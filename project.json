@@ -1,0 +1,17 @@
+{
+ "name": "desktop-wallet",
+ "description": "Desktop application for Vega Protocol's wallet.",
+ "author": {
+  "name": "Vega Protocol",
+  "email": "dev@vegaprotocol.io"
+ },
+ "version": "0.1.0",
+ "binaryname": "desktop-wallet",
+ "frontend": {
+  "dir": "frontend",
+  "install": "npm install",
+  "build": "npm run build",
+  "bridge": "src",
+  "serve": "npm run serve"
+ }
+}
