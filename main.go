@@ -1,13 +1,11 @@
 package main
 
 import (
-  _ "embed"
-  "github.com/wailsapp/wails"
-)
+	_ "embed"
 
-func basic() string {
-  return "World!"
-}
+	"desktop-wallet/backend"
+	"github.com/wailsapp/wails"
+)
 
 //go:embed frontend/build/static/js/main.js
 var js string
@@ -16,15 +14,16 @@ var js string
 var css string
 
 func main() {
-
-  app := wails.CreateApp(&wails.AppConfig{
-    Width:  1024,
-    Height: 768,
-    Title:  "desktop-wallet",
-    JS:     js,
-    CSS:    css,
-    Colour: "#131313",
-  })
-  app.Bind(basic)
-  app.Run()
+	b := &backend.Backend{}
+	app := wails.CreateApp(&wails.AppConfig{
+		Resizable: true,
+		MinWidth:  512,
+		MinHeight: 384,
+		Title:     "Vega Protocol's Wallet",
+		JS:        js,
+		CSS:       css,
+		Colour:    "#ffffff",
+	})
+	app.Bind(b)
+	_ = app.Run()
 }
