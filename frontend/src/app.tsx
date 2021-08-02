@@ -1,6 +1,5 @@
 import React from "react";
 
-import "./app.scss";
 import {AppRouter} from "./routes";
 // Wails doesn't support BrowserRouter
 // See https://wails.app/guides/reactrouter/

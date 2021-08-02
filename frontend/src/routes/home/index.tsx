@@ -1,6 +1,5 @@
 import React from "react";
 
-import "./home.scss";
 import {GetConfig} from "../../api/service";
 import {Config} from "../../models/config";
 import {ConfigDetails} from "../../components/config/config-details";

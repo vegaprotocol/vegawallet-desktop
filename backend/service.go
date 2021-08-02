@@ -9,18 +9,18 @@ import (
 	"go.uber.org/zap"
 )
 
-type Backend struct {
+type Service struct {
 	runtime *wails.Runtime
 	log     *wails.CustomLogger
 }
 
-func (b *Backend) WailsInit(runtime *wails.Runtime) error {
+func (b *Service) WailsInit(runtime *wails.Runtime) error {
 	b.runtime = runtime
-	b.log = runtime.Log.New("Backend")
+	b.log = runtime.Log.New("Service")
 	return nil
 }
 
-func (b *Backend) GetConfig() service.Config {
+func (b *Service) GetConfig() service.Config {
 	b.log.Debug("Entering GetConfig()...")
 	defer b.log.Debug("Leaving GetConfig()...")
 

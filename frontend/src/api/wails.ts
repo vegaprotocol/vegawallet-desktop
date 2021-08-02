@@ -1,7 +1,15 @@
-declare global {
-    interface Window {
-        backend: any;
-    }
+import {Config} from "../models/config";
+
+interface Service {
+    GetConfig(): Promise<Config>
 }
 
-export {}
+interface Backend {
+    Service: Service
+}
+
+declare global {
+    interface Window {
+        backend: Backend;
+    }
+}
