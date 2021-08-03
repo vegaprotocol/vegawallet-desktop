@@ -5,35 +5,35 @@ export interface ConfigDetailsProps {
     config: Config;
 }
 
-export const ConfigDetails = (props: ConfigDetailsProps): React.ReactElement => {
+export const ConfigDetails = (props: ConfigDetailsProps): JSX.Element => {
     return (
         <div>
-            <h1>Log level</h1>
+            <h2>Log level</h2>
             <p>{props.config.Level}</p>
 
-            <h1>Token expiry</h1>
+            <h2>Token expiry</h2>
             <p>{props.config.TokenExpiry}</p>
 
-            <h1>Host</h1>
+            <h2>Host</h2>
             <p>{props.config.Host}</p>
 
-            <h1>Port</h1>
+            <h2>Port</h2>
             <p>{props.config.Port}</p>
 
-            <h1>Nodes</h1>
-            <h2>Retries</h2>
+            <h2>Nodes</h2>
+            <h3>Retries</h3>
             <p>{props.config.Nodes.Retries}</p>
-            <h2>Hosts</h2>
+            <h3>Hosts</h3>
             <ul>
-                {props.config.Nodes.Hosts.every(host =>
-                    <li>{host}</li>
+                {props.config.Nodes.Hosts.map(host =>
+                    <li key={host}>{host}</li>
                 )}
             </ul>
 
-            <h1>Console</h1>
-            <h2>URL</h2>
+            <h2>Console</h2>
+            <h3>URL</h3>
             <p>{props.config.Console.URL}</p>
-            <h2>Local port</h2>
+            <h3>Local port</h3>
             <p>{props.config.Console.LocalPort}</p>
         </div>
     )
