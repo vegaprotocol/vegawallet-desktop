@@ -1,4 +1,4 @@
-import React, {FormEvent} from "react";
+import React from "react";
 import {Config} from "../../models/config";
 import {SaveConfig} from "../../api/service";
 import {ErrorMessage} from "../error-message";

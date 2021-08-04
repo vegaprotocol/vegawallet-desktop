@@ -14,7 +14,7 @@ const routerConfig = [
         children: [],
         component: EditServiceConfig,
         exact: true,
-    },
+    }
 ];
 
 export default routerConfig;
