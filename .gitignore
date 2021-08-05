@@ -1,0 +1,8 @@
+/build
+
+# MacOS
+.DS_Store
+
+# MacOS bundle
+info.plist
+appicon.png
