@@ -48,6 +48,7 @@ pipeline {
                 // TODO: add some checks (--help or --version)
                 sh label: 'Sanity check', script: '''
                     ls -lah
+                    ls -lah build
                 '''
             }
         }
