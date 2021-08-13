@@ -1,20 +1,18 @@
-import Home from "./home";
-import EditServiceConfig from "./config";
+import { Config } from "./config";
+import { Home } from "./home";
 
 const routerConfig = [
-    {
-        path: "/",
-        name: 'Home',
-        children: [],
-        component: Home,
-        exact: true,
-    }, {
-        path: "/service/config/edit",
-        name: "Edit service config",
-        children: [],
-        component: EditServiceConfig,
-        exact: true,
-    }
+  {
+    path: "/config",
+    name: "Config",
+    component: Config,
+  },
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+    exact: true,
+  },
 ];
 
 export default routerConfig;
