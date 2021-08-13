@@ -6,6 +6,9 @@ import { SuccessMessage } from "../../components/success-message";
 import { FormGroup } from "../../components/form-group";
 import { useForm } from "react-hook-form";
 import { LogLevels } from "../../config/log-levels";
+import { AppToaster, Toaster } from "../../components/toaster";
+import { Toast } from "../../components/toaster/toast";
+import { Colors } from "../../config/colors";
 
 interface FormFields {
   logLevel: string;
@@ -48,26 +51,28 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
       const configJSON = JSON.stringify({
         Level: values.logLevel,
         TokenExpiry: values.tokenExpiry,
-        Port: values.port,
+        Port: Number(values.port),
         Host: values.host,
         Console: {
           URL: values.consoleUrl,
-          LocalPort: values.consolePort,
+          LocalPort: Number(values.consolePort),
         },
         Nodes: {
           Hosts: config.Nodes.Hosts,
-          Retries: values.nodeRetries,
+          Retries: Number(values.nodeRetries),
         },
       });
-      const res = await SaveConfig(configJSON);
-      console.log(res);
-      if (res) {
-        setErrorMessage(null);
-        setSuccessMessage("Configuration saved!");
+      const success = await SaveConfig(configJSON);
+      if (success) {
+        AppToaster.show({
+          message: "Configuration saved!",
+          color: Colors.GREEN,
+        });
+      } else {
+        AppToaster.show({ message: "Error: Unknown", color: Colors.RED });
       }
     } catch (err) {
-      setSuccessMessage(null);
-      setErrorMessage(`Error: ${err}`);
+      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED });
     }
   };
 
@@ -133,8 +138,16 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         />
       </FormGroup>
       <button type="submit">Submit</button>
-      <ErrorMessage message={errorMessage} />
-      <SuccessMessage message={successMessage} />
+      {/* <button
+        onClick={() => AppToaster.show({ message: "foo", color: "blue" })}
+      >
+        Go blue
+      </button>
+      <button
+        onClick={() => AppToaster.show({ message: "foo", color: "green" })}
+      >
+        Go green
+      </button> */}
     </form>
   );
 };
