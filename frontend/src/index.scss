@@ -69,14 +69,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-
-  tr {
-    border-bottom: 1px solid $white;
-
-    &:first-child {
-      border-top: 1px solid $white;
-    }
-  }
+  font-size: 14px;
 
   th,
   td {
@@ -89,11 +82,13 @@ table {
     font-weight: 500;
     color: $white;
     text-transform: uppercase;
+    padding-left: 0;
   }
 
   td {
     color: $text-color;
     text-align: right;
+    padding-right: 0;
   }
 }
 

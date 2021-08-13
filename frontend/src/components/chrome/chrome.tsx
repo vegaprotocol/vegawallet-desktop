@@ -1,32 +1,28 @@
+import "./chrome.scss";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Vega } from "../icons";
+import routerConfig from "../../routes/router-config";
 
 export function Chrome({ children }: { children: React.ReactNode }) {
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "1px solid white",
-          padding: "0 15px 0 8px",
-          height: 50,
-          maxWidth: 600,
-          margin: "0 auto",
-        }}
-      >
-        <Link to="/">
+    <div className="chrome">
+      <div className="chrome__topbar">
+        <Link to="/" style={{ marginLeft: -8 }}>
           <Vega style={{ display: "block", width: 30, height: 30 }} />
         </Link>
-        <Link to="/config">
-          <button>Config</button>
-        </Link>
+        <nav className="chrome__nav">
+          {routerConfig
+            .filter((route) => {
+              if (route.name === "Home") return false;
+              return true;
+            })
+            .map((route) => (
+              <Link to={route.path}>{route.name}</Link>
+            ))}
+        </nav>
       </div>
-      <main style={{ padding: 15, maxWidth: 600, margin: "0 auto" }}>
-        {children}
-      </main>
+      <main className="chrome__main">{children}</main>
     </div>
   );
 }
