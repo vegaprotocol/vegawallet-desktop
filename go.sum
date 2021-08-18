@@ -10,10 +10,10 @@ cloud.google.com/go/datastore v1.0.0/go.mod h1:LXYbyblFSglQ5pkeyhO+Qmw7ukd3C+pD7
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/pubsub v1.0.1/go.mod h1:R0Gpsv3s54REJCy4fxDixWD93lHJMoZTyQ2kNxGRt3I=
 cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiyrjsg+URw=
-code.vegaprotocol.io/go-wallet v0.7.1-0.20210805111303-4776940e41ef h1:hc7i0QfMaSx5M10HmL2rb7p0iaPK9yktrBhAyl3er5Q=
-code.vegaprotocol.io/go-wallet v0.7.1-0.20210805111303-4776940e41ef/go.mod h1:+O+NLLQOavZixtanOh196bem01wcHaBMUqghTLpGI/M=
-code.vegaprotocol.io/protos v0.0.0-20210727151144-8e0c7307afea h1:CyGtd2htLj9vgzhZT8bYjRmYh17KzNcRaJbbw34I2AU=
-code.vegaprotocol.io/protos v0.0.0-20210727151144-8e0c7307afea/go.mod h1:srlX/+IMBhrQlxy//o8r6TCZ92fuqFDLf9ttnypHpyI=
+code.vegaprotocol.io/go-wallet v0.7.1-0.20210820092849-2ffcadfa6116 h1:LE9m/m7yASvxXEDhFdRFd6BIcgwwhj0FOHWy4sPtblU=
+code.vegaprotocol.io/go-wallet v0.7.1-0.20210820092849-2ffcadfa6116/go.mod h1:FqwlBV1B+HR487NmuurfRtZ9XvhM1n7NjgrSEuYZl/k=
+code.vegaprotocol.io/protos v0.41.1-0.20210818085909-433d56f64986 h1:vH0RnnE54jZChwG30JkUPw8ttAGx8NfhLZfC7YvH+pc=
+code.vegaprotocol.io/protos v0.41.1-0.20210818085909-433d56f64986/go.mod h1:17UdBxRpWLiJk1bq43Pl6HFfTjFnuoLHBsKfEZP0qjE=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
@@ -31,6 +31,8 @@ github.com/VividCortex/gohistogram v1.0.0/go.mod h1:Pf5mBqqDxYaXu3hDrrU+w6nw50o/
 github.com/Workiva/go-datastructures v1.0.52/go.mod h1:Z+F2Rca0qCsVYDS8z7bAGm8f3UkzuWYS/oBZz5a7VVA=
 github.com/abadojack/whatlanggo v1.0.1 h1:19N6YogDnf71CTHm3Mp2qhYfkRdyvbgwWdd2EPxJRG4=
 github.com/abadojack/whatlanggo v1.0.1/go.mod h1:66WiQbSbJBIlOZMsvbKe5m6pzQovxCH9B/K8tQB2uoc=
+github.com/adrg/xdg v0.3.3 h1:s/tV7MdqQnzB1nKY8aqHvAMD+uCiuEDzVB5HLRY849U=
+github.com/adrg/xdg v0.3.3/go.mod h1:61xAR2VZcggl2St4O9ohF5qCKe08+JDmE4VNzPFQvOQ=
 github.com/aead/siphash v1.0.1/go.mod h1:Nywa3cDsYNNK3gaciGTWPwHt0wlpNV15vwmswBAUSII=
 github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5/go.mod h1:SkGFH1ia65gfNATL8TAiHDNxPzPdmEL5uirI2Uyuz6c=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=

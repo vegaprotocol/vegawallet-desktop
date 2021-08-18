@@ -4,6 +4,7 @@ import (
 	_ "embed"
 
 	"desktop-wallet/backend"
+
 	"github.com/wailsapp/wails"
 )
 
