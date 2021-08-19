@@ -18,7 +18,7 @@ export const Toast = ({
     }, 2000);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [id, onDismiss]);
 
   return (
     <div

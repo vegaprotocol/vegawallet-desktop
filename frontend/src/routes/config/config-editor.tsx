@@ -1,13 +1,10 @@
 import React from "react";
 import { Config } from "../../models/config";
 import { SaveConfig } from "../../api/service";
-import { ErrorMessage } from "../../components/error-message";
-import { SuccessMessage } from "../../components/success-message";
 import { FormGroup } from "../../components/form-group";
 import { useForm } from "react-hook-form";
 import { LogLevels } from "../../config/log-levels";
-import { AppToaster, Toaster } from "../../components/toaster";
-import { Toast } from "../../components/toaster/toast";
+import { AppToaster } from "../../components/toaster";
 import { Colors } from "../../config/colors";
 
 interface FormFields {
@@ -40,11 +37,6 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
       consolePort: config.Console.LocalPort,
     },
   });
-
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = React.useState<string | null>(
-    null
-  );
 
   const onSubmit = async (values: FormFields) => {
     try {
@@ -138,16 +130,6 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         />
       </FormGroup>
       <button type="submit">Submit</button>
-      {/* <button
-        onClick={() => AppToaster.show({ message: "foo", color: "blue" })}
-      >
-        Go blue
-      </button>
-      <button
-        onClick={() => AppToaster.show({ message: "foo", color: "green" })}
-      >
-        Go green
-      </button> */}
     </form>
   );
 };
