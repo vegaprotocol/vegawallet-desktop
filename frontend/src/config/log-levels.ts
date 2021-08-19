@@ -1,7 +1,9 @@
-// TODO: Check these log levels are correct. Can we get available log
-// levels exposed
 export const LogLevels = {
+  DEBUG: "debug",
   INFO: "info",
   WARN: "warn",
+  ERROR: "error",
+  DPANIC: "dpanic",
+  PANIC: "panic",
   FATAL: "fatal",
 };
