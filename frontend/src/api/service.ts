@@ -1,5 +1,6 @@
 import type { Config } from '../models/config'
 import type { GetConsoleStateResponse } from '../models/console-state'
+import type { CreateWalletRequest, CreateWalletResponse } from '../models/create-wallet'
 import type { ImportWalletRequest } from '../models/import-wallet'
 import type { ListKeysRequest, ListKeysResponse } from '../models/list-keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
@@ -7,6 +8,10 @@ import type { LoadWalletsRequest } from '../models/load-wallets'
 
 export function ListKeys(request: ListKeysRequest): Promise<ListKeysResponse> {
   return window.backend.Service.ListKeys(JSON.stringify(request))
+}
+
+export function CreateWallet(request:CreateWalletRequest): Promise<CreateWalletResponse> {
+  return window.backend.Service.CreateWallet(JSON.stringify(request));
 }
 
 export function ImportWallet(request: ImportWalletRequest): Promise<boolean> {
