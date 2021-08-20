@@ -1,0 +1,10 @@
+*.css
+*.scss
+*.stories.tsx
+*.md
+*.graphql
+node_modules
+build
+scripts
+cypress
+config

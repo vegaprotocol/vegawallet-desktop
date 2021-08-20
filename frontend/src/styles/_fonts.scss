@@ -1,6 +1,12 @@
-$font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-                "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-                sans-serif;
+$font-main: "Helvetica neue", "Helvetica", arial, sans-serif;
+$font-mono: "Roboto Mono", monospace;
+$font-pixelated: NeuePixelGrotesk, "Helvetica neue", "Helvetica", arial,
+  sans-serif;
 
-$font-mono: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-                monospace;
+.font-main {
+  font-family: $font-main;
+}
+
+.font-mono {
+  font-family: $font-mono;
+}

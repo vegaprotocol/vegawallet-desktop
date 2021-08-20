@@ -1,0 +1,10 @@
+.toaster-container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
