@@ -1,17 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Config } from "../../models/config";
-import { BulletHeader } from "../../components/bullet-header";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Config } from '../../models/config'
+import { BulletHeader } from '../../components/bullet-header'
 
 export interface ConfigDetailsProps {
-  config: Config;
+  config: Config
 }
 
 export const ConfigDetails = (props: ConfigDetailsProps): JSX.Element => {
   return (
     <>
-      <BulletHeader tag="h1">
-        Config / <Link to="/config/edit">Edit</Link>
+      <BulletHeader tag='h1'>
+        Config / <Link to='/config/edit'>Edit</Link>
       </BulletHeader>
       <table>
         <tbody>
@@ -34,7 +34,7 @@ export const ConfigDetails = (props: ConfigDetailsProps): JSX.Element => {
           <tr></tr>
         </tbody>
       </table>
-      <BulletHeader tag="h2">Nodes</BulletHeader>
+      <BulletHeader tag='h2'>Nodes</BulletHeader>
       <table>
         <tbody>
           <tr>
@@ -43,7 +43,7 @@ export const ConfigDetails = (props: ConfigDetailsProps): JSX.Element => {
           </tr>
         </tbody>
       </table>
-      <BulletHeader tag="h2">Console</BulletHeader>
+      <BulletHeader tag='h2'>Console</BulletHeader>
       <table>
         <tbody>
           <tr>
@@ -60,14 +60,14 @@ export const ConfigDetails = (props: ConfigDetailsProps): JSX.Element => {
           </tr>
         </tbody>
       </table>
-      <BulletHeader tag="h2">Hosts</BulletHeader>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-        {props.config.Nodes.Hosts.map((host) => (
+      <BulletHeader tag='h2'>Hosts</BulletHeader>
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+        {props.config.Nodes.Hosts.map(host => (
           <li key={host} style={{ marginBottom: 5 }}>
             {host}
           </li>
         ))}
       </ul>
     </>
-  );
-};
+  )
+}

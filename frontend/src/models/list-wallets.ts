@@ -1,3 +1,3 @@
 export class ListWalletsResponse {
-    Wallets: string[] = []
+  Wallets: string[] = []
 }

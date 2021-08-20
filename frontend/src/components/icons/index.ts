@@ -1,3 +1,3 @@
-import "./icons.scss";
+import './icons.scss'
 
-export * from "./vega";
+export * from './vega'

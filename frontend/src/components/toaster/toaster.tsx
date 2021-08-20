@@ -1,60 +1,60 @@
-import "./toaster.scss";
-import React from "react";
-import ReactDOM from "react-dom";
-import { Toast } from "./toast";
+import './toaster.scss'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Toast } from './toast'
 
 interface ToasterState {
-  toasts: Array<{ id: string; message: string; color?: string }>;
+  toasts: Array<{ id: string; message: string; color?: string }>
 }
 
 export class Toaster extends React.Component<any, ToasterState> {
-  toastId = 0;
-  container: HTMLDivElement | null = null;
+  toastId = 0
+  container: HTMLDivElement | null = null
 
   state: ToasterState = {
-    toasts: [],
-  };
+    toasts: []
+  }
 
   public static create() {
-    const container = document.createElement("div");
-    container.className = "toaster-container";
-    document.body.appendChild(container);
+    const container = document.createElement('div')
+    container.className = 'toaster-container'
+    document.body.appendChild(container)
     // @ts-ignore
-    const toaster = ReactDOM.render(<Toaster />, container) as Toaster;
-    return toaster;
+    const toaster = ReactDOM.render(<Toaster />, container) as Toaster
+    return toaster
   }
 
   handleDismiss = (id: string) => {
     this.setState(({ toasts }) => ({
-      toasts: toasts.filter((t) => {
-        return t.id !== id;
-      }),
-    }));
-  };
+      toasts: toasts.filter(t => {
+        return t.id !== id
+      })
+    }))
+  }
 
   show(toast: { message: string; color?: string }) {
-    this.setState((curr) => {
+    this.setState(curr => {
       return {
         ...curr,
         toasts: [
           {
             id: `toast-${this.toastId++}`,
-            ...toast,
+            ...toast
           },
-          ...curr.toasts,
-        ],
-      };
-    });
+          ...curr.toasts
+        ]
+      }
+    })
   }
 
   componentDidMount() {
-    this.container = document.createElement("div");
-    this.container.className = "toaster-portal-container";
+    this.container = document.createElement('div')
+    this.container.className = 'toaster-portal-container'
   }
 
   render() {
     if (this.container === null) {
-      return null;
+      return null
     }
 
     return (
@@ -69,8 +69,8 @@ export class Toaster extends React.Component<any, ToasterState> {
           />
         ))}
       </>
-    );
+    )
   }
 }
 
-export const AppToaster = Toaster.create();
+export const AppToaster = Toaster.create()

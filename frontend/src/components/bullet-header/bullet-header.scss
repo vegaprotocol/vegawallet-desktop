@@ -1,19 +1,19 @@
-@import "../../styles/colors";
+@import '../../styles/colors';
 
 .bullet-header {
-  font-size: 16px;
   border-top: 1px solid $white;
-  padding: 8px 0 25px 0;
-  text-transform: uppercase;
+  font-size: 16px;
   font-weight: 300;
-  margin: 35px 0 0 0;
+  margin: 35px 0 0;
+  padding: 8px 0 25px;
+  text-transform: uppercase;
 
   &::before {
-    content: "";
+    background-color: $white;
+    content: '';
     display: inline-block;
-    width: 12px;
     height: 12px;
     margin-right: 10px;
-    background-color: $white;
+    width: 12px;
   }
 }

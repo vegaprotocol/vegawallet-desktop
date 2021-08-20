@@ -1,27 +1,27 @@
-import "./form-group.scss";
-import React from "react";
-import { Colors } from "../../config/colors";
+import './form-group.scss'
+import React from 'react'
+import { Colors } from '../../config/colors'
 
 export const FormGroup = ({
   children,
   label,
   labelFor,
-  errorText,
+  errorText
 }: {
-  children: React.ReactNode;
-  label: string;
-  labelFor: string;
-  errorText?: string;
+  children: React.ReactNode
+  label: string
+  labelFor: string
+  errorText?: string
 }) => {
   return (
-    <div className="form-group">
+    <div className='form-group'>
       <label htmlFor={labelFor}>{label}</label>
       <div>{children}</div>
       {errorText && (
-        <div className="form-group__error" style={{ color: Colors.RED }}>
+        <div className='form-group__error' style={{ color: Colors.RED }}>
           {errorText}
         </div>
       )}
     </div>
-  );
-};
+  )
+}

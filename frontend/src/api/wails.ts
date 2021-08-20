@@ -1,7 +1,9 @@
-import {Config} from "../models/config";
-import {ListWalletsResponse} from "../models/list-wallets";
+import { Config } from '../models/config'
+import { ListWalletsResponse } from '../models/list-wallets'
 
 interface Service {
+  ImportWallet(request: string): Promise<boolean>
+
   LoadWallets(request: string): Promise<boolean>
 
   IsAppInitialised(): Promise<boolean>
@@ -23,6 +25,6 @@ interface Backend {
 
 declare global {
   interface Window {
-    backend: Backend;
+    backend: Backend
   }
 }

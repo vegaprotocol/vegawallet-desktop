@@ -1,5 +1,2 @@
-*.css
-*.scss
-*.md
 node_modules
 build
