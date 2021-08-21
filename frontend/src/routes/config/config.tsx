@@ -3,15 +3,12 @@ import React from 'react'
 import { GetConfig } from '../../api/service'
 import { Config as ConfigModel } from '../../models/config'
 import { ConfigDetails } from './config-details'
-import { ErrorMessage } from '../../components/error-message'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { ConfigEdit } from './config-edit'
+import { BulletHeader } from '../../components/bullet-header'
 
 export const Config = () => {
   const match = useRouteMatch()
-  const [configErrorMessage, setConfigErrorMessage] = React.useState<
-    string | null
-  >(null)
   const [config, setConfig] = React.useState<ConfigModel | null>(null)
 
   React.useEffect(() => {
@@ -20,13 +17,16 @@ export const Config = () => {
         setConfig(result)
       })
       .catch(error => {
-        setConfigErrorMessage(error)
+        console.log(error)
       })
   }, [])
 
   if (!config) {
     return (
-      <ErrorMessage message={configErrorMessage || 'Something went wrong'} />
+      <>
+        <BulletHeader tag='h1'>Config</BulletHeader>
+        <p>No wallet</p>
+      </>
     )
   }
 
