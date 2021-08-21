@@ -1,0 +1,9 @@
+@import "../../styles/colors";
+
+.wallet-creator {
+  &__mnemonic {
+    white-space: break-spaces;
+    background: $dark-gray2;
+    padding: 15px;
+  }
+}
