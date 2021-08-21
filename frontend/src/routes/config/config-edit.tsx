@@ -10,7 +10,6 @@ export const ConfigEdit = ({ config }: { config: Config }) => {
       <BulletHeader tag='h1'>
         Edit configuration / <Link to='/config'>Back</Link>
       </BulletHeader>
-
       <ConfigEditor config={config} />
     </>
   )

@@ -71,7 +71,7 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup
-        label='Log level'
+        label='* Log level'
         labelFor='logLevel'
         errorText={errors.logLevel?.message}>
         <select {...register('logLevel', { required: 'Required' })}>
@@ -83,7 +83,7 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         </select>
       </FormGroup>
       <FormGroup
-        label='Token expiry'
+        label='* Token expiry'
         labelFor='tokenExpiry'
         errorText={errors.tokenExpiry?.message}>
         <input
@@ -91,14 +91,20 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
           {...register('tokenExpiry', { required: 'Required' })}
         />
       </FormGroup>
-      <FormGroup label='Port' labelFor='port' errorText={errors.port?.message}>
+      <FormGroup
+        label='* Port'
+        labelFor='port'
+        errorText={errors.port?.message}>
         <input type='text' {...register('port', { required: 'Required' })} />
       </FormGroup>
-      <FormGroup label='Host' labelFor='host' errorText={errors.host?.message}>
+      <FormGroup
+        label='* Host'
+        labelFor='host'
+        errorText={errors.host?.message}>
         <input type='text' {...register('host', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
-        label='Node retries'
+        label='* Node retries'
         labelFor='nodeRetries'
         errorText={errors.nodeRetries?.message}>
         <input
@@ -107,7 +113,7 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         />
       </FormGroup>
       <FormGroup
-        label='Console URL'
+        label='* Console URL'
         labelFor='consoleUrl'
         errorText={errors.consoleUrl?.message}>
         <input
@@ -116,7 +122,7 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         />
       </FormGroup>
       <FormGroup
-        label='Console port'
+        label='* Console port'
         labelFor='consolePort'
         errorText={errors.consolePort?.message}>
         <input

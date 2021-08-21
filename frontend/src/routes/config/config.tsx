@@ -25,7 +25,9 @@ export const Config = () => {
   }, [])
 
   if (!config) {
-    return <ErrorMessage message={configErrorMessage || ''} />
+    return (
+      <ErrorMessage message={configErrorMessage || 'Something went wrong'} />
+    )
   }
 
   return (
