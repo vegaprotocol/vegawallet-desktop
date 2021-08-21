@@ -1,7 +1,7 @@
 import React from "react";
 import { IsAppInitialised, ListWallets } from "../../api/service";
 import { WalletList } from "./wallet-list";
-import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { Wallet } from "./wallet";
 
 enum WalletStatus {
@@ -54,13 +54,4 @@ export const Home = () => {
       </Route>
     </Switch>
   );
-
-  // <b>Is app initialised? {isInit ? "Yes" : "No"}</b>
-  // <hr/>
-  // <WalletsLoader request={{RootPath: ""}}/>
-  // <hr/>
-  // <WalletImporter request={{RootPath: "", Name: "", Passphrase: "", Mnemonic: ""}}/>
-  // <hr/>
-  // <WalletList/>
-  // <hr/>
 };
