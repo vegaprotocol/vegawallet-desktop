@@ -10,7 +10,6 @@ export interface ConfigDetailsProps {
 export const ConfigDetails = (props: ConfigDetailsProps): JSX.Element => {
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}></div>
       <BulletHeader tag="h1">
         Config / <Link to="/config/edit">Edit</Link>
       </BulletHeader>

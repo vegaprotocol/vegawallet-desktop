@@ -1,29 +1,28 @@
+import "./wallet-list.scss";
 import React from "react";
-import {ListWallets} from "../../api/service";
-import {AppToaster} from "../../components/toaster";
-import {Colors} from "../../config/colors";
-import {ListWalletsResponse} from "../../models/list-wallets";
+import { Link } from "react-router-dom";
+import { BulletHeader } from "../../components/bullet-header";
 
-export const WalletList = () => {
-  const [response, setResponse] = React.useState<ListWalletsResponse>(new ListWalletsResponse());
+interface WalletListProps {
+  wallets: string[];
+}
 
-  React.useEffect(() => {
-    ListWallets()
-      .then((result) => {
-        setResponse(result);
-      })
-      .catch((error) => {
-        AppToaster.show({message: `Error: ${error}`, color: Colors.RED});
-      });
-  }, []);
-
+export const WalletList = ({ wallets }: WalletListProps) => {
   return (
-    <ul>
-      {response.Wallets.map((wallet) => (
-        <li key={wallet} style={{marginBottom: 5}}>
-          {wallet}
-        </li>
-      ))}
-    </ul>
+    <>
+      <BulletHeader tag="h1">Wallets</BulletHeader>
+      {wallets.length ? (
+        <ul className="wallet-list">
+          {wallets.map((wallet) => (
+            <li key={wallet} style={{ marginBottom: 5 }}>
+              <span>{wallet}</span>
+              <Link to={`/wallet/${wallet}`}>View</Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No wallets</p>
+      )}
+    </>
   );
 };
