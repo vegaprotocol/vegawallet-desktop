@@ -1,19 +1,16 @@
+import "./wallet-creator.scss";
 import React from "react";
-import { ImportWallet } from "../../api/service";
+import { CreateWallet } from "../../api/service";
 import { FormGroup } from "../../components/form-group";
 import { useForm } from "react-hook-form";
 import { AppToaster } from "../../components/toaster";
 import { Colors } from "../../config/colors";
-import { ImportWalletRequest } from "../../models/import-wallet";
+import {
+  CreateWalletRequest,
+  CreateWalletResponse,
+} from "../../models/create-wallet";
 import { BulletHeader } from "../../components/bullet-header";
 import { Link } from "react-router-dom";
-
-enum FormState {
-  Default,
-  Pending,
-  Success,
-  Failure,
-}
 
 interface FormFields {
   rootPath: string;
@@ -22,12 +19,15 @@ interface FormFields {
   mnemonic: string;
 }
 
-export interface ImportMnemonicProps {
-  request: ImportWalletRequest;
+export interface WalletCreatorProps {
+  request: CreateWalletRequest;
 }
 
-export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
-  const [formState, setFormState] = React.useState(FormState.Default);
+export const WalletCreator = ({ request }: WalletCreatorProps) => {
+  const [response, setResponse] = React.useState<CreateWalletResponse | null>(
+    null
+  );
+
   const {
     register,
     handleSubmit,
@@ -37,51 +37,48 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
       rootPath: request.RootPath,
       name: request.Name,
       passphrase: request.Passphrase,
-      mnemonic: request.Mnemonic,
     },
   });
 
   const onSubmit = async (values: FormFields) => {
-    setFormState(FormState.Pending);
     try {
-      const success = await ImportWallet({
+      const resp = await CreateWallet({
         RootPath: values.rootPath,
         Name: values.name,
         Passphrase: values.passphrase,
-        Mnemonic: values.mnemonic,
       });
-      if (success) {
+      if (resp) {
+        setResponse(resp);
         AppToaster.show({
-          message: "Wallet imported!",
+          message: "Wallet created!",
           color: Colors.GREEN,
         });
-        setFormState(FormState.Success);
       } else {
         AppToaster.show({ message: "Error: Unknown", color: Colors.RED });
-        setFormState(FormState.Failure);
       }
     } catch (err) {
       AppToaster.show({ message: `Error: ${err}`, color: Colors.RED });
-      setFormState(FormState.Failure);
     }
   };
 
   return (
     <>
-      <BulletHeader tag="h1">
-        Import by mnemonic phrase / <Link to="/import">Back</Link>
-      </BulletHeader>
-      {formState === FormState.Success ? (
+      <BulletHeader tag="h1">Create wallet</BulletHeader>
+      {response ? (
         <>
-          <p>Wallet successfully imported</p>
+          <p>
+            Here is your mnemonic phrase. Please take note of the words below as
+            you will need these to restore your wallet!
+          </p>
+          <pre className="wallet-creator__mnemonic">{response.Mnemonic}</pre>
           <Link to="/">
-            <button>Go to wallets</button>
+            <button>View wallets</button>
           </Link>
         </>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormGroup
-            label="Wallet location"
+            label="Location (defaults to home directory)"
             labelFor="rootPath"
             errorText={errors.rootPath?.message}
           >
@@ -95,16 +92,6 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
             <input
               type="text"
               {...register("name", { required: "Required" })}
-            />
-          </FormGroup>
-          <FormGroup
-            label="* Mnemonic"
-            labelFor="mnemonic"
-            errorText={errors.mnemonic?.message}
-          >
-            <textarea
-              {...register("mnemonic", { required: "Required" })}
-              style={{ minHeight: 75 }}
             />
           </FormGroup>
           <FormGroup
