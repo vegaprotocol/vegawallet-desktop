@@ -15,7 +15,7 @@ export const Toast = ({
   React.useEffect(() => {
     const timeout = setTimeout(() => {
       onDismiss(id)
-    }, 2000)
+    }, 3000)
 
     return () => clearTimeout(timeout)
   }, [id, onDismiss])
