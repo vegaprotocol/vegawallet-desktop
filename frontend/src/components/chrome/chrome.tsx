@@ -17,8 +17,11 @@ export function Chrome({ children }: { children: React.ReactNode }) {
               if (route.name === "Home") return false;
               return true;
             })
-            .map((route) => (
-              <Link to={route.path}>{route.name}</Link>
+            .map((route, i) => (
+              <span key={route.name}>
+                {i !== 0 ? " / " : null}
+                <Link to={route.path}>{route.name}</Link>
+              </span>
             ))}
         </nav>
       </div>

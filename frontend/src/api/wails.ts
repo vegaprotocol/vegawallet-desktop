@@ -1,21 +1,28 @@
 import {Config} from "../models/config";
+import {ListWalletsResponse} from "../models/list-wallets";
 
 interface Service {
-    GetConfig(): Promise<Config>
+  LoadWallets(request: string): Promise<boolean>
 
-    SaveConfig(jsonConfig: string): Promise<boolean>
+  IsAppInitialised(): Promise<boolean>
 
-    StartConsole(): Promise<boolean>
+  ListWallets(): Promise<ListWalletsResponse>
 
-    StopConsole(): Promise<boolean>
+  GetConfig(): Promise<Config>
+
+  SaveConfig(jsonConfig: string): Promise<boolean>
+
+  StartConsole(): Promise<boolean>
+
+  StopConsole(): Promise<boolean>
 }
 
 interface Backend {
-    Service: Service
+  Service: Service
 }
 
 declare global {
-    interface Window {
-        backend: Backend;
-    }
+  interface Window {
+    backend: Backend;
+  }
 }

@@ -12,10 +12,6 @@ export const Config = () => {
   const [configErrorMessage, setConfigErrorMessage] = React.useState<
     string | null
   >(null);
-  // const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  // const [successMessage, setSuccessMessage] = React.useState<string | null>(
-  //   null
-  // );
   const [config, setConfig] = React.useState<ConfigModel | null>(null);
 
   React.useEffect(() => {
@@ -28,39 +24,8 @@ export const Config = () => {
       });
   }, []);
 
-  // const startConsole = (e: any) => {
-  //   e.preventDefault();
-  //   setSuccessMessage("Starting console...");
-  //   StartConsole()
-  //     .then((success) => {
-  //       if (success) {
-  //         setErrorMessage(null);
-  //         setSuccessMessage("Console successfully stopped...");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setSuccessMessage(null);
-  //       setErrorMessage(`Error: ${error}`);
-  //     });
-  // };
-
-  // const stopConsole = (e: any) => {
-  //   e.preventDefault();
-  //   StopConsole()
-  //     .then((success) => {
-  //       if (success) {
-  //         setErrorMessage(null);
-  //         setSuccessMessage("Stopping console...");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setSuccessMessage(null);
-  //       setErrorMessage(`Error: ${error}`);
-  //     });
-  // };
-
   if (!config) {
-    return <ErrorMessage message={configErrorMessage} />;
+    return <ErrorMessage message={configErrorMessage || ""} />;
   }
 
   return (
