@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { AppToaster } from "../../components/toaster";
 import { Colors } from "../../config/colors";
 import { ImportWalletRequest } from "../../models/import-wallet";
-import { Link } from "react-router-dom";
 import { ImportSuccess } from "./import-success";
 
 enum FormState {
