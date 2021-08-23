@@ -74,6 +74,10 @@ button {
   &.fill {
     width: 100%;
   }
+
+  &.active {
+    background: $dark-gray5;
+  }
 }
 
 // TABLES

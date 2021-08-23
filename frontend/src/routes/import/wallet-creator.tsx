@@ -9,7 +9,6 @@ import {
   CreateWalletRequest,
   CreateWalletResponse,
 } from "../../models/create-wallet";
-import { BulletHeader } from "../../components/bullet-header";
 import { Link } from "react-router-dom";
 
 interface FormFields {
@@ -61,52 +60,44 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
     }
   };
 
-  return (
+  return response ? (
     <>
-      <BulletHeader tag="h1">Create wallet</BulletHeader>
-      {response ? (
-        <>
-          <p>
-            Here is your mnemonic phrase. Please take note of the words below as
-            you will need these to restore your wallet!
-          </p>
-          <pre className="wallet-creator__mnemonic">{response.Mnemonic}</pre>
-          <Link to="/">
-            <button>View wallets</button>
-          </Link>
-        </>
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup
-            label="Location (defaults to home directory)"
-            labelFor="rootPath"
-            errorText={errors.rootPath?.message}
-          >
-            <input type="text" {...register("rootPath")} />
-          </FormGroup>
-          <FormGroup
-            label="* Name"
-            labelFor="name"
-            errorText={errors.name?.message}
-          >
-            <input
-              type="text"
-              {...register("name", { required: "Required" })}
-            />
-          </FormGroup>
-          <FormGroup
-            label="* Passphrase"
-            labelFor="passphrase"
-            errorText={errors.passphrase?.message}
-          >
-            <input
-              type="text"
-              {...register("passphrase", { required: "Required" })}
-            />
-          </FormGroup>
-          <button type="submit">Submit</button>
-        </form>
-      )}
+      <p>
+        Here is your mnemonic phrase. Please take note of the words below as you
+        will need these to restore your wallet!
+      </p>
+      <pre className="wallet-creator__mnemonic">{response.Mnemonic}</pre>
+      <Link to="/">
+        <button>View wallets</button>
+      </Link>
     </>
+  ) : (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormGroup
+        label="Location (defaults to home directory)"
+        labelFor="rootPath"
+        errorText={errors.rootPath?.message}
+      >
+        <input type="text" {...register("rootPath")} />
+      </FormGroup>
+      <FormGroup
+        label="* Name"
+        labelFor="name"
+        errorText={errors.name?.message}
+      >
+        <input type="text" {...register("name", { required: "Required" })} />
+      </FormGroup>
+      <FormGroup
+        label="* Passphrase"
+        labelFor="passphrase"
+        errorText={errors.passphrase?.message}
+      >
+        <input
+          type="text"
+          {...register("passphrase", { required: "Required" })}
+        />
+      </FormGroup>
+      <button type="submit">Submit</button>
+    </form>
   );
 };

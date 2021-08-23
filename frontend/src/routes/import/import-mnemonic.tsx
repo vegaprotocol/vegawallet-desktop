@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { AppToaster } from "../../components/toaster";
 import { Colors } from "../../config/colors";
 import { ImportWalletRequest } from "../../models/import-wallet";
-import { BulletHeader } from "../../components/bullet-header";
 import { Link } from "react-router-dom";
 
 enum FormState {
@@ -66,60 +65,50 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     }
   };
 
-  return (
+  return formState === FormState.Success ? (
     <>
-      <BulletHeader tag="h1">
-        Import by mnemonic phrase / <Link to="/import">Back</Link>
-      </BulletHeader>
-      {formState === FormState.Success ? (
-        <>
-          <p>Wallet successfully imported</p>
-          <Link to="/">
-            <button>Go to wallets</button>
-          </Link>
-        </>
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup
-            label="Wallet location"
-            labelFor="rootPath"
-            errorText={errors.rootPath?.message}
-          >
-            <input type="text" {...register("rootPath")} />
-          </FormGroup>
-          <FormGroup
-            label="* Name"
-            labelFor="name"
-            errorText={errors.name?.message}
-          >
-            <input
-              type="text"
-              {...register("name", { required: "Required" })}
-            />
-          </FormGroup>
-          <FormGroup
-            label="* Mnemonic"
-            labelFor="mnemonic"
-            errorText={errors.mnemonic?.message}
-          >
-            <textarea
-              {...register("mnemonic", { required: "Required" })}
-              style={{ minHeight: 75 }}
-            />
-          </FormGroup>
-          <FormGroup
-            label="* Passphrase"
-            labelFor="passphrase"
-            errorText={errors.passphrase?.message}
-          >
-            <input
-              type="text"
-              {...register("passphrase", { required: "Required" })}
-            />
-          </FormGroup>
-          <button type="submit">Submit</button>
-        </form>
-      )}
+      <p>Wallet successfully imported</p>
+      <Link to="/">
+        <button>Go to wallets</button>
+      </Link>
     </>
+  ) : (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormGroup
+        label="Wallet location"
+        labelFor="rootPath"
+        errorText={errors.rootPath?.message}
+      >
+        <input type="text" {...register("rootPath")} />
+      </FormGroup>
+      <FormGroup
+        label="* Name"
+        labelFor="name"
+        errorText={errors.name?.message}
+      >
+        <input type="text" {...register("name", { required: "Required" })} />
+      </FormGroup>
+      <FormGroup
+        label="* Mnemonic"
+        labelFor="mnemonic"
+        errorText={errors.mnemonic?.message}
+      >
+        <textarea
+          {...register("mnemonic", { required: "Required" })}
+          style={{ minHeight: 75 }}
+        />
+      </FormGroup>
+      <FormGroup
+        label="* Passphrase"
+        labelFor="passphrase"
+        errorText={errors.passphrase?.message}
+      >
+        <input
+          type="text"
+          {...register("passphrase", { required: "Required" })}
+        />
+      </FormGroup>
+      <button type="submit">Submit</button>
+    </form>
   );
 };

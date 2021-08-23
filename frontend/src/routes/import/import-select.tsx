@@ -1,24 +1,29 @@
 import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import { BulletHeader } from "../../components/bullet-header";
 import { ButtonGroup } from "../../components/button-group";
 
 export function ImportSelect() {
   const match = useRouteMatch();
+  const location = useLocation();
+  console.log(location);
   return (
     <>
       <BulletHeader tag="h1">Create or import wallet</BulletHeader>
-
       <ButtonGroup>
-        <Link to={`${match.path}/create`}>
-          <button className="fill">Create new</button>
-        </Link>
-        <Link to={`${match.path}/path`}>
-          <button className="fill">Import by path</button>
-        </Link>
-        <Link to={`${match.path}/mnemonic`}>
-          <button className="fill">Import by mnemonic</button>
-        </Link>
+        {[
+          { path: `${match.path}/create`, text: "Create new" },
+          { path: `${match.path}/path`, text: "Import by path" },
+          { path: `${match.path}/mnemonic`, text: "Import by mnemonic" },
+        ].map((route) => {
+          const isActive = location.pathname === route.path;
+          const className = ["fill", isActive ? "active" : ""].join(" ");
+          return (
+            <Link to={route.path} key={route.path}>
+              <button className={className}>{route.text}</button>
+            </Link>
+          );
+        })}
       </ButtonGroup>
     </>
   );
