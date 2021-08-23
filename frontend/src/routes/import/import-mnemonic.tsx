@@ -6,6 +6,7 @@ import { AppToaster } from "../../components/toaster";
 import { Colors } from "../../config/colors";
 import { ImportWalletRequest } from "../../models/import-wallet";
 import { Link } from "react-router-dom";
+import { ImportSuccess } from "./import-success";
 
 enum FormState {
   Default,
@@ -66,12 +67,7 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
   };
 
   return formState === FormState.Success ? (
-    <>
-      <p>Wallet successfully imported</p>
-      <Link to="/">
-        <button>Go to wallets</button>
-      </Link>
-    </>
+    <ImportSuccess />
   ) : (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup
