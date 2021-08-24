@@ -1,4 +1,5 @@
 import type { Config } from '../models/config'
+import type { GetConsoleStateResponse } from '../models/console-state'
 import type { ImportWalletRequest } from '../models/import-wallet'
 import type { ListWalletsResponse } from '../models/list-wallets'
 import type { LoadWalletsRequest } from '../models/load-wallets'
@@ -29,6 +30,10 @@ export function SaveServiceConfig(config: string): Promise<boolean> {
 
 export function StartConsole(): Promise<boolean> {
   return window.backend.Service.StartConsole()
+}
+
+export function GetConsoleState(): Promise<GetConsoleStateResponse> {
+  return window.backend.Service.GetConsoleState()
 }
 
 export function StopConsole(): Promise<boolean> {

@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Config } from '../../models/config'
+
 import { BulletHeader } from '../../components/bullet-header'
+import type { Config } from '../../models/config'
 
 export interface ConfigDetailsProps {
   config: Config

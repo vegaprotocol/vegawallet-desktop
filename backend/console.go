@@ -16,15 +16,25 @@ import (
 	"github.com/skratchdot/open-golang/open"
 )
 
-type StartConsoleResponse struct {
-	URL string
+type consoleState struct {
+	URL          string
+	shutdownFunc func()
+}
+
+func (s *consoleState) IsRunning() bool {
+	return s.shutdownFunc != nil
+}
+
+func (s *consoleState) Shutdown() {
+	s.shutdownFunc()
+	s.shutdownFunc = nil
 }
 
 func (s *Service) StartConsole() (bool, error) {
 	s.log.Debug("Entering StartConsole")
 	defer s.log.Debug("Leaving StartConsole")
 
-	if s.shutdownFunc != nil {
+	if s.console.IsRunning() {
 		s.log.Error("A console already started")
 		return false, ErrConsoleAlreadyRunning
 	}
@@ -62,8 +72,6 @@ func (s *Service) StartConsole() (bool, error) {
 	ctx, shutdown := context.WithCancel(context.Background())
 	defer shutdown()
 
-	s.shutdownFunc = shutdown
-
 	srv, err := service.NewService(log, svcConfig, svcStore, handler)
 	if err != nil {
 		s.log.Errorf("Couldn't instantiate the service: %v", err)
@@ -94,6 +102,9 @@ func (s *Service) StartConsole() (bool, error) {
 		}
 	}()
 
+	s.console.URL = cs.GetBrowserURL()
+	s.console.shutdownFunc = shutdown
+
 	s.log.Infof("Opening the console at %s", cs.GetBrowserURL())
 	err = open.Run(cs.GetBrowserURL())
 	if err != nil {
@@ -120,19 +131,32 @@ func (s *Service) StartConsole() (bool, error) {
 	return true, nil
 }
 
+type GetConsoleStateResponse struct {
+	URL     string
+	Running bool
+}
+
+func (s *Service) GetConsoleState() GetConsoleStateResponse {
+	s.log.Debug("Entering GetConsoleState")
+	defer s.log.Debug("Leaving GetConsoleState")
+
+	return GetConsoleStateResponse{
+		URL:     s.console.URL,
+		Running: s.console.IsRunning(),
+	}
+}
+
 func (s *Service) StopConsole() (bool, error) {
 	s.log.Debug("Entering StopConsole")
 	defer s.log.Debug("Leaving StopConsole")
 
-	if s.shutdownFunc == nil {
+	if !s.console.IsRunning() {
 		s.log.Error("No console running")
 		return false, ErrConsoleNotRunning
 	}
 
 	s.log.Info("Shutting down the console")
-	s.shutdownFunc()
-
-	s.shutdownFunc = nil
+	s.console.Shutdown()
 
 	return true, nil
 }

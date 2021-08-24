@@ -1,4 +1,5 @@
 import type { Config } from '../models/config'
+import type { GetConsoleStateResponse } from '../models/console-state'
 import type { ListWalletsResponse } from '../models/list-wallets'
 
 interface Service {
@@ -15,6 +16,8 @@ interface Service {
   SaveServiceConfig(jsonConfig: string): Promise<boolean>
 
   StartConsole(): Promise<boolean>
+
+  GetConsoleState(): Promise<GetConsoleStateResponse>
 
   StopConsole(): Promise<boolean>
 }

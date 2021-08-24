@@ -32,7 +32,7 @@ type Service struct {
 
 	isAppInitialised bool
 
-	shutdownFunc func()
+	console *consoleState
 }
 
 func (s *Service) WailsInit(runtime *wails.Runtime) error {
@@ -47,6 +47,8 @@ func (s *Service) WailsInit(runtime *wails.Runtime) error {
 		return err
 	}
 
+	s.console = &consoleState{}
+
 	return nil
 }
 
@@ -54,10 +56,9 @@ func (s *Service) WailsShutdown() {
 	s.log.Debug("Entering WailsShutdown")
 	defer s.log.Debug("Leaving WailsShutdown")
 
-	if s.shutdownFunc != nil {
+	if s.console.IsRunning() {
 		s.log.Info("Shutting down the console")
-		s.shutdownFunc()
-		s.shutdownFunc = nil
+		s.console.Shutdown()
 	}
 }
 

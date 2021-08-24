@@ -1,8 +1,9 @@
 import React from 'react'
-import { Config } from '../../models/config'
 import { Link } from 'react-router-dom'
-import { ConfigEditor } from './config-editor'
+
 import { BulletHeader } from '../../components/bullet-header'
+import type { Config } from '../../models/config'
+import { ConfigEditor } from './config-editor'
 
 export const ConfigEdit = ({ config }: { config: Config }) => {
   return (
