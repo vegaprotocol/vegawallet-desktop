@@ -35,6 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "check_format": "npx prettier --check . && npx stylelint \"**/*.css\" \"**/*.scss\"",
     "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\" \"**/*.scss\""
   },
   "eslintConfig": {
