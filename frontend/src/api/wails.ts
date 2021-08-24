@@ -1,5 +1,5 @@
-import { Config } from '../models/config'
-import { ListWalletsResponse } from '../models/list-wallets'
+import type { Config } from '../models/config'
+import type { ListWalletsResponse } from '../models/list-wallets'
 
 interface Service {
   ImportWallet(request: string): Promise<boolean>
@@ -10,9 +10,9 @@ interface Service {
 
   ListWallets(): Promise<ListWalletsResponse>
 
-  GetConfig(): Promise<Config>
+  GetServiceConfig(): Promise<Config>
 
-  SaveConfig(jsonConfig: string): Promise<boolean>
+  SaveServiceConfig(jsonConfig: string): Promise<boolean>
 
   StartConsole(): Promise<boolean>
 

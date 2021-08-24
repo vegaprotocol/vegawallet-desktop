@@ -1,11 +1,12 @@
 import React from 'react'
-import { Config } from '../../models/config'
-import { SaveConfig } from '../../api/service'
-import { FormGroup } from '../../components/form-group'
 import { useForm } from 'react-hook-form'
-import { LogLevels } from '../../config/log-levels'
+
+import { SaveServiceConfig } from '../../api/service'
+import { FormGroup } from '../../components/form-group'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
+import { LogLevels } from '../../config/log-levels'
+import type { Config } from '../../models/config'
 
 interface FormFields {
   logLevel: string
@@ -54,7 +55,7 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
           Retries: Number(values.nodeRetries)
         }
       })
-      const success = await SaveConfig(configJSON)
+      const success = await SaveServiceConfig(configJSON)
       if (success) {
         AppToaster.show({
           message: 'Configuration saved!',

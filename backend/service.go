@@ -74,9 +74,9 @@ func (s *Service) IsAppInitialised() bool {
 	return s.isAppInitialised
 }
 
-func (s *Service) GetConfig() (*service.Config, error) {
-	s.log.Debug("Entering GetConfig")
-	defer s.log.Debug("Leaving GetConfig")
+func (s *Service) GetServiceConfig() (*service.Config, error) {
+	s.log.Debug("Entering GetServiceConfig")
+	defer s.log.Debug("Leaving GetServiceConfig")
 
 	config, err := s.loadConfig()
 	if err != nil {
@@ -97,9 +97,9 @@ func (s *Service) GetConfig() (*service.Config, error) {
 	return svcConfig, nil
 }
 
-func (s *Service) SaveConfig(jsonConfig string) (bool, error) {
-	s.log.Debug("Entering SaveConfig")
-	defer s.log.Debug("Leaving SaveConfig")
+func (s *Service) SaveServiceConfig(jsonConfig string) (bool, error) {
+	s.log.Debug("Entering SaveServiceConfig")
+	defer s.log.Debug("Leaving SaveServiceConfig")
 
 	config, err := s.loadConfig()
 	if err != nil {
