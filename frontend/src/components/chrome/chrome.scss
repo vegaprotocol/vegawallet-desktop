@@ -1,22 +1,22 @@
-@import "../../styles/colors";
+@import '../../styles/colors';
 
 .chrome {
-  max-width: 600px;
   margin: 0 auto;
-  padding: 0 15px 15px 15px;
+  max-width: 600px;
+  padding: 0 15px 15px;
 
   &__topbar {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid $white;
+    display: flex;
     height: 50px;
+    justify-content: space-between;
   }
 
   &__nav {
     a {
-      text-transform: uppercase;
       font-size: 16px;
+      text-transform: uppercase;
     }
   }
 }

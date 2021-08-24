@@ -1,8 +1,8 @@
 .wallet-list {
   > li {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     text-transform: uppercase;
   }
 }

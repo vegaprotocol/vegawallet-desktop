@@ -1,7 +1,7 @@
 .toast {
-  transform: translateY(-100%);
   animation: drop 0.3s ease;
   animation-fill-mode: forwards;
+  transform: translateY(-100%);
 }
 
 @keyframes drop {

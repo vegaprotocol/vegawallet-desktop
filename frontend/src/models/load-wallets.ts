@@ -1,3 +1,3 @@
 export class LoadWalletsRequest {
-    RootPath: string = ""
+  RootPath: string = ''
 }

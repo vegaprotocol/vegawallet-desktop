@@ -1,26 +1,26 @@
-import { Config } from "./config";
-import { Home } from "./home";
-import { Import } from "./import";
+import { Config } from './config'
+import { Home } from './home'
+import { Import } from './import'
 
 const routerConfig = [
   {
-    path: "/config",
-    name: "Config",
+    path: '/config',
+    name: 'Config',
     component: Config,
-    exact: false,
+    exact: false
   },
   {
-    path: "/import",
-    name: "Import",
+    path: '/import',
+    name: 'Import',
     component: Import,
-    exact: false,
+    exact: false
   },
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
-    exact: false,
-  },
-];
+    exact: false
+  }
+]
 
-export default routerConfig;
+export default routerConfig

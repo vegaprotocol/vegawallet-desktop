@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 interface ErrorMessageProps {
-  message: string;
+  message: string
 }
 
 export const ErrorMessage = ({
-  message,
+  message
 }: ErrorMessageProps): JSX.Element | null => {
-  return <p style={{ color: "red" }}>{message}</p>;
-};
+  return <p style={{ color: 'red' }}>{message}</p>
+}

@@ -55,6 +55,11 @@ jobs:
           cd frontend
           npm test -- --watchAll=false --passWithNoTests
 
+      - name: Check formatting
+        run: |
+          cd frontend
+          npm run check_format
+
   build-macos:
     name: MacOS build
     runs-on: macos-latest
@@ -96,6 +101,11 @@ jobs:
         run: |
           cd frontend
           npm test -- --watchAll=false --passWithNoTests
+
+      - name: Check formatting
+        run: |
+          cd frontend
+          npm run check_format
 
   build-windows:
     name: Windows Build

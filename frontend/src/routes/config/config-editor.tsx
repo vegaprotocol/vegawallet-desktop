@@ -1,31 +1,31 @@
-import React from "react";
-import { Config } from "../../models/config";
-import { SaveConfig } from "../../api/service";
-import { FormGroup } from "../../components/form-group";
-import { useForm } from "react-hook-form";
-import { LogLevels } from "../../config/log-levels";
-import { AppToaster } from "../../components/toaster";
-import { Colors } from "../../config/colors";
+import React from 'react'
+import { Config } from '../../models/config'
+import { SaveConfig } from '../../api/service'
+import { FormGroup } from '../../components/form-group'
+import { useForm } from 'react-hook-form'
+import { LogLevels } from '../../config/log-levels'
+import { AppToaster } from '../../components/toaster'
+import { Colors } from '../../config/colors'
 
 interface FormFields {
-  logLevel: string;
-  tokenExpiry: string;
-  port: number;
-  host: string;
-  nodeRetries: number;
-  consoleUrl: string;
-  consolePort: number;
+  logLevel: string
+  tokenExpiry: string
+  port: number
+  host: string
+  nodeRetries: number
+  consoleUrl: string
+  consolePort: number
 }
 
 export interface ConfigEditorProps {
-  config: Config;
+  config: Config
 }
 
 export const ConfigEditor = ({ config }: ConfigEditorProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
       logLevel: config.Level,
@@ -34,9 +34,9 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
       host: config.Host,
       nodeRetries: config.Nodes.Retries,
       consoleUrl: config.Console.URL,
-      consolePort: config.Console.LocalPort,
-    },
-  });
+      consolePort: config.Console.LocalPort
+    }
+  })
 
   const onSubmit = async (values: FormFields) => {
     try {
@@ -47,36 +47,35 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         Host: values.host,
         Console: {
           URL: values.consoleUrl,
-          LocalPort: Number(values.consolePort),
+          LocalPort: Number(values.consolePort)
         },
         Nodes: {
           Hosts: config.Nodes.Hosts,
-          Retries: Number(values.nodeRetries),
-        },
-      });
-      const success = await SaveConfig(configJSON);
+          Retries: Number(values.nodeRetries)
+        }
+      })
+      const success = await SaveConfig(configJSON)
       if (success) {
         AppToaster.show({
-          message: "Configuration saved!",
-          color: Colors.GREEN,
-        });
+          message: 'Configuration saved!',
+          color: Colors.GREEN
+        })
       } else {
-        AppToaster.show({ message: "Error: Unknown", color: Colors.RED });
+        AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
       }
     } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED });
+      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup
-        label="Log level"
-        labelFor="logLevel"
-        errorText={errors.logLevel?.message}
-      >
-        <select {...register("logLevel", { required: "Required" })}>
-          {Object.values(LogLevels).map((level) => (
+        label='* Log level'
+        labelFor='logLevel'
+        errorText={errors.logLevel?.message}>
+        <select {...register('logLevel', { required: 'Required' })}>
+          {Object.values(LogLevels).map(level => (
             <option key={level} value={level}>
               {level}
             </option>
@@ -84,52 +83,54 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         </select>
       </FormGroup>
       <FormGroup
-        label="Token expiry"
-        labelFor="tokenExpiry"
-        errorText={errors.tokenExpiry?.message}
-      >
+        label='* Token expiry'
+        labelFor='tokenExpiry'
+        errorText={errors.tokenExpiry?.message}>
         <input
-          type="text"
-          {...register("tokenExpiry", { required: "Required" })}
-        />
-      </FormGroup>
-      <FormGroup label="Port" labelFor="port" errorText={errors.port?.message}>
-        <input type="text" {...register("port", { required: "Required" })} />
-      </FormGroup>
-      <FormGroup label="Host" labelFor="host" errorText={errors.host?.message}>
-        <input type="text" {...register("host", { required: "Required" })} />
-      </FormGroup>
-      <FormGroup
-        label="Node retries"
-        labelFor="nodeRetries"
-        errorText={errors.nodeRetries?.message}
-      >
-        <input
-          type="text"
-          {...register("nodeRetries", { required: "Required" })}
+          type='text'
+          {...register('tokenExpiry', { required: 'Required' })}
         />
       </FormGroup>
       <FormGroup
-        label="Console URL"
-        labelFor="consoleUrl"
-        errorText={errors.consoleUrl?.message}
-      >
+        label='* Port'
+        labelFor='port'
+        errorText={errors.port?.message}>
+        <input type='text' {...register('port', { required: 'Required' })} />
+      </FormGroup>
+      <FormGroup
+        label='* Host'
+        labelFor='host'
+        errorText={errors.host?.message}>
+        <input type='text' {...register('host', { required: 'Required' })} />
+      </FormGroup>
+      <FormGroup
+        label='* Node retries'
+        labelFor='nodeRetries'
+        errorText={errors.nodeRetries?.message}>
         <input
-          type="text"
-          {...register("consoleUrl", { required: "Required" })}
+          type='text'
+          {...register('nodeRetries', { required: 'Required' })}
         />
       </FormGroup>
       <FormGroup
-        label="Console port"
-        labelFor="consolePort"
-        errorText={errors.consolePort?.message}
-      >
+        label='* Console URL'
+        labelFor='consoleUrl'
+        errorText={errors.consoleUrl?.message}>
         <input
-          type="text"
-          {...register("consolePort", { required: "Required" })}
+          type='text'
+          {...register('consoleUrl', { required: 'Required' })}
         />
       </FormGroup>
-      <button type="submit">Submit</button>
+      <FormGroup
+        label='* Console port'
+        labelFor='consolePort'
+        errorText={errors.consolePort?.message}>
+        <input
+          type='text'
+          {...register('consolePort', { required: 'Required' })}
+        />
+      </FormGroup>
+      <button type='submit'>Submit</button>
     </form>
-  );
-};
+  )
+}
