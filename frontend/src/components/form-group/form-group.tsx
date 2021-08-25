@@ -8,13 +8,13 @@ export const FormGroup = ({
   labelFor,
   errorText
 }: {
-  children: React.ReactNode;
-  label?: string;
-  labelFor?: string;
-  errorText?: string;
+  children: React.ReactNode
+  label?: string
+  labelFor?: string
+  errorText?: string
 }) => {
   return (
-    <div className="form-group">
+    <div className='form-group'>
       {label && <label htmlFor={labelFor}>{label}</label>}
       <div>{children}</div>
       {errorText && (
