@@ -1,9 +1,9 @@
 export class CreateWalletRequest {
-  RootPath: string = ""
-  Name: string = ""
-  Passphrase: string = ""
+  RootPath: string = ''
+  Name: string = ''
+  Passphrase: string = ''
 }
 
 export class CreateWalletResponse {
-  Mnemonic: string = ""
+  Mnemonic: string = ''
 }

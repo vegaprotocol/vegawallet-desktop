@@ -1,12 +1,12 @@
-import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import { ImportMnemonic } from "./import-mnemonic";
-import { ImportPath } from "./import-path";
-import { ImportSelect } from "./import-select";
-import { WalletCreator } from "./wallet-creator";
+import React from 'react'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { ImportMnemonic } from './import-mnemonic'
+import { ImportPath } from './import-path'
+import { ImportSelect } from './import-select'
+import { WalletCreator } from './wallet-creator'
 
 export function Import() {
-  const match = useRouteMatch();
+  const match = useRouteMatch()
 
   return (
     <>
@@ -15,7 +15,7 @@ export function Import() {
         <Switch>
           <Route path={`${match.path}/create`}>
             <WalletCreator
-              request={{ RootPath: "", Name: "", Passphrase: "" }}
+              request={{ RootPath: '', Name: '', Passphrase: '' }}
             />
           </Route>
           <Route path={`${match.path}/path`}>
@@ -23,11 +23,11 @@ export function Import() {
           </Route>
           <Route path={`${match.path}/mnemonic`}>
             <ImportMnemonic
-              request={{ RootPath: "", Name: "", Passphrase: "", Mnemonic: "" }}
+              request={{ RootPath: '', Name: '', Passphrase: '', Mnemonic: '' }}
             />
           </Route>
         </Switch>
       </div>
     </>
-  );
+  )
 }

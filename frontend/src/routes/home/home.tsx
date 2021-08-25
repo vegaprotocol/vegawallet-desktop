@@ -1,57 +1,57 @@
-import React from "react";
-import { IsAppInitialised, ListWallets } from "../../api/service";
-import { WalletList } from "./wallet-list";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { Wallet } from "./wallet";
+import React from 'react'
+import { IsAppInitialised, ListWallets } from '../../api/service'
+import { WalletList } from './wallet-list'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { Wallet } from './wallet'
 
 enum WalletStatus {
   Pending,
   Ready,
-  None,
+  None
 }
 
 export const Home = () => {
-  const [walletStatus, setWalletStatus] = React.useState(WalletStatus.Pending);
-  const [wallets, setWallets] = React.useState<string[]>([]);
+  const [walletStatus, setWalletStatus] = React.useState(WalletStatus.Pending)
+  const [wallets, setWallets] = React.useState<string[]>([])
 
   React.useEffect(() => {
     async function run() {
       try {
-        const isInit = await IsAppInitialised();
+        const isInit = await IsAppInitialised()
 
         if (!isInit) {
-          setWalletStatus(WalletStatus.None);
-          return;
+          setWalletStatus(WalletStatus.None)
+          return
         }
 
-        const wallets = await ListWallets();
-        setWallets(wallets.Wallets);
-        setWalletStatus(WalletStatus.Ready);
+        const wallets = await ListWallets()
+        setWallets(wallets.Wallets)
+        setWalletStatus(WalletStatus.Ready)
       } catch (err) {
-        console.log(err);
-        setWalletStatus(WalletStatus.None);
+        console.log(err)
+        setWalletStatus(WalletStatus.None)
       }
     }
 
-    run();
-  }, []);
+    run()
+  }, [])
 
   if (walletStatus === WalletStatus.Pending) {
-    return null;
+    return null
   }
 
   if (walletStatus === WalletStatus.None) {
-    return <Redirect to="/import" />;
+    return <Redirect to='/import' />
   }
 
   return (
     <Switch>
-      <Route path="/wallet/:wallet">
+      <Route path='/wallet/:wallet'>
         <Wallet />
       </Route>
-      <Route path="/" exact>
+      <Route path='/' exact>
         <WalletList wallets={wallets} />
       </Route>
     </Switch>
-  );
-};
+  )
+}
