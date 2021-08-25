@@ -99,7 +99,7 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
         errorText={errors.passphrase?.message}
       >
         <input
-          type="text"
+          type="password"
           {...register("passphrase", { required: "Required" })}
         />
       </FormGroup>
