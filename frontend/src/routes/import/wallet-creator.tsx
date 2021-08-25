@@ -87,7 +87,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
         errorText={errors.passphrase?.message}
       >
         <input
-          type="text"
+          type="password"
           {...register("passphrase", { required: "Required" })}
         />
       </FormGroup>
