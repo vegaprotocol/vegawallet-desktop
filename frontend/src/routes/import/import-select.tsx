@@ -6,7 +6,6 @@ import { ButtonGroup } from "../../components/button-group";
 export function ImportSelect() {
   const match = useRouteMatch();
   const location = useLocation();
-  console.log(location);
   return (
     <>
       <BulletHeader tag="h1">Create or import wallet</BulletHeader>
