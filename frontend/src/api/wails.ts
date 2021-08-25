@@ -1,8 +1,11 @@
 import type { Config } from '../models/config'
 import type { GetConsoleStateResponse } from '../models/console-state'
+import type { ListKeysResponse } from '../models/list-keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
 
 interface Service {
+  ListKeys(request: string): Promise<ListKeysResponse>
+
   ImportWallet(request: string): Promise<boolean>
 
   LoadWallets(request: string): Promise<boolean>
