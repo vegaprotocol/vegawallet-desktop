@@ -23,6 +23,7 @@ export interface WalletCreatorProps {
 }
 
 export const WalletCreator = ({ request }: WalletCreatorProps) => {
+  const [advancedOpen, setAdvancedOpen] = React.useState(false);
   const [response, setResponse] = React.useState<CreateWalletResponse | null>(
     null
   );
@@ -74,13 +75,6 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
   ) : (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup
-        label="Location (defaults to home directory)"
-        labelFor="rootPath"
-        errorText={errors.rootPath?.message}
-      >
-        <input type="text" {...register("rootPath")} />
-      </FormGroup>
-      <FormGroup
         label="* Name"
         labelFor="name"
         errorText={errors.name?.message}
@@ -97,7 +91,27 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
           {...register("passphrase", { required: "Required" })}
         />
       </FormGroup>
-      <button type="submit">Submit</button>
+      <FormGroup>
+        <button
+          type="button"
+          onClick={() => setAdvancedOpen((x) => !x)}
+          className="link"
+        >
+          {advancedOpen ? "Hide advanced options" : "Show advanced options"}
+        </button>
+      </FormGroup>
+      {advancedOpen && (
+        <FormGroup
+          label="Location (defaults to home directory)"
+          labelFor="rootPath"
+          errorText={errors.rootPath?.message}
+        >
+          <input type="text" {...register("rootPath")} />
+        </FormGroup>
+      )}
+      <div>
+        <button type="submit">Submit</button>
+      </div>
     </form>
   );
 };
