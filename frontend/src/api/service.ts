@@ -1,7 +1,8 @@
-import { Config } from '../models/config'
-import { LoadWalletsRequest } from '../models/load-wallets'
-import { ListWalletsResponse } from '../models/list-wallets'
-import { ImportWalletRequest } from '../models/import-wallet'
+import type { Config } from '../models/config'
+import type { GetConsoleStateResponse } from '../models/console-state'
+import type { ImportWalletRequest } from '../models/import-wallet'
+import type { ListWalletsResponse } from '../models/list-wallets'
+import type { LoadWalletsRequest } from '../models/load-wallets'
 
 export function ImportWallet(request: ImportWalletRequest): Promise<boolean> {
   return window.backend.Service.ImportWallet(JSON.stringify(request))
@@ -19,16 +20,20 @@ export function ListWallets(): Promise<ListWalletsResponse> {
   return window.backend.Service.ListWallets()
 }
 
-export function GetConfig(): Promise<Config> {
-  return window.backend.Service.GetConfig()
+export function GetServiceConfig(): Promise<Config> {
+  return window.backend.Service.GetServiceConfig()
 }
 
-export function SaveConfig(config: string): Promise<boolean> {
-  return window.backend.Service.SaveConfig(config)
+export function SaveServiceConfig(config: string): Promise<boolean> {
+  return window.backend.Service.SaveServiceConfig(config)
 }
 
 export function StartConsole(): Promise<boolean> {
   return window.backend.Service.StartConsole()
+}
+
+export function GetConsoleState(): Promise<GetConsoleStateResponse> {
+  return window.backend.Service.GetConsoleState()
 }
 
 export function StopConsole(): Promise<boolean> {

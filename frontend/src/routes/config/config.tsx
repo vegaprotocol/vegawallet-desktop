@@ -1,18 +1,18 @@
 import React from 'react'
-
-import { GetConfig } from '../../api/service'
-import { Config as ConfigModel } from '../../models/config'
-import { ConfigDetails } from './config-details'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import { ConfigEdit } from './config-edit'
+
+import { GetServiceConfig } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
+import type { Config as ConfigModel } from '../../models/config'
+import { ConfigDetails } from './config-details'
+import { ConfigEdit } from './config-edit'
 
 export const Config = () => {
   const match = useRouteMatch()
   const [config, setConfig] = React.useState<ConfigModel | null>(null)
 
   React.useEffect(() => {
-    GetConfig()
+    GetServiceConfig()
       .then(result => {
         setConfig(result)
       })
