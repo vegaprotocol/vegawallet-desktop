@@ -1,7 +1,7 @@
 import React from 'react'
 import { ImportWallet } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { ImportWalletRequest } from '../../models/import-wallet'
@@ -18,6 +18,7 @@ interface FormFields {
   rootPath: string
   name: string
   passphrase: string
+  confirmPassphrase: string
   mnemonic: string
 }
 
@@ -28,6 +29,7 @@ export interface ImportMnemonicProps {
 export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
   const [formState, setFormState] = React.useState(FormState.Default)
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors }
@@ -35,10 +37,12 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     defaultValues: {
       rootPath: request.RootPath,
       name: request.Name,
-      passphrase: request.Passphrase,
+      passphrase: '',
+      confirmPassphrase: '',
       mnemonic: request.Mnemonic
     }
   })
+  const passphrase = useWatch({ control, name: 'passphrase' })
 
   const onSubmit = async (values: FormFields) => {
     setFormState(FormState.Pending)
@@ -97,6 +101,21 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
         <input
           type='password'
           {...register('passphrase', { required: 'Required' })}
+        />
+      </FormGroup>
+      <FormGroup
+        label='* Confirm passphrase'
+        labelFor='confirmPassphrase'
+        errorText={errors.confirmPassphrase?.message}>
+        <input
+          type='password'
+          {...register('confirmPassphrase', {
+            required: 'Required',
+            pattern: {
+              message: 'Password does not match',
+              value: new RegExp(`^${passphrase}$`)
+            }
+          })}
         />
       </FormGroup>
       <button type='submit'>Submit</button>
