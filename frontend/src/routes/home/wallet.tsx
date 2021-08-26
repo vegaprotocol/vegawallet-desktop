@@ -7,42 +7,23 @@ import { ErrorMessage } from '../../components/error-message'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { KeyPair } from '../../models/list-keys'
 import { useCopyToClipboard } from '../../hooks/use-copy-to-clipboard'
+import { Wallets } from './wallet-container'
 
 interface Key extends KeyPair {
   alias: string
   pubShort: string
 }
 
-export function Wallet() {
+interface WalletProps {
+  wallets: Wallets
+}
+
+export function Wallet({ wallets }: WalletProps) {
   const { wallet } = useParams<{ wallet: string }>()
-  const [keys, setKeys] = React.useState<Key[]>([])
-  const [err, setErr] = React.useState<Error | null>(null)
 
-  React.useEffect(() => {
-    async function run() {
-      try {
-        const res = await ListKeys({ Name: wallet, Passphrase: '123' })
-        setKeys(
-          res.KeyPairs.map(k => {
-            const alias = k.Meta?.find(m => m.Key === 'alias')
-            return {
-              ...k,
-              alias: alias?.Value || 'No alias',
-              pubShort: truncateMiddle(k.PublicKey)
-            }
-          })
-        )
-      } catch (err) {
-        setErr(err)
-      }
-    }
-
-    run()
-  }, [wallet])
-
-  if (err) {
-    return <ErrorMessage message={err.message} />
-  }
+  const keys = React.useMemo(() => {
+    return wallets[wallet]
+  }, [wallet, wallets])
 
   return (
     <>
