@@ -1,0 +1,24 @@
+@import '../../styles/colors';
+@import '../../styles/fonts';
+
+.keypair-list {
+  > li {
+    border-bottom: 1px solid $white;
+    padding: 10px 0;
+  }
+}
+
+.keypair {
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+
+  &__public-key {
+    font-family: $font-mono;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+  }
+}

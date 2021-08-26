@@ -87,7 +87,12 @@ button {
     padding: 0;
     text-decoration: underline;
 
-    &:hover {
+    &[disabled] {
+      color: $text-color-deemphasise;
+      cursor: not-allowed;
+    }
+
+    &:hover:not([disabled]) {
       color: $vega-yellow3;
     }
   }
