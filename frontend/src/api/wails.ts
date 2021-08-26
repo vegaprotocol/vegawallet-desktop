@@ -2,7 +2,7 @@ import type { Config } from '../models/config'
 import type { GetConsoleStateResponse } from '../models/console-state'
 import type { ListKeysResponse } from '../models/list-keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
-import type { CreateWalletResponse } from "../models/create-wallet";
+import type { CreateWalletResponse } from '../models/create-wallet'
 
 interface Service {
   ListKeys(request: string): Promise<ListKeysResponse>
