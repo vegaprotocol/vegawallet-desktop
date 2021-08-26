@@ -2,7 +2,7 @@ import './wallet-creator.scss'
 import React from 'react'
 import { CreateWallet } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import {
@@ -15,7 +15,7 @@ interface FormFields {
   rootPath: string
   name: string
   passphrase: string
-  mnemonic: string
+  confirmPassphrase: string
 }
 
 export interface WalletCreatorProps {
@@ -29,6 +29,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
   )
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors }
@@ -39,6 +40,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
       passphrase: request.Passphrase
     }
   })
+  const passphrase = useWatch({ control, name: 'passphrase' })
 
   const onSubmit = async (values: FormFields) => {
     try {
@@ -87,6 +89,21 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
         <input
           type='password'
           {...register('passphrase', { required: 'Required' })}
+        />
+      </FormGroup>
+      <FormGroup
+        label='* Confirm passphrase'
+        labelFor='confirmPassphrase'
+        errorText={errors.confirmPassphrase?.message}>
+        <input
+          type='password'
+          {...register('confirmPassphrase', {
+            required: 'Required',
+            pattern: {
+              message: 'Password does not match',
+              value: new RegExp(`^${passphrase}$`)
+            }
+          })}
         />
       </FormGroup>
       <FormGroup>
