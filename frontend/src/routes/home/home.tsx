@@ -1,7 +1,6 @@
 import React from 'react'
-import { IsAppInitialised, ListWallets } from '../../api/service'
 import { WalletList } from './wallet-list'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { Wallet } from './wallet'
 import { WalletKey } from './wallet-key'
 import { WalletContainer } from './wallet-container'
