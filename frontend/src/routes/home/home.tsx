@@ -7,20 +7,20 @@ import { WalletContainer } from './wallet-container'
 
 export const Home = () => {
   return (
-    <WalletContainer>
-      {({ wallets, setWallets }) => (
-        <Switch>
-          <Route path='/wallet/:wallet/:key'>
-            <WalletKey wallets={wallets} />
-          </Route>
-          <Route path='/wallet/:wallet'>
-            <Wallet wallets={wallets} />
-          </Route>
-          <Route path='/' exact>
-            <WalletList wallets={wallets} />
-          </Route>
-        </Switch>
-      )}
-    </WalletContainer>
+    <Switch>
+      <Route path='/wallet/:wallet/:key'>
+        <WalletContainer>
+          {({ keys }) => <WalletKey keys={keys} />}
+        </WalletContainer>
+      </Route>
+      <Route path='/wallet/:wallet'>
+        <WalletContainer>
+          {({ keys }) => <Wallet keys={keys} />}
+        </WalletContainer>
+      </Route>
+      <Route path='/' exact>
+        <WalletList />
+      </Route>
+    </Switch>
   )
 }

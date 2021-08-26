@@ -1,25 +1,37 @@
 import React from 'react'
 import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
-import { Wallets } from './wallet-container'
+import { Key } from './wallet-container'
 
 interface WalletKeyProps {
-  wallets: Wallets
+  keys: Key[]
 }
 
-export const WalletKey = ({ wallets }: WalletKeyProps) => {
+export function WalletKey({ keys }: WalletKeyProps) {
   const { wallet, key } = useParams<{ wallet: string; key: string }>()
 
   const currKey = React.useMemo(() => {
-    return wallets[wallet].find(k => k.PublicKey === key)
-  }, [wallets, wallet, key])
+    return keys.find(k => k.PublicKey === key)
+  }, [keys, key])
 
-  if (!currKey) return <p>No key</p>
+  const back = <Link to={`/wallet/${wallet}`}>Back</Link>
+
+  if (!currKey) {
+    return (
+      <>
+        <BulletHeader tag='h1'>
+          {wallet} / {back}
+        </BulletHeader>
+        <p>Key not found</p>
+      </>
+    )
+  }
 
   return (
     <>
       <BulletHeader tag='h1'>
-        {wallet} / {currKey.pubShort}
+        {wallet} / {currKey.pubShort} / {back}
       </BulletHeader>
       <table>
         <tbody>

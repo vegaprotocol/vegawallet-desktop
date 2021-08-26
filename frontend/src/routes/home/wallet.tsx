@@ -1,29 +1,16 @@
 import './wallet.scss'
 import React from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { ListKeys } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
-import { ErrorMessage } from '../../components/error-message'
-import { truncateMiddle } from '../../lib/truncate-middle'
-import { KeyPair } from '../../models/list-keys'
 import { useCopyToClipboard } from '../../hooks/use-copy-to-clipboard'
-import { Wallets } from './wallet-container'
-
-interface Key extends KeyPair {
-  alias: string
-  pubShort: string
-}
+import { Key } from './wallet-container'
 
 interface WalletProps {
-  wallets: Wallets
+  keys: Key[]
 }
 
-export function Wallet({ wallets }: WalletProps) {
+export function Wallet({ keys }: WalletProps) {
   const { wallet } = useParams<{ wallet: string }>()
-
-  const keys = React.useMemo(() => {
-    return wallets[wallet]
-  }, [wallet, wallets])
 
   return (
     <>
