@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
+	"code.vegaprotocol.io/go-wallet/service"
 	"code.vegaprotocol.io/go-wallet/wallet"
 )
 
@@ -69,6 +70,24 @@ func (s *Service) ImportWallet(data string) (bool, error) {
 	}
 
 	handler := wallet.NewHandler(wStore)
+
+	svcStore, err := s.getServiceStore(config)
+	if err != nil {
+		return false, err
+	}
+
+	exists, err := service.ConfigExists(svcStore)
+	if err != nil {
+		s.log.Errorf("Couldn't verify service configuration existance: %v", err)
+		return false, err
+	}
+	if !exists {
+		err := service.GenerateConfig(svcStore, false)
+		if err != nil {
+			s.log.Errorf("Couldn't generate service configuration: %v", err)
+			return false, err
+		}
+	}
 
 	err = handler.ImportWallet(req.Name, req.Passphrase, req.Mnemonic)
 	if err != nil {

@@ -62,7 +62,7 @@ func (s *Service) StartConsole() (bool, error) {
 		return false, ErrFailedToRetrieveServiceConfig
 	}
 
-	log, err := logger.New(svcConfig.Level.Level)
+	log, err := logger.New(svcConfig.Level.Level, "json")
 	if err != nil {
 		s.log.Errorf("Couldn't instantiate the service logger: %v", err)
 		return false, ErrFailedToStartTheConsole

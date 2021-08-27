@@ -188,6 +188,12 @@ func (s *Service) getWalletsStore(config Config) (*wstore.Store, error) {
 		s.log.Errorf("Couldn't instantiate the wallet store: %v", err)
 		return nil, err
 	}
+
+	if err := wStore.Initialise(); err != nil {
+		s.log.Errorf("Couldn't initialise the wallet store: %v", err)
+		return nil, err
+	}
+
 	return wStore, nil
 }
 
