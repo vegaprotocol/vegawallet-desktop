@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
+	"code.vegaprotocol.io/go-wallet/service"
 	"code.vegaprotocol.io/go-wallet/wallet"
 )
 
@@ -14,7 +15,8 @@ type CreateWalletRequest struct {
 }
 
 type CreateWalletResponse struct {
-	Mnemonic string
+	Mnemonic   string
+	WalletPath string
 }
 
 func (r CreateWalletRequest) Check() error {
@@ -65,6 +67,24 @@ func (s *Service) CreateWallet(data string) (CreateWalletResponse, error) {
 	if err != nil {
 		s.log.Errorf("Couldn't initialise the wallets store: %v", err)
 		return CreateWalletResponse{}, err
+	}
+
+	svcStore, err := s.getServiceStore(config)
+	if err != nil {
+		return CreateWalletResponse{}, err
+	}
+
+	exists, err := service.ConfigExists(svcStore)
+	if err != nil {
+		s.log.Errorf("Couldn't verify service configuration existance: %v", err)
+		return CreateWalletResponse{}, err
+	}
+	if !exists {
+		err := service.GenerateConfig(svcStore, false)
+		if err != nil {
+			s.log.Errorf("Couldn't generate service configuration: %v", err)
+			return CreateWalletResponse{}, err
+		}
 	}
 
 	handler := wallet.NewHandler(wStore)
