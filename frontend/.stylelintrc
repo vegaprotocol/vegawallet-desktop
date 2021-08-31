@@ -5,6 +5,6 @@
     "max-nesting-depth": null,
     "selector-max-compound-selectors": 5,
     "selector-max-id": 1,
-    "selector-no-qualifying-type: null
+    "selector-no-qualifying-type": null
   }
 }
