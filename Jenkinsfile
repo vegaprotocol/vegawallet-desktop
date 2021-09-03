@@ -45,10 +45,8 @@ pipeline {
                 sh label: 'Build', script: '''
                     wails build
                 '''
-                // TODO: add some checks (--help or --version)
                 sh label: 'Sanity check', script: '''
-                    ls -lah
-                    ls -lah build
+                    file ./build/vega-wallet
                 '''
             }
         }
@@ -93,7 +91,7 @@ pipeline {
         }
         unsuccessful {
             retry(3) {
-                slackSend(channel: "#tradingcore-notify", color: "danger", message: ":red_circle: *${currentBuild.result}* ${SLACK_MESSAGE} (${currentBuild.durationString.minus(' and counting')})")
+                slackSend(channel: "#tradingcore-notify", color: "danger", message: ":red_circle: ${SLACK_MESSAGE} (${currentBuild.durationString.minus(' and counting')})")
             }
         }
     }
