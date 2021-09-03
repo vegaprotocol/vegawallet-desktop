@@ -75,8 +75,6 @@ pipeline {
                     steps {
                         dir('frontend') {
                             sh 'npm test -- --watchAll=false --passWithNoTests'
-                            // TODO add junit result file
-                            sh 'ls -lah'
                         }
                     }
                 }
