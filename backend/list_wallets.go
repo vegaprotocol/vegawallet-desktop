@@ -4,11 +4,11 @@ type ListWalletsResponse struct {
 	Wallets []string
 }
 
-func (s *Service) ListWallets() (ListWalletsResponse, error) {
+func (s *Handler) ListWallets() (ListWalletsResponse, error) {
 	s.log.Debug("Entering ListWallets")
 	defer s.log.Debug("Leaving ListWallets")
 
-	config, err := s.loadConfig()
+	config, err := s.loadAppConfig()
 	if err != nil {
 		return ListWalletsResponse{}, err
 	}

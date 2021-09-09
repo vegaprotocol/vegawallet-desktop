@@ -4,7 +4,10 @@ import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
-import { ImportWalletRequest } from '../../models/import-wallet'
+import {
+  ImportWalletRequest,
+  ImportWalletResponse
+} from '../../models/import-wallet'
 import { ImportSuccess } from './import-success'
 
 enum FormState {
@@ -15,7 +18,7 @@ enum FormState {
 }
 
 interface FormFields {
-  rootPath: string
+  vegaHome: string
   name: string
   passphrase: string
   confirmPassphrase: string
@@ -27,6 +30,7 @@ export interface ImportMnemonicProps {
 }
 
 export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
+  const [advancedOpen, setAdvancedOpen] = React.useState(false)
   const [formState, setFormState] = React.useState(FormState.Default)
   const {
     control,
@@ -35,7 +39,7 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
-      rootPath: request.RootPath,
+      vegaHome: request.VegaHome,
       name: request.Name,
       passphrase: '',
       confirmPassphrase: '',
@@ -43,17 +47,21 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     }
   })
   const passphrase = useWatch({ control, name: 'passphrase' })
+  const [response, setResponse] = React.useState<ImportWalletResponse | null>(
+    null
+  )
 
   const onSubmit = async (values: FormFields) => {
     setFormState(FormState.Pending)
     try {
-      const success = await ImportWallet({
-        RootPath: values.rootPath,
+      const resp = await ImportWallet({
+        VegaHome: values.vegaHome,
         Name: values.name,
         Passphrase: values.passphrase,
         Mnemonic: values.mnemonic
       })
-      if (success) {
+      if (resp) {
+        setResponse(resp)
         AppToaster.show({
           message: 'Wallet imported!',
           color: Colors.GREEN
@@ -69,16 +77,10 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     }
   }
 
-  return formState === FormState.Success ? (
-    <ImportSuccess />
+  return formState === FormState.Success && response ? (
+    <ImportSuccess walletPath={response.WalletPath} />
   ) : (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup
-        label='Wallet location'
-        labelFor='rootPath'
-        errorText={errors.rootPath?.message}>
-        <input type='text' {...register('rootPath')} />
-      </FormGroup>
       <FormGroup
         label='* Name'
         labelFor='name'
@@ -118,7 +120,25 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
           })}
         />
       </FormGroup>
-      <button type='submit'>Submit</button>
+      <FormGroup>
+        <button
+          type='button'
+          onClick={() => setAdvancedOpen(x => !x)}
+          className='link'>
+          {advancedOpen ? 'Hide advanced options' : 'Show advanced options'}
+        </button>
+      </FormGroup>
+      {advancedOpen && (
+        <FormGroup
+          label='Vega home (leave blank for defaults)'
+          labelFor='vegaHome'
+          errorText={errors.vegaHome?.message}>
+          <input type='text' {...register('vegaHome')} />
+        </FormGroup>
+      )}
+      <div>
+        <button type='submit'>Submit</button>
+      </div>
     </form>
   )
 }

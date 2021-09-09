@@ -15,7 +15,7 @@ var js string
 var css string
 
 func main() {
-	svc := &backend.Service{}
+	handler := &backend.Handler{}
 	app := wails.CreateApp(&wails.AppConfig{
 		Resizable: true,
 		MinWidth:  512,
@@ -25,6 +25,6 @@ func main() {
 		CSS:       css,
 		Colour:    "#ffffff",
 	})
-	app.Bind(svc)
+	app.Bind(handler)
 	_ = app.Run()
 }

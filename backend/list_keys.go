@@ -3,6 +3,7 @@ package backend
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"code.vegaprotocol.io/go-wallet/wallet"
 )
@@ -42,7 +43,7 @@ type Meta struct {
 	Value string
 }
 
-func (s *Service) ListKeys(data string) (ListKeysResponse, error) {
+func (s *Handler) ListKeys(data string) (ListKeysResponse, error) {
 	s.log.Debug("Entering ListKeys")
 	defer s.log.Debug("Leaving ListKeys")
 
@@ -50,10 +51,10 @@ func (s *Service) ListKeys(data string) (ListKeysResponse, error) {
 	err := json.Unmarshal([]byte(data), req)
 	if err != nil {
 		s.log.Errorf("Couldn't unmarshall request: %v", err)
-		return ListKeysResponse{}, ErrFailedToSaveServiceConfig
+		return ListKeysResponse{}, fmt.Errorf("couldn't unmarshal request: %w", err)
 	}
 
-	config, err := s.loadConfig()
+	config, err := s.loadAppConfig()
 	if err != nil {
 		return ListKeysResponse{}, err
 	}

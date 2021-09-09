@@ -15,7 +15,7 @@ export function Import() {
         <Switch>
           <Route path={`${match.path}/create`}>
             <WalletCreator
-              request={{ RootPath: '', Name: '', Passphrase: '' }}
+              request={{ VegaHome: '', Name: '', Passphrase: '' }}
             />
           </Route>
           <Route path={`${match.path}/path`}>
@@ -23,7 +23,7 @@ export function Import() {
           </Route>
           <Route path={`${match.path}/mnemonic`}>
             <ImportMnemonic
-              request={{ RootPath: '', Name: '', Passphrase: '', Mnemonic: '' }}
+              request={{ VegaHome: '', Name: '', Passphrase: '', Mnemonic: '' }}
             />
           </Route>
         </Switch>

@@ -3,20 +3,17 @@ package backend
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"strings"
 
 	"code.vegaprotocol.io/go-wallet/service"
-	"code.vegaprotocol.io/go-wallet/wallet"
+	"code.vegaprotocol.io/go-wallet/wallets"
 )
 
 type CreateWalletRequest struct {
-	RootPath   string
+	VegaHome   string
 	Name       string
 	Passphrase string
-}
-
-type CreateWalletResponse struct {
-	Mnemonic   string
-	WalletPath string
 }
 
 func (r CreateWalletRequest) Check() error {
@@ -27,10 +24,19 @@ func (r CreateWalletRequest) Check() error {
 	if len(r.Passphrase) == 0 {
 		return errors.New("passphrase is required")
 	}
+
+	if len(r.VegaHome) > 0 && !strings.HasPrefix(r.VegaHome, "/") {
+		return errors.New("vega home should be an absolute path")
+	}
 	return nil
 }
 
-func (s *Service) CreateWallet(data string) (CreateWalletResponse, error) {
+type CreateWalletResponse struct {
+	Mnemonic   string
+	WalletPath string
+}
+
+func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
 	s.log.Debug("Entering CreateWallet")
 	defer s.log.Debug("Leaving CreateWallet")
 
@@ -38,34 +44,24 @@ func (s *Service) CreateWallet(data string) (CreateWalletResponse, error) {
 	err := json.Unmarshal([]byte(data), req)
 	if err != nil {
 		s.log.Errorf("Couldn't unmarshall request: %v", err)
-		return CreateWalletResponse{}, ErrFailedToSaveServiceConfig
+		return CreateWalletResponse{}, fmt.Errorf("couldn't unmarshal request: %w", err)
 	}
 
 	err = req.Check()
 	if err != nil {
 		s.log.Errorf("Request is invalid: %v", err)
-		return CreateWalletResponse{}, err
+		return CreateWalletResponse{}, fmt.Errorf("request is invalid: %w", err)
 	}
 
-	config, err := s.loadConfig()
+	config, err := s.loadAppConfig()
 	if err != nil {
 		return CreateWalletResponse{}, err
 	}
 
-	if len(req.RootPath) == 0 {
-		config.WalletRootPath = defaultVegaDir
-	} else {
-		config.WalletRootPath = req.RootPath
-	}
+	config.VegaHome = req.VegaHome
 
 	wStore, err := s.getWalletsStore(config)
 	if err != nil {
-		return CreateWalletResponse{}, err
-	}
-
-	err = wStore.Initialise()
-	if err != nil {
-		s.log.Errorf("Couldn't initialise the wallets store: %v", err)
 		return CreateWalletResponse{}, err
 	}
 
@@ -76,34 +72,35 @@ func (s *Service) CreateWallet(data string) (CreateWalletResponse, error) {
 
 	exists, err := service.ConfigExists(svcStore)
 	if err != nil {
-		s.log.Errorf("Couldn't verify service configuration existance: %v", err)
-		return CreateWalletResponse{}, err
+		s.log.Errorf("Couldn't verify service configuration existence: %v", err)
+		return CreateWalletResponse{}, fmt.Errorf("couldn't verify service configuration existence: %w", err)
 	}
 	if !exists {
 		err := service.GenerateConfig(svcStore, false)
 		if err != nil {
 			s.log.Errorf("Couldn't generate service configuration: %v", err)
-			return CreateWalletResponse{}, err
+			return CreateWalletResponse{}, fmt.Errorf("couldn't generate service configuration: %w", err)
 		}
 	}
 
-	handler := wallet.NewHandler(wStore)
+	handler := wallets.NewHandler(wStore)
 
 	mnemonic, err := handler.CreateWallet(req.Name, req.Passphrase)
 	if err != nil {
 		s.log.Errorf("Couldn't create the wallet: %v", err)
-		return CreateWalletResponse{}, err
+		return CreateWalletResponse{}, fmt.Errorf("couldn't create the wallet: %w", err)
 	}
 
-	err = SaveConfig(config)
+	err = s.configLoader.SaveConfig(config)
 	if err != nil {
-		s.log.Errorf("Couldn't save configuration: %v", err)
-		return CreateWalletResponse{}, err
+		s.log.Errorf("Couldn't save the configuration: %v", err)
+		return CreateWalletResponse{}, fmt.Errorf("couldn't save the configuration: %w", err)
 	}
 
 	s.isAppInitialised = true
 
 	return CreateWalletResponse{
 		Mnemonic: mnemonic,
+		WalletPath: wStore.GetWalletPath(req.Name),
 	}, nil
 }

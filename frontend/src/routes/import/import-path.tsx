@@ -4,7 +4,8 @@ import { LoadWallets } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
-import { ImportSuccess } from './import-success'
+import { Link } from 'react-router-dom'
+import { LoadWalletsResponse } from '../../models/load-wallets'
 
 enum FormState {
   Default,
@@ -14,11 +15,15 @@ enum FormState {
 }
 
 interface FormFields {
-  rootPath: string
+  vegaHome: string
 }
 
 export function ImportPath() {
+  const [advancedOpen, setAdvancedOpen] = React.useState(false)
   const [formState, setFormState] = React.useState(FormState.Default)
+  const [response, setResponse] = React.useState<LoadWalletsResponse | null>(
+    null
+  )
   const {
     register,
     handleSubmit,
@@ -28,14 +33,15 @@ export function ImportPath() {
   const onSubmit = async (values: FormFields) => {
     setFormState(FormState.Pending)
     try {
-      const success = await LoadWallets({
-        RootPath: values.rootPath
+      const resp = await LoadWallets({
+        VegaHome: values.vegaHome
       })
-      if (success) {
+      if (resp) {
         AppToaster.show({
           message: 'Wallet loaded!',
           color: Colors.GREEN
         })
+        setResponse(resp)
         setFormState(FormState.Success)
       } else {
         AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
@@ -47,20 +53,32 @@ export function ImportPath() {
     }
   }
 
-  return formState === FormState.Success ? (
-    <ImportSuccess />
+  return formState === FormState.Success && response ? (
+    <>
+      <p>Wallets successfully loaded from:</p>
+      <pre className='wallet-creator__mnemonic'>{response.WalletsPath}</pre>
+      <Link to='/'>
+        <button>View wallets</button>
+      </Link>
+    </>
   ) : (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup
-        label='* Path to wallet'
-        labelFor='rootPath'
-        errorText={errors.rootPath?.message}>
-        <input
-          id='rootPath'
-          type='text'
-          {...register('rootPath', { required: 'Required' })}
-        />
+      <FormGroup>
+        <button
+          type='button'
+          onClick={() => setAdvancedOpen(x => !x)}
+          className='link'>
+          {advancedOpen ? 'Hide advanced options' : 'Show advanced options'}
+        </button>
       </FormGroup>
+      {advancedOpen && (
+        <FormGroup
+          label='Vega home (leave blank for defaults)'
+          labelFor='vegaHome'
+          errorText={errors.vegaHome?.message}>
+          <input type='text' {...register('vegaHome')} />
+        </FormGroup>
+      )}
       <button type='submit'>Submit</button>
     </form>
   )
