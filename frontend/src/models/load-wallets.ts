@@ -1,3 +1,7 @@
 export class LoadWalletsRequest {
-  RootPath: string = ''
+  VegaHome: string = ''
+}
+
+export class LoadWalletsResponse {
+  WalletsPath: string = ''
 }

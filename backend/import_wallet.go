@@ -3,13 +3,15 @@ package backend
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"strings"
 
 	"code.vegaprotocol.io/go-wallet/service"
-	"code.vegaprotocol.io/go-wallet/wallet"
+	"code.vegaprotocol.io/go-wallet/wallets"
 )
 
 type ImportWalletRequest struct {
-	RootPath   string
+	VegaHome   string
 	Name       string
 	Mnemonic   string
 	Passphrase string
@@ -27,10 +29,18 @@ func (r ImportWalletRequest) Check() error {
 	if len(r.Passphrase) == 0 {
 		return errors.New("passphrase is required")
 	}
+
+	if len(r.VegaHome) > 0 && !strings.HasPrefix(r.VegaHome, "/") {
+		return errors.New("vega home should be an absolute path")
+	}
 	return nil
 }
 
-func (s *Service) ImportWallet(data string) (bool, error) {
+type ImportWalletResponse struct {
+	WalletPath string
+}
+
+func (s *Handler) ImportWallet(data string) (ImportWalletResponse, error) {
 	s.log.Debug("Entering ImportWallet")
 	defer s.log.Debug("Leaving ImportWallet")
 
@@ -38,70 +48,63 @@ func (s *Service) ImportWallet(data string) (bool, error) {
 	err := json.Unmarshal([]byte(data), req)
 	if err != nil {
 		s.log.Errorf("Couldn't unmarshall request: %v", err)
-		return false, ErrFailedToSaveServiceConfig
+		return ImportWalletResponse{}, fmt.Errorf("couldn't unmarshal request: %w", err)
 	}
 
 	err = req.Check()
 	if err != nil {
 		s.log.Errorf("Request is invalid: %v", err)
-		return false, err
+		return ImportWalletResponse{}, fmt.Errorf("request is invalid: %w", err)
 	}
 
-	config, err := s.loadConfig()
+	config, err := s.loadAppConfig()
 	if err != nil {
-		return false, err
+		return ImportWalletResponse{}, err
 	}
 
-	if len(req.RootPath) == 0 {
-		config.WalletRootPath = defaultVegaDir
-	} else {
-		config.WalletRootPath = req.RootPath
-	}
+	config.VegaHome = req.VegaHome
 
 	wStore, err := s.getWalletsStore(config)
 	if err != nil {
-		return false, err
+		return ImportWalletResponse{}, err
 	}
 
-	err = wStore.Initialise()
-	if err != nil {
-		s.log.Errorf("Couldn't initialise the wallets store: %v", err)
-		return false, err
-	}
-
-	handler := wallet.NewHandler(wStore)
+	handler := wallets.NewHandler(wStore)
 
 	svcStore, err := s.getServiceStore(config)
 	if err != nil {
-		return false, err
+		return ImportWalletResponse{}, err
 	}
 
 	exists, err := service.ConfigExists(svcStore)
 	if err != nil {
-		s.log.Errorf("Couldn't verify service configuration existance: %v", err)
-		return false, err
+		s.log.Errorf("Couldn't verify service configuration existence: %v", err)
+		return ImportWalletResponse{}, fmt.Errorf("couldn't verify service configuration existence: %w", err)
 	}
+
 	if !exists {
 		err := service.GenerateConfig(svcStore, false)
 		if err != nil {
 			s.log.Errorf("Couldn't generate service configuration: %v", err)
-			return false, err
+			return ImportWalletResponse{}, fmt.Errorf("couldn't generate service configuration: %w", err)
 		}
 	}
 
 	err = handler.ImportWallet(req.Name, req.Passphrase, req.Mnemonic)
 	if err != nil {
 		s.log.Errorf("Couldn't import the wallet: %v", err)
-		return false, err
+		return ImportWalletResponse{}, err
 	}
 
-	err = SaveConfig(config)
+	err = s.configLoader.SaveConfig(config)
 	if err != nil {
 		s.log.Errorf("Couldn't save configuration: %v", err)
-		return false, err
+		return ImportWalletResponse{}, err
 	}
 
 	s.isAppInitialised = true
 
-	return true, nil
+	return ImportWalletResponse{
+		WalletPath: wStore.GetWalletPath(req.Name),
+	}, nil
 }

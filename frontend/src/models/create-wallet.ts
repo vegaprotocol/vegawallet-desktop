@@ -1,9 +1,10 @@
 export class CreateWalletRequest {
-  RootPath: string = ''
+  VegaHome: string = ''
   Name: string = ''
   Passphrase: string = ''
 }
 
 export class CreateWalletResponse {
+  WalletPath: string = ''
   Mnemonic: string = ''
 }

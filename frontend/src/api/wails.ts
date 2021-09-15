@@ -3,15 +3,17 @@ import type { GetConsoleStateResponse } from '../models/console-state'
 import type { ListKeysResponse } from '../models/list-keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
 import type { CreateWalletResponse } from '../models/create-wallet'
+import { ImportWalletResponse } from '../models/import-wallet'
+import { LoadWalletsResponse } from '../models/load-wallets'
 
-interface Service {
+interface Handler {
   ListKeys(request: string): Promise<ListKeysResponse>
 
   CreateWallet(request: string): Promise<CreateWalletResponse>
 
-  ImportWallet(request: string): Promise<boolean>
+  ImportWallet(request: string): Promise<ImportWalletResponse>
 
-  LoadWallets(request: string): Promise<boolean>
+  LoadWallets(request: string): Promise<LoadWalletsResponse>
 
   IsAppInitialised(): Promise<boolean>
 
@@ -29,7 +31,7 @@ interface Service {
 }
 
 interface Backend {
-  Service: Service
+  Handler: Handler
 }
 
 declare global {

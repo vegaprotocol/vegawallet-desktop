@@ -12,7 +12,7 @@ import {
 import { Link } from 'react-router-dom'
 
 interface FormFields {
-  rootPath: string
+  vegaHome: string
   name: string
   passphrase: string
   confirmPassphrase: string
@@ -35,7 +35,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
     formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
-      rootPath: request.RootPath,
+      vegaHome: request.VegaHome,
       name: request.Name,
       passphrase: request.Passphrase
     }
@@ -45,7 +45,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
   const onSubmit = async (values: FormFields) => {
     try {
       const resp = await CreateWallet({
-        RootPath: values.rootPath,
+        VegaHome: values.vegaHome,
         Name: values.name,
         Passphrase: values.passphrase
       })
@@ -116,10 +116,10 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
       </FormGroup>
       {advancedOpen && (
         <FormGroup
-          label='Location (defaults to home directory)'
-          labelFor='rootPath'
-          errorText={errors.rootPath?.message}>
-          <input type='text' {...register('rootPath')} />
+          label='Vega home (leave blank for defaults)'
+          labelFor='vegaHome'
+          errorText={errors.vegaHome?.message}>
+          <input type='text' {...register('vegaHome')} />
         </FormGroup>
       )}
       <div>

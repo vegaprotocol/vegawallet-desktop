@@ -10,9 +10,11 @@ import (
 
 	"code.vegaprotocol.io/go-wallet/console"
 	"code.vegaprotocol.io/go-wallet/logger"
+	"code.vegaprotocol.io/go-wallet/node"
 	"code.vegaprotocol.io/go-wallet/service"
 	svcstore "code.vegaprotocol.io/go-wallet/service/store/v1"
-	"code.vegaprotocol.io/go-wallet/wallet"
+	"code.vegaprotocol.io/go-wallet/wallets"
+	"code.vegaprotocol.io/shared/paths"
 	"github.com/skratchdot/open-golang/open"
 )
 
@@ -30,7 +32,7 @@ func (s *consoleState) Shutdown() {
 	s.shutdownFunc = nil
 }
 
-func (s *Service) StartConsole() (bool, error) {
+func (s *Handler) StartConsole() (bool, error) {
 	s.log.Debug("Entering StartConsole")
 	defer s.log.Debug("Leaving StartConsole")
 
@@ -39,7 +41,7 @@ func (s *Service) StartConsole() (bool, error) {
 		return false, ErrConsoleAlreadyRunning
 	}
 
-	config, err := s.loadConfig()
+	config, err := s.loadAppConfig()
 	if err != nil {
 		return false, err
 	}
@@ -49,33 +51,45 @@ func (s *Service) StartConsole() (bool, error) {
 		return false, err
 	}
 
-	handler := wallet.NewHandler(wStore)
+	handler := wallets.NewHandler(wStore)
 
-	svcStore, err := svcstore.NewStore(config.WalletRootPath)
+	svcStore, err := svcstore.InitialiseStore(paths.NewPaths(config.VegaHome))
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("couldn't initialise the service store: %w", err)
 	}
 
 	svcConfig, err := svcStore.GetConfig()
 	if err != nil {
 		s.log.Error(fmt.Sprintf("Couldn't retrieve the service configuration: %v", err))
-		return false, ErrFailedToRetrieveServiceConfig
+		return false, fmt.Errorf("couldn't retrieve the service configuration: %w", err)
 	}
 
 	log, err := logger.New(svcConfig.Level.Level, "json")
 	if err != nil {
 		s.log.Errorf("Couldn't instantiate the service logger: %v", err)
-		return false, ErrFailedToStartTheConsole
+		return false, fmt.Errorf("couldn't start the console: %w", err)
 	}
 	defer log.Sync()
 
 	ctx, shutdown := context.WithCancel(context.Background())
 	defer shutdown()
 
-	srv, err := service.NewService(log, svcConfig, svcStore, handler)
+	auth, err := service.NewAuth(log.Named("auth"), svcStore, svcConfig.TokenExpiry.Get())
+	if err != nil {
+		s.log.Errorf("Couldn't instantiate authentication: %v", err)
+		return false, fmt.Errorf("couldn't initialise authentication: %w", err)
+	}
+
+	forwarder, err := node.NewForwarder(log.Named("forwarder"), svcConfig.Nodes)
+	if err != nil {
+		s.log.Errorf("Couldn't instantiate the node forwarder: %v", err)
+		return false, fmt.Errorf("couldn't initialise the node forwarder: %w", err)
+	}
+
+	srv, err := service.NewService(log.Named("service"), svcConfig, handler, auth, forwarder)
 	if err != nil {
 		s.log.Errorf("Couldn't instantiate the service: %v", err)
-		return false, ErrFailedToStartTheConsole
+		return false, fmt.Errorf("couldn't instantiate the service: %w", err)
 	}
 
 	cs := console.NewConsole(
@@ -109,7 +123,7 @@ func (s *Service) StartConsole() (bool, error) {
 	err = open.Run(cs.GetBrowserURL())
 	if err != nil {
 		s.log.Errorf("Couldn't open the default browser: %v", err)
-		return false, ErrFailedToStartTheConsole
+		return false, fmt.Errorf("couldn't open the default browser: %w", err)
 	}
 
 	s.waitSignal(ctx, shutdown)
@@ -136,7 +150,7 @@ type GetConsoleStateResponse struct {
 	Running bool
 }
 
-func (s *Service) GetConsoleState() GetConsoleStateResponse {
+func (s *Handler) GetConsoleState() GetConsoleStateResponse {
 	s.log.Debug("Entering GetConsoleState")
 	defer s.log.Debug("Leaving GetConsoleState")
 
@@ -146,7 +160,7 @@ func (s *Service) GetConsoleState() GetConsoleStateResponse {
 	}
 }
 
-func (s *Service) StopConsole() (bool, error) {
+func (s *Handler) StopConsole() (bool, error) {
 	s.log.Debug("Entering StopConsole")
 	defer s.log.Debug("Leaving StopConsole")
 
@@ -162,7 +176,7 @@ func (s *Service) StopConsole() (bool, error) {
 }
 
 // waitSignal will wait for a sigterm or sigint interrupt.
-func (s *Service) waitSignal(ctx context.Context, shutdownFunc func()) {
+func (s *Handler) waitSignal(ctx context.Context, shutdownFunc func()) {
 	var gracefulStop = make(chan os.Signal, 1)
 	signal.Notify(gracefulStop, syscall.SIGTERM)
 	signal.Notify(gracefulStop, syscall.SIGINT)
