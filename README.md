@@ -1,7 +1,7 @@
 # desktop-wallet
 
 desktop-wallet is a graphical implementation of Vega
-Protocol's [wallet](https://github.com/vegaprotocol/go-wallet/).
+Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/).
 
 ## Development
 
@@ -56,7 +56,7 @@ npm run serve
 Get API reference documentation, learn more about how Vega works, and explore
 sample scripts for API trading
 
-**[Wallet documentation](https://docs.fairground.vega.xyz/docs/wallet/)**
+**[Wallet documentation](https://docs.fairground.vega.xyz/docs/vega-wallet/)**
 
 Learn about how Vega interacts with wallets.
 
