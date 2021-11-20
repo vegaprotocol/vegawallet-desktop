@@ -1,0 +1,39 @@
+@import '../../styles/colors';
+
+.switcher {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.switcher-dropdown {
+  position: relative;
+
+  > button {
+    background: transparent;
+    border: 0;
+    padding: 17px 10px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: $dark-gray5;
+
+    button {
+      min-width: 100px;
+      background: transparent;
+      border: 0;
+      text-align: left;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

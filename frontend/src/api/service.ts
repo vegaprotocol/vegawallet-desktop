@@ -13,7 +13,36 @@ import { LoadWalletsResponse } from '../models/load-wallets'
 import { StartConsoleRequest } from '../models/start-console'
 
 export function ListKeys(request: ListKeysRequest): Promise<ListKeysResponse> {
-  return window.backend.Handler.ListKeys(JSON.stringify(request))
+  return Promise.resolve({
+    Name: 'matt',
+    KeyPairs: [
+      {
+        PublicKey: '0x000000000000000000000000000000000',
+        PrivateKey: '',
+        IsTainted: false,
+        Meta: [],
+        AlgorithmName: 'ed2115',
+        AlgorithmVersion: 2
+      },
+      {
+        PublicKey: '0x1111111111111111111111111111111111',
+        PrivateKey: '',
+        IsTainted: false,
+        Meta: [],
+        AlgorithmName: 'ed2115',
+        AlgorithmVersion: 2
+      },
+      {
+        PublicKey: '0x22222222222222222222222222222222222',
+        PrivateKey: '',
+        IsTainted: false,
+        Meta: [],
+        AlgorithmName: 'ed2115',
+        AlgorithmVersion: 2
+      }
+    ]
+  })
+  // return window.backend.Handler.ListKeys(JSON.stringify(request))
 }
 
 export function CreateWallet(
