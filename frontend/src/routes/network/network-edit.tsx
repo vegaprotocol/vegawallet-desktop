@@ -2,16 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { BulletHeader } from '../../components/bullet-header'
-import type { Config } from '../../models/config'
-import { ConfigEditor } from './config-editor'
+import type { Network } from '../../models/network'
+import { NetworkEditor } from './network-editor'
 
-export const ConfigEdit = ({ config }: { config: Config }) => {
+export const NetworkEdit = ({ config }: { config: Network }) => {
   return (
     <>
       <BulletHeader tag='h1'>
         Edit configuration / <Link to='/config'>Back</Link>
       </BulletHeader>
-      <ConfigEditor config={config} />
+      <NetworkEditor config={config} />
     </>
   )
 }

@@ -9,6 +9,7 @@
 - [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) - 
 
 ### 🛠 Improvements
+- [34](https://github.com/vegaprotocol/vegawallet-desktop/pull/34) - Update to latest version of the vegawallet
 - [38](https://github.com/vegaprotocol/vegawallet-desktop/pull/38) - Add changelog, project board Github actions and linked PR action version
 - [34](https://github.com/vegaprotocol/vegawallet-desktop/pull/34) - Find the definitive name for this project
 - [31](https://github.com/vegaprotocol/vegawallet-desktop/pull/31) - Migrate to the XDG file structure

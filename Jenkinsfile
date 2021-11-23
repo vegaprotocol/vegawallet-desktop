@@ -3,7 +3,7 @@
     - GIT_COMMIT:05a1c6fbe7d1ff87cfc40a011a63db574edad7e6
     - GIT_PREVIOUS_COMMIT:5d02b46fdb653f789e799ff6ad304baccc32cbf9
     - GIT_PREVIOUS_SUCCESSFUL_COMMIT:5d02b46fdb653f789e799ff6ad304baccc32cbf9
-    - GIT_URL:https://github.com/vegaprotocol/desktop-wallet.git
+    - GIT_URL:https://github.com/vegaprotocol/vegawallet-desktop.git
 */
 def scmVars = null
 def version = 'UNKNOWN'
@@ -14,7 +14,7 @@ pipeline {
     environment {
         CGO_ENABLED = 1
         GO111MODULE = 'on'
-        SLACK_MESSAGE = "DesktopWallet CI » <${RUN_DISPLAY_URL}|Jenkins ${BRANCH_NAME} Job>${ env.CHANGE_URL ? " » <${CHANGE_URL}|GitHub PR #${CHANGE_ID}>" : '' }"
+        SLACK_MESSAGE = "vegawallet-desktop CI » <${RUN_DISPLAY_URL}|Jenkins ${BRANCH_NAME} Job>${ env.CHANGE_URL ? " » <${CHANGE_URL}|GitHub PR #${CHANGE_ID}>" : '' }"
     }
 
     stages {
@@ -46,7 +46,7 @@ pipeline {
                     wails build
                 '''
                 sh label: 'Sanity check', script: '''
-                    file ./build/vega-wallet
+                    file ./build/vegawallet-desktop
                 '''
             }
         }

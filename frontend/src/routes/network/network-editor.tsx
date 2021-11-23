@@ -1,28 +1,28 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { SaveServiceConfig } from '../../api/service'
+import { SaveNetworkConfig } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { LogLevels } from '../../config/log-levels'
-import type { Config } from '../../models/config'
+import type { Network } from '../../models/network'
 
 interface FormFields {
   logLevel: string
   tokenExpiry: string
   port: number
   host: string
-  nodeRetries: number
+  grpcNodeRetries: number
   consoleUrl: string
   consolePort: number
 }
 
 export interface ConfigEditorProps {
-  config: Config
+  config: Network
 }
 
-export const ConfigEditor = ({ config }: ConfigEditorProps) => {
+export const NetworkEditor = ({ config }: ConfigEditorProps) => {
   const {
     register,
     handleSubmit,
@@ -33,7 +33,7 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
       tokenExpiry: config.TokenExpiry,
       port: config.Port,
       host: config.Host,
-      nodeRetries: config.Nodes.Retries,
+      grpcNodeRetries: config.API.GRPC.Retries,
       consoleUrl: config.Console.URL,
       consolePort: config.Console.LocalPort
     }
@@ -50,12 +50,16 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
           URL: values.consoleUrl,
           LocalPort: Number(values.consolePort)
         },
-        Nodes: {
-          Hosts: config.Nodes.Hosts,
-          Retries: Number(values.nodeRetries)
+        Api: {
+          GRPC: {
+            Hosts: config.API.GRPC.Hosts,
+            Retries: Number(values.grpcNodeRetries)
+          },
+          GraphQL: config.API.GraphQL,
+          REST: config.API.REST
         }
       })
-      const success = await SaveServiceConfig(configJSON)
+      const success = await SaveNetworkConfig(configJSON)
       if (success) {
         AppToaster.show({
           message: 'Configuration saved!',
@@ -105,12 +109,12 @@ export const ConfigEditor = ({ config }: ConfigEditorProps) => {
         <input type='text' {...register('host', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
-        label='* Node retries'
-        labelFor='nodeRetries'
-        errorText={errors.nodeRetries?.message}>
+        label='*gRPC Node retries'
+        labelFor='grpcNodeRetries'
+        errorText={errors.grpcNodeRetries?.message}>
         <input
           type='text'
-          {...register('nodeRetries', { required: 'Required' })}
+          {...register('grpcNodeRetries', { required: 'Required' })}
         />
       </FormGroup>
       <FormGroup

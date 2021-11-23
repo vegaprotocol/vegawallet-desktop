@@ -3,6 +3,7 @@ export class ImportWalletRequest {
   Name: string = ''
   Passphrase: string = ''
   Mnemonic: string = ''
+  Version: number = 2
 }
 
 export class ImportWalletResponse {

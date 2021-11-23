@@ -23,7 +23,13 @@ export function Import() {
           </Route>
           <Route path={`${match.path}/mnemonic`}>
             <ImportMnemonic
-              request={{ VegaHome: '', Name: '', Passphrase: '', Mnemonic: '' }}
+              request={{
+                VegaHome: '',
+                Name: '',
+                Passphrase: '',
+                Mnemonic: '',
+                Version: 2
+              }}
             />
           </Route>
         </Switch>

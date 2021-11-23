@@ -35,8 +35,7 @@ func (s *Handler) LoadWallets(data string) (LoadWalletsResponse, error) {
 		return LoadWalletsResponse{}, fmt.Errorf("couldn't unmarshal request: %w", err)
 	}
 
-	err = req.Check()
-	if err != nil {
+	if err = req.Check(); err != nil {
 		s.log.Errorf("Request is invalid: %v", err)
 		return LoadWalletsResponse{}, fmt.Errorf("request is invalid: %w", err)
 	}

@@ -1,6 +1,6 @@
 {
-  "short_name": "Vega Wallet",
-  "name": "Desktop application for Vega Protocol's wallet",
+  "short_name": "Vegawallet",
+  "name": "Desktop application for Vegawallet",
   "icons": [
     {
       "src": "favicon-16x16.png",

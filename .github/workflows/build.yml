@@ -22,10 +22,10 @@ jobs:
           node-version: '14'
         id: npm
 
-      - name: Set up Go ^1.16
+      - name: Set up Go ^1.17
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.16
+          go-version: ^1.17
         id: go
 
       - name: Install Wails dependencies
@@ -35,7 +35,7 @@ jobs:
 
       - name: Get Wails
         run: |
-          go install github.com/wailsapp/wails/cmd/wails@v1.16.5
+          go install github.com/wailsapp/wails/cmd/wails@v1.16.8
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -74,15 +74,15 @@ jobs:
           node-version: '14'
         id: npm
 
-      - name: Set up Go ^1.16
+      - name: Set up Go ^1.17
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.16
+          go-version: ^1.17
         id: go
 
       - name: Get Wails
         run: |
-          go install github.com/wailsapp/wails/cmd/wails@v1.16.5
+          go install github.com/wailsapp/wails/cmd/wails@v1.16.8
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -121,10 +121,10 @@ jobs:
           node-version: '14'
         id: npm
 
-      - name: Set up Go ^1.16
+      - name: Set up Go ^1.17
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.16
+          go-version: ^1.17
         id: go
 
       - name: Set up GCC for Wails
@@ -136,7 +136,7 @@ jobs:
 
       - name: Get Wails
         run: |
-          go install github.com/wailsapp/wails/cmd/wails@v1.16.5
+          go install github.com/wailsapp/wails/cmd/wails@v1.16.8
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2

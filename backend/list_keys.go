@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"code.vegaprotocol.io/go-wallet/wallet"
+	"code.vegaprotocol.io/vegawallet/wallet"
 )
 
 type ListKeysRequest struct {
@@ -52,6 +52,10 @@ func (s *Handler) ListKeys(data string) (ListKeysResponse, error) {
 	if err != nil {
 		s.log.Errorf("Couldn't unmarshall request: %v", err)
 		return ListKeysResponse{}, fmt.Errorf("couldn't unmarshal request: %w", err)
+	}
+
+	if err := req.Check(); err != nil {
+		return ListKeysResponse{}, err
 	}
 
 	config, err := s.loadAppConfig()

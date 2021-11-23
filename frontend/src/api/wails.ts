@@ -1,4 +1,4 @@
-import type { Config } from '../models/config'
+import type { Network } from '../models/network'
 import type { GetConsoleStateResponse } from '../models/console-state'
 import type { ListKeysResponse } from '../models/list-keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
@@ -19,11 +19,11 @@ interface Handler {
 
   ListWallets(): Promise<ListWalletsResponse>
 
-  GetServiceConfig(): Promise<Config>
+  GetNetworkConfig(name: string): Promise<Network>
 
-  SaveServiceConfig(jsonConfig: string): Promise<boolean>
+  SaveNetworkConfig(jsonConfig: string): Promise<boolean>
 
-  StartConsole(): Promise<boolean>
+  StartConsole(request: string): Promise<boolean>
 
   GetConsoleState(): Promise<GetConsoleStateResponse>
 

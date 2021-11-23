@@ -4,12 +4,13 @@ import (
 	"errors"
 	"fmt"
 
-	svcstore "code.vegaprotocol.io/go-wallet/service/store/v1"
-	wstore "code.vegaprotocol.io/go-wallet/wallet/store/v1"
-	"code.vegaprotocol.io/go-wallet/wallets"
 	"code.vegaprotocol.io/shared/paths"
-	"desktop-wallet/backend/config"
+	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
+	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
+	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
+	"code.vegaprotocol.io/vegawallet/wallets"
 	"github.com/wailsapp/wails"
+	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 )
 
 var (
@@ -109,10 +110,20 @@ func (s *Handler) verifyAppInitialisation() error {
 }
 
 func (s *Handler) getServiceStore(config config.Config) (*svcstore.Store, error) {
-	st, err := svcstore.InitialiseStore(paths.NewPaths(config.VegaHome))
+	st, err := svcstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
-		s.log.Errorf("Couldn't create the service store: %v", err)
-		return nil, fmt.Errorf("couldn't create the service store: %w", err)
+		s.log.Errorf("Couldn't initialise the service store: %v", err)
+		return nil, fmt.Errorf("couldn't initialise the service store: %w", err)
+	}
+
+	return st, nil
+}
+
+func (s *Handler) getNetworksStore(config config.Config) (*netstore.Store, error) {
+	st, err := netstore.InitialiseStore(paths.New(config.VegaHome))
+	if err != nil {
+		s.log.Errorf("Couldn't initialise the networks store: %v", err)
+		return nil, fmt.Errorf("couldn't initialise the networks store: %w", err)
 	}
 
 	return st, nil

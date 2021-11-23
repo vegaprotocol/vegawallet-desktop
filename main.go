@@ -3,7 +3,7 @@ package main
 import (
 	_ "embed"
 
-	"desktop-wallet/backend"
+	"code.vegaprotocol.io/vegawallet-desktop/backend"
 
 	"github.com/wailsapp/wails"
 )
@@ -20,7 +20,7 @@ func main() {
 		Resizable: true,
 		MinWidth:  512,
 		MinHeight: 384,
-		Title:     "Vega Protocol's Wallet",
+		Title:     "Vegawallet",
 		JS:        js,
 		CSS:       css,
 		Colour:    "#ffffff",
