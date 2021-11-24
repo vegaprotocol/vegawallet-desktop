@@ -1,12 +1,12 @@
-import { Config } from './config'
+import { Network } from './network'
 import { Home } from './home'
 import { Import } from './import'
 
 const routerConfig = [
   {
-    path: '/config',
-    name: 'Config',
-    component: Config,
+    path: '/network',
+    name: 'Network',
+    component: Network,
     exact: false
   },
   {

@@ -1,7 +1,8 @@
-# desktop-wallet
+# vegawallet-desktop
 
-desktop-wallet is a graphical implementation of Vega
-Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/).
+vegawallet-desktop is a graphical desktop application of Vega
+Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/) for Windows, MacOS
+and Linux.
 
 ## Development
 
@@ -17,7 +18,7 @@ Be sure to have the following environment variables set:
 * `GO111MODULE=on`
 
 ```sh
-go install github.com/wailsapp/wails/cmd/wails@v1.16.5
+go install github.com/wailsapp/wails/cmd/wails@v1.16.8
 ```
 
 ### Build
@@ -29,8 +30,8 @@ wails build -p
 ```
 
 If all went well, you should have a compiled program in your `build` directory.
-Go to the `build` directory and run the program with `./desktop-wallet` or
-double click `desktop-wallet.exe` if on Windows.
+Go to the `build` directory and run the program with `./vegawallet-desktop` or
+double click `vegawallet-desktop.exe` if on Windows.
 
 More at the [Wails documentation](https://wails.app/reference/cli/#build).
 

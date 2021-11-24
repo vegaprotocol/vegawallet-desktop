@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"code.vegaprotocol.io/go-wallet/service"
-	"code.vegaprotocol.io/go-wallet/wallets"
+	"code.vegaprotocol.io/vegawallet/wallets"
 )
 
 type CreateWalletRequest struct {
@@ -63,24 +62,6 @@ func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
 	wStore, err := s.getWalletsStore(config)
 	if err != nil {
 		return CreateWalletResponse{}, err
-	}
-
-	svcStore, err := s.getServiceStore(config)
-	if err != nil {
-		return CreateWalletResponse{}, err
-	}
-
-	exists, err := service.ConfigExists(svcStore)
-	if err != nil {
-		s.log.Errorf("Couldn't verify service configuration existence: %v", err)
-		return CreateWalletResponse{}, fmt.Errorf("couldn't verify service configuration existence: %w", err)
-	}
-	if !exists {
-		err := service.GenerateConfig(svcStore, false)
-		if err != nil {
-			s.log.Errorf("Couldn't generate service configuration: %v", err)
-			return CreateWalletResponse{}, fmt.Errorf("couldn't generate service configuration: %w", err)
-		}
 	}
 
 	handler := wallets.NewHandler(wStore)

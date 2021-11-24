@@ -2,20 +2,25 @@ package backend
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"code.vegaprotocol.io/go-wallet/console"
-	"code.vegaprotocol.io/go-wallet/logger"
-	"code.vegaprotocol.io/go-wallet/node"
-	"code.vegaprotocol.io/go-wallet/service"
-	svcstore "code.vegaprotocol.io/go-wallet/service/store/v1"
-	"code.vegaprotocol.io/go-wallet/wallets"
 	"code.vegaprotocol.io/shared/paths"
+	"code.vegaprotocol.io/vegawallet/console"
+	"code.vegaprotocol.io/vegawallet/network"
+	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
+	"code.vegaprotocol.io/vegawallet/node"
+	"code.vegaprotocol.io/vegawallet/service"
+	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
+	"code.vegaprotocol.io/vegawallet/wallets"
 	"github.com/skratchdot/open-golang/open"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type consoleState struct {
@@ -32,13 +37,36 @@ func (s *consoleState) Shutdown() {
 	s.shutdownFunc = nil
 }
 
-func (s *Handler) StartConsole() (bool, error) {
+type StartConsoleRequest struct {
+	Network string
+}
+
+func (r StartConsoleRequest) Check() error {
+	if len(r.Network) == 0 {
+		return errors.New("network is required")
+	}
+
+	return nil
+}
+
+func (s *Handler) StartConsole(data string) (bool, error) {
 	s.log.Debug("Entering StartConsole")
 	defer s.log.Debug("Leaving StartConsole")
 
 	if s.console.IsRunning() {
 		s.log.Error("A console already started")
 		return false, ErrConsoleAlreadyRunning
+	}
+
+	req := &StartConsoleRequest{}
+	err := json.Unmarshal([]byte(data), req)
+	if err != nil {
+		s.log.Errorf("Couldn't unmarshall request: %v", err)
+		return false, fmt.Errorf("couldn't unmarshal request: %w", err)
+	}
+
+	if err := req.Check(); err != nil {
+		return false, err
 	}
 
 	config, err := s.loadAppConfig()
@@ -53,93 +81,106 @@ func (s *Handler) StartConsole() (bool, error) {
 
 	handler := wallets.NewHandler(wStore)
 
-	svcStore, err := svcstore.InitialiseStore(paths.NewPaths(config.VegaHome))
+	netStore, err := netstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
-		return false, fmt.Errorf("couldn't initialise the service store: %w", err)
+		s.log.Errorf("Couldn't initialise network store: %v", err)
+		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
-	svcConfig, err := svcStore.GetConfig()
+	exists, err := netStore.NetworkExists(req.Network)
 	if err != nil {
-		s.log.Error(fmt.Sprintf("Couldn't retrieve the service configuration: %v", err))
-		return false, fmt.Errorf("couldn't retrieve the service configuration: %w", err)
+		s.log.Errorf("Couldn't verify the network existence: %v", err)
+		return false, fmt.Errorf("couldn't verify the network existence: %w", err)
+	}
+	if !exists {
+		s.log.Errorf("Network %s does not exist", req.Network)
+		return false, network.NewNetworkDoesNotExistError(req.Network)
 	}
 
-	log, err := logger.New(svcConfig.Level.Level, "json")
+	cfg, err := netStore.GetNetwork(req.Network)
 	if err != nil {
-		s.log.Errorf("Couldn't instantiate the service logger: %v", err)
-		return false, fmt.Errorf("couldn't start the console: %w", err)
+		s.log.Errorf("Couldn't initialise network store: %v", err)
+		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
-	defer log.Sync()
 
-	ctx, shutdown := context.WithCancel(context.Background())
-	defer shutdown()
-
-	auth, err := service.NewAuth(log.Named("auth"), svcStore, svcConfig.TokenExpiry.Get())
+	logLevel := cfg.Level.String()
+	log, err := buildLogger(logLevel)
 	if err != nil {
-		s.log.Errorf("Couldn't instantiate authentication: %v", err)
+		return false, err
+	}
+	defer syncLogger(log)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	svcStore, err := svcstore.InitialiseStore(paths.New(config.VegaHome))
+	if err != nil {
+		s.log.Errorf("Couldn't initialise service store: %v", err)
+		return false, fmt.Errorf("couldn't initialise service store: %w", err)
+	}
+
+	auth, err := service.NewAuth(log.Named("auth"), svcStore, cfg.TokenExpiry.Get())
+	if err != nil {
+		s.log.Errorf("Couldn't initialise authentication: %v", err)
 		return false, fmt.Errorf("couldn't initialise authentication: %w", err)
 	}
 
-	forwarder, err := node.NewForwarder(log.Named("forwarder"), svcConfig.Nodes)
+	forwarder, err := node.NewForwarder(log.Named("forwarder"), cfg.API.GRPC)
 	if err != nil {
-		s.log.Errorf("Couldn't instantiate the node forwarder: %v", err)
+		s.log.Errorf("Couldn't initialise the node forwarder: %v", err)
 		return false, fmt.Errorf("couldn't initialise the node forwarder: %w", err)
 	}
 
-	srv, err := service.NewService(log.Named("service"), svcConfig, handler, auth, forwarder)
+	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder)
 	if err != nil {
-		s.log.Errorf("Couldn't instantiate the service: %v", err)
-		return false, fmt.Errorf("couldn't instantiate the service: %w", err)
+		s.log.Errorf("Couldn't initialise the service: %v", err)
+		return false, err
 	}
 
 	cs := console.NewConsole(
-		svcConfig.Console.LocalPort,
-		svcConfig.Console.URL,
-		svcConfig.Nodes.Hosts[0],
+		cfg.Console.LocalPort,
+		cfg.Console.URL,
+		cfg.Nodes.Hosts[0],
 	)
 
 	go func() {
-		defer shutdown()
+		defer cancel()
 		s.log.Info("Starting the service")
-		err := srv.Start()
-		if err != nil && err != http.ErrServerClosed {
-			s.log.Errorf("Couldn't start the service: %v", err)
+		if err := srv.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			s.log.Errorf("Error while starting HTTP server: %v", err)
 		}
 	}()
 
 	go func() {
-		defer shutdown()
+		defer cancel()
 		s.log.Info("Starting the console")
-		err := cs.Start()
-		if err != nil && err != http.ErrServerClosed {
-			s.log.Errorf("Couldn't start the console: %v", err)
+		if err := cs.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			s.log.Errorf("Error while starting the console proxy: %v", err)
 		}
 	}()
 
 	s.console.URL = cs.GetBrowserURL()
-	s.console.shutdownFunc = shutdown
+	s.console.shutdownFunc = cancel
 
 	s.log.Infof("Opening the console at %s", cs.GetBrowserURL())
-	err = open.Run(cs.GetBrowserURL())
-	if err != nil {
-		s.log.Errorf("Couldn't open the default browser: %v", err)
-		return false, fmt.Errorf("couldn't open the default browser: %w", err)
+
+	if err = open.Run(cs.GetBrowserURL()); err != nil {
+		s.log.Errorf("Unable to open the console in the default browser: %v", err)
+		return false, fmt.Errorf("unable to open the console in the default browser: %w", err)
 	}
 
-	s.waitSignal(ctx, shutdown)
+	s.waitSignal(ctx, cancel)
 
-	err = cs.Stop()
-	if err != nil {
-		s.log.Errorf("Couldn't stop the console: %v", err)
+	if err = cs.Stop(); err != nil {
+		s.log.Errorf("Error while stopping console proxy: %v", err)
 	} else {
-		s.log.Info("The console stopped")
+		s.log.Info("Console proxy stopped with success")
 	}
 
-	err = srv.Stop()
-	if err != nil {
-		s.log.Errorf("Couldn't stop the service: %v", err)
+	if err = srv.Stop(); err != nil {
+		s.log.Errorf("Error while stopping HTTP server: %v", err)
 	} else {
-		s.log.Info("The service stopped")
+		s.log.Info("HTTP server stopped with success")
 	}
 
 	return true, nil
@@ -188,5 +229,84 @@ func (s *Handler) waitSignal(ctx context.Context, shutdownFunc func()) {
 		shutdownFunc()
 	case <-ctx.Done():
 		// nothing to do
+	}
+}
+
+func buildLogger(level string) (*zap.Logger, error) {
+	cfg := zap.Config{
+		Level:    zap.NewAtomicLevelAt(zapcore.InfoLevel),
+		Encoding: "json",
+		EncoderConfig: zapcore.EncoderConfig{
+			MessageKey:     "message",
+			LevelKey:       "level",
+			TimeKey:        "@timestamp",
+			NameKey:        "logger",
+			CallerKey:      "caller",
+			StacktraceKey:  "stacktrace",
+			LineEnding:     "\n",
+			EncodeLevel:    zapcore.LowercaseLevelEncoder,
+			EncodeTime:     zapcore.ISO8601TimeEncoder,
+			EncodeDuration: zapcore.StringDurationEncoder,
+			EncodeCaller:   zapcore.ShortCallerEncoder,
+			EncodeName:     zapcore.FullNameEncoder,
+		},
+		OutputPaths:       []string{"stdout"},
+		ErrorOutputPaths:  []string{"stderr"},
+		DisableStacktrace: true,
+	}
+
+	l, err := getLoggerLevel(level)
+	if err != nil {
+		return nil, err
+	}
+
+	cfg.Level = zap.NewAtomicLevelAt(*l)
+
+	log, err := cfg.Build()
+	if err != nil {
+		return nil, fmt.Errorf("couldn't create logger: %w", err)
+	}
+	return log, nil
+}
+
+func getLoggerLevel(level string) (*zapcore.Level, error) {
+	if !isSupportedLogLevel(level) {
+		return nil, errors.New(fmt.Sprintf("unsupported logger level %s", level))
+	}
+
+	l := new(zapcore.Level)
+
+	err := l.UnmarshalText([]byte(level))
+	if err != nil {
+		return nil, fmt.Errorf("couldn't parse logger level: %w", err)
+	}
+
+	return l, nil
+}
+
+func isSupportedLogLevel(level string) bool {
+	for _, supported := range []string{
+		zapcore.DebugLevel.String(),
+		zapcore.InfoLevel.String(),
+		zapcore.WarnLevel.String(),
+		zapcore.ErrorLevel.String(),
+	} {
+		if level == supported {
+			return true
+		}
+	}
+	return false
+}
+
+func syncLogger(logger *zap.Logger) func() {
+	return func() {
+		err := logger.Sync()
+		if err != nil {
+			// Try to report any flushing errors on stderr
+			if _, err := fmt.Fprintf(os.Stderr, "couldn't flush logger: %v", err); err != nil {
+				// This is the ultimate reporting, as we can't do anything else.
+				fmt.Printf("couldn't flush logger: %v", err)
+			}
+		}
 	}
 }

@@ -12,9 +12,9 @@ type Loader struct {
 }
 
 func NewLoader() (*Loader, error) {
-	configPath, err := paths.DefaultConfigPathFor(paths.WalletDesktopDefaultConfigFile)
+	configPath, err := paths.CreateDefaultConfigPathFor(paths.WalletAppDefaultConfigFile)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletDesktopDefaultConfigFile, err)
+		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppDefaultConfigFile, err)
 	}
 
 	return &Loader{

@@ -1,15 +1,16 @@
-import type { Config } from '../models/config'
+import type { Network } from '../models/network'
 import type { GetConsoleStateResponse } from '../models/console-state'
 import type {
   CreateWalletRequest,
   CreateWalletResponse
 } from '../models/create-wallet'
 import type { ImportWalletRequest } from '../models/import-wallet'
+import { ImportWalletResponse } from '../models/import-wallet'
 import type { ListKeysRequest, ListKeysResponse } from '../models/list-keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
 import type { LoadWalletsRequest } from '../models/load-wallets'
-import { ImportWalletResponse } from '../models/import-wallet'
 import { LoadWalletsResponse } from '../models/load-wallets'
+import { StartConsoleRequest } from '../models/start-console'
 
 export function ListKeys(request: ListKeysRequest): Promise<ListKeysResponse> {
   return window.backend.Handler.ListKeys(JSON.stringify(request))
@@ -41,16 +42,16 @@ export function ListWallets(): Promise<ListWalletsResponse> {
   return window.backend.Handler.ListWallets()
 }
 
-export function GetServiceConfig(): Promise<Config> {
-  return window.backend.Handler.GetServiceConfig()
+export function GetNetworkConfig(name: string): Promise<Network> {
+  return window.backend.Handler.GetNetworkConfig(name)
 }
 
-export function SaveServiceConfig(config: string): Promise<boolean> {
-  return window.backend.Handler.SaveServiceConfig(config)
+export function SaveNetworkConfig(config: string): Promise<boolean> {
+  return window.backend.Handler.SaveNetworkConfig(config)
 }
 
-export function StartConsole(): Promise<boolean> {
-  return window.backend.Handler.StartConsole()
+export function StartConsole(request: StartConsoleRequest): Promise<boolean> {
+  return window.backend.Handler.StartConsole(JSON.stringify(request))
 }
 
 export function GetConsoleState(): Promise<GetConsoleStateResponse> {

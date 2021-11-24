@@ -20,6 +20,7 @@ enum FormState {
 interface FormFields {
   vegaHome: string
   name: string
+  version: number
   passphrase: string
   confirmPassphrase: string
   mnemonic: string
@@ -41,6 +42,7 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     defaultValues: {
       vegaHome: request.VegaHome,
       name: request.Name,
+      version: request.Version,
       passphrase: '',
       confirmPassphrase: '',
       mnemonic: request.Mnemonic
@@ -58,7 +60,8 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
         VegaHome: values.vegaHome,
         Name: values.name,
         Passphrase: values.passphrase,
-        Mnemonic: values.mnemonic
+        Mnemonic: values.mnemonic,
+        Version: values.version
       })
       if (resp) {
         setResponse(resp)
@@ -95,6 +98,12 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
           {...register('mnemonic', { required: 'Required' })}
           style={{ minHeight: 75 }}
         />
+      </FormGroup>
+      <FormGroup
+        label='* Version'
+        labelFor='version'
+        errorText={errors.version?.message}>
+        <input type='text' {...register('version', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
         label='* Passphrase'
