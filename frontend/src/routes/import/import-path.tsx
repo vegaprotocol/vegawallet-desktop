@@ -19,7 +19,6 @@ interface FormFields {
 }
 
 export function ImportPath() {
-  const [advancedOpen, setAdvancedOpen] = React.useState(false)
   const [formState, setFormState] = React.useState(FormState.Default)
   const [response, setResponse] = React.useState<LoadWalletsResponse | null>(
     null
@@ -63,22 +62,12 @@ export function ImportPath() {
     </>
   ) : (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup>
-        <button
-          type='button'
-          onClick={() => setAdvancedOpen(x => !x)}
-          className='link'>
-          {advancedOpen ? 'Hide advanced options' : 'Show advanced options'}
-        </button>
+      <FormGroup
+        label='Vega home (leave blank for defaults)'
+        labelFor='vegaHome'
+        errorText={errors.vegaHome?.message}>
+        <input type='text' {...register('vegaHome')} />
       </FormGroup>
-      {advancedOpen && (
-        <FormGroup
-          label='Vega home (leave blank for defaults)'
-          labelFor='vegaHome'
-          errorText={errors.vegaHome?.message}>
-          <input type='text' {...register('vegaHome')} />
-        </FormGroup>
-      )}
       <button type='submit'>Submit</button>
     </form>
   )

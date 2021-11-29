@@ -35,7 +35,8 @@ export function Switcher() {
       {state.keypairs?.length ? (
         <Dropdown
           current={
-            `${state.wallet} ${state.keypair?.PublicKeyShort}` || 'Select'
+            `wallet: ${state.wallet} keypair: ${state.keypair?.Name} ${state.keypair?.PublicKeyShort}` ||
+            'Select'
           }
           options={state.keypairs.map(k => ({
             value: k.PublicKey,

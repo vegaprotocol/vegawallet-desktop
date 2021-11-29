@@ -34,7 +34,7 @@ export function Wallet() {
           ))}
         </ul>
       ) : (
-        <p>No wallets</p>
+        <p>No keypairs in this wallet</p>
       )}
     </>
   )
