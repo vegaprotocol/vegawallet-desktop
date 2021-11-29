@@ -5,14 +5,39 @@ import { AppRouter } from './routes'
 import { HashRouter as Router } from 'react-router-dom'
 import { Chrome } from './components/chrome'
 import { GlobalProvider } from './contexts/global/global-provider'
+import { IsAppInitialised } from './api/service'
+import { useGlobal } from './contexts/global/global-context'
+
+function AppLoader({ children }: { children: React.ReactElement }) {
+  const { state, dispatch } = useGlobal()
+
+  React.useEffect(() => {
+    IsAppInitialised()
+      .then(res => {
+        dispatch({ type: 'INIT_APP' })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
+
+  if (!state.init) {
+    // TODO: Replace with loading pixel effect
+    return <div>Initializing...</div>
+  }
+
+  return children
+}
 
 function App() {
   return (
     <Router>
       <GlobalProvider>
-        <Chrome>
-          <AppRouter />
-        </Chrome>
+        <AppLoader>
+          <Chrome>
+            <AppRouter />
+          </Chrome>
+        </AppLoader>
       </GlobalProvider>
     </Router>
   )

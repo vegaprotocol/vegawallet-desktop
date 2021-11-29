@@ -15,8 +15,6 @@ export const initialGlobalState: GlobalState = {
 export type GlobalAction =
   | {
       type: 'INIT_APP'
-      wallets: string[]
-      keypairs: KeyPair[]
     }
   | {
       type: 'SET_WALLETS'
@@ -45,20 +43,8 @@ export function globalReducer(
 ): GlobalState {
   switch (action.type) {
     case 'INIT_APP': {
-      const keypairsExtended = action.keypairs.map(kp => {
-        const nameMeta = kp.Meta.find(m => m.Key === 'name')
-        return {
-          ...kp,
-          Name: nameMeta ? nameMeta.Value : 'No name',
-          PublicKeyShort: truncateMiddle(kp.PublicKey)
-        }
-      })
       return {
         ...state,
-        wallet: action.wallets[0],
-        wallets: action.wallets,
-        keypairs: keypairsExtended,
-        keypair: keypairsExtended[0],
         init: true
       }
     }

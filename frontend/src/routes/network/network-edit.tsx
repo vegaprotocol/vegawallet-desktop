@@ -9,7 +9,7 @@ export const NetworkEdit = ({ config }: { config: Network }) => {
   return (
     <>
       <BulletHeader tag='h1'>
-        Edit configuration / <Link to='/config'>Back</Link>
+        Edit configuration / <Link to='/network'>Back</Link>
       </BulletHeader>
       <NetworkEditor config={config} />
     </>

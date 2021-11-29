@@ -19,7 +19,6 @@ export const Network = () => {
     setConfig(null)
     GetNetworkConfig(network)
       .then(result => {
-        console.log(result)
         setConfig(result)
       })
       .catch(err => {

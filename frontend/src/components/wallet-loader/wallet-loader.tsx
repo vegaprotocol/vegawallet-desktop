@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { ListWallets } from '../../api/service'
 import { useGlobal } from '../../contexts/global/global-context'
 
@@ -27,7 +28,13 @@ export function WalletLoader({ children }: WalletLoaderProps) {
   }, [dispatch])
 
   if (!state.wallets.length) {
-    return <div>Loading...</div>
+    return (
+      <div>
+        <p>
+          No wallets. <Link to='/import'>Import or create one</Link>
+        </p>
+      </div>
+    )
   }
 
   return children
