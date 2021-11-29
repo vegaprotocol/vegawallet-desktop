@@ -2,12 +2,13 @@ import './switcher.scss'
 import React from 'react'
 import { useGlobal } from '../../contexts/global/global-context'
 import { KeyPair } from '../../models/list-keys'
-import { truncateMiddle } from '../../lib/truncate-middle'
+import { useHistory } from 'react-router'
 
-type DropdownType = 'network' | 'wallet' | 'keypair'
+type DropdownType = 'network' | 'keypair'
 
 export function Switcher() {
-  const [state, dispatch] = useGlobal()
+  const history = useHistory()
+  const { state, dispatch } = useGlobal()
   const [currDropdown, setCurrDropdown] = React.useState<DropdownType | null>(
     null
   )
@@ -16,7 +17,7 @@ export function Switcher() {
     <div className='switcher'>
       <Dropdown
         current={state.network}
-        options={state.networks}
+        options={state.networks.map(n => ({ value: n, text: n }))}
         isOpen={currDropdown === 'network'}
         onSelect={n => {
           dispatch({ type: 'CHANGE_NETWORK', network: n })
@@ -25,34 +26,36 @@ export function Switcher() {
         onOpen={() =>
           setCurrDropdown(currDropdown === 'network' ? null : 'network')
         }
-      />
-      <Dropdown
-        current={state.wallet}
-        options={state.wallets}
-        isOpen={currDropdown === 'wallet'}
-        onSelect={w => {
-          dispatch({ type: 'CHANGE_WALLET', wallet: w })
+        secondaryText='Config'
+        onClickSecondary={n => {
           setCurrDropdown(null)
+          history.push(`/network`)
         }}
-        onOpen={() =>
-          setCurrDropdown(currDropdown === 'wallet' ? null : 'wallet')
-        }
       />
-      <Dropdown
-        current={truncateMiddle(state.keypair.PublicKey)}
-        options={state.keypairs.map((k: KeyPair) => k.PublicKey)}
-        isOpen={currDropdown === 'keypair'}
-        onSelect={pubkey => {
-          const keypair = state.keypairs.find(
-            (kp: KeyPair) => kp.PublicKey === pubkey
-          )
-          dispatch({ type: 'CHANGE_KEYPAIR', keypair })
-          setCurrDropdown(null)
-        }}
-        onOpen={() =>
-          setCurrDropdown(currDropdown === 'keypair' ? null : 'keypair')
-        }
-      />
+      {state.keypairs?.length ? (
+        <Dropdown
+          current={
+            `${state.wallet} ${state.keypair?.PublicKeyShort}` || 'Select'
+          }
+          options={state.keypairs.map(k => ({
+            value: k.PublicKey,
+            text: k.PublicKeyShort
+          }))}
+          isOpen={currDropdown === 'keypair'}
+          onSelect={pubkey => {
+            const keypair = state.keypairs?.find(
+              (kp: KeyPair) => kp.PublicKey === pubkey
+            )
+            if (keypair) {
+              dispatch({ type: 'CHANGE_KEYPAIR', keypair })
+            }
+            setCurrDropdown(null)
+          }}
+          onOpen={() =>
+            setCurrDropdown(currDropdown === 'keypair' ? null : 'keypair')
+          }
+        />
+      ) : null}
     </div>
   )
 }
@@ -61,13 +64,17 @@ function Dropdown({
   current,
   options,
   isOpen,
+  secondaryText,
   onSelect,
+  onClickSecondary,
   onOpen
 }: {
   current: string
   options: Array<{ value: string; text: string }>
   isOpen: boolean
+  secondaryText?: string
   onSelect: (value: string) => void
+  onClickSecondary?: (value: string) => void
   onOpen: () => void
 }) {
   return (
@@ -84,6 +91,11 @@ function Dropdown({
             <button type='button' onClick={() => onSelect(o.value)}>
               {o.text}
             </button>
+            {secondaryText && onClickSecondary && (
+              <button type='button' onClick={() => onClickSecondary(o.value)}>
+                {secondaryText}
+              </button>
+            )}
           </li>
         ))}
       </ul>

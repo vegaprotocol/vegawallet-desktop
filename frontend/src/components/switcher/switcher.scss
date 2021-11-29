@@ -24,10 +24,17 @@
     top: 100%;
     right: 0;
     background: $dark-gray5;
+    min-width: 200px;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 15px;
+    }
 
     button {
-      min-width: 100px;
       background: transparent;
+      padding: 0;
       border: 0;
       text-align: left;
 

@@ -9,7 +9,7 @@ interface GlobalProviderProps {
 export function GlobalProvider({ children }: GlobalProviderProps) {
   const [state, dispatch] = React.useReducer(globalReducer, initialGlobalState)
   return (
-    <GlobalContext.Provider value={[state, dispatch]}>
+    <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
     </GlobalContext.Provider>
   )

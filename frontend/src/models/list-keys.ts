@@ -5,7 +5,7 @@ export class ListKeysRequest {
 
 export class ListKeysResponse {
   Name: string = ''
-  KeyPairs: KeyPair[] = []
+  KeyPairs: KeyPair[] | null = []
 }
 
 export class KeyPair {

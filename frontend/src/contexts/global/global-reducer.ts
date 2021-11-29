@@ -5,17 +5,25 @@ import { GlobalState, KeyPairExtended } from './global-context'
 export const initialGlobalState: GlobalState = {
   init: false,
   network: 'devnet',
-  networks: ['devnet', 'stagnet', 'fairgrounds', 'mainnet'],
+  networks: ['devnet', 'stagnet', 'fairground', 'mainnet'],
   wallet: '',
   wallets: [],
   keypair: null,
-  keypairs: []
+  keypairs: null
 }
 
 export type GlobalAction =
   | {
       type: 'INIT_APP'
       wallets: string[]
+      keypairs: KeyPair[]
+    }
+  | {
+      type: 'SET_WALLETS'
+      wallets: string[]
+    }
+  | {
+      type: 'SET_KEYPAIRS'
       keypairs: KeyPair[]
     }
   | {
@@ -54,6 +62,27 @@ export function globalReducer(
         init: true
       }
     }
+    case 'SET_WALLETS': {
+      return {
+        ...state,
+        wallets: action.wallets
+      }
+    }
+    case 'SET_KEYPAIRS': {
+      const keypairsExtended = action.keypairs.map(kp => {
+        const nameMeta = kp.Meta.find(m => m.Key === 'name')
+        return {
+          ...kp,
+          Name: nameMeta ? nameMeta.Value : 'No name',
+          PublicKeyShort: truncateMiddle(kp.PublicKey)
+        }
+      })
+      return {
+        ...state,
+        keypairs: keypairsExtended,
+        keypair: keypairsExtended[0]
+      }
+    }
     case 'CHANGE_NETWORK': {
       return {
         ...state,
@@ -63,7 +92,9 @@ export function globalReducer(
     case 'CHANGE_WALLET': {
       return {
         ...state,
-        wallet: action.wallet
+        wallet: action.wallet,
+        keypairs: null,
+        keypair: null
       }
     }
     case 'CHANGE_KEYPAIR': {

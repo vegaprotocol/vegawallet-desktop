@@ -14,14 +14,13 @@ export interface GlobalState {
   wallet: string
   wallets: string[]
   keypair: KeyPairExtended | null
-  keypairs: KeyPairExtended[]
+  keypairs: KeyPairExtended[] | null
 }
 
 export type GlobalDispatch = React.Dispatch<GlobalAction>
 
-type GlobalContextShape = [GlobalState, GlobalDispatch]
+type GlobalContextShape = { state: GlobalState; dispatch: GlobalDispatch }
 
-// @ts-ignore
 export const GlobalContext = React.createContext<
   GlobalContextShape | undefined
 >(undefined)

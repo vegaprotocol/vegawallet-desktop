@@ -2,12 +2,14 @@ import './wallet-list.scss'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
+import { useGlobal } from '../../contexts/global/global-context'
 
-interface WalletListProps {
-  wallets: string[]
-}
+export const WalletList = () => {
+  const {
+    state: { wallets },
+    dispatch
+  } = useGlobal()
 
-export const WalletList = ({ wallets }: WalletListProps) => {
   return (
     <>
       <BulletHeader tag='h1'>Wallets</BulletHeader>
@@ -16,7 +18,11 @@ export const WalletList = ({ wallets }: WalletListProps) => {
           {wallets.map(wallet => (
             <li key={wallet} style={{ marginBottom: 5 }}>
               <span>{wallet}</span>
-              <Link to={`/wallet/${wallet}`}>View</Link>
+              <Link
+                to='/wallet'
+                onClick={() => dispatch({ type: 'CHANGE_WALLET', wallet })}>
+                Select
+              </Link>
             </li>
           ))}
         </ul>

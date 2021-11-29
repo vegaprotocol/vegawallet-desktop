@@ -4,18 +4,15 @@ import { AppRouter } from './routes'
 // See https://wails.app/guides/reactrouter/
 import { HashRouter as Router } from 'react-router-dom'
 import { Chrome } from './components/chrome'
-import { AppLoader } from './components/app-loader'
 import { GlobalProvider } from './contexts/global/global-provider'
 
 function App() {
   return (
     <Router>
       <GlobalProvider>
-        <AppLoader>
-          <Chrome>
-            <AppRouter />
-          </Chrome>
-        </AppLoader>
+        <Chrome>
+          <AppRouter />
+        </Chrome>
       </GlobalProvider>
     </Router>
   )
