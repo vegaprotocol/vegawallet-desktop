@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Vega({ style }: { style: React.CSSProperties }) {
+export function Vega({ style }: { style?: React.CSSProperties }) {
   return (
     <svg className='icon' viewBox='0 0 59 59' style={style}>
       <path d='M32.1811 42.9087H26.818V48.2718H32.1811V42.9087z' />

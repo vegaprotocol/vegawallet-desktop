@@ -1,10 +1,11 @@
+import { truncateMiddle } from '../../lib/truncate-middle'
 import { KeyPair } from '../../models/list-keys'
-import { GlobalState } from './global-context'
+import { GlobalState, KeyPairExtended } from './global-context'
 
 export const initialGlobalState: GlobalState = {
   init: false,
   network: 'devnet',
-  networks: ['devnet', 'stagnet', 'mainnet'],
+  networks: ['devnet', 'stagnet', 'fairgrounds', 'mainnet'],
   wallet: '',
   wallets: [],
   keypair: null,
@@ -27,7 +28,7 @@ export type GlobalAction =
     }
   | {
       type: 'CHANGE_KEYPAIR'
-      keypair: KeyPair
+      keypair: KeyPairExtended
     }
 
 export function globalReducer(
@@ -36,12 +37,20 @@ export function globalReducer(
 ): GlobalState {
   switch (action.type) {
     case 'INIT_APP': {
+      const keypairsExtended = action.keypairs.map(kp => {
+        const nameMeta = kp.Meta.find(m => m.Key === 'name')
+        return {
+          ...kp,
+          Name: nameMeta ? nameMeta.Value : 'No name',
+          PublicKeyShort: truncateMiddle(kp.PublicKey)
+        }
+      })
       return {
         ...state,
         wallet: action.wallets[0],
         wallets: action.wallets,
-        keypairs: action.keypairs,
-        keypair: action.keypairs[0],
+        keypairs: keypairsExtended,
+        keypair: keypairsExtended[0],
         init: true
       }
     }

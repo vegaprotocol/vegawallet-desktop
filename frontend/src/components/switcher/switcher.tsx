@@ -2,6 +2,7 @@ import './switcher.scss'
 import React from 'react'
 import { useGlobal } from '../../contexts/global/global-context'
 import { KeyPair } from '../../models/list-keys'
+import { truncateMiddle } from '../../lib/truncate-middle'
 
 type DropdownType = 'network' | 'wallet' | 'keypair'
 
@@ -38,7 +39,7 @@ export function Switcher() {
         }
       />
       <Dropdown
-        current={state.keypair.PublicKey}
+        current={truncateMiddle(state.keypair.PublicKey)}
         options={state.keypairs.map((k: KeyPair) => k.PublicKey)}
         isOpen={currDropdown === 'keypair'}
         onSelect={pubkey => {
@@ -64,7 +65,7 @@ function Dropdown({
   onOpen
 }: {
   current: string
-  options: Array<string>
+  options: Array<{ value: string; text: string }>
   isOpen: boolean
   onSelect: (value: string) => void
   onOpen: () => void
@@ -79,9 +80,9 @@ function Dropdown({
           display: isOpen ? 'block' : 'none'
         }}>
         {options.map(o => (
-          <li key={o}>
-            <button type='button' onClick={() => onSelect(o)}>
-              {o}
+          <li key={o.value}>
+            <button type='button' onClick={() => onSelect(o.value)}>
+              {o.text}
             </button>
           </li>
         ))}

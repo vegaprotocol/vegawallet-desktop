@@ -2,21 +2,29 @@ import React from 'react'
 import { KeyPair } from '../../models/list-keys'
 import { GlobalAction } from './global-reducer'
 
+export interface KeyPairExtended extends KeyPair {
+  Name: string
+  PublicKeyShort: string
+}
+
 export interface GlobalState {
   init: boolean
   network: string
   networks: string[]
   wallet: string
   wallets: string[]
-  keypair: KeyPair | null
-  keypairs: KeyPair[]
+  keypair: KeyPairExtended | null
+  keypairs: KeyPairExtended[]
 }
 
 export type GlobalDispatch = React.Dispatch<GlobalAction>
 
-// type GlobalContextShape = [GlobalState, GlobalDispatch]
+type GlobalContextShape = [GlobalState, GlobalDispatch]
 
-export const GlobalContext = React.createContext<any | undefined>(undefined)
+// @ts-ignore
+export const GlobalContext = React.createContext<
+  GlobalContextShape | undefined
+>(undefined)
 
 export function useGlobal() {
   const context = React.useContext(GlobalContext)

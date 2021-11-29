@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { AppRouter } from './routes'
 // Wails doesn't support BrowserRouter
 // See https://wails.app/guides/reactrouter/
@@ -14,8 +13,7 @@ function App() {
       <GlobalProvider>
         <AppLoader>
           <Chrome>
-            {/* <AppRouter /> */}
-            <div>App</div>
+            <AppRouter />
           </Chrome>
         </AppLoader>
       </GlobalProvider>
