@@ -1,5 +1,6 @@
 import './network-switcher.scss'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Dropdown } from './dropdown'
 
@@ -31,11 +32,21 @@ export function NetworkSwitcher() {
             {state.networks.map(n => (
               <li
                 key={n}
-                onClick={() => {
-                  dispatch({ type: 'CHANGE_NETWORK', network: n })
-                  setIsOpen(false)
-                }}>
-                {n.toUpperCase()}
+                style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span
+                  onClick={() => {
+                    dispatch({ type: 'CHANGE_NETWORK', network: n })
+                    setIsOpen(false)
+                  }}>
+                  {n.toUpperCase()}
+                </span>
+                <Link
+                  to='network'
+                  onClick={() =>
+                    dispatch({ type: 'CHANGE_NETWORK', network: n })
+                  }>
+                  Config
+                </Link>
               </li>
             ))}
           </ul>
