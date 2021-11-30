@@ -9,7 +9,7 @@ export function NetworkSwitcher() {
     appearance: 'none',
     border: 0,
     background: 'transparent',
-    padding: '0 10px'
+    padding: 0
   }
   return (
     <Dropdown

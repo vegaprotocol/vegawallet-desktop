@@ -13,7 +13,7 @@ export function KeypairSwitcher({ wallet, onSelect }: KeypairSwitcherProps) {
     appearance: 'none',
     border: 0,
     background: 'transparent',
-    padding: '0 10px'
+    padding: 0
   }
   return (
     <Dropdown

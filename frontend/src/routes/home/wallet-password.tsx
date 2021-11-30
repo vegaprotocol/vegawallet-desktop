@@ -61,6 +61,7 @@ export function WalletPassword() {
           errorText={errors.Passphrase?.message}>
           <input
             type='password'
+            autoFocus={true}
             {...register('Passphrase', { required: 'Required' })}
           />
         </FormGroup>
