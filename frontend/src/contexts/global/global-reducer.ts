@@ -65,8 +65,8 @@ export function globalReducer(
             }
           })
           .sort((a, b) => {
-            if (a < b) return 1
-            if (a > b) return -1
+            if (a.name < b.name) return -1
+            if (a.name > b.name) return 1
             return 0
           })
       }
@@ -94,7 +94,11 @@ export function globalReducer(
         wallets: [
           ...state.wallets.filter(w => w.name !== action.wallet),
           newWallet
-        ],
+        ].sort((a, b) => {
+          if (a.name < b.name) return -1
+          if (a.name > b.name) return 1
+          return 0
+        }),
         wallet: newWallet
       }
     }

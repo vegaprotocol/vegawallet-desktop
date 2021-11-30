@@ -49,7 +49,7 @@ function KeypairControls() {
           <ChevronLeft style={{ width: 10, height: 10 }} />
         </button>
       </div>
-      {state.wallet?.keypair && (
+      {state.wallet?.keypair ? (
         <div>
           <CopyToClipboard text={state.wallet.keypair.PublicKey}>
             <button style={buttonStyle}>
@@ -61,8 +61,8 @@ function KeypairControls() {
             </button>
           </CopyToClipboard>
         </div>
-      )}
-      {state.wallet?.keypairs && (
+      ) : null}
+      {state.wallet?.keypairs?.length ? (
         <div style={{ marginLeft: 'auto' }}>
           <Dropdown
             isOpen={isOpen}
@@ -90,7 +90,7 @@ function KeypairControls() {
             }
           />
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

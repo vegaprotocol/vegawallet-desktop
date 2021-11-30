@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ListWallets } from '../../api/service'
 import { useGlobal } from '../../contexts/global/global-context'
+import { BulletHeader } from '../bullet-header'
 
 interface WalletLoaderProps {
   children: React.ReactElement
@@ -29,11 +30,12 @@ export function WalletLoader({ children }: WalletLoaderProps) {
 
   if (!state.wallets.length) {
     return (
-      <div>
+      <>
+        <BulletHeader tag='h1'>Wallets</BulletHeader>
         <p>
           No wallets. <Link to='/import'>Import or create one</Link>
         </p>
-      </div>
+      </>
     )
   }
 
