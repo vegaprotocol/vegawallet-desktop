@@ -1,15 +1,18 @@
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { KeyPair } from '../../models/list-keys'
-import { AppStatus, GlobalState, KeyPairExtended } from './global-context'
+import {
+  AppStatus,
+  GlobalState,
+  KeyPairExtended,
+  Wallet
+} from './global-context'
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   network: 'devnet',
   networks: ['devnet', 'stagnet', 'fairground', 'mainnet'],
-  wallet: '',
-  wallets: [],
-  keypair: null,
-  keypairs: null
+  wallet: null,
+  wallets: []
 }
 
 export type GlobalAction =
@@ -23,6 +26,7 @@ export type GlobalAction =
     }
   | {
       type: 'SET_KEYPAIRS'
+      wallet: string
       keypairs: KeyPair[]
     }
   | {
@@ -53,11 +57,23 @@ export function globalReducer(
       return {
         ...state,
         wallets: action.wallets
+          .map(w => {
+            return {
+              name: w,
+              keypairs: null,
+              keypair: null
+            }
+          })
+          .sort((a, b) => {
+            if (a < b) return 1
+            if (a > b) return -1
+            return 0
+          })
       }
     }
     case 'SET_KEYPAIRS': {
       // Add a 'Name' and 'PublicKeyShort' fields to the keypair object
-      const keypairsExtended = action.keypairs.map(kp => {
+      const keypairsExtended: KeyPairExtended[] = action.keypairs.map(kp => {
         const nameMeta = kp.Meta.find(m => m.Key === 'name')
         return {
           ...kp,
@@ -65,10 +81,21 @@ export function globalReducer(
           PublicKeyShort: truncateMiddle(kp.PublicKey)
         }
       })
-      return {
-        ...state,
+      const currWallet = state.wallets.find(w => w.name === action.wallet)
+      const newWallet: Wallet = {
+        ...currWallet,
+        name: action.wallet,
         keypairs: keypairsExtended,
         keypair: keypairsExtended[0]
+      }
+
+      return {
+        ...state,
+        wallets: [
+          ...state.wallets.filter(w => w.name !== action.wallet),
+          newWallet
+        ],
+        wallet: newWallet
       }
     }
     case 'CHANGE_NETWORK': {
@@ -78,17 +105,34 @@ export function globalReducer(
       }
     }
     case 'CHANGE_WALLET': {
+      const wallet = state.wallets.find(w => w.name === action.wallet)
+
+      if (!wallet) {
+        throw new Error('Wallet not found')
+      }
+
       return {
         ...state,
-        wallet: action.wallet,
-        keypairs: null,
-        keypair: null
+        wallet
       }
     }
     case 'CHANGE_KEYPAIR': {
+      if (!state.wallet) return state
+
+      const keypair = state.wallet.keypairs?.find(
+        kp => kp.PublicKey === action.keypair.PublicKey
+      )
+
+      if (!keypair) {
+        throw new Error('No keypair found')
+      }
+
       return {
         ...state,
-        keypair: action.keypair
+        wallet: {
+          ...state.wallet,
+          keypair
+        }
       }
     }
     default: {

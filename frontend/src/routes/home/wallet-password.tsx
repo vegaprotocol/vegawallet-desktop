@@ -23,12 +23,20 @@ export function WalletPassword() {
   } = useForm<FormFields>()
 
   const onSubmit = async (values: FormFields) => {
+    if (!state.wallet) {
+      throw new Error('No wallet set')
+    }
+
     try {
       const keys = await ListKeys({
-        Name: state.wallet,
+        Name: state.wallet.name,
         Passphrase: values.Passphrase
       })
-      dispatch({ type: 'SET_KEYPAIRS', keypairs: keys.KeyPairs || [] })
+      dispatch({
+        type: 'SET_KEYPAIRS',
+        wallet: state.wallet.name,
+        keypairs: keys.KeyPairs || []
+      })
       history.push('/wallet')
     } catch (err) {
       AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
@@ -39,9 +47,13 @@ export function WalletPassword() {
     return <Redirect to='/' />
   }
 
+  if (state.wallet.keypairs !== null) {
+    return <Redirect to='/wallet' />
+  }
+
   return (
     <>
-      <BulletHeader tag='h1'>{state.wallet}</BulletHeader>
+      <BulletHeader tag='h1'>{state.wallet.name}</BulletHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
           label='* Passphrase'

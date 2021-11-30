@@ -16,11 +16,13 @@ export const WalletList = () => {
       {wallets.length ? (
         <ul className='wallet-list'>
           {wallets.map(wallet => (
-            <li key={wallet} style={{ marginBottom: 10 }}>
-              <span>{wallet}</span>
+            <li key={wallet.name} style={{ marginBottom: 10 }}>
+              <span>{wallet.name}</span>
               <Link
                 to='/wallet'
-                onClick={() => dispatch({ type: 'CHANGE_WALLET', wallet })}>
+                onClick={() =>
+                  dispatch({ type: 'CHANGE_WALLET', wallet: wallet.name })
+                }>
                 Select
               </Link>
             </li>

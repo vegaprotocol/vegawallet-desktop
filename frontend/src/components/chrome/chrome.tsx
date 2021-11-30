@@ -9,6 +9,7 @@ import { Copy } from '../icons/copy'
 import { Kebab } from '../icons/kebab'
 import { ChevronLeft } from '../icons/chevron-left'
 import { Dropdown } from './dropdown'
+import { Colors } from '../../config/colors'
 
 export function Chrome({ children }: { children: React.ReactNode }) {
   return (
@@ -36,58 +37,60 @@ function KeypairControls() {
     padding: '0 10px'
   }
 
-  if (!state.keypair) return null
-
   return (
     <div
       style={{
         display: 'flex',
         padding: '10px 0',
-        borderBottom: '1px solid white'
+        borderBottom: `1px solid ${Colors.DARK_GRAY_5}`
       }}>
       <div>
         <button onClick={() => goBack()} style={buttonStyle}>
           <ChevronLeft style={{ width: 10, height: 10 }} />
         </button>
       </div>
-      <div>
-        <CopyToClipboard text={state.keypair.PublicKey}>
-          <button style={buttonStyle}>
-            {state.keypair?.Name}{' '}
-            <span className='text-muted'>
-              {state.keypair.PublicKeyShort}{' '}
-              <Copy style={{ width: 10, height: 10 }} />
-            </span>
-          </button>
-        </CopyToClipboard>
-      </div>
-      <div style={{ marginLeft: 'auto' }}>
-        <Dropdown
-          isOpen={isOpen}
-          target={
-            <button
-              style={buttonStyle}
-              onClick={() => setIsOpen(curr => !curr)}>
-              <Kebab style={{ width: 15 }} />
+      {state.wallet?.keypair && (
+        <div>
+          <CopyToClipboard text={state.wallet.keypair.PublicKey}>
+            <button style={buttonStyle}>
+              {state.wallet.keypair.Name}{' '}
+              <span className='text-muted'>
+                {state.wallet.keypair.PublicKeyShort}{' '}
+                <Copy style={{ width: 10, height: 10 }} />
+              </span>
             </button>
-          }
-          contents={
-            <ul>
-              {state.keypairs?.map(kp => (
-                <li key={kp.PublicKey}>
-                  <button
-                    onClick={() => {
-                      dispatch({ type: 'CHANGE_KEYPAIR', keypair: kp })
-                    }}
-                    style={buttonStyle}>
-                    {kp.PublicKeyShort}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          }
-        />
-      </div>
+          </CopyToClipboard>
+        </div>
+      )}
+      {state.wallet?.keypairs && (
+        <div style={{ marginLeft: 'auto' }}>
+          <Dropdown
+            isOpen={isOpen}
+            target={
+              <button
+                style={buttonStyle}
+                onClick={() => setIsOpen(curr => !curr)}>
+                <Kebab style={{ width: 15 }} />
+              </button>
+            }
+            contents={
+              <ul>
+                {state.wallet.keypairs?.map(kp => (
+                  <li key={kp.PublicKey}>
+                    <button
+                      onClick={() => {
+                        dispatch({ type: 'CHANGE_KEYPAIR', keypair: kp })
+                      }}
+                      style={buttonStyle}>
+                      {kp.PublicKeyShort}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            }
+          />
+        </div>
+      )}
     </div>
   )
 }

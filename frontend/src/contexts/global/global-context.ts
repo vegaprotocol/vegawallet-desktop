@@ -13,14 +13,18 @@ export interface KeyPairExtended extends KeyPair {
   PublicKeyShort: string
 }
 
+export interface Wallet {
+  name: string
+  keypairs: KeyPairExtended[] | null
+  keypair: KeyPairExtended | null
+}
+
 export interface GlobalState {
   status: AppStatus
   network: string
   networks: string[]
-  wallet: string
-  wallets: string[]
-  keypair: KeyPairExtended | null
-  keypairs: KeyPairExtended[] | null
+  wallets: Wallet[]
+  wallet: Wallet | null
 }
 
 export type GlobalDispatch = React.Dispatch<GlobalAction>
