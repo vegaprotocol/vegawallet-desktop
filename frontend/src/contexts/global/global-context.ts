@@ -2,13 +2,19 @@ import React from 'react'
 import { KeyPair } from '../../models/list-keys'
 import { GlobalAction } from './global-reducer'
 
+export enum AppStatus {
+  Pending,
+  Initialised,
+  Failed
+}
+
 export interface KeyPairExtended extends KeyPair {
   Name: string
   PublicKeyShort: string
 }
 
 export interface GlobalState {
-  init: boolean
+  status: AppStatus
   network: string
   networks: string[]
   wallet: string

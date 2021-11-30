@@ -6,7 +6,7 @@ import { HashRouter as Router } from 'react-router-dom'
 import { Chrome } from './components/chrome'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { IsAppInitialised } from './api/service'
-import { useGlobal } from './contexts/global/global-context'
+import { AppStatus, useGlobal } from './contexts/global/global-context'
 
 function AppLoader({ children }: { children: React.ReactElement }) {
   const { state, dispatch } = useGlobal()
@@ -14,16 +14,20 @@ function AppLoader({ children }: { children: React.ReactElement }) {
   React.useEffect(() => {
     IsAppInitialised()
       .then(res => {
-        dispatch({ type: 'INIT_APP' })
+        dispatch({ type: 'INIT_APP', isInit: res })
       })
       .catch(err => {
         console.log(err)
       })
   }, [])
 
-  if (!state.init) {
+  if (state.status === AppStatus.Pending) {
     // TODO: Replace with loading pixel effect
     return <div>Initializing...</div>
+  }
+
+  if (state.status === AppStatus.Failed) {
+    return <div>Failed to initialize</div>
   }
 
   return children
