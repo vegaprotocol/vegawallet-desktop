@@ -1,6 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import { ListKeys } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
 import { FormGroup } from '../../components/form-group'
@@ -41,9 +41,7 @@ export function WalletPassword() {
 
   return (
     <>
-      <BulletHeader tag='h1'>
-        {state.wallet} / <Link to='/'>Back</Link>
-      </BulletHeader>
+      <BulletHeader tag='h1'>{state.wallet}</BulletHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
           label='* Passphrase'

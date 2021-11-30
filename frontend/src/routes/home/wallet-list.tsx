@@ -16,7 +16,7 @@ export const WalletList = () => {
       {wallets.length ? (
         <ul className='wallet-list'>
           {wallets.map(wallet => (
-            <li key={wallet} style={{ marginBottom: 5 }}>
+            <li key={wallet} style={{ marginBottom: 10 }}>
               <span>{wallet}</span>
               <Link
                 to='/wallet'

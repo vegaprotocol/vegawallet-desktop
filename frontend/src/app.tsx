@@ -19,7 +19,7 @@ function AppLoader({ children }: { children: React.ReactElement }) {
       .catch(err => {
         console.log(err)
       })
-  }, [])
+  }, [dispatch])
 
   if (state.status === AppStatus.Pending) {
     // TODO: Replace with loading pixel effect

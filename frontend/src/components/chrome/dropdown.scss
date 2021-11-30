@@ -1,0 +1,42 @@
+@import '../../styles/colors';
+
+.dropdown {
+  position: relative;
+
+  > button {
+    background: transparent;
+    border: 0;
+    padding: 17px 10px;
+    text-transform: uppercase;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__contents {
+    position: absolute;
+    padding: 15px;
+    top: 100%;
+    right: 0;
+    background: rgba($dark-gray2, 0.8);
+    min-width: 200px;
+
+    // li {
+    //   display: flex;
+    //   justify-content: space-between;
+    //   padding: 10px 15px;
+    // }
+
+    // button {
+    //   background: transparent;
+    //   padding: 0;
+    //   border: 0;
+    //   text-align: left;
+
+    //   &:hover {
+    //     text-decoration: underline;
+    //   }
+    // }
+  }
+}
