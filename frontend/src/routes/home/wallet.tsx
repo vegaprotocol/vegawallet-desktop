@@ -1,7 +1,7 @@
 import React from 'react'
-import CopyToClipboard from 'react-copy-to-clipboard'
 import { Redirect } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
+import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { useGlobal } from '../../contexts/global/global-context'
 
@@ -24,7 +24,7 @@ export function Wallet() {
           {state.wallet.keypairs.map(kp => {
             return (
               <li key={kp.PublicKey} style={{ marginBottom: 10 }}>
-                <CopyToClipboard text={kp.PublicKey}>
+                <CopyWithTooltip text={kp.PublicKey}>
                   <button
                     style={{
                       appearance: 'none',
@@ -38,7 +38,7 @@ export function Wallet() {
                       <Copy style={{ width: 10, height: 10 }} />
                     </span>
                   </button>
-                </CopyToClipboard>
+                </CopyWithTooltip>
               </li>
             )
           })}

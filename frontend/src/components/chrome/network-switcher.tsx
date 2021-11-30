@@ -1,57 +1,50 @@
-import './network-switcher.scss'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useGlobal } from '../../contexts/global/global-context'
-import { Dropdown } from './dropdown'
-
-type DropdownType = 'network' | 'keypair'
+import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
 
 export function NetworkSwitcher() {
   const { state, dispatch } = useGlobal()
-  const [isOpen, setIsOpen] = React.useState(false)
-
+  const buttonStyle: React.CSSProperties = {
+    appearance: 'none',
+    border: 0,
+    background: 'transparent',
+    padding: '0 10px'
+  }
   return (
-    <div className='network-switcher'>
-      <Dropdown
-        isOpen={isOpen}
-        target={
-          <button
-            onClick={() => setIsOpen(curr => !curr)}
-            style={{
-              appearance: 'none',
-              border: 0,
-              background: 'transparent',
-              padding: '7px 10px'
-            }}
-            type='button'>
-            {state.network.toUpperCase()}
-          </button>
-        }
-        contents={
-          <ul className='network-switcher__list'>
-            {state.networks.map(n => (
-              <li
-                key={n}
-                style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span
-                  onClick={() => {
-                    dispatch({ type: 'CHANGE_NETWORK', network: n })
-                    setIsOpen(false)
-                  }}>
-                  {n.toUpperCase()}
-                </span>
-                <Link
-                  to='network'
-                  onClick={() =>
-                    dispatch({ type: 'CHANGE_NETWORK', network: n })
-                  }>
-                  Config
-                </Link>
-              </li>
-            ))}
-          </ul>
-        }
-      />
-    </div>
+    <Dropdown
+      content={
+        <DropdownMenu>
+          {state.networks.map(n => (
+            <DropdownMenuItem key={n}>
+              <button
+                style={buttonStyle}
+                onClick={() => {
+                  dispatch({ type: 'CHANGE_NETWORK', network: n })
+                }}>
+                {n.toUpperCase()}
+              </button>
+              <Link
+                to='network'
+                onClick={() =>
+                  dispatch({ type: 'CHANGE_NETWORK', network: n })
+                }>
+                Config
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenu>
+      }>
+      <button
+        style={{
+          appearance: 'none',
+          border: 0,
+          background: 'transparent',
+          padding: '7px 10px'
+        }}
+        type='button'>
+        {state.network.toUpperCase()}
+      </button>
+    </Dropdown>
   )
 }
