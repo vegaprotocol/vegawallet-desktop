@@ -1,8 +1,9 @@
 import React from 'react'
+import { style as defaultStyle } from './style'
 
 export function Copy({ style }: { style?: React.CSSProperties }) {
   return (
-    <svg className='icon' viewBox='0 0 11 11' style={style}>
+    <svg viewBox='0 0 11 11' style={{ ...defaultStyle, ...style }}>
       <path
         fillRule='evenodd'
         clipRule='evenodd'

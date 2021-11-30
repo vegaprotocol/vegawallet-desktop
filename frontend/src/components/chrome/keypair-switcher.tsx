@@ -1,5 +1,6 @@
 import React from 'react'
 import { KeyPairExtended, Wallet } from '../../contexts/global/global-context'
+import { ButtonUnstyled } from '../button-unstyled'
 import { Kebab } from '../icons/kebab'
 import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
 
@@ -9,29 +10,23 @@ interface KeypairSwitcherProps {
 }
 
 export function KeypairSwitcher({ wallet, onSelect }: KeypairSwitcherProps) {
-  const buttonStyle: React.CSSProperties = {
-    appearance: 'none',
-    border: 0,
-    background: 'transparent',
-    padding: 0
-  }
   return (
     <Dropdown
       content={
         <DropdownMenu>
           {wallet.keypairs?.map(kp => (
             <DropdownMenuItem key={kp.PublicKey}>
-              <button onClick={() => onSelect(kp)} style={buttonStyle}>
+              <ButtonUnstyled onClick={() => onSelect(kp)}>
                 {kp.Name}{' '}
                 <span className='text-muted'>{kp.PublicKeyShort}</span>
-              </button>
+              </ButtonUnstyled>
             </DropdownMenuItem>
           ))}
         </DropdownMenu>
       }>
-      <button style={buttonStyle}>
+      <ButtonUnstyled>
         <Kebab style={{ width: 15 }} />
-      </button>
+      </ButtonUnstyled>
     </Dropdown>
   )
 }

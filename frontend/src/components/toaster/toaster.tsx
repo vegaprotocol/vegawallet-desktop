@@ -1,4 +1,3 @@
-import './toaster.scss'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Toast } from './toast'
@@ -18,6 +17,14 @@ export class Toaster extends React.Component<any, ToasterState> {
   public static create() {
     const container = document.createElement('div')
     container.className = 'toaster-container'
+    container.style.display = 'flex'
+    container.style.alignItems = 'center'
+    container.style.flexFlow = 'column nowrap'
+    container.style.top = '0'
+    container.style.right = '0'
+    container.style.left = '0'
+    container.style.pointerEvents = 'none'
+    container.style.position = 'absolute'
     document.body.appendChild(container)
     // @ts-ignore
     const toaster = ReactDOM.render(<Toaster />, container) as Toaster

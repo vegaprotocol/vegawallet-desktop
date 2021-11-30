@@ -1,8 +1,9 @@
 import React from 'react'
+import { style as defaultStyle } from './style'
 
 export function Vega({ style }: { style?: React.CSSProperties }) {
   return (
-    <svg className='icon' viewBox='0 0 59 59' style={style}>
+    <svg viewBox='0 0 59 59' style={{ ...defaultStyle, ...style }}>
       <path d='M32.1811 42.9087H26.818V48.2718H32.1811V42.9087z' />
       <path d='M37.5452 37.5457H32.1821V42.9088H37.5452V37.5457z' />
       <path d='M48.2721 32.1826H42.9091V37.5457H48.2721V32.1826z' />

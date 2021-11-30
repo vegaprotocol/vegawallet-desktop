@@ -22,7 +22,6 @@ export const Toast = ({
 
   return (
     <div
-      className='toast'
       role='alert'
       style={{
         padding: '10px 20px',
@@ -30,7 +29,10 @@ export const Toast = ({
         color: 'white',
         minWidth: 200,
         marginTop: 20,
-        borderRadius: 2
+        borderRadius: 2,
+        animation: 'drop 0.3s ease',
+        animationFillMode: 'forwards',
+        transform: 'translateY(-100%)'
       }}>
       {message}
     </div>

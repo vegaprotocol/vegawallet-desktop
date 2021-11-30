@@ -1,4 +1,3 @@
-import './wallet-creator.scss'
 import React from 'react'
 import { CreateWallet } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
@@ -10,6 +9,7 @@ import {
   CreateWalletResponse
 } from '../../models/create-wallet'
 import { Link } from 'react-router-dom'
+import { Styles } from './styles'
 
 interface FormFields {
   vegaHome: string
@@ -69,7 +69,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
         Here is your mnemonic phrase. Please take note of the words below as you
         will need these to restore your wallet!
       </p>
-      <pre className='wallet-creator__mnemonic'>{response.Mnemonic}</pre>
+      <pre style={Styles.mnemonic}>{response.Mnemonic}</pre>
       <Link to='/'>
         <button>View wallets</button>
       </Link>

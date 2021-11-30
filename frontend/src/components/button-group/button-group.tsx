@@ -6,5 +6,16 @@ interface ButtonGroupProps {
 }
 
 export function ButtonGroup({ children }: ButtonGroupProps) {
-  return <div className='button-group'>{children}</div>
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 10
+      }}
+      className='button-group'>
+      {children}
+    </div>
+  )
 }

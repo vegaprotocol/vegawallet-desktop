@@ -6,6 +6,7 @@ import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { Link } from 'react-router-dom'
 import { LoadWalletsResponse } from '../../models/load-wallets'
+import { Styles } from './styles'
 
 enum FormState {
   Default,
@@ -55,7 +56,7 @@ export function ImportPath() {
   return formState === FormState.Success && response ? (
     <>
       <p>Wallets successfully loaded from:</p>
-      <pre className='wallet-creator__mnemonic'>{response.WalletsPath}</pre>
+      <pre style={Styles.mnemonic}>{response.WalletsPath}</pre>
       <Link to='/'>
         <button>View wallets</button>
       </Link>

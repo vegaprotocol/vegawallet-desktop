@@ -1,29 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useGlobal } from '../../contexts/global/global-context'
+import { ButtonUnstyled } from '../button-unstyled'
 import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
 
 export function NetworkSwitcher() {
   const { state, dispatch } = useGlobal()
-  const buttonStyle: React.CSSProperties = {
-    appearance: 'none',
-    border: 0,
-    background: 'transparent',
-    padding: 0
-  }
   return (
     <Dropdown
       content={
         <DropdownMenu>
           {state.networks.map(n => (
             <DropdownMenuItem key={n}>
-              <button
-                style={buttonStyle}
+              <ButtonUnstyled
                 onClick={() => {
                   dispatch({ type: 'CHANGE_NETWORK', network: n })
                 }}>
                 {n.toUpperCase()}
-              </button>
+              </ButtonUnstyled>
               <Link
                 to='network'
                 onClick={() =>
@@ -35,16 +29,7 @@ export function NetworkSwitcher() {
           ))}
         </DropdownMenu>
       }>
-      <button
-        style={{
-          appearance: 'none',
-          border: 0,
-          background: 'transparent',
-          padding: '7px 10px'
-        }}
-        type='button'>
-        {state.network.toUpperCase()}
-      </button>
+      <ButtonUnstyled>{state.network.toUpperCase()}</ButtonUnstyled>
     </Dropdown>
   )
 }

@@ -1,4 +1,3 @@
-import './form-group.scss'
 import React from 'react'
 import { Colors } from '../../config/colors'
 
@@ -14,11 +13,17 @@ export const FormGroup = ({
   errorText?: string
 }) => {
   return (
-    <div className='form-group'>
-      {label && <label htmlFor={labelFor}>{label}</label>}
+    <div style={{ marginBottom: 20 }}>
+      {label && (
+        <label
+          htmlFor={labelFor}
+          style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>
+          {label}
+        </label>
+      )}
       <div>{children}</div>
       {errorText && (
-        <div className='form-group__error' style={{ color: Colors.RED }}>
+        <div style={{ fontSize: 14, marginTop: 8, color: Colors.RED }}>
           {errorText}
         </div>
       )}

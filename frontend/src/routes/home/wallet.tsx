@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
+import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -26,18 +27,12 @@ export function Wallet() {
               <li key={kp.PublicKey} style={{ marginBottom: 10 }}>
                 <Link to={`/wallet/${kp.PublicKey}`}>{kp.Name}</Link>{' '}
                 <CopyWithTooltip text={kp.PublicKey}>
-                  <button
-                    style={{
-                      appearance: 'none',
-                      border: 0,
-                      background: 'transparent',
-                      padding: 0
-                    }}>
+                  <ButtonUnstyled>
                     <span className='text-muted'>
                       {kp.PublicKeyShort}{' '}
                       <Copy style={{ width: 10, height: 10 }} />
                     </span>
-                  </button>
+                  </ButtonUnstyled>
                 </CopyWithTooltip>
               </li>
             )
