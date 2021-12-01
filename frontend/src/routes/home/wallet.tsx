@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
+import { GenerateKey } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
@@ -7,7 +8,30 @@ import { Copy } from '../../components/icons/copy'
 import { useGlobal } from '../../contexts/global/global-context'
 
 export function Wallet() {
-  const { state } = useGlobal()
+  const { state, dispatch } = useGlobal()
+
+  async function generateKeypair() {
+    if (!state.wallet?.name) {
+      throw new Error('No wallet set')
+    }
+
+    try {
+      console.log('gen key for', state.wallet?.name)
+      const res = await GenerateKey({
+        wallet: state.wallet.name,
+        passphrase: '123',
+        metadata: []
+      })
+      console.log(res)
+      dispatch({
+        type: 'ADD_KEYPAIR',
+        wallet: state.wallet.name,
+        keypair: res.key
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   if (!state.wallets.length) {
     return <Redirect to='/' />
@@ -21,7 +45,7 @@ export function Wallet() {
     <>
       <BulletHeader tag='h1'>{state.wallet.name}</BulletHeader>
       {state.wallet.keypairs.length ? (
-        <ul>
+        <ul style={{ marginBottom: 15 }}>
           {state.wallet.keypairs.map(kp => {
             return (
               <li key={kp.publicKey} style={{ marginBottom: 10 }}>
@@ -29,7 +53,7 @@ export function Wallet() {
                 <CopyWithTooltip text={kp.publicKey}>
                   <ButtonUnstyled>
                     <span className='text-muted'>
-                      {kp.PublicKeyShort}{' '}
+                      {kp.publicKeyShort}{' '}
                       <Copy style={{ width: 10, height: 10 }} />
                     </span>
                   </ButtonUnstyled>
@@ -38,9 +62,12 @@ export function Wallet() {
             )
           })}
         </ul>
-      ) : (
-        <p>No keypairs in this wallet</p>
-      )}
+      ) : null}
+      <p>
+        <button onClick={generateKeypair} type='button'>
+          Generate Keypair
+        </button>
+      </p>
     </>
   )
 }

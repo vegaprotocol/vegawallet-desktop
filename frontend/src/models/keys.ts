@@ -1,61 +1,60 @@
 export class GenerateKeyRequest {
-  Wallet: string = ''
-  Metadata: Meta[] | null = []
-  Passphrase: string = ''
+  wallet: string = ''
+  metadata: Meta[] | null = []
+  passphrase: string = ''
 }
 
 export class GenerateKeyResponse {
-  Wallet: Wallet = new Wallet()
-  Key: Key = new Key()
+  wallet: Wallet = new Wallet()
+  key: Key = new Key()
 }
 
 export class Wallet {
-  Name: string = ''
-  Version: number = 0
-  FilePath: string = ''
-  Mnemonic: string = ''
+  name: string = ''
+  version: number = 0
+  filePath: string = ''
+  mnemonic: string = ''
 }
 
 export class Key {
-  PublicKey: string = ''
-  IsTainted: boolean = false
-  Meta: Meta[] | null = []
-  Algorithm: Algorithm = new Algorithm()
+  publicKey: string = ''
+  meta: Meta[] | null = []
+  algorithm: Algorithm = new Algorithm()
 }
 
 export class AnnotateKeyRequest {
-  Wallet: string = ''
-  PubKey: string = ''
-  Metadata: Meta[] | null = []
-  Passphrase: string = ''
+  wallet: string = ''
+  pubKey: string = ''
+  metadata: Meta[] | null = []
+  passphrase: string = ''
 }
 
 export class TaintKeyRequest {
-  Wallet: string = ''
-  Passphrase: string = ''
-  PubKey: string = ''
+  wallet: string = ''
+  passphrase: string = ''
+  pubKey: string = ''
 }
 
 export class UntaintKeyRequest {
-  Wallet: string = ''
-  Passphrase: string = ''
-  PubKey: string = ''
+  wallet: string = ''
+  passphrase: string = ''
+  pubKey: string = ''
 }
 
 export class IsolateKeyRequest {
-  Wallet: string = ''
-  PubKey: string = ''
-  Passphrase: string = ''
+  wallet: string = ''
+  pubKey: string = ''
+  passphrase: string = ''
 }
 
 export class IsolateKeyResponse {
-  Wallet: string = ''
-  FilePath: string = ''
+  wallet: string = ''
+  filePath: string = ''
 }
 
 export class ListKeysRequest {
-  Wallet: string = ''
-  Passphrase: string = ''
+  wallet: string = ''
+  passphrase: string = ''
 }
 
 export class ListKeysResponse {
@@ -68,24 +67,24 @@ export class NamedKeyPair {
 }
 
 export class DescribeKeyRequest {
-  Wallet: string = ''
-  Passphrase: string = ''
-  PubKey: string = ''
+  wallet: string = ''
+  passphrase: string = ''
+  pubKey: string = ''
 }
 
 export class DescribeKeyResponse {
-  PublicKey: string = ''
-  IsTainted: boolean = false
-  Meta: Meta[] | null = []
-  Algorithm: Algorithm = new Algorithm()
+  publicKey: string = ''
+  isTainted: boolean = false
+  meta: Meta[] | null = []
+  algorithm: Algorithm = new Algorithm()
 }
 
 export class Algorithm {
-  Version: number = 0
-  Name: string = ''
+  version: number = 0
+  name: string = ''
 }
 
 export class Meta {
-  Key: string = ''
-  Value: string = ''
+  key: string = ''
+  value: string = ''
 }

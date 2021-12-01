@@ -29,8 +29,8 @@ export function WalletPassword() {
 
     try {
       const keys = await ListKeys({
-        Wallet: state.wallet.name,
-        Passphrase: values.Passphrase
+        wallet: state.wallet.name,
+        passphrase: values.Passphrase
       })
       dispatch({
         type: 'SET_KEYPAIRS',

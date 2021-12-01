@@ -1,5 +1,5 @@
 import { truncateMiddle } from '../../lib/truncate-middle'
-import { NamedKeyPair } from '../../models/keys'
+import { Key, NamedKeyPair } from '../../models/keys'
 import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
 
 export const initialGlobalState: GlobalState = {
@@ -25,6 +25,11 @@ export type GlobalAction =
       type: 'SET_KEYPAIRS'
       wallet: string
       keypairs: NamedKeyPair[]
+    }
+  | {
+      type: 'ADD_KEYPAIR'
+      wallet: string
+      keypair: Key
     }
   | {
       type: 'CHANGE_NETWORK'
@@ -85,7 +90,7 @@ export function globalReducer(
       const keypairsExtended: KeyPair[] = action.keypairs.map(kp => {
         return {
           ...kp,
-          PublicKeyShort: truncateMiddle(kp.publicKey)
+          publicKeyShort: truncateMiddle(kp.publicKey)
         }
       })
       const currWallet = state.wallets.find(w => w.name === action.wallet)
@@ -107,6 +112,35 @@ export function globalReducer(
           return 0
         }),
         wallet: newWallet
+      }
+    }
+    case 'ADD_KEYPAIR': {
+      const wallets = state.wallets.filter(w => w.name !== action.wallet)
+      const currWallet = state.wallets.find(w => w.name === action.wallet)
+
+      if (!currWallet) {
+        throw new Error('Wallet not found')
+      }
+
+      const nameMeta = action.keypair.meta?.find(m => m.key === 'name')
+
+      const newKeypair: KeyPair = {
+        ...action.keypair,
+        name: nameMeta ? nameMeta.value : 'No name',
+        publicKeyShort: truncateMiddle(action.keypair.publicKey)
+      }
+      const updatedWallet: Wallet = {
+        ...currWallet,
+        keypairs: [...(currWallet?.keypairs || []), newKeypair]
+      }
+      return {
+        ...state,
+        wallets: [...wallets, updatedWallet].sort((a, b) => {
+          if (a.name < b.name) return -1
+          if (a.name > b.name) return 1
+          return 0
+        }),
+        wallet: updatedWallet
       }
     }
     case 'CHANGE_NETWORK': {

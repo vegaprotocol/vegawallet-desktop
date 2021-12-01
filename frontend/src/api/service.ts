@@ -6,18 +6,28 @@ import type {
 } from '../models/create-wallet'
 import type { ImportWalletRequest } from '../models/import-wallet'
 import { ImportWalletResponse } from '../models/import-wallet'
-import type { ListKeysRequest, ListKeysResponse } from '../models/keys'
+import type {
+  GenerateKeyRequest,
+  ListKeysRequest,
+  ListKeysResponse
+} from '../models/keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
 import type { LoadWalletsRequest } from '../models/load-wallets'
 import { LoadWalletsResponse } from '../models/load-wallets'
 import { StartConsoleRequest } from '../models/start-console'
-import {DescribeKeyResponse, GenerateKeyResponse, IsolateKeyResponse} from "../models/keys";
+import {
+  DescribeKeyResponse,
+  GenerateKeyResponse,
+  IsolateKeyResponse
+} from '../models/keys'
 
 /**
  * Generate a new key on a given wallet. If the wallet doesn't exist, it's
  * created.
  */
-export function GenerateKey(request: string): Promise<GenerateKeyResponse> {
+export function GenerateKey(
+  request: GenerateKeyRequest
+): Promise<GenerateKeyResponse> {
   return window.backend.Handler.GenerateKey(JSON.stringify(request))
 }
 

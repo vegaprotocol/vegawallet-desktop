@@ -5,7 +5,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { Colors } from '../../config/colors'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 import { Copy } from '../icons/copy'
-import { KeypairSwitcher } from './keypair-switcher'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Drawer } from '@blueprintjs/core'
 
@@ -64,7 +63,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
 }
 
 function KeypairControls() {
-  const { state, dispatch } = useGlobal()
+  const { state } = useGlobal()
 
   return (
     <div>
@@ -74,7 +73,7 @@ function KeypairControls() {
             <ButtonUnstyled>
               {state.wallet.keypair.name}{' '}
               <span className='text-muted'>
-                {state.wallet.keypair.PublicKeyShort}{' '}
+                {state.wallet.keypair.publicKeyShort}{' '}
                 <Copy style={{ width: 10, height: 10 }} />
               </span>
             </ButtonUnstyled>

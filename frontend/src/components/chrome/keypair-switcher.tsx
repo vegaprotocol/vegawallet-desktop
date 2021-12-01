@@ -18,7 +18,7 @@ export function KeypairSwitcher({ wallet, onSelect }: KeypairSwitcherProps) {
             <DropdownMenuItem key={kp.publicKey}>
               <ButtonUnstyled onClick={() => onSelect(kp)}>
                 {kp.name}{' '}
-                <span className='text-muted'>{kp.PublicKeyShort}</span>
+                <span className='text-muted'>{kp.publicKeyShort}</span>
               </ButtonUnstyled>
             </DropdownMenuItem>
           ))}

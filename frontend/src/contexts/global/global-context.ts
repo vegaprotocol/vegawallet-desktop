@@ -9,7 +9,7 @@ export enum AppStatus {
 }
 
 export interface KeyPair extends NamedKeyPair {
-  PublicKeyShort: string
+  publicKeyShort: string
 }
 
 export interface Wallet {
