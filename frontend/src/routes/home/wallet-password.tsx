@@ -35,7 +35,7 @@ export function WalletPassword() {
       dispatch({
         type: 'SET_KEYPAIRS',
         wallet: state.wallet.name,
-        keypairs: keys.Keys || []
+        keypairs: keys.keys || []
       })
       history.push('/wallet')
     } catch (err) {

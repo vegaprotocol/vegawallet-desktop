@@ -26,7 +26,7 @@ export const Toast = ({
       style={{
         padding: '10px 20px',
         background: color,
-        color: 'white',
+        color: 'black',
         minWidth: 200,
         marginTop: 20,
         borderRadius: 2,

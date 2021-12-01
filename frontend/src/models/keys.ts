@@ -59,12 +59,12 @@ export class ListKeysRequest {
 }
 
 export class ListKeysResponse {
-  Keys: NamedKeyPair[] | null = []
+  keys: NamedKeyPair[] | null = []
 }
 
 export class NamedKeyPair {
-  Name: string = ''
-  PublicKey: string = ''
+  name: string = ''
+  publicKey: string = ''
 }
 
 export class DescribeKeyRequest {

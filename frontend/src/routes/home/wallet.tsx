@@ -24,9 +24,9 @@ export function Wallet() {
         <ul>
           {state.wallet.keypairs.map(kp => {
             return (
-              <li key={kp.PublicKey} style={{ marginBottom: 10 }}>
-                <Link to={`/wallet/${kp.PublicKey}`}>{kp.Name}</Link>{' '}
-                <CopyWithTooltip text={kp.PublicKey}>
+              <li key={kp.publicKey} style={{ marginBottom: 10 }}>
+                <Link to={`/wallet/${kp.publicKey}`}>{kp.name}</Link>{' '}
+                <CopyWithTooltip text={kp.publicKey}>
                   <ButtonUnstyled>
                     <span className='text-muted'>
                       {kp.PublicKeyShort}{' '}

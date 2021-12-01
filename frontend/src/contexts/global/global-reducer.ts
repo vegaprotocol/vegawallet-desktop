@@ -1,5 +1,5 @@
 import { truncateMiddle } from '../../lib/truncate-middle'
-import { Key, NamedKeyPair } from '../../models/keys'
+import { NamedKeyPair } from '../../models/keys'
 import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
 
 export const initialGlobalState: GlobalState = {
@@ -85,7 +85,7 @@ export function globalReducer(
       const keypairsExtended: KeyPair[] = action.keypairs.map(kp => {
         return {
           ...kp,
-          PublicKeyShort: truncateMiddle(kp.PublicKey)
+          PublicKeyShort: truncateMiddle(kp.publicKey)
         }
       })
       const currWallet = state.wallets.find(w => w.name === action.wallet)
@@ -131,7 +131,7 @@ export function globalReducer(
       if (!state.wallet) return state
 
       const keypair = state.wallet.keypairs?.find(
-        kp => kp.PublicKey === action.keypair.PublicKey
+        kp => kp.publicKey === action.keypair.publicKey
       )
 
       if (!keypair) {

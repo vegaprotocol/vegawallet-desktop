@@ -1,6 +1,6 @@
 import React from 'react'
 import { NetworkSwitcher } from './network-switcher'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Colors } from '../../config/colors'
 import { CopyWithTooltip } from '../copy-with-tooltip'
@@ -67,20 +67,12 @@ function KeypairControls() {
   const { state, dispatch } = useGlobal()
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        padding: '10px 0',
-        gap: 10,
-        borderBottom: `1px solid ${Colors.DARK_GRAY_5}`,
-        minHeight: 45
-      }}>
+    <div>
       {state.wallet?.keypair ? (
         <div>
-          <CopyWithTooltip text={state.wallet.keypair.PublicKey}>
+          <CopyWithTooltip text={state.wallet.keypair.publicKey}>
             <ButtonUnstyled>
-              {state.wallet.keypair.Name}{' '}
+              {state.wallet.keypair.name}{' '}
               <span className='text-muted'>
                 {state.wallet.keypair.PublicKeyShort}{' '}
                 <Copy style={{ width: 10, height: 10 }} />
@@ -89,14 +81,14 @@ function KeypairControls() {
           </CopyWithTooltip>
         </div>
       ) : null}
-      {state.wallet?.keypairs?.length ? (
+      {/* {state.wallet?.keypairs?.length ? (
         <div style={{ marginLeft: 'auto' }}>
           <KeypairSwitcher
             wallet={state.wallet}
             onSelect={kp => dispatch({ type: 'CHANGE_KEYPAIR', keypair: kp })}
           />
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   )
 }
