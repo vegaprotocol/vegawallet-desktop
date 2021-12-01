@@ -5,6 +5,8 @@ import { BulletHeader } from '../../components/bullet-header'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
+import { AppToaster } from '../../components/toaster'
+import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 
 export function Wallet() {
@@ -27,7 +29,7 @@ export function Wallet() {
         keypair: res.key
       })
     } catch (err) {
-      console.log(err)
+      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
     }
   }
 

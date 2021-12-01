@@ -44,18 +44,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             background: Colors.DARK_GRAY_2,
             padding: 15
           }}>
-          <nav>
-            <Link
-              to='/import'
-              onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}>
-              Import or create wallet
-            </Link>
-            <Link
-              to='/'
-              onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}>
-              Wallets
-            </Link>
-          </nav>
+          <Menu />
         </div>
       </Drawer>
     </div>
@@ -88,6 +77,52 @@ function KeypairControls() {
           />
         </div>
       ) : null} */}
+    </div>
+  )
+}
+
+function Menu() {
+  return (
+    <nav>
+      <AppLink to='/'>Wallets</AppLink>
+      <AppLink to='/import'>Add / Import Wallet</AppLink>
+      <ExternalLink href='https://docs.vega.xyz'>Docs</ExternalLink>
+      <ExternalLink href='https://github.com/vegaprotocol'>Github</ExternalLink>
+    </nav>
+  )
+}
+
+interface NavLinkProps {
+  children: React.ReactNode
+  to: string
+}
+
+function AppLink({ children, to }: NavLinkProps) {
+  const { dispatch } = useGlobal()
+  return (
+    <div>
+      <Link
+        to={to}
+        style={{ display: 'block', padding: 10 }}
+        onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}>
+        {children}
+      </Link>
+    </div>
+  )
+}
+
+interface ExternalLinkProps {
+  children: React.ReactNode
+  href: string
+}
+
+function ExternalLink({ children, href }: ExternalLinkProps) {
+  const { dispatch } = useGlobal()
+  return (
+    <div>
+      <a href={href} style={{ display: 'block', padding: 10 }}>
+        {children}
+      </a>
     </div>
   )
 }
