@@ -6,7 +6,8 @@ import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { Link } from 'react-router-dom'
 import { LoadWalletsResponse } from '../../models/load-wallets'
-import { Styles } from './styles'
+import { CodeBlock } from '../../components/code-block'
+import { BulletHeader } from '../../components/bullet-header'
 
 enum FormState {
   Default,
@@ -16,7 +17,7 @@ enum FormState {
 }
 
 interface FormFields {
-  vegaHome: string
+  path: string
 }
 
 export function ImportPath() {
@@ -34,7 +35,7 @@ export function ImportPath() {
     setFormState(FormState.Pending)
     try {
       const resp = await LoadWallets({
-        VegaHome: values.vegaHome
+        VegaHome: values.path
       })
       if (resp) {
         AppToaster.show({
@@ -55,21 +56,26 @@ export function ImportPath() {
 
   return formState === FormState.Success && response ? (
     <>
-      <p>Wallets successfully loaded from:</p>
-      <pre style={Styles.mnemonic}>{response.WalletsPath}</pre>
+      <BulletHeader tag='h1'>Wallets successfully imported</BulletHeader>
+      <p>
+        <CodeBlock>{response.WalletsPath}</CodeBlock>
+      </p>
       <Link to='/'>
         <button>View wallets</button>
       </Link>
     </>
   ) : (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup
-        label='Vega home (leave blank for defaults)'
-        labelFor='vegaHome'
-        errorText={errors.vegaHome?.message}>
-        <input type='text' {...register('vegaHome')} />
-      </FormGroup>
-      <button type='submit'>Submit</button>
-    </form>
+    <>
+      <BulletHeader tag='h1'>Import wallet</BulletHeader>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormGroup
+          label='Path to wallet'
+          labelFor='path'
+          errorText={errors.path?.message}>
+          <input type='text' {...register('path')} />
+        </FormGroup>
+        <button type='submit'>Submit</button>
+      </form>
+    </>
   )
 }

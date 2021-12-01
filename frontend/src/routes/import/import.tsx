@@ -9,31 +9,27 @@ export function Import() {
   const match = useRouteMatch()
 
   return (
-    <>
-      <ImportSelect />
-      <div style={{ marginTop: 20 }}>
-        <Switch>
-          <Route path={`${match.path}/create`}>
-            <WalletCreator
-              request={{ VegaHome: '', Name: '', Passphrase: '' }}
-            />
-          </Route>
-          <Route path={`${match.path}/path`}>
-            <ImportPath />
-          </Route>
-          <Route path={`${match.path}/mnemonic`}>
-            <ImportMnemonic
-              request={{
-                VegaHome: '',
-                Name: '',
-                Passphrase: '',
-                Mnemonic: '',
-                Version: 2
-              }}
-            />
-          </Route>
-        </Switch>
-      </div>
-    </>
+    <Switch>
+      <Route path={`${match.path}/create`}>
+        <WalletCreator request={{ VegaHome: '', Name: '', Passphrase: '' }} />
+      </Route>
+      <Route path={`${match.path}/path`}>
+        <ImportPath />
+      </Route>
+      <Route path={`${match.path}/mnemonic`}>
+        <ImportMnemonic
+          request={{
+            VegaHome: '',
+            Name: '',
+            Passphrase: '',
+            Mnemonic: '',
+            Version: 2
+          }}
+        />
+      </Route>
+      <Route path={match.path} exact>
+        <ImportSelect />
+      </Route>
+    </Switch>
   )
 }

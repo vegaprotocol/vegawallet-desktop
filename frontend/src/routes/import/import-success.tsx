@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Styles } from './styles'
+import { BulletHeader } from '../../components/bullet-header'
+import { CodeBlock } from '../../components/code-block'
 
 export interface ImportSuccessProps {
   walletPath: string
@@ -9,8 +10,10 @@ export interface ImportSuccessProps {
 export function ImportSuccess({ walletPath }: ImportSuccessProps) {
   return (
     <>
-      <p>Wallet successfully imported at:</p>
-      <pre style={Styles.mnemonic}>{walletPath}</pre>
+      <BulletHeader tag='h1'>Wallet successfully imported at:</BulletHeader>
+      <p>
+        <CodeBlock>{walletPath}</CodeBlock>
+      </p>
       <Link to='/'>
         <button>Go to wallets</button>
       </Link>

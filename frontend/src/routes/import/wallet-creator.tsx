@@ -9,7 +9,9 @@ import {
   CreateWalletResponse
 } from '../../models/create-wallet'
 import { Link } from 'react-router-dom'
-import { Styles } from './styles'
+import { BulletHeader } from '../../components/bullet-header'
+import { CodeBlock } from '../../components/code-block'
+import { useGlobal } from '../../contexts/global/global-context'
 
 interface FormFields {
   vegaHome: string
@@ -23,6 +25,7 @@ export interface WalletCreatorProps {
 }
 
 export const WalletCreator = ({ request }: WalletCreatorProps) => {
+  const { dispatch } = useGlobal()
   const [advancedOpen, setAdvancedOpen] = React.useState(false)
   const [response, setResponse] = React.useState<CreateWalletResponse | null>(
     null
@@ -55,6 +58,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
           message: 'Wallet created!',
           color: Colors.GREEN
         })
+        dispatch({ type: 'ADD_WALLET', wallet: values.name })
       } else {
         AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
       }
@@ -65,66 +69,76 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
 
   return response ? (
     <>
+      <BulletHeader tag='h1'>Wallet created</BulletHeader>
       <p>
         Here is your mnemonic phrase. Please take note of the words below as you
         will need these to restore your wallet!
       </p>
-      <pre style={Styles.mnemonic}>{response.Mnemonic}</pre>
+      <p>
+        <CodeBlock>{response.Mnemonic}</CodeBlock>
+      </p>
       <Link to='/'>
         <button>View wallets</button>
       </Link>
     </>
   ) : (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup
-        label='* Name'
-        labelFor='name'
-        errorText={errors.name?.message}>
-        <input type='text' {...register('name', { required: 'Required' })} />
-      </FormGroup>
-      <FormGroup
-        label='* Passphrase'
-        labelFor='passphrase'
-        errorText={errors.passphrase?.message}>
-        <input
-          type='password'
-          {...register('passphrase', { required: 'Required' })}
-        />
-      </FormGroup>
-      <FormGroup
-        label='* Confirm passphrase'
-        labelFor='confirmPassphrase'
-        errorText={errors.confirmPassphrase?.message}>
-        <input
-          type='password'
-          {...register('confirmPassphrase', {
-            required: 'Required',
-            pattern: {
-              message: 'Password does not match',
-              value: new RegExp(`^${passphrase}$`)
-            }
-          })}
-        />
-      </FormGroup>
-      <FormGroup>
-        <button
-          type='button'
-          onClick={() => setAdvancedOpen(x => !x)}
-          className='link'>
-          {advancedOpen ? 'Hide advanced options' : 'Show advanced options'}
-        </button>
-      </FormGroup>
-      {advancedOpen && (
+    <>
+      <BulletHeader tag='h1'>Create wallet</BulletHeader>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
-          label='Vega home (leave blank for defaults)'
-          labelFor='vegaHome'
-          errorText={errors.vegaHome?.message}>
-          <input type='text' {...register('vegaHome')} />
+          label='* Name'
+          labelFor='name'
+          errorText={errors.name?.message}>
+          <input
+            type='text'
+            {...register('name', { required: 'Required' })}
+            autoComplete='off'
+          />
         </FormGroup>
-      )}
-      <div>
-        <button type='submit'>Submit</button>
-      </div>
-    </form>
+        <FormGroup
+          label='* Passphrase'
+          labelFor='passphrase'
+          errorText={errors.passphrase?.message}>
+          <input
+            type='password'
+            {...register('passphrase', { required: 'Required' })}
+          />
+        </FormGroup>
+        <FormGroup
+          label='* Confirm passphrase'
+          labelFor='confirmPassphrase'
+          errorText={errors.confirmPassphrase?.message}>
+          <input
+            type='password'
+            {...register('confirmPassphrase', {
+              required: 'Required',
+              pattern: {
+                message: 'Password does not match',
+                value: new RegExp(`^${passphrase}$`)
+              }
+            })}
+          />
+        </FormGroup>
+        <FormGroup>
+          <button
+            type='button'
+            onClick={() => setAdvancedOpen(x => !x)}
+            className='link'>
+            {advancedOpen ? 'Hide advanced options' : 'Show advanced options'}
+          </button>
+        </FormGroup>
+        {advancedOpen && (
+          <FormGroup
+            label='Vega home (leave blank for defaults)'
+            labelFor='vegaHome'
+            errorText={errors.vegaHome?.message}>
+            <input type='text' {...register('vegaHome')} />
+          </FormGroup>
+        )}
+        <div>
+          <button type='submit'>Submit</button>
+        </div>
+      </form>
+    </>
   )
 }

@@ -12,9 +12,6 @@ export const WalletList = () => {
   return (
     <>
       <BulletHeader tag='h1'>Wallets</BulletHeader>
-      <p>
-        <Link to='/import'>Create/Import Wallet</Link>
-      </p>
       {wallets.length ? (
         <ul className='wallet-list'>
           {wallets.map(wallet => (
@@ -23,7 +20,6 @@ export const WalletList = () => {
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                textTransform: 'uppercase',
                 alignItems: 'center',
                 marginBottom: 10
               }}>

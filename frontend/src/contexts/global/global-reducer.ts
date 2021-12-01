@@ -12,17 +12,19 @@ export const initialGlobalState: GlobalState = {
   network: 'devnet',
   networks: ['devnet', 'stagnet', 'fairground', 'mainnet'],
   wallet: null,
-  wallets: []
+  wallets: [],
+  drawerOpen: false
 }
 
 export type GlobalAction =
   | {
       type: 'INIT_APP'
       isInit: boolean
+      wallets: string[]
     }
   | {
-      type: 'SET_WALLETS'
-      wallets: string[]
+      type: 'ADD_WALLET'
+      wallet: string
     }
   | {
       type: 'SET_KEYPAIRS'
@@ -41,6 +43,10 @@ export type GlobalAction =
       type: 'CHANGE_KEYPAIR'
       keypair: KeyPairExtended
     }
+  | {
+      type: 'SET_DRAWER'
+      open: boolean
+    }
 
 export function globalReducer(
   state: GlobalState,
@@ -50,12 +56,7 @@ export function globalReducer(
     case 'INIT_APP': {
       return {
         ...state,
-        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed
-      }
-    }
-    case 'SET_WALLETS': {
-      return {
-        ...state,
+        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
         wallets: action.wallets
           .map(w => {
             return {
@@ -69,6 +70,19 @@ export function globalReducer(
             if (a.name > b.name) return 1
             return 0
           })
+      }
+    }
+    case 'ADD_WALLET': {
+      return {
+        ...state,
+        wallets: [
+          ...state.wallets,
+          { name: action.wallet, keypairs: null, keypair: null }
+        ].sort((a, b) => {
+          if (a.name < b.name) return -1
+          if (a.name > b.name) return 1
+          return 0
+        })
       }
     }
     case 'SET_KEYPAIRS': {
@@ -137,6 +151,12 @@ export function globalReducer(
           ...state.wallet,
           keypair
         }
+      }
+    }
+    case 'SET_DRAWER': {
+      return {
+        ...state,
+        drawerOpen: action.open
       }
     }
     default: {

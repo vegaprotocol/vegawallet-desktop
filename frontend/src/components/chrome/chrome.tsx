@@ -1,16 +1,16 @@
 import React from 'react'
 import { NetworkSwitcher } from './network-switcher'
-import { Vega } from '../icons'
 import { Link, useHistory } from 'react-router-dom'
 import { useGlobal } from '../../contexts/global/global-context'
-import { ChevronLeft } from '../icons/chevron-left'
 import { Colors } from '../../config/colors'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 import { Copy } from '../icons/copy'
 import { KeypairSwitcher } from './keypair-switcher'
 import { ButtonUnstyled } from '../button-unstyled'
+import { Drawer } from '@blueprintjs/core'
 
 export function Chrome({ children }: { children: React.ReactNode }) {
+  const { state, dispatch } = useGlobal()
   return (
     <div style={{ margin: '0 auto', maxWidth: 600, padding: '0 15px 15px' }}>
       <div
@@ -21,19 +21,49 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           minHeight: 45,
           borderBottom: `1px solid ${Colors.DARK_GRAY_5}`
         }}>
-        <Link to='/'>
-          <Vega style={{ width: 30, height: 30 }} />
-        </Link>
+        <ButtonUnstyled
+          onClick={() =>
+            dispatch({ type: 'SET_DRAWER', open: !state.drawerOpen })
+          }>
+          Menu
+        </ButtonUnstyled>
+        <KeypairControls />
         <NetworkSwitcher />
       </div>
-      <KeypairControls />
       <main style={{ marginTop: 35 }}>{children}</main>
+      <Drawer
+        isOpen={state.drawerOpen}
+        transitionDuration={0}
+        onClose={() => dispatch({ type: 'SET_DRAWER', open: false })}>
+        <div
+          style={{
+            position: 'fixed',
+            top: 45,
+            left: 0,
+            width: '80vw',
+            height: '100vh',
+            background: Colors.DARK_GRAY_2,
+            padding: 15
+          }}>
+          <nav>
+            <Link
+              to='/import'
+              onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}>
+              Import or create wallet
+            </Link>
+            <Link
+              to='/'
+              onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}>
+              Wallets
+            </Link>
+          </nav>
+        </div>
+      </Drawer>
     </div>
   )
 }
 
 function KeypairControls() {
-  const { goBack } = useHistory()
   const { state, dispatch } = useGlobal()
 
   return (
@@ -46,13 +76,6 @@ function KeypairControls() {
         borderBottom: `1px solid ${Colors.DARK_GRAY_5}`,
         minHeight: 45
       }}>
-      <div>
-        <ButtonUnstyled onClick={() => goBack()}>
-          <ChevronLeft
-            style={{ width: 15, height: 15, position: 'relative', top: 2 }}
-          />
-        </ButtonUnstyled>
-      </div>
       {state.wallet?.keypair ? (
         <div>
           <CopyWithTooltip text={state.wallet.keypair.PublicKey}>
