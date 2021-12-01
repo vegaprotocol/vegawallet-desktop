@@ -16,7 +16,7 @@ func (r LoadWalletsRequest) Check() error {
 	if len(r.VegaHome) > 0 && !strings.HasPrefix(r.VegaHome, "/") {
 		return errors.New("vega home should be an absolute path")
 	}
-	
+
 	return nil
 }
 
