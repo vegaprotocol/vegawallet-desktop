@@ -29,13 +29,13 @@ export function WalletPassword() {
 
     try {
       const keys = await ListKeys({
-        Name: state.wallet.name,
+        Wallet: state.wallet.name,
         Passphrase: values.Passphrase
       })
       dispatch({
         type: 'SET_KEYPAIRS',
         wallet: state.wallet.name,
-        keypairs: keys.KeyPairs || []
+        keypairs: keys.Keys || []
       })
       history.push('/wallet')
     } catch (err) {

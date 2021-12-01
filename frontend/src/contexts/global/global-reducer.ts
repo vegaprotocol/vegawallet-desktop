@@ -1,5 +1,5 @@
 import { truncateMiddle } from '../../lib/truncate-middle'
-import { KeyPair } from '../../models/list-keys'
+import {Key, KeyPair} from '../../models/keys'
 import {
   AppStatus,
   GlobalState,
@@ -29,7 +29,7 @@ export type GlobalAction =
   | {
       type: 'SET_KEYPAIRS'
       wallet: string
-      keypairs: KeyPair[]
+      keypairs: Key[]
     }
   | {
       type: 'CHANGE_NETWORK'

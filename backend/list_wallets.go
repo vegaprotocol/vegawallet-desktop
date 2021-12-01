@@ -1,30 +1,20 @@
 package backend
 
-type ListWalletsResponse struct {
-	Wallets []string
-}
+import "code.vegaprotocol.io/vegawallet/wallet"
 
-func (s *Handler) ListWallets() (ListWalletsResponse, error) {
+func (s *Handler) ListWallets() (*wallet.ListWalletsResponse, error) {
 	s.log.Debug("Entering ListWallets")
 	defer s.log.Debug("Leaving ListWallets")
 
 	config, err := s.loadAppConfig()
 	if err != nil {
-		return ListWalletsResponse{}, err
+		return nil, err
 	}
 
 	wStore, err := s.getWalletsStore(config)
 	if err != nil {
-		return ListWalletsResponse{}, err
+		return nil, err
 	}
 
-	wallets, err := wStore.ListWallets()
-	if err != nil {
-		s.log.Errorf("Couldn't list wallets: %v", err)
-		return ListWalletsResponse{}, err
-	}
-
-	return ListWalletsResponse{
-		Wallets: wallets,
-	}, nil
+	return wallet.ListWallets(wStore)
 }

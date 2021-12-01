@@ -6,11 +6,56 @@ import type {
 } from '../models/create-wallet'
 import type { ImportWalletRequest } from '../models/import-wallet'
 import { ImportWalletResponse } from '../models/import-wallet'
-import type { ListKeysRequest, ListKeysResponse } from '../models/list-keys'
+import type { ListKeysRequest, ListKeysResponse } from '../models/keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
 import type { LoadWalletsRequest } from '../models/load-wallets'
 import { LoadWalletsResponse } from '../models/load-wallets'
 import { StartConsoleRequest } from '../models/start-console'
+import {DescribeKeyResponse, GenerateKeyResponse, IsolateKeyResponse} from "../models/keys";
+
+/**
+ * Generate a new key on a given wallet. If the wallet doesn't exist, it's
+ * created.
+ */
+export function GenerateKey(request: string): Promise<GenerateKeyResponse> {
+  return window.backend.Handler.GenerateKey(JSON.stringify(request))
+}
+
+/**
+ * Get all information of given key (no private key)
+ */
+export function DescribeKey(request: string): Promise<DescribeKeyResponse> {
+  return window.backend.Handler.DescribeKey(JSON.stringify(request))
+}
+
+/**
+ * Add metadata to a key pair.
+ */
+export function AnnotateKey(request: string): Promise<void> {
+  return window.backend.Handler.AnnotateKey(JSON.stringify(request))
+}
+
+/**
+ * Mark a key pair as unsafe to use.
+ */
+export function TaintKey(request: string): Promise<void> {
+  return window.backend.Handler.TaintKey(JSON.stringify(request))
+}
+
+/**
+ * Remove the taint of a key pair.
+ */
+export function UntaintKey(request: string): Promise<void> {
+  return window.backend.Handler.UntaintKey(JSON.stringify(request))
+}
+
+/**
+ * Isolate the given key pair in a wallet stripped form its generation mechanism
+ * and siblings.
+ */
+export function IsolateKey(request: string): Promise<IsolateKeyResponse> {
+  return window.backend.Handler.IsolateKey(JSON.stringify(request))
+}
 
 /**
  * Lists all key pairs for a given wallet. Requires your wallet name and passphrase
@@ -47,7 +92,8 @@ export function LoadWallets(
 }
 
 /**
- * TODO: Find out what this does exactly
+ * Verify the application has a configuration file initialised with a defined
+ * Vega home.
  */
 export function IsAppInitialised(): Promise<boolean> {
   return window.backend.Handler.IsAppInitialised()
