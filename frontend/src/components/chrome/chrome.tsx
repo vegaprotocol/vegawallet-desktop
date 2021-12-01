@@ -6,7 +6,8 @@ import { Colors } from '../../config/colors'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 import { Copy } from '../icons/copy'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Drawer } from '@blueprintjs/core'
+import { Drawer, Position } from '@blueprintjs/core'
+import { Links } from '../../config/links'
 
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state, dispatch } = useGlobal()
@@ -32,17 +33,13 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       <main style={{ marginTop: 35 }}>{children}</main>
       <Drawer
         isOpen={state.drawerOpen}
-        transitionDuration={0}
+        position={Position.LEFT}
         onClose={() => dispatch({ type: 'SET_DRAWER', open: false })}>
         <div
           style={{
-            position: 'fixed',
-            top: 45,
-            left: 0,
-            width: '80vw',
-            height: '100vh',
             background: Colors.DARK_GRAY_2,
-            padding: 15
+            padding: 15,
+            height: '100vh'
           }}>
           <Menu />
         </div>
@@ -86,8 +83,8 @@ function Menu() {
     <nav>
       <AppLink to='/'>Wallets</AppLink>
       <AppLink to='/import'>Add / Import Wallet</AppLink>
-      <ExternalLink href='https://docs.vega.xyz'>Docs</ExternalLink>
-      <ExternalLink href='https://github.com/vegaprotocol'>Github</ExternalLink>
+      <ExternalLink href={Links.DOCS}>Docs</ExternalLink>
+      <ExternalLink href={Links.GITHUB}>Github</ExternalLink>
     </nav>
   )
 }
@@ -117,7 +114,6 @@ interface ExternalLinkProps {
 }
 
 function ExternalLink({ children, href }: ExternalLinkProps) {
-  const { dispatch } = useGlobal()
   return (
     <div>
       <a href={href} style={{ display: 'block', padding: 10 }}>
