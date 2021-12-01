@@ -30,29 +30,6 @@ export function WalletKeyPair() {
               <BreakText>{keypair.PublicKey}</BreakText>
             </td>
           </tr>
-          <tr>
-            {/* TODO: request password to reveal private key */}
-            <th>Private key</th>
-            <td>
-              <BreakText>{keypair.PrivateKey}</BreakText>
-            </td>
-          </tr>
-          <tr>
-            <th>Tainted</th>
-            <td>{keypair.IsTainted}</td>
-          </tr>
-          <tr>
-            <th>Algorithm name</th>
-            <td>{keypair.AlgorithmName}</td>
-          </tr>
-          <tr>
-            <th>Algorithm version</th>
-            <td>{keypair.AlgorithmVersion}</td>
-          </tr>
-          <tr>
-            <th>Meta data</th>
-            <td>{JSON.stringify(keypair.Meta)}</td>
-          </tr>
         </tbody>
       </table>
     </>

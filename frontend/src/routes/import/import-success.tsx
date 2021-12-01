@@ -10,7 +10,7 @@ export interface ImportSuccessProps {
 export function ImportSuccess({ walletPath }: ImportSuccessProps) {
   return (
     <>
-      <BulletHeader tag='h1'>Wallet successfully imported at:</BulletHeader>
+      <BulletHeader tag='h1'>Wallet successfully imported</BulletHeader>
       <p>
         <CodeBlock>{walletPath}</CodeBlock>
       </p>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeyPair } from '../../models/keys'
+import { NamedKeyPair } from '../../models/keys'
 import { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
@@ -8,15 +8,14 @@ export enum AppStatus {
   Failed
 }
 
-export interface KeyPairExtended extends KeyPair {
-  Name: string
+export interface KeyPair extends NamedKeyPair {
   PublicKeyShort: string
 }
 
 export interface Wallet {
   name: string
-  keypairs: KeyPairExtended[] | null
-  keypair: KeyPairExtended | null
+  keypairs: KeyPair[] | null
+  keypair: KeyPair | null
 }
 
 export interface GlobalState {

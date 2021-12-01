@@ -1,12 +1,12 @@
 import React from 'react'
-import { KeyPairExtended, Wallet } from '../../contexts/global/global-context'
+import { KeyPair, Wallet } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Kebab } from '../icons/kebab'
 import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
 
 interface KeypairSwitcherProps {
   wallet: Wallet
-  onSelect: (kp: KeyPairExtended) => void
+  onSelect: (kp: KeyPair) => void
 }
 
 export function KeypairSwitcher({ wallet, onSelect }: KeypairSwitcherProps) {

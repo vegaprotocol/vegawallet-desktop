@@ -21,7 +21,7 @@ function AppLoader({ children }: { children: React.ReactElement }) {
         // App initialised check what wallets are available
         if (isInit) {
           const wallets = await ListWallets()
-          dispatch({ type: 'INIT_APP', isInit: true, wallets: wallets.Wallets })
+          dispatch({ type: 'INIT_APP', isInit: true, wallets: wallets.wallets })
         } else {
           dispatch({ type: 'INIT_APP', isInit: false, wallets: [] })
         }
