@@ -16,13 +16,11 @@ export function Wallet() {
     }
 
     try {
-      console.log('gen key for', state.wallet?.name)
       const res = await GenerateKey({
         wallet: state.wallet.name,
-        passphrase: '123',
-        metadata: []
+        passphrase: state.passphrase,
+        metadata: [] // just rely on default naming for now
       })
-      console.log(res)
       dispatch({
         type: 'ADD_KEYPAIR',
         wallet: state.wallet.name,

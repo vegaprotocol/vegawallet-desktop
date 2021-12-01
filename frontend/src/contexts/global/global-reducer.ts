@@ -8,6 +8,7 @@ export const initialGlobalState: GlobalState = {
   networks: ['devnet', 'stagnet', 'fairground', 'mainnet'],
   wallet: null,
   wallets: [],
+  passphrase: '',
   drawerOpen: false
 }
 
@@ -25,6 +26,7 @@ export type GlobalAction =
       type: 'SET_KEYPAIRS'
       wallet: string
       keypairs: NamedKeyPair[]
+      passphrase: string
     }
   | {
       type: 'ADD_KEYPAIR'
@@ -111,7 +113,8 @@ export function globalReducer(
           if (a.name > b.name) return 1
           return 0
         }),
-        wallet: newWallet
+        wallet: newWallet,
+        passphrase: action.passphrase
       }
     }
     case 'ADD_KEYPAIR': {
