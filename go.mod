@@ -4,14 +4,14 @@ go 1.17
 
 require (
 	code.vegaprotocol.io/shared v0.0.0-20211015074835-9ed837d93090
-	code.vegaprotocol.io/vegawallet v0.10.1-0.20211130122703-894792de2086
+	code.vegaprotocol.io/vegawallet v0.10.1-0.20211201165331-1cb8560c9d78
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/wailsapp/wails v1.16.8
 	go.uber.org/zap v1.13.0
 )
 
 require (
-	code.vegaprotocol.io/protos v0.46.1-0.20211124140330-6f1ee8ac737e // indirect
+	code.vegaprotocol.io/protos v0.46.1-0.20211201150331-b536716fea70 // indirect
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/Masterminds/semver v1.4.2 // indirect
 	github.com/abadojack/whatlanggo v1.0.1 // indirect

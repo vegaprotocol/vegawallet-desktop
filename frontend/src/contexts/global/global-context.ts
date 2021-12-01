@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeyPair } from '../../models/list-keys'
+import { KeyPair } from '../../models/keys'
 import { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
