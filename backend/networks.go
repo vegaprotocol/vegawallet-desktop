@@ -35,6 +35,23 @@ func (s *Handler) GetNetworkConfig(name string) (*network.Network, error) {
 	return cfg, nil
 }
 
+func (s *Handler) ListNetworks() (*network.ListNetworksResponse, error) {
+	s.log.Debug("Entering ListNetworks")
+	defer s.log.Debug("Leaving ListNetworks")
+
+	c, err := s.loadAppConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	st, err := s.getNetworksStore(c)
+	if err != nil {
+		return nil, err
+	}
+
+	return network.ListNetworks(st)
+}
+
 func (s *Handler) SaveNetworkConfig(jsonConfig string) (bool, error) {
 	s.log.Debug("Entering SaveNetworkConfig")
 	defer s.log.Debug("Leaving SaveNetworkConfig")

@@ -1,4 +1,4 @@
-export class GetConsoleStateResponse {
-  URL: string = ''
+export class GetServiceStateResponse {
+  ConsoleURL: string = ''
   Running: boolean = false
 }

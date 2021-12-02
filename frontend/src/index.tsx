@@ -19,8 +19,7 @@ TODO:
 - Unmarshal request json for import by mnemonic
 - Check config editing
 - Tests
-- Show 
-- Flip console button when started
+- Footer showing version and service running
 */
 
 Wails.Init(() => {

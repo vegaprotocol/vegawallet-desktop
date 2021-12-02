@@ -1,19 +1,19 @@
 import React from 'react'
-import { GetConsoleState, StartConsole, StopConsole } from '../../api/service'
+import { GetServiceState, StartService, StopService } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
-import { GetConsoleStateResponse } from '../../models/console-state'
+import { GetServiceStateResponse } from '../../models/console-state'
 
 export function Console() {
   const { state } = useGlobal()
-  const [status, setStatus] = React.useState<GetConsoleStateResponse | null>(
+  const [status, setStatus] = React.useState<GetServiceStateResponse | null>(
     null
   )
 
   React.useEffect(() => {
     async function run() {
-      const status = await GetConsoleState()
+      const status = await GetServiceState()
       setStatus(status)
     }
     run()
@@ -25,9 +25,13 @@ export function Console() {
       return
     }
     try {
-      const res = await StartConsole({ Network: state.network })
+      // TODO: Move this to use response of StartService. Currently the promise never resolves
       // @ts-ignore
-      setStatus(curr => ({ ...curr, Running: res }))
+      setStatus(curr => ({ ...curr, Running: true }))
+      await StartService({
+        network: state.network,
+        withConsole: true
+      })
     } catch (err) {
       console.error(err)
     }
@@ -35,7 +39,7 @@ export function Console() {
 
   async function stop() {
     try {
-      await StopConsole()
+      await StopService()
       // @ts-ignore
       setStatus(curr => ({ ...curr, Running: false }))
     } catch (err) {

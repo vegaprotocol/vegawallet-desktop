@@ -23,25 +23,26 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type consoleState struct {
-	URL          string
+type serviceState struct {
+	consoleURL   string
 	shutdownFunc func()
 }
 
-func (s *consoleState) IsRunning() bool {
+func (s *serviceState) IsRunning() bool {
 	return s.shutdownFunc != nil
 }
 
-func (s *consoleState) Shutdown() {
+func (s *serviceState) Shutdown() {
 	s.shutdownFunc()
 	s.shutdownFunc = nil
 }
 
-type StartConsoleRequest struct {
-	Network string
+type StartServiceRequest struct {
+	Network     string
+	WithConsole bool
 }
 
-func (r StartConsoleRequest) Check() error {
+func (r StartServiceRequest) Check() error {
 	if len(r.Network) == 0 {
 		return errors.New("network is required")
 	}
@@ -49,16 +50,16 @@ func (r StartConsoleRequest) Check() error {
 	return nil
 }
 
-func (s *Handler) StartConsole(data string) (bool, error) {
-	s.log.Debug("Entering StartConsole")
-	defer s.log.Debug("Leaving StartConsole")
+func (s *Handler) StartService(data string) (bool, error) {
+	s.log.Debug("Entering StartService")
+	defer s.log.Debug("Leaving StartService")
 
-	if s.console.IsRunning() {
+	if s.service.IsRunning() {
 		s.log.Error("A console already started")
 		return false, ErrConsoleAlreadyRunning
 	}
 
-	req := &StartConsoleRequest{}
+	req := &StartServiceRequest{}
 	err := json.Unmarshal([]byte(data), req)
 	if err != nil {
 		s.log.Errorf("Couldn't unmarshall request: %v", err)
@@ -112,6 +113,7 @@ func (s *Handler) StartConsole(data string) (bool, error) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+	s.service.shutdownFunc = cancel
 
 	svcStore, err := svcstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
@@ -137,12 +139,6 @@ func (s *Handler) StartConsole(data string) (bool, error) {
 		return false, err
 	}
 
-	cs := console.NewConsole(
-		cfg.Console.LocalPort,
-		cfg.Console.URL,
-		cfg.API.GRPC.Hosts[0],
-	)
-
 	go func() {
 		defer cancel()
 		s.log.Info("Starting the service")
@@ -151,30 +147,41 @@ func (s *Handler) StartConsole(data string) (bool, error) {
 		}
 	}()
 
-	go func() {
-		defer cancel()
-		s.log.Info("Starting the console")
-		if err := cs.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			s.log.Errorf("Error while starting the console proxy: %v", err)
+	var cs *console.Console
+	if req.WithConsole {
+		cons := console.NewConsole(
+			cfg.Console.LocalPort,
+			cfg.Console.URL,
+			cfg.API.GRPC.Hosts[0],
+		)
+		cs = cons
+
+		go func() {
+			defer cancel()
+			s.log.Info("Starting the console")
+			if err := cs.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+				s.log.Errorf("Error while starting the console proxy: %v", err)
+			}
+		}()
+
+		s.service.consoleURL = cs.GetBrowserURL()
+
+		s.log.Infof("Opening the console at %s", cs.GetBrowserURL())
+
+		if err = open.Run(cs.GetBrowserURL()); err != nil {
+			s.log.Errorf("Unable to open the console in the default browser: %v", err)
+			return false, fmt.Errorf("unable to open the console in the default browser: %w", err)
 		}
-	}()
-
-	s.console.URL = cs.GetBrowserURL()
-	s.console.shutdownFunc = cancel
-
-	s.log.Infof("Opening the console at %s", cs.GetBrowserURL())
-
-	if err = open.Run(cs.GetBrowserURL()); err != nil {
-		s.log.Errorf("Unable to open the console in the default browser: %v", err)
-		return false, fmt.Errorf("unable to open the console in the default browser: %w", err)
 	}
 
 	s.waitSignal(ctx, cancel)
 
-	if err = cs.Stop(); err != nil {
-		s.log.Errorf("Error while stopping console proxy: %v", err)
-	} else {
-		s.log.Info("Console proxy stopped with success")
+	if req.WithConsole {
+		if err = cs.Stop(); err != nil {
+			s.log.Errorf("Error while stopping console proxy: %v", err)
+		} else {
+			s.log.Info("Console proxy stopped with success")
+		}
 	}
 
 	if err = srv.Stop(); err != nil {
@@ -186,32 +193,32 @@ func (s *Handler) StartConsole(data string) (bool, error) {
 	return true, nil
 }
 
-type GetConsoleStateResponse struct {
+type GetServiceStateResponse struct {
 	URL     string
 	Running bool
 }
 
-func (s *Handler) GetConsoleState() GetConsoleStateResponse {
-	s.log.Debug("Entering GetConsoleState")
-	defer s.log.Debug("Leaving GetConsoleState")
+func (s *Handler) GetServiceState() GetServiceStateResponse {
+	s.log.Debug("Entering GetServiceState")
+	defer s.log.Debug("Leaving GetServiceState")
 
-	return GetConsoleStateResponse{
-		URL:     s.console.URL,
-		Running: s.console.IsRunning(),
+	return GetServiceStateResponse{
+		URL:     s.service.consoleURL,
+		Running: s.service.IsRunning(),
 	}
 }
 
-func (s *Handler) StopConsole() (bool, error) {
-	s.log.Debug("Entering StopConsole")
-	defer s.log.Debug("Leaving StopConsole")
+func (s *Handler) StopService() (bool, error) {
+	s.log.Debug("Entering StopService")
+	defer s.log.Debug("Leaving StopService")
 
-	if !s.console.IsRunning() {
-		s.log.Error("No console running")
+	if !s.service.IsRunning() {
+		s.log.Error("No service running")
 		return false, ErrConsoleNotRunning
 	}
 
-	s.log.Info("Shutting down the console")
-	s.console.Shutdown()
+	s.log.Info("Shutting down the service")
+	s.service.Shutdown()
 
 	return true, nil
 }

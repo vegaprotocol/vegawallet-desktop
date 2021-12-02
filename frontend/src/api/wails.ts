@@ -1,5 +1,6 @@
 import type {Network} from '../models/network'
-import type {GetConsoleStateResponse} from '../models/console-state'
+import {ListNetworksResponse} from "../models/network";
+import type {GetServiceStateResponse} from '../models/console-state'
 import type {ListKeysResponse} from '../models/keys'
 import {DescribeKeyResponse, GenerateKeyResponse, IsolateKeyResponse} from "../models/keys";
 import type {ListWalletsResponse} from '../models/list-wallets'
@@ -34,13 +35,15 @@ interface Handler {
 
   GetNetworkConfig(name: string): Promise<Network>
 
+  ListNetworks(): Promise<ListNetworksResponse>
+
   SaveNetworkConfig(jsonConfig: string): Promise<boolean>
 
-  StartConsole(request: string): Promise<boolean>
+  StartService(request: string): Promise<boolean>
 
-  GetConsoleState(): Promise<GetConsoleStateResponse>
+  GetServiceState(): Promise<GetServiceStateResponse>
 
-  StopConsole(): Promise<boolean>
+  StopService(): Promise<boolean>
 }
 
 interface Backend {

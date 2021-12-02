@@ -1,3 +1,4 @@
-export class StartConsoleRequest {
-  Network: string = ''
+export class StartServiceRequest {
+  network: string = ''
+  withConsole: boolean = false
 }
