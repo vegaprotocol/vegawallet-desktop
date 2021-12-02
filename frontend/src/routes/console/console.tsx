@@ -20,7 +20,7 @@ export function Console() {
   async function start() {
     try {
       // TODO: figure out why this isn't working
-      const res = await StartConsole({ Network: 'foo' })
+      const res = await StartConsole({ Network: state.network })
     } catch (err) {
       console.error(err)
     }
@@ -47,7 +47,7 @@ export function Console() {
       }}>
       {status?.Running ? (
         <button onClick={stop} type='button'>
-          Start Console
+          Stop Console
         </button>
       ) : (
         <button onClick={start} type='button'>
