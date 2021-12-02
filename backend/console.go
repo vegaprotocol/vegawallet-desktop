@@ -140,7 +140,7 @@ func (s *Handler) StartConsole(data string) (bool, error) {
 	cs := console.NewConsole(
 		cfg.Console.LocalPort,
 		cfg.Console.URL,
-		cfg.Nodes.Hosts[0],
+		cfg.API.GRPC.Hosts[0],
 	)
 
 	go func() {
