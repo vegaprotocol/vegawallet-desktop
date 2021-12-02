@@ -8,6 +8,8 @@ import { Copy } from '../icons/copy'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
+import * as Wails from '@wailsapp/runtime'
+import { ExternalLink } from '../external-link'
 
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state, dispatch } = useGlobal()
@@ -91,8 +93,8 @@ function Menu() {
         <AppLink to='/import'>Add / Import Wallet</AppLink>
       </nav>
       <nav style={{ marginTop: 15 }}>
-        <ExternalLink href={Links.DOCS}>Docs</ExternalLink>
-        <ExternalLink href={Links.GITHUB}>Github</ExternalLink>
+        <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>
+        <NavExternalLink href={Links.GITHUB}>Github</NavExternalLink>
       </nav>
     </div>
   )
@@ -122,12 +124,12 @@ interface ExternalLinkProps {
   href: string
 }
 
-function ExternalLink({ children, href }: ExternalLinkProps) {
+function NavExternalLink({ children, href }: ExternalLinkProps) {
   return (
     <div>
-      <a href={href} style={{ display: 'block', padding: '10px 0' }}>
+      <ExternalLink href={href} style={{ display: 'block', padding: '10px 0' }}>
         {children}
-      </a>
+      </ExternalLink>
     </div>
   )
 }
