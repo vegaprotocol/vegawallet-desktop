@@ -26,7 +26,7 @@ type Handler struct {
 	configLoader     *config.Loader
 	isAppInitialised bool
 
-	console *consoleState
+	service *serviceState
 }
 
 func (s *Handler) WailsInit(runtime *wails.Runtime) error {
@@ -48,7 +48,7 @@ func (s *Handler) WailsInit(runtime *wails.Runtime) error {
 		return err
 	}
 
-	s.console = &consoleState{}
+	s.service = &serviceState{}
 
 	return nil
 }
@@ -57,9 +57,9 @@ func (s *Handler) WailsShutdown() {
 	s.log.Debug("Entering WailsShutdown")
 	defer s.log.Debug("Leaving WailsShutdown")
 
-	if s.console.IsRunning() {
+	if s.service.IsRunning() {
 		s.log.Info("Shutting down the console")
-		s.console.Shutdown()
+		s.service.Shutdown()
 	}
 }
 

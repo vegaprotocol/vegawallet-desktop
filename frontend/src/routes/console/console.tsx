@@ -1,17 +1,17 @@
 import React from 'react'
-import { GetConsoleState, StartConsole, StopConsole } from '../../api/service'
+import { GetServiceState, StartService, StopService } from '../../api/service'
 import { useGlobal } from '../../contexts/global/global-context'
-import { GetConsoleStateResponse } from '../../models/console-state'
+import { GetServiceStateResponse } from '../../models/console-state'
 
 export function Console() {
   const { state } = useGlobal()
-  const [status, setStatus] = React.useState<GetConsoleStateResponse | null>(
+  const [status, setStatus] = React.useState<GetServiceStateResponse | null>(
     null
   )
 
   React.useEffect(() => {
     async function run() {
-      const status = await GetConsoleState()
+      const status = await GetServiceState()
       setStatus(status)
     }
     run()
@@ -19,8 +19,7 @@ export function Console() {
 
   async function start() {
     try {
-      // TODO: figure out why this isn't working
-      const res = await StartConsole({ Network: state.network })
+      const res = await StartService({ Network: state.network })
     } catch (err) {
       console.error(err)
     }
@@ -28,7 +27,7 @@ export function Console() {
 
   async function stop() {
     try {
-      await StopConsole()
+      await StopService()
     } catch (err) {
       console.error(err)
     }

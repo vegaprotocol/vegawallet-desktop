@@ -1,5 +1,5 @@
 import type { Network } from '../models/network'
-import type { GetConsoleStateResponse } from '../models/console-state'
+import type { GetServiceStateResponse } from '../models/console-state'
 import type {
   CreateWalletRequest,
   CreateWalletResponse
@@ -14,7 +14,7 @@ import type {
 import type { ListWalletsResponse } from '../models/list-wallets'
 import type { LoadWalletsRequest } from '../models/load-wallets'
 import { LoadWalletsResponse } from '../models/load-wallets'
-import { StartConsoleRequest } from '../models/start-console'
+import { StartServiceRequest } from '../models/start-console'
 import {
   DescribeKeyResponse,
   GenerateKeyResponse,
@@ -139,22 +139,23 @@ export function SaveNetworkConfig(config: string): Promise<boolean> {
 }
 
 /**
- * Starts the console proxy
+ * Starts the service
  */
-export function StartConsole(request: StartConsoleRequest): Promise<boolean> {
-  return window.backend.Handler.StartConsole(JSON.stringify(request))
+export function StartService(request: StartServiceRequest): Promise<boolean> {
+  return window.backend.Handler.StartService(JSON.stringify(request))
 }
 
 /**
- * Returns the current console url and whether or not its running via the desktop wallet
+ * Returns the current service state, the console URL and whether or not its
+ * running via the desktop wallet
  */
-export function GetConsoleState(): Promise<GetConsoleStateResponse> {
-  return window.backend.Handler.GetConsoleState()
+export function GetServiceState(): Promise<GetServiceStateResponse> {
+  return window.backend.Handler.GetServiceState()
 }
 
 /**
- * Stops the console proxy
+ * Stops the service
  */
-export function StopConsole(): Promise<boolean> {
-  return window.backend.Handler.StopConsole()
+export function StopService(): Promise<boolean> {
+  return window.backend.Handler.StopService()
 }
