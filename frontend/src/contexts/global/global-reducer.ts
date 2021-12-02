@@ -4,6 +4,9 @@ import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
+  version: '0.10.0',
+  serviceRunning: false,
+  servicdUrl: null,
   network: null,
   networks: [],
   wallet: null,
@@ -18,6 +21,8 @@ export type GlobalAction =
       isInit: boolean
       wallets: string[]
       networks: string[]
+      serviceRunning: boolean
+      serviceUrl: string
     }
   | {
       type: 'ADD_WALLET'
@@ -47,6 +52,11 @@ export type GlobalAction =
       keypair: KeyPair
     }
   | {
+      type: 'SET_SERVICE'
+      running: boolean
+      url: string
+    }
+  | {
       type: 'SET_DRAWER'
       open: boolean
     }
@@ -74,7 +84,9 @@ export function globalReducer(
             if (a.name < b.name) return -1
             if (a.name > b.name) return 1
             return 0
-          })
+          }),
+        serviceRunning: action.serviceRunning,
+        servicdUrl: action.serviceUrl
       }
     }
     case 'ADD_WALLET': {
@@ -184,6 +196,13 @@ export function globalReducer(
           ...state.wallet,
           keypair
         }
+      }
+    }
+    case 'SET_SERVICE': {
+      return {
+        ...state,
+        serviceRunning: action.running,
+        servicdUrl: action.url
       }
     }
     case 'SET_DRAWER': {

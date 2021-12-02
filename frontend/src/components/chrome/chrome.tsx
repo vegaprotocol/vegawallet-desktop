@@ -10,10 +10,21 @@ import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
 import { ExternalLink } from '../external-link'
 
+const layoutStyles: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateRows: 'min-content 1fr min-content'
+}
+
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state, dispatch } = useGlobal()
   return (
-    <div style={{ height: '100%', background: '#101010', overflowY: 'auto' }}>
+    <div
+      style={{
+        ...layoutStyles,
+        height: '100%',
+        background: '#101010',
+        overflowY: 'auto'
+      }}>
       <div
         style={{
           display: 'flex',
@@ -39,6 +50,23 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         <NetworkSwitcher />
       </div>
       <main style={{ padding: '0 15px', margin: '35px 0' }}>{children}</main>
+      <footer
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          fontSize: 14,
+          background: 'url(./footer-background.png)',
+          backgroundSize: 'cover'
+        }}>
+        <div>Version {state.version}</div>
+        {state.serviceRunning ? (
+          <div>Console running @ {state.servicdUrl}</div>
+        ) : (
+          <div>Service not running</div>
+        )}
+      </footer>
       <Drawer
         isOpen={state.drawerOpen}
         position={Position.LEFT}

@@ -5,7 +5,12 @@ import { AppRouter } from './routes'
 import { HashRouter as Router } from 'react-router-dom'
 import { Chrome } from './components/chrome'
 import { GlobalProvider } from './contexts/global/global-provider'
-import { IsAppInitialised, ListNetworks, ListWallets } from './api/service'
+import {
+  GetServiceState,
+  IsAppInitialised,
+  ListNetworks,
+  ListWallets
+} from './api/service'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
@@ -20,24 +25,38 @@ function AppLoader({ children }: { children: React.ReactElement }) {
 
         // App initialised check what wallets are available
         if (isInit) {
-          const networks = await ListNetworks()
-          const wallets = await ListWallets()
+          const res = await Promise.all([
+            await ListNetworks(),
+            await ListWallets(),
+            await GetServiceState()
+          ])
           dispatch({
             type: 'INIT_APP',
             isInit: true,
-            networks: networks.networks,
-            wallets: wallets.wallets
+            networks: res[0].networks,
+            wallets: res[1].wallets,
+            serviceRunning: res[2].Running,
+            serviceUrl: res[2].URL
           })
         } else {
           dispatch({
             type: 'INIT_APP',
             isInit: false,
             wallets: [],
-            networks: []
+            networks: [],
+            serviceRunning: false,
+            serviceUrl: ''
           })
         }
       } catch (err) {
-        dispatch({ type: 'INIT_APP', isInit: false, wallets: [], networks: [] })
+        dispatch({
+          type: 'INIT_APP',
+          isInit: false,
+          wallets: [],
+          networks: [],
+          serviceRunning: false,
+          serviceUrl: ''
+        })
       }
     }
 

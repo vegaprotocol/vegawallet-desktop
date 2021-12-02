@@ -1,23 +1,11 @@
 import React from 'react'
-import { GetServiceState, StartService, StopService } from '../../api/service'
+import { StartService, StopService } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
-import { GetServiceStateResponse } from '../../models/console-state'
 
 export function Console() {
-  const { state } = useGlobal()
-  const [status, setStatus] = React.useState<GetServiceStateResponse | null>(
-    null
-  )
-
-  React.useEffect(() => {
-    async function run() {
-      const status = await GetServiceState()
-      setStatus(status)
-    }
-    run()
-  }, [])
+  const { state, dispatch } = useGlobal()
 
   async function start() {
     if (!state.network) {
@@ -26,8 +14,8 @@ export function Console() {
     }
     try {
       // TODO: Move this to use response of StartService. Currently the promise never resolves
-      // @ts-ignore
-      setStatus(curr => ({ ...curr, Running: true }))
+      const HACK_URL = 'http://127.0.0.1:1847'
+      dispatch({ type: 'SET_SERVICE', running: true, url: HACK_URL })
       await StartService({
         network: state.network,
         withConsole: true
@@ -40,15 +28,10 @@ export function Console() {
   async function stop() {
     try {
       await StopService()
-      // @ts-ignore
-      setStatus(curr => ({ ...curr, Running: false }))
+      dispatch({ type: 'SET_SERVICE', running: false, url: '' })
     } catch (err) {
       console.error(err)
     }
-  }
-
-  if (status === null) {
-    return null
   }
 
   return (
@@ -58,7 +41,7 @@ export function Console() {
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-      {status?.Running ? (
+      {state.serviceRunning ? (
         <button onClick={stop} type='button'>
           Stop Console
         </button>

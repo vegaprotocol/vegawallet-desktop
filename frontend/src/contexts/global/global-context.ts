@@ -20,6 +20,9 @@ export interface Wallet {
 
 export interface GlobalState {
   status: AppStatus
+  version: string
+  serviceRunning: boolean
+  servicdUrl: string | null
   network: string | null
   networks: string[]
   wallets: Wallet[]
