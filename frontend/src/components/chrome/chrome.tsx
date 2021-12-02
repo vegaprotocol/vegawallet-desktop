@@ -46,10 +46,9 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           }>
           Menu
         </ButtonUnstyled>
-        <KeypairControls />
         <NetworkSwitcher />
       </div>
-      <main style={{ padding: '0 15px', margin: '35px 0' }}>{children}</main>
+      <main style={{ padding: 15 }}>{children}</main>
       <footer
         style={{
           display: 'flex',
@@ -79,36 +78,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           <Menu />
         </div>
       </Drawer>
-    </div>
-  )
-}
-
-function KeypairControls() {
-  const { state } = useGlobal()
-
-  return (
-    <div>
-      {state.wallet?.keypair ? (
-        <div>
-          <CopyWithTooltip text={state.wallet.keypair.publicKey}>
-            <ButtonUnstyled>
-              {state.wallet.keypair.name}{' '}
-              <span className='text-muted'>
-                {state.wallet.keypair.publicKeyShort}{' '}
-                <Copy style={{ width: 10, height: 10 }} />
-              </span>
-            </ButtonUnstyled>
-          </CopyWithTooltip>
-        </div>
-      ) : null}
-      {/* {state.wallet?.keypairs?.length ? (
-        <div style={{ marginLeft: 'auto' }}>
-          <KeypairSwitcher
-            wallet={state.wallet}
-            onSelect={kp => dispatch({ type: 'CHANGE_KEYPAIR', keypair: kp })}
-          />
-        </div>
-      ) : null} */}
     </div>
   )
 }
