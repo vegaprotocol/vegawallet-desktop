@@ -8,12 +8,11 @@ import { Copy } from '../icons/copy'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
-import { Vega } from '../icons'
 
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state, dispatch } = useGlobal()
   return (
-    <div style={{ height: '100%', background: '#101010' }}>
+    <div style={{ height: '100%', background: '#101010', overflowY: 'auto' }}>
       <div
         style={{
           display: 'flex',
@@ -33,7 +32,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         <KeypairControls />
         <NetworkSwitcher />
       </div>
-      <main style={{ padding: '0 15px', marginTop: 35 }}>{children}</main>
+      <main style={{ padding: '0 15px', margin: '35px 0' }}>{children}</main>
       <Drawer
         isOpen={state.drawerOpen}
         position={Position.LEFT}
