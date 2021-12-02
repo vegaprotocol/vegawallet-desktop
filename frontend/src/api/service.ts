@@ -20,6 +20,7 @@ import {
   GenerateKeyResponse,
   IsolateKeyResponse
 } from '../models/keys'
+import {ListNetworksResponse} from "../models/network";
 
 /**
  * Generate a new key on a given wallet. If the wallet doesn't exist, it's
@@ -117,10 +118,17 @@ export function ListWallets(): Promise<ListWalletsResponse> {
 }
 
 /**
- * Gets the config of a given wallet
+ * Gets the config of a given network
  */
 export function GetNetworkConfig(name: string): Promise<Network> {
   return window.backend.Handler.GetNetworkConfig(name)
+}
+
+/**
+ * List all registered networks
+ */
+export function ListNetworks(): Promise<ListNetworksResponse> {
+  return window.backend.Handler.ListNetworks()
 }
 
 /**

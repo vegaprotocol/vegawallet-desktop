@@ -31,3 +31,7 @@ export class Network {
   API: API = new API()
   Console: ConsoleConfig = new ConsoleConfig()
 }
+
+export class ListNetworksResponse {
+  Networks: string[] = []
+}
