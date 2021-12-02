@@ -30,7 +30,11 @@ export function NetworkSwitcher() {
         </DropdownMenu>
       }>
       <ButtonUnstyled
-        style={{ fontFamily: 'AlphaLyrae', padding: '10px 15px' }}>
+        style={{
+          fontFamily: 'AlphaLyrae',
+          letterSpacing: '0.3em',
+          padding: '10px 15px'
+        }}>
         {state.network.toUpperCase()}
       </ButtonUnstyled>
     </Dropdown>

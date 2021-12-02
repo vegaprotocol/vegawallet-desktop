@@ -25,7 +25,12 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           background: '#040404'
         }}>
         <ButtonUnstyled
-          style={{ padding: '10px 15px', fontFamily: 'AlphaLyrae' }}
+          style={{
+            padding: '10px 15px',
+            fontFamily: 'AlphaLyrae',
+            textTransform: 'uppercase',
+            letterSpacing: '0.3em'
+          }}
           onClick={() =>
             dispatch({ type: 'SET_DRAWER', open: !state.drawerOpen })
           }>
@@ -84,6 +89,16 @@ function KeypairControls() {
 function Menu() {
   return (
     <div style={{ fontFamily: 'AlphaLyrae', padding: 15 }}>
+      <header>
+        <h1
+          style={{
+            fontSize: 20,
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase'
+          }}>
+          Vega
+        </h1>
+      </header>
       <nav
         style={{
           borderBottom: `1px solid ${Colors.DARK_GRAY_5}`,
