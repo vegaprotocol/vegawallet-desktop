@@ -1,4 +1,4 @@
-import type { Network } from '../models/network'
+import type { ListNetworksResponse, Network } from '../models/network'
 import type { GetConsoleStateResponse } from '../models/console-state'
 import type {
   CreateWalletRequest,
@@ -114,6 +114,16 @@ export function IsAppInitialised(): Promise<boolean> {
  */
 export function ListWallets(): Promise<ListWalletsResponse> {
   return window.backend.Handler.ListWallets()
+}
+
+/**
+ * TODO: Implement backend
+ * Lists all networks
+ */
+export function ListNetworks(): Promise<ListNetworksResponse> {
+  return Promise.resolve({
+    networks: ['devnet', 'stagnet', 'fairground', 'mainnet']
+  })
 }
 
 /**

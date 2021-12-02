@@ -6,6 +6,7 @@ import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
 
 export function NetworkSwitcher() {
   const { state, dispatch } = useGlobal()
+
   return (
     <Dropdown
       content={
@@ -35,7 +36,7 @@ export function NetworkSwitcher() {
           letterSpacing: '0.3em',
           padding: '10px 15px'
         }}>
-        {state.network.toUpperCase()}
+        {state.network ? state.network.toUpperCase() : 'None'}
       </ButtonUnstyled>
     </Dropdown>
   )

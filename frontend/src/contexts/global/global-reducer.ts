@@ -4,8 +4,8 @@ import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
-  network: 'devnet',
-  networks: ['devnet', 'stagnet', 'fairground', 'mainnet'],
+  network: null,
+  networks: [],
   wallet: null,
   wallets: [],
   passphrase: '',
@@ -17,6 +17,7 @@ export type GlobalAction =
       type: 'INIT_APP'
       isInit: boolean
       wallets: string[]
+      networks: string[]
     }
   | {
       type: 'ADD_WALLET'
@@ -59,6 +60,8 @@ export function globalReducer(
       return {
         ...state,
         status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
+        network: action.networks[0],
+        networks: action.networks,
         wallets: action.wallets
           .map(w => {
             return {

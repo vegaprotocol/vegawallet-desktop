@@ -20,7 +20,7 @@ export interface Wallet {
 
 export interface GlobalState {
   status: AppStatus
-  network: string
+  network: string | null
   networks: string[]
   wallets: Wallet[]
   wallet: Wallet | null

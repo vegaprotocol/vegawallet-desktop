@@ -1,5 +1,7 @@
 import React from 'react'
 import { GetConsoleState, StartConsole, StopConsole } from '../../api/service'
+import { AppToaster } from '../../components/toaster'
+import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { GetConsoleStateResponse } from '../../models/console-state'
 
@@ -18,9 +20,14 @@ export function Console() {
   }, [])
 
   async function start() {
+    if (!state.network) {
+      AppToaster.show({ message: 'No network selected', color: Colors.RED })
+      return
+    }
     try {
-      // TODO: figure out why this isn't working
       const res = await StartConsole({ Network: state.network })
+      // @ts-ignore
+      setStatus(curr => ({ ...curr, Running: res }))
     } catch (err) {
       console.error(err)
     }
@@ -29,6 +36,8 @@ export function Console() {
   async function stop() {
     try {
       await StopConsole()
+      // @ts-ignore
+      setStatus(curr => ({ ...curr, Running: false }))
     } catch (err) {
       console.error(err)
     }
