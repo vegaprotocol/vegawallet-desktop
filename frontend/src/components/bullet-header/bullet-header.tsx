@@ -17,7 +17,8 @@ export const BulletHeader = ({ tag, children }: BulletHeaderProps) => {
         margin: '35px 0 0',
         padding: '0 0 25px',
         fontFamily: 'AlphaLyrae',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        letterSpacing: '0.3em'
       }
     },
     <div>

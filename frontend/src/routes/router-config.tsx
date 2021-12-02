@@ -1,8 +1,15 @@
 import { Network } from './network'
 import { Home } from './home'
 import { Import } from './import'
+import { Console } from './console'
 
 const routerConfig = [
+  {
+    path: '/console',
+    name: 'Console',
+    component: Console,
+    exact: false
+  },
   {
     path: '/network',
     name: 'Network',

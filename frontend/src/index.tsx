@@ -12,6 +12,7 @@ TODO:
 - Ensure config editing is working
 - Make wallet list better
 - Make network switcher better
+- Use enums for route strings
 - Tests
 */
 

@@ -8,7 +8,6 @@ import { Copy } from '../icons/copy'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
-import * as Wails from '@wailsapp/runtime'
 import { ExternalLink } from '../external-link'
 
 export function Chrome({ children }: { children: React.ReactNode }) {
@@ -88,10 +87,11 @@ function KeypairControls() {
 
 function Menu() {
   return (
-    <div style={{ fontFamily: 'AlphaLyrae', padding: 15 }}>
+    <div style={{ padding: 15 }}>
       <header>
         <h1
           style={{
+            fontFamily: 'AlphaLyrae',
             fontSize: 20,
             letterSpacing: '0.3em',
             textTransform: 'uppercase'
@@ -106,6 +106,7 @@ function Menu() {
         }}>
         <AppLink to='/'>Wallets</AppLink>
         <AppLink to='/import'>Add / Import Wallet</AppLink>
+        <AppLink to='/console'>Console</AppLink>
       </nav>
       <nav style={{ marginTop: 15 }}>
         <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>
