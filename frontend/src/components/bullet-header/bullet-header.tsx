@@ -12,19 +12,20 @@ export const BulletHeader = ({ tag, children }: BulletHeaderProps) => {
     {
       className: 'bullet-header',
       style: {
-        fontSize: 16,
+        fontSize: 22,
         fontWeight: 300,
         margin: '35px 0 0',
         padding: '0 0 25px',
-        textTransform: 'uppdercase'
+        fontFamily: 'AlphaLyrae',
+        textTransform: 'uppercase'
       }
     },
     <div>
       <span
         style={{
           display: 'inline-block',
-          width: 12,
-          height: 12,
+          width: 16,
+          height: 16,
           marginRight: 10,
           backgroundColor: Colors.WHITE
         }}

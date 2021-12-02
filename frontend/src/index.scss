@@ -1,7 +1,7 @@
-@import '~@blueprintjs/core/lib/css/blueprint.css';
 @import './styles/reset';
 @import './styles/colors';
 @import './styles/fonts';
+@import './styles/blueprint';
 
 *,
 *::before,
@@ -11,11 +11,11 @@
 
 html,
 body,
-#root {
+#app {
   background-color: $black;
   color: $text-color;
   font-family: $font-main;
-  font-size: 14px;
+  font-size: 16px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -72,6 +72,7 @@ button {
   color: $white;
   cursor: pointer;
   padding: 7px 17px;
+  font-size: 16px;
 
   &:hover {
     background: $dark-gray3;
@@ -137,6 +138,7 @@ textarea {
   display: block;
   padding: 7px 10px;
   width: 100%;
+  font-size: 16px;
 }
 
 textarea {

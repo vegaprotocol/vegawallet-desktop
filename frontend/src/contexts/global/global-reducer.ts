@@ -9,7 +9,7 @@ export const initialGlobalState: GlobalState = {
   wallet: null,
   wallets: [],
   passphrase: '',
-  drawerOpen: false
+  drawerOpen: true
 }
 
 export type GlobalAction =

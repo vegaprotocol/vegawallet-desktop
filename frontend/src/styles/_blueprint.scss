@@ -1,0 +1,6 @@
+@import './colors';
+@import '~@blueprintjs/core/lib/css/blueprint.css';
+
+.bp3-overlay-backdrop {
+  background: rgba($dark-gray3, 0.8);
+}

@@ -8,20 +8,23 @@ import { Copy } from '../icons/copy'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
+import { Vega } from '../icons'
 
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state, dispatch } = useGlobal()
   return (
-    <div style={{ margin: '0 auto', maxWidth: 600, padding: '0 15px 15px' }}>
+    <div style={{ height: '100%', background: '#101010' }}>
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           minHeight: 45,
-          borderBottom: `1px solid ${Colors.DARK_GRAY_5}`
+          borderBottom: `1px solid ${Colors.DARK_GRAY_5}`,
+          background: '#040404'
         }}>
         <ButtonUnstyled
+          style={{ padding: '10px 15px', fontFamily: 'AlphaLyrae' }}
           onClick={() =>
             dispatch({ type: 'SET_DRAWER', open: !state.drawerOpen })
           }>
@@ -30,15 +33,14 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         <KeypairControls />
         <NetworkSwitcher />
       </div>
-      <main style={{ marginTop: 35 }}>{children}</main>
+      <main style={{ padding: '0 15px', marginTop: 35 }}>{children}</main>
       <Drawer
         isOpen={state.drawerOpen}
         position={Position.LEFT}
         onClose={() => dispatch({ type: 'SET_DRAWER', open: false })}>
         <div
           style={{
-            background: Colors.DARK_GRAY_2,
-            padding: 15,
+            background: '#101010',
             height: '100vh'
           }}>
           <Menu />
@@ -80,12 +82,20 @@ function KeypairControls() {
 
 function Menu() {
   return (
-    <nav>
-      <AppLink to='/'>Wallets</AppLink>
-      <AppLink to='/import'>Add / Import Wallet</AppLink>
-      <ExternalLink href={Links.DOCS}>Docs</ExternalLink>
-      <ExternalLink href={Links.GITHUB}>Github</ExternalLink>
-    </nav>
+    <div style={{ fontFamily: 'AlphaLyrae', padding: 15 }}>
+      <nav
+        style={{
+          borderBottom: `1px solid ${Colors.DARK_GRAY_5}`,
+          paddingBottom: 15
+        }}>
+        <AppLink to='/'>Wallets</AppLink>
+        <AppLink to='/import'>Add / Import Wallet</AppLink>
+      </nav>
+      <nav style={{ marginTop: 15 }}>
+        <ExternalLink href={Links.DOCS}>Docs</ExternalLink>
+        <ExternalLink href={Links.GITHUB}>Github</ExternalLink>
+      </nav>
+    </div>
   )
 }
 
@@ -100,7 +110,7 @@ function AppLink({ children, to }: NavLinkProps) {
     <div>
       <Link
         to={to}
-        style={{ display: 'block', padding: 10 }}
+        style={{ display: 'block', padding: '10px 0' }}
         onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}>
         {children}
       </Link>
@@ -116,7 +126,7 @@ interface ExternalLinkProps {
 function ExternalLink({ children, href }: ExternalLinkProps) {
   return (
     <div>
-      <a href={href} style={{ display: 'block', padding: 10 }}>
+      <a href={href} style={{ display: 'block', padding: '10px 0' }}>
         {children}
       </a>
     </div>

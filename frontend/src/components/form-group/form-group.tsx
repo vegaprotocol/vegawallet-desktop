@@ -13,11 +13,11 @@ export const FormGroup = ({
   errorText?: string
 }) => {
   return (
-    <div style={{ marginBottom: 20 }}>
+    <div style={{ marginBottom: 25 }}>
       {label && (
         <label
           htmlFor={labelFor}
-          style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>
+          style={{ display: 'block', fontSize: 16, marginBottom: 8 }}>
           {label}
         </label>
       )}
