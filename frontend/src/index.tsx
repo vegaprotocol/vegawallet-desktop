@@ -4,8 +4,16 @@ import 'core-js/stable'
 import './index.scss'
 import App from './app'
 import reportWebVitals from './report-web-vitals'
-
 import * as Wails from '@wailsapp/runtime'
+
+/**
+TODO:
+- Re-add start and stop console buttons
+- Ensure config editing is working
+- Make wallet list better
+- Make network switcher better
+- Tests
+*/
 
 Wails.Init(() => {
   ReactDOM.render(
