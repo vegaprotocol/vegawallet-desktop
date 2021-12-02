@@ -5,12 +5,12 @@ import (
 	"fmt"
 
 	"code.vegaprotocol.io/shared/paths"
+	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
 	"github.com/wailsapp/wails"
-	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 )
 
 var (

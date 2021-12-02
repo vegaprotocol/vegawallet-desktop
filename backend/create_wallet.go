@@ -81,7 +81,7 @@ func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
 	s.isAppInitialised = true
 
 	return CreateWalletResponse{
-		Mnemonic: mnemonic,
+		Mnemonic:   mnemonic,
 		WalletPath: wStore.GetWalletPath(req.Name),
 	}, nil
 }
