@@ -109,7 +109,7 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
           />
         </FormGroup>
         <FormGroup
-          label='* Passphrase'
+          label='* Choose passphrase'
           labelFor='passphrase'
           errorText={errors.passphrase?.message}>
           <input

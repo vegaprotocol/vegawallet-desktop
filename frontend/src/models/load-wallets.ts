@@ -1,7 +1,7 @@
-export class LoadWalletsRequest {
-  VegaHome: string = ''
+export interface LoadWalletsRequest {
+  VegaHome: string
 }
 
-export class LoadWalletsResponse {
-  WalletsPath: string = ''
+export interface LoadWalletsResponse {
+  WalletsPath: string
 }

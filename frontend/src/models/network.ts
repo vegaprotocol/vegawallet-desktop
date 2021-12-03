@@ -1,47 +1,47 @@
-export class ConsoleConfig {
-  URL: string = ''
-  LocalPort: number = 0
+export interface ConsoleConfig {
+  URL: string
+  LocalPort: number
 }
 
-export class API {
-  GRPC: GRPCConfig = new GRPCConfig()
-  GraphQL: GraphQLConfig = new GraphQLConfig()
-  REST: RESTConfig = new RESTConfig()
+export interface API {
+  GRPC: GRPCConfig
+  GraphQL: GraphQLConfig
+  REST: RESTConfig
 }
 
-export class GRPCConfig {
-  Hosts: string[] = []
-  Retries: number = 0
+export interface GRPCConfig {
+  Hosts: string[]
+  Retries: number
 }
 
-export class GraphQLConfig {
-  Hosts: string[] = []
+export interface GraphQLConfig {
+  Hosts: string[]
 }
 
-export class RESTConfig {
-  Hosts: string[] = []
+export interface RESTConfig {
+  Hosts: string[]
 }
 
-export class Network {
-  Name: string = ''
-  Level: string = ''
-  TokenExpiry: string = ''
-  Host: string = ''
-  Port: number = 0
-  API: API = new API()
-  Console: ConsoleConfig = new ConsoleConfig()
+export interface Network {
+  Name: string
+  Level: string
+  TokenExpiry: string
+  Host: string
+  Port: number
+  API: API
+  Console: ConsoleConfig
 }
 
-export class ListNetworksResponse {
-  networks: string[] = []
+export interface ListNetworksResponse {
+  networks: string[]
 }
 
-export class SaveNetworkConfigRequest {
-  Name: string = ''
-  Level: string = ''
-  TokenExpiry: string = ''
-  Port: number = 0
-  Host: string = ''
-  Console: ConsoleConfig = new ConsoleConfig()
-  API: API = new API()
+export interface SaveNetworkConfigRequest {
+  Name: string
+  Level: string
+  TokenExpiry: string
+  Port: number
+  Host: string
+  Console: ConsoleConfig
+  API: API
 }

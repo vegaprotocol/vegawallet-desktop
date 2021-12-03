@@ -1,3 +1,3 @@
-export class ListWalletsResponse {
-  wallets: string[] = []
+export interface ListWalletsResponse {
+  wallets: string[]
 }

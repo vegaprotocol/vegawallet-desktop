@@ -68,13 +68,6 @@ a,
   }
 }
 
-a,
-button {
-  &:focus {
-    outline: none;
-  }
-}
-
 button {
   background: $dark-gray1;
   border: 0;

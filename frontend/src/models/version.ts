@@ -1,3 +1,3 @@
-export class GetVersionResponse {
-  version: string = ''
+export interface GetVersionResponse {
+  version: string
 }

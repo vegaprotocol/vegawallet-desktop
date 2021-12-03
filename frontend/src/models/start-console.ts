@@ -1,4 +1,4 @@
-export class StartServiceRequest {
-  network: string = ''
-  withConsole: boolean = false
+export interface StartServiceRequest {
+  network: string
+  withConsole: boolean
 }

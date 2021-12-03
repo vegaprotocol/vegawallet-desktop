@@ -9,8 +9,12 @@ interface TooltipProps {
 }
 
 export function Tooltip({ children, content, isOpen }: TooltipProps) {
+  const contentWrapper = <div style={{ padding: 10 }}>{content}</div>
   return (
-    <Tooltip2 content={content} position={Position.BOTTOM} isOpen={isOpen}>
+    <Tooltip2
+      content={contentWrapper}
+      position={Position.BOTTOM}
+      isOpen={isOpen}>
       {children}
     </Tooltip2>
   )
