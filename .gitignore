@@ -2,3 +2,6 @@
 
 # MacOS
 .DS_Store
+
+# IDE files
+.idea
