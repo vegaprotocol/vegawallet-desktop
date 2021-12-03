@@ -9,6 +9,7 @@ import { Links } from '../../config/links'
 import { ExternalLink } from '../external-link'
 import { setDrawerAction } from '../../contexts/global/global-actions'
 import { Paths } from '../../routes/router-config'
+import { DrawerCloseButton } from './drawer-close-button'
 
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
@@ -94,7 +95,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
 }
 
 function Menu() {
-  const { dispatch } = useGlobal()
   return (
     <div>
       <header
@@ -115,36 +115,7 @@ function Menu() {
           }}>
           Vega
         </h1>
-        <ButtonUnstyled
-          onClick={() => dispatch(setDrawerAction(false))}
-          style={{ position: 'relative', width: 45, height: 45 }}>
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: 13,
-              display: 'block',
-              width: 20,
-              height: 2,
-              background: 'white',
-              transform: 'rotate(45deg)',
-              transformOrigin: 'center center'
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: 13,
-              display: 'block',
-              width: 20,
-              height: 2,
-              background: 'white',
-              transform: 'rotate(-45deg)',
-              transformOrigin: 'center center'
-            }}
-          />
-        </ButtonUnstyled>
+        <DrawerCloseButton />
       </header>
       <nav
         style={{

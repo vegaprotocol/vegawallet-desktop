@@ -8,9 +8,7 @@ import * as Wails from '@wailsapp/runtime'
 
 /**
 TODO:
-- Make wallet list better
 - Make network switcher better
-- Use enums for route strings
 - Permission for import wallet by path
 - Unmarshal request json for import by mnemonic
 - Check config editing
