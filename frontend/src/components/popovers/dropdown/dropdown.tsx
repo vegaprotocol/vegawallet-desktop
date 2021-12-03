@@ -32,7 +32,9 @@ export function DropdownMenu({ children }: DropdownMenuProps) {
         margin: 0,
         padding: 0,
         listStyle: 'none',
-        minWidth: 130
+        minWidth: 130,
+        background: 'url(./vega-bg.png)',
+        backgroundSize: 'cover'
       }}>
       {children}
     </ul>
