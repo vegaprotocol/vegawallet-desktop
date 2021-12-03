@@ -18,12 +18,20 @@ export const BulletHeader = ({ tag, children }: BulletHeaderProps) => {
         padding: '0 0 25px',
         fontFamily: 'AlphaLyrae',
         textTransform: 'uppercase',
-        letterSpacing: '0.3em'
+        letterSpacing: '0.3em',
+        lineHeight: 1.2
       }
     },
-    <div>
+    <div
+      style={{
+        position: 'relative',
+        paddingLeft: 25
+      }}>
       <span
         style={{
+          position: 'absolute',
+          top: 4,
+          left: 0,
           display: 'inline-block',
           width: 16,
           height: 16,
