@@ -129,7 +129,9 @@ table {
 }
 
 // FORMS
-input,
+input[type='text'],
+input[type='password'],
+input[type='number'],
 select,
 textarea {
   background: $dark-gray2;

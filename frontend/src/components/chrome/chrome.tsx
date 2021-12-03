@@ -3,8 +3,6 @@ import { NetworkSwitcher } from './network-switcher'
 import { Link } from 'react-router-dom'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Colors } from '../../config/colors'
-import { CopyWithTooltip } from '../copy-with-tooltip'
-import { Copy } from '../icons/copy'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
@@ -61,7 +59,20 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         }}>
         <div>Version {state.version}</div>
         {state.serviceRunning ? (
-          <div>Console running @ {state.servicdUrl}</div>
+          <>
+            {state.serviceUrl ? (
+              <div>
+                Console running @{' '}
+                <ExternalLink
+                  href={state.serviceUrl}
+                  style={{ textDecoration: 'underline' }}>
+                  {state.serviceUrl}
+                </ExternalLink>
+              </div>
+            ) : (
+              <div>Service running</div>
+            )}
+          </>
         ) : (
           <div>Service not running</div>
         )}
@@ -103,7 +114,7 @@ function Menu() {
         }}>
         <AppLink to='/'>Wallets</AppLink>
         <AppLink to='/import'>Add / Import Wallet</AppLink>
-        <AppLink to='/console'>Console</AppLink>
+        <AppLink to='/console'>Wallet Service</AppLink>
       </nav>
       <nav style={{ marginTop: 15 }}>
         <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>

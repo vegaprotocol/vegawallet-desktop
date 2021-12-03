@@ -6,7 +6,7 @@ export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   version: '0.10.0',
   serviceRunning: false,
-  servicdUrl: null,
+  serviceUrl: null,
   network: null,
   networks: [],
   wallet: null,
@@ -86,7 +86,7 @@ export function globalReducer(
             return 0
           }),
         serviceRunning: action.serviceRunning,
-        servicdUrl: action.serviceUrl
+        serviceUrl: action.serviceUrl
       }
     }
     case 'ADD_WALLET': {
@@ -202,7 +202,7 @@ export function globalReducer(
       return {
         ...state,
         serviceRunning: action.running,
-        servicdUrl: action.url
+        serviceUrl: action.url
       }
     }
     case 'SET_DRAWER': {

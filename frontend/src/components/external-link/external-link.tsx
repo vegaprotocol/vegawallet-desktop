@@ -8,7 +8,7 @@ interface ExternalLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 
 export function ExternalLink(props: ExternalLinkProps) {
   return (
-    // eslint-disable-next-line
+    // eslint-disable-next-line // ignore warning about no children
     <a {...props} onClick={() => WailsRuntime.Browser.OpenURL(props.href)} />
   )
 }
