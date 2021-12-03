@@ -5,22 +5,29 @@ import { Wallet } from './wallet'
 import { WalletPassword } from './wallet-password'
 import { WalletKeyPair } from './wallet-key-pair'
 import { useGlobal } from '../../contexts/global/global-context'
+import { Paths } from '../router-config'
+
+export enum WalletPaths {
+  Auth = '/wallet/auth',
+  Keypair = '/wallet/:pubkey',
+  Home = '/wallet'
+}
 
 export const Home = () => {
   const { state } = useGlobal()
   return (
     <Switch>
-      <Route path='/wallet/auth' exact>
+      <Route path={WalletPaths.Auth} exact>
         <WalletPassword />
       </Route>
-      <Route path='/wallet/:pubkey'>
+      <Route path={WalletPaths.Keypair}>
         <WalletKeyPair />
       </Route>
-      <Route path='/wallet'>
+      <Route path={WalletPaths.Home}>
         <Wallet />
       </Route>
       <Route path='/' exact>
-        {state.wallets.length ? <WalletList /> : <Redirect to='/import' />}
+        {state.wallets.length ? <WalletList /> : <Redirect to={Paths.Import} />}
       </Route>
     </Switch>
   )

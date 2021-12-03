@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { LoadWalletsResponse } from '../../models/load-wallets'
 import { CodeBlock } from '../../components/code-block'
 import { BulletHeader } from '../../components/bullet-header'
+import { Paths } from '../router-config'
 
 enum FormState {
   Default,
@@ -60,7 +61,7 @@ export function ImportPath() {
       <p>
         <CodeBlock>{response.WalletsPath}</CodeBlock>
       </p>
-      <Link to='/'>
+      <Link to={Paths.Home}>
         <button>View wallets</button>
       </Link>
     </>

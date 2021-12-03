@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { NetworkPaths } from '.'
 
 import { BulletHeader } from '../../components/bullet-header'
 import type { Network } from '../../models/network'
@@ -12,7 +13,7 @@ export const NetworkDetails = (props: NetworkDetailsProps): JSX.Element => {
   return (
     <>
       <BulletHeader tag='h1'>
-        Config / <Link to='/network/edit'>Edit</Link>
+        Config / <Link to={NetworkPaths.Edit}>Edit</Link>
       </BulletHeader>
       <table>
         <tbody>

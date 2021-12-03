@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
+import { WalletPaths } from '.'
 import { GenerateKey } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
 import { ButtonUnstyled } from '../../components/button-unstyled'
@@ -9,6 +10,7 @@ import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
+import { Paths } from '../router-config'
 
 export function Wallet() {
   const { state, dispatch } = useGlobal()
@@ -31,17 +33,17 @@ export function Wallet() {
   }
 
   if (!state.wallets.length) {
-    return <Redirect to='/' />
+    return <Redirect to={Paths.Home} />
   }
 
   if (!state.wallet?.keypairs) {
-    return <Redirect to='/wallet/auth' />
+    return <Redirect to={WalletPaths.Auth} />
   }
 
   return (
     <>
       <div>
-        <Link to='/'>Back</Link>
+        <Link to={Paths.Home}>Back</Link>
       </div>
       <BulletHeader tag='h1'>{state.wallet.name}</BulletHeader>
       {state.wallet.keypairs.length ? (
@@ -55,7 +57,9 @@ export function Wallet() {
                   justifyContent: 'space-between',
                   marginBottom: 10
                 }}>
-                <Link to={`/wallet/${kp.publicKey}`}>{kp.name}</Link>{' '}
+                <Link to={`${WalletPaths.Home}/${kp.publicKey}`}>
+                  {kp.name}
+                </Link>{' '}
                 <CopyWithTooltip text={kp.publicKey}>
                   <ButtonUnstyled>
                     <span className='text-muted'>

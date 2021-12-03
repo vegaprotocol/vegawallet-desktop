@@ -1,9 +1,11 @@
 import React from 'react'
 import { Redirect, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
+import { WalletPaths } from '.'
 import { BreakText } from '../../components/break-text'
 import { BulletHeader } from '../../components/bullet-header'
 import { useGlobal } from '../../contexts/global/global-context'
+import { Paths } from '../router-config'
 
 export function WalletKeyPair() {
   const {
@@ -13,13 +15,13 @@ export function WalletKeyPair() {
   const keypair = wallet?.keypairs?.find(kp => kp.publicKey === pubkey)
 
   if (!keypair) {
-    return <Redirect to='/' />
+    return <Redirect to={Paths.Home} />
   }
 
   return (
     <>
       <div>
-        <Link to='/wallet'>Back</Link>
+        <Link to={WalletPaths.Home}>Back</Link>
       </div>
       <BulletHeader tag='h1'>{keypair.name}</BulletHeader>
       <table>

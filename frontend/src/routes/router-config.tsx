@@ -3,27 +3,34 @@ import { Home } from './home'
 import { Import } from './import'
 import { Console } from './console'
 
+export enum Paths {
+  Console = '/console',
+  Network = '/network',
+  Import = '/import',
+  Home = '/'
+}
+
 const routerConfig = [
   {
-    path: '/console',
+    path: Paths.Console,
     name: 'Console',
     component: Console,
     exact: false
   },
   {
-    path: '/network',
+    path: Paths.Network,
     name: 'Network',
     component: Network,
     exact: false
   },
   {
-    path: '/import',
+    path: Paths.Import,
     name: 'Import',
     component: Import,
     exact: false
   },
   {
-    path: '/',
+    path: Paths.Home,
     name: 'Home',
     component: Home,
     exact: false

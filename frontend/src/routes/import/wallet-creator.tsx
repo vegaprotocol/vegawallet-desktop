@@ -16,6 +16,7 @@ import { addWalletAction } from '../../contexts/global/global-actions'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
+import { Paths } from '../router-config'
 
 interface FormFields {
   name: string
@@ -85,7 +86,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
           </CopyWithTooltip>
         </div>
       </p>
-      <Link to='/'>
+      <Link to={Paths.Home}>
         <button>View wallets</button>
       </Link>
     </>

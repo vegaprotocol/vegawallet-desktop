@@ -5,18 +5,24 @@ import { ImportPath } from './import-path'
 import { ImportSelect } from './import-select'
 import { WalletCreator } from './wallet-creator'
 
+export enum ImportPaths {
+  Create = '/import/create',
+  Path = '/import/path',
+  Mnemonic = '/import/mnemonic'
+}
+
 export function Import() {
   const match = useRouteMatch()
 
   return (
     <Switch>
-      <Route path={`${match.path}/create`}>
+      <Route path={ImportPaths.Create}>
         <WalletCreator request={{ VegaHome: '', Name: '', Passphrase: '' }} />
       </Route>
-      <Route path={`${match.path}/path`}>
+      <Route path={ImportPaths.Path}>
         <ImportPath />
       </Route>
-      <Route path={`${match.path}/mnemonic`}>
+      <Route path={ImportPaths.Mnemonic}>
         <ImportMnemonic
           request={{
             VegaHome: '',

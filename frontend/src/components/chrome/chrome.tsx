@@ -8,6 +8,7 @@ import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
 import { ExternalLink } from '../external-link'
 import { setDrawerAction } from '../../contexts/global/global-actions'
+import { Paths } from '../../routes/router-config'
 
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
@@ -150,9 +151,9 @@ function Menu() {
           padding: 15,
           borderBottom: `1px solid ${Colors.DARK_GRAY_5}`
         }}>
-        <AppLink to='/'>Wallets</AppLink>
-        <AppLink to='/import'>Add / Import Wallet</AppLink>
-        <AppLink to='/console'>Wallet Service</AppLink>
+        <AppLink to={Paths.Home}>Wallets</AppLink>
+        <AppLink to={Paths.Import}>Add / Import Wallet</AppLink>
+        <AppLink to={Paths.Console}>Wallet Service</AppLink>
       </nav>
       <nav style={{ padding: 15 }}>
         <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>

@@ -9,6 +9,10 @@ import type { Network as NetworkModel } from '../../models/network'
 import { NetworkDetails } from './network-details'
 import { NetworkEdit } from './network-edit'
 
+export enum NetworkPaths {
+  Edit = '/network/edit'
+}
+
 export const Network = () => {
   const match = useRouteMatch()
   const { state } = useGlobal()
@@ -46,7 +50,7 @@ export const Network = () => {
       <Route path={match.path} exact={true}>
         <NetworkDetails config={config} />
       </Route>
-      <Route path={`${match.path}/edit`}>
+      <Route path={NetworkPaths.Edit}>
         <NetworkEdit config={config} />
       </Route>
     </Switch>
