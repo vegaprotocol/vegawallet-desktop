@@ -7,6 +7,11 @@ import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
 export function NetworkSwitcher() {
   const { state, dispatch } = useGlobal()
 
+  // If the user has no networks dont render switcher
+  if (!state.networks.length || !state.network) {
+    return null
+  }
+
   return (
     <div style={{ display: 'flex' }}>
       <Dropdown
@@ -40,7 +45,7 @@ export function NetworkSwitcher() {
             letterSpacing: '0.3em',
             padding: '10px 15px'
           }}>
-          {state.network ? state.network.toUpperCase() : 'None'}
+          {state.network.toUpperCase()}
         </ButtonUnstyled>
       </Dropdown>
     </div>

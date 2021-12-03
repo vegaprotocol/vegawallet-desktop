@@ -20,9 +20,9 @@ export const Network = () => {
   React.useEffect(() => {
     async function run() {
       if (!state.network) {
-        AppToaster.show({ message: 'No network selected', color: Colors.RED })
         return
       }
+
       try {
         const config = await GetNetworkConfig(state.network)
         setConfig(config)
@@ -33,6 +33,10 @@ export const Network = () => {
 
     run()
   }, [state.network])
+
+  if (!state.network) {
+    return <p>No network configuration found</p>
+  }
 
   if (!config) {
     return null
