@@ -40,18 +40,27 @@ export function Wallet() {
 
   return (
     <>
+      <div>
+        <Link to='/'>Back</Link>
+      </div>
       <BulletHeader tag='h1'>{state.wallet.name}</BulletHeader>
       {state.wallet.keypairs.length ? (
         <ul style={{ marginBottom: 15 }}>
           {state.wallet.keypairs.map(kp => {
             return (
-              <li key={kp.publicKey} style={{ marginBottom: 10 }}>
+              <li
+                key={kp.publicKey}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: 10
+                }}>
                 <Link to={`/wallet/${kp.publicKey}`}>{kp.name}</Link>{' '}
                 <CopyWithTooltip text={kp.publicKey}>
                   <ButtonUnstyled>
                     <span className='text-muted'>
                       {kp.publicKeyShort}{' '}
-                      <Copy style={{ width: 10, height: 10 }} />
+                      <Copy style={{ width: 12, height: 12 }} />
                     </span>
                   </ButtonUnstyled>
                 </CopyWithTooltip>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect, useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import { BreakText } from '../../components/break-text'
 import { BulletHeader } from '../../components/bullet-header'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -17,6 +18,9 @@ export function WalletKeyPair() {
 
   return (
     <>
+      <div>
+        <Link to='/wallet'>Back</Link>
+      </div>
       <BulletHeader tag='h1'>{keypair.name}</BulletHeader>
       <table>
         <tbody>

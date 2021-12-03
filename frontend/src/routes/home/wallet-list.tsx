@@ -19,16 +19,12 @@ export const WalletList = () => {
             <li
               key={wallet.name}
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
                 marginBottom: 10
               }}>
-              <span>{wallet.name}</span>
               <Link
                 to='/wallet'
                 onClick={() => dispatch(changeWalletAction(wallet.name))}>
-                Select
+                {wallet.name}
               </Link>
             </li>
           ))}

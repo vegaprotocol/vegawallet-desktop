@@ -41,7 +41,6 @@ function AppLoader({ children }: { children: React.ReactElement }) {
           dispatch(initAppFailureAction())
         }
       } catch (err) {
-        console.log(err)
         dispatch(initAppFailureAction())
       }
     }
