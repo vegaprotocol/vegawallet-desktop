@@ -3,91 +3,85 @@ import { Link } from 'react-router-dom'
 import { NetworkPaths } from '.'
 
 import { BulletHeader } from '../../components/bullet-header'
+import { ExternalLink } from '../../components/external-link'
 import type { Network } from '../../models/network'
 
 export interface NetworkDetailsProps {
   config: Network
 }
 
-export const NetworkDetails = (props: NetworkDetailsProps): JSX.Element => {
+export const NetworkDetails = ({
+  config
+}: NetworkDetailsProps): JSX.Element => {
   return (
     <>
-      <BulletHeader tag='h1'>
-        Config / <Link to={NetworkPaths.Edit}>Edit</Link>
-      </BulletHeader>
+      <div>
+        <Link to={NetworkPaths.Edit}>Edit</Link>
+      </div>
+      <BulletHeader tag='h1'>Network: {config.Name}</BulletHeader>
       <table>
         <tbody>
           <tr>
             <th>Name</th>
-            <td>{props.config.Name}</td>
+            <td>{config.Name}</td>
           </tr>
           <tr>
             <th>Log level</th>
-            <td>{props.config.Level}</td>
+            <td>{config.Level}</td>
           </tr>
           <tr>
             <th>Token expiry</th>
-            <td>{props.config.TokenExpiry}</td>
+            <td>{config.TokenExpiry}</td>
           </tr>
           <tr>
             <th>Host</th>
-            <td>{props.config.Host}</td>
+            <td>{config.Host}</td>
           </tr>
           <tr>
             <th>Port</th>
-            <td>{props.config.Port}</td>
+            <td>{config.Port}</td>
           </tr>
         </tbody>
       </table>
-      <BulletHeader tag='h2'>gRPC Nodes</BulletHeader>
-      <table>
-        <tbody>
-          <tr>
-            <th>Retries</th>
-            <td>{props.config.API.GRPC.Retries}</td>
-          </tr>
-        </tbody>
-      </table>
-      <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-        {props.config.API.GRPC.Hosts.map(host => (
-          <li key={host} style={{ marginBottom: 5 }}>
-            {host}
-          </li>
-        ))}
-      </ul>
-      <BulletHeader tag='h2'>GraphQL Nodes</BulletHeader>
-      <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-        {props.config.API.GraphQL.Hosts.map(host => (
-          <li key={host} style={{ marginBottom: 5 }}>
-            {host}
-          </li>
-        ))}
-      </ul>
-      <BulletHeader tag='h2'>REST Nodes</BulletHeader>
-      <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-        {props.config.API.REST.Hosts.map(host => (
-          <li key={host} style={{ marginBottom: 5 }}>
-            {host}
-          </li>
-        ))}
-      </ul>
-      <BulletHeader tag='h2'>Console</BulletHeader>
+      <h2>gRPC Nodes</h2>
+      <NodeList items={config.API.GRPC.Hosts} />
+      <h2>GraphQL Nodes</h2>
+      <NodeList items={config.API.GraphQL.Hosts} />
+      <h2>REST Nodes</h2>
+      <NodeList items={config.API.REST.Hosts} />
+      <h2>Console</h2>
       <table>
         <tbody>
           <tr>
             <th>URL</th>
             <td>
-              <a href={`https://${props.config.Console.URL}`}>
-                {props.config.Console.URL}
-              </a>
+              <ExternalLink href={`https://${config.Console.URL}`}>
+                {config.Console.URL}
+              </ExternalLink>
             </td>
           </tr>
           <tr>
             <th>Local port</th>
-            <td>{props.config.Console.LocalPort}</td>
+            <td>{config.Console.LocalPort}</td>
           </tr>
         </tbody>
       </table>
     </>
+  )
+}
+
+interface NodeListProps {
+  items: string[]
+}
+
+function NodeList({ items }: NodeListProps) {
+  return (
+    <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+      {items.map((item, i) => (
+        <li key={i} style={{ marginBottom: 5 }} className='text-muted'>
+          {item}
+        </li>
+      ))}
+    </ul>
   )
 }

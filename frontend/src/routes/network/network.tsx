@@ -1,7 +1,6 @@
 import React from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { GetNetworkConfig } from '../../api/service'
-import { BulletHeader } from '../../components/bullet-header'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -10,11 +9,11 @@ import { NetworkDetails } from './network-details'
 import { NetworkEdit } from './network-edit'
 
 export enum NetworkPaths {
+  Config = '/network',
   Edit = '/network/edit'
 }
 
 export const Network = () => {
-  const match = useRouteMatch()
   const { state } = useGlobal()
   const [config, setConfig] = React.useState<NetworkModel | null>(null)
 
@@ -24,7 +23,6 @@ export const Network = () => {
         AppToaster.show({ message: 'No network selected', color: Colors.RED })
         return
       }
-      setConfig(null)
       try {
         const config = await GetNetworkConfig(state.network)
         setConfig(config)
@@ -37,17 +35,12 @@ export const Network = () => {
   }, [state.network])
 
   if (!config) {
-    return (
-      <>
-        <BulletHeader tag='h1'>Network ({state.network})</BulletHeader>
-        <p>No network configuration found</p>
-      </>
-    )
+    return null
   }
 
   return (
     <Switch>
-      <Route path={match.path} exact={true}>
+      <Route path={NetworkPaths.Config} exact={true}>
         <NetworkDetails config={config} />
       </Route>
       <Route path={NetworkPaths.Edit}>

@@ -62,7 +62,9 @@ export function Wallet() {
                 </Link>{' '}
                 <CopyWithTooltip text={kp.publicKey}>
                   <ButtonUnstyled>
-                    <span className='text-muted'>
+                    <span
+                      className='text-muted'
+                      style={{ fontFamily: '"Roboto Mono", monospace' }}>
                       {kp.publicKeyShort}{' '}
                       <Copy style={{ width: 12, height: 12 }} />
                     </span>

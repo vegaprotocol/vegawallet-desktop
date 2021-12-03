@@ -11,6 +11,7 @@ TODO:
 - Make network switcher better
 - Permission for import wallet by path
 - Unmarshal request json for import by mnemonic
+- Fix glitchy ness when switching networks on config page
 - Check config editing
 - Tests
 */

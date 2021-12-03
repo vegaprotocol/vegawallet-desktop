@@ -11,6 +11,8 @@ export function Dropdown({ content, children }: DropdownProps) {
   return (
     <Popover2
       transitionDuration={0}
+      modifiers={{ arrow: { enabled: false } }}
+      targetTagName='div'
       position={Position.BOTTOM_RIGHT}
       content={content}>
       {children}
@@ -24,7 +26,13 @@ interface DropdownMenuProps {
 
 export function DropdownMenu({ children }: DropdownMenuProps) {
   return (
-    <ul style={{ margin: 0, padding: 0, listStyle: 'none', minWidth: 200 }}>
+    <ul
+      style={{
+        margin: 0,
+        padding: 0,
+        listStyle: 'none',
+        minWidth: 130
+      }}>
       {children}
     </ul>
   )
@@ -32,15 +40,18 @@ export function DropdownMenu({ children }: DropdownMenuProps) {
 
 interface DropdownMenuItemProps {
   children: React.ReactNode
+  active?: boolean
 }
 
-export function DropdownMenuItem({ children }: DropdownMenuItemProps) {
+export function DropdownMenuItem({
+  children,
+  active = false
+}: DropdownMenuItemProps) {
   return (
     <li
       style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '5px 0'
+        borderLeft: '3px solid transparent',
+        borderLeftColor: active ? '#fff' : 'transparent'
       }}>
       {children}
     </li>
