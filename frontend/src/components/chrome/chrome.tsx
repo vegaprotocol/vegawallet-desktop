@@ -119,7 +119,8 @@ function Menu() {
       <nav
         style={{
           padding: 15,
-          borderBottom: `1px solid ${Colors.DARK_GRAY_5}`
+          borderBottom: `3px solid`,
+          borderImage: 'url(./vega-bg.png) 15% / 1 / 0'
         }}>
         <AppLink to={Paths.Home}>Wallets</AppLink>
         <AppLink to={Paths.Import}>Add / Import Wallet</AppLink>
