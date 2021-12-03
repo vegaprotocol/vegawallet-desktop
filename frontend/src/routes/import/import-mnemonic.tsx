@@ -19,7 +19,6 @@ enum FormState {
 }
 
 interface FormFields {
-  vegaHome: string
   name: string
   version: number
   passphrase: string
@@ -32,7 +31,6 @@ export interface ImportMnemonicProps {
 }
 
 export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
-  const [advancedOpen, setAdvancedOpen] = React.useState(false)
   const [formState, setFormState] = React.useState(FormState.Default)
   const {
     control,
@@ -41,7 +39,6 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
-      vegaHome: request.VegaHome,
       name: request.Name,
       version: request.Version,
       passphrase: '',
@@ -58,7 +55,7 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     setFormState(FormState.Pending)
     try {
       const resp = await ImportWallet({
-        VegaHome: values.vegaHome,
+        VegaHome: '',
         Name: values.name,
         Passphrase: values.passphrase,
         Mnemonic: values.mnemonic,
@@ -135,22 +132,6 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
             })}
           />
         </FormGroup>
-        <FormGroup>
-          <button
-            type='button'
-            onClick={() => setAdvancedOpen(x => !x)}
-            className='link'>
-            {advancedOpen ? 'Hide advanced options' : 'Show advanced options'}
-          </button>
-        </FormGroup>
-        {advancedOpen && (
-          <FormGroup
-            label='Vega home (leave blank for defaults)'
-            labelFor='vegaHome'
-            errorText={errors.vegaHome?.message}>
-            <input type='text' {...register('vegaHome')} />
-          </FormGroup>
-        )}
         <div>
           <button type='submit'>Submit</button>
         </div>

@@ -18,7 +18,6 @@ import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 
 interface FormFields {
-  vegaHome: string
   name: string
   passphrase: string
   confirmPassphrase: string
@@ -30,7 +29,6 @@ export interface WalletCreatorProps {
 
 export const WalletCreator = ({ request }: WalletCreatorProps) => {
   const { dispatch } = useGlobal()
-  const [advancedOpen, setAdvancedOpen] = React.useState(false)
   const [response, setResponse] = React.useState<CreateWalletResponse | null>(
     null
   )
@@ -42,7 +40,6 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
     formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
-      vegaHome: request.VegaHome,
       name: request.Name,
       passphrase: request.Passphrase
     }
@@ -52,7 +49,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
   const onSubmit = async (values: FormFields) => {
     try {
       const resp = await CreateWallet({
-        VegaHome: values.vegaHome,
+        VegaHome: '',
         Name: values.name,
         Passphrase: values.passphrase
       })
@@ -130,22 +127,6 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
             })}
           />
         </FormGroup>
-        <FormGroup>
-          <button
-            type='button'
-            onClick={() => setAdvancedOpen(x => !x)}
-            className='link'>
-            {advancedOpen ? 'Hide advanced options' : 'Show advanced options'}
-          </button>
-        </FormGroup>
-        {advancedOpen && (
-          <FormGroup
-            label='Vega home (leave blank for defaults)'
-            labelFor='vegaHome'
-            errorText={errors.vegaHome?.message}>
-            <input type='text' {...register('vegaHome')} />
-          </FormGroup>
-        )}
         <div>
           <button type='submit'>Submit</button>
         </div>

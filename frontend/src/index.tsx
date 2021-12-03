@@ -8,8 +8,6 @@ import * as Wails from '@wailsapp/runtime'
 
 /**
 TODO:
-- Re-add start and stop console buttons
-- Ensure config editing is working
 - Make wallet list better
 - Make network switcher better
 - Use enums for route strings
