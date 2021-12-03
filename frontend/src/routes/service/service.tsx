@@ -14,7 +14,6 @@ export function Service() {
       return
     }
     try {
-      // TODO:  @Valentin heres where StartService hangs
       const HACK_URL = withConsole ? 'http://127.0.0.1:1847' : ''
       dispatch(setServiceAction(true, HACK_URL))
       await StartService({

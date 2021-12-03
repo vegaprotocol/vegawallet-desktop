@@ -152,7 +152,6 @@ export function SaveNetworkConfig(
 }
 
 /**
- * TODO: @Valentin The promise returned here hangs and never resolves
  * Starts the service
  */
 export function StartService(request: StartServiceRequest): Promise<boolean> {
