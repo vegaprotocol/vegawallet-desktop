@@ -10,7 +10,6 @@ import * as Wails from '@wailsapp/runtime'
 TODO:
 - Permission for import wallet by path
 - Unmarshal request json for import by mnemonic
-- Check config editing
 - Tests
 */
 
