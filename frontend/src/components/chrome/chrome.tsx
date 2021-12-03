@@ -94,29 +94,68 @@ export function Chrome({ children }: { children: React.ReactNode }) {
 }
 
 function Menu() {
+  const { dispatch } = useGlobal()
   return (
-    <div style={{ padding: 15 }}>
-      <header>
+    <div>
+      <header
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '0 0 0 15px',
+          minHeight: 45
+        }}>
         <h1
           style={{
             fontFamily: 'AlphaLyrae',
-            fontSize: 20,
+            fontSize: 18,
             letterSpacing: '0.3em',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            margin: 0
           }}>
           Vega
         </h1>
+        <ButtonUnstyled
+          onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}
+          style={{ position: 'relative', width: 45, height: 45 }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: 13,
+              display: 'block',
+              width: 20,
+              height: 2,
+              background: 'white',
+              transform: 'rotate(45deg)',
+              transformOrigin: 'center center'
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: 13,
+              display: 'block',
+              width: 20,
+              height: 2,
+              background: 'white',
+              transform: 'rotate(-45deg)',
+              transformOrigin: 'center center'
+            }}
+          />
+        </ButtonUnstyled>
       </header>
       <nav
         style={{
-          borderBottom: `1px solid ${Colors.DARK_GRAY_5}`,
-          paddingBottom: 15
+          padding: 15,
+          borderBottom: `1px solid ${Colors.DARK_GRAY_5}`
         }}>
         <AppLink to='/'>Wallets</AppLink>
         <AppLink to='/import'>Add / Import Wallet</AppLink>
         <AppLink to='/console'>Wallet Service</AppLink>
       </nav>
-      <nav style={{ marginTop: 15 }}>
+      <nav style={{ padding: 15 }}>
         <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>
         <NavExternalLink href={Links.GITHUB}>Github</NavExternalLink>
       </nav>
