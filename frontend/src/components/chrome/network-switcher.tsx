@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { changeNetworkAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
@@ -15,15 +16,13 @@ export function NetworkSwitcher() {
             <DropdownMenuItem key={n}>
               <ButtonUnstyled
                 onClick={() => {
-                  dispatch({ type: 'CHANGE_NETWORK', network: n })
+                  dispatch(changeNetworkAction(n))
                 }}>
                 {n.toUpperCase()}
               </ButtonUnstyled>
               <Link
                 to='network'
-                onClick={() =>
-                  dispatch({ type: 'CHANGE_NETWORK', network: n })
-                }>
+                onClick={() => dispatch(changeNetworkAction(n))}>
                 Config
               </Link>
             </DropdownMenuItem>

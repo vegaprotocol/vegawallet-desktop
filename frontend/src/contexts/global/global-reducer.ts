@@ -48,10 +48,6 @@ export type GlobalAction =
       wallet: string
     }
   | {
-      type: 'CHANGE_KEYPAIR'
-      keypair: KeyPair
-    }
-  | {
       type: 'SET_SERVICE'
       running: boolean
       url: string
@@ -177,25 +173,6 @@ export function globalReducer(
       return {
         ...state,
         wallet
-      }
-    }
-    case 'CHANGE_KEYPAIR': {
-      if (!state.wallet) return state
-
-      const keypair = state.wallet.keypairs?.find(
-        kp => kp.publicKey === action.keypair.publicKey
-      )
-
-      if (!keypair) {
-        throw new Error('No keypair found')
-      }
-
-      return {
-        ...state,
-        wallet: {
-          ...state.wallet,
-          keypair
-        }
       }
     }
     case 'SET_SERVICE': {

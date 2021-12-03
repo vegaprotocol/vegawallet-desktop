@@ -7,6 +7,7 @@ import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
+import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 
 export function Wallet() {
@@ -23,11 +24,7 @@ export function Wallet() {
         passphrase: state.passphrase,
         metadata: [] // just rely on default naming for now
       })
-      dispatch({
-        type: 'ADD_KEYPAIR',
-        wallet: state.wallet.name,
-        keypair: res.key
-      })
+      dispatch(addKeypairAction(state.wallet.name, res.key))
     } catch (err) {
       AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
     }

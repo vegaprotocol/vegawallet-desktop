@@ -14,6 +14,10 @@ import {
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
+import {
+  initAppSuccess,
+  initAppFailure
+} from './contexts/global/global-actions'
 
 function AppLoader({ children }: { children: React.ReactElement }) {
   const { state, dispatch } = useGlobal()
@@ -30,33 +34,12 @@ function AppLoader({ children }: { children: React.ReactElement }) {
             await ListWallets(),
             await GetServiceState()
           ])
-          dispatch({
-            type: 'INIT_APP',
-            isInit: true,
-            networks: res[0].networks,
-            wallets: res[1].wallets,
-            serviceRunning: res[2].Running,
-            serviceUrl: res[2].URL
-          })
+          dispatch(initAppSuccess(...res))
         } else {
-          dispatch({
-            type: 'INIT_APP',
-            isInit: false,
-            wallets: [],
-            networks: [],
-            serviceRunning: false,
-            serviceUrl: ''
-          })
+          dispatch(initAppFailure())
         }
       } catch (err) {
-        dispatch({
-          type: 'INIT_APP',
-          isInit: false,
-          wallets: [],
-          networks: [],
-          serviceRunning: false,
-          serviceUrl: ''
-        })
+        dispatch(initAppFailure())
       }
     }
 

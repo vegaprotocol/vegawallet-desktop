@@ -7,6 +7,7 @@ import { ButtonUnstyled } from '../button-unstyled'
 import { Drawer, Position } from '@blueprintjs/core'
 import { Links } from '../../config/links'
 import { ExternalLink } from '../external-link'
+import { setDrawerAction } from '../../contexts/global/global-actions'
 
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
@@ -39,9 +40,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             textTransform: 'uppercase',
             letterSpacing: '0.3em'
           }}
-          onClick={() =>
-            dispatch({ type: 'SET_DRAWER', open: !state.drawerOpen })
-          }>
+          onClick={() => dispatch(setDrawerAction(!state.drawerOpen))}>
           Menu
         </ButtonUnstyled>
         <NetworkSwitcher />
@@ -80,7 +79,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       <Drawer
         isOpen={state.drawerOpen}
         position={Position.LEFT}
-        onClose={() => dispatch({ type: 'SET_DRAWER', open: false })}>
+        onClose={() => dispatch(setDrawerAction(false))}>
         <div
           style={{
             background: '#101010',
@@ -116,7 +115,7 @@ function Menu() {
           Vega
         </h1>
         <ButtonUnstyled
-          onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}
+          onClick={() => dispatch(setDrawerAction(false))}
           style={{ position: 'relative', width: 45, height: 45 }}>
           <div
             style={{
@@ -175,7 +174,7 @@ function AppLink({ children, to }: NavLinkProps) {
       <Link
         to={to}
         style={{ display: 'block', padding: '10px 0' }}
-        onClick={() => dispatch({ type: 'SET_DRAWER', open: false })}>
+        onClick={() => dispatch(setDrawerAction(false))}>
         {children}
       </Link>
     </div>

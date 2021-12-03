@@ -2,6 +2,7 @@ import React from 'react'
 import { StartService, StopService } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
+import { setServiceAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 
 export function Console() {
@@ -15,7 +16,7 @@ export function Console() {
     try {
       // TODO: Move this to use response of StartService. Currently the promise never resolves
       const HACK_URL = withConsole ? 'http://127.0.0.1:1847' : ''
-      dispatch({ type: 'SET_SERVICE', running: true, url: HACK_URL })
+      dispatch(setServiceAction(true, HACK_URL))
       await StartService({
         network: state.network,
         withConsole
@@ -28,7 +29,7 @@ export function Console() {
   async function stop() {
     try {
       await StopService()
-      dispatch({ type: 'SET_SERVICE', running: false, url: '' })
+      dispatch(setServiceAction(false, ''))
     } catch (err) {
       console.error(err)
     }

@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
 import { useGlobal } from '../../contexts/global/global-context'
+import { addWalletAction } from '../../contexts/global/global-actions'
 
 interface FormFields {
   vegaHome: string
@@ -58,7 +59,7 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
           message: 'Wallet created!',
           color: Colors.GREEN
         })
-        dispatch({ type: 'ADD_WALLET', wallet: values.name })
+        dispatch(addWalletAction(values.name))
       } else {
         AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
       }

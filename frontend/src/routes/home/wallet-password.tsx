@@ -6,6 +6,7 @@ import { BulletHeader } from '../../components/bullet-header'
 import { FormGroup } from '../../components/form-group'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
+import { setKeypairsAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 
 interface FormFields {
@@ -32,12 +33,9 @@ export function WalletPassword() {
         wallet: state.wallet.name,
         passphrase: values.Passphrase
       })
-      dispatch({
-        type: 'SET_KEYPAIRS',
-        wallet: state.wallet.name,
-        keypairs: keys.keys || [],
-        passphrase: values.Passphrase
-      })
+      dispatch(
+        setKeypairsAction(state.wallet.name, keys.keys || [], values.Passphrase)
+      )
       history.push('/wallet')
     } catch (err) {
       AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
