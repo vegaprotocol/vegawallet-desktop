@@ -1,6 +1,5 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-
 import { SaveNetworkConfig } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { AppToaster } from '../../components/toaster'
@@ -20,9 +19,10 @@ interface FormFields {
 
 export interface ConfigEditorProps {
   config: Network
+  setConfig: React.Dispatch<React.SetStateAction<Network | null>>
 }
 
-export const NetworkEditor = ({ config }: ConfigEditorProps) => {
+export const NetworkEditor = ({ config, setConfig }: ConfigEditorProps) => {
   const {
     register,
     handleSubmit,
@@ -41,7 +41,8 @@ export const NetworkEditor = ({ config }: ConfigEditorProps) => {
 
   const onSubmit = async (values: FormFields) => {
     try {
-      const configJSON = JSON.stringify({
+      const configUpdate: Network = {
+        Name: config.Name,
         Level: values.logLevel,
         TokenExpiry: values.tokenExpiry,
         Port: Number(values.port),
@@ -50,7 +51,7 @@ export const NetworkEditor = ({ config }: ConfigEditorProps) => {
           URL: values.consoleUrl,
           LocalPort: Number(values.consolePort)
         },
-        Api: {
+        API: {
           GRPC: {
             Hosts: config.API.GRPC.Hosts,
             Retries: Number(values.grpcNodeRetries)
@@ -58,9 +59,10 @@ export const NetworkEditor = ({ config }: ConfigEditorProps) => {
           GraphQL: config.API.GraphQL,
           REST: config.API.REST
         }
-      })
-      const success = await SaveNetworkConfig(configJSON)
+      }
+      const success = await SaveNetworkConfig(configUpdate)
       if (success) {
+        setConfig(configUpdate)
         AppToaster.show({
           message: 'Configuration saved!',
           color: Colors.GREEN

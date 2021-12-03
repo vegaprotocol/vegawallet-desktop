@@ -35,3 +35,13 @@ export class Network {
 export class ListNetworksResponse {
   networks: string[] = []
 }
+
+export class SaveNetworkConfigRequest {
+  Name: string = ''
+  Level: string = ''
+  TokenExpiry: string = ''
+  Port: number = 0
+  Host: string = ''
+  Console: ConsoleConfig = new ConsoleConfig()
+  API: API = new API()
+}

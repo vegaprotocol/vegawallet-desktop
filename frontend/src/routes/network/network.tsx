@@ -44,7 +44,7 @@ export const Network = () => {
         <NetworkDetails config={config} />
       </Route>
       <Route path={NetworkPaths.Edit}>
-        <NetworkEdit config={config} />
+        <NetworkEdit config={config} setConfig={setConfig} />
       </Route>
     </Switch>
   )

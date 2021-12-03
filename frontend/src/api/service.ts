@@ -1,4 +1,8 @@
-import type { ListNetworksResponse, Network } from '../models/network'
+import type {
+  ListNetworksResponse,
+  Network,
+  SaveNetworkConfigRequest
+} from '../models/network'
 import type { GetServiceStateResponse } from '../models/console-state'
 import type {
   CreateWalletRequest,
@@ -139,8 +143,10 @@ export function ListNetworks(): Promise<ListNetworksResponse> {
 /**
  * Saves config changes
  */
-export function SaveNetworkConfig(config: string): Promise<boolean> {
-  return window.backend.Handler.SaveNetworkConfig(config)
+export function SaveNetworkConfig(
+  request: SaveNetworkConfigRequest
+): Promise<boolean> {
+  return window.backend.Handler.SaveNetworkConfig(JSON.stringify(request))
 }
 
 /**
