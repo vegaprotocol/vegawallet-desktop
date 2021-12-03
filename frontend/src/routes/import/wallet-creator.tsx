@@ -13,6 +13,9 @@ import { BulletHeader } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
 import { useGlobal } from '../../contexts/global/global-context'
 import { addWalletAction } from '../../contexts/global/global-actions'
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { CopyWithTooltip } from '../../components/copy-with-tooltip'
+import { Copy } from '../../components/icons/copy'
 
 interface FormFields {
   vegaHome: string
@@ -75,8 +78,15 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
         Here is your mnemonic phrase. Please take note of the words below as you
         will need these to restore your wallet!
       </p>
-      <p>
+      <p style={{ position: 'relative' }}>
         <CodeBlock>{response.Mnemonic}</CodeBlock>
+        <div style={{ position: 'absolute', top: 7, right: 10 }}>
+          <CopyWithTooltip text={response.Mnemonic}>
+            <ButtonUnstyled>
+              <Copy style={{ width: 13, height: 13 }} />
+            </ButtonUnstyled>
+          </CopyWithTooltip>
+        </div>
       </p>
       <Link to='/'>
         <button>View wallets</button>

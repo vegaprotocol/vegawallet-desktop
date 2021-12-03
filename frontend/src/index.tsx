@@ -14,12 +14,10 @@ TODO:
 - Make network switcher better
 - Use enums for route strings
 - Alignments of alias and pubkey
-- Copy to clipboard for mnemonic
 - Permission for import wallet by path
 - Unmarshal request json for import by mnemonic
 - Check config editing
 - Tests
-- Footer showing version and service running
 */
 
 Wails.Init(() => {
