@@ -50,7 +50,6 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
   const onSubmit = async (values: FormFields) => {
     try {
       const resp = await CreateWallet({
-        VegaHome: '',
         Name: values.name,
         Passphrase: values.passphrase
       })

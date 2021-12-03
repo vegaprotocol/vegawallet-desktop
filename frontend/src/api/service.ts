@@ -16,8 +16,6 @@ import type {
   ListKeysResponse
 } from '../models/keys'
 import type { ListWalletsResponse } from '../models/list-wallets'
-import type { LoadWalletsRequest } from '../models/load-wallets'
-import { LoadWalletsResponse } from '../models/load-wallets'
 import {
   DescribeKeyResponse,
   GenerateKeyResponse,
@@ -25,6 +23,7 @@ import {
 } from '../models/keys'
 import { StartServiceRequest } from '../models/start-console'
 import { GetVersionResponse } from '../models/version'
+import { AppConfig } from '../models/app-config'
 
 /**
  * Return the software version.
@@ -105,20 +104,19 @@ export function ImportWallet(
 }
 
 /**
- * Loads a wallet by specifying a path to an existing wallet on your machine
+ * Verify the application has a configuration file initialised with a defined
+ * Vega home.
  */
-export function LoadWallets(
-  request: LoadWalletsRequest
-): Promise<LoadWalletsResponse> {
-  return window.backend.Handler.LoadWallets(JSON.stringify(request))
+export function IsAppInitialised(): Promise<boolean> {
+  return window.backend.Handler.IsAppInitialised()
 }
 
 /**
  * Verify the application has a configuration file initialised with a defined
  * Vega home.
  */
-export function IsAppInitialised(): Promise<boolean> {
-  return window.backend.Handler.IsAppInitialised()
+export function InitialiseApp(request: AppConfig): Promise<void> {
+  return window.backend.Handler.InitialiseApp(JSON.stringify(request))
 }
 
 /**

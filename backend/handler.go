@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -16,17 +17,14 @@ import (
 var (
 	ErrConsoleAlreadyRunning = errors.New("the console is already running")
 	ErrConsoleNotRunning     = errors.New("the console is not running")
-	ErrNoWalletFound         = errors.New("no wallet found at this location")
 )
 
 type Handler struct {
 	runtime *wails.Runtime
 	log     *wails.CustomLogger
 
-	configLoader     *config.Loader
-	isAppInitialised bool
-
-	service *serviceState
+	configLoader *config.Loader
+	service      *serviceState
 }
 
 func (s *Handler) WailsInit(runtime *wails.Runtime) error {
@@ -42,12 +40,8 @@ func (s *Handler) WailsInit(runtime *wails.Runtime) error {
 		s.log.Errorf("Couldn't create configuration loader: %v", err)
 		return fmt.Errorf("couldn't create configuration loader: %w", err)
 	}
+
 	s.configLoader = loader
-
-	if err = s.verifyAppInitialisation(); err != nil {
-		return err
-	}
-
 	s.service = &serviceState{}
 
 	return nil
@@ -63,50 +57,18 @@ func (s *Handler) WailsShutdown() {
 	}
 }
 
-func (s *Handler) IsAppInitialised() bool {
-	return s.isAppInitialised
+func (s *Handler) IsAppInitialised() (bool, error) {
+	return s.configLoader.IsConfigInitialised()
 }
 
-func (s *Handler) verifyAppInitialisation() error {
-	s.isAppInitialised = false
-
-	initialised, err := s.configLoader.IsConfigInitialised()
-	if err != nil {
-		s.log.Errorf("Couldn't verify configuration initialisation state: %v", err)
-		return fmt.Errorf("couldn't verify configuration initialisation state: %w", err)
+func (s *Handler) InitialiseApp(data string) error {
+	cfg := &config.Config{}
+	if err := json.Unmarshal([]byte(data), cfg); err != nil {
+		s.log.Errorf("Couldn't unmarshall config: %v", err)
+		return fmt.Errorf("couldn't unmarshal config: %w", err)
 	}
 
-	if !initialised {
-		c := config.Config{VegaHome: ""}
-		err = s.configLoader.SaveConfig(c)
-		if err != nil {
-			s.log.Errorf("Couldn't save default configuration: %v", err)
-			return fmt.Errorf("couldn't save default configuration: %w", err)
-		}
-	}
-
-	configFilePath := s.configLoader.ConfigFilePath()
-	s.log.Debugf("Loading configuration located at %s", configFilePath)
-
-	c, err := s.loadAppConfig()
-	if err != nil {
-		return err
-	}
-
-	wStore, err := s.getWalletsStore(c)
-	if err != nil {
-		return err
-	}
-
-	ws, err := wStore.ListWallets()
-	if err != nil {
-		s.log.Errorf("Couldn't list wallets: %v", err)
-		return fmt.Errorf("couldn't list wallets: %w", err)
-	}
-
-	s.isAppInitialised = len(ws) != 0
-
-	return nil
+	return s.configLoader.SaveConfig(*cfg)
 }
 
 func (s *Handler) getServiceStore(config config.Config) (*svcstore.Store, error) {

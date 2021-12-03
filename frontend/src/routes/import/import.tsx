@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { ImportMnemonic } from './import-mnemonic'
-import { ImportPath } from './import-path'
 import { ImportSelect } from './import-select'
 import { WalletCreator } from './wallet-creator'
 
@@ -17,15 +16,11 @@ export function Import() {
   return (
     <Switch>
       <Route path={ImportPaths.Create}>
-        <WalletCreator request={{ VegaHome: '', Name: '', Passphrase: '' }} />
-      </Route>
-      <Route path={ImportPaths.Path}>
-        <ImportPath />
+        <WalletCreator request={{ Name: '', Passphrase: '' }} />
       </Route>
       <Route path={ImportPaths.Mnemonic}>
         <ImportMnemonic
           request={{
-            VegaHome: '',
             Name: '',
             Passphrase: '',
             Mnemonic: '',

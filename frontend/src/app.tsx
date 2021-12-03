@@ -19,6 +19,7 @@ import {
   initAppSuccessAction,
   initAppFailureAction
 } from './contexts/global/global-actions'
+import { InitApp } from './routes/init'
 
 function AppLoader({ children }: { children: React.ReactElement }) {
   const { state, dispatch } = useGlobal()
@@ -59,7 +60,7 @@ function AppLoader({ children }: { children: React.ReactElement }) {
   if (state.status === AppStatus.Failed) {
     return (
       <Splash>
-        <p>Failed to initialise</p>
+        <InitApp />
       </Splash>
     )
   }

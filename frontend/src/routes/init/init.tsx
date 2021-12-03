@@ -1,12 +1,10 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { LoadWallets } from '../../api/service'
+import { InitialiseApp } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { Link } from 'react-router-dom'
-import { LoadWalletsResponse } from '../../models/load-wallets'
-import { CodeBlock } from '../../components/code-block'
 import { BulletHeader } from '../../components/bullet-header'
 import { Paths } from '../router-config'
 
@@ -18,14 +16,11 @@ enum FormState {
 }
 
 interface FormFields {
-  path: string
+  vegaHome: string
 }
 
-export function ImportPath() {
+export function InitApp() {
   const [formState, setFormState] = React.useState(FormState.Default)
-  const [response, setResponse] = React.useState<LoadWalletsResponse | null>(
-    null
-  )
   const {
     register,
     handleSubmit,
@@ -35,45 +30,37 @@ export function ImportPath() {
   const onSubmit = async (values: FormFields) => {
     setFormState(FormState.Pending)
     try {
-      const resp = await LoadWallets({
-        VegaHome: values.path
+      await InitialiseApp({
+        vegaHome: values.vegaHome
       })
-      if (resp) {
-        AppToaster.show({
-          message: 'Wallet loaded!',
-          color: Colors.GREEN
-        })
-        setResponse(resp)
-        setFormState(FormState.Success)
-      } else {
-        AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
-        setFormState(FormState.Failure)
-      }
+      AppToaster.show({
+        message: 'Application initialised!',
+        color: Colors.GREEN
+      })
+      setFormState(FormState.Success)
     } catch (err) {
       AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
       setFormState(FormState.Failure)
     }
   }
 
-  return formState === FormState.Success && response ? (
+  return formState === FormState.Success ? (
     <>
-      <BulletHeader tag='h1'>Wallets successfully imported</BulletHeader>
-      <p>
-        <CodeBlock>{response.WalletsPath}</CodeBlock>
-      </p>
+      <BulletHeader tag='h1'>Application successfully initialised</BulletHeader>
       <Link to={Paths.Home}>
         <button>View wallets</button>
       </Link>
     </>
   ) : (
     <>
-      <BulletHeader tag='h1'>Import wallet</BulletHeader>
+      <BulletHeader tag='h1'>Initialise application</BulletHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
-          label='Path to wallet'
-          labelFor='path'
-          errorText={errors.path?.message}>
-          <input type='text' {...register('path')} />
+          label='Vega home'
+          labelFor='vegaHome'
+          errorText={errors.vegaHome?.message}
+        >
+          <input type='text' {...register('vegaHome')} />
         </FormGroup>
         <button type='submit'>Submit</button>
       </form>
