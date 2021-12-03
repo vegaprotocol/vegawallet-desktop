@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { GetNetworkConfig } from '../../api/service'
-import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import type { Network as NetworkModel } from '../../models/network'
 import { NetworkDetails } from './network-details'

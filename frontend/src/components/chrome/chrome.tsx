@@ -9,6 +9,7 @@ import { ExternalLink } from '../external-link'
 import { setDrawerAction } from '../../contexts/global/global-actions'
 import { Paths } from '../../routes/router-config'
 import { DrawerCloseButton } from './drawer-close-button'
+import { ChromeFooter } from './chrome-footer'
 
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
@@ -48,34 +49,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         <NetworkSwitcher />
       </div>
       <main style={{ padding: 15 }}>{children}</main>
-      <footer
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          fontSize: 14,
-          background: 'url(./vega-bg.png)',
-          backgroundSize: 'cover'
-        }}>
-        <div>Version {state.version}</div>
-        {state.serviceRunning ? (
-          <>
-            {state.serviceUrl ? (
-              <div>
-                Console running @{' '}
-                <ExternalLink href={state.serviceUrl}>
-                  {state.serviceUrl}
-                </ExternalLink>
-              </div>
-            ) : (
-              <div>Service running</div>
-            )}
-          </>
-        ) : (
-          <div>Service not running</div>
-        )}
-      </footer>
+      <ChromeFooter />
       <Drawer
         isOpen={state.drawerOpen}
         position={Position.LEFT}

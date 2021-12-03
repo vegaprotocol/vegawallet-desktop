@@ -15,7 +15,6 @@ TODO:
 - Separate start console proxy from start service
 - Stop service when network changes (Can we avoid stopping and starting service if the network changes?)
 - Investigate input type file for import path
-- Drag wallet file to input
 - After create go straight to keys (store password only once for memory)
 - Test no network configs
 - Importing configs? Where to prompt?

@@ -21,8 +21,6 @@ export interface Wallet {
 export interface GlobalState {
   status: AppStatus
   version: string
-  serviceRunning: boolean
-  serviceUrl: string | null
   network: string | null
   networks: string[]
   wallets: Wallet[]

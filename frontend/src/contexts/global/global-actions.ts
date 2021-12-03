@@ -67,10 +67,6 @@ export function changeWalletAction(wallet: string): GlobalAction {
   return { type: 'CHANGE_WALLET', wallet }
 }
 
-export function setServiceAction(running: boolean, url: string): GlobalAction {
-  return { type: 'SET_SERVICE', running, url }
-}
-
 export function setDrawerAction(open: boolean): GlobalAction {
   return { type: 'SET_DRAWER', open }
 }

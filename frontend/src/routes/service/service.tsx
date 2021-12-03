@@ -2,14 +2,21 @@ import React from 'react'
 import { StartService, StopService } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
-import { setServiceAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
+import { setServiceAction } from '../../contexts/service/service-actions'
+import { useService } from '../../contexts/service/service-context'
 
 export function Service() {
-  const { state, dispatch } = useGlobal()
+  const {
+    state: { network }
+  } = useGlobal()
+  const {
+    state: { running },
+    dispatch
+  } = useService()
 
   async function start(withConsole: boolean) {
-    if (!state.network) {
+    if (!network) {
       AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
     }
@@ -18,9 +25,10 @@ export function Service() {
       const HACK_URL = withConsole ? 'http://127.0.0.1:1847' : ''
       dispatch(setServiceAction(true, HACK_URL))
       await StartService({
-        network: state.network,
+        network,
         withConsole
       })
+      console.log('after')
     } catch (err) {
       console.error(err)
     }
@@ -43,7 +51,7 @@ export function Service() {
         alignItems: 'center',
         padding: 30
       }}>
-      {state.serviceRunning ? (
+      {running ? (
         <button onClick={stop} type='button'>
           Stop service
         </button>

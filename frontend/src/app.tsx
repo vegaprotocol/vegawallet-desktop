@@ -19,6 +19,7 @@ import {
   initAppSuccessAction,
   initAppFailureAction
 } from './contexts/global/global-actions'
+import { ServiceProvider } from './contexts/service/service-provider'
 
 function AppLoader({ children }: { children: React.ReactElement }) {
   const { state, dispatch } = useGlobal()
@@ -71,11 +72,13 @@ function App() {
   return (
     <Router>
       <GlobalProvider>
-        <AppLoader>
-          <Chrome>
-            <AppRouter />
-          </Chrome>
-        </AppLoader>
+        <ServiceProvider>
+          <AppLoader>
+            <Chrome>
+              <AppRouter />
+            </Chrome>
+          </AppLoader>
+        </ServiceProvider>
       </GlobalProvider>
     </Router>
   )
