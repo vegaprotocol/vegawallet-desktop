@@ -11,6 +11,7 @@ export function Dropdown({ content, children }: DropdownProps) {
   return (
     <Popover2
       transitionDuration={0}
+      // @ts-ignore
       modifiers={{ arrow: { enabled: false } }}
       targetTagName='div'
       position={Position.BOTTOM_RIGHT}
@@ -51,7 +52,8 @@ export function DropdownMenuItem({
     <li
       style={{
         borderLeft: '3px solid transparent',
-        borderLeftColor: active ? '#fff' : 'transparent'
+        borderLeftColor: active ? '#fff' : 'transparent',
+        borderImage: active ? 'url(./vega-bg.png) 15% / 1 / 0' : 'none'
       }}>
       {children}
     </li>

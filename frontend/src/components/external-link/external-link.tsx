@@ -10,6 +10,10 @@ export function ExternalLink(props: ExternalLinkProps) {
   return (
     // ignore warning about no content
     // eslint-disable-next-line
-    <a {...props} onClick={() => WailsRuntime.Browser.OpenURL(props.href)} />
+    <a
+      {...props}
+      target='_blank'
+      onClick={() => WailsRuntime.Browser.OpenURL(props.href)}
+    />
   )
 }

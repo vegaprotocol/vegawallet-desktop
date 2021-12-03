@@ -32,7 +32,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           minHeight: 45,
-          borderBottom: `1px solid ${Colors.DARK_GRAY_5}`,
+          borderBottom: `3px solid`,
+          borderImage: 'url(./vega-bg.png) 15% / 1 / 0',
           background: '#040404'
         }}>
         <ButtonUnstyled
@@ -55,7 +56,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           alignItems: 'center',
           padding: '10px 15px',
           fontSize: 14,
-          background: 'url(./footer-background.png)',
+          background: 'url(./vega-bg.png)',
           backgroundSize: 'cover'
         }}>
         <div>Version {state.version}</div>

@@ -21,10 +21,9 @@ export function NetworkSwitcher() {
                   style={{
                     display: 'block',
                     width: '100%',
-                    padding: '10px 15px 10px 18px',
+                    padding: '10px 15px',
                     lineHeight: 1,
-                    textAlign: 'left',
-                    borderLeft: '3px solid transparnet'
+                    textAlign: 'left'
                   }}
                   onClick={() => {
                     dispatch(changeNetworkAction(network))
