@@ -122,7 +122,7 @@ function Menu() {
         }}>
         <AppLink to={Paths.Home}>Wallets</AppLink>
         <AppLink to={Paths.Import}>Add / Import Wallet</AppLink>
-        <AppLink to={Paths.Console}>Wallet Service</AppLink>
+        <AppLink to={Paths.Service}>Wallet Service</AppLink>
         <AppLink to={Paths.Network}>Network Config</AppLink>
       </nav>
       <nav style={{ padding: 15 }}>

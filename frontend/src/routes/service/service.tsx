@@ -5,7 +5,7 @@ import { Colors } from '../../config/colors'
 import { setServiceAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 
-export function Console() {
+export function Service() {
   const { state, dispatch } = useGlobal()
 
   async function start(withConsole: boolean) {
