@@ -11,9 +11,10 @@ import type { ListWalletsResponse } from '../models/list-wallets'
 import type { CreateWalletResponse } from '../models/create-wallet'
 import { ImportWalletResponse } from '../models/import-wallet'
 import { LoadWalletsResponse } from '../models/load-wallets'
+import {GetVersionResponse} from "../models/version";
 
 interface Handler {
-  GetVersion(): Promise<string>
+  GetVersion(): Promise<GetVersionResponse>
 
   GenerateKey(request: string): Promise<GenerateKeyResponse>
 

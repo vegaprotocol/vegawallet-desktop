@@ -26,9 +26,11 @@ import {
 import { StartServiceRequest } from '../models/start-console'
 import { GetVersionResponse } from '../models/version'
 
-// TODO: @Valentin can we get the version here?
+/**
+ * Return the software version.
+ */
 export function GetVersion(): Promise<GetVersionResponse> {
-  return Promise.resolve({ version: '0.10.0' })
+  return window.backend.Handler.GetVersion()
 }
 
 /**
