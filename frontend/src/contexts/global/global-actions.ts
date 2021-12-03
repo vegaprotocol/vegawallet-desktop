@@ -2,12 +2,14 @@ import { GetServiceStateResponse } from '../../models/console-state'
 import { Key, NamedKeyPair } from '../../models/keys'
 import { ListWalletsResponse } from '../../models/list-wallets'
 import { ListNetworksResponse } from '../../models/network'
+import { GetVersionResponse } from '../../models/version'
 import { GlobalAction } from './global-reducer'
 
-export function initAppSuccess(
+export function initAppSuccessAction(
   networks: ListNetworksResponse,
   wallets: ListWalletsResponse,
-  service: GetServiceStateResponse
+  service: GetServiceStateResponse,
+  version: GetVersionResponse
 ): GlobalAction {
   return {
     type: 'INIT_APP',
@@ -15,18 +17,20 @@ export function initAppSuccess(
     networks: networks.networks,
     wallets: wallets.wallets,
     serviceRunning: service.Running,
-    serviceUrl: service.URL
+    serviceUrl: service.URL,
+    version: version.version
   }
 }
 
-export function initAppFailure(): GlobalAction {
+export function initAppFailureAction(): GlobalAction {
   return {
     type: 'INIT_APP',
     isInit: false,
     wallets: [],
     networks: [],
     serviceRunning: false,
-    serviceUrl: ''
+    serviceUrl: '',
+    version: ''
   }
 }
 

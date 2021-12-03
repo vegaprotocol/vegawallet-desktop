@@ -20,6 +20,12 @@ import {
   IsolateKeyResponse
 } from '../models/keys'
 import { StartServiceRequest } from '../models/start-console'
+import { GetVersionResponse } from '../models/version'
+
+// TODO: @Valentin
+export function GetVersion(): Promise<GetVersionResponse> {
+  return Promise.resolve({ version: '0.10.0' })
+}
 
 /**
  * Generate a new key on a given wallet. If the wallet doesn't exist, it's

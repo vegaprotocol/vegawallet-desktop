@@ -1,14 +1,20 @@
-import type {Network} from '../models/network'
-import {ListNetworksResponse} from "../models/network";
-import type {GetServiceStateResponse} from '../models/console-state'
-import type {ListKeysResponse} from '../models/keys'
-import {DescribeKeyResponse, GenerateKeyResponse, IsolateKeyResponse} from "../models/keys";
-import type {ListWalletsResponse} from '../models/list-wallets'
-import type {CreateWalletResponse} from '../models/create-wallet'
-import {ImportWalletResponse} from '../models/import-wallet'
-import {LoadWalletsResponse} from '../models/load-wallets'
+import type { Network } from '../models/network'
+import { ListNetworksResponse } from '../models/network'
+import type { GetServiceStateResponse } from '../models/console-state'
+import type { ListKeysResponse } from '../models/keys'
+import {
+  DescribeKeyResponse,
+  GenerateKeyResponse,
+  IsolateKeyResponse
+} from '../models/keys'
+import type { ListWalletsResponse } from '../models/list-wallets'
+import type { CreateWalletResponse } from '../models/create-wallet'
+import { ImportWalletResponse } from '../models/import-wallet'
+import { LoadWalletsResponse } from '../models/load-wallets'
 
 interface Handler {
+  GetVersion(): Promise<string>
+
   GenerateKey(request: string): Promise<GenerateKeyResponse>
 
   DescribeKey(request: string): Promise<DescribeKeyResponse>

@@ -4,7 +4,7 @@ import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
-  version: '0.10.0',
+  version: '',
   serviceRunning: false,
   serviceUrl: null,
   network: null,
@@ -23,6 +23,7 @@ export type GlobalAction =
       networks: string[]
       serviceRunning: boolean
       serviceUrl: string
+      version: string
     }
   | {
       type: 'ADD_WALLET'
@@ -82,7 +83,8 @@ export function globalReducer(
             return 0
           }),
         serviceRunning: action.serviceRunning,
-        serviceUrl: action.serviceUrl
+        serviceUrl: action.serviceUrl,
+        version: action.version
       }
     }
     case 'ADD_WALLET': {

@@ -7,6 +7,7 @@ import { Chrome } from './components/chrome'
 import { GlobalProvider } from './contexts/global/global-provider'
 import {
   GetServiceState,
+  GetVersion,
   IsAppInitialised,
   ListNetworks,
   ListWallets
@@ -15,8 +16,8 @@ import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
 import {
-  initAppSuccess,
-  initAppFailure
+  initAppSuccessAction,
+  initAppFailureAction
 } from './contexts/global/global-actions'
 
 function AppLoader({ children }: { children: React.ReactElement }) {
@@ -32,14 +33,16 @@ function AppLoader({ children }: { children: React.ReactElement }) {
           const res = await Promise.all([
             await ListNetworks(),
             await ListWallets(),
-            await GetServiceState()
+            await GetServiceState(),
+            await GetVersion()
           ])
-          dispatch(initAppSuccess(...res))
+          dispatch(initAppSuccessAction(...res))
         } else {
-          dispatch(initAppFailure())
+          dispatch(initAppFailureAction())
         }
       } catch (err) {
-        dispatch(initAppFailure())
+        console.log(err)
+        dispatch(initAppFailureAction())
       }
     }
 
