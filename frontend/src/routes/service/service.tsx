@@ -30,7 +30,6 @@ export function Service() {
         network,
         withConsole
       })
-      console.log('after')
     } catch (err) {
       console.error(err)
     }
@@ -46,7 +45,10 @@ export function Service() {
   }
 
   async function startConsole() {
-    if (!network) return
+    if (!network) {
+      AppToaster.show({ message: 'No network selected', color: Colors.RED })
+      return
+    }
     try {
       await StopService()
       dispatch(startConsoleAction())

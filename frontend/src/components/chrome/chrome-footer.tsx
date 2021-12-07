@@ -15,28 +15,28 @@ export function ChromeFooter() {
       style={{
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         padding: '10px 15px',
         fontSize: 14,
         background: 'url(./vega-bg.png)',
         backgroundSize: 'cover'
       }}>
-      <div>Version {version}</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {serviceRunning ? (
-          <div>Service running @ {serviceUrl}</div>
+          <div>Service running: {serviceUrl}</div>
         ) : (
           <div>Service not running</div>
         )}
         {consoleRunning ? (
           <div>
-            Console running @{' '}
+            Console running:{' '}
             <ExternalLink href={consoleUrl}>{consoleUrl}</ExternalLink>
           </div>
         ) : (
           <div>Console not running</div>
         )}
       </div>
+      <div>Version {version}</div>
     </footer>
   )
 }
