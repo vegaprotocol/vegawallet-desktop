@@ -8,6 +8,7 @@ import { GlobalProvider } from './contexts/global/global-provider'
 import {
   GetServiceState,
   GetVersion,
+  InitialiseApp,
   IsAppInitialised,
   ListNetworks,
   ListWallets
@@ -29,19 +30,20 @@ function AppLoader({ children }: { children: React.ReactElement }) {
       try {
         const isInit = await IsAppInitialised()
 
-        // App initialised check what wallets are available
-        if (isInit) {
-          console.log('startup requests')
-          const res = await Promise.all([
-            await ListNetworks(),
-            await ListWallets(),
-            await GetServiceState(),
-            await GetVersion()
-          ])
-          dispatch(initAppSuccessAction(...res))
-        } else {
-          dispatch(initAppFailureAction())
+        if (!isInit) {
+          // For now just pass an empty string so that you always get
+          // the default vega home location
+          await InitialiseApp({ vegaHome: '' })
         }
+
+        // App initialised check what wallets are available
+        const res = await Promise.all([
+          await ListNetworks(),
+          await ListWallets(),
+          await GetServiceState(),
+          await GetVersion()
+        ])
+        dispatch(initAppSuccessAction(...res))
       } catch (err) {
         dispatch(initAppFailureAction())
       }

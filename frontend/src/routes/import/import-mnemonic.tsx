@@ -55,7 +55,6 @@ export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
     setFormState(FormState.Pending)
     try {
       const resp = await ImportWallet({
-        VegaHome: '',
         Name: values.name,
         Passphrase: values.passphrase,
         Mnemonic: values.mnemonic,
