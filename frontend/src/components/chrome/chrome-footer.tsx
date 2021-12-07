@@ -8,7 +8,7 @@ export function ChromeFooter() {
     state: { version }
   } = useGlobal()
   const {
-    state: { url, running }
+    state: { serviceRunning, serviceUrl, consoleRunning, consoleUrl }
   } = useService()
   return (
     <footer
@@ -22,19 +22,21 @@ export function ChromeFooter() {
         backgroundSize: 'cover'
       }}>
       <div>Version {version}</div>
-      {running ? (
-        <>
-          {url ? (
-            <div>
-              Console running @ <ExternalLink href={url}>{url}</ExternalLink>
-            </div>
-          ) : (
-            <div>Service running</div>
-          )}
-        </>
-      ) : (
-        <div>Service not running</div>
-      )}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {serviceRunning ? (
+          <div>Service running @ {serviceUrl}</div>
+        ) : (
+          <div>Service not running</div>
+        )}
+        {consoleRunning ? (
+          <div>
+            Console running @{' '}
+            <ExternalLink href={consoleUrl}>{consoleUrl}</ExternalLink>
+          </div>
+        ) : (
+          <div>Console not running</div>
+        )}
+      </div>
     </footer>
   )
 }

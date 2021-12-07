@@ -31,6 +31,7 @@ function AppLoader({ children }: { children: React.ReactElement }) {
 
         // App initialised check what wallets are available
         if (isInit) {
+          console.log('startup requests')
           const res = await Promise.all([
             await ListNetworks(),
             await ListWallets(),
@@ -72,13 +73,13 @@ function App() {
   return (
     <Router>
       <GlobalProvider>
-        <ServiceProvider>
-          <AppLoader>
+        <AppLoader>
+          <ServiceProvider>
             <Chrome>
               <AppRouter />
             </Chrome>
-          </AppLoader>
-        </ServiceProvider>
+          </ServiceProvider>
+        </AppLoader>
       </GlobalProvider>
     </Router>
   )

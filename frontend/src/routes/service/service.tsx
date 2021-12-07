@@ -3,7 +3,11 @@ import { StartService, StopService } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
-import { setServiceAction } from '../../contexts/service/service-actions'
+import {
+  startConsoleAction,
+  startServiceAction,
+  stopServiceAction
+} from '../../contexts/service/service-actions'
 import { useService } from '../../contexts/service/service-context'
 
 export function Service() {
@@ -11,7 +15,7 @@ export function Service() {
     state: { network }
   } = useGlobal()
   const {
-    state: { running },
+    state: { serviceRunning, consoleRunning },
     dispatch
   } = useService()
 
@@ -22,8 +26,8 @@ export function Service() {
     }
     try {
       // TODO:  @Valentin heres where StartService hangs
-      const HACK_URL = withConsole ? 'http://127.0.0.1:1847' : ''
-      dispatch(setServiceAction(true, HACK_URL))
+      // const HACK_URL = withConsole ? 'http://127.0.0.1:1847' : ''
+      dispatch(startServiceAction())
       await StartService({
         network,
         withConsole
@@ -37,7 +41,18 @@ export function Service() {
   async function stop() {
     try {
       await StopService()
-      dispatch(setServiceAction(false, ''))
+      dispatch(stopServiceAction())
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async function startConsole() {
+    if (!network) return
+    try {
+      await StopService()
+      dispatch(startConsoleAction())
+      await StartService({ network, withConsole: true })
     } catch (err) {
       console.error(err)
     }
@@ -47,24 +62,32 @@ export function Service() {
     <div
       style={{
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 30
+        flexDirection: 'column',
+        padding: 30,
+        gap: 15
       }}>
-      {running ? (
-        <button onClick={stop} type='button'>
-          Stop service
-        </button>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+        {serviceRunning ? (
+          <button onClick={stop} type='button'>
+            Stop service
+          </button>
+        ) : (
           <button onClick={() => start(false)} type='button'>
             Start service
           </button>
-          <button onClick={() => start(true)} type='button'>
+        )}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+        {consoleRunning ? (
+          <button onClick={stop} type='button'>
+            Stop Console
+          </button>
+        ) : (
+          <button onClick={() => startConsole()} type='button'>
             Start service with Console proxy
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

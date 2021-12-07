@@ -2,8 +2,10 @@ import React from 'react'
 import { ServiceAction } from './service-reducer'
 
 export interface ServiceState {
-  running: boolean
-  url: string | null
+  serviceRunning: boolean
+  serviceUrl: string
+  consoleRunning: boolean
+  consoleUrl: string
 }
 
 export type ServiceDispatch = React.Dispatch<ServiceAction>

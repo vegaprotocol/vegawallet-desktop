@@ -1,5 +1,13 @@
 import { ServiceAction } from './service-reducer'
 
-export function setServiceAction(running: boolean, url: string): ServiceAction {
-  return { type: 'SET_SERVICE', running, url }
+export function startServiceAction(): ServiceAction {
+  return { type: 'START_SERVICE' }
+}
+
+export function stopServiceAction(): ServiceAction {
+  return { type: 'STOP_SERVICE' }
+}
+
+export function startConsoleAction(): ServiceAction {
+  return { type: 'START_CONSOLE' }
 }
