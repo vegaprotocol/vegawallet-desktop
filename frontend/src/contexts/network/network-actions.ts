@@ -49,7 +49,7 @@ export function updateNetworkConfigAction(config: Network) {
       const isSuccessful = await SaveNetworkConfig(config)
       if (isSuccessful) {
         AppToaster.show({
-          message: 'Configuration saved!',
+          message: 'Configuration saved. All services stopped.',
           color: Colors.GREEN
         })
         dispatch({ type: 'UPDATE_NETWORK_CONFIG', config })

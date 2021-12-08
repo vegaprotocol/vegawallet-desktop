@@ -1,7 +1,7 @@
 import React from 'react'
 import useThunkReducer from 'react-hook-thunk-reducer'
 import { useNetwork } from '../network/network-context'
-import { startServiceAction } from './service-actions'
+import { startServiceAction, stopServiceAction } from './service-actions'
 import { ServiceContext } from './service-context'
 import { initialServiceState, serviceReducer } from './service-reducer'
 
@@ -21,6 +21,13 @@ export function ServiceProvider({ children }: ServiceProviderProps) {
     if (!network || !config) return
     dispatch(startServiceAction(network, config.Port))
   }, [network, config, dispatch])
+
+  // Stop services any time user updates their network config, otherwise you
+  // might get in a pickle where services are running on ports when the config
+  // has been changed to use different ports
+  React.useEffect(() => {
+    dispatch(stopServiceAction())
+  }, [config, dispatch])
 
   return (
     <ServiceContext.Provider value={{ state, dispatch }}>
