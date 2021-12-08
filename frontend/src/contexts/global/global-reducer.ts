@@ -1,4 +1,4 @@
-import { truncateMiddle } from '../../lib/truncate-middle'
+import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
 import { Key, NamedKeyPair } from '../../models/keys'
 import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
 
@@ -73,11 +73,7 @@ export function globalReducer(
               keypair: null
             }
           })
-          .sort((a, b) => {
-            if (a.name < b.name) return -1
-            if (a.name > b.name) return 1
-            return 0
-          }),
+          .sort(sortWallet),
         version: action.version
       }
     }
@@ -87,21 +83,11 @@ export function globalReducer(
         wallets: [
           ...state.wallets,
           { name: action.wallet, keypairs: null, keypair: null }
-        ].sort((a, b) => {
-          if (a.name < b.name) return -1
-          if (a.name > b.name) return 1
-          return 0
-        })
+        ].sort(sortWallet)
       }
     }
     case 'SET_KEYPAIRS': {
-      // Add a 'Name' and 'PublicKeyShort' fields to the keypair object
-      const keypairsExtended: KeyPair[] = action.keypairs.map(kp => {
-        return {
-          ...kp,
-          publicKeyShort: truncateMiddle(kp.publicKey)
-        }
-      })
+      const keypairsExtended: KeyPair[] = action.keypairs.map(extendKeypair)
       const currWallet = state.wallets.find(w => w.name === action.wallet)
       const newWallet: Wallet = {
         ...currWallet,
@@ -115,11 +101,7 @@ export function globalReducer(
         wallets: [
           ...state.wallets.filter(w => w.name !== action.wallet),
           newWallet
-        ].sort((a, b) => {
-          if (a.name < b.name) return -1
-          if (a.name > b.name) return 1
-          return 0
-        }),
+        ].sort(sortWallet),
         wallet: newWallet
       }
     }
@@ -131,24 +113,14 @@ export function globalReducer(
         throw new Error('Wallet not found')
       }
 
-      const nameMeta = action.keypair.meta?.find(m => m.key === 'name')
-
-      const newKeypair: KeyPair = {
-        ...action.keypair,
-        name: nameMeta ? nameMeta.value : 'No name',
-        publicKeyShort: truncateMiddle(action.keypair.publicKey)
-      }
+      const newKeypair = extendKeypair(action.keypair)
       const updatedWallet: Wallet = {
         ...currWallet,
         keypairs: [...(currWallet?.keypairs || []), newKeypair]
       }
       return {
         ...state,
-        wallets: [...wallets, updatedWallet].sort((a, b) => {
-          if (a.name < b.name) return -1
-          if (a.name > b.name) return 1
-          return 0
-        }),
+        wallets: [...wallets, updatedWallet].sort(sortWallet),
         wallet: updatedWallet
       }
     }

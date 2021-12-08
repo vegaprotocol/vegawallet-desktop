@@ -33,6 +33,7 @@ export const WalletList = () => {
           wallet,
           passphrase
         })
+        console.log(keys)
         dispatch(setKeypairsAction(wallet, keys.keys || []))
         history.push(WalletPaths.Home)
       } catch (err) {
