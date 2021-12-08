@@ -89,6 +89,15 @@ button {
   &.active {
     background: $dark-gray5;
   }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: default;
+
+    &:hover {
+      background: $dark-gray1;
+    }
+  }
 }
 
 // TABLES

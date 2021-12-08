@@ -43,19 +43,15 @@ export const NetworkDetails = ({
           </tr>
         </tbody>
       </table>
-      <h2>gRPC Nodes</h2>
-      <NodeList items={config.API.GRPC.Hosts} />
-      <h2>GraphQL Nodes</h2>
-      <NodeList items={config.API.GraphQL.Hosts} />
-      <h2>REST Nodes</h2>
-      <NodeList items={config.API.REST.Hosts} />
       <h2>Console</h2>
       <table>
         <tbody>
           <tr>
             <th>URL</th>
             <td>
-              <ExternalLink href={`https://${config.Console.URL}`}>
+              <ExternalLink
+                style={{ textDecoration: 'underline' }}
+                href={`https://${config.Console.URL}`}>
                 {config.Console.URL}
               </ExternalLink>
             </td>
@@ -66,6 +62,12 @@ export const NetworkDetails = ({
           </tr>
         </tbody>
       </table>
+      <h2>gRPC Nodes</h2>
+      <NodeList items={config.API.GRPC.Hosts} />
+      <h2>GraphQL Nodes</h2>
+      <NodeList items={config.API.GraphQL.Hosts} />
+      <h2>REST Nodes</h2>
+      <NodeList items={config.API.REST.Hosts} />
     </>
   )
 }
