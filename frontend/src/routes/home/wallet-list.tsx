@@ -7,7 +7,10 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
-import { setKeypairsAction } from '../../contexts/global/global-actions'
+import {
+  changeWalletAction,
+  setKeypairsAction
+} from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 
 export const WalletList = () => {
@@ -18,17 +21,24 @@ export const WalletList = () => {
   } = useGlobal()
 
   async function getKeys(wallet: string) {
-    try {
-      const passphrase = await requestPassphrase()
-      const keys = await ListKeys({
-        wallet,
-        passphrase
-      })
-      dispatch(setKeypairsAction(wallet, keys.keys || []))
+    const selectedWallet = wallets.find(w => w.name === wallet)
+
+    if (selectedWallet?.keypairs) {
+      dispatch(changeWalletAction(wallet))
       history.push(WalletPaths.Home)
-    } catch (err) {
-      if (err !== 'dismissed') {
-        AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
+    } else {
+      try {
+        const passphrase = await requestPassphrase()
+        const keys = await ListKeys({
+          wallet,
+          passphrase
+        })
+        dispatch(setKeypairsAction(wallet, keys.keys || []))
+        history.push(WalletPaths.Home)
+      } catch (err) {
+        if (err !== 'dismissed') {
+          AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
+        }
       }
     }
   }

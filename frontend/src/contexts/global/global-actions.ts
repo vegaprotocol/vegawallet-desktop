@@ -61,6 +61,10 @@ export function changeNetworkAction(network: string): GlobalAction {
   return { type: 'CHANGE_NETWORK', network }
 }
 
+export function changeWalletAction(wallet: string): GlobalAction {
+  return { type: 'CHANGE_WALLET', wallet }
+}
+
 export function setDrawerAction(open: boolean): GlobalAction {
   return { type: 'SET_DRAWER', open }
 }

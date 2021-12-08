@@ -42,6 +42,10 @@ export type GlobalAction =
       network: string
     }
   | {
+      type: 'CHANGE_WALLET'
+      wallet: string
+    }
+  | {
       type: 'SET_DRAWER'
       open: boolean
     }
@@ -152,6 +156,18 @@ export function globalReducer(
       return {
         ...state,
         network: action.network
+      }
+    }
+    case 'CHANGE_WALLET': {
+      const wallet = state.wallets.find(w => w.name === action.wallet)
+
+      if (!wallet) {
+        throw new Error('Wallet not found')
+      }
+
+      return {
+        ...state,
+        wallet
       }
     }
     case 'SET_DRAWER': {
