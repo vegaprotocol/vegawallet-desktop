@@ -1,4 +1,4 @@
-export interface ConsoleConfig {
+export interface AppConfig {
   URL: string
   LocalPort: number
 }
@@ -29,7 +29,8 @@ export interface Network {
   Host: string
   Port: number
   API: API
-  Console: ConsoleConfig
+  Console: AppConfig
+  TokenDApp: AppConfig
 }
 
 export interface ListNetworksResponse {
@@ -42,6 +43,7 @@ export interface SaveNetworkConfigRequest {
   TokenExpiry: string
   Port: number
   Host: string
-  Console: ConsoleConfig
+  Console: AppConfig
+  TokenDApp: AppConfig
   API: API
 }

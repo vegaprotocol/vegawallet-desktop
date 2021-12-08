@@ -5,10 +5,7 @@ import {
   useForm,
   UseFormRegister
 } from 'react-hook-form'
-import { SaveNetworkConfig } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
-import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
 import { LogLevels } from '../../config/log-levels'
 import type { Network } from '../../models/network'
 
@@ -20,17 +17,22 @@ interface FormFields {
   grpcNodeRetries: number
   consoleUrl: string
   consolePort: number
+  tokenDAppUrl: string
+  tokenDAppPort: number
   grpcHosts: Array<{ value: string }>
   graphqlHosts: Array<{ value: string }>
   restHosts: Array<{ value: string }>
 }
 
-export interface ConfigEditorProps {
+export interface NetworkConfigFormProps {
   config: Network
-  setConfig: React.Dispatch<React.SetStateAction<Network | null>>
+  onSubmit: (config: Network) => void
 }
 
-export const NetworkEditor = ({ config, setConfig }: ConfigEditorProps) => {
+export const NetworkConfigForm = ({
+  config,
+  onSubmit
+}: NetworkConfigFormProps) => {
   const {
     control,
     register,
@@ -41,24 +43,6 @@ export const NetworkEditor = ({ config, setConfig }: ConfigEditorProps) => {
     defaultValues: configToFields(config)
   })
 
-  const onSubmit = async (values: FormFields) => {
-    try {
-      const configUpdate = fieldsToConfig(config, values)
-      const success = await SaveNetworkConfig(configUpdate)
-      if (success) {
-        setConfig(configUpdate)
-        AppToaster.show({
-          message: 'Configuration saved!',
-          color: Colors.GREEN
-        })
-      } else {
-        AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
-      }
-    } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
-    }
-  }
-
   // If the config changes reset the fields with the new config. This happens
   // if the network dropdown is used whilst editing
   React.useEffect(() => {
@@ -66,7 +50,11 @@ export const NetworkEditor = ({ config, setConfig }: ConfigEditorProps) => {
   }, [config, reset])
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit((values: FormFields) => {
+        const configUpdate = fieldsToConfig(config, values)
+        onSubmit(configUpdate)
+      })}>
       <FormGroup
         label='* Log level'
         labelFor='logLevel'
@@ -127,6 +115,24 @@ export const NetworkEditor = ({ config, setConfig }: ConfigEditorProps) => {
           {...register('consolePort', { required: 'Required' })}
         />
       </FormGroup>
+      <FormGroup
+        label='* Token DApp URL'
+        labelFor='tokenDAppUrl'
+        errorText={errors.tokenDAppUrl?.message}>
+        <input
+          type='text'
+          {...register('tokenDAppUrl', { required: 'Required' })}
+        />
+      </FormGroup>
+      <FormGroup
+        label='* Token DApp port'
+        labelFor='tokenDAppPort'
+        errorText={errors.tokenDAppPort?.message}>
+        <input
+          type='text'
+          {...register('tokenDAppPort', { required: 'Required' })}
+        />
+      </FormGroup>
       <h2>gRPC Nodes</h2>
       <HostEditor name='grpcHosts' control={control} register={register} />
       <h2>GraphQL Nodes</h2>
@@ -182,7 +188,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
   )
 }
 
-function fieldsToConfig(config: Network, values: FormFields) {
+function fieldsToConfig(config: Network, values: FormFields): Network {
   return {
     Name: config.Name,
     Level: values.logLevel,
@@ -192,6 +198,10 @@ function fieldsToConfig(config: Network, values: FormFields) {
     Console: {
       URL: values.consoleUrl,
       LocalPort: Number(values.consolePort)
+    },
+    TokenDApp: {
+      URL: values.tokenDAppUrl,
+      LocalPort: Number(values.tokenDAppPort)
     },
     API: {
       GRPC: {
@@ -204,7 +214,7 @@ function fieldsToConfig(config: Network, values: FormFields) {
   }
 }
 
-function configToFields(config: Network) {
+function configToFields(config: Network): FormFields {
   return {
     logLevel: config.Level,
     tokenExpiry: config.TokenExpiry,
@@ -213,6 +223,8 @@ function configToFields(config: Network) {
     grpcNodeRetries: config.API.GRPC.Retries,
     consoleUrl: config.Console.URL,
     consolePort: config.Console.LocalPort,
+    tokenDAppUrl: config.TokenDApp.URL,
+    tokenDAppPort: config.TokenDApp.LocalPort,
     grpcHosts: config.API.GRPC.Hosts.map(x => ({ value: x })),
     graphqlHosts: config.API.GraphQL.Hosts.map(x => ({ value: x })),
     restHosts: config.API.REST.Hosts.map(x => ({ value: x }))

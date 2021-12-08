@@ -4,15 +4,17 @@ import { NetworkPaths } from '.'
 
 import { BulletHeader } from '../../components/bullet-header'
 import { ExternalLink } from '../../components/external-link'
-import type { Network } from '../../models/network'
+import { useNetwork } from '../../contexts/network/network-context'
 
-export interface NetworkDetailsProps {
-  config: Network
-}
+export const NetworkDetails = () => {
+  const {
+    state: { config }
+  } = useNetwork()
 
-export const NetworkDetails = ({
-  config
-}: NetworkDetailsProps): JSX.Element => {
+  if (!config) {
+    return <p>No network configuration found</p>
+  }
+
   return (
     <>
       <div>

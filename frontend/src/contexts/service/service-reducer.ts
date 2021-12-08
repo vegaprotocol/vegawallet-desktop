@@ -10,6 +10,7 @@ export const initialServiceState: ServiceState = {
 export type ServiceAction =
   | {
       type: 'START_SERVICE'
+      port: number
     }
   | {
       type: 'STOP_SERVICE'
@@ -17,6 +18,7 @@ export type ServiceAction =
   | {
       type: 'START_PROXY'
       app: ProxyApp
+      port: number
     }
   | {
       type: 'STOP_PROXY'
@@ -31,8 +33,7 @@ export function serviceReducer(
       return {
         ...state,
         serviceRunning: true,
-        // TODO: Get actual port from backend
-        serviceUrl: 'http://127.0.0.1:1789'
+        serviceUrl: `http://127.0.0.1:${action.port}`
       }
     }
     case 'STOP_SERVICE': {
@@ -48,8 +49,7 @@ export function serviceReducer(
       return {
         ...state,
         proxy: action.app,
-        // TODO: Get actual port from backend
-        proxyUrl: 'http://127.0.0.1:1847'
+        proxyUrl: `http://127.0.0.1:${action.port}`
       }
     }
     case 'STOP_PROXY': {

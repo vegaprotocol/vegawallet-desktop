@@ -3,22 +3,30 @@ import { Link } from 'react-router-dom'
 import { NetworkPaths } from '.'
 
 import { BulletHeader } from '../../components/bullet-header'
-import type { Network } from '../../models/network'
-import { NetworkEditor } from './network-editor'
+import { updateNetworkConfigAction } from '../../contexts/network/network-actions'
+import { useNetwork } from '../../contexts/network/network-context'
+import { NetworkConfigForm } from './network-config-form'
 
-interface NetworkEditProps {
-  config: Network
-  setConfig: React.Dispatch<React.SetStateAction<Network | null>>
-}
+export const NetworkEdit = () => {
+  const {
+    state: { config },
+    dispatch
+  } = useNetwork()
 
-export const NetworkEdit = ({ config, setConfig }: NetworkEditProps) => {
+  if (!config) {
+    return <p>No network configuration found</p>
+  }
+
   return (
     <>
       <div>
         <Link to={NetworkPaths.Config}>Back</Link>
       </div>
       <BulletHeader tag='h1'>Edit configuration</BulletHeader>
-      <NetworkEditor config={config} setConfig={setConfig} />
+      <NetworkConfigForm
+        config={config}
+        onSubmit={config => dispatch(updateNetworkConfigAction(config))}
+      />
     </>
   )
 }

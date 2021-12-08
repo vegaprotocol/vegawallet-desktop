@@ -11,16 +11,16 @@ interface ServiceProviderProps {
 
 export function ServiceProvider({ children }: ServiceProviderProps) {
   const {
-    state: { network }
+    state: { network, config }
   } = useNetwork()
 
   const [state, dispatch] = useThunkReducer(serviceReducer, initialServiceState)
 
   // Start service on app startup
   React.useEffect(() => {
-    if (!network) return
-    dispatch(startServiceAction(network))
-  }, [network, dispatch])
+    if (!network || !config) return
+    dispatch(startServiceAction(network, config.Port))
+  }, [network, config, dispatch])
 
   return (
     <ServiceContext.Provider value={{ state, dispatch }}>

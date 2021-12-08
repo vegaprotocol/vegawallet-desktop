@@ -19,6 +19,10 @@ export type NetworkAction =
       network: string
       config: Network
     }
+  | {
+      type: 'UPDATE_NETWORK_CONFIG'
+      config: Network
+    }
 
 export function networkReducer(
   state: NetworkState,
@@ -37,6 +41,12 @@ export function networkReducer(
       return {
         ...state,
         network: action.network,
+        config: action.config
+      }
+    }
+    case 'UPDATE_NETWORK_CONFIG': {
+      return {
+        ...state,
         config: action.config
       }
     }

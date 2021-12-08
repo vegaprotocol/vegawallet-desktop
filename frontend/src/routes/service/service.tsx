@@ -11,7 +11,7 @@ import { ProxyApp, useService } from '../../contexts/service/service-context'
 
 export function Service() {
   const {
-    state: { network }
+    state: { network, config }
   } = useNetwork()
   const {
     state: { serviceRunning, proxy },
@@ -19,12 +19,12 @@ export function Service() {
   } = useService()
 
   function start() {
-    if (!network) {
+    if (!network || !config) {
       AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
     }
 
-    dispatch(startServiceAction(network))
+    dispatch(startServiceAction(network, config.Port))
   }
 
   function stop() {
@@ -32,12 +32,17 @@ export function Service() {
   }
 
   function startProxy(app: ProxyApp) {
-    if (!network) {
+    if (!network || !config || app === ProxyApp.None) {
       AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
     }
 
-    dispatch(startProxyAction(network, app))
+    const port =
+      app === ProxyApp.Console
+        ? config.Console.LocalPort
+        : config.TokenDApp.LocalPort
+
+    dispatch(startProxyAction(network, app, port))
   }
 
   return (
