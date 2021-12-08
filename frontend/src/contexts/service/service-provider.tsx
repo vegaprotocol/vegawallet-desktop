@@ -1,5 +1,5 @@
 import React from 'react'
-import { StartService, StopService } from '../../api/service'
+import { GetServiceState, StartService, StopService } from '../../api/service'
 import { useGlobal } from '../global/global-context'
 import { startServiceAction } from './service-actions'
 import { ServiceContext } from './service-context'
@@ -25,8 +25,11 @@ export function ServiceProvider({ children }: ServiceProviderProps) {
       if (!network) return
 
       try {
-        // Always stop stop service so it can be started again with a new network
-        await StopService()
+        const res = await GetServiceState()
+
+        if (res.Running) {
+          await StopService()
+        }
 
         // Start service must be before API call because the below promise will only
         // resolve once the service is stopped

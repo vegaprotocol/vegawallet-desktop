@@ -30,7 +30,11 @@ export function ChromeFooter() {
         {consoleRunning ? (
           <div>
             Console running:{' '}
-            <ExternalLink href={consoleUrl}>{consoleUrl}</ExternalLink>
+            <ExternalLink
+              href={consoleUrl}
+              style={{ textDecoration: 'underline' }}>
+              {consoleUrl}
+            </ExternalLink>
           </div>
         ) : (
           <div>Console not running</div>
