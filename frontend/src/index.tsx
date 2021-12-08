@@ -18,7 +18,6 @@ TODO:
 - After create go straight to keys (store password only once for memory)
 - Test no network configs
 - Importing configs? Where to prompt?
-- Start service immediately?
 - Tests
 */
 

@@ -40,14 +40,12 @@ export function addWalletAction(wallet: string): GlobalAction {
 
 export function setKeypairsAction(
   wallet: string,
-  keypairs: NamedKeyPair[],
-  passphrase: string
+  keypairs: NamedKeyPair[]
 ): GlobalAction {
   return {
     type: 'SET_KEYPAIRS',
     wallet,
-    keypairs,
-    passphrase
+    keypairs
   }
 }
 
@@ -63,10 +61,10 @@ export function changeNetworkAction(network: string): GlobalAction {
   return { type: 'CHANGE_NETWORK', network }
 }
 
-export function changeWalletAction(wallet: string): GlobalAction {
-  return { type: 'CHANGE_WALLET', wallet }
-}
-
 export function setDrawerAction(open: boolean): GlobalAction {
   return { type: 'SET_DRAWER', open }
+}
+
+export function setPassphraseModalAction(open: boolean): GlobalAction {
+  return { type: 'SET_PASSPHRASE_MODAL', open }
 }

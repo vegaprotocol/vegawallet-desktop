@@ -21,6 +21,7 @@ import {
   initAppFailureAction
 } from './contexts/global/global-actions'
 import { ServiceProvider } from './contexts/service/service-provider'
+import { PassphraseModal } from './components/passphrase-modal'
 
 function AppLoader({ children }: { children: React.ReactElement }) {
   const { state, dispatch } = useGlobal()
@@ -80,6 +81,7 @@ function App() {
             <Chrome>
               <AppRouter />
             </Chrome>
+            <PassphraseModal />
           </ServiceProvider>
         </AppLoader>
       </GlobalProvider>

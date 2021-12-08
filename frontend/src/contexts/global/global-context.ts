@@ -25,8 +25,8 @@ export interface GlobalState {
   networks: string[]
   wallets: Wallet[]
   wallet: Wallet | null
-  passphrase: string
   drawerOpen: boolean
+  passphraseModalOpen: boolean
 }
 
 export type GlobalDispatch = React.Dispatch<GlobalAction>

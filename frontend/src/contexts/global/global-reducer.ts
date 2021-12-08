@@ -9,8 +9,8 @@ export const initialGlobalState: GlobalState = {
   networks: [],
   wallet: null,
   wallets: [],
-  passphrase: '',
-  drawerOpen: false
+  drawerOpen: false,
+  passphraseModalOpen: false
 }
 
 export type GlobalAction =
@@ -31,7 +31,6 @@ export type GlobalAction =
       type: 'SET_KEYPAIRS'
       wallet: string
       keypairs: NamedKeyPair[]
-      passphrase: string
     }
   | {
       type: 'ADD_KEYPAIR'
@@ -43,11 +42,11 @@ export type GlobalAction =
       network: string
     }
   | {
-      type: 'CHANGE_WALLET'
-      wallet: string
+      type: 'SET_DRAWER'
+      open: boolean
     }
   | {
-      type: 'SET_DRAWER'
+      type: 'SET_PASSPHRASE_MODAL'
       open: boolean
     }
 
@@ -117,8 +116,7 @@ export function globalReducer(
           if (a.name > b.name) return 1
           return 0
         }),
-        wallet: newWallet,
-        passphrase: action.passphrase
+        wallet: newWallet
       }
     }
     case 'ADD_KEYPAIR': {
@@ -156,22 +154,16 @@ export function globalReducer(
         network: action.network
       }
     }
-    case 'CHANGE_WALLET': {
-      const wallet = state.wallets.find(w => w.name === action.wallet)
-
-      if (!wallet) {
-        throw new Error('Wallet not found')
-      }
-
-      return {
-        ...state,
-        wallet
-      }
-    }
     case 'SET_DRAWER': {
       return {
         ...state,
         drawerOpen: action.open
+      }
+    }
+    case 'SET_PASSPHRASE_MODAL': {
+      return {
+        ...state,
+        passphraseModalOpen: action.open
       }
     }
     default: {
