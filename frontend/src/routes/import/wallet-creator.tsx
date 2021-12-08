@@ -4,10 +4,7 @@ import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
-import {
-  CreateWalletRequest,
-  CreateWalletResponse
-} from '../../models/create-wallet'
+import { CreateWalletResponse } from '../../models/create-wallet'
 import { Link } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
@@ -24,11 +21,7 @@ interface FormFields {
   confirmPassphrase: string
 }
 
-export interface WalletCreatorProps {
-  request: CreateWalletRequest
-}
-
-export const WalletCreator = ({ request }: WalletCreatorProps) => {
+export const WalletCreator = () => {
   const { dispatch } = useGlobal()
   const [response, setResponse] = React.useState<CreateWalletResponse | null>(
     null
@@ -39,12 +32,8 @@ export const WalletCreator = ({ request }: WalletCreatorProps) => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormFields>({
-    defaultValues: {
-      name: request.Name,
-      passphrase: request.Passphrase
-    }
-  })
+  } = useForm<FormFields>()
+
   const passphrase = useWatch({ control, name: 'passphrase' })
 
   const onSubmit = async (values: FormFields) => {

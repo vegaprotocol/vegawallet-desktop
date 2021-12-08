@@ -1,4 +1,5 @@
 import React from 'react'
+import { Thunk } from 'react-hook-thunk-reducer'
 import { NamedKeyPair } from '../../models/keys'
 import { GlobalAction } from './global-reducer'
 
@@ -29,7 +30,9 @@ export interface GlobalState {
   passphraseModalOpen: boolean
 }
 
-export type GlobalDispatch = React.Dispatch<GlobalAction>
+export type GlobalDispatch = React.Dispatch<
+  GlobalAction | Thunk<GlobalState, GlobalAction>
+>
 
 type GlobalContextShape = { state: GlobalState; dispatch: GlobalDispatch }
 

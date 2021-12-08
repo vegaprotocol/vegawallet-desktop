@@ -1,4 +1,5 @@
 import React from 'react'
+import { Thunk } from 'react-hook-thunk-reducer'
 import { ServiceAction } from './service-reducer'
 
 export interface ServiceState {
@@ -8,7 +9,9 @@ export interface ServiceState {
   consoleUrl: string
 }
 
-export type ServiceDispatch = React.Dispatch<ServiceAction>
+export type ServiceDispatch = React.Dispatch<
+  ServiceAction | Thunk<ServiceState, ServiceAction>
+>
 
 type ServiceContextShape = { state: ServiceState; dispatch: ServiceDispatch }
 

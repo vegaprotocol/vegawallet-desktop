@@ -16,17 +16,10 @@ export function Import() {
   return (
     <Switch>
       <Route path={ImportPaths.Create}>
-        <WalletCreator request={{ Name: '', Passphrase: '' }} />
+        <WalletCreator />
       </Route>
       <Route path={ImportPaths.Mnemonic}>
-        <ImportMnemonic
-          request={{
-            Name: '',
-            Passphrase: '',
-            Mnemonic: '',
-            Version: 2
-          }}
-        />
+        <ImportMnemonic />
       </Route>
       <Route path={match.path} exact>
         <ImportSelect />

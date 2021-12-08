@@ -1,5 +1,5 @@
 import React from 'react'
-import { GetServiceState, StartService, StopService } from '../../api/service'
+import useThunkReducer from 'react-hook-thunk-reducer'
 import { useGlobal } from '../global/global-context'
 import { startServiceAction } from './service-actions'
 import { ServiceContext } from './service-context'
@@ -14,39 +14,13 @@ export function ServiceProvider({ children }: ServiceProviderProps) {
     state: { network }
   } = useGlobal()
 
-  const [state, dispatch] = React.useReducer(
-    serviceReducer,
-    initialServiceState
-  )
+  const [state, dispatch] = useThunkReducer(serviceReducer, initialServiceState)
 
   // Start service on app startup
   React.useEffect(() => {
-    async function run() {
-      if (!network) return
-
-      try {
-        const res = await GetServiceState()
-
-        if (res.Running) {
-          await StopService()
-        }
-
-        // Start service must be before API call because the below promise will only
-        // resolve once the service is stopped
-        dispatch(startServiceAction())
-
-        // Only resolves once service is stoped
-        await StartService({
-          network,
-          withConsole: false
-        })
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    run()
-  }, [network])
+    if (!network) return
+    dispatch(startServiceAction(network))
+  }, [network, dispatch])
 
   return (
     <ServiceContext.Provider value={{ state, dispatch }}>

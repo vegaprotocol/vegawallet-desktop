@@ -1,13 +1,42 @@
-import { ServiceAction } from './service-reducer'
+import { GetServiceState, StartService, StopService } from '../../api/service'
+import { ServiceDispatch } from './service-context'
 
-export function startServiceAction(): ServiceAction {
-  return { type: 'START_SERVICE' }
+export function startServiceAction(network: string) {
+  return async (dispatch: ServiceDispatch) => {
+    try {
+      const status = await GetServiceState()
+
+      if (status.Running) {
+        await StopService()
+      }
+
+      dispatch({ type: 'START_SERVICE' })
+      await StartService({ network, withConsole: false })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
-export function stopServiceAction(): ServiceAction {
-  return { type: 'STOP_SERVICE' }
+export function stopServiceAction() {
+  return async (dispatch: ServiceDispatch) => {
+    try {
+      await StopService()
+      dispatch({ type: 'STOP_SERVICE' })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
-export function startConsoleAction(): ServiceAction {
-  return { type: 'START_CONSOLE' }
+export function startConsoleAction(network: string) {
+  return async (dispatch: ServiceDispatch) => {
+    try {
+      await StopService()
+      dispatch({ type: 'START_CONSOLE' })
+      await StartService({ network, withConsole: true })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }

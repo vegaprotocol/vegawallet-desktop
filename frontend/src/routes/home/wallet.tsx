@@ -1,12 +1,10 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { WalletPaths } from '.'
-import { GenerateKey } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
-import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { addKeypairAction } from '../../contexts/global/global-actions'
@@ -18,22 +16,11 @@ export function Wallet() {
 
   async function generateKeypair() {
     if (!state.wallet?.name) {
-      throw new Error('No wallet set')
+      AppToaster.show({ message: 'No wallet', color: Colors.RED })
+      return
     }
 
-    try {
-      const passphrase = await requestPassphrase()
-      const res = await GenerateKey({
-        wallet: state.wallet.name,
-        passphrase,
-        metadata: [] // just rely on default naming for now
-      })
-      dispatch(addKeypairAction(state.wallet.name, res.key))
-    } catch (err) {
-      if (err !== 'dismissed') {
-        AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
-      }
-    }
+    dispatch(addKeypairAction(state.wallet.name))
   }
 
   if (!state.wallets.length || !state.wallet?.keypairs) {

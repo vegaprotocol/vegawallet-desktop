@@ -5,21 +5,10 @@ import { AppRouter } from './routes'
 import { HashRouter as Router } from 'react-router-dom'
 import { Chrome } from './components/chrome'
 import { GlobalProvider } from './contexts/global/global-provider'
-import {
-  GetServiceState,
-  GetVersion,
-  InitialiseApp,
-  IsAppInitialised,
-  ListNetworks,
-  ListWallets
-} from './api/service'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
-import {
-  initAppSuccessAction,
-  initAppFailureAction
-} from './contexts/global/global-actions'
+import { initAppAction } from './contexts/global/global-actions'
 import { ServiceProvider } from './contexts/service/service-provider'
 import { PassphraseModal } from './components/passphrase-modal'
 
@@ -27,30 +16,7 @@ function AppLoader({ children }: { children: React.ReactElement }) {
   const { state, dispatch } = useGlobal()
 
   React.useEffect(() => {
-    async function run() {
-      try {
-        const isInit = await IsAppInitialised()
-
-        if (!isInit) {
-          // For now just pass an empty string so that you always get
-          // the default vega home location
-          await InitialiseApp({ vegaHome: '' })
-        }
-
-        // App initialised check what wallets are available
-        const res = await Promise.all([
-          await ListNetworks(),
-          await ListWallets(),
-          await GetServiceState(),
-          await GetVersion()
-        ])
-        dispatch(initAppSuccessAction(...res))
-      } catch (err) {
-        dispatch(initAppFailureAction())
-      }
-    }
-
-    run()
+    dispatch(initAppAction())
   }, [dispatch])
 
   if (state.status === AppStatus.Pending) {

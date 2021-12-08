@@ -4,10 +4,7 @@ import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
-import {
-  ImportWalletRequest,
-  ImportWalletResponse
-} from '../../models/import-wallet'
+import { ImportWalletResponse } from '../../models/import-wallet'
 import { ImportSuccess } from './import-success'
 import { BulletHeader } from '../../components/bullet-header'
 
@@ -26,26 +23,14 @@ interface FormFields {
   mnemonic: string
 }
 
-export interface ImportMnemonicProps {
-  request: ImportWalletRequest
-}
-
-export const ImportMnemonic = ({ request }: ImportMnemonicProps) => {
+export const ImportMnemonic = () => {
   const [formState, setFormState] = React.useState(FormState.Default)
   const {
     control,
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormFields>({
-    defaultValues: {
-      name: request.Name,
-      version: request.Version,
-      passphrase: '',
-      confirmPassphrase: '',
-      mnemonic: request.Mnemonic
-    }
-  })
+  } = useForm<FormFields>()
   const passphrase = useWatch({ control, name: 'passphrase' })
   const [response, setResponse] = React.useState<ImportWalletResponse | null>(
     null

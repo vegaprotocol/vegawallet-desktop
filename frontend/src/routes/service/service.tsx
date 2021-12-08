@@ -1,5 +1,4 @@
 import React from 'react'
-import { StartService, StopService } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -19,43 +18,26 @@ export function Service() {
     dispatch
   } = useService()
 
-  async function start(withConsole: boolean) {
+  async function start() {
     if (!network) {
       AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
     }
-    try {
-      dispatch(startServiceAction())
-      await StartService({
-        network,
-        withConsole
-      })
-    } catch (err) {
-      console.error(err)
-    }
+
+    dispatch(startServiceAction(network))
   }
 
-  async function stop() {
-    try {
-      await StopService()
-      dispatch(stopServiceAction())
-    } catch (err) {
-      console.error(err)
-    }
+  function stop() {
+    dispatch(stopServiceAction())
   }
 
-  async function startConsole() {
+  function startConsole() {
     if (!network) {
       AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
     }
-    try {
-      await StopService()
-      dispatch(startConsoleAction())
-      await StartService({ network, withConsole: true })
-    } catch (err) {
-      console.error(err)
-    }
+
+    dispatch(startConsoleAction(network))
   }
 
   return (
@@ -72,7 +54,7 @@ export function Service() {
             Stop service
           </button>
         ) : (
-          <button onClick={() => start(false)} type='button'>
+          <button onClick={() => start()} type='button'>
             Start service
           </button>
         )}
