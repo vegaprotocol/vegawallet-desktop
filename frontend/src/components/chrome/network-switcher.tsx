@@ -1,11 +1,11 @@
 import React from 'react'
-import { changeNetworkAction } from '../../contexts/global/global-actions'
-import { useGlobal } from '../../contexts/global/global-context'
+import { changeNetworkAction } from '../../contexts/network/network-actions'
+import { useNetwork } from '../../contexts/network/network-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dropdown, DropdownMenu, DropdownMenuItem } from '../popovers'
 
 export function NetworkSwitcher() {
-  const { state, dispatch } = useGlobal()
+  const { state, dispatch } = useNetwork()
 
   // If the user has no networks dont render switcher
   if (!state.networks.length || !state.network) {

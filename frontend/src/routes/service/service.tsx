@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
-import { useGlobal } from '../../contexts/global/global-context'
+import { useNetwork } from '../../contexts/network/network-context'
 import {
   startProxyAction,
   startServiceAction,
@@ -12,7 +12,7 @@ import { ProxyApp, useService } from '../../contexts/service/service-context'
 export function Service() {
   const {
     state: { network }
-  } = useGlobal()
+  } = useNetwork()
   const {
     state: { serviceRunning, proxy },
     dispatch

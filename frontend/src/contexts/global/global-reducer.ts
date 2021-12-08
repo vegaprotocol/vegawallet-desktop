@@ -5,8 +5,6 @@ import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   version: '',
-  network: null,
-  networks: [],
   wallet: null,
   wallets: [],
   drawerOpen: false,
@@ -18,7 +16,6 @@ export type GlobalAction =
       type: 'INIT_APP'
       isInit: boolean
       wallets: string[]
-      networks: string[]
       serviceRunning: boolean
       serviceUrl: string
       version: string
@@ -36,10 +33,6 @@ export type GlobalAction =
       type: 'ADD_KEYPAIR'
       wallet: string
       keypair: Key
-    }
-  | {
-      type: 'CHANGE_NETWORK'
-      network: string
     }
   | {
       type: 'CHANGE_WALLET'
@@ -63,8 +56,6 @@ export function globalReducer(
       return {
         ...state,
         status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
-        network: action.networks[0],
-        networks: action.networks,
         wallets: action.wallets
           .map(w => {
             return {
@@ -124,12 +115,7 @@ export function globalReducer(
         wallet: updatedWallet
       }
     }
-    case 'CHANGE_NETWORK': {
-      return {
-        ...state,
-        network: action.network
-      }
-    }
+
     case 'CHANGE_WALLET': {
       const wallet = state.wallets.find(w => w.name === action.wallet)
 

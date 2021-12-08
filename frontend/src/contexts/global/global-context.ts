@@ -22,8 +22,6 @@ export interface Wallet {
 export interface GlobalState {
   status: AppStatus
   version: string
-  network: string | null
-  networks: string[]
   wallets: Wallet[]
   wallet: Wallet | null
   drawerOpen: boolean

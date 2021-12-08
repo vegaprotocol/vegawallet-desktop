@@ -2,7 +2,6 @@ import * as Service from '../../api/service'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { GetServiceStateResponse } from '../../models/console-state'
 import { ListWalletsResponse } from '../../models/list-wallets'
-import { ListNetworksResponse } from '../../models/network'
 import { GetVersionResponse } from '../../models/version'
 import { GlobalDispatch, GlobalState } from './global-context'
 import { GlobalAction } from './global-reducer'
@@ -10,7 +9,7 @@ import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 
 export function initAppAction() {
-  return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+  return async (dispatch: GlobalDispatch) => {
     try {
       const isInit = await Service.IsAppInitialised()
 
@@ -20,7 +19,6 @@ export function initAppAction() {
 
       // App initialised check what wallets are available
       const res = await Promise.all([
-        await Service.ListNetworks(),
         await Service.ListWallets(),
         await Service.GetServiceState(),
         await Service.GetVersion()
@@ -34,7 +32,6 @@ export function initAppAction() {
 }
 
 export function initAppSuccessAction(
-  networks: ListNetworksResponse,
   wallets: ListWalletsResponse,
   service: GetServiceStateResponse,
   version: GetVersionResponse
@@ -42,7 +39,6 @@ export function initAppSuccessAction(
   return {
     type: 'INIT_APP',
     isInit: true,
-    networks: networks.networks,
     wallets: wallets.wallets,
     serviceRunning: service.Running,
     serviceUrl: service.URL,
@@ -55,7 +51,6 @@ export function initAppFailureAction(): GlobalAction {
     type: 'INIT_APP',
     isInit: false,
     wallets: [],
-    networks: [],
     serviceRunning: false,
     serviceUrl: '',
     version: ''
@@ -87,10 +82,6 @@ export function addKeypairAction(wallet: string) {
       }
     }
   }
-}
-
-export function changeNetworkAction(network: string): GlobalAction {
-  return { type: 'CHANGE_NETWORK', network }
 }
 
 export function getKeysAction(wallet: string, cb: Function) {
