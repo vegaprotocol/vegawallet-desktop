@@ -1,27 +1,26 @@
 import React from 'react'
-import {AppToaster} from '../../components/toaster'
-import {Colors} from '../../config/colors'
-import {useGlobal} from '../../contexts/global/global-context'
+import { AppToaster } from '../../components/toaster'
+import { Colors } from '../../config/colors'
+import { useGlobal } from '../../contexts/global/global-context'
 import {
-  startConsoleAction,
+  startProxyAction,
   startServiceAction,
-  startTokenDAppAction,
   stopServiceAction
 } from '../../contexts/service/service-actions'
-import {useService} from '../../contexts/service/service-context'
+import { ProxyApp, useService } from '../../contexts/service/service-context'
 
 export function Service() {
   const {
-    state: {network}
+    state: { network }
   } = useGlobal()
   const {
-    state: {serviceRunning, consoleRunning, tokenDAppRunning},
+    state: { serviceRunning, proxy },
     dispatch
   } = useService()
 
   async function start() {
     if (!network) {
-      AppToaster.show({message: 'No network selected', color: Colors.RED})
+      AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
     }
 
@@ -32,22 +31,13 @@ export function Service() {
     dispatch(stopServiceAction())
   }
 
-  function startConsole() {
+  function startProxy(app: ProxyApp) {
     if (!network) {
-      AppToaster.show({message: 'No network selected', color: Colors.RED})
+      AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
     }
 
-    dispatch(startConsoleAction(network))
-  }
-
-  function startTokenDApp() {
-    if (!network) {
-      AppToaster.show({message: 'No network selected', color: Colors.RED})
-      return
-    }
-
-    dispatch(startTokenDAppAction(network))
+    dispatch(startProxyAction(network, app))
   }
 
   return (
@@ -58,7 +48,7 @@ export function Service() {
         padding: 30,
         gap: 15
       }}>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 15}}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {serviceRunning ? (
           <button onClick={stop} type='button'>
             Stop service
@@ -69,24 +59,24 @@ export function Service() {
           </button>
         )}
       </div>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 15}}>
-        {consoleRunning ? (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+        {proxy === ProxyApp.Console ? (
           <button onClick={stop} type='button'>
             Stop Console
           </button>
         ) : (
-          <button onClick={() => startConsole()} type='button'>
+          <button onClick={() => startProxy(ProxyApp.Console)} type='button'>
             Start service with Console proxy
           </button>
         )}
       </div>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 15}}>
-        {tokenDAppRunning ? (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+        {proxy === ProxyApp.TokenDApp ? (
           <button onClick={stop} type='button'>
             Stop Token dApp
           </button>
         ) : (
-          <button onClick={() => startTokenDApp()} type='button'>
+          <button onClick={() => startProxy(ProxyApp.TokenDApp)} type='button'>
             Start service with Token dApp proxy
           </button>
         )}

@@ -1,11 +1,10 @@
-import {ServiceState} from './service-context'
+import { ProxyApp, ServiceState } from './service-context'
 
 export const initialServiceState: ServiceState = {
-  tokenDAppRunning: false,
   serviceRunning: false,
   serviceUrl: '',
-  consoleRunning: false,
-  consoleUrl: ''
+  proxy: ProxyApp.None,
+  proxyUrl: ''
 }
 
 export type ServiceAction =
@@ -16,10 +15,11 @@ export type ServiceAction =
       type: 'STOP_SERVICE'
     }
   | {
-      type: 'START_CONSOLE'
+      type: 'START_PROXY'
+      app: ProxyApp
     }
   | {
-      type: 'START_TOKEN_DAPP'
+      type: 'STOP_PROXY'
     }
 
 export function serviceReducer(
@@ -31,6 +31,7 @@ export function serviceReducer(
       return {
         ...state,
         serviceRunning: true,
+        // TODO: Get actual port from backend
         serviceUrl: 'http://127.0.0.1:1789'
       }
     }
@@ -39,25 +40,23 @@ export function serviceReducer(
         ...state,
         serviceRunning: false,
         serviceUrl: '',
-        consoleRunning: false,
-        tokenDAppRunning: false,
-        consoleUrl: ''
+        proxy: ProxyApp.None,
+        proxyUrl: ''
       }
     }
-    case 'START_CONSOLE': {
+    case 'START_PROXY': {
       return {
         ...state,
-        consoleRunning: true,
-        tokenDAppRunning: false,
-        consoleUrl: 'http://127.0.0.1:1847'
+        proxy: action.app,
+        // TODO: Get actual port from backend
+        proxyUrl: 'http://127.0.0.1:1847'
       }
     }
-    case 'START_TOKEN_DAPP': {
+    case 'STOP_PROXY': {
       return {
         ...state,
-        consoleRunning: false,
-        tokenDAppRunning: true,
-        consoleUrl: 'http://127.0.0.1:1847'
+        proxy: ProxyApp.None,
+        proxyUrl: ''
       }
     }
     default: {

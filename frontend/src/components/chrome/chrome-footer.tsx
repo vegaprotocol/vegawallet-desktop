@@ -8,7 +8,7 @@ export function ChromeFooter() {
     state: { version }
   } = useGlobal()
   const {
-    state: { serviceRunning, serviceUrl, consoleRunning, consoleUrl }
+    state: { serviceRunning, serviceUrl, proxy, proxyUrl }
   } = useService()
   return (
     <footer
@@ -31,19 +31,21 @@ export function ChromeFooter() {
           )}
         </div>
         <div>
-          <StatusCircle running={consoleRunning} />
-          {consoleRunning ? (
-            <>
-              Console running:{' '}
-              <ExternalLink
-                href={consoleUrl}
-                style={{ textDecoration: 'underline' }}>
-                {consoleUrl}
-              </ExternalLink>
-            </>
-          ) : (
-            <>Console not running</>
-          )}
+          <>
+            <StatusCircle running={proxy !== null} />
+            {proxy ? (
+              <>
+                Proxy running:{' '}
+                <ExternalLink
+                  href={proxyUrl}
+                  style={{ textDecoration: 'underline' }}>
+                  {proxy} @ {proxyUrl}
+                </ExternalLink>
+              </>
+            ) : (
+              <>Proxy not running</>
+            )}
+          </>
         </div>
       </div>
       <div>Version {version}</div>

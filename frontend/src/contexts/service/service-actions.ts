@@ -1,5 +1,5 @@
-import {GetServiceState, StartService, StopService} from '../../api/service'
-import {ServiceDispatch} from './service-context'
+import { GetServiceState, StartService, StopService } from '../../api/service'
+import { ProxyApp, ServiceDispatch } from './service-context'
 
 export function startServiceAction(network: string) {
   return async (dispatch: ServiceDispatch) => {
@@ -10,8 +10,8 @@ export function startServiceAction(network: string) {
         await StopService()
       }
 
-      dispatch({type: 'START_SERVICE'})
-      await StartService({network, withConsole: false, withTokenDApp: false})
+      dispatch({ type: 'START_SERVICE' })
+      await StartService({ network, withConsole: false, withTokenDApp: false })
     } catch (err) {
       console.log(err)
     }
@@ -22,31 +22,29 @@ export function stopServiceAction() {
   return async (dispatch: ServiceDispatch) => {
     try {
       await StopService()
-      dispatch({type: 'STOP_SERVICE'})
+      dispatch({ type: 'STOP_SERVICE' })
     } catch (err) {
       console.log(err)
     }
   }
 }
 
-export function startConsoleAction(network: string) {
+export function startProxyAction(network: string, app: ProxyApp) {
   return async (dispatch: ServiceDispatch) => {
     try {
-      await StopService()
-      dispatch({type: 'START_CONSOLE'})
-      await StartService({network, withConsole: true, withTokenDApp: false})
-    } catch (err) {
-      console.log(err)
-    }
-  }
-}
+      const status = await GetServiceState()
+      console.log(status)
 
-export function startTokenDAppAction(network: string) {
-  return async (dispatch: ServiceDispatch) => {
-    try {
-      await StopService()
-      dispatch({type: 'START_TOKEN_DAPP'})
-      await StartService({network, withConsole: false, withTokenDApp: true})
+      if (status.Running) {
+        await StopService()
+      }
+
+      dispatch({ type: 'START_PROXY', app })
+      await StartService({
+        network,
+        withConsole: app === ProxyApp.Console,
+        withTokenDApp: app === ProxyApp.TokenDApp
+      })
     } catch (err) {
       console.log(err)
     }
