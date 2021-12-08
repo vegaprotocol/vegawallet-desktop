@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGlobal } from '../../contexts/global/global-context'
-import { useService } from '../../contexts/service/service-context'
+import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
 
 export function ChromeFooter() {
@@ -32,8 +32,8 @@ export function ChromeFooter() {
         </div>
         <div>
           <>
-            <StatusCircle running={proxy !== null} />
-            {proxy ? (
+            <StatusCircle running={proxy !== ProxyApp.None} />
+            {proxy !== ProxyApp.None ? (
               <>
                 Proxy running:{' '}
                 <ExternalLink

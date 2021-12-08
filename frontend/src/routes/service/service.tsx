@@ -18,7 +18,7 @@ export function Service() {
     dispatch
   } = useService()
 
-  async function start() {
+  function start() {
     if (!network) {
       AppToaster.show({ message: 'No network selected', color: Colors.RED })
       return
