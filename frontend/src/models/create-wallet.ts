@@ -5,5 +5,5 @@ export interface CreateWalletRequest {
 
 export interface CreateWalletResponse {
   WalletPath: string
-  Mnemonic: string
+  RecoveryPhrase: string
 }

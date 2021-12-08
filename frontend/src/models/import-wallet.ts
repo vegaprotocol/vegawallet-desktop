@@ -1,7 +1,7 @@
 export interface ImportWalletRequest {
   Name: string
   Passphrase: string
-  Mnemonic: string
+  RecoveryPhrase: string
   Version: number
 }
 

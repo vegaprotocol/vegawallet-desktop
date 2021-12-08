@@ -20,10 +20,10 @@ interface FormFields {
   version: number
   passphrase: string
   confirmPassphrase: string
-  mnemonic: string
+  recoveryPhrase: string
 }
 
-export const ImportMnemonic = () => {
+export const ImportRecoveryPhrase = () => {
   const [formState, setFormState] = React.useState(FormState.Default)
   const {
     control,
@@ -42,7 +42,7 @@ export const ImportMnemonic = () => {
       const resp = await ImportWallet({
         Name: values.name,
         Passphrase: values.passphrase,
-        Mnemonic: values.mnemonic,
+        RecoveryPhrase: values.recoveryPhrase,
         Version: values.version
       })
       if (resp) {
@@ -75,11 +75,11 @@ export const ImportMnemonic = () => {
           <input type='text' {...register('name', { required: 'Required' })} />
         </FormGroup>
         <FormGroup
-          label='* Mnemonic'
-          labelFor='mnemonic'
-          errorText={errors.mnemonic?.message}>
+          label='* Recovery phrase'
+          labelFor='recoveryPhrase'
+          errorText={errors.recoveryPhrase?.message}>
           <textarea
-            {...register('mnemonic', { required: 'Required' })}
+            {...register('recoveryPhrase', { required: 'Required' })}
             style={{ minHeight: 75 }}
           />
         </FormGroup>
@@ -88,7 +88,8 @@ export const ImportMnemonic = () => {
           labelFor='version'
           errorText={errors.version?.message}>
           <input
-            type='text'
+            type='number'
+            value={2}
             {...register('version', { required: 'Required' })}
           />
         </FormGroup>

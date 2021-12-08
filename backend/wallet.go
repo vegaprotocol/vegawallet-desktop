@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"code.vegaprotocol.io/vegawallet/wallet"
 	"code.vegaprotocol.io/vegawallet/wallets"
@@ -28,8 +29,8 @@ func (r CreateWalletRequest) Check() error {
 }
 
 type CreateWalletResponse struct {
-	Mnemonic   string
-	WalletPath string
+	RecoveryPhrase string
+	WalletPath     string
 }
 
 func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
@@ -62,38 +63,45 @@ func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
 
 	handler := wallets.NewHandler(wStore)
 
-	mnemonic, err := handler.CreateWallet(req.Name, req.Passphrase)
+	recoveryPhrase, err := handler.CreateWallet(req.Name, req.Passphrase)
 	if err != nil {
 		s.log.Errorf("Couldn't create the wallet: %v", err)
 		return CreateWalletResponse{}, fmt.Errorf("couldn't create the wallet: %w", err)
 	}
 
 	return CreateWalletResponse{
-		Mnemonic:   mnemonic,
-		WalletPath: wStore.GetWalletPath(req.Name),
+		RecoveryPhrase: recoveryPhrase,
+		WalletPath:     wStore.GetWalletPath(req.Name),
 	}, nil
 }
 
 type ImportWalletRequest struct {
-	VegaHome   string
-	Name       string
-	Mnemonic   string
-	Passphrase string
-	Version    uint32
+	VegaHome       string
+	Name           string
+	RecoveryPhrase string
+	Passphrase     string
+	Version        string
+	parsedVersion  uint32
 }
 
-func (r ImportWalletRequest) Check() error {
+func (r *ImportWalletRequest) Check() error {
 	if len(r.Name) == 0 {
 		return errors.New("name is required")
 	}
 
-	if len(r.Mnemonic) == 0 {
-		return errors.New("mnemonic is required")
+	if len(r.RecoveryPhrase) == 0 {
+		return errors.New("recovery phrase is required")
 	}
 
 	if len(r.Passphrase) == 0 {
 		return errors.New("passphrase is required")
 	}
+
+	version, err := strconv.ParseUint(r.Version, 10, 32)
+	if err != nil {
+		return errors.New("version requires a positive integer")
+	}
+	r.parsedVersion = uint32(version)
 
 	return nil
 }
@@ -107,16 +115,16 @@ func (s *Handler) ImportWallet(data string) (ImportWalletResponse, error) {
 	defer s.log.Debug("Leaving ImportWallet")
 
 	req := &ImportWalletRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
+	if err := json.Unmarshal([]byte(data), req); err != nil {
 		s.log.Errorf("Couldn't unmarshall request: %v", err)
 		return ImportWalletResponse{}, fmt.Errorf("couldn't unmarshal request: %w", err)
 	}
 
-	if err = req.Check(); err != nil {
+	if err := req.Check(); err != nil {
 		s.log.Errorf("Request is invalid: %v", err)
 		return ImportWalletResponse{}, fmt.Errorf("request is invalid: %w", err)
 	}
+	s.log.Debug(fmt.Sprintf("request 2 %v", req))
 
 	config, err := s.loadAppConfig()
 	if err != nil {
@@ -132,8 +140,7 @@ func (s *Handler) ImportWallet(data string) (ImportWalletResponse, error) {
 
 	handler := wallets.NewHandler(wStore)
 
-	err = handler.ImportWallet(req.Name, req.Passphrase, req.Mnemonic, req.Version)
-	if err != nil {
+	if err := handler.ImportWallet(req.Name, req.Passphrase, req.RecoveryPhrase, req.parsedVersion); err != nil {
 		s.log.Errorf("Couldn't import the wallet: %v", err)
 		return ImportWalletResponse{}, err
 	}

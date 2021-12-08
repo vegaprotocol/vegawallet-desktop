@@ -61,13 +61,13 @@ export const WalletCreator = () => {
     <>
       <BulletHeader tag='h1'>Wallet created</BulletHeader>
       <p>
-        Here is your mnemonic phrase. Please take note of the words below as you
+        Here is your recovery phrase phrase. Please take note of the words below as you
         will need these to restore your wallet!
       </p>
       <p style={{ position: 'relative' }}>
-        <CodeBlock>{response.Mnemonic}</CodeBlock>
+        <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
         <div style={{ position: 'absolute', top: 7, right: 10 }}>
-          <CopyWithTooltip text={response.Mnemonic}>
+          <CopyWithTooltip text={response.RecoveryPhrase}>
             <ButtonUnstyled>
               <Copy style={{ width: 13, height: 13 }} />
             </ButtonUnstyled>

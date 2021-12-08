@@ -1,13 +1,12 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import { ImportMnemonic } from './import-mnemonic'
+import { ImportRecoveryPhrase } from './import-recovery-phrase'
 import { ImportSelect } from './import-select'
 import { WalletCreator } from './wallet-creator'
 
 export enum ImportPaths {
   Create = '/import/create',
-  Path = '/import/path',
-  Mnemonic = '/import/mnemonic'
+  RecoveryPhrase = '/import/recovery-phrase'
 }
 
 export function Import() {
@@ -18,8 +17,8 @@ export function Import() {
       <Route path={ImportPaths.Create}>
         <WalletCreator />
       </Route>
-      <Route path={ImportPaths.Mnemonic}>
-        <ImportMnemonic />
+      <Route path={ImportPaths.RecoveryPhrase}>
+        <ImportRecoveryPhrase />
       </Route>
       <Route path={match.path} exact>
         <ImportSelect />

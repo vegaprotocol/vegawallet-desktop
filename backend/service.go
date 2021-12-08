@@ -11,10 +11,10 @@ import (
 	"syscall"
 
 	"code.vegaprotocol.io/shared/paths"
-	"code.vegaprotocol.io/vegawallet/console"
 	"code.vegaprotocol.io/vegawallet/network"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
 	"code.vegaprotocol.io/vegawallet/node"
+	"code.vegaprotocol.io/vegawallet/proxy"
 	"code.vegaprotocol.io/vegawallet/service"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
@@ -38,8 +38,9 @@ func (s *serviceState) Shutdown() {
 }
 
 type StartServiceRequest struct {
-	Network     string
-	WithConsole bool
+	Network       string
+	WithConsole   bool
+	WithTokenDApp bool
 }
 
 func (r StartServiceRequest) Check() error {
@@ -147,9 +148,9 @@ func (s *Handler) StartService(data string) (bool, error) {
 		}
 	}()
 
-	var cs *console.Console
+	var cs *proxy.Proxy
 	if req.WithConsole {
-		cons := console.NewConsole(
+		cons := proxy.NewProxy(
 			cfg.Console.LocalPort,
 			cfg.Console.URL,
 			cfg.API.GRPC.Hosts[0],
@@ -174,6 +175,33 @@ func (s *Handler) StartService(data string) (bool, error) {
 		}
 	}
 
+	var tokenDApp *proxy.Proxy
+	if req.WithTokenDApp {
+		tda := proxy.NewProxy(
+			cfg.TokenDApp.LocalPort,
+			cfg.TokenDApp.URL,
+			cfg.API.GRPC.Hosts[0],
+		)
+		tokenDApp = tda
+
+		go func() {
+			defer cancel()
+			s.log.Info("Starting the token dApp")
+			if err := tokenDApp.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+				s.log.Errorf("Error while starting the token dApp proxy: %v", err)
+			}
+		}()
+
+		s.service.consoleURL = tokenDApp.GetBrowserURL()
+
+		s.log.Infof("Opening the token dApp at %s", tokenDApp.GetBrowserURL())
+
+		if err = open.Run(tokenDApp.GetBrowserURL()); err != nil {
+			s.log.Errorf("Unable to open the token dApp in the default browser: %v", err)
+			return false, fmt.Errorf("unable to open the token dApp in the default browser: %w", err)
+		}
+	}
+
 	s.waitSignal(ctx, cancel)
 
 	if req.WithConsole {
@@ -181,6 +209,14 @@ func (s *Handler) StartService(data string) (bool, error) {
 			s.log.Errorf("Error while stopping console proxy: %v", err)
 		} else {
 			s.log.Info("Console proxy stopped with success")
+		}
+	}
+
+	if req.WithTokenDApp {
+		if err = tokenDApp.Stop(); err != nil {
+			s.log.Errorf("Error while stopping token dApp proxy: %v", err)
+		} else {
+			s.log.Info("Token dApp proxy stopped with success")
 		}
 	}
 

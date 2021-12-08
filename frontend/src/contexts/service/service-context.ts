@@ -4,6 +4,7 @@ import { ServiceAction } from './service-reducer'
 
 export interface ServiceState {
   serviceRunning: boolean
+  tokenDAppRunning: boolean
   serviceUrl: string
   consoleRunning: boolean
   consoleUrl: string

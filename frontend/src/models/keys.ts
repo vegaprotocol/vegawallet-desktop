@@ -13,7 +13,7 @@ export interface Wallet {
   name: string
   version: number
   filePath: string
-  mnemonic: string
+  recoveryPhrase: string
 }
 
 export interface Key {

@@ -95,7 +95,7 @@ export function CreateWallet(
 }
 
 /**
- * Imports a wallet using a mnemonic phrase
+ * Imports a wallet using a recovery phrase
  */
 export function ImportWallet(
   request: ImportWalletRequest

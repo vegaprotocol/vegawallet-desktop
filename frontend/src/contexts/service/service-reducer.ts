@@ -1,6 +1,7 @@
-import { ServiceState } from './service-context'
+import {ServiceState} from './service-context'
 
 export const initialServiceState: ServiceState = {
+  tokenDAppRunning: false,
   serviceRunning: false,
   serviceUrl: '',
   consoleRunning: false,
@@ -16,6 +17,9 @@ export type ServiceAction =
     }
   | {
       type: 'START_CONSOLE'
+    }
+  | {
+      type: 'START_TOKEN_DAPP'
     }
 
 export function serviceReducer(
@@ -36,6 +40,7 @@ export function serviceReducer(
         serviceRunning: false,
         serviceUrl: '',
         consoleRunning: false,
+        tokenDAppRunning: false,
         consoleUrl: ''
       }
     }
@@ -43,6 +48,15 @@ export function serviceReducer(
       return {
         ...state,
         consoleRunning: true,
+        tokenDAppRunning: false,
+        consoleUrl: 'http://127.0.0.1:1847'
+      }
+    }
+    case 'START_TOKEN_DAPP': {
+      return {
+        ...state,
+        consoleRunning: false,
+        tokenDAppRunning: true,
         consoleUrl: 'http://127.0.0.1:1847'
       }
     }
