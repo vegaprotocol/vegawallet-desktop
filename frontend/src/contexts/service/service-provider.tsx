@@ -1,7 +1,7 @@
 import React from 'react'
 import useThunkReducer from 'react-hook-thunk-reducer'
 import { useNetwork } from '../network/network-context'
-import { startServiceAction, stopServiceAction } from './service-actions'
+import { startServiceAction } from './service-actions'
 import { ServiceContext } from './service-context'
 import { initialServiceState, serviceReducer } from './service-reducer'
 
@@ -10,6 +10,7 @@ interface ServiceProviderProps {
 }
 
 export function ServiceProvider({ children }: ServiceProviderProps) {
+  const isFirstMount = React.useRef(true)
   const {
     state: { network, config }
   } = useNetwork()
@@ -18,16 +19,10 @@ export function ServiceProvider({ children }: ServiceProviderProps) {
 
   // Start service on app startup
   React.useEffect(() => {
-    if (!network || !config) return
+    if (!isFirstMount.current || !network || !config) return
     dispatch(startServiceAction(network, config.Port))
+    isFirstMount.current = false
   }, [network, config, dispatch])
-
-  // Stop services any time user updates their network config, otherwise you
-  // might get in a pickle where services are running on ports when the config
-  // has been changed to use different ports
-  React.useEffect(() => {
-    dispatch(stopServiceAction())
-  }, [config, dispatch])
 
   return (
     <ServiceContext.Provider value={{ state, dispatch }}>

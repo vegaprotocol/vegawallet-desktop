@@ -9,6 +9,7 @@ interface GlobalProviderProps {
 
 export function GlobalProvider({ children }: GlobalProviderProps) {
   const [state, dispatch] = useThunkReducer(globalReducer, initialGlobalState)
+
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
