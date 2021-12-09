@@ -18,7 +18,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         overflowY: 'auto'
       }}>
       <ChromeHeader />
-      <main style={{ padding: 15 }}>{children}</main>
+      <main style={{ padding: 15, overflowY: 'auto' }}>{children}</main>
       <ChromeFooter />
       <ChromeDrawerMenu />
     </div>
