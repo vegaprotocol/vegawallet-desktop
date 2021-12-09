@@ -18,9 +18,7 @@ export function NetworkSwitcher() {
         content={
           <DropdownMenu>
             {state.networks.map(network => (
-              <DropdownMenuItem
-                key={network}
-                active={network === state.network}>
+              <DropdownMenuItem key={network}>
                 <ButtonUnstyled
                   className='link'
                   style={{
@@ -41,7 +39,6 @@ export function NetworkSwitcher() {
         }>
         <ButtonUnstyled
           style={{
-            fontFamily: 'AlphaLyrae',
             letterSpacing: '0.3em',
             padding: '10px 15px'
           }}>

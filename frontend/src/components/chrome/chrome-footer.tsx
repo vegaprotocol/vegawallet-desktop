@@ -2,6 +2,8 @@ import React from 'react'
 import { useGlobal } from '../../contexts/global/global-context'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
+// @ts-ignore
+import bg from '../../images/vega-bg.png'
 
 export function ChromeFooter() {
   const {
@@ -17,9 +19,9 @@ export function ChromeFooter() {
         justifyContent: 'space-between',
         alignItems: 'flex-end',
         padding: '10px 15px',
-        fontSize: 14,
-        background: 'url(./vega-bg.png)',
-        backgroundSize: 'cover'
+        background: `url(${bg})`,
+        backgroundSize: 'cover',
+        fontSize: 14
       }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div>

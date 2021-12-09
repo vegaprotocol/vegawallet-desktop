@@ -21,8 +21,11 @@ export function startServiceAction(network: string, port: number) {
 export function stopServiceAction() {
   return async (dispatch: ServiceDispatch) => {
     try {
-      await StopService()
-      dispatch({ type: 'STOP_SERVICE' })
+      const status = await GetServiceState()
+      if (status.Running) {
+        await StopService()
+        dispatch({ type: 'STOP_SERVICE' })
+      }
     } catch (err) {
       console.log(err)
     }
