@@ -39,10 +39,24 @@ export function NetworkSwitcher() {
         }>
         <ButtonUnstyled
           style={{
+            position: 'relative',
             letterSpacing: '0.3em',
-            padding: '10px 15px'
+            padding: '10px 30px 10px 15px'
           }}>
           {state.network.toUpperCase()}
+          <div
+            style={{
+              position: 'absolute',
+              right: 15,
+              bottom: 17,
+              display: 'inline-block',
+              borderBottom: '2px solid white',
+              borderRight: '2px solid white',
+              width: 6,
+              height: 6,
+              transform: 'rotate(45deg)'
+            }}
+          />
         </ButtonUnstyled>
       </Dropdown>
     </div>
