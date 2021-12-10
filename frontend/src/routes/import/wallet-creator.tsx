@@ -1,5 +1,4 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import { CreateWallet } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
@@ -13,7 +12,6 @@ import { addWalletAction } from '../../contexts/global/global-actions'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
-import { Paths } from '../router-config'
 import { WalletPaths } from '../home'
 import { Intent } from '@blueprintjs/core'
 
@@ -24,7 +22,6 @@ interface FormFields {
 }
 
 export const WalletCreator = () => {
-  const history = useHistory()
   const { dispatch } = useGlobal()
   const [response, setResponse] = React.useState<CreateWalletResponse | null>(
     null
@@ -52,7 +49,6 @@ export const WalletCreator = () => {
           intent: Intent.SUCCESS
         })
         dispatch(addWalletAction(values.name))
-        history.push(WalletPaths.Home)
       } else {
         AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
       }
@@ -70,16 +66,16 @@ export const WalletCreator = () => {
       </p>
       <p style={{ position: 'relative' }}>
         <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
-        <div style={{ position: 'absolute', top: 7, right: 10 }}>
+        <span style={{ position: 'absolute', top: 7, right: 10 }}>
           <CopyWithTooltip text={response.RecoveryPhrase}>
             <ButtonUnstyled>
               <Copy style={{ width: 13, height: 13 }} />
             </ButtonUnstyled>
           </CopyWithTooltip>
-        </div>
+        </span>
       </p>
-      <Link to={Paths.Home}>
-        <button>View wallets</button>
+      <Link to={WalletPaths.Home}>
+        <button>View wallet</button>
       </Link>
     </>
   ) : (
