@@ -4,7 +4,6 @@ import { CreateWallet } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
 import { CreateWalletResponse } from '../../models/create-wallet'
 import { Link } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
@@ -16,6 +15,7 @@ import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { Paths } from '../router-config'
 import { WalletPaths } from '../home'
+import { Intent } from '@blueprintjs/core'
 
 interface FormFields {
   name: string
@@ -49,15 +49,15 @@ export const WalletCreator = () => {
         setResponse(resp)
         AppToaster.show({
           message: 'Wallet created!',
-          color: Colors.GREEN
+          intent: Intent.SUCCESS
         })
         dispatch(addWalletAction(values.name))
         history.push(WalletPaths.Home)
       } else {
-        AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
+        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
       }
     } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
+      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
     }
   }
 

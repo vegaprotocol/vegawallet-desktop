@@ -1,6 +1,6 @@
+import { Intent } from '@blueprintjs/core'
 import React from 'react'
 import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
 import { useNetwork } from '../../contexts/network/network-context'
 import {
   startProxyAction,
@@ -20,7 +20,7 @@ export function Service() {
 
   function start() {
     if (!network || !config) {
-      AppToaster.show({ message: 'No network selected', color: Colors.RED })
+      AppToaster.show({ message: 'No network selected', intent: Intent.DANGER })
       return
     }
 
@@ -33,7 +33,7 @@ export function Service() {
 
   function startProxy(app: ProxyApp) {
     if (!network || !config || app === ProxyApp.None) {
-      AppToaster.show({ message: 'No network selected', color: Colors.RED })
+      AppToaster.show({ message: 'No network selected', intent: Intent.DANGER })
       return
     }
 

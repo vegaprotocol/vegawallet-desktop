@@ -1,3 +1,4 @@
+import { Intent } from '@blueprintjs/core'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { WalletPaths } from '.'
@@ -6,7 +7,6 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
 import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
@@ -16,7 +16,7 @@ export function Wallet() {
 
   async function generateKeypair() {
     if (!state.wallet?.name) {
-      AppToaster.show({ message: 'No wallet', color: Colors.RED })
+      AppToaster.show({ message: 'No wallet', intent: Intent.DANGER })
       return
     }
 

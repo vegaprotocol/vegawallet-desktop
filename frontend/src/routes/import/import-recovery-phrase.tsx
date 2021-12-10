@@ -3,10 +3,10 @@ import { ImportWallet } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
 import { ImportWalletResponse } from '../../models/import-wallet'
 import { ImportSuccess } from './import-success'
 import { BulletHeader } from '../../components/bullet-header'
+import { Intent } from '@blueprintjs/core'
 
 enum FormState {
   Default,
@@ -49,15 +49,15 @@ export const ImportRecoveryPhrase = () => {
         setResponse(resp)
         AppToaster.show({
           message: 'Wallet imported!',
-          color: Colors.GREEN
+          intent: Intent.SUCCESS
         })
         setFormState(FormState.Success)
       } else {
-        AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
+        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
         setFormState(FormState.Failure)
       }
     } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
+      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       setFormState(FormState.Failure)
     }
   }

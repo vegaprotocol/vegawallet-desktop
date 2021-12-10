@@ -6,7 +6,7 @@ import { GetVersionResponse } from '../../models/version'
 import { GlobalDispatch, GlobalState } from './global-context'
 import { GlobalAction } from './global-reducer'
 import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
+import { Intent } from '@blueprintjs/core'
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
@@ -78,7 +78,7 @@ export function addKeypairAction(wallet: string) {
     } catch (err) {
       if (err !== 'dismissed') {
         console.log(err)
-        AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
+        AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       }
     }
   }
@@ -101,7 +101,7 @@ export function getKeysAction(wallet: string, cb: Function) {
       } catch (err) {
         console.log(err)
         if (err !== 'dismissed') {
-          AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
+          AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
         }
       }
     }

@@ -1,10 +1,10 @@
+import { Intent } from '@blueprintjs/core'
 import {
   GetNetworkConfig,
   ListNetworks,
   SaveNetworkConfig
 } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
 import { Network } from '../../models/network'
 import { NetworkDispatch } from './network-context'
 
@@ -50,14 +50,14 @@ export function updateNetworkConfigAction(config: Network) {
       if (isSuccessful) {
         AppToaster.show({
           message: 'Configuration saved. All services stopped.',
-          color: Colors.GREEN
+          intent: Intent.SUCCESS
         })
         dispatch({ type: 'UPDATE_NETWORK_CONFIG', config })
       } else {
-        AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
+        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
       }
     } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, color: Colors.RED })
+      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       console.log(err)
     }
   }
