@@ -15,7 +15,13 @@ export function ButtonGroup({ children }: ButtonGroupProps) {
         gap: 10
       }}
       className='button-group'>
-      {children}
+      {React.Children.map(children, child => {
+        return React.cloneElement(child as any, {
+          style: {
+            flex: 1
+          }
+        })
+      })}
     </div>
   )
 }
