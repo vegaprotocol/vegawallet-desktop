@@ -8,7 +8,6 @@ import * as Wails from '@wailsapp/runtime'
 
 /**
 TODO:
-- chevron for network switcher
 - Investigate input type file for import path
 - Importing configs? Where to prompt?
 - Tests
