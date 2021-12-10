@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import { CreateWallet } from '../../api/service'
 import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
@@ -14,6 +15,7 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { Paths } from '../router-config'
+import { WalletPaths } from '../home'
 
 interface FormFields {
   name: string
@@ -22,6 +24,7 @@ interface FormFields {
 }
 
 export const WalletCreator = () => {
+  const history = useHistory()
   const { dispatch } = useGlobal()
   const [response, setResponse] = React.useState<CreateWalletResponse | null>(
     null
@@ -49,6 +52,7 @@ export const WalletCreator = () => {
           color: Colors.GREEN
         })
         dispatch(addWalletAction(values.name))
+        history.push(WalletPaths.Home)
       } else {
         AppToaster.show({ message: 'Error: Unknown', color: Colors.RED })
       }
@@ -61,8 +65,8 @@ export const WalletCreator = () => {
     <>
       <BulletHeader tag='h1'>Wallet created</BulletHeader>
       <p>
-        Here is your recovery phrase phrase. Please take note of the words below as you
-        will need these to restore your wallet!
+        Here is your recovery phrase phrase. Please take note of the words below
+        as you will need these to restore your wallet!
       </p>
       <p style={{ position: 'relative' }}>
         <CodeBlock>{response.RecoveryPhrase}</CodeBlock>

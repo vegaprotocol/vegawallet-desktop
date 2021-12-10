@@ -8,10 +8,8 @@ import * as Wails from '@wailsapp/runtime'
 
 /**
 TODO:
-- Unmarshal request json for import by mnemonic
 - chevron for network switcher
 - Investigate input type file for import path
-- After create go straight to keys (store password only once for memory)
 - Importing configs? Where to prompt?
 - Tests
 */

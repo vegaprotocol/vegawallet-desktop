@@ -12,6 +12,7 @@ export function ImportSuccess({ walletPath }: ImportSuccessProps) {
   return (
     <>
       <BulletHeader tag='h1'>Wallet successfully imported</BulletHeader>
+      <p>Wallet location:</p>
       <p>
         <CodeBlock>{walletPath}</CodeBlock>
       </p>

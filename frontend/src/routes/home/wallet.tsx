@@ -23,7 +23,7 @@ export function Wallet() {
     dispatch(addKeypairAction(state.wallet.name))
   }
 
-  if (!state.wallets.length || !state.wallet?.keypairs) {
+  if (!state.wallets.length || !state.wallet) {
     return <Redirect to={Paths.Home} />
   }
 
@@ -33,7 +33,7 @@ export function Wallet() {
         <Link to={Paths.Home}>Back</Link>
       </div>
       <BulletHeader tag='h1'>{state.wallet.name}</BulletHeader>
-      {state.wallet.keypairs.length ? (
+      {state.wallet.keypairs?.length ? (
         <ul style={{ marginBottom: 15 }}>
           {state.wallet.keypairs.map(kp => {
             return (

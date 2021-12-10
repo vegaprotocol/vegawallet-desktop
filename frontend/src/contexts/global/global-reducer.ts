@@ -69,12 +69,15 @@ export function globalReducer(
       }
     }
     case 'ADD_WALLET': {
+      const newWallet: Wallet = {
+        name: action.wallet,
+        keypair: null,
+        keypairs: null
+      }
       return {
         ...state,
-        wallets: [
-          ...state.wallets,
-          { name: action.wallet, keypairs: null, keypair: null }
-        ].sort(sortWallet)
+        wallets: [...state.wallets, newWallet].sort(sortWallet),
+        wallet: newWallet
       }
     }
     case 'SET_KEYPAIRS': {
