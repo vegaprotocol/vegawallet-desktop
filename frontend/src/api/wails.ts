@@ -1,12 +1,16 @@
-import type {ImportNetworkResponse, Network} from '../models/network'
-import {ImportNetworkRequest, ListNetworksResponse} from '../models/network'
-import type {GetServiceStateResponse} from '../models/console-state'
-import type {ListKeysResponse} from '../models/keys'
-import {DescribeKeyResponse, GenerateKeyResponse, IsolateKeyResponse} from '../models/keys'
-import type {ListWalletsResponse} from '../models/list-wallets'
-import type {CreateWalletResponse} from '../models/create-wallet'
-import {ImportWalletResponse} from '../models/import-wallet'
-import {GetVersionResponse} from '../models/version'
+import type { ImportNetworkResponse, Network } from '../models/network'
+import { ImportNetworkRequest, ListNetworksResponse } from '../models/network'
+import type { GetServiceStateResponse } from '../models/console-state'
+import type { ListKeysResponse } from '../models/keys'
+import {
+  DescribeKeyResponse,
+  GenerateKeyResponse,
+  IsolateKeyResponse
+} from '../models/keys'
+import type { ListWalletsResponse } from '../models/list-wallets'
+import type { CreateWalletResponse } from '../models/create-wallet'
+import { ImportWalletResponse } from '../models/import-wallet'
+import { GetVersionResponse } from '../models/version'
 
 interface Handler {
   GetVersion(): Promise<GetVersionResponse>
@@ -35,7 +39,7 @@ interface Handler {
 
   ListWallets(): Promise<ListWalletsResponse>
 
-  ImportNetwork(req: ImportNetworkRequest): Promise<ImportNetworkResponse>
+  ImportNetwork(request: string): Promise<ImportNetworkResponse>
 
   GetNetworkConfig(name: string): Promise<Network>
 
