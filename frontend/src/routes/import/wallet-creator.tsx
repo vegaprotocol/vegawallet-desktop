@@ -60,8 +60,8 @@ export const WalletCreator = () => {
     <>
       <BulletHeader tag='h1'>Wallet created</BulletHeader>
       <p>
-        Here is your recovery phrase phrase. Please take note of the words below
-        as you will need these to restore your wallet!
+        Here is your recovery phrase. Please take note of the words below as you
+        will need these to restore your wallet!
       </p>
       <p style={{ position: 'relative' }}>
         <CodeBlock>{response.RecoveryPhrase}</CodeBlock>

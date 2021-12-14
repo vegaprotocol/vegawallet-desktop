@@ -10,9 +10,9 @@ export const initialNetworkState: NetworkState = {
 export type NetworkAction =
   | {
       type: 'SET_NETWORKS'
-      network: string
+      network: string | null
       networks: string[]
-      config: Network
+      config: Network | null
     }
   | {
       type: 'CHANGE_NETWORK'

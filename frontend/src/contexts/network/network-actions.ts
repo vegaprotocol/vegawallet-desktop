@@ -13,15 +13,23 @@ export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
     try {
       const networks = await ListNetworks()
-      const defaultNetwork = networks.networks[0]
-      const config = await GetNetworkConfig(defaultNetwork)
-
-      dispatch({
-        type: 'SET_NETWORKS',
-        network: defaultNetwork,
-        networks: networks.networks,
-        config
-      })
+      if (networks.networks.length) {
+        const defaultNetwork = networks.networks[0]
+        const config = await GetNetworkConfig(defaultNetwork)
+        dispatch({
+          type: 'SET_NETWORKS',
+          network: defaultNetwork,
+          networks: networks.networks,
+          config
+        })
+      } else {
+        dispatch({
+          type: 'SET_NETWORKS',
+          network: null,
+          networks: [],
+          config: null
+        })
+      }
     } catch (err) {
       console.log(err)
     }
