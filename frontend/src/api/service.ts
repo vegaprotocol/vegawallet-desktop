@@ -1,29 +1,20 @@
 import type {
+  ImportNetworkRequest,
+  ImportNetworkResponse,
   ListNetworksResponse,
   Network,
   SaveNetworkConfigRequest
 } from '../models/network'
-import type { GetServiceStateResponse } from '../models/console-state'
-import type {
-  CreateWalletRequest,
-  CreateWalletResponse
-} from '../models/create-wallet'
-import type { ImportWalletRequest } from '../models/import-wallet'
-import { ImportWalletResponse } from '../models/import-wallet'
-import type {
-  GenerateKeyRequest,
-  ListKeysRequest,
-  ListKeysResponse
-} from '../models/keys'
-import type { ListWalletsResponse } from '../models/list-wallets'
-import {
-  DescribeKeyResponse,
-  GenerateKeyResponse,
-  IsolateKeyResponse
-} from '../models/keys'
-import { StartServiceRequest } from '../models/start-console'
-import { GetVersionResponse } from '../models/version'
-import { AppConfig } from '../models/app-config'
+import type {GetServiceStateResponse} from '../models/console-state'
+import type {CreateWalletRequest, CreateWalletResponse} from '../models/create-wallet'
+import type {ImportWalletRequest} from '../models/import-wallet'
+import {ImportWalletResponse} from '../models/import-wallet'
+import type {GenerateKeyRequest, ListKeysRequest, ListKeysResponse} from '../models/keys'
+import {DescribeKeyResponse, GenerateKeyResponse, IsolateKeyResponse} from '../models/keys'
+import type {ListWalletsResponse} from '../models/list-wallets'
+import {StartServiceRequest} from '../models/start-console'
+import {GetVersionResponse} from '../models/version'
+import {AppConfig} from '../models/app-config'
 
 /**
  * Return the software version.
@@ -124,6 +115,13 @@ export function InitialiseApp(request: AppConfig): Promise<void> {
  */
 export function ListWallets(): Promise<ListWalletsResponse> {
   return window.backend.Handler.ListWallets()
+}
+
+/**
+ * Gets the config of a given network
+ */
+export function ImportNetwork(req: ImportNetworkRequest): Promise<ImportNetworkResponse> {
+  return window.backend.Handler.ImportNetwork(req)
 }
 
 /**

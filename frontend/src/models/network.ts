@@ -47,3 +47,16 @@ export interface SaveNetworkConfigRequest {
   TokenDApp: AppConfig
   API: API
 }
+
+
+export interface ImportNetworkRequest {
+  FilePath: string
+  URL: string
+  Name: string
+  Force: boolean
+}
+
+export interface ImportNetworkResponse {
+  Name: string
+  FilePath: string
+}

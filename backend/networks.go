@@ -8,6 +8,23 @@ import (
 	"code.vegaprotocol.io/vegawallet/network"
 )
 
+func (s *Handler) ImportNetwork(req *network.ImportNetworkFromSourceRequest) (*network.ImportNetworkFromSourceResponse, error) {
+	s.log.Debug("Entering ImportNetwork")
+	defer s.log.Debug("Leaving ImportNetwork")
+
+	c, err := s.loadAppConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	st, err := s.getNetworksStore(c)
+	if err != nil {
+		return nil, err
+	}
+
+	return network.ImportNetworkFromSource(st, network.NewReaders(), req)
+}
+
 func (s *Handler) GetNetworkConfig(name string) (*network.Network, error) {
 	s.log.Debug("Entering GetNetworkConfig")
 	defer s.log.Debug("Leaving GetNetworkConfig")

@@ -1,5 +1,5 @@
-import type {Network} from '../models/network'
-import {ListNetworksResponse} from '../models/network'
+import type {ImportNetworkResponse, Network} from '../models/network'
+import {ImportNetworkRequest, ListNetworksResponse} from '../models/network'
 import type {GetServiceStateResponse} from '../models/console-state'
 import type {ListKeysResponse} from '../models/keys'
 import {DescribeKeyResponse, GenerateKeyResponse, IsolateKeyResponse} from '../models/keys'
@@ -34,6 +34,8 @@ interface Handler {
   InitialiseApp(request: string): Promise<void>
 
   ListWallets(): Promise<ListWalletsResponse>
+
+  ImportNetwork(req: ImportNetworkRequest): Promise<ImportNetworkResponse>
 
   GetNetworkConfig(name: string): Promise<Network>
 
