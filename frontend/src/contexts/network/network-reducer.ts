@@ -23,6 +23,10 @@ export type NetworkAction =
       type: 'UPDATE_NETWORK_CONFIG'
       config: Network
     }
+  | {
+      type: 'ADD_NETWORK'
+      network: string
+    }
 
 export function networkReducer(
   state: NetworkState,
@@ -33,7 +37,7 @@ export function networkReducer(
       return {
         ...state,
         network: action.network,
-        networks: action.networks,
+        networks: action.networks.sort(),
         config: action.config
       }
     }
@@ -48,6 +52,12 @@ export function networkReducer(
       return {
         ...state,
         config: action.config
+      }
+    }
+    case 'ADD_NETWORK': {
+      return {
+        ...state,
+        networks: [...state.networks, action.network].sort()
       }
     }
     default: {

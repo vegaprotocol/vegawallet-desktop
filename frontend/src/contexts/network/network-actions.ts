@@ -7,6 +7,7 @@ import {
 import { AppToaster } from '../../components/toaster'
 import { Network } from '../../models/network'
 import { NetworkDispatch } from './network-context'
+import { NetworkAction } from './network-reducer'
 
 export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
@@ -38,7 +39,10 @@ export function changeNetworkAction(network: string) {
         config
       })
     } catch (err) {
-      console.log(err)
+      AppToaster.show({
+        message: err as string,
+        intent: Intent.DANGER
+      })
     }
   }
 }
@@ -60,5 +64,12 @@ export function updateNetworkConfigAction(config: Network) {
       AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       console.log(err)
     }
+  }
+}
+
+export function addNetworkAction(network: string): NetworkAction {
+  return {
+    type: 'ADD_NETWORK',
+    network
   }
 }
