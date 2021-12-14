@@ -1,3 +1,4 @@
+import { FormGroup, Intent } from '@blueprintjs/core'
 import React from 'react'
 import {
   Control,
@@ -5,7 +6,6 @@ import {
   useForm,
   UseFormRegister
 } from 'react-hook-form'
-import { FormGroup } from '../../components/form-group'
 import { LogLevels } from '../../config/log-levels'
 import type { Network } from '../../models/network'
 
@@ -58,7 +58,8 @@ export const NetworkConfigForm = ({
       <FormGroup
         label='* Log level'
         labelFor='logLevel'
-        errorText={errors.logLevel?.message}>
+        intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.logLevel?.message}>
         <select {...register('logLevel', { required: 'Required' })}>
           {Object.values(LogLevels).map(level => (
             <option key={level} value={level}>
@@ -70,7 +71,8 @@ export const NetworkConfigForm = ({
       <FormGroup
         label='* Token expiry'
         labelFor='tokenExpiry'
-        errorText={errors.tokenExpiry?.message}>
+        intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.tokenExpiry?.message}>
         <input
           type='text'
           {...register('tokenExpiry', { required: 'Required' })}
@@ -79,19 +81,22 @@ export const NetworkConfigForm = ({
       <FormGroup
         label='* Port'
         labelFor='port'
-        errorText={errors.port?.message}>
+        intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.port?.message}>
         <input type='text' {...register('port', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
         label='* Host'
         labelFor='host'
-        errorText={errors.host?.message}>
+        intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.host?.message}>
         <input type='text' {...register('host', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
         label='*gRPC Node retries'
         labelFor='grpcNodeRetries'
-        errorText={errors.grpcNodeRetries?.message}>
+        intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.grpcNodeRetries?.message}>
         <input
           type='text'
           {...register('grpcNodeRetries', { required: 'Required' })}
@@ -100,7 +105,8 @@ export const NetworkConfigForm = ({
       <FormGroup
         label='* Console URL'
         labelFor='consoleUrl'
-        errorText={errors.consoleUrl?.message}>
+        intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.consoleUrl?.message}>
         <input
           type='text'
           {...register('consoleUrl', { required: 'Required' })}
@@ -109,7 +115,8 @@ export const NetworkConfigForm = ({
       <FormGroup
         label='* Console port'
         labelFor='consolePort'
-        errorText={errors.consolePort?.message}>
+        intent={errors.consolePort?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.consolePort?.message}>
         <input
           type='text'
           {...register('consolePort', { required: 'Required' })}
@@ -118,7 +125,8 @@ export const NetworkConfigForm = ({
       <FormGroup
         label='* Token DApp URL'
         labelFor='tokenDAppUrl'
-        errorText={errors.tokenDAppUrl?.message}>
+        intent={errors.tokenDAppUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.tokenDAppUrl?.message}>
         <input
           type='text'
           {...register('tokenDAppUrl', { required: 'Required' })}
@@ -127,7 +135,8 @@ export const NetworkConfigForm = ({
       <FormGroup
         label='* Token DApp port'
         labelFor='tokenDAppPort'
-        errorText={errors.tokenDAppPort?.message}>
+        intent={errors.tokenDAppPort?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.tokenDAppPort?.message}>
         <input
           type='text'
           {...register('tokenDAppPort', { required: 'Required' })}

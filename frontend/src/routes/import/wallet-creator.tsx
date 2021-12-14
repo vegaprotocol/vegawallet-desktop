@@ -1,6 +1,5 @@
 import React from 'react'
 import { CreateWallet } from '../../api/service'
-import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { CreateWalletResponse } from '../../models/create-wallet'
@@ -13,7 +12,7 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { WalletPaths } from '../home'
-import { Intent } from '@blueprintjs/core'
+import { FormGroup, Intent } from '@blueprintjs/core'
 
 interface FormFields {
   name: string
@@ -85,7 +84,8 @@ export const WalletCreator = () => {
         <FormGroup
           label='* Name'
           labelFor='name'
-          errorText={errors.name?.message}>
+          intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+          helperText={errors.name?.message}>
           <input
             type='text'
             {...register('name', { required: 'Required' })}
@@ -95,7 +95,8 @@ export const WalletCreator = () => {
         <FormGroup
           label='* Passphrase'
           labelFor='passphrase'
-          errorText={errors.passphrase?.message}>
+          intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
+          helperText={errors.passphrase?.message}>
           <input
             type='password'
             {...register('passphrase', { required: 'Required' })}
@@ -104,7 +105,10 @@ export const WalletCreator = () => {
         <FormGroup
           label='* Confirm passphrase'
           labelFor='confirmPassphrase'
-          errorText={errors.confirmPassphrase?.message}>
+          intent={
+            errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE
+          }
+          helperText={errors.confirmPassphrase?.message}>
           <input
             type='password'
             {...register('confirmPassphrase', {

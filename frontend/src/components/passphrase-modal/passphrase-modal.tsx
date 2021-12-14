@@ -1,9 +1,8 @@
 import React from 'react'
-import { Overlay } from '@blueprintjs/core'
+import { FormGroup, Intent, Overlay } from '@blueprintjs/core'
 import { useGlobal } from '../../contexts/global/global-context'
 import { setPassphraseModalAction } from '../../contexts/global/global-actions'
 import { useForm } from 'react-hook-form'
-import { FormGroup } from '../form-group'
 
 interface ModalHandler {
   open: Function
@@ -78,7 +77,8 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
       <FormGroup
         label='* Passphrase'
         labelFor='passphrase'
-        errorText={errors.passphrase?.message}>
+        helperText={errors.passphrase?.message}
+        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}>
         <input
           type='password'
           autoComplete='off'

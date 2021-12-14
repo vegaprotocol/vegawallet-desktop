@@ -1,12 +1,11 @@
 import React from 'react'
 import { ImportWallet } from '../../api/service'
-import { FormGroup } from '../../components/form-group'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { ImportWalletResponse } from '../../models/import-wallet'
 import { ImportSuccess } from './import-success'
 import { BulletHeader } from '../../components/bullet-header'
-import { Intent } from '@blueprintjs/core'
+import { FormGroup, Intent } from '@blueprintjs/core'
 
 enum FormState {
   Default,
@@ -71,13 +70,14 @@ export const ImportRecoveryPhrase = () => {
         <FormGroup
           label='* Name'
           labelFor='name'
-          errorText={errors.name?.message}>
+          helperText={errors.name?.message}>
           <input type='text' {...register('name', { required: 'Required' })} />
         </FormGroup>
         <FormGroup
           label='* Recovery phrase'
           labelFor='recoveryPhrase'
-          errorText={errors.recoveryPhrase?.message}>
+          helperText={errors.recoveryPhrase?.message}
+          intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}>
           <textarea
             {...register('recoveryPhrase', { required: 'Required' })}
             style={{ minHeight: 75 }}
@@ -86,7 +86,8 @@ export const ImportRecoveryPhrase = () => {
         <FormGroup
           label='* Version'
           labelFor='version'
-          errorText={errors.version?.message}>
+          intent={errors.version?.message ? Intent.DANGER : Intent.NONE}
+          helperText={errors.version?.message}>
           <input
             type='number'
             value={2}
@@ -96,7 +97,8 @@ export const ImportRecoveryPhrase = () => {
         <FormGroup
           label='* Choose passphrase'
           labelFor='passphrase'
-          errorText={errors.passphrase?.message}>
+          intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
+          helperText={errors.passphrase?.message}>
           <input
             type='password'
             {...register('passphrase', { required: 'Required' })}
@@ -105,7 +107,10 @@ export const ImportRecoveryPhrase = () => {
         <FormGroup
           label='* Confirm passphrase'
           labelFor='confirmPassphrase'
-          errorText={errors.confirmPassphrase?.message}>
+          intent={
+            errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE
+          }
+          helperText={errors.confirmPassphrase?.message}>
           <input
             type='password'
             {...register('confirmPassphrase', {
