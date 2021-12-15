@@ -7,13 +7,6 @@ import { ImportSuccess } from './import-success'
 import { BulletHeader } from '../../components/bullet-header'
 import { FormGroup, Intent } from '@blueprintjs/core'
 
-enum FormState {
-  Default,
-  Pending,
-  Success,
-  Failure
-}
-
 interface FormFields {
   name: string
   version: number
@@ -23,7 +16,7 @@ interface FormFields {
 }
 
 export const ImportRecoveryPhrase = () => {
-  const [formState, setFormState] = React.useState(FormState.Default)
+  const { response, submit } = useWalletImport()
   const {
     control,
     register,
@@ -31,42 +24,15 @@ export const ImportRecoveryPhrase = () => {
     formState: { errors }
   } = useForm<FormFields>()
   const passphrase = useWatch({ control, name: 'passphrase' })
-  const [response, setResponse] = React.useState<ImportWalletResponse | null>(
-    null
-  )
 
-  const onSubmit = async (values: FormFields) => {
-    setFormState(FormState.Pending)
-    try {
-      const resp = await ImportWallet({
-        Name: values.name,
-        Passphrase: values.passphrase,
-        RecoveryPhrase: values.recoveryPhrase,
-        Version: values.version
-      })
-      if (resp) {
-        setResponse(resp)
-        AppToaster.show({
-          message: 'Wallet imported!',
-          intent: Intent.SUCCESS
-        })
-        setFormState(FormState.Success)
-      } else {
-        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
-        setFormState(FormState.Failure)
-      }
-    } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
-      setFormState(FormState.Failure)
-    }
+  if (response) {
+    return <ImportSuccess walletPath={response.WalletPath} />
   }
 
-  return formState === FormState.Success && response ? (
-    <ImportSuccess walletPath={response.WalletPath} />
-  ) : (
+  return (
     <>
       <BulletHeader tag='h1'>Import wallet</BulletHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
           labelFor='name'
@@ -128,4 +94,37 @@ export const ImportRecoveryPhrase = () => {
       </form>
     </>
   )
+}
+
+function useWalletImport() {
+  const [response, setResponse] = React.useState<ImportWalletResponse | null>(
+    null
+  )
+
+  const submit = React.useCallback(async (values: FormFields) => {
+    try {
+      const resp = await ImportWallet({
+        Name: values.name,
+        Passphrase: values.passphrase,
+        RecoveryPhrase: values.recoveryPhrase,
+        Version: values.version
+      })
+      if (resp) {
+        setResponse(resp)
+        AppToaster.show({
+          message: 'Wallet imported!',
+          intent: Intent.SUCCESS
+        })
+      } else {
+        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
+      }
+    } catch (err) {
+      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
+    }
+  }, [])
+
+  return {
+    response,
+    submit
+  }
 }

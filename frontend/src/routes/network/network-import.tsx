@@ -19,11 +19,7 @@ interface FormFields {
 }
 
 export function NetworkImport() {
-  const { dispatch } = useNetwork()
-  const [response, setResponse] = React.useState<ImportNetworkResponse | null>(
-    null
-  )
-
+  const { response, submit } = useImportNetwork()
   const {
     control,
     register,
@@ -42,39 +38,6 @@ export function NetworkImport() {
   React.useEffect(() => {
     clearErrors('filePath')
   }, [url, clearErrors])
-
-  const onSubmit = async (values: FormFields) => {
-    try {
-      const res = await ImportNetwork({
-        name: values.name,
-        url: values.url,
-        filePath: values.filePath,
-        force: values.force
-      })
-
-      if (res) {
-        setResponse(res)
-        const config = await GetNetworkConfig(res.name)
-
-        dispatch(addNetworkAction(res.name, config))
-
-        AppToaster.show({
-          message: 'Network imported',
-          intent: Intent.SUCCESS
-        })
-      } else {
-        AppToaster.show({
-          message: 'Error: Could not import network',
-          intent: Intent.DANGER
-        })
-      }
-    } catch (err) {
-      AppToaster.show({
-        message: `Error: ${err}`,
-        intent: Intent.DANGER
-      })
-    }
-  }
 
   if (response) {
     return (
@@ -99,7 +62,7 @@ export function NetworkImport() {
   return (
     <>
       <BulletHeader tag='h1'>Import network</BulletHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Network name'
           labelFor='name'
@@ -153,4 +116,52 @@ export function NetworkImport() {
       </form>
     </>
   )
+}
+
+function useImportNetwork() {
+  const { dispatch } = useNetwork()
+  const [response, setResponse] = React.useState<ImportNetworkResponse | null>(
+    null
+  )
+
+  const submit = React.useCallback(
+    async (values: FormFields) => {
+      try {
+        const res = await ImportNetwork({
+          name: values.name,
+          url: values.url,
+          filePath: values.filePath,
+          force: values.force
+        })
+
+        if (res) {
+          setResponse(res)
+          const config = await GetNetworkConfig(res.name)
+
+          dispatch(addNetworkAction(res.name, config))
+
+          AppToaster.show({
+            message: 'Network imported',
+            intent: Intent.SUCCESS
+          })
+        } else {
+          AppToaster.show({
+            message: 'Error: Could not import network',
+            intent: Intent.DANGER
+          })
+        }
+      } catch (err) {
+        AppToaster.show({
+          message: `Error: ${err}`,
+          intent: Intent.DANGER
+        })
+      }
+    },
+    [dispatch]
+  )
+
+  return {
+    response,
+    submit
+  }
 }

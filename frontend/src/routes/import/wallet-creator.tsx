@@ -21,11 +21,7 @@ interface FormFields {
 }
 
 export const WalletCreator = () => {
-  const { dispatch } = useGlobal()
-  const [response, setResponse] = React.useState<CreateWalletResponse | null>(
-    null
-  )
-
+  const { response, submit } = useCreateWallet()
   const {
     control,
     register,
@@ -34,27 +30,6 @@ export const WalletCreator = () => {
   } = useForm<FormFields>()
 
   const passphrase = useWatch({ control, name: 'passphrase' })
-
-  const onSubmit = async (values: FormFields) => {
-    try {
-      const resp = await CreateWallet({
-        Name: values.name,
-        Passphrase: values.passphrase
-      })
-      if (resp) {
-        setResponse(resp)
-        AppToaster.show({
-          message: 'Wallet created!',
-          intent: Intent.SUCCESS
-        })
-        dispatch(addWalletAction(values.name))
-      } else {
-        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
-      }
-    } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
-    }
-  }
 
   if (response) {
     return (
@@ -84,7 +59,7 @@ export const WalletCreator = () => {
   return (
     <>
       <BulletHeader tag='h1'>Create wallet</BulletHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
           labelFor='name'
@@ -130,4 +105,40 @@ export const WalletCreator = () => {
       </form>
     </>
   )
+}
+
+function useCreateWallet() {
+  const { dispatch } = useGlobal()
+  const [response, setResponse] = React.useState<CreateWalletResponse | null>(
+    null
+  )
+
+  const submit = React.useCallback(
+    async (values: FormFields) => {
+      try {
+        const resp = await CreateWallet({
+          Name: values.name,
+          Passphrase: values.passphrase
+        })
+        if (resp) {
+          setResponse(resp)
+          AppToaster.show({
+            message: 'Wallet created!',
+            intent: Intent.SUCCESS
+          })
+          dispatch(addWalletAction(values.name))
+        } else {
+          AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
+        }
+      } catch (err) {
+        AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
+      }
+    },
+    [dispatch]
+  )
+
+  return {
+    response,
+    submit
+  }
 }
