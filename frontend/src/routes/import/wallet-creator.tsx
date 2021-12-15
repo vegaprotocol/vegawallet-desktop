@@ -56,28 +56,32 @@ export const WalletCreator = () => {
     }
   }
 
-  return response ? (
-    <>
-      <BulletHeader tag='h1'>Wallet created</BulletHeader>
-      <p>
-        Here is your recovery phrase. Please take note of the words below as you
-        will need these to restore your wallet!
-      </p>
-      <p style={{ position: 'relative' }}>
-        <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
-        <span style={{ position: 'absolute', top: 7, right: 10 }}>
-          <CopyWithTooltip text={response.RecoveryPhrase}>
-            <ButtonUnstyled>
-              <Copy style={{ width: 13, height: 13 }} />
-            </ButtonUnstyled>
-          </CopyWithTooltip>
-        </span>
-      </p>
-      <Link to={WalletPaths.Home}>
-        <button>View wallet</button>
-      </Link>
-    </>
-  ) : (
+  if (response) {
+    return (
+      <>
+        <BulletHeader tag='h1'>Wallet created</BulletHeader>
+        <p>
+          Here is your recovery phrase. Please take note of the words below as
+          you will need these to restore your wallet!
+        </p>
+        <p style={{ position: 'relative' }}>
+          <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
+          <span style={{ position: 'absolute', top: 7, right: 10 }}>
+            <CopyWithTooltip text={response.RecoveryPhrase}>
+              <ButtonUnstyled>
+                <Copy style={{ width: 13, height: 13 }} />
+              </ButtonUnstyled>
+            </CopyWithTooltip>
+          </span>
+        </p>
+        <Link to={WalletPaths.Home}>
+          <button>View wallet</button>
+        </Link>
+      </>
+    )
+  }
+
+  return (
     <>
       <BulletHeader tag='h1'>Create wallet</BulletHeader>
       <form onSubmit={handleSubmit(onSubmit)}>

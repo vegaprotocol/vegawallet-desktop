@@ -48,15 +48,14 @@ export interface SaveNetworkConfigRequest {
   API: API
 }
 
-
 export interface ImportNetworkRequest {
-  FilePath: string
-  URL: string
-  Name: string
-  Force: boolean
+  filePath: string
+  url: string
+  name: string
+  force: boolean
 }
 
 export interface ImportNetworkResponse {
-  Name: string
-  FilePath: string
+  name: string
+  filePath: string
 }

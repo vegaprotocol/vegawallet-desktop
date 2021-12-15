@@ -12,7 +12,16 @@ export const NetworkDetails = () => {
   } = useNetwork()
 
   if (!config) {
-    return <p>No network configuration found</p>
+    return (
+      <>
+        <p>No network configuration found. </p>
+        <p>
+          <Link to={NetworkPaths.Import}>
+            <button>Import network</button>
+          </Link>
+        </p>
+      </>
+    )
   }
 
   return (

@@ -1,10 +1,15 @@
 import { FormGroup, Intent } from '@blueprintjs/core'
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { NetworkPaths } from '.'
+import { GetNetworkConfig, ImportNetwork } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
+import { CodeBlock } from '../../components/code-block'
 import { AppToaster } from '../../components/toaster'
 import { addNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
+import { ImportNetworkResponse } from '../../models/network'
 
 interface FormFields {
   filePath: string
@@ -15,6 +20,9 @@ interface FormFields {
 
 export function NetworkImport() {
   const { dispatch } = useNetwork()
+  const [response, setResponse] = React.useState<ImportNetworkResponse | null>(
+    null
+  )
 
   const {
     control,
@@ -36,25 +44,22 @@ export function NetworkImport() {
   }, [url, clearErrors])
 
   const onSubmit = async (values: FormFields) => {
-    console.log(values)
     try {
-      // TODO: Reinstate after backend is working
-
-      // const res = await ImportNetwork({
-      //   Name: values.name,
-      //   URL: values.url,
-      //   FilePath: values.filePath,
-      //   Force: values.force
-      // })
-      const res = await Promise.resolve({
-        Name: 'mainnet1',
-        FilePath: 'fooo/bar/buzz'
+      const res = await ImportNetwork({
+        name: values.name,
+        url: values.url,
+        filePath: values.filePath,
+        force: values.force
       })
 
       if (res) {
-        dispatch(addNetworkAction(res.Name))
+        setResponse(res)
+        const config = await GetNetworkConfig(res.name)
+
+        dispatch(addNetworkAction(res.name, config))
+
         AppToaster.show({
-          message: `Network imported from ${res.FilePath}`,
+          message: `Network imported from ${res.filePath}`,
           intent: Intent.SUCCESS
         })
       } else {
@@ -64,8 +69,26 @@ export function NetworkImport() {
         })
       }
     } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
+      AppToaster.show({
+        message: `Error: ${err}`,
+        intent: Intent.DANGER
+      })
     }
+  }
+
+  if (response) {
+    return (
+      <>
+        <BulletHeader tag='h1'>Network imported</BulletHeader>
+        <p>Network configuration location</p>
+        <p style={{ position: 'relative' }}>
+          <CodeBlock>{response.filePath}</CodeBlock>
+        </p>
+        <Link to={NetworkPaths.Config}>
+          <button>View configuration</button>
+        </Link>
+      </>
+    )
   }
 
   return (

@@ -1,12 +1,13 @@
 import { Intent } from '@blueprintjs/core'
 import {
   GetNetworkConfig,
+  ImportNetwork,
   ListNetworks,
   SaveNetworkConfig
 } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
-import { Network } from '../../models/network'
-import { NetworkDispatch } from './network-context'
+import { ImportNetworkRequest, Network } from '../../models/network'
+import { NetworkDispatch, NetworkState } from './network-context'
 import { NetworkAction } from './network-reducer'
 
 export function initNetworksAction() {
@@ -75,9 +76,51 @@ export function updateNetworkConfigAction(config: Network) {
   }
 }
 
-export function addNetworkAction(network: string): NetworkAction {
+export function importNetworkAction(values: ImportNetworkRequest) {
+  return async (dispatch: NetworkDispatch, getState: () => NetworkState) => {
+    try {
+      const res = await ImportNetwork({
+        name: values.name,
+        url: values.url,
+        filePath: values.filePath,
+        force: values.force
+      })
+
+      if (res) {
+        const config = await GetNetworkConfig(res.name)
+
+        dispatch({
+          type: 'ADD_NETWORK',
+          network: res.name,
+          config
+        })
+
+        AppToaster.show({
+          message: `Network imported from ${res.filePath}`,
+          intent: Intent.SUCCESS
+        })
+      } else {
+        AppToaster.show({
+          message: 'Error: Could not import network',
+          intent: Intent.DANGER
+        })
+      }
+    } catch (err) {
+      AppToaster.show({
+        message: `Error: ${err}`,
+        intent: Intent.DANGER
+      })
+    }
+  }
+}
+
+export function addNetworkAction(
+  network: string,
+  config: Network
+): NetworkAction {
   return {
     type: 'ADD_NETWORK',
-    network
+    network,
+    config
   }
 }

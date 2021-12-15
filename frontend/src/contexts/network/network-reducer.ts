@@ -26,6 +26,7 @@ export type NetworkAction =
   | {
       type: 'ADD_NETWORK'
       network: string
+      config: Network
     }
 
 export function networkReducer(
@@ -55,9 +56,16 @@ export function networkReducer(
       }
     }
     case 'ADD_NETWORK': {
+      const networks = [...state.networks, action.network].sort()
+      const changeToNewNetwork =
+        state.networks === null || state.networks.length === 0
+      const network = changeToNewNetwork ? action.network : state.network
+      const config = changeToNewNetwork ? action.config : state.config
       return {
         ...state,
-        networks: [...state.networks, action.network].sort()
+        network,
+        networks,
+        config
       }
     }
     default: {
