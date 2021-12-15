@@ -59,7 +59,7 @@ export function NetworkImport() {
         dispatch(addNetworkAction(res.name, config))
 
         AppToaster.show({
-          message: `Network imported from ${res.filePath}`,
+          message: 'Network imported',
           intent: Intent.SUCCESS
         })
       } else {
@@ -80,13 +80,18 @@ export function NetworkImport() {
     return (
       <>
         <BulletHeader tag='h1'>Network imported</BulletHeader>
-        <p>Network configuration location</p>
+        <p>Location</p>
         <p style={{ position: 'relative' }}>
           <CodeBlock>{response.filePath}</CodeBlock>
         </p>
-        <Link to={NetworkPaths.Config}>
-          <button>View configuration</button>
-        </Link>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <Link to={NetworkPaths.Config}>
+            <button>View {response.name} configuration</button>
+          </Link>
+          <Link to={NetworkPaths.Edit}>
+            <button>Edit {response.name} configuration</button>
+          </Link>
+        </div>
       </>
     )
   }
