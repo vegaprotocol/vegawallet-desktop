@@ -8,9 +8,16 @@ import (
 	"code.vegaprotocol.io/vegawallet/network"
 )
 
-func (s *Handler) ImportNetwork(req *network.ImportNetworkFromSourceRequest) (*network.ImportNetworkFromSourceResponse, error) {
+func (s *Handler) ImportNetwork(data string) (*network.ImportNetworkFromSourceResponse, error) {
 	s.log.Debug("Entering ImportNetwork")
 	defer s.log.Debug("Leaving ImportNetwork")
+
+	req := &network.ImportNetworkFromSourceRequest{}
+	err := json.Unmarshal([]byte(data), req)
+	if err != nil {
+		s.log.Errorf("Couldn't unmarshall request: %v", err)
+		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
+	}
 
 	c, err := s.loadAppConfig()
 	if err != nil {
