@@ -22,6 +22,9 @@
 - [3](https://github.com/vegaprotocol/vegawallet-desktop/pull/3) - Edit wallet service configuration
 - [2](https://github.com/vegaprotocol/vegawallet-desktop/pull/2) - Expose the console
 - [1](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Bootstrap the desktop application
+- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add key management
+- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add network management
+- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add service start
 
 ### 🐛 Fixes
 - [21](https://github.com/vegaprotocol/vegawallet-desktop/pull/21) - No service config if you create a new wallet
