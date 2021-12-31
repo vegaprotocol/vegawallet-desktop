@@ -1,15 +1,18 @@
-name: Build the project
+name: Build binaries
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master, develop ]
+    branches:
+      - master
+      - develop
 
 jobs:
 
   build-linux:
-    name: Linux build
+    name: Build on Linux
     runs-on: ubuntu-latest
     env:
       GO111MODULE: on # Needed by Wails
@@ -61,7 +64,7 @@ jobs:
           npm run check_format
 
   build-macos:
-    name: MacOS build
+    name: Build on MacOS
     runs-on: macos-latest
     env:
       GO111MODULE: on # Needed by Wails
@@ -108,7 +111,7 @@ jobs:
           npm run check_format
 
   build-windows:
-    name: Windows Build
+    name: Build on Windows
     runs-on: windows-latest
     env:
       GO111MODULE: on # Needed by Wails
