@@ -1,39 +1,28 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import { ImportMnemonic } from './import-mnemonic'
-import { ImportPath } from './import-path'
+import { ImportRecoveryPhrase } from './import-recovery-phrase'
 import { ImportSelect } from './import-select'
 import { WalletCreator } from './wallet-creator'
+
+export enum ImportPaths {
+  Create = '/import/create',
+  RecoveryPhrase = '/import/recovery-phrase'
+}
 
 export function Import() {
   const match = useRouteMatch()
 
   return (
-    <>
-      <ImportSelect />
-      <div style={{ marginTop: 20 }}>
-        <Switch>
-          <Route path={`${match.path}/create`}>
-            <WalletCreator
-              request={{ VegaHome: '', Name: '', Passphrase: '' }}
-            />
-          </Route>
-          <Route path={`${match.path}/path`}>
-            <ImportPath />
-          </Route>
-          <Route path={`${match.path}/mnemonic`}>
-            <ImportMnemonic
-              request={{
-                VegaHome: '',
-                Name: '',
-                Passphrase: '',
-                Mnemonic: '',
-                Version: 2
-              }}
-            />
-          </Route>
-        </Switch>
-      </div>
-    </>
+    <Switch>
+      <Route path={ImportPaths.Create}>
+        <WalletCreator />
+      </Route>
+      <Route path={ImportPaths.RecoveryPhrase}>
+        <ImportRecoveryPhrase />
+      </Route>
+      <Route path={match.path} exact>
+        <ImportSelect />
+      </Route>
+    </Switch>
   )
 }

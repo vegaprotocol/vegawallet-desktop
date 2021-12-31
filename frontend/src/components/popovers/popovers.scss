@@ -1,0 +1,14 @@
+@import '../../styles/colors';
+
+.bp3-popover2-content {
+  background: $dark-gray3;
+}
+
+.bp3-popover2-arrow {
+  border-color: transparent;
+  border-bottom-color: rgba($dark-gray4, 0.9);
+  border-style: solid;
+  border-width: 2px 10px 10px;
+  height: 0;
+  width: 0;
+}

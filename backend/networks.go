@@ -8,6 +8,30 @@ import (
 	"code.vegaprotocol.io/vegawallet/network"
 )
 
+func (s *Handler) ImportNetwork(data string) (*network.ImportNetworkFromSourceResponse, error) {
+	s.log.Debug("Entering ImportNetwork")
+	defer s.log.Debug("Leaving ImportNetwork")
+
+	req := &network.ImportNetworkFromSourceRequest{}
+	err := json.Unmarshal([]byte(data), req)
+	if err != nil {
+		s.log.Errorf("Couldn't unmarshall request: %v", err)
+		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
+	}
+
+	c, err := s.loadAppConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	st, err := s.getNetworksStore(c)
+	if err != nil {
+		return nil, err
+	}
+
+	return network.ImportNetworkFromSource(st, network.NewReaders(), req)
+}
+
 func (s *Handler) GetNetworkConfig(name string) (*network.Network, error) {
 	s.log.Debug("Entering GetNetworkConfig")
 	defer s.log.Debug("Leaving GetNetworkConfig")
@@ -33,6 +57,23 @@ func (s *Handler) GetNetworkConfig(name string) (*network.Network, error) {
 	}
 
 	return cfg, nil
+}
+
+func (s *Handler) ListNetworks() (*network.ListNetworksResponse, error) {
+	s.log.Debug("Entering ListNetworks")
+	defer s.log.Debug("Leaving ListNetworks")
+
+	c, err := s.loadAppConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	st, err := s.getNetworksStore(c)
+	if err != nil {
+		return nil, err
+	}
+
+	return network.ListNetworks(st)
 }
 
 func (s *Handler) SaveNetworkConfig(jsonConfig string) (bool, error) {

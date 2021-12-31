@@ -1,0 +1,27 @@
+@import '../../styles/colors';
+
+.loading {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  &__animation {
+    display: flex;
+    flex-wrap: wrap;
+    height: 50px;
+    margin-bottom: 20px;
+    width: 50px;
+
+    div {
+      background: $white;
+      height: 10px;
+      opacity: 0;
+      width: 10px;
+    }
+  }
+
+  &__text {
+    color: $white;
+    font-size: 20px;
+  }
+}

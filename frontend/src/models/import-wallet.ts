@@ -1,11 +1,10 @@
-export class ImportWalletRequest {
-  VegaHome: string = ''
-  Name: string = ''
-  Passphrase: string = ''
-  Mnemonic: string = ''
-  Version: number = 2
+export interface ImportWalletRequest {
+  Name: string
+  Passphrase: string
+  RecoveryPhrase: string
+  Version: number
 }
 
-export class ImportWalletResponse {
-  WalletPath: string = ''
+export interface ImportWalletResponse {
+  WalletPath: string
 }

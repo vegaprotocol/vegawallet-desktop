@@ -1,22 +1,40 @@
-import './wallet-list.scss'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { WalletPaths } from '.'
 import { BulletHeader } from '../../components/bullet-header'
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { getKeysAction } from '../../contexts/global/global-actions'
+import { useGlobal } from '../../contexts/global/global-context'
 
-interface WalletListProps {
-  wallets: string[]
-}
+export const WalletList = () => {
+  const history = useHistory()
+  const {
+    state: { wallets },
+    dispatch
+  } = useGlobal()
 
-export const WalletList = ({ wallets }: WalletListProps) => {
+  function getKeys(wallet: string) {
+    dispatch(getKeysAction(wallet, () => history.push(WalletPaths.Home)))
+  }
+
   return (
     <>
       <BulletHeader tag='h1'>Wallets</BulletHeader>
       {wallets.length ? (
         <ul className='wallet-list'>
           {wallets.map(wallet => (
-            <li key={wallet} style={{ marginBottom: 5 }}>
-              <span>{wallet}</span>
-              <Link to={`/wallet/${wallet}`}>View</Link>
+            <li
+              key={wallet.name}
+              style={{
+                marginBottom: 10
+              }}
+            >
+              <ButtonUnstyled
+                className='link'
+                onClick={() => getKeys(wallet.name)}
+              >
+                {wallet.name}
+              </ButtonUnstyled>
             </li>
           ))}
         </ul>

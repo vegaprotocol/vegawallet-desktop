@@ -1,4 +1,4 @@
-export class GetConsoleStateResponse {
-  URL: string = ''
-  Running: boolean = false
+export interface GetServiceStateResponse {
+  URL: string
+  Running: boolean
 }

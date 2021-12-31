@@ -4,8 +4,16 @@ import 'core-js/stable'
 import './index.scss'
 import App from './app'
 import reportWebVitals from './report-web-vitals'
-
 import * as Wails from '@wailsapp/runtime'
+
+/**
+TODO:
+- Investigate input type file for import path
+- Importing configs? Where to prompt?
+- Tests
+- Use formgroup from blueprint
+- make validation DRY
+*/
 
 Wails.Init(() => {
   ReactDOM.render(
