@@ -18,9 +18,9 @@ body,
   font-size: 16px;
   height: 100%;
   margin: 0;
+  overflow: hidden;
   padding: 0;
   width: 100%;
-  overflow: hidden;
 
   @media (min-width: 960px) {
     font-size: 16px;
@@ -43,8 +43,8 @@ h4,
 h5,
 h6 {
   color: $white;
-  margin-top: 30px;
   margin-bottom: 10px;
+  margin-top: 30px;
   text-transform: uppercase;
 }
 
@@ -75,8 +75,8 @@ button {
   border-radius: 2px;
   color: $white;
   cursor: pointer;
-  padding: 7px 17px;
   font-size: 16px;
+  padding: 7px 17px;
 
   &:hover {
     background: $dark-gray3;
@@ -91,8 +91,8 @@ button {
   }
 
   &:disabled {
-    opacity: 0.7;
     cursor: default;
+    opacity: 0.7;
 
     &:hover {
       background: $dark-gray1;
@@ -136,9 +136,9 @@ textarea {
   border: 0;
   color: $white;
   display: block;
+  font-size: 16px;
   padding: 7px 10px;
   width: 100%;
-  font-size: 16px;
 }
 
 textarea {

@@ -22,7 +22,8 @@ export function ChromeFooter() {
         background: `url(${bg})`,
         backgroundSize: 'cover',
         fontSize: 14
-      }}>
+      }}
+    >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div>
           <StatusCircle running={serviceRunning} />
@@ -40,7 +41,8 @@ export function ChromeFooter() {
                 Proxy running:{' '}
                 <ExternalLink
                   href={proxyUrl}
-                  style={{ textDecoration: 'underline' }}>
+                  style={{ textDecoration: 'underline' }}
+                >
                   {proxy} @ {proxyUrl}
                 </ExternalLink>
               </>

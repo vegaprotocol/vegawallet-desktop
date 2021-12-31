@@ -13,7 +13,8 @@ export function CodeBlock({ children }: CodeBlockProps) {
         fontFamily: '"Roboto Mono", monospace',
         padding: '15px 30px 15px 15px',
         background: Colors.DARK_GRAY_2
-      }}>
+      }}
+    >
       {children}
     </code>
   )

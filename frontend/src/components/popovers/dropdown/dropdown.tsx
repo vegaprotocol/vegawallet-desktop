@@ -17,7 +17,8 @@ export function Dropdown({ content, children }: DropdownProps) {
       modifiers={{ arrow: { enabled: false } }}
       targetTagName='div'
       position={Position.BOTTOM_RIGHT}
-      content={content}>
+      content={content}
+    >
       {children}
     </Popover2>
   )
@@ -37,7 +38,8 @@ export function DropdownMenu({ children }: DropdownMenuProps) {
         minWidth: 130,
         background: `url(${bg})`,
         backgroundSize: 'cover'
-      }}>
+      }}
+    >
       {children}
     </ul>
   )

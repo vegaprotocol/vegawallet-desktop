@@ -17,12 +17,14 @@ export function ChromeDrawerMenu() {
     <Drawer
       isOpen={state.drawerOpen}
       position={Position.LEFT}
-      onClose={() => dispatch(setDrawerAction(false))}>
+      onClose={() => dispatch(setDrawerAction(false))}
+    >
       <div
         style={{
           background: '#101010',
           height: '100vh'
-        }}>
+        }}
+      >
         <Menu />
       </div>
     </Drawer>
@@ -39,14 +41,16 @@ function Menu() {
           alignItems: 'center',
           padding: '0 0 0 15px',
           minHeight: 45
-        }}>
+        }}
+      >
         <h1
           style={{
             fontSize: 18,
             letterSpacing: '0.3em',
             textTransform: 'uppercase',
             margin: 0
-          }}>
+          }}
+        >
           Vega
         </h1>
         <DrawerCloseButton />
@@ -56,7 +60,8 @@ function Menu() {
           padding: 15,
           borderBottom: `3px solid`,
           borderImage: `url(${bg}) 15%`
-        }}>
+        }}
+      >
         <AppLink to={Paths.Home}>Wallets</AppLink>
         <AppLink to={Paths.Import}>Add / Import Wallet</AppLink>
         <AppLink to={Paths.Service}>Wallet Service</AppLink>
@@ -83,7 +88,8 @@ function AppLink({ children, to }: NavLinkProps) {
       <Link
         to={to}
         style={{ display: 'block', padding: '10px 0' }}
-        onClick={() => dispatch(setDrawerAction(false))}>
+        onClick={() => dispatch(setDrawerAction(false))}
+      >
         {children}
       </Link>
     </div>

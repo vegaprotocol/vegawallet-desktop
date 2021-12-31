@@ -12,7 +12,10 @@ export function ImportSelect() {
       <ButtonGroup>
         {[
           { path: ImportPaths.Create, text: 'Create new' },
-          { path: ImportPaths.RecoveryPhrase, text: 'Import by recovery phrase' }
+          {
+            path: ImportPaths.RecoveryPhrase,
+            text: 'Import by recovery phrase'
+          }
         ].map(route => {
           const isActive = location.pathname === route.path
           const className = ['fill', isActive ? 'active' : ''].join(' ')

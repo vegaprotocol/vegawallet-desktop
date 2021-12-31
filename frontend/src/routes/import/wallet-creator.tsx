@@ -64,7 +64,8 @@ export const WalletCreator = () => {
           label='* Name'
           labelFor='name'
           intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.name?.message}>
+          helperText={errors.name?.message}
+        >
           <input
             type='text'
             {...register('name', { required: 'Required' })}
@@ -75,7 +76,8 @@ export const WalletCreator = () => {
           label='* Passphrase'
           labelFor='passphrase'
           intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.passphrase?.message}>
+          helperText={errors.passphrase?.message}
+        >
           <input
             type='password'
             {...register('passphrase', { required: 'Required' })}
@@ -87,7 +89,8 @@ export const WalletCreator = () => {
           intent={
             errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE
           }
-          helperText={errors.confirmPassphrase?.message}>
+          helperText={errors.confirmPassphrase?.message}
+        >
           <input
             type='password'
             {...register('confirmPassphrase', {

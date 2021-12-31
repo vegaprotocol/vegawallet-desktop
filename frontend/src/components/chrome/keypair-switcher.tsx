@@ -23,7 +23,8 @@ export function KeypairSwitcher({ wallet, onSelect }: KeypairSwitcherProps) {
             </DropdownMenuItem>
           ))}
         </DropdownMenu>
-      }>
+      }
+    >
       <ButtonUnstyled>
         <Kebab style={{ width: 15 }} />
       </ButtonUnstyled>

@@ -14,7 +14,8 @@ export function Tooltip({ children, content, isOpen }: TooltipProps) {
     <Tooltip2
       content={contentWrapper}
       position={Position.BOTTOM}
-      isOpen={isOpen}>
+      isOpen={isOpen}
+    >
       {children}
     </Tooltip2>
   )

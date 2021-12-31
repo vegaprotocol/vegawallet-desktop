@@ -33,7 +33,8 @@ export const Toast = ({
         animation: 'drop 0.3s ease',
         animationFillMode: 'forwards',
         transform: 'translateY(-100%)'
-      }}>
+      }}
+    >
       {message}
     </div>
   )

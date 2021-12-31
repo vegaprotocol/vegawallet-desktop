@@ -8,13 +8,15 @@ export const Loading = (): React.ReactElement => {
         marginTop: 40 + 'px',
         marginBottom: 60 + 'px',
         textAlign: 'center'
-      }}>
+      }}
+    >
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width='200px'
         height='200px'
         viewBox='0 0 100 100'
-        preserveAspectRatio='xMidYMid'>
+        preserveAspectRatio='xMidYMid'
+      >
         <g transform='rotate(0 50 50)'>
           <rect
             x='47'
@@ -23,7 +25,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -42,7 +45,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -61,7 +65,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -80,7 +85,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -99,7 +105,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -118,7 +125,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -137,7 +145,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -156,7 +165,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -175,7 +185,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -194,7 +205,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -213,7 +225,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'
@@ -232,7 +245,8 @@ export const Loading = (): React.ReactElement => {
             ry='6'
             width='6'
             height='12'
-            fill='#ffffff'>
+            fill='#ffffff'
+          >
             <animate
               attributeName='opacity'
               values='1;0'

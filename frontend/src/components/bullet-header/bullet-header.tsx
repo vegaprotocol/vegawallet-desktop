@@ -25,7 +25,8 @@ export const BulletHeader = ({ tag, children }: BulletHeaderProps) => {
       style={{
         position: 'relative',
         paddingLeft: 25
-      }}>
+      }}
+    >
       <span
         style={{
           position: 'absolute',

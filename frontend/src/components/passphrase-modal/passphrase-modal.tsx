@@ -44,7 +44,8 @@ export function PassphraseModal() {
     <Overlay
       isOpen={state.passphraseModalOpen}
       transitionDuration={0}
-      onClose={close}>
+      onClose={close}
+    >
       <div
         style={{
           padding: 20,
@@ -53,7 +54,8 @@ export function PassphraseModal() {
           position: 'fixed',
           top: 30,
           left: 'calc(50% - 125px)'
-        }}>
+        }}
+      >
         <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
       </div>
     </Overlay>
@@ -78,7 +80,8 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         label='* Passphrase'
         labelFor='passphrase'
         helperText={errors.passphrase?.message}
-        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}>
+        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
+      >
         <input
           type='password'
           autoComplete='off'

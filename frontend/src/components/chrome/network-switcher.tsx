@@ -30,19 +30,22 @@ export function NetworkSwitcher() {
                   }}
                   onClick={() => {
                     dispatch(changeNetworkAction(network))
-                  }}>
+                  }}
+                >
                   {network}
                 </ButtonUnstyled>
               </DropdownMenuItem>
             ))}
           </DropdownMenu>
-        }>
+        }
+      >
         <ButtonUnstyled
           style={{
             position: 'relative',
             letterSpacing: '0.3em',
             padding: '10px 30px 10px 15px'
-          }}>
+          }}
+        >
           {state.network.toUpperCase()}
           <div
             style={{

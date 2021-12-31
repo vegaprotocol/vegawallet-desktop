@@ -52,7 +52,8 @@ export function Service() {
         flexDirection: 'column',
         padding: 30,
         gap: 15
-      }}>
+      }}
+    >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {serviceRunning ? (
           <button onClick={stop} type='button'>

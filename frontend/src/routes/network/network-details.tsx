@@ -62,7 +62,8 @@ export const NetworkDetails = () => {
             <td>
               <ExternalLink
                 style={{ textDecoration: 'underline' }}
-                href={`https://${config.Console.URL}`}>
+                href={`https://${config.Console.URL}`}
+              >
                 {config.Console.URL}
               </ExternalLink>
             </td>

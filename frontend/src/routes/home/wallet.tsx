@@ -43,7 +43,8 @@ export function Wallet() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   marginBottom: 10
-                }}>
+                }}
+              >
                 <Link to={`${WalletPaths.Home}/${kp.publicKey}`}>
                   {kp.name}
                 </Link>{' '}
@@ -51,7 +52,8 @@ export function Wallet() {
                   <ButtonUnstyled>
                     <span
                       className='text-muted'
-                      style={{ fontFamily: '"Roboto Mono", monospace' }}>
+                      style={{ fontFamily: '"Roboto Mono", monospace' }}
+                    >
                       {kp.publicKeyShort}{' '}
                       <Copy style={{ width: 12, height: 12 }} />
                     </span>

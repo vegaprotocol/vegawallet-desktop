@@ -18,14 +18,16 @@ export function ChromeHeader() {
         borderBottom: `3px solid`,
         borderImage: `url(${bg}) 15%`,
         background: '#040404'
-      }}>
+      }}
+    >
       <ButtonUnstyled
         style={{
           padding: '10px 15px',
           textTransform: 'uppercase',
           letterSpacing: '0.3em'
         }}
-        onClick={() => dispatch(setDrawerAction(!state.drawerOpen))}>
+        onClick={() => dispatch(setDrawerAction(!state.drawerOpen))}
+      >
         Menu
       </ButtonUnstyled>
       <NetworkSwitcher />
