@@ -11,7 +11,6 @@ import (
 )
 
 type CreateWalletRequest struct {
-	VegaHome   string
 	Name       string
 	Passphrase string
 }
@@ -54,8 +53,6 @@ func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
 		return CreateWalletResponse{}, err
 	}
 
-	config.VegaHome = req.VegaHome
-
 	wStore, err := s.getWalletsStore(config)
 	if err != nil {
 		return CreateWalletResponse{}, err
@@ -76,7 +73,6 @@ func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
 }
 
 type ImportWalletRequest struct {
-	VegaHome       string
 	Name           string
 	RecoveryPhrase string
 	Passphrase     string
@@ -130,8 +126,6 @@ func (s *Handler) ImportWallet(data string) (ImportWalletResponse, error) {
 	if err != nil {
 		return ImportWalletResponse{}, err
 	}
-
-	config.VegaHome = req.VegaHome
 
 	wStore, err := s.getWalletsStore(config)
 	if err != nil {
