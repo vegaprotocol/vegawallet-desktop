@@ -1,5 +1,6 @@
 import React from 'react'
-import { FormGroup, Intent, Overlay } from '@blueprintjs/core'
+import * as Dialog from '@radix-ui/react-dialog'
+import { FormGroup, Intent } from '@blueprintjs/core'
 import { useGlobal } from '../../contexts/global/global-context'
 import { setPassphraseModalAction } from '../../contexts/global/global-actions'
 import { useForm } from 'react-hook-form'
@@ -41,24 +42,33 @@ export function PassphraseModal() {
   }
 
   return (
-    <Overlay
-      isOpen={state.passphraseModalOpen}
-      transitionDuration={0}
-      onClose={close}
-    >
-      <div
-        style={{
-          padding: 20,
-          background: 'black',
-          width: 250,
-          position: 'fixed',
-          top: 30,
-          left: 'calc(50% - 125px)'
-        }}
-      >
-        <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
-      </div>
-    </Overlay>
+    <Dialog.Root open={state.passphraseModalOpen}>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          style={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: '100%',
+            background: 'rgba(54, 54, 54 ,0.8)'
+          }}
+        />
+        <Dialog.Content
+          onPointerDownOutside={close}
+          style={{
+            padding: 20,
+            background: 'black',
+            width: 250,
+            position: 'fixed',
+            top: 30,
+            left: 'calc(50% - 125px)'
+          }}>
+          <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }
 
@@ -80,8 +90,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         label='* Passphrase'
         labelFor='passphrase'
         helperText={errors.passphrase?.message}
-        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
-      >
+        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}>
         <input
           type='password'
           autoComplete='off'

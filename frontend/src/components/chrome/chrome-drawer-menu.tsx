@@ -1,4 +1,4 @@
-import { Drawer, Position } from '@blueprintjs/core'
+import * as Dialog from '@radix-ui/react-dialog'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Links } from '../../config/links'
@@ -13,21 +13,38 @@ import { NetworkPaths } from '../../routes/network'
 
 export function ChromeDrawerMenu() {
   const { state, dispatch } = useGlobal()
+  const close = React.useCallback(() => {
+    dispatch(setDrawerAction(false))
+  }, [dispatch])
+
   return (
-    <Drawer
-      isOpen={state.drawerOpen}
-      position={Position.LEFT}
-      onClose={() => dispatch(setDrawerAction(false))}
-    >
-      <div
-        style={{
-          background: '#101010',
-          height: '100vh'
-        }}
-      >
-        <Menu />
-      </div>
-    </Drawer>
+    <Dialog.Root open={state.drawerOpen}>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          style={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: '100%',
+            background: 'rgba(54, 54, 54 ,0.8)'
+          }}
+        />
+        <Dialog.Content
+          onPointerDownOutside={close}
+          style={{
+            background: 'black',
+            width: '50vw',
+            height: '100%',
+            position: 'fixed',
+            top: 0,
+            left: 0
+          }}>
+          <Menu />
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }
 
@@ -41,16 +58,14 @@ function Menu() {
           alignItems: 'center',
           padding: '0 0 0 15px',
           minHeight: 45
-        }}
-      >
+        }}>
         <h1
           style={{
             fontSize: 18,
             letterSpacing: '0.3em',
             textTransform: 'uppercase',
             margin: 0
-          }}
-        >
+          }}>
           Vega
         </h1>
         <DrawerCloseButton />
@@ -60,8 +75,7 @@ function Menu() {
           padding: 15,
           borderBottom: `3px solid`,
           borderImage: `url(${bg}) 15%`
-        }}
-      >
+        }}>
         <AppLink to={Paths.Home}>Wallets</AppLink>
         <AppLink to={Paths.Import}>Add / Import Wallet</AppLink>
         <AppLink to={Paths.Service}>Wallet Service</AppLink>
@@ -88,8 +102,7 @@ function AppLink({ children, to }: NavLinkProps) {
       <Link
         to={to}
         style={{ display: 'block', padding: '10px 0' }}
-        onClick={() => dispatch(setDrawerAction(false))}
-      >
+        onClick={() => dispatch(setDrawerAction(false))}>
         {children}
       </Link>
     </div>

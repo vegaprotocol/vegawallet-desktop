@@ -1,6 +1,6 @@
 import React from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
-import { Tooltip } from '../popovers/tooltip'
+import { Tooltip } from '../tooltip'
 
 interface CopyWithtooltipProps {
   children: React.ReactElement
@@ -15,7 +15,7 @@ export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
 
     if (copied) {
       setTimeout(() => {
-        setCopied(false)
+        // setCopied(false)
       }, 800)
     }
 
@@ -28,9 +28,7 @@ export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
     <CopyToClipboard text={text} onCopy={() => setCopied(true)}>
       {/* Needs this wrapping div as tooltip component interfers with element used to capture click for copy */}
       <span>
-        <Tooltip content='Copied' isOpen={copied}>
-          {children}
-        </Tooltip>
+        <Tooltip trigger={children} content='Copied' isOpen={copied} />
       </span>
     </CopyToClipboard>
   )
