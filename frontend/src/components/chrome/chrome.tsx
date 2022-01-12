@@ -1,7 +1,7 @@
 import React from 'react'
 import { ChromeFooter } from './chrome-footer'
 import { ChromeHeader } from './chrome-header'
-import { ChromeDrawerMenu } from '../button-unstyled/chrome-drawer-menu'
+import { ChromeDrawerMenu } from './chrome-drawer-menu'
 
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
@@ -16,8 +16,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         height: '100%',
         background: '#101010',
         overflowY: 'auto'
-      }}
-    >
+      }}>
       <ChromeHeader />
       <main style={{ padding: 15, overflowY: 'auto' }}>{children}</main>
       <ChromeFooter />

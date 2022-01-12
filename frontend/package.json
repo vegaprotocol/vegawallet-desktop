@@ -9,6 +9,10 @@
   "dependencies": {
     "@blueprintjs/core": "^3.51.3",
     "@blueprintjs/popover2": "^0.12.8",
+    "@radix-ui/react-dialog": "^0.1.5",
+    "@radix-ui/react-dropdown-menu": "^0.1.4",
+    "@radix-ui/react-popover": "^0.1.4",
+    "@radix-ui/react-tooltip": "^0.1.6",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

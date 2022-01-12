@@ -1,26 +1,21 @@
 import React from 'react'
-import { Popover2 } from '@blueprintjs/popover2'
-import { Position } from '@blueprintjs/core'
-// @ts-ignore
-import bg from '../../../images/vega-bg.png'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
 
 interface DropdownProps {
   content: React.ReactElement
-  children: React.ReactElement
+  trigger: React.ReactElement
 }
 
-export function Dropdown({ content, children }: DropdownProps) {
+export function Popover({ content, trigger }: DropdownProps) {
   return (
-    <Popover2
-      transitionDuration={0}
-      // @ts-ignore
-      modifiers={{ arrow: { enabled: false } }}
-      targetTagName='div'
-      position={Position.BOTTOM_RIGHT}
-      content={content}
-    >
-      {children}
-    </Popover2>
+    <PopoverPrimitive.Root>
+      <PopoverPrimitive.Trigger asChild={true}>
+        {trigger}
+      </PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Content className='zzzzzzzz'>
+        {content}
+      </PopoverPrimitive.Content>
+    </PopoverPrimitive.Root>
   )
 }
 
@@ -36,10 +31,9 @@ export function DropdownMenu({ children }: DropdownMenuProps) {
         padding: 0,
         listStyle: 'none',
         minWidth: 130,
-        background: `url(${bg})`,
+        // background: `url(${bg})`,
         backgroundSize: 'cover'
-      }}
-    >
+      }}>
       {children}
     </ul>
   )
