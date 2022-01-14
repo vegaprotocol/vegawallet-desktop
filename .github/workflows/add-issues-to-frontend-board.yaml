@@ -7,7 +7,7 @@ name: Auto Assign Issue to New Project
 
 jobs:
   add_issue:
-    if: contains(github.event.pull_request.labels.*.name, 'Frontend')
+    if: contains(github.event.pull_request.labels.*.name, 'ui')
     runs-on: ubuntu-latest
     steps:
       - name: Add Issue to New Front End Project Board
