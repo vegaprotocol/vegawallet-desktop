@@ -1,4 +1,5 @@
 import React from 'react'
+import { IntentColors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 
 interface FormGroupProps {
@@ -16,14 +17,29 @@ export function FormGroup({
   label,
   labelFor,
   helperText,
-  style
+  style,
+  intent = Intent.NONE
 }: FormGroupProps) {
   return (
-    <div style={style}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0 0 15px 0',
+        ...style
+      }}>
       <label htmlFor={labelFor}>{label}</label>
-      <div>
+      <div
+        style={{
+          marginTop: 5
+        }}>
         {children}
-        {helperText && <div>{helperText}</div>}
+        {helperText && (
+          <div
+            style={{ marginTop: 5, fontSize: 14, color: IntentColors[intent] }}>
+            {helperText}
+          </div>
+        )}
       </div>
     </div>
   )
