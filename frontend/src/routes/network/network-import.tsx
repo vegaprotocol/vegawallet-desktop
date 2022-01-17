@@ -1,4 +1,3 @@
-import { FormGroup, Intent } from '@blueprintjs/core'
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -10,6 +9,8 @@ import { AppToaster } from '../../components/toaster'
 import { addNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ImportNetworkResponse } from '../../models/network'
+import { FormGroup } from '../../components/form-group'
+import { Intent } from '../../config/intent'
 
 interface FormFields {
   filePath: string
@@ -67,8 +68,7 @@ export function NetworkImport() {
           label='* Network name'
           labelFor='name'
           intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.name?.message}
-        >
+          helperText={errors.name?.message}>
           <input
             type='text'
             id='name'
@@ -79,8 +79,7 @@ export function NetworkImport() {
           label='File path'
           labelFor='filePath'
           intent={errors.filePath?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.filePath?.message}
-        >
+          helperText={errors.filePath?.message}>
           <input
             id='filePath'
             type='text'
@@ -93,8 +92,7 @@ export function NetworkImport() {
           label='URL'
           labelFor='url'
           intent={errors.url?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.url?.message}
-        >
+          helperText={errors.url?.message}>
           <input
             id='url'
             type='text'

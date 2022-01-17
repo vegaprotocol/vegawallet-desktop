@@ -1,4 +1,3 @@
-import { FormGroup, Intent } from '@blueprintjs/core'
 import React from 'react'
 import {
   Control,
@@ -8,6 +7,8 @@ import {
 } from 'react-hook-form'
 import { LogLevels } from '../../config/log-levels'
 import type { Network } from '../../models/network'
+import { FormGroup } from '../../components/form-group'
+import { Intent } from '../../config/intent'
 
 interface FormFields {
   logLevel: string
@@ -54,14 +55,12 @@ export const NetworkConfigForm = ({
       onSubmit={handleSubmit((values: FormFields) => {
         const configUpdate = fieldsToConfig(config, values)
         onSubmit(configUpdate)
-      })}
-    >
+      })}>
       <FormGroup
         label='* Log level'
         labelFor='logLevel'
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.logLevel?.message}
-      >
+        helperText={errors.logLevel?.message}>
         <select {...register('logLevel', { required: 'Required' })}>
           {Object.values(LogLevels).map(level => (
             <option key={level} value={level}>
@@ -74,8 +73,7 @@ export const NetworkConfigForm = ({
         label='* Token expiry'
         labelFor='tokenExpiry'
         intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenExpiry?.message}
-      >
+        helperText={errors.tokenExpiry?.message}>
         <input
           type='text'
           {...register('tokenExpiry', { required: 'Required' })}
@@ -85,24 +83,21 @@ export const NetworkConfigForm = ({
         label='* Port'
         labelFor='port'
         intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.port?.message}
-      >
+        helperText={errors.port?.message}>
         <input type='text' {...register('port', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
         label='* Host'
         labelFor='host'
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.host?.message}
-      >
+        helperText={errors.host?.message}>
         <input type='text' {...register('host', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
         label='*gRPC Node retries'
         labelFor='grpcNodeRetries'
         intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.grpcNodeRetries?.message}
-      >
+        helperText={errors.grpcNodeRetries?.message}>
         <input
           type='text'
           {...register('grpcNodeRetries', { required: 'Required' })}
@@ -112,8 +107,7 @@ export const NetworkConfigForm = ({
         label='* Console URL'
         labelFor='consoleUrl'
         intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.consoleUrl?.message}
-      >
+        helperText={errors.consoleUrl?.message}>
         <input
           type='text'
           {...register('consoleUrl', { required: 'Required' })}
@@ -123,8 +117,7 @@ export const NetworkConfigForm = ({
         label='* Console port'
         labelFor='consolePort'
         intent={errors.consolePort?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.consolePort?.message}
-      >
+        helperText={errors.consolePort?.message}>
         <input
           type='text'
           {...register('consolePort', { required: 'Required' })}
@@ -134,8 +127,7 @@ export const NetworkConfigForm = ({
         label='* Token DApp URL'
         labelFor='tokenDAppUrl'
         intent={errors.tokenDAppUrl?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenDAppUrl?.message}
-      >
+        helperText={errors.tokenDAppUrl?.message}>
         <input
           type='text'
           {...register('tokenDAppUrl', { required: 'Required' })}
@@ -145,8 +137,7 @@ export const NetworkConfigForm = ({
         label='* Token DApp port'
         labelFor='tokenDAppPort'
         intent={errors.tokenDAppPort?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenDAppPort?.message}
-      >
+        helperText={errors.tokenDAppPort?.message}>
         <input
           type='text'
           {...register('tokenDAppPort', { required: 'Required' })}
@@ -182,8 +173,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
           return (
             <li
               key={field.id}
-              style={{ display: 'flex', gap: 10, marginBottom: 5 }}
-            >
+              style={{ display: 'flex', gap: 10, marginBottom: 5 }}>
               <input type='text' {...register(`${name}.${i}.value` as any)} />
               <button
                 type='button'
@@ -192,8 +182,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
                   if (fields.length > 1) {
                     remove(i)
                   }
-                }}
-              >
+                }}>
                 Remove
               </button>
             </li>

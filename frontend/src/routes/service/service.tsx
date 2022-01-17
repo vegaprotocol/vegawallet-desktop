@@ -1,6 +1,6 @@
-import { Intent } from '@blueprintjs/core'
 import React from 'react'
 import { AppToaster } from '../../components/toaster'
+import { Intent } from '../../config/intent'
 import { useNetwork } from '../../contexts/network/network-context'
 import {
   startProxyAction,
@@ -52,8 +52,7 @@ export function Service() {
         flexDirection: 'column',
         padding: 30,
         gap: 15
-      }}
-    >
+      }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {serviceRunning ? (
           <button onClick={stop} type='button'>

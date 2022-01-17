@@ -1,9 +1,10 @@
 import React from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
-import { FormGroup, Intent } from '@blueprintjs/core'
 import { useGlobal } from '../../contexts/global/global-context'
 import { setPassphraseModalAction } from '../../contexts/global/global-actions'
 import { useForm } from 'react-hook-form'
+import { FormGroup } from '../form-group'
+import { Intent } from '../../config/intent'
 
 interface ModalHandler {
   open: Function

@@ -1,4 +1,3 @@
-import { Intent } from '@blueprintjs/core'
 import {
   GetNetworkConfig,
   ImportNetwork,
@@ -6,6 +5,7 @@ import {
   SaveNetworkConfig
 } from '../../api/service'
 import { AppToaster } from '../../components/toaster'
+import { Intent } from '../../config/intent'
 import { ImportNetworkRequest, Network } from '../../models/network'
 import { NetworkDispatch, NetworkState } from './network-context'
 import { NetworkAction } from './network-reducer'
