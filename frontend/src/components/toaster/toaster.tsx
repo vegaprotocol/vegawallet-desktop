@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 import { Intent } from '../../config/intent'
 import { Toast } from './toast'
 
-interface ToastOptions {
+export interface ToastOptions {
   id: string
-  message: string
+  message: React.ReactNode
   intent: Intent
 }
 
@@ -30,7 +30,6 @@ export class Toaster extends React.Component<any, ToasterState> {
     container.style.top = '0'
     container.style.right = '0'
     container.style.left = '0'
-    container.style.pointerEvents = 'none'
     container.style.position = 'absolute'
     document.body.appendChild(container)
     // @ts-ignore
@@ -38,10 +37,10 @@ export class Toaster extends React.Component<any, ToasterState> {
     return toaster
   }
 
-  handleDismiss = (id: string) => {
+  handleDismiss = (toast: ToastOptions) => {
     this.setState(({ toasts }) => ({
       toasts: toasts.filter(t => {
-        return t.id !== id
+        return t.id !== toast.id
       })
     }))
   }
@@ -75,7 +74,13 @@ export class Toaster extends React.Component<any, ToasterState> {
     return (
       <>
         {this.state.toasts.map((t, i) => (
-          <Toast key={t.id} message={t.message} intent={t.intent} />
+          <Toast
+            key={t.id}
+            id={t.id}
+            message={t.message}
+            intent={t.intent}
+            onDismiss={this.handleDismiss}
+          />
         ))}
       </>
     )
