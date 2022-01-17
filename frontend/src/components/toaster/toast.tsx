@@ -1,103 +1,71 @@
 import './toast.scss'
 import React from 'react'
 import { Intent } from '../../config/intent'
+import { IntentColors } from '../../config/colors'
+import { ToastOptions } from '.'
+import { ButtonUnstyled } from '../button-unstyled'
 
-export interface ToastProps {
-  intent?: Intent
-  message: React.ReactNode
-  onDismiss?: (didTimeoutExpire: boolean) => void
+export interface ToastProps extends ToastOptions {
+  onDismiss?: (toast: ToastOptions) => void
   timeout?: number
 }
 
-export class Toast extends React.Component<ToastProps> {
-  public static defaultProps: ToastProps = {
-    message: '',
-    timeout: 5000
+export function Toast({
+  id,
+  message,
+  onDismiss,
+  intent = Intent.NONE,
+  timeout = 5000
+}: ToastProps) {
+  const timeoutRef = React.useRef<any>()
+
+  const startTimeout = () => {
+    cancelTimeout()
+    timeoutRef.current = setTimeout(() => {
+      dismiss()
+    }, timeout)
   }
 
-  public render(): JSX.Element {
-    const { message } = this.props
-    return (
-      <div
-        // onBlur={this.startTimeout}
-        // onFocus={this.clearTimeouts}
-        // onMouseEnter={this.clearTimeouts}
-        // onMouseLeave={this.startTimeout}
-        tabIndex={0}
-        role='alert'>
-        <span>{message}</span>
-      </div>
-    )
+  const cancelTimeout = () => {
+    clearTimeout(timeoutRef.current)
   }
 
-  // public componentDidMount() {
-  //     this.startTimeout();
-  // }
+  const dismiss = () => {
+    cancelTimeout()
+    if (typeof onDismiss === 'function') {
+      onDismiss({ id, message, intent })
+    }
+  }
 
-  // public componentDidUpdate(prevProps: IToastProps) {
-  //     if (prevProps.timeout !== this.props.timeout) {
-  //         if (this.props.timeout! > 0) {
-  //             this.startTimeout();
-  //         } else {
-  //             this.clearTimeouts();
-  //         }
-  //     }
-  // }
+  React.useEffect(() => {
+    startTimeout()
+    return () => {
+      cancelTimeout()
+    }
+    // eslint-disable-next-line
+  }, [])
 
-  // public componentWillUnmount() {
-  //     this.clearTimeouts();
-  // }
-
-  // private handleCloseClick = () => this.triggerDismiss(false);
-
-  // private triggerDismiss(didTimeoutExpire: boolean) {
-  //     // this.clearTimeouts();
-  //     this.props.onDismiss?.(didTimeoutExpire);
-  // }
-
-  // private startTimeout = () => {
-  //     this.clearTimeouts();
-  //     if (this.props.timeout! > 0) {
-  //         this.setTimeout(() => this.triggerDismiss(true), this.props.timeout);
-  //     }
-  // };
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 5,
+        borderRadius: 2,
+        margin: '15px 0 0 0',
+        padding: '10px 15px',
+        background: IntentColors[intent],
+        animation: 'drop .3s ease',
+        animationFillMode: 'forwards'
+      }}
+      onBlur={startTimeout}
+      onFocus={cancelTimeout}
+      onMouseEnter={cancelTimeout}
+      onMouseLeave={startTimeout}
+      tabIndex={0}
+      role='alert'>
+      <span>{message}</span>
+      <ButtonUnstyled onClick={dismiss}>X</ButtonUnstyled>
+    </div>
+  )
 }
-
-// export const Toast = ({
-//   id,
-//   message,
-//   onDismiss,
-//   color = 'purple'
-// }: {
-//   id: string
-//   message: string
-//   onDismiss: (key: string) => void
-//   color?: string
-// }) => {
-//   React.useEffect(() => {
-//     const timeout = setTimeout(() => {
-//       onDismiss(id)
-//     }, 3000)
-
-//     return () => clearTimeout(timeout)
-//   }, [id, onDismiss])
-
-//   return (
-//     <div
-//       role='alert'
-//       style={{
-//         padding: '10px 20px',
-//         background: color,
-//         color: 'black',
-//         minWidth: 200,
-//         marginTop: 20,
-//         borderRadius: 2,
-//         animation: 'drop 0.3s ease',
-//         animationFillMode: 'forwards',
-//         transform: 'translateY(-100%)'
-//       }}
-//     >
-//       {message}
-//     </div>
-//   )
-// }
