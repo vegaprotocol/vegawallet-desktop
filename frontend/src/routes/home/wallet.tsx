@@ -1,4 +1,3 @@
-import { Intent } from '@blueprintjs/core'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { WalletPaths } from '.'
@@ -7,6 +6,7 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { AppToaster } from '../../components/toaster'
+import { Intent } from '../../config/intent'
 import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
@@ -43,8 +43,7 @@ export function Wallet() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   marginBottom: 10
-                }}
-              >
+                }}>
                 <Link to={`${WalletPaths.Home}/${kp.publicKey}`}>
                   {kp.name}
                 </Link>{' '}
@@ -52,8 +51,7 @@ export function Wallet() {
                   <ButtonUnstyled>
                     <span
                       className='text-muted'
-                      style={{ fontFamily: '"Roboto Mono", monospace' }}
-                    >
+                      style={{ fontFamily: '"Roboto Mono", monospace' }}>
                       {kp.publicKeyShort}{' '}
                       <Copy style={{ width: 12, height: 12 }} />
                     </span>

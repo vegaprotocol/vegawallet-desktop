@@ -6,7 +6,7 @@ import { GetVersionResponse } from '../../models/version'
 import { GlobalDispatch, GlobalState } from './global-context'
 import { GlobalAction } from './global-reducer'
 import { AppToaster } from '../../components/toaster'
-import { Intent } from '@blueprintjs/core'
+import { Intent } from '../../config/intent'
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
