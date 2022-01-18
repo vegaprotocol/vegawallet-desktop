@@ -7,6 +7,7 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
 import { AppToaster } from '../../components/toaster'
+import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -49,14 +50,14 @@ export function Wallet() {
                   {kp.name}
                 </Link>{' '}
                 <CopyWithTooltip text={kp.publicKey}>
-                  <ButtonUnstyled>
-                    <span
-                      className='text-muted'
-                      style={{ fontFamily: '"Roboto Mono", monospace' }}>
-                      {kp.publicKeyShort}{' '}
-                      <Copy style={{ width: 12, height: 12 }} />
-                    </span>
-                  </ButtonUnstyled>
+                  <span
+                    style={{
+                      color: Colors.TEXT_MUTED,
+                      fontFamily: '"Roboto Mono", monospace'
+                    }}>
+                    {kp.publicKeyShort}{' '}
+                    <Copy style={{ width: 12, height: 12 }} />
+                  </span>
                 </CopyWithTooltip>
               </li>
             )
