@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react'
+import React, { ButtonHTMLAttributes, ForwardedRef } from 'react'
 import { Colors } from '../../config/colors'
 
 const style: React.CSSProperties = {
@@ -11,8 +11,18 @@ const style: React.CSSProperties = {
   padding: 0
 }
 
-export function ButtonUnstyled(props: ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button type='button' {...props} style={{ ...style, ...props.style }} />
-  )
-}
+export const ButtonUnstyled = React.forwardRef(
+  (
+    props: ButtonHTMLAttributes<HTMLButtonElement>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return (
+      <button
+        type='button'
+        ref={ref}
+        {...props}
+        style={{ ...style, ...props.style }}
+      />
+    )
+  }
+)
