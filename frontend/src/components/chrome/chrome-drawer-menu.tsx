@@ -1,4 +1,4 @@
-import './chrome-drawer-menu.scss'
+import './chrome-drawer-menu.css'
 import * as Dialog from '@radix-ui/react-dialog'
 import React from 'react'
 import { Link } from 'react-router-dom'

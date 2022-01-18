@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import 'core-js/stable'
-import './index.scss'
+import './index.css'
 import App from './app'
 import reportWebVitals from './report-web-vitals'
 import * as Wails from '@wailsapp/runtime'

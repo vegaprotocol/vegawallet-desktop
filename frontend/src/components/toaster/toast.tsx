@@ -1,4 +1,4 @@
-import './toast.scss'
+import './toast.css'
 import React from 'react'
 import { Intent } from '../../config/intent'
 import { IntentColors } from '../../config/colors'
