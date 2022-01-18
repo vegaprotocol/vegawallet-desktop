@@ -15,7 +15,6 @@ export function NetworkSwitcher() {
 
   return (
     <DropdownMenu
-      style={{}}
       trigger={
         <div
           style={{
