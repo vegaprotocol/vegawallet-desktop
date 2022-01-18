@@ -11,7 +11,9 @@ export function DropdownMenu({ trigger, content }: DropdownMenuProps) {
   return (
     <DropdownPrimitive.Root>
       <DropdownPrimitive.Trigger>{trigger}</DropdownPrimitive.Trigger>
-      <DropdownPrimitive.Content>{content}</DropdownPrimitive.Content>
+      <DropdownPrimitive.Content align='end'>
+        {content}
+      </DropdownPrimitive.Content>
     </DropdownPrimitive.Root>
   )
 }
