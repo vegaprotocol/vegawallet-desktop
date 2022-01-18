@@ -23,7 +23,7 @@ export function WalletKeyPair() {
       <div>
         <Link to={WalletPaths.Home}>Back</Link>
       </div>
-      <BulletHeader tag='h1'>{keypair.name}</BulletHeader>
+      <BulletHeader tag='h1'>Keypair name: {keypair.name}</BulletHeader>
       <table>
         <tbody>
           <tr>

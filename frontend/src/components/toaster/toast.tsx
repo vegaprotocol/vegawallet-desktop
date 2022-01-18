@@ -16,7 +16,7 @@ export function Toast({
   message,
   onDismiss,
   intent = Intent.NONE,
-  timeout = 0
+  timeout = 5000
 }: ToastProps) {
   const timeoutRef = React.useRef<any>()
 
