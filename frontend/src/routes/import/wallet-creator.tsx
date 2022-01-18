@@ -14,6 +14,7 @@ import { Copy } from '../../components/icons/copy'
 import { WalletPaths } from '../home'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
+import { Button } from '../../components/button'
 
 interface FormFields {
   name: string
@@ -51,7 +52,7 @@ export const WalletCreator = () => {
           </span>
         </p>
         <Link to={WalletPaths.Home}>
-          <button>View wallet</button>
+          <Button>View wallet</Button>
         </Link>
       </>
     )
@@ -101,7 +102,7 @@ export const WalletCreator = () => {
           />
         </FormGroup>
         <div>
-          <button type='submit'>Submit</button>
+          <Button type='submit'>Submit</Button>
         </div>
       </form>
     </>

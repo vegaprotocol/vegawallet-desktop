@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ImportPaths } from '.'
 import { BulletHeader } from '../../components/bullet-header'
+import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 
 export function ImportSelect() {
@@ -21,7 +22,7 @@ export function ImportSelect() {
           const className = ['fill', isActive ? 'active' : ''].join(' ')
           return (
             <Link to={route.path} key={route.path}>
-              <button className={className}>{route.text}</button>
+              <Button className={className}>{route.text}</Button>
             </Link>
           )
         })}

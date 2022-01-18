@@ -5,6 +5,7 @@ import { setPassphraseModalAction } from '../../contexts/global/global-actions'
 import { useForm } from 'react-hook-form'
 import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
+import { Button } from '../button'
 
 interface ModalHandler {
   open: Function
@@ -100,10 +101,8 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         />
       </FormGroup>
       <div style={{ display: 'flex', gap: 10 }}>
-        <button type='submit'>Submit</button>
-        <button type='button' onClick={onCancel}>
-          Cancel
-        </button>
+        <Button type='submit'>Submit</Button>
+        <Button onClick={onCancel}>Cancel</Button>
       </div>
     </form>
   )

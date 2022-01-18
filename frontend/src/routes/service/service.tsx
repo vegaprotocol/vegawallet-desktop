@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from '../../components/button'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
 import { useNetwork } from '../../contexts/network/network-context'
@@ -55,35 +56,35 @@ export function Service() {
       }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {serviceRunning ? (
-          <button onClick={stop} type='button'>
+          <Button onClick={stop} type='button'>
             Stop service
-          </button>
+          </Button>
         ) : (
-          <button onClick={() => start()} type='button'>
+          <Button onClick={() => start()} type='button'>
             Start service
-          </button>
+          </Button>
         )}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {proxy === ProxyApp.Console ? (
-          <button onClick={stop} type='button'>
+          <Button onClick={stop} type='button'>
             Stop Console
-          </button>
+          </Button>
         ) : (
-          <button onClick={() => startProxy(ProxyApp.Console)} type='button'>
+          <Button onClick={() => startProxy(ProxyApp.Console)} type='button'>
             Start service with Console proxy
-          </button>
+          </Button>
         )}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {proxy === ProxyApp.TokenDApp ? (
-          <button onClick={stop} type='button'>
+          <Button onClick={stop} type='button'>
             Stop Token dApp
-          </button>
+          </Button>
         ) : (
-          <button onClick={() => startProxy(ProxyApp.TokenDApp)} type='button'>
+          <Button onClick={() => startProxy(ProxyApp.TokenDApp)} type='button'>
             Start service with Token dApp proxy
-          </button>
+          </Button>
         )}
       </div>
     </div>

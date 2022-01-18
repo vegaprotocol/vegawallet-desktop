@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { WalletPaths } from '.'
 import { BulletHeader } from '../../components/bullet-header'
+import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
@@ -63,9 +64,7 @@ export function Wallet() {
         </ul>
       ) : null}
       <p>
-        <button onClick={generateKeypair} type='button'>
-          Generate Keypair
-        </button>
+        <Button onClick={generateKeypair}>Generate Keypair</Button>
       </p>
     </>
   )

@@ -9,6 +9,7 @@ import { LogLevels } from '../../config/log-levels'
 import type { Network } from '../../models/network'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
+import { Button } from '../../components/button'
 
 interface FormFields {
   logLevel: string
@@ -149,7 +150,7 @@ export const NetworkConfigForm = ({
       <HostEditor name='graphqlHosts' control={control} register={register} />
       <h2>REST Nodes</h2>
       <HostEditor name='restHosts' control={control} register={register} />
-      <button type='submit'>Submit</button>
+      <Button type='submit'>Submit</Button>
     </form>
   )
 }
@@ -175,7 +176,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
               key={field.id}
               style={{ display: 'flex', gap: 10, marginBottom: 5 }}>
               <input type='text' {...register(`${name}.${i}.value` as any)} />
-              <button
+              <Button
                 type='button'
                 disabled={fields.length <= 1}
                 onClick={() => {
@@ -184,15 +185,15 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
                   }
                 }}>
                 Remove
-              </button>
+              </Button>
             </li>
           )
         })}
       </ul>
       <div>
-        <button type='button' onClick={() => append('')}>
+        <Button type='button' onClick={() => append('')}>
           Add
-        </button>
+        </Button>
       </div>
     </FormGroup>
   )

@@ -103,7 +103,7 @@ function AppLink({ children, to }: NavLinkProps) {
     <div>
       <Link
         to={to}
-        style={{ display: 'block', padding: '10px 0' }}
+        style={{ display: 'block', padding: '10px 0', textDecoration: 'none' }}
         onClick={() => dispatch(setDrawerAction(false))}>
         {children}
       </Link>
@@ -119,7 +119,9 @@ interface ExternalLinkProps {
 function NavExternalLink({ children, href }: ExternalLinkProps) {
   return (
     <div>
-      <ExternalLink href={href} style={{ display: 'block', padding: '10px 0' }}>
+      <ExternalLink
+        href={href}
+        style={{ display: 'block', padding: '10px 0', textDecoration: 'none' }}>
         {children}
       </ExternalLink>
     </div>
