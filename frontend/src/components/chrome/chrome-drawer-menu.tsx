@@ -1,3 +1,4 @@
+import './chrome-drawer-menu.scss'
 import * as Dialog from '@radix-ui/react-dialog'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -33,6 +34,7 @@ export function ChromeDrawerMenu() {
         />
         <Dialog.Content
           onPointerDownOutside={close}
+          className='chrome-drawer-menu__content'
           style={{
             background: 'black',
             width: '50vw',

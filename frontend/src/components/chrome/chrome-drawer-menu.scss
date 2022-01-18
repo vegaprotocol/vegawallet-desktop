@@ -1,0 +1,14 @@
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.chrome-drawer-menu__content {
+  &[data-state='open'] {
+    animation: slideIn 0.3s ease;
+  }
+}
