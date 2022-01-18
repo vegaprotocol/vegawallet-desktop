@@ -85,6 +85,8 @@ table th {
   color: var(--white);
   padding-left: 0;
   text-align: left;
+  font-weight: normal;
+  white-space: nowrap;
 }
 
 table td {
