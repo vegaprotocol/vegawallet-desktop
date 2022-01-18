@@ -16,7 +16,7 @@ export function Toast({
   message,
   onDismiss,
   intent = Intent.NONE,
-  timeout = 5000
+  timeout = 0
 }: ToastProps) {
   const timeoutRef = React.useRef<any>()
 
@@ -71,8 +71,8 @@ export function Toast({
       <span>{message}</span>
       <ButtonUnstyled
         onClick={dismiss}
-        style={{ position: 'relative', top: -1 }}>
-        <Cross style={{ width: 20, height: 20 }} />
+        style={{ position: 'relative', top: -10, right: -15 }}>
+        <Cross style={{ width: 40, height: 40 }} />
       </ButtonUnstyled>
     </div>
   )
