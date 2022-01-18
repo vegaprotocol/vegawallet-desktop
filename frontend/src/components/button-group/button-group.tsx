@@ -1,4 +1,3 @@
-import './button-group.scss'
 import React from 'react'
 
 interface ButtonGroupProps {
@@ -14,8 +13,7 @@ export function ButtonGroup({ children }: ButtonGroupProps) {
         alignItems: 'center',
         gap: 10
       }}
-      className='button-group'
-    >
+      className='button-group'>
       {React.Children.map(children, child => {
         return React.cloneElement(child as any, {
           style: {
