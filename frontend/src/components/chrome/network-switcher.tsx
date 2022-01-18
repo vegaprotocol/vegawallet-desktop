@@ -1,7 +1,6 @@
 import React from 'react'
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
-import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 // @ts-ignore
 import bg from '../../images/vega-bg.png'
@@ -18,8 +17,9 @@ export function NetworkSwitcher() {
     <DropdownMenu
       style={{}}
       trigger={
-        <ButtonUnstyled
+        <div
           style={{
+            position: 'relative',
             letterSpacing: '0.3em',
             padding: '10px 30px 10px 15px'
           }}>
@@ -28,7 +28,7 @@ export function NetworkSwitcher() {
             style={{
               position: 'absolute',
               right: 15,
-              bottom: 17,
+              bottom: 19,
               display: 'inline-block',
               borderBottom: '2px solid white',
               borderRight: '2px solid white',
@@ -37,7 +37,7 @@ export function NetworkSwitcher() {
               transform: 'rotate(45deg)'
             }}
           />
-        </ButtonUnstyled>
+        </div>
       }
       content={
         <div

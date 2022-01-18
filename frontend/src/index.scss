@@ -67,6 +67,15 @@ a,
   }
 }
 
+// RESET BUTTON
+button {
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: 0;
+}
+
 // TABLES
 table {
   border-collapse: collapse;
