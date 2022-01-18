@@ -58,36 +58,6 @@ export const NetworkConfigForm = ({
         onSubmit(configUpdate)
       })}>
       <FormGroup
-        label='* Log level'
-        labelFor='logLevel'
-        intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.logLevel?.message}>
-        <select {...register('logLevel', { required: 'Required' })}>
-          {Object.values(LogLevels).map(level => (
-            <option key={level} value={level}>
-              {level}
-            </option>
-          ))}
-        </select>
-      </FormGroup>
-      <FormGroup
-        label='* Token expiry'
-        labelFor='tokenExpiry'
-        intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenExpiry?.message}>
-        <input
-          type='text'
-          {...register('tokenExpiry', { required: 'Required' })}
-        />
-      </FormGroup>
-      <FormGroup
-        label='* Port'
-        labelFor='port'
-        intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.port?.message}>
-        <input type='text' {...register('port', { required: 'Required' })} />
-      </FormGroup>
-      <FormGroup
         label='* Host'
         labelFor='host'
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
@@ -95,14 +65,11 @@ export const NetworkConfigForm = ({
         <input type='text' {...register('host', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
-        label='*gRPC Node retries'
-        labelFor='grpcNodeRetries'
-        intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.grpcNodeRetries?.message}>
-        <input
-          type='text'
-          {...register('grpcNodeRetries', { required: 'Required' })}
-        />
+        label='* Port'
+        labelFor='port'
+        intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.port?.message}>
+        <input type='text' {...register('port', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
         label='* Console URL'
@@ -150,6 +117,39 @@ export const NetworkConfigForm = ({
       <HostEditor name='graphqlHosts' control={control} register={register} />
       <h2>REST Nodes</h2>
       <HostEditor name='restHosts' control={control} register={register} />
+      <FormGroup
+        label='* Log level'
+        labelFor='logLevel'
+        intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.logLevel?.message}>
+        <select {...register('logLevel', { required: 'Required' })}>
+          {Object.values(LogLevels).map(level => (
+            <option key={level} value={level}>
+              {level}
+            </option>
+          ))}
+        </select>
+      </FormGroup>
+      <FormGroup
+        label='*gRPC Node retries'
+        labelFor='grpcNodeRetries'
+        intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.grpcNodeRetries?.message}>
+        <input
+          type='text'
+          {...register('grpcNodeRetries', { required: 'Required' })}
+        />
+      </FormGroup>
+      <FormGroup
+        label='* Token expiry'
+        labelFor='tokenExpiry'
+        intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.tokenExpiry?.message}>
+        <input
+          type='text'
+          {...register('tokenExpiry', { required: 'Required' })}
+        />
+      </FormGroup>
       <Button type='submit'>Submit</Button>
     </form>
   )
