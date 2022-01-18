@@ -51,12 +51,12 @@ const circle = {
   width: 16,
   height: 16,
   borderRadius: '100%',
-  background: 'var(--white)'
+  background: 'var(--dark-gray2)'
 }
 
 const circleInner = {
   width: 10,
   height: 10,
-  background: 'var(--black)',
+  background: 'var(--white)',
   borderRadius: '100%'
 }
