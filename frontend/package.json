@@ -21,7 +21,6 @@
     "@types/react-router-dom": "^5.1.8",
     "@wailsapp/runtime": "^1.0.10",
     "core-js": "^3.6.4",
-    "node-sass": "^4.0.0",
     "prettier": "^2.3.2",
     "react": "^16.13.1",
     "react-copy-to-clipboard": "^5.0.4",
@@ -30,7 +29,6 @@
     "react-hook-thunk-reducer": "^0.2.4",
     "react-router-dom": "^5.2.0",
     "stylelint": "^13.13.1",
-    "stylelint-config-sass-guidelines": "^8.0.0",
     "stylelint-config-standard": "^22.0.0",
     "typescript": "^4.3.5",
     "wails-react-scripts": "3.0.1-2",
@@ -41,8 +39,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "check_format": "npx prettier --check . && npx stylelint \"**/*.css\" \"**/*.scss\"",
-    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\" \"**/*.scss\""
+    "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
+    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\""
   },
   "eslintConfig": {
     "extends": [

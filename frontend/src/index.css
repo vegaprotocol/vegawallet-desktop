@@ -1,41 +1,37 @@
-@import './styles/reset';
-@import './styles/colors';
-@import './styles/fonts';
+@import './styles/_reset.css';
+@import './styles/_colors.css';
+@import './styles/_fonts.css';
 
 html,
 body,
 #app {
-  background-color: $black;
-  color: $text-color;
-  font-family: $font-main;
+  background-color: var(--black);
+  color: var(--text-color);
+  font-family: var(--font-main);
   font-size: 16px;
   height: 100%;
   margin: 0;
   overflow: hidden;
   padding: 0;
   width: 100%;
+}
 
-  @media (min-width: 960px) {
+@media (min-width: 960px) {
+  html,
+  body,
+  #app {
     font-size: 16px;
   }
 }
 
-// RESETS
-ul,
-ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-// TYPOGRAPHY
+/* TYPOGRAPHY */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: $white;
+  color: var(--white);
   margin-bottom: 10px;
   margin-top: 30px;
   text-transform: uppercase;
@@ -54,57 +50,58 @@ p {
 a,
 .link {
   color: inherit;
-
-  &:hover {
-    color: $vega-yellow3;
-    text-decoration: underline;
-  }
 }
 
-// RESET BUTTON
+a:hover,
+.link:hover {
+  color: var(--vega-yellow);
+  text-decoration: underline;
+}
+
+/* RESET BUTTON */
 button {
   appearance: none;
   background: transparent;
+  border: 0;
   color: inherit;
   padding: 0;
-  border: 0;
 }
 
-// TABLES
+/* TABLES */
 table {
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 16px;
   width: 100%;
-
-  th,
-  td {
-    padding: 5px;
-    vertical-align: top;
-  }
-
-  th {
-    color: $white;
-    padding-left: 0;
-    text-align: left;
-  }
-
-  td {
-    color: $text-color-deemphasise;
-    padding-right: 0;
-    text-align: right;
-  }
 }
 
-// FORMS
+table th,
+table td {
+  padding: 5px;
+  vertical-align: top;
+}
+
+table th {
+  color: var(--white);
+  padding-left: 0;
+  text-align: left;
+}
+
+table td {
+  color: var(--text-color-deemphasise);
+  padding-right: 0;
+  text-align: right;
+}
+
+/* FORMS */
 input[type='text'],
 input[type='password'],
 input[type='number'],
 select,
 textarea {
-  background: $dark-gray2;
+  background: var(--dark-gray2);
   border: 0;
-  color: $white;
+  color: var(--white);
   display: block;
   font-size: 16px;
   padding: 7px 10px;
