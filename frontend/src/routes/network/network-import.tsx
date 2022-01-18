@@ -92,12 +92,12 @@ export function NetworkImport() {
     <>
       <BulletHeader tag='h1'>Import network</BulletHeader>
       <form onSubmit={handleSubmit(submit)}>
-        <FormGroup label='Import by'>
+        <FormGroup label='Import method'>
           <RadioGroup
             name='type'
             control={control}
             options={[
-              { value: 'file', label: 'File' },
+              { value: 'file', label: 'File path' },
               { value: 'url', label: 'URL' }
             ]}
           />
