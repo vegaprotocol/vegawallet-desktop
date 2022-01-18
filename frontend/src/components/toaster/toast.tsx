@@ -4,6 +4,7 @@ import { Intent } from '../../config/intent'
 import { IntentColors } from '../../config/colors'
 import { ToastOptions } from '.'
 import { ButtonUnstyled } from '../button-unstyled'
+import { Cross } from '../icons/cross'
 
 export interface ToastProps extends ToastOptions {
   onDismiss?: (toast: ToastOptions) => void
@@ -50,7 +51,7 @@ export function Toast({
       style={{
         display: 'flex',
         alignItems: 'flex-start',
-        gap: 5,
+        gap: 10,
         borderRadius: 2,
         margin: '15px 0 0 0',
         padding: '10px 15px',
@@ -65,7 +66,9 @@ export function Toast({
       tabIndex={0}
       role='alert'>
       <span>{message}</span>
-      <ButtonUnstyled onClick={dismiss}>X</ButtonUnstyled>
+      <ButtonUnstyled onClick={dismiss}>
+        <Cross style={{ width: 20, height: 20 }} />
+      </ButtonUnstyled>
     </div>
   )
 }
