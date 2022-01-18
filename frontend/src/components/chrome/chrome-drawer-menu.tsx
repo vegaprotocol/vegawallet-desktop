@@ -9,6 +9,7 @@ import { Paths } from '../../routes/router-config'
 import { DrawerCloseButton } from '../chrome/drawer-close-button'
 import { ExternalLink } from '../external-link'
 import { NetworkPaths } from '../../routes/network'
+import { ArrowTopRight } from '../icons/arrow-top-right'
 
 export function ChromeDrawerMenu() {
   const { state, dispatch } = useGlobal()
@@ -119,8 +120,15 @@ function NavExternalLink({ children, href }: ExternalLinkProps) {
     <div>
       <ExternalLink
         href={href}
-        style={{ display: 'block', padding: '10px 0', textDecoration: 'none' }}>
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 0',
+          textDecoration: 'none'
+        }}>
         {children}
+        <ArrowTopRight style={{ width: 13, height: 13 }} />
       </ExternalLink>
     </div>
   )

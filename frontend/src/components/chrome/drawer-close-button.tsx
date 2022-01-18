@@ -10,8 +10,8 @@ export function DrawerCloseButton() {
   return (
     <ButtonUnstyled
       onClick={() => dispatch(setDrawerAction(false))}
-      style={{ position: 'relative', width: 45, height: 45 }}>
-      <Cross style={{ width: 20, height: 20 }} />
+      style={{ position: 'relative' }}>
+      <Cross style={{ width: 40, height: 40 }} />
     </ButtonUnstyled>
   )
 }
