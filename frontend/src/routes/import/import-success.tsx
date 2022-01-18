@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
+import { Button } from '../../components/button'
 import { CodeBlock } from '../../components/code-block'
 import { Paths } from '../router-config'
 
@@ -17,7 +18,7 @@ export function ImportSuccess({ walletPath }: ImportSuccessProps) {
         <CodeBlock>{walletPath}</CodeBlock>
       </p>
       <Link to={Paths.Home}>
-        <button>Go to wallets</button>
+        <Button>Go to wallets</Button>
       </Link>
     </>
   )

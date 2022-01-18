@@ -11,6 +11,7 @@ import { useNetwork } from '../../contexts/network/network-context'
 import { ImportNetworkResponse } from '../../models/network'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
+import { Button } from '../../components/button'
 
 interface FormFields {
   filePath: string
@@ -50,10 +51,10 @@ export function NetworkImport() {
         </p>
         <div style={{ display: 'flex', gap: 10 }}>
           <Link to={NetworkPaths.Config}>
-            <button>View {response.name} configuration</button>
+            <Button>View {response.name} configuration</Button>
           </Link>
           <Link to={NetworkPaths.Edit}>
-            <button>Edit {response.name} configuration</button>
+            <Button>Edit {response.name} configuration</Button>
           </Link>
         </div>
       </>
@@ -112,7 +113,7 @@ export function NetworkImport() {
           </label>
         </FormGroup>
         <div>
-          <button type='submit'>Submit</button>
+          <Button type='submit'>Submit</Button>
         </div>
       </form>
     </>

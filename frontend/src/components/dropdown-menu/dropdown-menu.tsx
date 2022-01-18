@@ -4,6 +4,7 @@ import * as DropdownPrimitive from '@radix-ui/react-dropdown-menu'
 interface DropdownMenuProps {
   trigger: React.ReactNode
   content: React.ReactNode
+  style?: React.CSSProperties
 }
 
 export function DropdownMenu({ trigger, content }: DropdownMenuProps) {

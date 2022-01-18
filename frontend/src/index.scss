@@ -67,38 +67,6 @@ a,
   }
 }
 
-button {
-  background: $dark-gray1;
-  border: 0;
-  border: 1px solid $dark-gray3;
-  border-radius: 2px;
-  color: $white;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 7px 17px;
-
-  &:hover {
-    background: $dark-gray3;
-  }
-
-  &.fill {
-    width: 100%;
-  }
-
-  &.active {
-    background: $dark-gray5;
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.7;
-
-    &:hover {
-      background: $dark-gray1;
-    }
-  }
-}
-
 // TABLES
 table {
   border-collapse: collapse;

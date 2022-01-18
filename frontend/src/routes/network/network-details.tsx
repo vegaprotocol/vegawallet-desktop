@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { NetworkPaths } from '.'
 
 import { BulletHeader } from '../../components/bullet-header'
+import { Button } from '../../components/button'
 import { ExternalLink } from '../../components/external-link'
 import { useNetwork } from '../../contexts/network/network-context'
 
@@ -17,7 +18,7 @@ export const NetworkDetails = () => {
         <p>No network configuration found. </p>
         <p>
           <Link to={NetworkPaths.Import}>
-            <button>Import network</button>
+            <Button>Import network</Button>
           </Link>
         </p>
       </>
@@ -62,8 +63,7 @@ export const NetworkDetails = () => {
             <td>
               <ExternalLink
                 style={{ textDecoration: 'underline' }}
-                href={`https://${config.Console.URL}`}
-              >
+                href={`https://${config.Console.URL}`}>
                 {config.Console.URL}
               </ExternalLink>
             </td>

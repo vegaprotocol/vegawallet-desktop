@@ -7,6 +7,7 @@ import { ImportSuccess } from './import-success'
 import { BulletHeader } from '../../components/bullet-header'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
+import { Button } from '../../components/button'
 
 interface FormFields {
   name: string
@@ -90,7 +91,7 @@ export const ImportRecoveryPhrase = () => {
           />
         </FormGroup>
         <div>
-          <button type='submit'>Submit</button>
+          <Button type='submit'>Submit</Button>
         </div>
       </form>
     </>
