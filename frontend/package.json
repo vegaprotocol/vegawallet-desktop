@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "^14.17.4"
+    "node": "^16.13.2"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^0.1.5",
