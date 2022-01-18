@@ -15,7 +15,7 @@ export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
 
     if (copied) {
       setTimeout(() => {
-        // setCopied(false)
+        setCopied(false)
       }, 800)
     }
 
