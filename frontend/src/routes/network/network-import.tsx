@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm, useWatch } from 'react-hook-form'
+import { FieldError, useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { NetworkPaths } from '.'
 import { GetNetworkConfig, ImportNetwork } from '../../api/service'
@@ -26,11 +26,12 @@ interface FormFields {
 
 export function NetworkImport() {
   const [advancedFields, setAdvancedfields] = React.useState(false)
-  const { response, submit } = useImportNetwork()
+  const { response, submit, error } = useImportNetwork()
   const {
     control,
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
@@ -43,6 +44,17 @@ export function NetworkImport() {
 
   const type = useWatch({ name: 'type', control })
   const isURLType = type === 'url'
+
+  React.useEffect(() => {
+    if (error && /already exists/.test(error)) {
+      setAdvancedfields(true)
+      setError(
+        'name',
+        { message: 'Network with name already exists' },
+        { shouldFocus: true }
+      )
+    }
+  }, [error, setError])
 
   if (response) {
     return (
@@ -64,26 +76,37 @@ export function NetworkImport() {
     )
   }
 
+  const renderInputHelperText = (error: FieldError | undefined) => {
+    if (error) {
+      return error.message
+    }
+
+    if (isURLType) {
+      return 'URL to raw text file'
+    }
+
+    return 'Path to file on your computer'
+  }
+
   return (
     <>
       <BulletHeader tag='h1'>Import network</BulletHeader>
       <form onSubmit={handleSubmit(submit)}>
-        <FormGroup>
+        <FormGroup label='Import by'>
           <RadioGroup
             name='type'
             control={control}
             options={[
-              { value: 'file', label: 'Import by file' },
-              { value: 'url', label: 'Import by URL' }
+              { value: 'file', label: 'File' },
+              { value: 'url', label: 'URL' }
             ]}
           />
         </FormGroup>
-
         <FormGroup
           label={isURLType ? '* URL' : '* File path'}
           labelFor='input'
           intent={errors.input?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.input?.message}>
+          helperText={renderInputHelperText(errors.input)}>
           <input
             id='input'
             type='text'
@@ -101,24 +124,6 @@ export function NetworkImport() {
         <CollapsiblePrimitive.Root
           open={advancedFields}
           onOpenChange={() => setAdvancedfields(curr => !curr)}>
-          <CollapsiblePrimitive.Content>
-            <>
-              <FormGroup
-                label='Network name'
-                labelFor='name'
-                intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-                helperText={errors.name?.message}>
-                <input type='text' id='name' {...register('name')} />
-              </FormGroup>
-              <FormGroup>
-                <Checkbox
-                  name='force'
-                  control={control}
-                  label='Force (overwrite network with matching name)'
-                />
-              </FormGroup>
-            </>
-          </CollapsiblePrimitive.Content>
           <CollapsiblePrimitive.Trigger asChild={true}>
             <p>
               <ButtonUnstyled style={{ textDecoration: 'underline' }}>
@@ -128,6 +133,24 @@ export function NetworkImport() {
               </ButtonUnstyled>
             </p>
           </CollapsiblePrimitive.Trigger>
+          <CollapsiblePrimitive.Content>
+            <>
+              <FormGroup
+                label='Network name'
+                labelFor='name'
+                intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+                helperText={
+                  errors.name
+                    ? errors.name?.message
+                    : 'Uses name specified in config by default'
+                }>
+                <input type='text' id='name' {...register('name')} />
+              </FormGroup>
+              <FormGroup helperText='Overwrite existing network configuration if it already exists'>
+                <Checkbox name='force' control={control} label='Overwrite' />
+              </FormGroup>
+            </>
+          </CollapsiblePrimitive.Content>
         </CollapsiblePrimitive.Root>
         <div>
           <Button type='submit'>Submit</Button>
@@ -142,6 +165,7 @@ function useImportNetwork() {
   const [response, setResponse] = React.useState<ImportNetworkResponse | null>(
     null
   )
+  const [error, setError] = React.useState<string | null>(null)
 
   const submit = React.useCallback(
     async (values: FormFields) => {
@@ -164,12 +188,16 @@ function useImportNetwork() {
             intent: Intent.SUCCESS
           })
         } else {
+          const message = 'Error: Could not import network'
+          setError(message)
           AppToaster.show({
-            message: 'Error: Could not import network',
+            message,
             intent: Intent.DANGER
           })
         }
       } catch (err) {
+        // @ts-ignore
+        setError(err)
         AppToaster.show({
           message: `Error: ${err}`,
           intent: Intent.DANGER
@@ -181,6 +209,7 @@ function useImportNetwork() {
 
   return {
     response,
-    submit
+    submit,
+    error
   }
 }

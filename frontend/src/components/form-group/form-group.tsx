@@ -36,7 +36,15 @@ export function FormGroup({
         {children}
         {helperText && (
           <div
-            style={{ marginTop: 5, fontSize: 14, color: IntentColors[intent] }}>
+            style={{
+              marginTop: 5,
+              fontSize: 14,
+              color:
+                // if no intent is provided, use deemphasises text to help visual hierarchy
+                intent === 'none'
+                  ? 'var(--text-color-deemphasise)'
+                  : IntentColors[intent]
+            }}>
             {helperText}
           </div>
         )}

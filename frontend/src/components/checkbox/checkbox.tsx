@@ -44,11 +44,11 @@ const box = {
   justifyContent: 'center',
   width: 16,
   height: 16,
-  background: 'var(--white)'
+  background: 'var(--dark-gray2)'
 }
 
 const boxInner = {
   width: 10,
   height: 10,
-  background: 'var(--black)'
+  background: 'var(--white)'
 }
