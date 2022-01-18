@@ -12,8 +12,7 @@ export function ButtonGroup({ children }: ButtonGroupProps) {
         justifyContent: 'space-between',
         alignItems: 'center',
         gap: 10
-      }}
-      className='button-group'>
+      }}>
       {React.Children.map(children, child => {
         return React.cloneElement(child as any, {
           style: {
