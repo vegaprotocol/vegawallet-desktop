@@ -12,34 +12,37 @@ import { ImportNetworkResponse } from '../../models/network'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
+import { RadioGroup } from '../../components/radio-group'
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { Checkbox } from '../../components/checkbox'
+import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 
 interface FormFields {
-  filePath: string
-  url: string
   name: string
+  type: 'file' | 'url'
+  input: string
   force: boolean
 }
 
 export function NetworkImport() {
+  const [advancedFields, setAdvancedfields] = React.useState(false)
   const { response, submit } = useImportNetwork()
   const {
     control,
     register,
     handleSubmit,
-    clearErrors,
     formState: { errors }
-  } = useForm<FormFields>()
+  } = useForm<FormFields>({
+    defaultValues: {
+      name: '',
+      type: 'file',
+      input: '',
+      force: false
+    }
+  })
 
-  const filePath = useWatch({ name: 'filePath', control })
-  const url = useWatch({ name: 'url', control })
-
-  React.useEffect(() => {
-    clearErrors('url')
-  }, [filePath, clearErrors])
-
-  React.useEffect(() => {
-    clearErrors('filePath')
-  }, [url, clearErrors])
+  const type = useWatch({ name: 'type', control })
+  const isURLType = type === 'url'
 
   if (response) {
     return (
@@ -65,53 +68,67 @@ export function NetworkImport() {
     <>
       <BulletHeader tag='h1'>Import network</BulletHeader>
       <form onSubmit={handleSubmit(submit)}>
-        <FormGroup
-          label='* Network name'
-          labelFor='name'
-          intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.name?.message}>
-          <input
-            type='text'
-            id='name'
-            {...register('name', { required: 'Required' })}
-          />
-        </FormGroup>
-        <FormGroup
-          label='File path'
-          labelFor='filePath'
-          intent={errors.filePath?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.filePath?.message}>
-          <input
-            id='filePath'
-            type='text'
-            {...register('filePath', {
-              required: url ? false : 'File path or URL required'
-            })}
-          />
-        </FormGroup>
-        <FormGroup
-          label='URL'
-          labelFor='url'
-          intent={errors.url?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.url?.message}>
-          <input
-            id='url'
-            type='text'
-            {...register('url', {
-              required: filePath ? false : 'File path or URL requried',
-              pattern: {
-                message: 'Invalid url',
-                value: /^(http|https):\/\/[^ "]+$/i
-              }
-            })}
-          />
-        </FormGroup>
         <FormGroup>
-          <label htmlFor='force'>
-            <input type='checkbox' id='force' {...register('force')} />
-            <span>Force (overwrite network with matching name)</span>
-          </label>
+          <RadioGroup
+            name='type'
+            control={control}
+            options={[
+              { value: 'file', label: 'Import by file' },
+              { value: 'url', label: 'Import by URL' }
+            ]}
+          />
         </FormGroup>
+
+        <FormGroup
+          label={isURLType ? '* URL' : '* File path'}
+          labelFor='input'
+          intent={errors.input?.message ? Intent.DANGER : Intent.NONE}
+          helperText={errors.input?.message}>
+          <input
+            id='input'
+            type='text'
+            {...register('input', {
+              required: 'Required',
+              pattern: isURLType
+                ? {
+                    message: 'Invalid url',
+                    value: /^(http|https):\/\/[^ "]+$/i
+                  }
+                : undefined
+            })}
+          />
+        </FormGroup>
+        <CollapsiblePrimitive.Root
+          open={advancedFields}
+          onOpenChange={() => setAdvancedfields(curr => !curr)}>
+          <CollapsiblePrimitive.Content>
+            <>
+              <FormGroup
+                label='Network name'
+                labelFor='name'
+                intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+                helperText={errors.name?.message}>
+                <input type='text' id='name' {...register('name')} />
+              </FormGroup>
+              <FormGroup>
+                <Checkbox
+                  name='force'
+                  control={control}
+                  label='Force (overwrite network with matching name)'
+                />
+              </FormGroup>
+            </>
+          </CollapsiblePrimitive.Content>
+          <CollapsiblePrimitive.Trigger asChild={true}>
+            <p>
+              <ButtonUnstyled style={{ textDecoration: 'underline' }}>
+                {advancedFields
+                  ? 'Hide advanced fields'
+                  : 'Show advanced fields'}
+              </ButtonUnstyled>
+            </p>
+          </CollapsiblePrimitive.Trigger>
+        </CollapsiblePrimitive.Root>
         <div>
           <Button type='submit'>Submit</Button>
         </div>
@@ -131,8 +148,8 @@ function useImportNetwork() {
       try {
         const res = await ImportNetwork({
           name: values.name,
-          url: values.url,
-          filePath: values.filePath,
+          url: values.type === 'url' ? values.input : '',
+          filePath: values.type === 'file' ? values.input : '',
           force: values.force
         })
 
