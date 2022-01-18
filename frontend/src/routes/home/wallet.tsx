@@ -51,8 +51,8 @@ export function Wallet() {
                 <CopyWithTooltip text={kp.publicKey}>
                   <span
                     style={{
-                      color: Colors.TEXT_MUTED,
-                      fontFamily: '"Roboto Mono", monospace'
+                      color: Colors.TEXT_COLOR_DEEMPHASISE,
+                      fontFamily: 'var(--font-mono)'
                     }}>
                     {kp.publicKeyShort}{' '}
                     <Copy style={{ width: 12, height: 12 }} />

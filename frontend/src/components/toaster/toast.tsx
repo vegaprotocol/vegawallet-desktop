@@ -16,15 +16,17 @@ export function Toast({
   message,
   onDismiss,
   intent = Intent.NONE,
-  timeout = 5000
+  timeout = 0
 }: ToastProps) {
   const timeoutRef = React.useRef<any>()
 
   const startTimeout = () => {
-    cancelTimeout()
-    timeoutRef.current = setTimeout(() => {
-      dismiss()
-    }, timeout)
+    if (timeout && timeout > 0) {
+      cancelTimeout()
+      timeoutRef.current = setTimeout(() => {
+        dismiss()
+      }, timeout)
+    }
   }
 
   const cancelTimeout = () => {
@@ -53,6 +55,7 @@ export function Toast({
         alignItems: 'flex-start',
         gap: 10,
         borderRadius: 2,
+        maxWidth: '90vw',
         margin: '15px 0 0 0',
         padding: '10px 15px',
         background: IntentColors[intent],
@@ -66,7 +69,9 @@ export function Toast({
       tabIndex={0}
       role='alert'>
       <span>{message}</span>
-      <ButtonUnstyled onClick={dismiss}>
+      <ButtonUnstyled
+        onClick={dismiss}
+        style={{ position: 'relative', top: -1 }}>
         <Cross style={{ width: 20, height: 20 }} />
       </ButtonUnstyled>
     </div>

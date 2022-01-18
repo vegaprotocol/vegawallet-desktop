@@ -12,7 +12,9 @@ export function Tooltip({ trigger, content, isOpen }: TooltipProps) {
   return (
     <TooltipPrimitive.Provider>
       <TooltipPrimitive.Root open={isOpen}>
-        <TooltipPrimitive.Trigger>{trigger}</TooltipPrimitive.Trigger>
+        <TooltipPrimitive.Trigger asChild={true}>
+          {trigger}
+        </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Content
           style={{ background: Colors.DARK_GRAY_2, padding: '5px 10px' }}>
           <TooltipPrimitive.Arrow fill={Colors.DARK_GRAY_2} />
