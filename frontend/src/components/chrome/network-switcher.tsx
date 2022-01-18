@@ -2,8 +2,6 @@ import React from 'react'
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
-// @ts-ignore
-import bg from '../../images/vega-bg.png'
 import { ButtonUnstyled } from '../button-unstyled'
 
 export function NetworkSwitcher() {
@@ -43,7 +41,7 @@ export function NetworkSwitcher() {
         <div
           style={{
             minWidth: 130,
-            background: `url(${bg})`,
+            background: `url(${process.env.PUBLIC_URL}/vega-bg.png)`,
             backgroundSize: 'cover'
           }}>
           {state.networks.map(network => (

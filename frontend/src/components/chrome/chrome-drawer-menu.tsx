@@ -8,8 +8,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../../routes/router-config'
 import { DrawerCloseButton } from '../chrome/drawer-close-button'
 import { ExternalLink } from '../external-link'
-// @ts-ignore
-import bg from '../../images/vega-bg.png'
 import { NetworkPaths } from '../../routes/network'
 
 export function ChromeDrawerMenu() {
@@ -76,7 +74,7 @@ function Menu() {
         style={{
           padding: 15,
           borderBottom: `3px solid`,
-          borderImage: `url(${bg}) 15%`
+          borderImage: `url(${process.env.PUBLIC_URL}/vega-bg.png) 15%`
         }}>
         <AppLink to={Paths.Home}>Wallets</AppLink>
         <AppLink to={Paths.Import}>Add / Recover Wallet</AppLink>

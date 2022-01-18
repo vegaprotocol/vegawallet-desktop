@@ -2,8 +2,6 @@ import React from 'react'
 import { useGlobal } from '../../contexts/global/global-context'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
-// @ts-ignore
-import bg from '../../images/vega-bg.png'
 
 export function ChromeFooter() {
   const {
@@ -19,11 +17,10 @@ export function ChromeFooter() {
         justifyContent: 'space-between',
         alignItems: 'flex-end',
         padding: '10px 15px',
-        background: `url(${bg})`,
+        background: `url(${process.env.PUBLIC_URL}/vega-bg.png)`,
         backgroundSize: 'cover',
         fontSize: 14
-      }}
-    >
+      }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div>
           <StatusCircle running={serviceRunning} />
@@ -41,8 +38,7 @@ export function ChromeFooter() {
                 Proxy running:{' '}
                 <ExternalLink
                   href={proxyUrl}
-                  style={{ textDecoration: 'underline' }}
-                >
+                  style={{ textDecoration: 'underline' }}>
                   {proxy} @ {proxyUrl}
                 </ExternalLink>
               </>

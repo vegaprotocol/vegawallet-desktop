@@ -14,10 +14,9 @@ $color5 = Lightest
   --vega-yellow3: #daff0d;
   --vega-orange3: #d9822b;
   --vega-blue3: #48aff0;
-  --vega-red1: darken(--vega-red3, 38%);
-  --vega-green1: darken(--vega-green3, 38%);
-  --vega-yellow1: darken(--vega-yellow3, 38%);
-  --vega-orange1: darken(--vega-orange3, 38%);
+  --intent-success: #18b567;
+  --intent-warning: --vega-orange3;
+  --intent-danger: #ed1515;
   --black: #000;
   --white: #fff;
   --dark-gray1: #1f1f1f;

@@ -10,7 +10,6 @@ export const BulletHeader = ({ tag, children }: BulletHeaderProps) => {
   return React.createElement(
     tag,
     {
-      className: 'bullet-header',
       style: {
         fontSize: 22,
         fontWeight: 300,
@@ -25,8 +24,7 @@ export const BulletHeader = ({ tag, children }: BulletHeaderProps) => {
       style={{
         position: 'relative',
         paddingLeft: 25
-      }}
-    >
+      }}>
       <span
         style={{
           position: 'absolute',
