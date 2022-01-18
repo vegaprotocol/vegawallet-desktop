@@ -4,6 +4,7 @@ import { useNetwork } from '../../contexts/network/network-context'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 // @ts-ignore
 import bg from '../../images/vega-bg.png'
+import { ButtonUnstyled } from '../button-unstyled'
 
 export function NetworkSwitcher() {
   const { state, dispatch } = useNetwork()
@@ -46,16 +47,17 @@ export function NetworkSwitcher() {
             backgroundSize: 'cover'
           }}>
           {state.networks.map(network => (
-            <DropdownItem
-              key={network}
-              style={{
-                width: '100%',
-                padding: '10px 15px',
-                lineHeight: 1,
-                textAlign: 'left'
-              }}
-              onClick={() => dispatch(changeNetworkAction(network))}>
-              {network}
+            <DropdownItem key={network}>
+              <ButtonUnstyled
+                style={{
+                  width: '100%',
+                  padding: '10px 15px',
+                  lineHeight: 1,
+                  textAlign: 'left'
+                }}
+                onClick={() => dispatch(changeNetworkAction(network))}>
+                {network}
+              </ButtonUnstyled>
             </DropdownItem>
           ))}
         </div>
