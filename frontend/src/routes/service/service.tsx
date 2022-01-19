@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from '../../components/button'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
+import { useBackend } from '../../contexts/backend/backend-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import {
   startProxyAction,
@@ -11,6 +12,7 @@ import {
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 
 export function Service() {
+  const service = useBackend()
   const {
     state: { network, config }
   } = useNetwork()
@@ -25,11 +27,11 @@ export function Service() {
       return
     }
 
-    dispatch(startServiceAction(network, config.Port))
+    dispatch(startServiceAction(network, config.Port, service))
   }
 
   function stop() {
-    dispatch(stopServiceAction())
+    dispatch(stopServiceAction(service))
   }
 
   function startProxy(app: ProxyApp) {
@@ -43,7 +45,7 @@ export function Service() {
         ? config.Console.LocalPort
         : config.TokenDApp.LocalPort
 
-    dispatch(startProxyAction(network, app, port))
+    dispatch(startProxyAction(network, app, port, service))
   }
 
   return (

@@ -8,11 +8,13 @@ import { Copy } from '../../components/icons/copy'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
+import { useBackend } from '../../contexts/backend/backend-context'
 import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
 
 export function Wallet() {
+  const service = useBackend()
   const { state, dispatch } = useGlobal()
 
   async function generateKeypair() {
@@ -21,7 +23,7 @@ export function Wallet() {
       return
     }
 
-    dispatch(addKeypairAction(state.wallet.name))
+    dispatch(addKeypairAction(state.wallet.name, service))
   }
 
   if (!state.wallets.length || !state.wallet) {

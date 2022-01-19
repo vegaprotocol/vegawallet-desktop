@@ -1,4 +1,3 @@
-import * as Service from '../../api/service'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { GetServiceStateResponse } from '../../models/console-state'
 import { ListWalletsResponse } from '../../models/list-wallets'
@@ -7,23 +6,24 @@ import { GlobalDispatch, GlobalState } from './global-context'
 import { GlobalAction } from './global-reducer'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
+import { Service } from '../../app'
 
-export function initAppAction() {
+export function initAppAction(service: Service) {
   return async (dispatch: GlobalDispatch) => {
     try {
-      const isInit = await Service.IsAppInitialised()
+      const isInit = await service.IsAppInitialised()
 
       if (!isInit) {
-        await Service.InitialiseApp({
+        await service.InitialiseApp({
           vegaHome: process.env.REACT_APP_VEGA_HOME || ''
         })
       }
 
       // App initialised check what wallets are available
       const res = await Promise.all([
-        await Service.ListWallets(),
-        await Service.GetServiceState(),
-        await Service.GetVersion()
+        await service.ListWallets(),
+        await service.GetServiceState(),
+        await service.GetVersion()
       ])
 
       dispatch(initAppSuccessAction(...res))
@@ -63,11 +63,11 @@ export function addWalletAction(wallet: string): GlobalAction {
   return { type: 'ADD_WALLET', wallet }
 }
 
-export function addKeypairAction(wallet: string) {
+export function addKeypairAction(wallet: string, service: Service) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     try {
       const passphrase = await requestPassphrase()
-      const res = await Service.GenerateKey({
+      const res = await service.GenerateKey({
         wallet,
         passphrase,
         metadata: []
@@ -86,7 +86,7 @@ export function addKeypairAction(wallet: string) {
   }
 }
 
-export function getKeysAction(wallet: string, cb: Function) {
+export function getKeysAction(wallet: string, cb: Function, service: Service) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     const state = getState()
     const selectedWallet = state.wallets.find(w => w.name === wallet)
@@ -97,7 +97,7 @@ export function getKeysAction(wallet: string, cb: Function) {
     } else {
       try {
         const passphrase = await requestPassphrase()
-        const keys = await Service.ListKeys({ wallet, passphrase })
+        const keys = await service.ListKeys({ wallet, passphrase })
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
         cb()
       } catch (err) {

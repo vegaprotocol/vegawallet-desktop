@@ -2,7 +2,6 @@ import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { NetworkPaths } from '.'
-import { GetNetworkConfig, ImportNetwork } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
 import { AppToaster } from '../../components/toaster'
@@ -12,6 +11,7 @@ import { ImportNetworkResponse } from '../../models/network'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
+import { useBackend } from '../../contexts/backend/backend-context'
 
 interface FormFields {
   filePath: string
@@ -121,6 +121,7 @@ export function NetworkImport() {
 }
 
 function useImportNetwork() {
+  const service = useBackend()
   const { dispatch } = useNetwork()
   const [response, setResponse] = React.useState<ImportNetworkResponse | null>(
     null
@@ -129,7 +130,7 @@ function useImportNetwork() {
   const submit = React.useCallback(
     async (values: FormFields) => {
       try {
-        const res = await ImportNetwork({
+        const res = await service.ImportNetwork({
           name: values.name,
           url: values.url,
           filePath: values.filePath,
@@ -138,7 +139,7 @@ function useImportNetwork() {
 
         if (res) {
           setResponse(res)
-          const config = await GetNetworkConfig(res.name)
+          const config = await service.GetNetworkConfig(res.name)
 
           dispatch(addNetworkAction(res.name, config))
 
@@ -159,7 +160,7 @@ function useImportNetwork() {
         })
       }
     },
-    [dispatch]
+    [dispatch, service]
   )
 
   return {

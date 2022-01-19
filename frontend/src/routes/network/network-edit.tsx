@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { NetworkPaths } from '.'
 
 import { BulletHeader } from '../../components/bullet-header'
+import { useBackend } from '../../contexts/backend/backend-context'
 import { updateNetworkConfigAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
 import { stopServiceAction } from '../../contexts/service/service-actions'
@@ -10,6 +11,7 @@ import { useService } from '../../contexts/service/service-context'
 import { NetworkConfigForm } from './network-config-form'
 
 export const NetworkEdit = () => {
+  const service = useBackend()
   const {
     state: { config },
     dispatch: dispatchNetwork
@@ -29,8 +31,8 @@ export const NetworkEdit = () => {
       <NetworkConfigForm
         config={config}
         onSubmit={config => {
-          dispatchService(stopServiceAction())
-          dispatchNetwork(updateNetworkConfigAction(config))
+          dispatchService(stopServiceAction(service))
+          dispatchNetwork(updateNetworkConfigAction(config, service))
         }}
       />
     </>

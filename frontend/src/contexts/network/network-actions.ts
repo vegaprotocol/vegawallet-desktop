@@ -1,22 +1,17 @@
-import {
-  GetNetworkConfig,
-  ImportNetwork,
-  ListNetworks,
-  SaveNetworkConfig
-} from '../../api/service'
+import { Service } from '../../app'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
 import { ImportNetworkRequest, Network } from '../../models/network'
 import { NetworkDispatch, NetworkState } from './network-context'
 import { NetworkAction } from './network-reducer'
 
-export function initNetworksAction() {
+export function initNetworksAction(service: Service) {
   return async (dispatch: NetworkDispatch) => {
     try {
-      const networks = await ListNetworks()
+      const networks = await service.ListNetworks()
       if (networks.networks.length) {
         const defaultNetwork = networks.networks[0]
-        const config = await GetNetworkConfig(defaultNetwork)
+        const config = await service.GetNetworkConfig(defaultNetwork)
         dispatch({
           type: 'SET_NETWORKS',
           network: defaultNetwork,
@@ -37,10 +32,10 @@ export function initNetworksAction() {
   }
 }
 
-export function changeNetworkAction(network: string) {
+export function changeNetworkAction(network: string, service: Service) {
   return async (dispatch: NetworkDispatch) => {
     try {
-      const config = await GetNetworkConfig(network)
+      const config = await service.GetNetworkConfig(network)
 
       dispatch({
         type: 'CHANGE_NETWORK',
@@ -56,10 +51,10 @@ export function changeNetworkAction(network: string) {
   }
 }
 
-export function updateNetworkConfigAction(config: Network) {
+export function updateNetworkConfigAction(config: Network, service: Service) {
   return async (dispatch: NetworkDispatch) => {
     try {
-      const isSuccessful = await SaveNetworkConfig(config)
+      const isSuccessful = await service.SaveNetworkConfig(config)
       if (isSuccessful) {
         AppToaster.show({
           message: 'Configuration saved. All services stopped.',
@@ -76,10 +71,13 @@ export function updateNetworkConfigAction(config: Network) {
   }
 }
 
-export function importNetworkAction(values: ImportNetworkRequest) {
+export function importNetworkAction(
+  values: ImportNetworkRequest,
+  service: Service
+) {
   return async (dispatch: NetworkDispatch, getState: () => NetworkState) => {
     try {
-      const res = await ImportNetwork({
+      const res = await service.ImportNetwork({
         name: values.name,
         url: values.url,
         filePath: values.filePath,
@@ -87,7 +85,7 @@ export function importNetworkAction(values: ImportNetworkRequest) {
       })
 
       if (res) {
-        const config = await GetNetworkConfig(res.name)
+        const config = await service.GetNetworkConfig(res.name)
 
         dispatch({
           type: 'ADD_NETWORK',

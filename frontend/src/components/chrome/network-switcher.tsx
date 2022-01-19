@@ -5,8 +5,10 @@ import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 // @ts-ignore
 import bg from '../../images/vega-bg.png'
 import { ButtonUnstyled } from '../button-unstyled'
+import { useBackend } from '../../contexts/backend/backend-context'
 
 export function NetworkSwitcher() {
+  const service = useBackend()
   const { state, dispatch } = useNetwork()
 
   // If the user has no networks dont render switcher
@@ -55,7 +57,7 @@ export function NetworkSwitcher() {
                   lineHeight: 1,
                   textAlign: 'left'
                 }}
-                onClick={() => dispatch(changeNetworkAction(network))}>
+                onClick={() => dispatch(changeNetworkAction(network, service))}>
                 {network}
               </ButtonUnstyled>
             </DropdownItem>

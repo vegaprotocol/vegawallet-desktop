@@ -1,5 +1,4 @@
 import React from 'react'
-import { CreateWallet } from '../../api/service'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { CreateWalletResponse } from '../../models/create-wallet'
@@ -15,6 +14,7 @@ import { WalletPaths } from '../home'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
+import { useBackend } from '../../contexts/backend/backend-context'
 
 interface FormFields {
   name: string
@@ -110,6 +110,7 @@ export const WalletCreator = () => {
 }
 
 function useCreateWallet() {
+  const service = useBackend()
   const { dispatch } = useGlobal()
   const [response, setResponse] = React.useState<CreateWalletResponse | null>(
     null
@@ -118,7 +119,7 @@ function useCreateWallet() {
   const submit = React.useCallback(
     async (values: FormFields) => {
       try {
-        const resp = await CreateWallet({
+        const resp = await service.CreateWallet({
           Name: values.name,
           Passphrase: values.passphrase
         })
@@ -136,7 +137,7 @@ function useCreateWallet() {
         AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       }
     },
-    [dispatch]
+    [dispatch, service]
   )
 
   return {

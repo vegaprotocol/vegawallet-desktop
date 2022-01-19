@@ -12,13 +12,75 @@ import { initAppAction } from './contexts/global/global-actions'
 import { ServiceProvider } from './contexts/service/service-provider'
 import { PassphraseModal } from './components/passphrase-modal'
 import { NetworkProvider } from './contexts/network/network-provider'
+import * as Models from './models'
+import { BackendProvider } from './contexts/backend/backend-provider'
+import { useBackend } from './contexts/backend/backend-context'
 
-function AppLoader({ children }: { children: React.ReactElement }) {
+export interface Service {
+  GetVersion(): Promise<Models.GetVersionResponse>
+
+  GenerateKey(
+    request: Models.GenerateKeyRequest
+  ): Promise<Models.GenerateKeyResponse>
+
+  DescribeKey(
+    request: Models.DescribeKeyRequest
+  ): Promise<Models.DescribeKeyResponse>
+
+  AnnotateKey(request: Models.AnnotateKeyRequest): Promise<void>
+
+  TaintKey(request: Models.TaintKeyRequest): Promise<void>
+
+  UntaintKey(request: Models.UntaintKeyRequest): Promise<void>
+
+  IsolateKey(
+    request: Models.IsolateKeyRequest
+  ): Promise<Models.IsolateKeyResponse>
+
+  ListKeys(request: Models.ListKeysRequest): Promise<Models.ListKeysResponse>
+
+  CreateWallet(
+    request: Models.CreateWalletRequest
+  ): Promise<Models.CreateWalletResponse>
+
+  ImportWallet(
+    request: Models.ImportWalletRequest
+  ): Promise<Models.ImportWalletResponse>
+
+  IsAppInitialised(): Promise<boolean>
+
+  InitialiseApp(request: Models.AppConfig): Promise<void>
+
+  ListWallets(): Promise<Models.ListWalletsResponse>
+
+  ImportNetwork(
+    request: Models.ImportNetworkRequest
+  ): Promise<Models.ImportNetworkResponse>
+
+  GetNetworkConfig(name: string): Promise<Models.Network>
+
+  ListNetworks(): Promise<Models.ListNetworksResponse>
+
+  SaveNetworkConfig(request: Models.SaveNetworkConfigRequest): Promise<boolean>
+
+  StartService(request: Models.StartServiceRequest): Promise<boolean>
+
+  GetServiceState(): Promise<Models.GetServiceStateResponse>
+
+  StopService(): Promise<boolean>
+}
+
+interface AppLoaderProps {
+  children: React.ReactElement
+}
+
+function AppLoader({ children }: AppLoaderProps) {
+  const service = useBackend()
   const { state, dispatch } = useGlobal()
 
   React.useEffect(() => {
-    dispatch(initAppAction())
-  }, [dispatch])
+    dispatch(initAppAction(service))
+  }, [dispatch, service])
 
   if (state.status === AppStatus.Pending) {
     return (
@@ -39,21 +101,27 @@ function AppLoader({ children }: { children: React.ReactElement }) {
   return children
 }
 
-function App() {
+interface AppProps {
+  service: Service
+}
+
+function App({ service }: AppProps) {
   return (
     <Router>
-      <GlobalProvider>
-        <AppLoader>
-          <NetworkProvider>
-            <ServiceProvider>
-              <Chrome>
-                <AppRouter />
-              </Chrome>
-              <PassphraseModal />
-            </ServiceProvider>
-          </NetworkProvider>
-        </AppLoader>
-      </GlobalProvider>
+      <BackendProvider service={service}>
+        <GlobalProvider>
+          <AppLoader>
+            <NetworkProvider>
+              <ServiceProvider>
+                <Chrome>
+                  <AppRouter />
+                </Chrome>
+                <PassphraseModal />
+              </ServiceProvider>
+            </NetworkProvider>
+          </AppLoader>
+        </GlobalProvider>
+      </BackendProvider>
     </Router>
   )
 }

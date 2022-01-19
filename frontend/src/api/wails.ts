@@ -12,7 +12,7 @@ import type { CreateWalletResponse } from '../models/create-wallet'
 import { ImportWalletResponse } from '../models/import-wallet'
 import { GetVersionResponse } from '../models/version'
 
-interface Handler {
+export interface Handler {
   GetVersion(): Promise<GetVersionResponse>
 
   GenerateKey(request: string): Promise<GenerateKeyResponse>

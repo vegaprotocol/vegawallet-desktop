@@ -5,6 +5,7 @@ import './index.css'
 import App from './app'
 import reportWebVitals from './report-web-vitals'
 import * as Wails from '@wailsapp/runtime'
+import { service } from './api/service'
 
 /**
 TODO:
@@ -18,7 +19,7 @@ TODO:
 Wails.Init(() => {
   ReactDOM.render(
     <React.StrictMode>
-      <App />
+      <App service={service} />
     </React.StrictMode>,
     document.getElementById('app')
   )
