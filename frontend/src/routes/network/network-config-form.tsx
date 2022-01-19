@@ -131,7 +131,7 @@ export const NetworkConfigForm = ({
         </select>
       </FormGroup>
       <FormGroup
-        label='*gRPC Node retries'
+        label='* gRPC Node retries'
         labelFor='grpcNodeRetries'
         intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.grpcNodeRetries?.message}>
