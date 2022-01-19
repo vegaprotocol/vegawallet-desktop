@@ -10,7 +10,9 @@ interface DropdownMenuProps {
 export function DropdownMenu({ trigger, content }: DropdownMenuProps) {
   return (
     <DropdownPrimitive.Root>
-      <DropdownPrimitive.Trigger>{trigger}</DropdownPrimitive.Trigger>
+      <DropdownPrimitive.Trigger asChild={true}>
+        {trigger}
+      </DropdownPrimitive.Trigger>
       <DropdownPrimitive.Content align='end'>
         {content}
       </DropdownPrimitive.Content>
