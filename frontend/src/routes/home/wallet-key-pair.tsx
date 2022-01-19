@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { WalletPaths } from '.'
 import { BreakText } from '../../components/break-text'
 import { BulletHeader } from '../../components/bullet-header'
+import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
 
@@ -23,7 +24,12 @@ export function WalletKeyPair() {
       <div>
         <Link to={WalletPaths.Home}>Back</Link>
       </div>
-      <BulletHeader tag='h1'>Keypair name: {keypair.name}</BulletHeader>
+      <BulletHeader tag='h1'>
+        Keypair name:{' '}
+        <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+          {keypair.name}
+        </span>
+      </BulletHeader>
       <table>
         <tbody>
           <tr>
