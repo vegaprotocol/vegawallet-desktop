@@ -29,7 +29,7 @@ export function NetworkSwitcher() {
       content={
         <div
           style={{
-            minWidth: 130,
+            minWidth: 160,
             background: `url(${process.env.PUBLIC_URL}/vega-bg.png)`,
             backgroundSize: 'cover'
           }}>
