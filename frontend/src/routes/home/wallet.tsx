@@ -66,7 +66,14 @@ export function Wallet() {
                           fontFamily: Fonts.MONO
                         }}>
                         {kp.publicKeyShort}{' '}
-                        <Copy style={{ width: 12, height: 12 }} />
+                        <Copy
+                          style={{
+                            position: 'relative',
+                            top: -2,
+                            width: 12,
+                            height: 12
+                          }}
+                        />
                       </ButtonUnstyled>
                     </CopyWithTooltip>
                   </td>
