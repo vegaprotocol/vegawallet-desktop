@@ -15,6 +15,8 @@ import { WalletPaths } from '../home'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
+import { Callout } from '../../components/callout'
+import { Warning } from '../../components/icons/warning'
 
 interface FormFields {
   name: string
@@ -37,10 +39,21 @@ export const WalletCreator = () => {
     return (
       <>
         <BulletHeader tag='h1'>Wallet created</BulletHeader>
+        <Callout
+          title='Warning'
+          intent={Intent.DANGER}
+          icon={<Warning style={{ width: 15, height: 15 }} />}>
+          <p>
+            Save your recovery phrase now, you will need it to recover your
+            wallet. Keep it secure and secret. Your recovery phrase is only
+            shown once and cannot be recovered.
+          </p>
+        </Callout>
+        <p>Wallet version</p>
         <p>
-          Here is your recovery phrase. Please take note of the words below as
-          you will need these to restore your wallet!
+          <CodeBlock>{2}</CodeBlock>
         </p>
+        <p>Recovery phrase</p>
         <p style={{ position: 'relative' }}>
           <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
           <span style={{ position: 'absolute', top: 7, right: 10 }}>

@@ -1,11 +1,11 @@
 import { Intent } from './intent'
 
 export const Colors = {
-  VEGA_RED3: 'var(--vega-red3)',
-  VEGA_GREEN3: 'var(--vega-green3)',
-  VEGA_YELLOW3: 'var(--vega-yellow3)',
-  VEGA_ORANGE3: 'var(--vega-orange3)',
-  VEGA_BLUE3: 'var(--vega-blue3)',
+  VEGA_RED: 'var(--vega-red)',
+  VEGA_GREEN: 'var(--vega-green)',
+  VEGA_YELLOW: 'var(--vega-yellow)',
+  VEGA_ORANGE: 'var(--vega-orange)',
+  VEGA_BLUE: 'var(--vega-blue)',
   INTENT_SUCCESS: 'var(--intent-success)',
   INTENT_WARNING: 'var(--intent-warning)',
   INTENT_DANGER: 'var(--intent-danger)',
@@ -37,4 +37,12 @@ export const IntentColors: { [i in Intent]: string } = {
   success: Colors.INTENT_SUCCESS,
   warning: Colors.INTENT_WARNING,
   danger: Colors.INTENT_DANGER
+}
+
+export const IntentBackgrounds: { [i in Intent]: string } = {
+  none: 'var(--intent-none-bg)',
+  primary: 'var(--intent-primary-bg)',
+  success: 'var(--intent-success-bg)',
+  warning: 'var(--intent-warning-bg)',
+  danger: 'var(--intent-danger-bg)'
 }
