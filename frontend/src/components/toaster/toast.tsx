@@ -52,12 +52,12 @@ export function Toast({
     <div
       style={{
         display: 'flex',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         gap: 10,
         borderRadius: 2,
         maxWidth: '90vw',
         margin: '15px 0 0 0',
-        padding: '10px 15px',
+        padding: '5px 15px',
         background: IntentColors[intent],
         animation: 'drop .3s ease',
         animationFillMode: 'forwards'

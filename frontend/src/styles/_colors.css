@@ -9,14 +9,36 @@ $color4
 $color5 = Lightest
 */
 :root {
-  --vega-red3: #ff261a;
-  --vega-green3: #26ff8a;
-  --vega-yellow3: #daff0d;
-  --vega-orange3: #d9822b;
-  --vega-blue3: #48aff0;
-  --intent-success: #18b567;
-  --intent-warning: --vega-orange3;
-  --intent-danger: #ed1515;
+  /* Brand colors */
+  --vega-red-rgb: 255, 38, 26;
+  --vega-red: rgb(var(--vega-red-rgb));
+  --vega-green-rgb: 38, 255, 138;
+  --vega-green: rgb(var(--vega-green-rgb));
+  --vega-yellow-rgb: 218, 255, 13;
+  --vega-yellow: rgb(var(--vega-yellow-rgb));
+  --vega-orange-rgb: 217, 130, 43;
+  --vega-orange: rgb(var(--vega-orange-rgb));
+  --vega-blue-rgb: 72, 175, 240;
+  --vega-blue: rgb(var(--vega-blue-rgb));
+
+  /* Contextual colors */
+  --intent-none-rgb: 110, 110, 110;
+  --intent-none: var(--intent-none-rgb);
+  --intent-none-bg: rgba(var(--intent-none-rgb), 0.2);
+  --intent-primary-rgb: var(--vega-blue-rgb);
+  --intent-primary: rgb(var(--intent-primary-rgb));
+  --intent-primary-bg: rgba(var(--intent-primary-rgb), 0.2);
+  --intent-success-rgb: 24, 181, 103;
+  --intent-success: rgb(var(--intent-success-rgb));
+  --intent-success-bg: rgba(var(--intent-success-rgb), 0.2);
+  --intent-warning-rgb: var(--vega-orange-rgb);
+  --intent-warning: var(--vega-orange);
+  --intent-warning-bg: rgba(var(--intent-warning-rgb), 0.2);
+  --intent-danger-rgb: 237, 21, 21;
+  --intent-danger: rgb(var(--intent-danger-rgb));
+  --intent-danger-bg: rgba(var(--intent-danger-rgb), 0.2);
+
+  /* Grayscale */
   --black: #000;
   --white: #fff;
   --dark-gray1: #1f1f1f;
