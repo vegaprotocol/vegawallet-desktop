@@ -24,7 +24,7 @@ export const ImportRecoveryPhrase = () => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormFields>()
+  } = useForm<FormFields>({ defaultValues: { version: 2 } })
   const passphrase = useWatch({ control, name: 'passphrase' })
 
   if (response) {
@@ -58,7 +58,6 @@ export const ImportRecoveryPhrase = () => {
           helperText={errors.version?.message}>
           <input
             type='number'
-            value={2}
             {...register('version', { required: 'Required' })}
           />
         </FormGroup>
