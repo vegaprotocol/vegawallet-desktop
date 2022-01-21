@@ -1,5 +1,4 @@
 import React from 'react'
-import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
@@ -8,9 +7,6 @@ export function ChromeFooter() {
   const {
     state: { network }
   } = useNetwork()
-  const {
-    state: { version }
-  } = useGlobal()
   const {
     state: { serviceRunning, serviceUrl, proxy, proxyUrl }
   } = useService()
@@ -54,7 +50,6 @@ export function ChromeFooter() {
       </FooterCol>
       <FooterCol>
         <div>Network: {network}</div>
-        <div>Version: {version}</div>
       </FooterCol>
     </footer>
   )
