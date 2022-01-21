@@ -22,7 +22,7 @@ export function Callout({
     display: 'flex',
     gap: 15,
     background: IntentBackgrounds[intent],
-    padding: 20,
+    padding: '15px 20px',
     marginBottom: 15
   }
   return (

@@ -77,7 +77,7 @@ function Menu() {
           borderBottom: `3px solid`,
           borderImage: `url(${process.env.PUBLIC_URL}/vega-bg.png) 15%`
         }}>
-        <AppLink to={Paths.Home}>Wallets</AppLink>
+        <AppLink to={Paths.Wallet}>Wallets</AppLink>
         <AppLink to={Paths.Import}>Add / Recover Wallet</AppLink>
         <AppLink to={Paths.Service}>Wallet Service</AppLink>
         <AppLink to={Paths.Network}>Network Configuration</AppLink>

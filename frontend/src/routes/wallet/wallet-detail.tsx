@@ -14,7 +14,7 @@ import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
 
-export function Wallet() {
+export function WalletDetail() {
   const { state, dispatch } = useGlobal()
 
   async function generateKeypair() {
@@ -27,13 +27,13 @@ export function Wallet() {
   }
 
   if (!state.wallets.length || !state.wallet) {
-    return <Redirect to={Paths.Home} />
+    return <Redirect to={Paths.Wallet} />
   }
 
   return (
     <>
       <div>
-        <Link to={Paths.Home}>Back</Link>
+        <Link to={Paths.Wallet}>Back</Link>
       </div>
       <BulletHeader tag='h1'>
         Wallet name:{' '}
@@ -54,7 +54,7 @@ export function Wallet() {
               return (
                 <tr key={kp.publicKey}>
                   <td style={{ textAlign: 'left', padding: 0 }}>
-                    <Link to={`${WalletPaths.Home}/${kp.publicKey}`}>
+                    <Link to={`${WalletPaths.Detail}/${kp.publicKey}`}>
                       {kp.name}
                     </Link>
                   </td>

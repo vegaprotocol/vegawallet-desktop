@@ -16,13 +16,13 @@ export function WalletKeyPair() {
   const keypair = wallet?.keypairs?.find(kp => kp.publicKey === pubkey)
 
   if (!keypair) {
-    return <Redirect to={Paths.Home} />
+    return <Redirect to={Paths.Wallet} />
   }
 
   return (
     <>
       <div>
-        <Link to={WalletPaths.Home}>Back</Link>
+        <Link to={WalletPaths.Detail}>Back</Link>
       </div>
       <BulletHeader tag='h1'>
         Keypair name:{' '}
