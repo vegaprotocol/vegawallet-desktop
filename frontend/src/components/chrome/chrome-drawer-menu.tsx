@@ -42,94 +42,9 @@ export function ChromeDrawerMenu() {
             top: 0,
             left: 0
           }}>
-          <Menu />
+          {/* <Menu /> */}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
-  )
-}
-
-function Menu() {
-  return (
-    <div>
-      <header
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '0 0 0 15px',
-          minHeight: 45
-        }}>
-        <h1
-          style={{
-            fontSize: 18,
-            letterSpacing: '0.3em',
-            textTransform: 'uppercase',
-            margin: 0
-          }}>
-          Vega
-        </h1>
-        <DrawerCloseButton />
-      </header>
-      <nav
-        style={{
-          padding: 15,
-          borderBottom: `3px solid`,
-          borderImage: `url(${process.env.PUBLIC_URL}/vega-bg.png) 15%`
-        }}>
-        <AppLink to={Paths.Wallet}>Wallets</AppLink>
-        <AppLink to={Paths.Import}>Add / Recover Wallet</AppLink>
-        <AppLink to={Paths.Service}>Wallet Service</AppLink>
-        <AppLink to={Paths.Network}>Network Configuration</AppLink>
-        <AppLink to={NetworkPaths.Import}>Add Network</AppLink>
-      </nav>
-      <nav style={{ padding: 15 }}>
-        <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>
-        <NavExternalLink href={Links.GITHUB}>Github</NavExternalLink>
-      </nav>
-    </div>
-  )
-}
-
-interface NavLinkProps {
-  children: React.ReactNode
-  to: string
-}
-
-function AppLink({ children, to }: NavLinkProps) {
-  const { dispatch } = useGlobal()
-  return (
-    <div>
-      <Link
-        to={to}
-        style={{ display: 'block', padding: '10px 0', textDecoration: 'none' }}
-        onClick={() => dispatch(setDrawerAction(false))}>
-        {children}
-      </Link>
-    </div>
-  )
-}
-
-interface ExternalLinkProps {
-  children: React.ReactNode
-  href: string
-}
-
-function NavExternalLink({ children, href }: ExternalLinkProps) {
-  return (
-    <div>
-      <ExternalLink
-        href={href}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 0',
-          textDecoration: 'none'
-        }}>
-        {children}
-        <ArrowTopRight style={{ width: 13, height: 13 }} />
-      </ExternalLink>
-    </div>
   )
 }

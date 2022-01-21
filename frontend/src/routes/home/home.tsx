@@ -15,5 +15,5 @@ export const Home = () => {
     return <Redirect to={Paths.Wallet} />
   }
 
-  return <Redirect to={Paths.Import} />
+  return <Redirect to={Paths.WalletImport} />
 }

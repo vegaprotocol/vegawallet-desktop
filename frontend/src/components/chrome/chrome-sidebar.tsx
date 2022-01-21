@@ -4,7 +4,6 @@ import { Colors } from '../../config/colors'
 import { Links } from '../../config/links'
 import { setDrawerAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
-import { NetworkPaths } from '../../routes/network'
 import { Paths } from '../../routes/router-config'
 import { ExternalLink } from '../external-link'
 import { Vega } from '../icons'
@@ -38,10 +37,10 @@ function Menu() {
           borderImage: `url(${process.env.PUBLIC_URL}/vega-bg.png) 15%`
         }}>
         <AppLink to={Paths.Wallet}>Wallets</AppLink>
-        <AppLink to={Paths.Import}>Add / Recover Wallet</AppLink>
+        <AppLink to={Paths.WalletImport}>Add / Recover Wallet</AppLink>
         <AppLink to={Paths.Service}>Wallet Service</AppLink>
         <AppLink to={Paths.Network}>Network Configuration</AppLink>
-        <AppLink to={NetworkPaths.Import}>Add Network</AppLink>
+        <AppLink to={Paths.NetworkImport}>Add Network</AppLink>
       </nav>
       <nav style={{ padding: 20 }}>
         <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>

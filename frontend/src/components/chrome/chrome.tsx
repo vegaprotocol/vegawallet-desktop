@@ -18,7 +18,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         background: Colors.BLACK,
         overflowY: 'auto'
       }}>
-      <main style={{ gridColumn: '2 / 3', padding: 15, overflowY: 'auto' }}>
+      <main style={{ gridColumn: '2 / 3', padding: 20, overflowY: 'auto' }}>
         {children}
       </main>
       <div

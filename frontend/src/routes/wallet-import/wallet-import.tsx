@@ -9,7 +9,7 @@ export enum ImportPaths {
   RecoveryPhrase = '/import/recovery-phrase'
 }
 
-export function Import() {
+export function WalletImport() {
   const match = useRouteMatch()
 
   return (

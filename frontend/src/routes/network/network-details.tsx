@@ -6,6 +6,7 @@ import { BulletHeader } from '../../components/bullet-header'
 import { Button } from '../../components/button'
 import { ExternalLink } from '../../components/external-link'
 import { useNetwork } from '../../contexts/network/network-context'
+import { Paths } from '../router-config'
 
 export const NetworkDetails = () => {
   const {
@@ -17,7 +18,7 @@ export const NetworkDetails = () => {
       <>
         <p>No network configuration found. </p>
         <p>
-          <Link to={NetworkPaths.Import}>
+          <Link to={Paths.NetworkImport}>
             <Button>Import network</Button>
           </Link>
         </p>
