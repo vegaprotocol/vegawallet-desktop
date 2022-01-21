@@ -2,8 +2,6 @@ import React from 'react'
 import { ChromeFooter } from './chrome-footer'
 import { Colors } from '../../config/colors'
 import { ChromeSidebar } from './chrome-sidebar'
-import { useHistory } from 'react-router-dom'
-import { ButtonUnstyled } from '../button-unstyled'
 
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
@@ -15,7 +13,6 @@ const layoutStyles: React.CSSProperties = {
  * Handles app layout for main content, sidebar and footer
  */
 export function Chrome({ children }: { children: React.ReactNode }) {
-  const history = useHistory()
   return (
     <div
       style={{
@@ -25,13 +22,13 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         overflowY: 'auto'
       }}>
       <main style={{ gridColumn: '2 / 3', padding: 20, overflowY: 'auto' }}>
-        <div>
-          <ButtonUnstyled onClick={() => history.goBack()}>Back</ButtonUnstyled>
-        </div>
         {children}
       </main>
       <div
         style={{
+          // background: `url(${process.env.PUBLIC_URL}/vega-bg.png)`,
+          // backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
           gridColumn: '1 / 2',
           gridRow: '1 / 3',
           minWidth: 270,

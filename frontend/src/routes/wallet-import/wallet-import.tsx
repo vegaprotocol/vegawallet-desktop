@@ -5,8 +5,8 @@ import { ImportSelect } from './import-select'
 import { WalletCreator } from './wallet-creator'
 
 export enum ImportPaths {
-  Create = '/import/create',
-  RecoveryPhrase = '/import/recovery-phrase'
+  Create = '/wallet-import/create',
+  RecoveryPhrase = '/wallet-import/recovery-phrase'
 }
 
 export function WalletImport() {

@@ -15,7 +15,7 @@ export const Colors = {
   DARK_GRAY_2: 'var(--dark-gray2)',
   DARK_GRAY_3: 'var(--dark-gray3)',
   DARK_GRAY_4: 'var(--dark-gray4)',
-  DARK_GRAY_5: 'var(--drak-gray5)',
+  DARK_GRAY_5: 'var(--dark-gray5)',
   GRAY_1: 'var(--gray1)',
   GRAY_2: 'var(--gray2)',
   GRAY_3: 'var(--gray3)',
