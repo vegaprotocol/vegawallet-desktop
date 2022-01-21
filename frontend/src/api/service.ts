@@ -102,8 +102,7 @@ export function CreateWallet(
 export function ImportWallet(
   request: ImportWalletRequest
 ): Promise<ImportWalletResponse> {
-  // @ts-ignore
-  return window.backend.Handler.ImportWallet(request)
+  return window.backend.Handler.ImportWallet(JSON.stringify(request))
 }
 
 /**
