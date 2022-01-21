@@ -1,7 +1,5 @@
 import React from 'react'
 import { Redirect, useParams } from 'react-router'
-import { Link } from 'react-router-dom'
-import { WalletPaths } from '.'
 import { BreakText } from '../../components/break-text'
 import { BulletHeader } from '../../components/bullet-header'
 import { Colors } from '../../config/colors'
@@ -21,9 +19,6 @@ export function WalletKeyPair() {
 
   return (
     <>
-      <div>
-        <Link to={WalletPaths.Detail}>Back</Link>
-      </div>
       <BulletHeader tag='h1'>
         Keypair name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>

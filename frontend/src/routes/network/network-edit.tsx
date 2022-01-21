@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { NetworkPaths } from '.'
 
 import { BulletHeader } from '../../components/bullet-header'
 import { updateNetworkConfigAction } from '../../contexts/network/network-actions'
@@ -22,9 +20,6 @@ export const NetworkEdit = () => {
 
   return (
     <>
-      <div>
-        <Link to={NetworkPaths.Config}>Back</Link>
-      </div>
       <BulletHeader tag='h1'>Edit configuration</BulletHeader>
       <NetworkConfigForm
         config={config}
