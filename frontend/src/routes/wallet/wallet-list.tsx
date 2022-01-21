@@ -14,7 +14,7 @@ export const WalletList = () => {
   } = useGlobal()
 
   function getKeys(wallet: string) {
-    dispatch(getKeysAction(wallet, () => history.push(WalletPaths.Home)))
+    dispatch(getKeysAction(wallet, () => history.push(WalletPaths.Detail)))
   }
 
   return (

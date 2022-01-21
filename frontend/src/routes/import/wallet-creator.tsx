@@ -11,7 +11,7 @@ import { addWalletAction } from '../../contexts/global/global-actions'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
-import { WalletPaths } from '../home'
+import { WalletPaths } from '../wallet'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
@@ -64,7 +64,7 @@ export const WalletCreator = () => {
             </CopyWithTooltip>
           </span>
         </p>
-        <Link to={WalletPaths.Home}>
+        <Link to={WalletPaths.Detail}>
           <Button>View wallet</Button>
         </Link>
       </>

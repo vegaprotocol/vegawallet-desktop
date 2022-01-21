@@ -17,7 +17,7 @@ export function ImportSuccess({ walletPath }: ImportSuccessProps) {
       <p>
         <CodeBlock>{walletPath}</CodeBlock>
       </p>
-      <Link to={Paths.Home}>
+      <Link to={Paths.Wallet}>
         <Button>Go to wallets</Button>
       </Link>
     </>
