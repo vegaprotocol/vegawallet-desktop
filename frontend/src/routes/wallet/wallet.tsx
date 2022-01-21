@@ -6,14 +6,14 @@ import { WalletKeyPair } from './wallet-key-pair'
 import { Paths } from '../router-config'
 
 export enum WalletPaths {
-  Keypair = '/wallet/keypair/:pubkey',
+  Keypair = '/wallet/keypair',
   Detail = '/wallet/detail'
 }
 
 export const Wallet = () => {
   return (
     <Switch>
-      <Route path={WalletPaths.Keypair}>
+      <Route path={`${WalletPaths.Keypair}/:pubkey`}>
         <WalletKeyPair />
       </Route>
       <Route path={WalletPaths.Detail}>

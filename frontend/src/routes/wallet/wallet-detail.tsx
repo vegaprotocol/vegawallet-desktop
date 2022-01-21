@@ -54,7 +54,7 @@ export function WalletDetail() {
               return (
                 <tr key={kp.publicKey}>
                   <td style={{ textAlign: 'left', padding: 0 }}>
-                    <Link to={`${WalletPaths.Detail}/${kp.publicKey}`}>
+                    <Link to={`${WalletPaths.Keypair}/${kp.publicKey}`}>
                       {kp.name}
                     </Link>
                   </td>
