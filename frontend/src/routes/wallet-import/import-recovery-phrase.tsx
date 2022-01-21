@@ -8,6 +8,8 @@ import { BulletHeader } from '../../components/bullet-header'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
+import { useGlobal } from '../../contexts/global/global-context'
+import { addWalletAction } from '../../contexts/global/global-actions'
 
 interface FormFields {
   name: string
@@ -98,31 +100,36 @@ export const ImportRecoveryPhrase = () => {
 }
 
 function useWalletImport() {
+  const { dispatch } = useGlobal()
   const [response, setResponse] = React.useState<ImportWalletResponse | null>(
     null
   )
 
-  const submit = React.useCallback(async (values: FormFields) => {
-    try {
-      const resp = await ImportWallet({
-        Name: values.name,
-        Passphrase: values.passphrase,
-        RecoveryPhrase: values.recoveryPhrase,
-        Version: values.version
-      })
-      if (resp) {
-        setResponse(resp)
-        AppToaster.show({
-          message: 'Wallet imported!',
-          intent: Intent.SUCCESS
+  const submit = React.useCallback(
+    async (values: FormFields) => {
+      try {
+        const resp = await ImportWallet({
+          Name: values.name,
+          Passphrase: values.passphrase,
+          RecoveryPhrase: values.recoveryPhrase,
+          Version: values.version
         })
-      } else {
-        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
+        if (resp) {
+          setResponse(resp)
+          dispatch(addWalletAction(values.name))
+          AppToaster.show({
+            message: 'Wallet imported!',
+            intent: Intent.SUCCESS
+          })
+        } else {
+          AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
+        }
+      } catch (err) {
+        AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       }
-    } catch (err) {
-      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
-    }
-  }, [])
+    },
+    [dispatch]
+  )
 
   return {
     response,
