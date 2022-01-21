@@ -32,9 +32,6 @@ export function WalletDetail() {
 
   return (
     <>
-      <div>
-        <Link to={Paths.Wallet}>Back</Link>
-      </div>
       <BulletHeader tag='h1'>
         Wallet name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
