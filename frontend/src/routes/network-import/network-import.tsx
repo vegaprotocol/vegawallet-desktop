@@ -1,7 +1,6 @@
 import React from 'react'
 import { FieldError, useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { NetworkPaths } from '../network'
 import { GetNetworkConfig, ImportNetwork } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
@@ -36,7 +35,7 @@ export function NetworkImport() {
   } = useForm<FormFields>({
     defaultValues: {
       name: '',
-      type: 'file',
+      type: 'url',
       input: '',
       force: false
     }
@@ -65,10 +64,10 @@ export function NetworkImport() {
           <CodeBlock>{response.filePath}</CodeBlock>
         </p>
         <div style={{ display: 'flex', gap: 10 }}>
-          <Link to={NetworkPaths.Config}>
+          <Link to={`/network/${response.name}`}>
             <Button>View {response.name} configuration</Button>
           </Link>
-          <Link to={NetworkPaths.Edit}>
+          <Link to={`/network/${response.name}/edit`}>
             <Button>Edit {response.name} configuration</Button>
           </Link>
         </div>
@@ -97,8 +96,8 @@ export function NetworkImport() {
             name='type'
             control={control}
             options={[
-              { value: 'file', label: 'File path' },
-              { value: 'url', label: 'URL' }
+              { value: 'url', label: 'URL' },
+              { value: 'file', label: 'File path' }
             ]}
           />
         </FormGroup>

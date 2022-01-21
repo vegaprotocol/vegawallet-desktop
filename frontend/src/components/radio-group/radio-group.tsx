@@ -1,6 +1,7 @@
 import React from 'react'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import { Controller } from 'react-hook-form'
+import { Colors } from '../../config/colors'
 
 interface RadioGroupProps {
   name: string
@@ -51,12 +52,12 @@ const circle = {
   width: 16,
   height: 16,
   borderRadius: '100%',
-  background: 'var(--dark-gray2)'
+  background: Colors.DARK_GRAY_5
 }
 
 const circleInner = {
-  width: 10,
-  height: 10,
-  background: 'var(--white)',
+  width: 8,
+  height: 8,
+  background: Colors.WHITE,
   borderRadius: '100%'
 }

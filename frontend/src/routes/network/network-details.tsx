@@ -1,17 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { NetworkPaths } from '.'
-
+import { Link, useParams } from 'react-router-dom'
 import { BulletHeader } from '../../components/bullet-header'
 import { Button } from '../../components/button'
 import { ExternalLink } from '../../components/external-link'
-import { useNetwork } from '../../contexts/network/network-context'
 import { Paths } from '../router-config'
+import { useNetworkConfig } from './use-network-config'
 
 export const NetworkDetails = () => {
-  const {
-    state: { config }
-  } = useNetwork()
+  const { name } = useParams<{ name: string }>()
+  const config = useNetworkConfig(name)
 
   if (!config) {
     return (
@@ -28,9 +25,6 @@ export const NetworkDetails = () => {
 
   return (
     <>
-      <div>
-        <Link to={NetworkPaths.Edit}>Edit</Link>
-      </div>
       <BulletHeader tag='h1'>Network: {config.Name}</BulletHeader>
       <table>
         <tbody>

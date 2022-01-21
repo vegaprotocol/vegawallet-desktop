@@ -1,9 +1,13 @@
 import React from 'react'
 import { useGlobal } from '../../contexts/global/global-context'
+import { useNetwork } from '../../contexts/network/network-context'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
 
 export function ChromeFooter() {
+  const {
+    state: { network }
+  } = useNetwork()
   const {
     state: { version }
   } = useGlobal()
@@ -21,7 +25,7 @@ export function ChromeFooter() {
         backgroundSize: 'cover',
         fontSize: 14
       }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <FooterCol>
         <div>
           <StatusCircle running={serviceRunning} />
           {serviceRunning ? (
@@ -47,8 +51,11 @@ export function ChromeFooter() {
             )}
           </>
         </div>
-      </div>
-      <div>Version {version}</div>
+      </FooterCol>
+      <FooterCol>
+        <div>Network: {network}</div>
+        <div>Version: {version}</div>
+      </FooterCol>
     </footer>
   )
 }
@@ -66,4 +73,12 @@ export function StatusCircle({ running }: any) {
     background: running ? 'white' : 'transparent'
   }
   return <span style={{ ...baseStyles, ...contextualStyles }} />
+}
+
+function FooterCol({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+      {children}
+    </div>
+  )
 }

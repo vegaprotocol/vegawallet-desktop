@@ -1,5 +1,6 @@
 import React from 'react'
 import * as DropdownPrimitive from '@radix-ui/react-dropdown-menu'
+import { Colors } from '../../config/colors'
 
 interface DropdownMenuProps {
   trigger: React.ReactNode
@@ -13,8 +14,11 @@ export function DropdownMenu({ trigger, content }: DropdownMenuProps) {
       <DropdownPrimitive.Trigger asChild={true}>
         {trigger}
       </DropdownPrimitive.Trigger>
-      <DropdownPrimitive.Content align='end'>
+      <DropdownPrimitive.Content
+        align='center'
+        style={{ background: Colors.DARK_GRAY_3, padding: 10 }}>
         {content}
+        <DropdownPrimitive.Arrow fill={Colors.DARK_GRAY_3} />
       </DropdownPrimitive.Content>
     </DropdownPrimitive.Root>
   )
