@@ -106,7 +106,7 @@ export function NetworkOverview() {
         </>
       ) : (
         <>
-          <p>Now networks imported</p>
+          <p>No networks imported</p>
           <p>
             <Link to={Paths.NetworkImport}>
               <Button>Import network</Button>
