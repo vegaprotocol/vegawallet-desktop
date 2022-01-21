@@ -39,7 +39,7 @@ $color5 = Lightest
   --intent-danger-bg: rgba(var(--intent-danger-rgb), 0.2);
 
   /* Grayscale */
-  --black: #000;
+  --black: #101010;
   --white: #fff;
   --dark-gray1: #1f1f1f;
   --dark-gray2: #2a2a2a;
