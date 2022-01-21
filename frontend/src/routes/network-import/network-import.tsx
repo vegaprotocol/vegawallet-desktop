@@ -1,7 +1,7 @@
 import React from 'react'
 import { FieldError, useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { NetworkPaths } from '.'
+import { NetworkPaths } from '../network'
 import { GetNetworkConfig, ImportNetwork } from '../../api/service'
 import { BulletHeader } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'

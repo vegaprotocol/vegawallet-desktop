@@ -1,15 +1,17 @@
 import { Network } from './network'
 import { Wallet } from './wallet'
-import { Import } from './import'
+import { WalletImport } from './wallet-import'
 import { Service } from './service'
 import { Home } from './home'
+import { NetworkImport } from './network-import'
 
 export enum Paths {
   Home = '/',
   Service = '/service',
   Network = '/network',
-  Import = '/import',
-  Wallet = '/wallet'
+  NetworkImport = '/network-import',
+  Wallet = '/wallet',
+  WalletImport = '/wallet-import'
 }
 
 const routerConfig = [
@@ -20,15 +22,21 @@ const routerConfig = [
     exact: false
   },
   {
+    path: Paths.NetworkImport,
+    name: 'NetworkImport',
+    component: NetworkImport,
+    exact: false
+  },
+  {
     path: Paths.Network,
     name: 'Network',
     component: Network,
     exact: false
   },
   {
-    path: Paths.Import,
-    name: 'Import',
-    component: Import,
+    path: Paths.WalletImport,
+    name: 'WalletImport',
+    component: WalletImport,
     exact: false
   },
   {
