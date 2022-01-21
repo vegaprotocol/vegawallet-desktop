@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import 'core-js/stable'
+import './polyfills'
 import './index.css'
 import App from './app'
 import reportWebVitals from './report-web-vitals'
