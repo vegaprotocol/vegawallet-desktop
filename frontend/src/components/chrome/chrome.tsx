@@ -1,11 +1,12 @@
 import React from 'react'
 import { ChromeFooter } from './chrome-footer'
-import { ChromeHeader } from './chrome-header'
-import { ChromeDrawerMenu } from './chrome-drawer-menu'
+import { Colors } from '../../config/colors'
+import { ChromeSidebar } from './chrome-sidebar'
 
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
-  gridTemplateRows: 'min-content 1fr min-content'
+  gridTemplateColumns: 'min-content 1fr',
+  gridTemplateRows: '1fr min-content'
 }
 
 export function Chrome({ children }: { children: React.ReactNode }) {
@@ -14,13 +15,24 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       style={{
         ...layoutStyles,
         height: '100%',
-        background: '#101010',
+        background: Colors.BLACK,
         overflowY: 'auto'
       }}>
-      <ChromeHeader />
-      <main style={{ padding: 15, overflowY: 'auto' }}>{children}</main>
-      <ChromeFooter />
-      <ChromeDrawerMenu />
+      <main style={{ gridColumn: '2 / 3', padding: 15, overflowY: 'auto' }}>
+        {children}
+      </main>
+      <div
+        style={{
+          gridColumn: '1 / 2',
+          gridRow: '1 / 3',
+          minWidth: 270,
+          background: Colors.DARK_GRAY_1
+        }}>
+        <ChromeSidebar />
+      </div>
+      <div style={{ gridColumn: '1 / 3', gridRow: '2 / 3' }}>
+        <ChromeFooter />
+      </div>
     </div>
   )
 }
