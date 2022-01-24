@@ -26,12 +26,10 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       </main>
       <div
         style={{
-          // background: `url(${process.env.PUBLIC_URL}/vega-bg.png)`,
-          // backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           gridColumn: '1 / 2',
           gridRow: '1 / 3',
-          minWidth: 270,
+          minWidth: 240,
           background: Colors.DARK_GRAY_1
         }}>
         <ChromeSidebar />

@@ -10,7 +10,7 @@ export function ImportSelect() {
   return (
     <>
       <BulletHeader tag='h1'>Create or import wallet</BulletHeader>
-      <ButtonGroup>
+      <ButtonGroup orientation='vertical'>
         {[
           { path: ImportPaths.Create, text: 'Create new' },
           {

@@ -79,7 +79,9 @@ export function WalletDetail() {
             })}
           </tbody>
         </table>
-      ) : null}
+      ) : (
+        <p>No keypairs</p>
+      )}
       <p>
         <Button onClick={generateKeypair}>Generate Keypair</Button>
       </p>
