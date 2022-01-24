@@ -1,10 +1,12 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { WalletPaths } from '.'
 import { BulletHeader } from '../../components/bullet-header'
+import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { getKeysAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
+import { Paths } from '../router-config'
 
 export const WalletList = () => {
   const history = useHistory()
@@ -37,7 +39,12 @@ export const WalletList = () => {
           ))}
         </ul>
       ) : (
-        <p>No wallets</p>
+        <>
+          <p>No wallets</p>
+          <Link to={Paths.WalletImport}>
+            <Button>Add / Import Wallet</Button>
+          </Link>
+        </>
       )}
     </>
   )
