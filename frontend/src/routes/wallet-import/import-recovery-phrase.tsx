@@ -112,7 +112,7 @@ function useWalletImport() {
           Name: values.name,
           Passphrase: values.passphrase,
           RecoveryPhrase: values.recoveryPhrase,
-          Version: values.version
+          Version: Number(values.version)
         })
         if (resp) {
           setResponse(resp)
