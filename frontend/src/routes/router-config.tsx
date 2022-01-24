@@ -17,7 +17,7 @@ export enum Paths {
 const routerConfig = [
   {
     path: Paths.Service,
-    name: 'Console',
+    name: 'Service',
     component: Service,
     exact: false
   },
