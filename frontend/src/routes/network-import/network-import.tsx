@@ -2,7 +2,7 @@ import React from 'react'
 import { FieldError, useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { GetNetworkConfig, ImportNetwork } from '../../api/service'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
 import { AppToaster } from '../../components/toaster'
 import { addNetworkAction } from '../../contexts/network/network-actions'
@@ -60,7 +60,7 @@ export function NetworkImport() {
   if (response) {
     return (
       <>
-        <BulletHeader tag='h1'>Network imported</BulletHeader>
+        <Header>Network imported</Header>
         <p>Location</p>
         <p style={{ position: 'relative' }}>
           <CodeBlock>{response.filePath}</CodeBlock>
@@ -91,7 +91,7 @@ export function NetworkImport() {
 
   return (
     <>
-      <BulletHeader tag='h1'>Import network</BulletHeader>
+      <Header>Import network</Header>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup label='Import method'>
           <RadioGroup

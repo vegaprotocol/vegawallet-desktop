@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { WalletPaths } from '.'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { getKeysAction } from '../../contexts/global/global-actions'
@@ -21,7 +21,7 @@ export const WalletList = () => {
 
   return (
     <>
-      <BulletHeader tag='h1'>Wallets</BulletHeader>
+      <Header>Wallets</Header>
       {wallets.length ? (
         <ul className='wallet-list'>
           {wallets.map(wallet => (

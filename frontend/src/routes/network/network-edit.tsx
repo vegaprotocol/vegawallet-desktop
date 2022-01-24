@@ -1,5 +1,5 @@
 import React from 'react'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { updateNetworkConfigAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
 import { stopServiceAction } from '../../contexts/service/service-actions'
@@ -15,7 +15,7 @@ export const NetworkEdit = () => {
     <NetworkConfigContainer>
       {config => (
         <>
-          <BulletHeader tag='h1'>Edit Network: {config.Name}</BulletHeader>
+          <Header>Edit Network: {config.Name}</Header>
           <NetworkConfigForm
             config={config}
             onSubmit={updatedConfig => {

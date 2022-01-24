@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { CreateWalletResponse } from '../../models/create-wallet'
 import { Link } from 'react-router-dom'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
 import { useGlobal } from '../../contexts/global/global-context'
 import { addWalletAction } from '../../contexts/global/global-actions'
@@ -43,7 +43,7 @@ export const WalletCreator = () => {
 
   return (
     <>
-      <BulletHeader tag='h1'>Create wallet</BulletHeader>
+      <Header>Create wallet</Header>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
@@ -102,7 +102,7 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
   } = useNetwork()
   return (
     <>
-      <BulletHeader tag='h1'>Wallet created</BulletHeader>
+      <Header>Wallet created</Header>
       <Callout
         title='Warning'
         intent={Intent.DANGER}

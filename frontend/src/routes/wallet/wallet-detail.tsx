@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { WalletPaths } from '.'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
@@ -32,12 +32,12 @@ export function WalletDetail() {
 
   return (
     <>
-      <BulletHeader tag='h1'>
+      <Header>
         Wallet name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
           {state.wallet.name}
         </span>
-      </BulletHeader>
+      </Header>
       {state.wallet.keypairs?.length ? (
         <table style={{ marginBottom: 15 }}>
           <thead>

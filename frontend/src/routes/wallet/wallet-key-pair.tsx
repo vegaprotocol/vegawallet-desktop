@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect, useParams } from 'react-router'
 import { BreakText } from '../../components/break-text'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
@@ -19,12 +19,12 @@ export function WalletKeyPair() {
 
   return (
     <>
-      <BulletHeader tag='h1'>
+      <Header>
         Keypair name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
           {keypair.name}
         </span>
-      </BulletHeader>
+      </Header>
       <table>
         <tbody>
           <tr>
