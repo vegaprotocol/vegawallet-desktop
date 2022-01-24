@@ -1,16 +1,13 @@
 import React from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Colors } from '../../config/colors'
 import { Links } from '../../config/links'
 import { Paths } from '../../routes/router-config'
-import { ButtonUnstyled } from '../button-unstyled'
 import { ExternalLink } from '../external-link'
 import { Vega } from '../icons'
 import { ArrowTopRight } from '../icons/arrow-top-right'
-import { DropdownArrow } from '../icons/dropdown-arrow'
 
 export function ChromeSidebar() {
-  const history = useHistory()
   return (
     <aside>
       <header
@@ -22,17 +19,6 @@ export function ChromeSidebar() {
           minHeight: 45
         }}>
         <Vega />
-        <ButtonUnstyled
-          onClick={() => history.goBack()}
-          style={{ width: 30, height: 30, position: 'relative', right: -8 }}>
-          <DropdownArrow
-            style={{
-              width: 13,
-              height: 13,
-              transform: 'rotate(90deg)'
-            }}
-          />
-        </ButtonUnstyled>
       </header>
       <Menu />
     </aside>
