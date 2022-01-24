@@ -7,7 +7,6 @@ export const initialGlobalState: GlobalState = {
   version: '',
   wallet: null,
   wallets: [],
-  drawerOpen: false,
   passphraseModalOpen: false
 }
 
@@ -37,10 +36,6 @@ export type GlobalAction =
   | {
       type: 'CHANGE_WALLET'
       wallet: string
-    }
-  | {
-      type: 'SET_DRAWER'
-      open: boolean
     }
   | {
       type: 'SET_PASSPHRASE_MODAL'
@@ -129,12 +124,6 @@ export function globalReducer(
       return {
         ...state,
         wallet
-      }
-    }
-    case 'SET_DRAWER': {
-      return {
-        ...state,
-        drawerOpen: action.open
       }
     }
     case 'SET_PASSPHRASE_MODAL': {
