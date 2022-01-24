@@ -19,7 +19,7 @@ import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 interface FormFields {
   name: string
   type: 'file' | 'url'
-  input: string
+  fileOrUrl: string
   force: boolean
 }
 
@@ -36,7 +36,7 @@ export function NetworkImport() {
     defaultValues: {
       name: '',
       type: 'url',
-      input: '',
+      fileOrUrl: '',
       force: false
     }
   })
@@ -44,6 +44,8 @@ export function NetworkImport() {
   const type = useWatch({ name: 'type', control })
   const isURLType = type === 'url'
 
+  // If an error is set and its the 'wallet already exists' error, open the advanced fields section
+  // set the namee
   React.useEffect(() => {
     if (error && /already exists/.test(error)) {
       setAdvancedfields(true)
@@ -75,7 +77,7 @@ export function NetworkImport() {
     )
   }
 
-  const renderInputHelperText = (error: FieldError | undefined) => {
+  const renderFileOrUrlHelperText = (error: FieldError | undefined) => {
     if (error) {
       return error.message
     }
@@ -103,13 +105,13 @@ export function NetworkImport() {
         </FormGroup>
         <FormGroup
           label={isURLType ? '* URL' : '* File path'}
-          labelFor='input'
-          intent={errors.input?.message ? Intent.DANGER : Intent.NONE}
-          helperText={renderInputHelperText(errors.input)}>
+          labelFor='fileOrUrl'
+          intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
+          helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}>
           <input
-            id='input'
+            id='fileOrUrl'
             type='text'
-            {...register('input', {
+            {...register('fileOrUrl', {
               required: 'Required',
               pattern: isURLType
                 ? {
@@ -171,8 +173,8 @@ function useImportNetwork() {
       try {
         const res = await ImportNetwork({
           name: values.name,
-          url: values.type === 'url' ? values.input : '',
-          filePath: values.type === 'file' ? values.input : '',
+          url: values.type === 'url' ? values.fileOrUrl : '',
+          filePath: values.type === 'file' ? values.fileOrUrl : '',
           force: values.force
         })
 
