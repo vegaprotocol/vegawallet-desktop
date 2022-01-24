@@ -68,7 +68,7 @@ export function Toast({
       onMouseLeave={startTimeout}
       tabIndex={0}
       role='alert'>
-      <span>{message}</span>
+      <span style={{ wordBreak: 'break-word' }}>{message}</span>
       <ButtonUnstyled
         onClick={dismiss}
         style={{ position: 'relative', top: -10, right: -15 }}>
