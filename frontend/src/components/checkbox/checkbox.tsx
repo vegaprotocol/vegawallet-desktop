@@ -2,6 +2,7 @@ import React from 'react'
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import { Controller } from 'react-hook-form'
 import { Colors } from '../../config/colors'
+import { Tick } from '../icons/tick'
 
 interface CheckboxProps {
   name: string
@@ -23,7 +24,9 @@ export function Checkbox({ name, control, label }: CheckboxProps) {
               name={name}
               id={name}
               style={box}>
-              <CheckboxPrimitive.Indicator style={boxInner} />
+              <CheckboxPrimitive.Indicator style={boxInner}>
+                <Tick style={{ width: 10, height: 10 }} />
+              </CheckboxPrimitive.Indicator>
             </CheckboxPrimitive.Root>
             <label htmlFor={name}>{label}</label>
           </div>
@@ -49,7 +52,10 @@ const box = {
 }
 
 const boxInner = {
-  width: 8,
-  height: 8,
-  background: Colors.WHITE
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 10,
+  height: 10,
+  color: Colors.WHITE
 }
