@@ -24,7 +24,6 @@ export interface GlobalState {
   version: string
   wallets: Wallet[]
   wallet: Wallet | null
-  drawerOpen: boolean
   passphraseModalOpen: boolean
 }
 
