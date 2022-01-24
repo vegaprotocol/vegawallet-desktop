@@ -49,7 +49,7 @@ export function ChromeFooter() {
         </div>
       </FooterCol>
       <FooterCol>
-        <div>Network: {network}</div>
+        <div>Network: {network ? network : 'None'}</div>
       </FooterCol>
     </footer>
   )

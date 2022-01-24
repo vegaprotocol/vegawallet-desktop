@@ -17,6 +17,8 @@ import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
 import { Callout } from '../../components/callout'
 import { Warning } from '../../components/icons/warning'
+import { Paths } from '../router-config'
+import { useNetwork } from '../../contexts/network/network-context'
 
 interface FormFields {
   name: string
@@ -36,39 +38,7 @@ export const WalletCreator = () => {
   const passphrase = useWatch({ control, name: 'passphrase' })
 
   if (response) {
-    return (
-      <>
-        <BulletHeader tag='h1'>Wallet created</BulletHeader>
-        <Callout
-          title='Warning'
-          intent={Intent.DANGER}
-          icon={<Warning style={{ width: 15, height: 15 }} />}>
-          <p>
-            Save your recovery phrase now, you will need it to recover your
-            wallet. Keep it secure and secret. Your recovery phrase is only
-            shown once and cannot be recovered.
-          </p>
-        </Callout>
-        <p>Wallet version</p>
-        <p>
-          <CodeBlock>{2}</CodeBlock>
-        </p>
-        <p>Recovery phrase</p>
-        <p style={{ position: 'relative' }}>
-          <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
-          <span style={{ position: 'absolute', top: 7, right: 10 }}>
-            <CopyWithTooltip text={response.RecoveryPhrase}>
-              <ButtonUnstyled>
-                <Copy style={{ width: 13, height: 13 }} />
-              </ButtonUnstyled>
-            </CopyWithTooltip>
-          </span>
-        </p>
-        <Link to={WalletPaths.Detail}>
-          <Button>View wallet</Button>
-        </Link>
-      </>
-    )
+    return <WalletCreateSuccess response={response} />
   }
 
   return (
@@ -118,6 +88,60 @@ export const WalletCreator = () => {
           <Button type='submit'>Submit</Button>
         </div>
       </form>
+    </>
+  )
+}
+
+interface WalletCreateSuccessProps {
+  response: CreateWalletResponse
+}
+
+function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
+  const {
+    state: { network }
+  } = useNetwork()
+  return (
+    <>
+      <BulletHeader tag='h1'>Wallet created</BulletHeader>
+      <Callout
+        title='Warning'
+        intent={Intent.DANGER}
+        icon={<Warning style={{ width: 15, height: 15 }} />}>
+        <p>
+          Save your recovery phrase now, you will need it to recover your
+          wallet. Keep it secure and secret. Your recovery phrase is only shown
+          once and cannot be recovered.
+        </p>
+      </Callout>
+      <p>Wallet version</p>
+      <p>
+        <CodeBlock>{2}</CodeBlock>
+      </p>
+      <p>Recovery phrase</p>
+      <p style={{ position: 'relative' }}>
+        <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
+        <span style={{ position: 'absolute', top: 7, right: 10 }}>
+          <CopyWithTooltip text={response.RecoveryPhrase}>
+            <ButtonUnstyled>
+              <Copy style={{ width: 13, height: 13 }} />
+            </ButtonUnstyled>
+          </CopyWithTooltip>
+        </span>
+      </p>
+      {network === null ? (
+        <>
+          <p>You'll need a network configuration to interact with Vega</p>
+          <p>
+            <Link to={Paths.NetworkImport}>
+              <Button>Import network</Button>
+            </Link>
+          </p>
+        </>
+      ) : (
+        <Link to={WalletPaths.Detail}>
+          <Button>View wallet</Button>
+        </Link>
+      )}
     </>
   )
 }
