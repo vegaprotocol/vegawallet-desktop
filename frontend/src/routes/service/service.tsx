@@ -72,7 +72,7 @@ export function Service() {
           </Button>
         ) : (
           <Button onClick={() => startProxy(ProxyApp.Console)} type='button'>
-            Start service with Console proxy
+            Start service with Console
           </Button>
         )}
       </div>
@@ -83,7 +83,7 @@ export function Service() {
           </Button>
         ) : (
           <Button onClick={() => startProxy(ProxyApp.TokenDApp)} type='button'>
-            Start service with Token dApp proxy
+            Start service with Token dApp
           </Button>
         )}
       </div>

@@ -35,7 +35,7 @@ export function ChromeFooter() {
             <StatusCircle running={proxy !== ProxyApp.None} />
             {proxy !== ProxyApp.None ? (
               <>
-                Proxy running:{' '}
+                dApp running:{' '}
                 <ExternalLink
                   href={proxyUrl}
                   style={{ textDecoration: 'underline' }}>
@@ -43,7 +43,7 @@ export function ChromeFooter() {
                 </ExternalLink>
               </>
             ) : (
-              <>Proxy not running</>
+              <>dApp not running</>
             )}
           </>
         </div>
