@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useNetwork } from '../../contexts/network/network-context'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Button } from '../../components/button'
@@ -19,7 +19,7 @@ export function NetworkOverview() {
 
   return (
     <>
-      <BulletHeader tag='h1'>Network configuration</BulletHeader>
+      <Header>Network configuration</Header>
       {networks.length ? (
         <>
           <p

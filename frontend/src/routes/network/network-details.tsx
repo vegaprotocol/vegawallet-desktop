@@ -1,5 +1,5 @@
 import React from 'react'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { ExternalLink } from '../../components/external-link'
 import { NetworkConfigContainer } from './network-config-container'
 
@@ -8,7 +8,7 @@ export const NetworkDetails = () => {
     <NetworkConfigContainer>
       {config => (
         <>
-          <BulletHeader tag='h1'>Network: {config.Name}</BulletHeader>
+          <Header>Network: {config.Name}</Header>
           <table>
             <tbody>
               <tr>

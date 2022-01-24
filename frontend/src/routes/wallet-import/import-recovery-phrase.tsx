@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { ImportWalletResponse } from '../../models/import-wallet'
 import { ImportSuccess } from './import-success'
-import { BulletHeader } from '../../components/bullet-header'
+import { Header } from '../../components/bullet-header'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
@@ -35,7 +35,7 @@ export const ImportRecoveryPhrase = () => {
 
   return (
     <>
-      <BulletHeader tag='h1'>Import wallet</BulletHeader>
+      <Header>Import wallet</Header>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
