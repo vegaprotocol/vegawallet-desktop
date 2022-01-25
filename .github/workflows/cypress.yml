@@ -3,8 +3,10 @@ name: E2e tests
 on:
   # push:
   #   branches: [master, develop]
-  pull_request:
+  push:
     branches: [cypress-testing]
+  # pull_request:
+  #   branches: [master, develop]
 
 jobs:
   cypress-run:
