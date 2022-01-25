@@ -1,0 +1,7 @@
+{
+  "baseUrl": "http://localhost:3000/",
+  "projectId": "t5pfg7",
+  "env": {
+    "TAGS": "not @todo and not @ignore and not @manual"
+  }
+}

@@ -12,14 +12,22 @@ export function ImportSelect() {
       <Header>Create or import wallet</Header>
       <ButtonGroup orientation='vertical'>
         {[
-          { path: ImportPaths.Create, text: 'Create new' },
+          {
+            path: ImportPaths.Create,
+            text: 'Create new',
+            testId: 'create-new-wallet'
+          },
           {
             path: ImportPaths.RecoveryPhrase,
-            text: 'Import by recovery phrase'
+            text: 'Import by recovery phrase',
+            testId: 'import-wallet'
           }
         ].map(route => {
           return (
-            <Button key={route.path} onClick={() => history.push(route.path)}>
+            <Button
+              data-testid={route.testId}
+              key={route.path}
+              onClick={() => history.push(route.path)}>
               {route.text}
             </Button>
           )
