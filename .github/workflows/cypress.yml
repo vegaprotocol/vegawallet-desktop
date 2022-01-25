@@ -47,11 +47,6 @@ jobs:
         run: |
           go get -v -t -d ./...
 
-      ## TODO why is this not covered by the above?
-      - name: Get wallet
-        run: |
-          go get code.vegaprotocol.io/vegawallet-desktop
-
       - name: Build
         run: wails build -p
 
