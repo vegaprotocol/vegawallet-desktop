@@ -47,8 +47,8 @@ jobs:
         run: |
           go get -v -t -d ./...
 
-      # - name: Build
-      #   run: wails build -p
+      - name: Build
+        run: wails build -p
 
       - name: Start backend in background
         run: wails serve &
