@@ -6,7 +6,7 @@ require (
 	code.vegaprotocol.io/shared v0.0.0-20211015074835-9ed837d93090
 	code.vegaprotocol.io/vegawallet v0.11.0
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
-	github.com/wailsapp/wails v1.16.8
+	github.com/wailsapp/wails v1.16.9
 	go.uber.org/zap v1.13.0
 )
 
@@ -27,6 +27,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/jackmordaunt/icns v1.0.0 // indirect
 	github.com/julienschmidt/httprouter v1.3.0 // indirect
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/leaanthony/slicer v1.4.0 // indirect
 	github.com/leaanthony/spinner v0.5.3 // indirect
@@ -34,6 +35,7 @@ require (
 	github.com/leaanthony/wincursor v0.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
+	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
 	github.com/mwitkow/go-proto-validators v0.2.0 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/oasisprotocol/curve25519-voi v0.0.0-20210716083614-f38f8e8b0b84 // indirect
@@ -60,6 +62,7 @@ require (
 	google.golang.org/genproto v0.0.0-20201119123407-9b1e624d6bc4 // indirect
 	google.golang.org/grpc v1.38.0 // indirect
 	google.golang.org/protobuf v1.26.0-rc.1 // indirect
+	gopkg.in/AlecAivazis/survey.v1 v1.8.4 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 	honnef.co/go/tools v0.0.1-2019.2.3 // indirect
 )
