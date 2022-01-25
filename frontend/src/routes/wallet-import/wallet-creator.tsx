@@ -51,6 +51,7 @@ export const WalletCreator = () => {
           intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
           helperText={errors.name?.message}>
           <input
+            data-testid='create-wallet-form-name'
             type='text'
             {...register('name', { required: 'Required' })}
             autoComplete='off'
@@ -62,6 +63,7 @@ export const WalletCreator = () => {
           intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
           helperText={errors.passphrase?.message}>
           <input
+            data-testid='create-wallet-form-passphrase'
             type='password'
             {...register('passphrase', { required: 'Required' })}
           />
@@ -74,6 +76,7 @@ export const WalletCreator = () => {
           }
           helperText={errors.confirmPassphrase?.message}>
           <input
+            data-testid='create-wallet-form-passphrase-confirm'
             type='password'
             {...register('confirmPassphrase', {
               required: 'Required',
@@ -85,7 +88,9 @@ export const WalletCreator = () => {
           />
         </FormGroup>
         <div>
-          <Button type='submit'>Submit</Button>
+          <Button data-testid='create-wallet-form-submit' type='submit'>
+            Submit
+          </Button>
         </div>
       </form>
     </>
