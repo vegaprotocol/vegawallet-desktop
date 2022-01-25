@@ -65,7 +65,6 @@ jobs:
           working-directory: frontend/automation
           wait-on-timeout: 120
           record: true
-          config-file: e2e.json
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
