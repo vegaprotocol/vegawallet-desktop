@@ -14,8 +14,8 @@ its [Getting started](https://wails.app/gettingstarted/) page.
 
 Be sure to have the following environment variables set:
 
-* `CGO_ENABLED=1`
-* `GO111MODULE=on`
+- `CGO_ENABLED=1`
+- `GO111MODULE=on`
 
 ```sh
 go install github.com/wailsapp/wails/cmd/wails@v1.16.8

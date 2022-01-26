@@ -39,6 +39,7 @@
   },
   "scripts": {
     "serve": "react-scripts start",
+    "serve:coverage": "react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -66,9 +67,11 @@
     ]
   },
   "devDependencies": {
+    "@cypress/instrument-cra": "^1.4.0",
     "@types/react-copy-to-clipboard": "^5.0.2",
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-testing-library": "^3.10.2"
-  }
+  },
+  "cypressWebpackConfigPath": "./node_modules/wails-react-scripts/config/webpack.config.js"
 }

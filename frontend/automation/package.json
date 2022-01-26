@@ -1,0 +1,40 @@
+{
+  "name": "cypress-cucumber-example",
+  "version": "1.0.0",
+  "description": "An example for Cypress and Cucumber usage",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open:local": "env-cmd npm run cypress:open",
+    "cypress:open": "env-cmd cypress open",
+    "test:local": "CYPRESS_ENV=localhost env-cmd npm run test",
+    "test:prod": "CYPRESS_ENV=production env-cmd npm run test",
+    "test": "cypress run --env TAGS='@e2e-test' --spec 'cypress/integration/**/*.feature'",
+    "test:debug:local": "CYPRESS_ENV=localhost env-cmd npm run test:debug",
+    "test:debug:prod": "CYPRESS_ENV=production env-cmd npm run test:debug",
+    "test:debug": "env-cmd cypress run --headed --browser chrome --env TAGS='@e2e-test' --spec 'cypress/integration/**/*.feature'",
+    "test:pull-features": "git submodule update --remote gherkin-features && cp -rf gherkin-features/* cypress/integration && node ./scripts/remove-old-features.js"
+  },
+  "author": "",
+  "license": "Private",
+  "dependencies": {
+    "@cypress/code-coverage": "^3.9.10",
+    "@ethersproject/abstract-signer": "5.4.1",
+    "@ethersproject/experimental": "5.4.0",
+    "@ethersproject/providers": "5.5.0",
+    "@ethersproject/wallet": "5.4.0",
+    "axios": "^0.21.0",
+    "cypress": "^6.0.1",
+    "cypress-cucumber-preprocessor": "^4.0.0",
+    "fs-extra": "^9.0.1",
+    "glob": "^7.1.6",
+    "lodash": "^4.17.21"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": false
+  },
+  "devDependencies": {
+    "deepmerge": "^4.2.2",
+    "env-cmd": "^10.1.0",
+    "eslint-plugin-cypress": "^2.11.3"
+  }
+}
