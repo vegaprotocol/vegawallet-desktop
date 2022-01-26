@@ -56,7 +56,7 @@ jobs:
 
       # Start frontend in a second process
       - name: Start app in background
-        run: cd frontend && npm run serve &
+        run: cd frontend && npm run serve:coverage &
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
