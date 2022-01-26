@@ -44,7 +44,7 @@ export const WalletCreator = () => {
   return (
     <>
       <Header>Create wallet</Header>
-      <form onSubmit={handleSubmit(submit)}>
+      <form data-testid='create-wallet-form' onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
           labelFor='name'
@@ -112,18 +112,18 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
         title='Warning'
         intent={Intent.DANGER}
         icon={<Warning style={{ width: 15, height: 15 }} />}>
-        <p>
+        <p data-testid='wallet-warning'>
           Save your recovery phrase now, you will need it to recover your
           wallet. Keep it secure and secret. Your recovery phrase is only shown
           once and cannot be recovered.
         </p>
       </Callout>
-      <p>Wallet version</p>
+      <p data-testid='wallet-version'>Wallet version</p>
       <p>
         <CodeBlock>{2}</CodeBlock>
       </p>
       <p>Recovery phrase</p>
-      <p style={{ position: 'relative' }}>
+      <p style={{ position: 'relative' }} data-testid='wallet-recovery-phrase'>
         <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
         <span style={{ position: 'absolute', top: 7, right: 10 }}>
           <CopyWithTooltip text={response.RecoveryPhrase}>
@@ -138,13 +138,15 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
           <p>You'll need a network configuration to interact with Vega</p>
           <p>
             <Link to={Paths.NetworkImport}>
-              <Button>Import network</Button>
+              <Button data-testid='import-network-button'>
+                Import network
+              </Button>
             </Link>
           </p>
         </>
       ) : (
         <Link to={WalletPaths.Detail}>
-          <Button>View wallet</Button>
+          <Button data-testid='view-wallet-button'>View wallet</Button>
         </Link>
       )}
     </>

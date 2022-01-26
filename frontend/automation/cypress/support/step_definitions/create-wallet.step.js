@@ -29,10 +29,10 @@ Then('I see a warning message, the wallet version and recovery phrase', () => {
   cy.get("[data-testid='wallet-recovery-phrase']").should('exist')
 })
 
-When('I click view wallet button', () => {
-  cy.get("[data-testid='view-wallet-button']").click()
+When('I click view import network button', () => {
+  cy.get("[data-testid='import-network-button']").click()
 })
 
-Then('I am redirected to the wallets page', () => {
-  cy.url().should('include', '/wallet/detail')
+Then('I am redirected to the networks page', () => {
+  cy.url().should('include', '/network-import')
 })
