@@ -95,4 +95,6 @@ jobs:
           cd frontend
           npm i
       - name: Run jest
-        run: npm test -- --watchAll=false --passWithNoTests
+        run: |
+          cd frontend
+          npm test -- --watchAll=false --passWithNoTests
