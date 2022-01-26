@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"code.vegaprotocol.io/vegawallet/wallet"
-	"code.vegaprotocol.io/vegawallet/wallets"
 )
 
 type CreateWalletRequest struct {
@@ -29,6 +28,7 @@ func (r CreateWalletRequest) Check() error {
 
 type CreateWalletResponse struct {
 	RecoveryPhrase string
+	WalletVersion  uint32
 	WalletPath     string
 }
 
@@ -58,17 +58,19 @@ func (s *Handler) CreateWallet(data string) (CreateWalletResponse, error) {
 		return CreateWalletResponse{}, err
 	}
 
-	handler := wallets.NewHandler(wStore)
-
-	recoveryPhrase, err := handler.CreateWallet(req.Name, req.Passphrase)
+	resp, err := wallet.CreateWallet(wStore, &wallet.CreateWalletRequest{
+		Wallet:     req.Name,
+		Passphrase: req.Passphrase,
+	})
 	if err != nil {
 		s.log.Errorf("Couldn't create the wallet: %v", err)
 		return CreateWalletResponse{}, fmt.Errorf("couldn't create the wallet: %w", err)
 	}
 
 	return CreateWalletResponse{
-		RecoveryPhrase: recoveryPhrase,
-		WalletPath:     wStore.GetWalletPath(req.Name),
+		RecoveryPhrase: resp.Wallet.RecoveryPhrase,
+		WalletVersion:  resp.Wallet.Version,
+		WalletPath:     resp.Wallet.FilePath,
 	}, nil
 }
 
@@ -132,15 +134,19 @@ func (s *Handler) ImportWallet(data string) (ImportWalletResponse, error) {
 		return ImportWalletResponse{}, err
 	}
 
-	handler := wallets.NewHandler(wStore)
-
-	if err := handler.ImportWallet(req.Name, req.Passphrase, req.RecoveryPhrase, req.parsedVersion); err != nil {
+	resp, err := wallet.ImportWallet(wStore, &wallet.ImportWalletRequest{
+		Wallet:         req.Name,
+		RecoveryPhrase: req.RecoveryPhrase,
+		Version:        req.parsedVersion,
+		Passphrase:     req.Passphrase,
+	})
+	if err != nil {
 		s.log.Errorf("Couldn't import the wallet: %v", err)
 		return ImportWalletResponse{}, err
 	}
 
 	return ImportWalletResponse{
-		WalletPath: wStore.GetWalletPath(req.Name),
+		WalletPath: resp.Wallet.FilePath,
 	}, nil
 }
 

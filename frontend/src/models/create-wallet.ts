@@ -5,5 +5,6 @@ export interface CreateWalletRequest {
 
 export interface CreateWalletResponse {
   WalletPath: string
+  WalletVersion: number
   RecoveryPhrase: string
 }
