@@ -79,8 +79,9 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: my-artifact
+          name: coverage
           path: frontend/automation/coverage
+
   jest-run:
     runs-on: ubuntu-20.04
     strategy:
