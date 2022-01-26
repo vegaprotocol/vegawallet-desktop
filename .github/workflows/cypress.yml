@@ -50,12 +50,15 @@ jobs:
       - name: Build
         run: wails build -p
 
+      # Start wails in the first process
       - name: Start backend in background
         run: wails serve &
 
+      # Start frontend in a second process
       - name: Start app in background
         run: cd frontend && npm run serve &
 
+      # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
@@ -73,3 +76,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # pass the project ID from the secrets through environment variable
           CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  jest-run:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version:
+          - 16.x
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        id: Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run jest
+        run: |
+          cd frontend
+          npm i
+      - name: Run jest
+        run: npm test -- --watchAll=false --passWithNoTests
