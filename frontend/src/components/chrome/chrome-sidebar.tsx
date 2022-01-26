@@ -6,8 +6,6 @@ import { Paths } from '../../routes/router-config'
 import { ExternalLink } from '../external-link'
 import { Vega } from '../icons'
 import { ArrowTopRight } from '../icons/arrow-top-right'
-// @ts-ignore
-import vegaBg from '../../images/vega-bg.png'
 
 export function ChromeSidebar() {
   return (
@@ -31,10 +29,10 @@ function Menu() {
   return (
     <>
       <nav
+        className='vega-border-image'
         style={{
           padding: 20,
-          borderBottom: `3px solid`,
-          borderImage: `url(${vegaBg}) 15%`
+          borderBottom: `3px solid`
         }}>
         <AppLink to={Paths.Wallet}>Wallets</AppLink>
         <AppLink to={Paths.WalletImport}>Add / Recover Wallet</AppLink>

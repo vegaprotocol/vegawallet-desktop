@@ -2,8 +2,6 @@ import React from 'react'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
-// @ts-ignore
-import vegaBg from '../../images/vega-bg.png'
 
 export function ChromeFooter() {
   const {
@@ -14,12 +12,12 @@ export function ChromeFooter() {
   } = useService()
   return (
     <footer
+      className='vega-bg'
       style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
         padding: '10px 15px',
-        background: `url(${vegaBg})`,
         backgroundSize: 'cover',
         fontSize: 14
       }}>
