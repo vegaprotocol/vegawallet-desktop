@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "cypress:open:local": "env-cmd npm run cypress:open",
-    "cypress:open:e2e": "env-cmd npm run cypress:open --- --config-file e2e.json",
     "cypress:open": "env-cmd cypress open",
     "cypress:run": "npx cypress run --record --key ec7d4456-735d-4ddd-ab1a-4dbd46067b36",
     "test:local": "CYPRESS_ENV=localhost env-cmd npm run test",
