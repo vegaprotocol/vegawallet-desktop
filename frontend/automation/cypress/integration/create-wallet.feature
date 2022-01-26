@@ -7,5 +7,5 @@ Feature: Create wallet tests
     Then I see the create wallet form
     When I submit the create wallet form
     Then I see a warning message, the wallet version and recovery phrase
-    When I click view wallet button
-    Then I am redirected to the wallets page
+    When I click view import network button
+    Then I am redirected to the networks page
