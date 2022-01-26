@@ -76,6 +76,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # pass the project ID from the secrets through environment variable
           CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: frontend/automation/coverage
   jest-run:
     runs-on: ubuntu-20.04
     strategy:
