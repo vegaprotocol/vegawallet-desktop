@@ -2,7 +2,7 @@ import React from 'react'
 import { ImportWallet } from '../../api/service'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
-import { ImportWalletResponse } from '../../models/import-wallet'
+import { ImportWalletResponse } from '../../models/wallet'
 import { ImportSuccess } from './import-success'
 import { Header } from '../../components/bullet-header'
 import { FormGroup } from '../../components/form-group'
@@ -12,7 +12,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { addWalletAction } from '../../contexts/global/global-actions'
 
 interface FormFields {
-  name: string
+  wallet: string
   version: number
   passphrase: string
   confirmPassphrase: string
@@ -30,7 +30,7 @@ export const ImportRecoveryPhrase = () => {
   const passphrase = useWatch({ control, name: 'passphrase' })
 
   if (response) {
-    return <ImportSuccess walletPath={response.WalletPath} />
+    return <ImportSuccess walletPath={response.wallet.filePath} />
   }
 
   return (
@@ -39,10 +39,13 @@ export const ImportRecoveryPhrase = () => {
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
-          labelFor='name'
-          helperText={errors.name?.message}
+          labelFor='wallet'
+          helperText={errors.wallet?.message}
         >
-          <input type='text' {...register('name', { required: 'Required' })} />
+          <input
+            type='text'
+            {...register('wallet', { required: 'Required' })}
+          />
         </FormGroup>
         <FormGroup
           label='* Recovery phrase'
@@ -114,14 +117,14 @@ function useWalletImport() {
     async (values: FormFields) => {
       try {
         const resp = await ImportWallet({
-          Name: values.name,
-          Passphrase: values.passphrase,
-          RecoveryPhrase: values.recoveryPhrase,
-          Version: Number(values.version)
+          wallet: values.wallet,
+          passphrase: values.passphrase,
+          recoveryPhrase: values.recoveryPhrase,
+          version: Number(values.version)
         })
         if (resp) {
           setResponse(resp)
-          dispatch(addWalletAction(values.name))
+          dispatch(addWalletAction(values.wallet, resp.key))
           AppToaster.show({
             message: 'Wallet imported!',
             intent: Intent.SUCCESS

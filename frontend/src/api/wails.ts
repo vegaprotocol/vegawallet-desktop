@@ -7,9 +7,9 @@ import {
   GenerateKeyResponse,
   IsolateKeyResponse
 } from '../models/keys'
-import type { ListWalletsResponse } from '../models/list-wallets'
-import type { CreateWalletResponse } from '../models/create-wallet'
-import { ImportWalletResponse } from '../models/import-wallet'
+import type { ListWalletsResponse } from '../models/wallet'
+import type { CreateWalletResponse } from '../models/wallet'
+import { ImportWalletResponse } from '../models/wallet'
 import { GetVersionResponse } from '../models/version'
 
 interface Handler {
