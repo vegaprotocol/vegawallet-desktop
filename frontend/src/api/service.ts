@@ -24,7 +24,7 @@ import {
 } from '../models/keys'
 import type { ListWalletsResponse } from '../models/wallet'
 import { StartServiceRequest } from '../models/start-console'
-import { GetVersionResponse } from '../models/version'
+import { CheckVersionResponse, GetVersionResponse } from '../models/version'
 import { AppConfig } from '../models/app-config'
 
 /**
@@ -32,6 +32,13 @@ import { AppConfig } from '../models/app-config'
  */
 export function GetVersion(): Promise<GetVersionResponse> {
   return window.backend.Handler.GetVersion()
+}
+
+/**
+ * Return the new version to update to if any.
+ */
+export function CheckVersion(): Promise<CheckVersionResponse> {
+  return window.backend.Handler.CheckVersion()
 }
 
 /**

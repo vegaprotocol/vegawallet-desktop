@@ -1,13 +1,16 @@
 import './toast.css'
 import React from 'react'
 import { Intent } from '../../config/intent'
-import { IntentColors } from '../../config/colors'
-import { ToastOptions } from '.'
+import { IntentBackgrounds, Colors } from '../../config/colors'
+import { Toast as IToast } from '.'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Cross } from '../icons/cross'
 
-export interface ToastProps extends ToastOptions {
-  onDismiss?: (toast: ToastOptions) => void
+export interface ToastProps {
+  id: string
+  message: React.ReactNode
+  onDismiss: (toast: IToast) => void
+  intent?: Intent
   timeout?: number
 }
 
@@ -36,7 +39,7 @@ export function Toast({
   const dismiss = () => {
     cancelTimeout()
     if (typeof onDismiss === 'function') {
-      onDismiss({ id, message, intent })
+      onDismiss({ id, message, intent, timeout })
     }
   }
 
@@ -51,31 +54,38 @@ export function Toast({
   return (
     <div
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
+        background: Colors.BLACK,
         borderRadius: 2,
         maxWidth: '90vw',
         margin: '15px 0 0 0',
-        padding: '5px 15px',
-        background: IntentColors[intent],
-        animation: 'drop .3s ease',
-        animationFillMode: 'forwards'
+        overflow: 'hidden'
       }}
-      onBlur={startTimeout}
-      onFocus={cancelTimeout}
-      onMouseEnter={cancelTimeout}
-      onMouseLeave={startTimeout}
-      tabIndex={0}
-      role='alert'
     >
-      <span style={{ wordBreak: 'break-word' }}>{message}</span>
-      <ButtonUnstyled
-        onClick={dismiss}
-        style={{ position: 'relative', top: -10, right: -15 }}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          padding: '5px 15px',
+          background: IntentBackgrounds[intent],
+          animation: 'drop .3s ease',
+          animationFillMode: 'forwards'
+        }}
+        onBlur={startTimeout}
+        onFocus={cancelTimeout}
+        onMouseEnter={cancelTimeout}
+        onMouseLeave={startTimeout}
+        tabIndex={0}
+        role='alert'
       >
-        <Cross style={{ width: 40, height: 40 }} />
-      </ButtonUnstyled>
+        <span style={{ wordBreak: 'break-word' }}>{message}</span>
+        <ButtonUnstyled
+          onClick={dismiss}
+          style={{ position: 'relative', top: -5, right: -15 }}
+        >
+          <Cross style={{ width: 40, height: 40 }} />
+        </ButtonUnstyled>
+      </div>
     </div>
   )
 }
