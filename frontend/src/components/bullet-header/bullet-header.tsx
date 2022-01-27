@@ -14,7 +14,8 @@ export const Header = ({ children }: Header) => {
         textTransform: 'uppercase',
         letterSpacing: '0.3em',
         lineHeight: 1.2
-      }}>
+      }}
+    >
       {children}
     </h1>
   )

@@ -67,11 +67,13 @@ export function Toast({
       onMouseEnter={cancelTimeout}
       onMouseLeave={startTimeout}
       tabIndex={0}
-      role='alert'>
+      role='alert'
+    >
       <span style={{ wordBreak: 'break-word' }}>{message}</span>
       <ButtonUnstyled
         onClick={dismiss}
-        style={{ position: 'relative', top: -10, right: -15 }}>
+        style={{ position: 'relative', top: -10, right: -15 }}
+      >
         <Cross style={{ width: 40, height: 40 }} />
       </ButtonUnstyled>
     </div>

@@ -27,7 +27,8 @@ export function NetworkOverview() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
-            }}>
+            }}
+          >
             <span>
               Current network:{' '}
               <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
@@ -54,7 +55,8 @@ export function NetworkOverview() {
                           lineHeight: 1,
                           textAlign: 'left'
                         }}
-                        onClick={() => dispatch(changeNetworkAction(network))}>
+                        onClick={() => dispatch(changeNetworkAction(network))}
+                      >
                         {network}
                       </ButtonUnstyled>
                     </DropdownItem>
@@ -98,7 +100,8 @@ export function NetworkOverview() {
               display: 'flex',
               justifyContent: 'flex-end',
               margin: '15px 0'
-            }}>
+            }}
+          >
             <Link to={Paths.NetworkImport}>
               <Button>Import network</Button>
             </Link>

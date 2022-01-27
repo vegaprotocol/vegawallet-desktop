@@ -66,7 +66,8 @@ export function PassphraseModal() {
             position: 'fixed',
             top: 30,
             left: 'calc(50% - 125px)'
-          }}>
+          }}
+        >
           <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
         </Dialog.Content>
       </Dialog.Portal>
@@ -92,7 +93,8 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         label='* Passphrase'
         labelFor='passphrase'
         helperText={errors.passphrase?.message}
-        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}>
+        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
+      >
         <input
           type='password'
           autoComplete='off'
