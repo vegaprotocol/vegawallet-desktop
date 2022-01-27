@@ -23,7 +23,8 @@ export function Checkbox({ name, control, label }: CheckboxProps) {
               onCheckedChange={field.onChange}
               name={name}
               id={name}
-              style={box}>
+              style={box}
+            >
               <CheckboxPrimitive.Indicator style={boxInner}>
                 <Tick style={{ width: 10, height: 10 }} />
               </CheckboxPrimitive.Indicator>

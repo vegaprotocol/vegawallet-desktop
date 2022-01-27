@@ -18,7 +18,8 @@ export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
-      }}>
+      }}
+    >
       <div
         style={{
           display: 'flex',
@@ -26,7 +27,8 @@ export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
           width: 50,
           height: 50,
           marginBottom: 20
-        }}>
+        }}
+      >
         {new Array(25).fill(null).map((_, i) => {
           return (
             <div

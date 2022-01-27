@@ -27,7 +27,8 @@ export function ImportSelect() {
             <Button
               data-testid={route.testId}
               key={route.path}
-              onClick={() => history.push(route.path)}>
+              onClick={() => history.push(route.path)}
+            >
               {route.text}
             </Button>
           )

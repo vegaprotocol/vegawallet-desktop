@@ -29,10 +29,12 @@ export const WalletList = () => {
               key={wallet.name}
               style={{
                 marginBottom: 10
-              }}>
+              }}
+            >
               <ButtonUnstyled
                 className='link'
-                onClick={() => getKeys(wallet.name)}>
+                onClick={() => getKeys(wallet.name)}
+              >
                 {wallet.name}
               </ButtonUnstyled>
             </li>

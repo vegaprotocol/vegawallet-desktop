@@ -107,7 +107,8 @@ export function NetworkImport() {
           label={isURLType ? '* URL' : '* File path'}
           labelFor='fileOrUrl'
           intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
-          helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}>
+          helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}
+        >
           <input
             id='fileOrUrl'
             type='text'
@@ -124,7 +125,8 @@ export function NetworkImport() {
         </FormGroup>
         <CollapsiblePrimitive.Root
           open={advancedFields}
-          onOpenChange={() => setAdvancedfields(curr => !curr)}>
+          onOpenChange={() => setAdvancedfields(curr => !curr)}
+        >
           <CollapsiblePrimitive.Trigger asChild={true}>
             <p>
               <ButtonUnstyled style={{ textDecoration: 'underline' }}>
@@ -144,7 +146,8 @@ export function NetworkImport() {
                   errors.name
                     ? errors.name?.message
                     : 'Uses name specified in config by default'
-                }>
+                }
+              >
                 <input type='text' id='name' {...register('name')} />
               </FormGroup>
               <FormGroup helperText='Overwrite existing network configuration if it already exists'>

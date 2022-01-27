@@ -20,7 +20,8 @@ export function ChromeFooter() {
         padding: '10px 15px',
         backgroundSize: 'cover',
         fontSize: 14
-      }}>
+      }}
+    >
       <FooterCol>
         <div>
           <StatusCircle running={serviceRunning} />
@@ -38,7 +39,8 @@ export function ChromeFooter() {
                 dApp running:{' '}
                 <ExternalLink
                   href={proxyUrl}
-                  style={{ textDecoration: 'underline' }}>
+                  style={{ textDecoration: 'underline' }}
+                >
                   {proxy} @ {proxyUrl}
                 </ExternalLink>
               </>

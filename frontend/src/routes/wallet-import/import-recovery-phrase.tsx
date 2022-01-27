@@ -40,14 +40,16 @@ export const ImportRecoveryPhrase = () => {
         <FormGroup
           label='* Name'
           labelFor='name'
-          helperText={errors.name?.message}>
+          helperText={errors.name?.message}
+        >
           <input type='text' {...register('name', { required: 'Required' })} />
         </FormGroup>
         <FormGroup
           label='* Recovery phrase'
           labelFor='recoveryPhrase'
           helperText={errors.recoveryPhrase?.message}
-          intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}>
+          intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
+        >
           <textarea
             {...register('recoveryPhrase', { required: 'Required' })}
             style={{ minHeight: 75 }}
@@ -57,7 +59,8 @@ export const ImportRecoveryPhrase = () => {
           label='* Version'
           labelFor='version'
           intent={errors.version?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.version?.message}>
+          helperText={errors.version?.message}
+        >
           <input
             type='number'
             {...register('version', { required: 'Required' })}
@@ -67,7 +70,8 @@ export const ImportRecoveryPhrase = () => {
           label='* Choose passphrase'
           labelFor='passphrase'
           intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.passphrase?.message}>
+          helperText={errors.passphrase?.message}
+        >
           <input
             type='password'
             {...register('passphrase', { required: 'Required' })}
@@ -79,7 +83,8 @@ export const ImportRecoveryPhrase = () => {
           intent={
             errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE
           }
-          helperText={errors.confirmPassphrase?.message}>
+          helperText={errors.confirmPassphrase?.message}
+        >
           <input
             type='password'
             {...register('confirmPassphrase', {

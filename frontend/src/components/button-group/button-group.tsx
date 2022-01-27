@@ -16,7 +16,8 @@ export function ButtonGroup({
         justifyContent: 'space-between',
         flexDirection: orientation === 'horizontal' ? 'row' : 'column',
         gap: 10
-      }}>
+      }}
+    >
       {React.Children.map(children, child => {
         return React.cloneElement(child as any, {
           style: {

@@ -27,12 +27,14 @@ export function FormGroup({
         flexDirection: 'column',
         margin: '0 0 20px 0',
         ...style
-      }}>
+      }}
+    >
       <label htmlFor={labelFor}>{label}</label>
       <div
         style={{
           marginTop: 5
-        }}>
+        }}
+      >
         {children}
         {helperText && (
           <div
@@ -44,7 +46,8 @@ export function FormGroup({
                 intent === 'none'
                   ? 'var(--text-color-deemphasise)'
                   : IntentColors[intent]
-            }}>
+            }}
+          >
             {helperText}
           </div>
         )}

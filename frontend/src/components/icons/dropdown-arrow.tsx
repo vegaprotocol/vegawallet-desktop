@@ -6,7 +6,8 @@ export function DropdownArrow({ style }: { style?: React.CSSProperties }) {
     <svg
       style={{ ...defaultStyle, fill: 'transparent', ...style }}
       viewBox='0 0 13 14'
-      xmlns='http://www.w3.org/2000/svg'>
+      xmlns='http://www.w3.org/2000/svg'
+    >
       <path
         d='M6.52734 0.651855L6.52734 12.216'
         stroke='currentColor'

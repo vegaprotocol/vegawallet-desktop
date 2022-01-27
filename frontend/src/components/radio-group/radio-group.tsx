@@ -20,13 +20,15 @@ export function RadioGroup({ name, control, options }: RadioGroupProps) {
             value={field.value}
             onValueChange={field.onChange}
             name={field.name}
-            orientation='vertical'>
+            orientation='vertical'
+          >
             {options.map(o => (
               <div key={o.value} style={wrapper}>
                 <RadioGroupPrimitive.Item
                   value={o.value}
                   id={o.value}
-                  style={circle}>
+                  style={circle}
+                >
                   <RadioGroupPrimitive.Indicator style={circleInner} />
                 </RadioGroupPrimitive.Item>
                 <label htmlFor={o.value}>{o.label}</label>
