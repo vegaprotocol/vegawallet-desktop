@@ -1,5 +1,5 @@
 import type { ImportNetworkResponse, Network } from '../models/network'
-import { ImportNetworkRequest, ListNetworksResponse } from '../models/network'
+import { ListNetworksResponse } from '../models/network'
 import type { GetServiceStateResponse } from '../models/console-state'
 import type { ListKeysResponse } from '../models/keys'
 import {
@@ -10,10 +10,12 @@ import {
 import type { ListWalletsResponse } from '../models/wallet'
 import type { CreateWalletResponse } from '../models/wallet'
 import { ImportWalletResponse } from '../models/wallet'
-import { GetVersionResponse } from '../models/version'
+import { CheckVersionResponse, GetVersionResponse } from '../models/version'
 
 interface Handler {
   GetVersion(): Promise<GetVersionResponse>
+
+  CheckVersion(): Promise<CheckVersionResponse>
 
   GenerateKey(request: string): Promise<GenerateKeyResponse>
 

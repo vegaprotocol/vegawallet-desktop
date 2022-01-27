@@ -50,6 +50,7 @@ p {
 a,
 .link {
   color: inherit;
+  text-decoration: underline;
 }
 
 a:hover,

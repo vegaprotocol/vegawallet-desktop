@@ -3,14 +3,23 @@ import ReactDOM from 'react-dom'
 import { Intent } from '../../config/intent'
 import { Toast } from './toast'
 
-export interface ToastOptions {
+// Toast object to be stored in state
+export interface Toast {
   id: string
   message: React.ReactNode
-  intent: Intent
+  intent?: Intent
+  timeout?: number
+}
+
+// Options object to be passed to AppToaster.show(toastOptions)
+export interface ToastOptions {
+  message: React.ReactNode
+  intent?: Intent
+  timeout?: number
 }
 
 interface ToasterState {
-  toasts: ToastOptions[]
+  toasts: Toast[]
 }
 
 export class Toaster extends React.Component<any, ToasterState> {
@@ -37,7 +46,7 @@ export class Toaster extends React.Component<any, ToasterState> {
     return toaster
   }
 
-  handleDismiss = (toast: ToastOptions) => {
+  handleDismiss = (toast: Toast) => {
     this.setState(({ toasts }) => ({
       toasts: toasts.filter(t => {
         return t.id !== toast.id
@@ -45,13 +54,12 @@ export class Toaster extends React.Component<any, ToasterState> {
     }))
   }
 
-  show(toast: Pick<ToastOptions, 'message' | 'intent'>) {
+  show(toast: ToastOptions) {
     this.setState(curr => {
       return {
         ...curr,
         toasts: [
           {
-            // @ts-ignore
             id: `toast-${this.toastId++}`,
             ...toast
           },
@@ -74,13 +82,7 @@ export class Toaster extends React.Component<any, ToasterState> {
     return (
       <>
         {this.state.toasts.map((t, i) => (
-          <Toast
-            key={t.id}
-            id={t.id}
-            message={t.message}
-            intent={t.intent}
-            onDismiss={this.handleDismiss}
-          />
+          <Toast key={t.id} onDismiss={this.handleDismiss} {...t} />
         ))}
       </>
     )

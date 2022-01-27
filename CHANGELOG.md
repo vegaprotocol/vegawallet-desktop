@@ -22,11 +22,12 @@
 - [3](https://github.com/vegaprotocol/vegawallet-desktop/pull/3) - Edit wallet service configuration
 - [2](https://github.com/vegaprotocol/vegawallet-desktop/pull/2) - Expose the console
 - [1](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Bootstrap the desktop application
-- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add key management
-- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add network management
-- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add service start
-- [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Display wallet version on wallet creation
-- [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Generate first key on wallet creation and import
+- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/41) - Add key management
+- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/41) - Add network management
+- [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/41) - Add service start
+- [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/75) - Display wallet version on wallet creation
+- [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/75) - Generate first key on wallet creation and import
+- [80](https://github.com/vegaprotocol/vegawallet-desktop/pull/80) - Add verification of software updateg
 
 ### 🐛 Fixes
 - [21](https://github.com/vegaprotocol/vegawallet-desktop/pull/21) - No service config if you create a new wallet
