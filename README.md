@@ -21,6 +21,16 @@ Be sure to have the following environment variables set:
 go install github.com/wailsapp/wails/cmd/wails@v1.16.8
 ```
 
+#### Common issues
+
+##### `Error: open HOME/.wails/wails.json no such file or directory`
+
+Before building the project for the first time, ensure we have run:
+
+```sh
+wails setup
+```
+
 ### Build
 
 Compile the project using the `build` command.
