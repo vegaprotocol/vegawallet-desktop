@@ -25,6 +25,8 @@
 - [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add key management
 - [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add network management
 - [41](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Add service start
+- [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Display wallet version on wallet creation
+- [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/1) - Generate first key on wallet creation and import
 
 ### 🐛 Fixes
 - [21](https://github.com/vegaprotocol/vegawallet-desktop/pull/21) - No service config if you create a new wallet

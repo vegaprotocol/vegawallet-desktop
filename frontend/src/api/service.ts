@@ -9,9 +9,9 @@ import type { GetServiceStateResponse } from '../models/console-state'
 import type {
   CreateWalletRequest,
   CreateWalletResponse
-} from '../models/create-wallet'
-import type { ImportWalletRequest } from '../models/import-wallet'
-import { ImportWalletResponse } from '../models/import-wallet'
+} from '../models/wallet'
+import type { ImportWalletRequest } from '../models/wallet'
+import { ImportWalletResponse } from '../models/wallet'
 import type {
   GenerateKeyRequest,
   ListKeysRequest,
@@ -22,7 +22,7 @@ import {
   GenerateKeyResponse,
   IsolateKeyResponse
 } from '../models/keys'
-import type { ListWalletsResponse } from '../models/list-wallets'
+import type { ListWalletsResponse } from '../models/wallet'
 import { StartServiceRequest } from '../models/start-console'
 import { GetVersionResponse } from '../models/version'
 import { AppConfig } from '../models/app-config'

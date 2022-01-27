@@ -2,7 +2,7 @@ import React from 'react'
 import { CreateWallet } from '../../api/service'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
-import { CreateWalletResponse } from '../../models/create-wallet'
+import { CreateWalletResponse } from '../../models/wallet'
 import { Link } from 'react-router-dom'
 import { Header } from '../../components/bullet-header'
 import { CodeBlock } from '../../components/code-block'
@@ -21,7 +21,7 @@ import { Paths } from '../router-config'
 import { useNetwork } from '../../contexts/network/network-context'
 
 interface FormFields {
-  name: string
+  wallet: string
   passphrase: string
   confirmPassphrase: string
 }
@@ -47,14 +47,14 @@ export const WalletCreator = () => {
       <form data-testid='create-wallet-form' onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
-          labelFor='name'
-          intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.name?.message}
+          labelFor='wallet'
+          intent={errors.wallet?.message ? Intent.DANGER : Intent.NONE}
+          helperText={errors.wallet?.message}
         >
           <input
             data-testid='create-wallet-form-name'
             type='text'
-            {...register('name', { required: 'Required' })}
+            {...register('wallet', { required: 'Required' })}
             autoComplete='off'
           />
         </FormGroup>
@@ -124,13 +124,13 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
       </Callout>
       <p data-testid='wallet-version'>Wallet version</p>
       <p>
-        <CodeBlock>{2}</CodeBlock>
+        <CodeBlock>{response.wallet.version}</CodeBlock>
       </p>
       <p>Recovery phrase</p>
       <p style={{ position: 'relative' }} data-testid='wallet-recovery-phrase'>
-        <CodeBlock>{response.RecoveryPhrase}</CodeBlock>
+        <CodeBlock>{response.wallet.recoveryPhrase}</CodeBlock>
         <span style={{ position: 'absolute', top: 7, right: 10 }}>
-          <CopyWithTooltip text={response.RecoveryPhrase}>
+          <CopyWithTooltip text={response.wallet.recoveryPhrase}>
             <ButtonUnstyled>
               <Copy style={{ width: 13, height: 13 }} />
             </ButtonUnstyled>
@@ -167,8 +167,8 @@ function useCreateWallet() {
     async (values: FormFields) => {
       try {
         const resp = await CreateWallet({
-          Name: values.name,
-          Passphrase: values.passphrase
+          wallet: values.wallet,
+          passphrase: values.passphrase
         })
         if (resp) {
           setResponse(resp)
@@ -176,7 +176,7 @@ function useCreateWallet() {
             message: 'Wallet created!',
             intent: Intent.SUCCESS
           })
-          dispatch(addWalletAction(values.name))
+          dispatch(addWalletAction(values.wallet, resp.key))
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
         }

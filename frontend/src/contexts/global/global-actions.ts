@@ -1,12 +1,13 @@
 import * as Service from '../../api/service'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { GetServiceStateResponse } from '../../models/console-state'
-import { ListWalletsResponse } from '../../models/list-wallets'
+import { ListWalletsResponse } from '../../models/wallet'
 import { GetVersionResponse } from '../../models/version'
 import { GlobalDispatch, GlobalState } from './global-context'
 import { GlobalAction } from './global-reducer'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
+import { Key } from '../../models/keys'
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
@@ -59,8 +60,8 @@ export function initAppFailureAction(): GlobalAction {
   }
 }
 
-export function addWalletAction(wallet: string): GlobalAction {
-  return { type: 'ADD_WALLET', wallet }
+export function addWalletAction(wallet: string, key: Key): GlobalAction {
+  return { type: 'ADD_WALLET', wallet, key }
 }
 
 export function addKeypairAction(wallet: string) {
@@ -75,7 +76,7 @@ export function addKeypairAction(wallet: string) {
       dispatch({
         type: 'ADD_KEYPAIR',
         wallet,
-        keypair: res.key
+        keypair: res
       })
     } catch (err) {
       if (err !== 'dismissed') {

@@ -22,6 +22,7 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
+      key: Key
     }
   | {
       type: 'SET_KEYPAIRS'
@@ -64,10 +65,11 @@ export function globalReducer(
       }
     }
     case 'ADD_WALLET': {
+      const keypairExtended: KeyPair = extendKeypair(action.key)
       const newWallet: Wallet = {
         name: action.wallet,
-        keypair: null,
-        keypairs: null
+        keypairs: [keypairExtended],
+        keypair: keypairExtended
       }
       return {
         ...state,
