@@ -8,7 +8,7 @@ export const initialGlobalState: GlobalState = {
   wallet: null,
   wallets: [],
   passphraseModalOpen: false,
-  drawerOpen: false
+  drawerOpen: true
 }
 
 export type GlobalAction =
