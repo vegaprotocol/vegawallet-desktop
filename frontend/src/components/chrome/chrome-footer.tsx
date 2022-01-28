@@ -1,6 +1,9 @@
 import React from 'react'
+import { setDrawerAction } from '../../contexts/global/global-actions'
+import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
+import { ButtonUnstyled } from '../button-unstyled'
 import { ExternalLink } from '../external-link'
 
 export function ChromeFooter() {
@@ -10,6 +13,7 @@ export function ChromeFooter() {
   const {
     state: { serviceRunning, serviceUrl, proxy, proxyUrl }
   } = useService()
+  const { dispatch: globalDispatch } = useGlobal()
   return (
     <footer
       className='vega-bg'
@@ -20,8 +24,7 @@ export function ChromeFooter() {
         padding: '10px 15px',
         backgroundSize: 'cover',
         fontSize: 14
-      }}
-    >
+      }}>
       <FooterCol>
         <div>
           <StatusCircle running={serviceRunning} />
@@ -39,8 +42,7 @@ export function ChromeFooter() {
                 dApp running:{' '}
                 <ExternalLink
                   href={proxyUrl}
-                  style={{ textDecoration: 'underline' }}
-                >
+                  style={{ textDecoration: 'underline' }}>
                   {proxy} @ {proxyUrl}
                 </ExternalLink>
               </>
@@ -51,7 +53,9 @@ export function ChromeFooter() {
         </div>
       </FooterCol>
       <FooterCol>
-        <div>Network: {network ? network : 'None'}</div>
+        <ButtonUnstyled onClick={() => globalDispatch(setDrawerAction(true))}>
+          Slide up
+        </ButtonUnstyled>
       </FooterCol>
     </footer>
   )

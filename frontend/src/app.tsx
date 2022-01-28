@@ -92,7 +92,7 @@ function useCheckForUpdate() {
       }
     }
 
-    run()
+    // run()
   }, [])
 }
 
