@@ -4,10 +4,13 @@ import { Colors } from '../../config/colors'
 import { ChromeSidebar } from './chrome-sidebar'
 import { ChromeDrawer } from './chrome-drawer'
 
+export const DRAWER_HEIGHT = 70
+
 const layoutStyles: React.CSSProperties = {
   display: 'grid',
   gridTemplateColumns: 'min-content 1fr',
-  gridTemplateRows: '1fr min-content'
+  gridTemplateRows: '1fr',
+  paddingBottom: DRAWER_HEIGHT
 }
 
 /**
@@ -35,9 +38,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             background: Colors.DARK_GRAY_1
           }}>
           <ChromeSidebar />
-        </div>
-        <div style={{ gridColumn: '1 / 3', gridRow: '2 / 3' }}>
-          <ChromeFooter />
         </div>
       </div>
       <ChromeDrawer />

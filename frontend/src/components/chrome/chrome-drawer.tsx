@@ -12,19 +12,20 @@ import { Button } from '../button'
 import { NetworkDetails } from '../../routes/network/network-details'
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { ExternalLink } from '../external-link'
+import { DRAWER_HEIGHT } from '.'
+import { Tick } from '../icons/tick'
 
 export function ChromeDrawer() {
-  const { state, dispatch } = useGlobal()
+  const { state } = useGlobal()
 
-  const collapsedHeight = 70
   const transform = state.drawerOpen
     ? 'translateY(0)'
-    : `translateY(${window.innerHeight - collapsedHeight}px)`
+    : `translateY(${window.innerHeight - DRAWER_HEIGHT}px)`
 
   return (
     <div
       style={{
-        background: Colors.DARK_GRAY_5,
+        background: Colors.DARK_GRAY_2,
         position: 'fixed',
         top: 0,
         left: 0,
@@ -35,7 +36,7 @@ export function ChromeDrawer() {
         fontSize: 14
       }}>
       <div>
-        <DrawerHead height={collapsedHeight} />
+        <DrawerHead height={DRAWER_HEIGHT} />
         {state.drawerOpen && <DrawerContent />}
       </div>
     </div>
@@ -112,12 +113,30 @@ export function StatusCircle({ running }: any) {
 }
 
 function DrawerContent() {
+  const [view, setView] = React.useState<'network' | 'manage'>('network')
+
+  return (
+    <div style={{ padding: 20 }}>
+      {view === 'network' ? (
+        <DrawerNetworkView setView={setView} />
+      ) : (
+        <DrawerManageView setView={setView} />
+      )}
+    </div>
+  )
+}
+
+interface DrawerNetworkViewProps {
+  setView: React.Dispatch<React.SetStateAction<'network' | 'manage'>>
+}
+
+function DrawerNetworkView({ setView }: DrawerNetworkViewProps) {
   const {
-    state: { network, networks, config },
+    state: { network, networks },
     dispatch: networkDispatch
   } = useNetwork()
   return (
-    <div style={{ padding: 20 }}>
+    <>
       <div
         style={{
           display: 'flex',
@@ -161,10 +180,37 @@ function DrawerContent() {
             </div>
           }
         />
-        <ButtonUnstyled>Manage networks</ButtonUnstyled>
+        <ButtonUnstyled onClick={() => setView('manage')}>
+          Manage networks
+        </ButtonUnstyled>
       </div>
       <NetworkInfo />
-    </div>
+    </>
+  )
+}
+
+interface DrawerManageViewProps {
+  setView: React.Dispatch<React.SetStateAction<'network' | 'manage'>>
+}
+
+function DrawerManageView({ setView }: DrawerManageViewProps) {
+  const {
+    state: { network, networks }
+  } = useNetwork()
+  return (
+    <>
+      <div>
+        <ButtonUnstyled onClick={() => setView('network')}>Back</ButtonUnstyled>
+      </div>
+      <h2>Networks</h2>
+      <ul>
+        {networks.map(n => (
+          <li key={n}>
+            <span>{n}</span>
+          </li>
+        ))}
+      </ul>
+    </>
   )
 }
 
