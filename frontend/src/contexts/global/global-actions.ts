@@ -114,3 +114,7 @@ export function getKeysAction(wallet: string, cb: Function) {
 export function setPassphraseModalAction(open: boolean): GlobalAction {
   return { type: 'SET_PASSPHRASE_MODAL', open }
 }
+
+export function setDrawerAction(open: boolean): GlobalAction {
+  return { type: 'SET_DRAWER', open }
+}
