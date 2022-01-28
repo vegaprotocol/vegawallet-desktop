@@ -88,8 +88,7 @@ function useCheckForUpdate() {
           })
         }
       } catch (err) {
-        // No op for now
-        // TODO: logging?
+        // No op
       }
     }
 
