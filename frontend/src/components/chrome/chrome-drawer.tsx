@@ -7,6 +7,11 @@ import { ButtonUnstyled } from '../button-unstyled'
 import { useNetwork } from '../../contexts/network/network-context'
 import { useService } from '../../contexts/service/service-context'
 import { DropdownArrow } from '../icons/dropdown-arrow'
+import { DropdownItem, DropdownMenu } from '../dropdown-menu'
+import { Button } from '../button'
+import { NetworkDetails } from '../../routes/network/network-details'
+import { changeNetworkAction } from '../../contexts/network/network-actions'
+import { ExternalLink } from '../external-link'
 
 export function ChromeDrawer() {
   const { state, dispatch } = useGlobal()
@@ -31,7 +36,7 @@ export function ChromeDrawer() {
       }}>
       <div>
         <DrawerHead height={collapsedHeight} />
-        {state.drawerOpen && <div>Content</div>}
+        {state.drawerOpen && <DrawerContent />}
       </div>
     </div>
   )
@@ -104,4 +109,141 @@ export function StatusCircle({ running }: any) {
     background: running ? 'white' : 'transparent'
   }
   return <span style={{ ...baseStyles, ...contextualStyles }} />
+}
+
+function DrawerContent() {
+  const {
+    state: { network, networks, config },
+    dispatch: networkDispatch
+  } = useNetwork()
+  return (
+    <div style={{ padding: 20 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+        <DropdownMenu
+          trigger={
+            <Button
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 5,
+                minWidth: 75
+              }}>
+              <span>{network}</span>
+              <DropdownArrow
+                style={{ width: 13, height: 13, marginLeft: 10 }}
+              />
+            </Button>
+          }
+          content={
+            <div>
+              {networks.map(network => (
+                <DropdownItem key={network}>
+                  <ButtonUnstyled
+                    style={{
+                      width: '100%',
+                      padding: '10px 15px',
+                      lineHeight: 1,
+                      textAlign: 'left'
+                    }}
+                    onClick={() =>
+                      networkDispatch(changeNetworkAction(network))
+                    }>
+                    {network}
+                  </ButtonUnstyled>
+                </DropdownItem>
+              ))}
+            </div>
+          }
+        />
+        <ButtonUnstyled>Manage networks</ButtonUnstyled>
+      </div>
+      <NetworkInfo />
+    </div>
+  )
+}
+
+function NetworkInfo() {
+  const {
+    state: { config }
+  } = useNetwork()
+
+  if (!config) {
+    return null
+  }
+
+  return (
+    <>
+      <table>
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>{config.Name}</td>
+          </tr>
+          <tr>
+            <th>Log level</th>
+            <td>{config.Level}</td>
+          </tr>
+          <tr>
+            <th>Token expiry</th>
+            <td>{config.TokenExpiry}</td>
+          </tr>
+          <tr>
+            <th>Host</th>
+            <td>{config.Host}</td>
+          </tr>
+          <tr>
+            <th>Port</th>
+            <td>{config.Port}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Console</h2>
+      <table>
+        <tbody>
+          <tr>
+            <th>URL</th>
+            <td>
+              <ExternalLink
+                style={{ textDecoration: 'underline' }}
+                href={`https://${config.Console.URL}`}>
+                {config.Console.URL}
+              </ExternalLink>
+            </td>
+          </tr>
+          <tr>
+            <th>Local port</th>
+            <td>{config.Console.LocalPort}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>gRPC Nodes</h2>
+      <NodeList items={config.API.GRPC.Hosts} />
+      <h2>GraphQL Nodes</h2>
+      <NodeList items={config.API.GraphQL.Hosts} />
+      <h2>REST Nodes</h2>
+      <NodeList items={config.API.REST.Hosts} />
+    </>
+  )
+}
+
+interface NodeListProps {
+  items: string[]
+}
+
+function NodeList({ items }: NodeListProps) {
+  return (
+    <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+      {items.map((item, i) => (
+        <li key={i} style={{ marginBottom: 5 }} className='text-muted'>
+          {item}
+        </li>
+      ))}
+    </ul>
+  )
 }
