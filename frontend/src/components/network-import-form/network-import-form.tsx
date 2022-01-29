@@ -2,18 +2,18 @@ import React from 'react'
 import { FieldError, useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { GetNetworkConfig, ImportNetwork } from '../../api/service'
-import { Header } from '../../components/bullet-header'
-import { CodeBlock } from '../../components/code-block'
-import { AppToaster } from '../../components/toaster'
+import { Header } from '../bullet-header'
+import { CodeBlock } from '../code-block'
+import { AppToaster } from '../toaster'
 import { addNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ImportNetworkResponse } from '../../models/network'
-import { FormGroup } from '../../components/form-group'
+import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
-import { Button } from '../../components/button'
-import { RadioGroup } from '../../components/radio-group'
-import { ButtonUnstyled } from '../../components/button-unstyled'
-import { Checkbox } from '../../components/checkbox'
+import { Button } from '../button'
+import { RadioGroup } from '../radio-group'
+import { ButtonUnstyled } from '../button-unstyled'
+import { Checkbox } from '../checkbox'
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 
 interface FormFields {
@@ -23,7 +23,7 @@ interface FormFields {
   force: boolean
 }
 
-export function NetworkImport() {
+export function NetworkImportForm() {
   const [advancedFields, setAdvancedfields] = React.useState(false)
   const { response, submit, error } = useImportNetwork()
   const {
@@ -90,77 +90,69 @@ export function NetworkImport() {
   }
 
   return (
-    <>
-      <Header>Import network</Header>
-      <form onSubmit={handleSubmit(submit)}>
-        <FormGroup label='Import method'>
-          <RadioGroup
-            name='type'
-            control={control}
-            options={[
-              { value: 'url', label: 'URL' },
-              { value: 'file', label: 'File path' }
-            ]}
-          />
-        </FormGroup>
-        <FormGroup
-          label={isURLType ? '* URL' : '* File path'}
-          labelFor='fileOrUrl'
-          intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
-          helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}
-        >
-          <input
-            id='fileOrUrl'
-            type='text'
-            {...register('fileOrUrl', {
-              required: 'Required',
-              pattern: isURLType
-                ? {
-                    message: 'Invalid url',
-                    value: /^(http|https):\/\/[^ "]+$/i
-                  }
-                : undefined
-            })}
-          />
-        </FormGroup>
-        <CollapsiblePrimitive.Root
-          open={advancedFields}
-          onOpenChange={() => setAdvancedfields(curr => !curr)}
-        >
-          <CollapsiblePrimitive.Trigger asChild={true}>
-            <p>
-              <ButtonUnstyled style={{ textDecoration: 'underline' }}>
-                {advancedFields
-                  ? 'Hide advanced fields'
-                  : 'Show advanced fields'}
-              </ButtonUnstyled>
-            </p>
-          </CollapsiblePrimitive.Trigger>
-          <CollapsiblePrimitive.Content>
-            <>
-              <FormGroup
-                label='Network name'
-                labelFor='name'
-                intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-                helperText={
-                  errors.name
-                    ? errors.name?.message
-                    : 'Uses name specified in config by default'
+    <form onSubmit={handleSubmit(submit)}>
+      <FormGroup label='Import method'>
+        <RadioGroup
+          name='type'
+          control={control}
+          options={[
+            { value: 'url', label: 'URL' },
+            { value: 'file', label: 'File path' }
+          ]}
+        />
+      </FormGroup>
+      <FormGroup
+        label={isURLType ? '* URL' : '* File path'}
+        labelFor='fileOrUrl'
+        intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}>
+        <input
+          id='fileOrUrl'
+          type='text'
+          {...register('fileOrUrl', {
+            required: 'Required',
+            pattern: isURLType
+              ? {
+                  message: 'Invalid url',
+                  value: /^(http|https):\/\/[^ "]+$/i
                 }
-              >
-                <input type='text' id='name' {...register('name')} />
-              </FormGroup>
-              <FormGroup helperText='Overwrite existing network configuration if it already exists'>
-                <Checkbox name='force' control={control} label='Overwrite' />
-              </FormGroup>
-            </>
-          </CollapsiblePrimitive.Content>
-        </CollapsiblePrimitive.Root>
-        <div>
-          <Button type='submit'>Submit</Button>
-        </div>
-      </form>
-    </>
+              : undefined
+          })}
+        />
+      </FormGroup>
+      <CollapsiblePrimitive.Root
+        open={advancedFields}
+        onOpenChange={() => setAdvancedfields(curr => !curr)}>
+        <CollapsiblePrimitive.Trigger asChild={true}>
+          <p>
+            <ButtonUnstyled style={{ textDecoration: 'underline' }}>
+              {advancedFields ? 'Hide advanced fields' : 'Show advanced fields'}
+            </ButtonUnstyled>
+          </p>
+        </CollapsiblePrimitive.Trigger>
+        <CollapsiblePrimitive.Content>
+          <>
+            <FormGroup
+              label='Network name'
+              labelFor='name'
+              intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+              helperText={
+                errors.name
+                  ? errors.name?.message
+                  : 'Uses name specified in config by default'
+              }>
+              <input type='text' id='name' {...register('name')} />
+            </FormGroup>
+            <FormGroup helperText='Overwrite existing network configuration if it already exists'>
+              <Checkbox name='force' control={control} label='Overwrite' />
+            </FormGroup>
+          </>
+        </CollapsiblePrimitive.Content>
+      </CollapsiblePrimitive.Root>
+      <div>
+        <Button type='submit'>Submit</Button>
+      </div>
+    </form>
   )
 }
 

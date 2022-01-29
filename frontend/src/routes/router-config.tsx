@@ -3,7 +3,7 @@ import { Wallet } from './wallet'
 import { WalletImport } from './wallet-import'
 import { Service } from './service'
 import { Home } from './home'
-import { NetworkImport } from './network-import'
+import { NetworkImportForm } from '../components/network-import-form'
 
 export enum Paths {
   Home = '/',
@@ -24,7 +24,7 @@ const routerConfig = [
   {
     path: Paths.NetworkImport,
     name: 'NetworkImport',
-    component: NetworkImport,
+    component: NetworkImportForm,
     exact: false
   },
   {
