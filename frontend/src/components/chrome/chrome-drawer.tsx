@@ -8,10 +8,16 @@ import { useService } from '../../contexts/service/service-context'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 import { Button } from '../button'
-import { changeNetworkAction } from '../../contexts/network/network-actions'
+import {
+  changeNetworkAction,
+  updateNetworkConfigAction
+} from '../../contexts/network/network-actions'
 import { ExternalLink } from '../external-link'
 import { DRAWER_HEIGHT } from '.'
 import { NetworkImportForm } from '../network-import-form'
+import { NetworkConfigContainer } from '../network-config-container'
+import { NetworkConfigForm } from '../network-config-form'
+import { stopServiceAction } from '../../contexts/service/service-actions'
 
 export function ChromeDrawer() {
   const { state } = useGlobal()
@@ -110,22 +116,40 @@ export function StatusCircle({ running }: any) {
   return <span style={{ ...baseStyles, ...contextualStyles }} />
 }
 
-function DrawerContent() {
-  const [view, setView] = React.useState<'network' | 'manage'>('network')
+type DrawerViews = 'network' | 'manage' | 'edit'
 
-  return (
-    <div style={{ padding: 20 }}>
-      {view === 'network' ? (
-        <DrawerNetworkView setView={setView} />
-      ) : (
-        <DrawerManageView setView={setView} />
-      )}
-    </div>
+function DrawerContent() {
+  const [view, setView] = React.useState<DrawerViews>('network')
+  const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(
+    null
   )
+
+  const renderView = () => {
+    switch (view) {
+      case 'network': {
+        return <DrawerNetworkView setView={setView} />
+      }
+      case 'manage': {
+        return (
+          <DrawerManageView
+            setView={setView}
+            setSelectedNetwork={setSelectedNetwork}
+          />
+        )
+      }
+      case 'edit': {
+        return (
+          <DrawerEditView selectedNetwork={selectedNetwork} setView={setView} />
+        )
+      }
+    }
+  }
+
+  return <div style={{ padding: 20 }}>{renderView()}</div>
 }
 
 interface DrawerNetworkViewProps {
-  setView: React.Dispatch<React.SetStateAction<'network' | 'manage'>>
+  setView: React.Dispatch<React.SetStateAction<DrawerViews>>
 }
 
 function DrawerNetworkView({ setView }: DrawerNetworkViewProps) {
@@ -189,10 +213,14 @@ function DrawerNetworkView({ setView }: DrawerNetworkViewProps) {
 }
 
 interface DrawerManageViewProps {
-  setView: React.Dispatch<React.SetStateAction<'network' | 'manage'>>
+  setView: React.Dispatch<React.SetStateAction<DrawerViews>>
+  setSelectedNetwork: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-function DrawerManageView({ setView }: DrawerManageViewProps) {
+function DrawerManageView({
+  setView,
+  setSelectedNetwork
+}: DrawerManageViewProps) {
   const {
     state: { networks }
   } = useNetwork()
@@ -204,8 +232,21 @@ function DrawerManageView({ setView }: DrawerManageViewProps) {
       <h2>Networks</h2>
       <ul>
         {networks.map(n => (
-          <li key={n}>
+          <li
+            key={n}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
             <span>{n}</span>
+            <ButtonUnstyled
+              onClick={() => {
+                setSelectedNetwork(n)
+                setView('edit')
+              }}>
+              Edit
+            </ButtonUnstyled>
           </li>
         ))}
       </ul>
@@ -292,5 +333,28 @@ function NodeList({ items }: NodeListProps) {
         </li>
       ))}
     </ul>
+  )
+}
+
+interface DrawerEditViewProps {
+  selectedNetwork: string | null
+  setView: React.Dispatch<React.SetStateAction<DrawerViews>>
+}
+
+function DrawerEditView({ setView, selectedNetwork }: DrawerEditViewProps) {
+  const { dispatch: dispatchService } = useService()
+  const { dispatch: dispatchNetwork } = useNetwork()
+  return (
+    <NetworkConfigContainer name={selectedNetwork}>
+      {config => (
+        <NetworkConfigForm
+          config={config}
+          onSubmit={updatedConfig => {
+            dispatchService(stopServiceAction())
+            dispatchNetwork(updateNetworkConfigAction(updatedConfig))
+          }}
+        />
+      )}
+    </NetworkConfigContainer>
   )
 }
