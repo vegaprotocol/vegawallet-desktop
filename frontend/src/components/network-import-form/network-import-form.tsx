@@ -1,5 +1,5 @@
 import React from 'react'
-import { FieldError, useForm, useWatch } from 'react-hook-form'
+import { FieldError, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { GetNetworkConfig, ImportNetwork } from '../../api/service'
 import { Header } from '../bullet-header'
@@ -11,14 +11,12 @@ import { ImportNetworkResponse } from '../../models/network'
 import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../button'
-import { RadioGroup } from '../radio-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Checkbox } from '../checkbox'
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 
 interface FormFields {
   name: string
-  type: 'file' | 'url'
   fileOrUrl: string
   force: boolean
 }
@@ -35,14 +33,10 @@ export function NetworkImportForm() {
   } = useForm<FormFields>({
     defaultValues: {
       name: '',
-      type: 'url',
       fileOrUrl: '',
       force: false
     }
   })
-
-  const type = useWatch({ name: 'type', control })
-  const isURLType = type === 'url'
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
   // set the namee
@@ -82,16 +76,12 @@ export function NetworkImportForm() {
       return error.message
     }
 
-    if (isURLType) {
-      return 'URL to raw text file'
-    }
-
-    return 'Path to file on your computer'
+    return 'Enter a path to a configuration file for a new network, for example https://mynetwork.com/config.toml or /file/on/mysystem/config.toml'
   }
 
   return (
     <form onSubmit={handleSubmit(submit)}>
-      <FormGroup label='Import method'>
+      {/* <FormGroup label='Import method'>
         <RadioGroup
           name='type'
           control={control}
@@ -100,9 +90,9 @@ export function NetworkImportForm() {
             { value: 'file', label: 'File path' }
           ]}
         />
-      </FormGroup>
+      </FormGroup> */}
       <FormGroup
-        label={isURLType ? '* URL' : '* File path'}
+        label='URL or path'
         labelFor='fileOrUrl'
         intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}>
@@ -110,13 +100,7 @@ export function NetworkImportForm() {
           id='fileOrUrl'
           type='text'
           {...register('fileOrUrl', {
-            required: 'Required',
-            pattern: isURLType
-              ? {
-                  message: 'Invalid url',
-                  value: /^(http|https):\/\/[^ "]+$/i
-                }
-              : undefined
+            required: 'Required'
           })}
         />
       </FormGroup>
@@ -165,11 +149,13 @@ function useImportNetwork() {
 
   const submit = React.useCallback(
     async (values: FormFields) => {
+      const isUrl = /^(http|https):\/\/[^ "]+$/i.test(values.fileOrUrl)
+      console.log(isUrl ? 'url' : 'something else')
       try {
         const res = await ImportNetwork({
           name: values.name,
-          url: values.type === 'url' ? values.fileOrUrl : '',
-          filePath: values.type === 'file' ? values.fileOrUrl : '',
+          url: isUrl ? values.fileOrUrl : '',
+          filePath: !isUrl ? values.fileOrUrl : '',
           force: values.force
         })
 
