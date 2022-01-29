@@ -1,5 +1,4 @@
 import React from 'react'
-import { ChromeFooter } from './chrome-footer'
 import { Colors } from '../../config/colors'
 import { ChromeSidebar } from './chrome-sidebar'
 import { ChromeDrawer } from './chrome-drawer'

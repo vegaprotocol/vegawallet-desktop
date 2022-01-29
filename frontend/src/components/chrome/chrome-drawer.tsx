@@ -1,5 +1,4 @@
 import React from 'react'
-import * as Dialog from '@radix-ui/react-dialog'
 import { Colors } from '../../config/colors'
 import { setDrawerAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -9,11 +8,10 @@ import { useService } from '../../contexts/service/service-context'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 import { Button } from '../button'
-import { NetworkDetails } from '../../routes/network/network-details'
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { ExternalLink } from '../external-link'
 import { DRAWER_HEIGHT } from '.'
-import { Tick } from '../icons/tick'
+import { NetworkImportForm } from '../network-import-form'
 
 export function ChromeDrawer() {
   const { state } = useGlobal()
@@ -25,7 +23,7 @@ export function ChromeDrawer() {
   return (
     <div
       style={{
-        background: Colors.DARK_GRAY_2,
+        background: Colors.DARK_GRAY_1,
         position: 'fixed',
         top: 0,
         left: 0,
@@ -50,7 +48,7 @@ interface DrawerHeadProps {
 /** The part of the drawer that remains exposed */
 function DrawerHead({ height }: DrawerHeadProps) {
   const {
-    state: { serviceRunning, serviceUrl, proxy, proxyUrl }
+    state: { serviceRunning, serviceUrl }
   } = useService()
   const {
     state: { drawerOpen },
@@ -195,7 +193,7 @@ interface DrawerManageViewProps {
 
 function DrawerManageView({ setView }: DrawerManageViewProps) {
   const {
-    state: { network, networks }
+    state: { networks }
   } = useNetwork()
   return (
     <>
@@ -210,6 +208,8 @@ function DrawerManageView({ setView }: DrawerManageViewProps) {
           </li>
         ))}
       </ul>
+      <h2>Add a network</h2>
+      <NetworkImportForm />
     </>
   )
 }
