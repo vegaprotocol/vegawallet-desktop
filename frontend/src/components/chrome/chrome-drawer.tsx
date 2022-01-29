@@ -37,12 +37,11 @@ export function ChromeDrawer() {
         height: '100%',
         transform,
         transition: 'transform .15s ease',
-        fontSize: 14
+        fontSize: 14,
+        overflowY: 'auto'
       }}>
-      <div>
-        <DrawerHead height={DRAWER_HEIGHT} />
-        {state.drawerOpen && <DrawerContent />}
-      </div>
+      <DrawerHead height={DRAWER_HEIGHT} />
+      {state.drawerOpen && <DrawerContent />}
     </div>
   )
 }
