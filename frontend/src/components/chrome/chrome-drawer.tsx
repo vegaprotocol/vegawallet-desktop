@@ -139,7 +139,8 @@ function DrawerNetworkView({ setView }: DrawerNetworkViewProps) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          marginBottom: 20
         }}>
         <DropdownMenu
           trigger={
