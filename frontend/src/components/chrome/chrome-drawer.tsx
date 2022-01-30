@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { KeyboardEvent } from 'react'
 import { Colors } from '../../config/colors'
 import { setDrawerAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -118,10 +118,26 @@ export function StatusCircle({ running }: any) {
 type DrawerViews = 'network' | 'manage' | 'edit'
 
 function DrawerContent() {
+  const { dispatch } = useGlobal()
   const [view, setView] = React.useState<DrawerViews>('network')
   const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(
     null
   )
+
+  // Close modal on escape key
+  React.useEffect(() => {
+    function handleKeydown(e: KeyboardEvent<HTMLDivElement>) {
+      if (e.key === 'Escape') {
+        dispatch(setDrawerAction(false))
+      }
+    }
+
+    window.addEventListener('keydown', handleKeydown as any)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeydown as any)
+    }
+  }, [dispatch])
 
   const renderView = () => {
     switch (view) {
@@ -144,7 +160,11 @@ function DrawerContent() {
     }
   }
 
-  return <div style={{ padding: 20 }}>{renderView()}</div>
+  return (
+    <div style={{ padding: 20 }} onKeyDown={e => console.log(e)}>
+      {renderView()}
+    </div>
+  )
 }
 
 interface DrawerNetworkViewProps {
