@@ -12,7 +12,7 @@ export interface ImportSuccessProps {
 export function ImportSuccess({ walletPath }: ImportSuccessProps) {
   return (
     <>
-      <Header>Wallet successfully imported</Header>
+      <Header style={{ marginTop: 0 }}>Wallet successfully imported</Header>
       <p>Wallet location:</p>
       <p>
         <CodeBlock>{walletPath}</CodeBlock>

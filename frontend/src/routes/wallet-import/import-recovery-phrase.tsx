@@ -35,7 +35,7 @@ export const ImportRecoveryPhrase = () => {
 
   return (
     <>
-      <Header>Import wallet</Header>
+      <Header style={{ marginTop: 0 }}>Import wallet</Header>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'

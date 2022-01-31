@@ -21,7 +21,7 @@ export const WalletList = () => {
 
   return (
     <>
-      <Header>Wallets</Header>
+      <Header style={{ marginTop: 0 }}>Wallets</Header>
       {wallets.length ? (
         <ul className='wallet-list'>
           {wallets.map(wallet => (

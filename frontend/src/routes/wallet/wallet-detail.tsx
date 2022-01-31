@@ -32,7 +32,7 @@ export function WalletDetail() {
 
   return (
     <>
-      <Header>
+      <Header style={{ marginTop: 0 }}>
         Wallet name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
           {state.wallet.name}
