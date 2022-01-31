@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cypress:open:local": "env-cmd npm run cypress:open",
+    "clean": "rm -r ./test-wallets",
     "cypress:open": "env-cmd cypress open",
     "test:local": "CYPRESS_ENV=localhost env-cmd npm run test",
     "test:prod": "CYPRESS_ENV=production env-cmd npm run test",

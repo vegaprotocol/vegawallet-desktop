@@ -39,7 +39,7 @@
   },
   "scripts": {
     "serve": "react-scripts start",
-    "serve:coverage": "react-scripts -r @cypress/instrument-cra start",
+    "serve:test": "REACT_APP_VEGA_HOME=\"./frontend/automation/test-wallets\" REACT_APP_TESTING=1 react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

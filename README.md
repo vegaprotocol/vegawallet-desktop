@@ -9,6 +9,7 @@ and Linux.
 ### Dependencies
 
 #### Wails
+
 This project uses [Wails](https://wails.app) to build the desktop app. To
 install Wails, follow the instruction on
 its [Getting started](https://wails.app/gettingstarted/) page.
@@ -74,12 +75,15 @@ npm run serve
 ### Testing
 
 #### Backend
+
 To launch the backend tests, use the following commands:
+
 ```sh
 go test ./...
 ```
 
 #### Frontend
+
 Go to the `frontend` directory, and launch the test runner in the interactive watch mode:
 
 ```sh

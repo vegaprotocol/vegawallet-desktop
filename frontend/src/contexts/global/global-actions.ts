@@ -9,12 +9,13 @@ import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
 import { Key } from '../../models/keys'
 
+const truthy = ['true', '1']
+
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
     try {
       const isInit = await Service.IsAppInitialised()
-
-      if (!isInit) {
+      if (!isInit || truthy.includes(process.env.REACT_APP_TESTING || '')) {
         await Service.InitialiseApp({
           vegaHome: process.env.REACT_APP_VEGA_HOME || ''
         })
