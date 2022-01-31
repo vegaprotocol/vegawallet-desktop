@@ -40,28 +40,50 @@ export function ChromeDrawer() {
         fontSize: 14,
         overflowY: 'auto'
       }}>
-      <DrawerHead height={DRAWER_HEIGHT} />
-      {state.drawerOpen && <DrawerContent />}
+      {state.drawerOpen ? (
+        <DrawerContent />
+      ) : (
+        <DrawerHead height={DRAWER_HEIGHT}>
+          <ServiceStatus />
+        </DrawerHead>
+      )}
     </div>
+  )
+}
+
+function ServiceStatus() {
+  const {
+    state: { serviceRunning, serviceUrl }
+  } = useService()
+  const {
+    state: { network }
+  } = useNetwork()
+  return (
+    <>
+      <div>Network: {network ? network : 'None'}</div>
+      <div>
+        <StatusCircle running={serviceRunning} />
+        {serviceRunning ? (
+          <>Service running: {serviceUrl}</>
+        ) : (
+          <>Service not running</>
+        )}
+      </div>
+    </>
   )
 }
 
 interface DrawerHeadProps {
   height: number
+  children?: React.ReactNode
 }
 
 /** The part of the drawer that remains exposed */
-function DrawerHead({ height }: DrawerHeadProps) {
-  const {
-    state: { serviceRunning, serviceUrl }
-  } = useService()
+function DrawerHead({ height, children }: DrawerHeadProps) {
   const {
     state: { drawerOpen },
     dispatch: globalDispatch
   } = useGlobal()
-  const {
-    state: { network }
-  } = useNetwork()
   return (
     <div
       style={{
@@ -73,15 +95,7 @@ function DrawerHead({ height }: DrawerHeadProps) {
         borderBottom: `1px solid ${Colors.DARK_GRAY_3}`
       }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-        <div>Network: {network ? network : 'None'}</div>
-        <div>
-          <StatusCircle running={serviceRunning} />
-          {serviceRunning ? (
-            <>Service running: {serviceUrl}</>
-          ) : (
-            <>Service not running</>
-          )}
-        </div>
+        {children}
       </div>
       <div>
         <ButtonUnstyled
@@ -142,29 +156,46 @@ function DrawerContent() {
   const renderView = () => {
     switch (view) {
       case 'network': {
-        return <DrawerNetworkView setView={setView} />
+        return (
+          <>
+            <DrawerHead height={DRAWER_HEIGHT}>
+              <ServiceStatus />
+            </DrawerHead>
+            <DrawerNetworkView setView={setView} />
+          </>
+        )
       }
       case 'manage': {
         return (
-          <DrawerManageView
-            setView={setView}
-            setSelectedNetwork={setSelectedNetwork}
-          />
+          <>
+            <DrawerHead height={DRAWER_HEIGHT}>
+              <ButtonUnstyled onClick={() => setView('network')}>
+                Back
+              </ButtonUnstyled>
+            </DrawerHead>
+            <DrawerManageView
+              setView={setView}
+              setSelectedNetwork={setSelectedNetwork}
+            />
+          </>
         )
       }
       case 'edit': {
         return (
-          <DrawerEditView selectedNetwork={selectedNetwork} setView={setView} />
+          <>
+            <DrawerHead height={DRAWER_HEIGHT}>
+              <ButtonUnstyled onClick={() => setView('manage')}>
+                Back
+              </ButtonUnstyled>
+            </DrawerHead>
+            <DrawerEditView selectedNetwork={selectedNetwork} />
+          </>
         )
       }
     }
   }
 
-  return (
-    <div style={{ padding: 20 }} onKeyDown={e => console.log(e)}>
-      {renderView()}
-    </div>
-  )
+  return <div>{renderView()}</div>
 }
 
 interface DrawerNetworkViewProps {
@@ -177,7 +208,7 @@ function DrawerNetworkView({ setView }: DrawerNetworkViewProps) {
     dispatch: networkDispatch
   } = useNetwork()
   return (
-    <>
+    <div style={{ padding: 20 }}>
       <div
         style={{
           display: 'flex',
@@ -227,7 +258,7 @@ function DrawerNetworkView({ setView }: DrawerNetworkViewProps) {
         </ButtonUnstyled>
       </div>
       <NetworkInfo />
-    </>
+    </div>
   )
 }
 
@@ -245,9 +276,6 @@ function DrawerManageView({
   } = useNetwork()
   return (
     <>
-      <div>
-        <ButtonUnstyled onClick={() => setView('network')}>Back</ButtonUnstyled>
-      </div>
       <h2>Networks</h2>
       <ul>
         {networks.map(n => (
@@ -316,9 +344,7 @@ function NetworkInfo() {
           <tr>
             <th>URL</th>
             <td>
-              <ExternalLink
-                style={{ textDecoration: 'underline' }}
-                href={`https://${config.Console.URL}`}>
+              <ExternalLink href={`https://${config.Console.URL}`}>
                 {config.Console.URL}
               </ExternalLink>
             </td>
@@ -357,10 +383,9 @@ function NodeList({ items }: NodeListProps) {
 
 interface DrawerEditViewProps {
   selectedNetwork: string | null
-  setView: React.Dispatch<React.SetStateAction<DrawerViews>>
 }
 
-function DrawerEditView({ setView, selectedNetwork }: DrawerEditViewProps) {
+function DrawerEditView({ selectedNetwork }: DrawerEditViewProps) {
   const { dispatch: dispatchService } = useService()
   const { dispatch: dispatchNetwork } = useNetwork()
   return (

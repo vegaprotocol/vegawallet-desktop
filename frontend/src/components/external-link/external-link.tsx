@@ -13,6 +13,7 @@ export function ExternalLink(props: ExternalLinkProps) {
     <a
       {...props}
       target='_blank'
+      style={{ textDecoration: 'underline' }}
       onClick={() => WailsRuntime.Browser.OpenURL(props.href)}
     />
   )

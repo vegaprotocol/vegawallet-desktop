@@ -8,7 +8,8 @@ const style: React.CSSProperties = {
   appearance: 'none',
   border: 0,
   background: 'transparent',
-  padding: 0
+  padding: 0,
+  textDecoration: 'underline'
 }
 
 export const ButtonUnstyled = React.forwardRef(
