@@ -1,4 +1,5 @@
 import React from 'react'
+import { Colors } from '../../config/colors'
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
 import { Button } from '../button'
@@ -36,7 +37,8 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: 5,
-                minWidth: 75
+                minWidth: 75,
+                background: Colors.BLACK
               }}>
               <span>{network}</span>
               <DropdownArrow
