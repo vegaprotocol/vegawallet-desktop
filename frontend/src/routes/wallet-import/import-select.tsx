@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { ImportPaths } from '.'
-import { Header } from '../../components/bullet-header'
+import { Header } from '../../components/header'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 
@@ -27,8 +27,7 @@ export function ImportSelect() {
             <Button
               data-testid={route.testId}
               key={route.path}
-              onClick={() => history.push(route.path)}
-            >
+              onClick={() => history.push(route.path)}>
               {route.text}
             </Button>
           )

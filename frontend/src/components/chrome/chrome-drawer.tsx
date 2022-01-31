@@ -6,6 +6,9 @@ import { ServiceStatus } from './service-status'
 import { DrawerHead } from './drawer-head'
 import { DrawerContent } from './drawer-content'
 
+/**
+ * Renders and controls the slide up drawer showing network information.
+ */
 export function ChromeDrawer() {
   const { state } = useGlobal()
 

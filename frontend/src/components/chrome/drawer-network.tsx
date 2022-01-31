@@ -18,7 +18,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
     dispatch: networkDispatch
   } = useNetwork()
   return (
-    <div style={{ padding: 20 }}>
+    <>
       <div
         style={{
           display: 'flex',
@@ -68,6 +68,6 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
         </ButtonUnstyled>
       </div>
       <NetworkInfo />
-    </div>
+    </>
   )
 }

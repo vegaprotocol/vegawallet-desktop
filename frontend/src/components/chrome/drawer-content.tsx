@@ -11,9 +11,16 @@ import { ServiceStatus } from './service-status'
 
 export type DrawerViews = 'network' | 'manage' | 'edit'
 
+/**
+ * Renders different drawer content based on 'view' state
+ */
 export function DrawerContent() {
   const { dispatch } = useGlobal()
-  const [view, setView] = React.useState<DrawerViews>('network')
+
+  // The current view of the drawer
+  const [view, setView] = React.useState<DrawerViews>('manage')
+
+  // The network you are currently editing when in the edit view
   const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(
     null
   )
@@ -33,47 +40,60 @@ export function DrawerContent() {
     }
   }, [dispatch])
 
-  const renderView = () => {
-    switch (view) {
-      case 'network': {
-        return (
-          <>
-            <DrawerHead height={DRAWER_HEIGHT}>
-              <ServiceStatus />
-            </DrawerHead>
+  switch (view) {
+    case 'network': {
+      return (
+        <>
+          <DrawerHead height={DRAWER_HEIGHT}>
+            <ServiceStatus />
+          </DrawerHead>
+          <DrawerContentWrapper>
             <DrawerNetwork setView={setView} />
-          </>
-        )
-      }
-      case 'manage': {
-        return (
-          <>
-            <DrawerHead height={DRAWER_HEIGHT}>
-              <ButtonUnstyled onClick={() => setView('network')}>
-                Back
-              </ButtonUnstyled>
-            </DrawerHead>
+          </DrawerContentWrapper>
+        </>
+      )
+    }
+    case 'manage': {
+      return (
+        <>
+          <DrawerHead height={DRAWER_HEIGHT}>
+            <ButtonUnstyled onClick={() => setView('network')}>
+              Back
+            </ButtonUnstyled>
+          </DrawerHead>
+          <DrawerContentWrapper>
             <DrawerManageNetwork
               setView={setView}
               setSelectedNetwork={setSelectedNetwork}
             />
-          </>
-        )
-      }
-      case 'edit': {
-        return (
-          <>
-            <DrawerHead height={DRAWER_HEIGHT}>
-              <ButtonUnstyled onClick={() => setView('manage')}>
-                Back
-              </ButtonUnstyled>
-            </DrawerHead>
+          </DrawerContentWrapper>
+        </>
+      )
+    }
+    case 'edit': {
+      return (
+        <>
+          <DrawerHead height={DRAWER_HEIGHT}>
+            <ButtonUnstyled onClick={() => setView('manage')}>
+              Back
+            </ButtonUnstyled>
+          </DrawerHead>
+          <DrawerContentWrapper>
             <DrawerEditNetwork selectedNetwork={selectedNetwork} />
-          </>
-        )
-      }
+          </DrawerContentWrapper>
+        </>
+      )
+    }
+    default: {
+      throw new Error('Invalid drawer view')
     }
   }
+}
 
-  return <div>{renderView()}</div>
+interface DrawerContentWrapperProps {
+  children: React.ReactNode
+}
+
+function DrawerContentWrapper({ children }: DrawerContentWrapperProps) {
+  return <div style={{ padding: 20 }}>{children}</div>
 }
