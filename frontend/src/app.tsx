@@ -14,6 +14,7 @@ import { PassphraseModal } from './components/passphrase-modal'
 import { NetworkProvider } from './contexts/network/network-provider'
 import { CheckVersion } from './api/service'
 import { AppToaster } from './components/toaster'
+import { ExternalLink } from './components/external-link'
 
 /**
  * Initialiases the app
@@ -81,7 +82,7 @@ function useCheckForUpdate() {
             message: (
               <>
                 Version {res.version} is now available on{' '}
-                <a href={res.releaseUrl}>Github</a>
+                <ExternalLink href={res.releaseUrl}>Github</ExternalLink>
               </>
             ),
             timeout: 0
@@ -92,7 +93,7 @@ function useCheckForUpdate() {
       }
     }
 
-    // run()
+    run()
   }, [])
 }
 
