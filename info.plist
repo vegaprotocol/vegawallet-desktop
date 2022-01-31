@@ -7,6 +7,6 @@
 	<key>CFBundleVersion</key><string>0.1.0</string>
 	<key>CFBundleGetInfoString</key><string>Desktop application for Vegawallet</string>
 	<key>CFBundleShortVersionString</key><string>0.1.0</string>
-	<key>CFBundleIconFile</key><string>iconfile</string>
+	<key>CFBundleIconFile</key><string>appicon.icns</string>
 	<key>NSHighResolutionCapable</key><string>true</string>
 </dict></plist>
