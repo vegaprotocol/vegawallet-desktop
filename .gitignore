@@ -1,3 +1,5 @@
 /build
 .DS_Store
 frontend/automation/.nyc_output/
+
+frontend/automation/test-wallets/
