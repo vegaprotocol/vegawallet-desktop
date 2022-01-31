@@ -2,6 +2,7 @@ import React from 'react'
 import { useNetwork } from '../../contexts/network/network-context'
 import { BulletList, BulletListItem } from '../bulle-list'
 import { ButtonUnstyled } from '../button-unstyled'
+import { Header } from '../header'
 import { NetworkImportForm } from '../network-import-form'
 import { DrawerViews } from './drawer-content'
 
@@ -19,7 +20,7 @@ export function DrawerManageNetwork({
   } = useNetwork()
   return (
     <>
-      <h2>Networks</h2>
+      <Header style={{ marginTop: 0 }}>Networks</Header>
       <BulletList>
         {networks.map(n => (
           <BulletListItem
@@ -41,7 +42,7 @@ export function DrawerManageNetwork({
           </BulletListItem>
         ))}
       </BulletList>
-      <h2>Add a network</h2>
+      <Header>Add a network</Header>
       <NetworkImportForm />
     </>
   )

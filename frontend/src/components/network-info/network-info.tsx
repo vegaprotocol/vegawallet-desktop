@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ExternalLink } from '../external-link'
+import { Header } from '../header'
 import { NodeList } from '../node-list'
 
 export function NetworkInfo() {
@@ -38,7 +39,7 @@ export function NetworkInfo() {
           </tr>
         </tbody>
       </table>
-      <h2>Console</h2>
+      <Header>Console</Header>
       <table>
         <tbody>
           <tr>
@@ -55,11 +56,11 @@ export function NetworkInfo() {
           </tr>
         </tbody>
       </table>
-      <h2>gRPC Nodes</h2>
+      <Header>gRPC Nodes</Header>
       <NodeList items={config.API.GRPC.Hosts} />
-      <h2>GraphQL Nodes</h2>
+      <Header>GraphQL Nodes</Header>
       <NodeList items={config.API.GraphQL.Hosts} />
-      <h2>REST Nodes</h2>
+      <Header>REST Nodes</Header>
       <NodeList items={config.API.REST.Hosts} />
     </>
   )

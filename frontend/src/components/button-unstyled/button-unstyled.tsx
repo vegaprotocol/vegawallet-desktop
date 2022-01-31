@@ -3,7 +3,7 @@ import { Colors } from '../../config/colors'
 
 const style: React.CSSProperties = {
   color: Colors.WHITE,
-  fontSize: 16,
+  fontSize: 'inherit',
   cursor: 'pointer',
   appearance: 'none',
   border: 0,

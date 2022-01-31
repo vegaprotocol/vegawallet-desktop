@@ -4,6 +4,7 @@ import { useNetwork } from '../../contexts/network/network-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
+import { Header } from '../header'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { NetworkInfo } from '../network-info'
 import { DrawerViews } from './drawer-content'
@@ -19,6 +20,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   } = useNetwork()
   return (
     <>
+      <Header style={{ marginTop: 0 }}>Network</Header>
       <div
         style={{
           display: 'flex',

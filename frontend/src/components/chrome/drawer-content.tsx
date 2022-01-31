@@ -18,7 +18,7 @@ export function DrawerContent() {
   const { dispatch } = useGlobal()
 
   // The current view of the drawer
-  const [view, setView] = React.useState<DrawerViews>('manage')
+  const [view, setView] = React.useState<DrawerViews>('network')
 
   // The network you are currently editing when in the edit view
   const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(
