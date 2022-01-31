@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { WalletPaths } from '.'
-import { Header } from '../../components/bullet-header'
+import { Header } from '../../components/header'
 import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { getKeysAction } from '../../contexts/global/global-actions'
@@ -29,13 +29,11 @@ export const WalletList = () => {
               key={wallet.name}
               style={{
                 marginBottom: 10
-              }}
-            >
+              }}>
               <ButtonUnstyled
                 className='link'
                 onClick={() => getKeys(wallet.name)}
-                style={{ color: 'inherit' }}
-              >
+                style={{ color: 'inherit' }}>
                 {wallet.name}
               </ButtonUnstyled>
             </li>

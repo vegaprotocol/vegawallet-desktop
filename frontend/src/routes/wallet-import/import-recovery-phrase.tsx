@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { ImportWalletResponse } from '../../models/wallet'
 import { ImportSuccess } from './import-success'
-import { Header } from '../../components/bullet-header'
+import { Header } from '../../components/header'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
@@ -40,8 +40,7 @@ export const ImportRecoveryPhrase = () => {
         <FormGroup
           label='* Name'
           labelFor='wallet'
-          helperText={errors.wallet?.message}
-        >
+          helperText={errors.wallet?.message}>
           <input
             type='text'
             {...register('wallet', { required: 'Required' })}
@@ -51,8 +50,7 @@ export const ImportRecoveryPhrase = () => {
           label='* Recovery phrase'
           labelFor='recoveryPhrase'
           helperText={errors.recoveryPhrase?.message}
-          intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
-        >
+          intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}>
           <textarea
             {...register('recoveryPhrase', { required: 'Required' })}
             style={{ minHeight: 75 }}
@@ -62,8 +60,7 @@ export const ImportRecoveryPhrase = () => {
           label='* Version'
           labelFor='version'
           intent={errors.version?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.version?.message}
-        >
+          helperText={errors.version?.message}>
           <input
             type='number'
             {...register('version', { required: 'Required' })}
@@ -73,8 +70,7 @@ export const ImportRecoveryPhrase = () => {
           label='* Choose passphrase'
           labelFor='passphrase'
           intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.passphrase?.message}
-        >
+          helperText={errors.passphrase?.message}>
           <input
             type='password'
             {...register('passphrase', { required: 'Required' })}
@@ -86,8 +82,7 @@ export const ImportRecoveryPhrase = () => {
           intent={
             errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE
           }
-          helperText={errors.confirmPassphrase?.message}
-        >
+          helperText={errors.confirmPassphrase?.message}>
           <input
             type='password'
             {...register('confirmPassphrase', {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect, useParams } from 'react-router'
 import { BreakText } from '../../components/break-text'
-import { Header } from '../../components/bullet-header'
+import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
