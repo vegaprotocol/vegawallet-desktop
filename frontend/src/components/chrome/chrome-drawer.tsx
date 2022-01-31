@@ -28,7 +28,8 @@ export function ChromeDrawer() {
         transform,
         transition: 'transform .15s ease',
         fontSize: 14,
-        overflowY: 'auto'
+        overflowY: 'auto',
+        borderTop: `1px solid ${Colors.DARK_GRAY_3}`
       }}>
       {state.drawerOpen ? (
         <DrawerContent />
