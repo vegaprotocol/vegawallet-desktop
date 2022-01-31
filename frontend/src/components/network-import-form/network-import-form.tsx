@@ -109,7 +109,7 @@ export function NetworkImportForm() {
         onOpenChange={() => setAdvancedfields(curr => !curr)}>
         <CollapsiblePrimitive.Trigger asChild={true}>
           <p>
-            <ButtonUnstyled style={{ textDecoration: 'underline' }}>
+            <ButtonUnstyled>
               {advancedFields ? 'Hide advanced fields' : 'Show advanced fields'}
             </ButtonUnstyled>
           </p>

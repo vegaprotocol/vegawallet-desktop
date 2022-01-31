@@ -40,9 +40,7 @@ export function ChromeFooter() {
             {proxy !== ProxyApp.None ? (
               <>
                 dApp running:{' '}
-                <ExternalLink
-                  href={proxyUrl}
-                  style={{ textDecoration: 'underline' }}>
+                <ExternalLink href={proxyUrl}>
                   {proxy} @ {proxyUrl}
                 </ExternalLink>
               </>
