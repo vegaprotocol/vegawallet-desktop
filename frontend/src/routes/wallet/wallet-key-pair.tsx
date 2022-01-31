@@ -19,7 +19,7 @@ export function WalletKeyPair() {
 
   return (
     <>
-      <Header>
+      <Header style={{ marginTop: 0 }}>
         Keypair name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
           {keypair.name}

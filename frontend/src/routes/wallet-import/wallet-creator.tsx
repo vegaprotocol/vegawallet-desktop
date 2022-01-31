@@ -42,7 +42,7 @@ export const WalletCreator = () => {
 
   return (
     <>
-      <Header>Create wallet</Header>
+      <Header style={{ marginTop: 0 }}>Create wallet</Header>
       <form data-testid='create-wallet-form' onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
@@ -106,7 +106,7 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
   } = useNetwork()
   return (
     <>
-      <Header>Wallet created</Header>
+      <Header style={{ marginTop: 0 }}>Wallet created</Header>
       <Callout
         title='Warning'
         intent={Intent.DANGER}

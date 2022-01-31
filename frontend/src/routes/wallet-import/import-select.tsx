@@ -9,7 +9,7 @@ export function ImportSelect() {
   const history = useHistory()
   return (
     <>
-      <Header>Create or import wallet</Header>
+      <Header style={{ marginTop: 0 }}>Create or import wallet</Header>
       <ButtonGroup orientation='vertical'>
         {[
           {
