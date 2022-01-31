@@ -1,24 +1,41 @@
 import React from 'react'
 import { useNetwork } from '../../contexts/network/network-context'
-import { useService } from '../../contexts/service/service-context'
+import { ProxyApp, useService } from '../../contexts/service/service-context'
+import { ExternalLink } from '../external-link'
 
 export function ServiceStatus() {
   const {
-    state: { serviceRunning, serviceUrl }
+    state: { serviceRunning, serviceUrl, proxy, proxyUrl }
   } = useService()
   const {
     state: { network }
   } = useNetwork()
   return (
     <>
-      <div>Network: {network ? network : 'None'}</div>
       <div>
         <StatusCircle running={serviceRunning} />
         {serviceRunning ? (
-          <>Service running: {serviceUrl}</>
+          <>
+            Connected to {network} on {serviceUrl}
+          </>
         ) : (
           <>Service not running</>
         )}
+      </div>
+      <div>
+        <>
+          <StatusCircle running={proxy !== ProxyApp.None} />
+          {proxy !== ProxyApp.None ? (
+            <>
+              dApp running:{' '}
+              <ExternalLink href={proxyUrl}>
+                {proxy} @ {proxyUrl}
+              </ExternalLink>
+            </>
+          ) : (
+            <>dApp not running</>
+          )}
+        </>
       </div>
     </>
   )

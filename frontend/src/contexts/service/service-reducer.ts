@@ -48,6 +48,7 @@ export function serviceReducer(
     case 'START_PROXY': {
       return {
         ...state,
+        serviceRunning: true,
         proxy: action.app,
         proxyUrl: `http://127.0.0.1:${action.port}`
       }

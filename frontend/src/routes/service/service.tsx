@@ -21,7 +21,10 @@ export function Service() {
 
   function start() {
     if (!network || !config) {
-      AppToaster.show({ message: 'No network selected', intent: Intent.DANGER })
+      AppToaster.show({
+        message: 'No network config found',
+        intent: Intent.DANGER
+      })
       return
     }
 
@@ -34,7 +37,10 @@ export function Service() {
 
   function startProxy(app: ProxyApp) {
     if (!network || !config || app === ProxyApp.None) {
-      AppToaster.show({ message: 'No network selected', intent: Intent.DANGER })
+      AppToaster.show({
+        message: 'No network config found',
+        intent: Intent.DANGER
+      })
       return
     }
 
@@ -53,15 +59,14 @@ export function Service() {
         flexDirection: 'column',
         padding: 30,
         gap: 15
-      }}
-    >
+      }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {serviceRunning ? (
           <Button onClick={stop} type='button'>
             Stop service
           </Button>
         ) : (
-          <Button onClick={() => start()} type='button'>
+          <Button onClick={start} type='button'>
             Start service
           </Button>
         )}
