@@ -3,16 +3,19 @@ import { useForm } from 'react-hook-form'
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 import { InitialiseApp } from '../../api/service'
 import { Colors } from '../../config/colors'
+import { Intent } from '../../config/intent'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ImportRecoveryPhrase } from '../../routes/wallet-import/import-recovery-phrase'
 import { WalletCreator } from '../../routes/wallet-import/wallet-creator'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
 import { FormGroup } from '../form-group'
 import { Header } from '../header'
 import { Vega } from '../icons'
 import { NetworkImportForm } from '../network-import-form'
+import { AppToaster } from '../toaster'
 
 export function Onboard() {
   const [isImport, setIsImport] = React.useState(false)
@@ -44,7 +47,7 @@ interface OnboardHomeProps {
 function OnboardHome({ setIsImport }: OnboardHomeProps) {
   const history = useHistory()
   const {
-    state: { wallets, status }
+    state: { wallets, status, version }
   } = useGlobal()
   const {
     state: { networks }
@@ -61,27 +64,34 @@ function OnboardHome({ setIsImport }: OnboardHomeProps) {
       </Header>
       <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
         <Button
-          onClick={() => {
-            if (status === AppStatus.Initialised) {
-              history.push('/onboard/wallet-create')
-            } else {
-              history.push('/onboard/settings')
-            }
-          }}>
+          onClick={async () => {
+            // initialise with default
+            await InitialiseApp({
+              vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+            })
+            history.push('/onboard/wallet-create')
+          }}
+        >
           Create new wallet
         </Button>
         <Button
-          onClick={() => {
+          onClick={async () => {
             setIsImport(true)
-            if (status === AppStatus.Initialised) {
-              history.push('/onboard/wallet-import')
-            } else {
-              history.push('/onboard/settings')
-            }
-          }}>
+            await InitialiseApp({
+              vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+            })
+            history.push('/onboard/wallet-import')
+          }}
+        >
           Use recovery phrase
         </Button>
       </ButtonGroup>
+      <p>
+        <ButtonUnstyled onClick={() => history.push('/onboard/settings')}>
+          Advanced options
+        </ButtonUnstyled>
+      </p>
+      {version && <p>version {version}</p>}
     </div>
   )
 }
@@ -102,11 +112,8 @@ function OnboardSettings({ isImport }: { isImport: boolean }) {
         await InitialiseApp({
           vegaHome: values.vegaHome
         })
-        if (isImport) {
-          history.push('/onboard/wallet-import')
-        } else {
-          history.push('/onboard/wallet-create')
-        }
+        AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })
+        history.push('/')
       } catch (err) {
         console.error(err)
       }
@@ -121,7 +128,8 @@ function OnboardSettings({ isImport }: { isImport: boolean }) {
         <FormGroup
           label='Vega home'
           labelFor='vegaHome'
-          helperText='Leave blank to use default'>
+          helperText='Leave blank to use default'
+        >
           <input type='text' {...register('vegaHome')} />
         </FormGroup>
         <div>
@@ -183,7 +191,8 @@ interface OnboardPanelProps {
 function OnboardPanel({ children }: OnboardPanelProps) {
   return (
     <div
-      style={{ width: '90vw', background: Colors.BLACK, padding: '30px 25px' }}>
+      style={{ width: '90vw', background: Colors.BLACK, padding: '30px 25px' }}
+    >
       {children}
     </div>
   )
