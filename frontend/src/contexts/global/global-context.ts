@@ -6,7 +6,8 @@ import { GlobalAction } from './global-reducer'
 export enum AppStatus {
   Pending,
   Initialised,
-  Failed
+  Failed,
+  Onboarding
 }
 
 export interface KeyPair extends NamedKeyPair {

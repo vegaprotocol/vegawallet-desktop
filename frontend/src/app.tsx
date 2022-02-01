@@ -21,7 +21,7 @@ import { Intent } from './config/intent'
  * Initialiases the app
  */
 function AppLoader({ children }: { children: React.ReactElement }) {
-  useCheckForUpdate()
+  // useCheckForUpdate()
   const { state, dispatch } = useGlobal()
 
   React.useEffect(() => {
@@ -42,6 +42,10 @@ function AppLoader({ children }: { children: React.ReactElement }) {
         <p>Failed to initialise</p>
       </Splash>
     )
+  }
+
+  if (state.status === AppStatus.Onboarding) {
+    return <div>Onboarding</div>
   }
 
   return children

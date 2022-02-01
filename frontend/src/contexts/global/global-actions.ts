@@ -14,20 +14,22 @@ export function initAppAction() {
     try {
       const isInit = await Service.IsAppInitialised()
 
-      if (!isInit) {
-        await Service.InitialiseApp({
-          vegaHome: process.env.REACT_APP_VEGA_HOME || ''
-        })
+      // await Service.InitialiseApp({
+      //   vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+      // })
+
+      if (isInit) {
+        // App initialised check what wallets are available
+        const res = await Promise.all([
+          await Service.ListWallets(),
+          await Service.GetServiceState(),
+          await Service.GetVersion()
+        ])
+
+        dispatch(initAppSuccessAction(...res))
+      } else {
+        dispatch(startOnboardingAction())
       }
-
-      // App initialised check what wallets are available
-      const res = await Promise.all([
-        await Service.ListWallets(),
-        await Service.GetServiceState(),
-        await Service.GetVersion()
-      ])
-
-      dispatch(initAppSuccessAction(...res))
     } catch (err) {
       dispatch(initAppFailureAction())
     }
@@ -117,4 +119,10 @@ export function setPassphraseModalAction(open: boolean): GlobalAction {
 
 export function setDrawerAction(open: boolean): GlobalAction {
   return { type: 'SET_DRAWER', open }
+}
+
+export function startOnboardingAction(): GlobalAction {
+  return {
+    type: 'START_ONBOARDING'
+  }
 }
