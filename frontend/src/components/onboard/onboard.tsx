@@ -65,7 +65,6 @@ function OnboardHome({ setIsImport }: OnboardHomeProps) {
       <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
         <Button
           onClick={async () => {
-            // initialise with default
             await InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
@@ -123,7 +122,7 @@ function OnboardSettings({ isImport }: { isImport: boolean }) {
 
   return (
     <OnboardPanel>
-      <Header style={{ marginTop: 0 }}>Initialise Vega Wallet</Header>
+      <Header style={{ marginTop: 0 }}>Advanced settings</Header>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='Vega home'
