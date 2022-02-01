@@ -61,7 +61,8 @@ export function WalletDetail() {
                         style={{
                           color: Colors.TEXT_COLOR_DEEMPHASISE,
                           fontFamily: Fonts.MONO
-                        }}>
+                        }}
+                      >
                         {kp.publicKeyShort}{' '}
                         <Copy
                           style={{

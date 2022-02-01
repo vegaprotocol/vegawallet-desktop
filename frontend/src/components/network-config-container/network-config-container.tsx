@@ -18,17 +18,7 @@ export function NetworkConfigContainer({
   }
 
   if (!config) {
-    return (
-      <>
-        <p>No network configuration found. </p>
-        <p>
-          TODO: guide to import
-          {/* <Link to={Paths.NetworkImport}>
-            <Button>Import network</Button>
-          </Link> */}
-        </p>
-      </>
-    )
+    return <p>No network configuration found. </p>
   }
 
   return children(config)

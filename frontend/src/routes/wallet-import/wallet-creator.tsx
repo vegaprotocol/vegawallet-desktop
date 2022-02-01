@@ -47,7 +47,8 @@ export const WalletCreator = () => {
           label='* Name'
           labelFor='wallet'
           intent={errors.wallet?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.wallet?.message}>
+          helperText={errors.wallet?.message}
+        >
           <input
             data-testid='create-wallet-form-name'
             type='text'
@@ -59,7 +60,8 @@ export const WalletCreator = () => {
           label='* Passphrase'
           labelFor='passphrase'
           intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
-          helperText={errors.passphrase?.message}>
+          helperText={errors.passphrase?.message}
+        >
           <input
             data-testid='create-wallet-form-passphrase'
             type='password'
@@ -72,7 +74,8 @@ export const WalletCreator = () => {
           intent={
             errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE
           }
-          helperText={errors.confirmPassphrase?.message}>
+          helperText={errors.confirmPassphrase?.message}
+        >
           <input
             data-testid='create-wallet-form-passphrase-confirm'
             type='password'
@@ -106,7 +109,8 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
       <Callout
         title='Warning'
         intent={Intent.DANGER}
-        icon={<Warning style={{ width: 15, height: 15 }} />}>
+        icon={<Warning style={{ width: 15, height: 15 }} />}
+      >
         <p data-testid='wallet-warning'>
           Save your recovery phrase now, you will need it to recover your
           wallet. Keep it secure and secret. Your recovery phrase is only shown
