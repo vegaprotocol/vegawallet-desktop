@@ -20,7 +20,7 @@ import { ExternalLink } from './components/external-link'
  * Initialiases the app
  */
 function AppLoader({ children }: { children: React.ReactElement }) {
-  // useCheckForUpdate()
+  useCheckForUpdate()
   const { state, dispatch } = useGlobal()
 
   React.useEffect(() => {
