@@ -17,7 +17,6 @@ import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
 import { Callout } from '../../components/callout'
 import { Warning } from '../../components/icons/warning'
-import { useNetwork } from '../../contexts/network/network-context'
 
 interface FormFields {
   wallet: string
@@ -101,9 +100,6 @@ interface WalletCreateSuccessProps {
 }
 
 function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
-  const {
-    state: { network }
-  } = useNetwork()
   return (
     <>
       <Header style={{ marginTop: 0 }}>Wallet created</Header>
@@ -132,23 +128,9 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
           </CopyWithTooltip>
         </span>
       </p>
-      {network === null ? (
-        <>
-          <p>You'll need a network configuration to interact with Vega</p>
-          <p>
-            TODO: open import form
-            {/* <Link to={Paths.NetworkImport}>
-              <Button data-testid='import-network-button'>
-                Import network
-              </Button>
-            </Link> */}
-          </p>
-        </>
-      ) : (
-        <Link to={WalletPaths.Detail}>
-          <Button data-testid='view-wallet-button'>View wallet</Button>
-        </Link>
-      )}
+      <Link to={WalletPaths.Detail}>
+        <Button data-testid='view-wallet-button'>View wallet</Button>
+      </Link>
     </>
   )
 }
