@@ -15,6 +15,7 @@ import { NetworkProvider } from './contexts/network/network-provider'
 import { CheckVersion } from './api/service'
 import { AppToaster } from './components/toaster'
 import { ExternalLink } from './components/external-link'
+import { Intent } from './config/intent'
 
 /**
  * Initialiases the app
@@ -85,7 +86,8 @@ function useCheckForUpdate() {
                 <ExternalLink href={res.releaseUrl}>Github</ExternalLink>
               </>
             ),
-            timeout: 0
+            timeout: 0,
+            intent: Intent.PRIMARY
           })
         }
       } catch (err) {

@@ -58,28 +58,31 @@ export function Toast({
         borderRadius: 2,
         maxWidth: '90vw',
         margin: '15px 0 0 0',
-        overflow: 'hidden'
-      }}>
+        overflow: 'hidden',
+        animation: 'drop .3s ease',
+        animationFillMode: 'forwards'
+      }}
+    >
       <div
         style={{
           display: 'flex',
           alignItems: 'flex-start',
           gap: 10,
           padding: '5px 15px',
-          background: IntentBackgrounds[intent],
-          animation: 'drop .3s ease',
-          animationFillMode: 'forwards'
+          background: IntentBackgrounds[intent]
         }}
         onBlur={startTimeout}
         onFocus={cancelTimeout}
         onMouseEnter={cancelTimeout}
         onMouseLeave={startTimeout}
         tabIndex={0}
-        role='alert'>
+        role='alert'
+      >
         <span style={{ wordBreak: 'break-word' }}>{message}</span>
         <ButtonUnstyled
           onClick={dismiss}
-          style={{ position: 'relative', top: -5, right: -15 }}>
+          style={{ position: 'relative', top: -5, right: -15 }}
+        >
           <Cross style={{ width: 40, height: 40 }} />
         </ButtonUnstyled>
       </div>
