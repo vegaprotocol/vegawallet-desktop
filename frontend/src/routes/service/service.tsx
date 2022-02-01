@@ -59,36 +59,29 @@ export function Service() {
         flexDirection: 'column',
         padding: 30,
         gap: 15
-      }}>
+      }}
+    >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {serviceRunning ? (
-          <Button onClick={stop} type='button'>
-            Stop service
-          </Button>
+          <Button onClick={stop}>Stop service</Button>
         ) : (
-          <Button onClick={start} type='button'>
-            Start service
-          </Button>
+          <Button onClick={start}>Start service</Button>
         )}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {proxy === ProxyApp.Console ? (
-          <Button onClick={stop} type='button'>
-            Stop Console
-          </Button>
+          <Button onClick={stop}>Stop Console</Button>
         ) : (
-          <Button onClick={() => startProxy(ProxyApp.Console)} type='button'>
+          <Button onClick={() => startProxy(ProxyApp.Console)}>
             Start service with Console
           </Button>
         )}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
         {proxy === ProxyApp.TokenDApp ? (
-          <Button onClick={stop} type='button'>
-            Stop Token dApp
-          </Button>
+          <Button onClick={stop}>Stop Token dApp</Button>
         ) : (
-          <Button onClick={() => startProxy(ProxyApp.TokenDApp)} type='button'>
+          <Button onClick={() => startProxy(ProxyApp.TokenDApp)}>
             Start service with Token dApp
           </Button>
         )}
