@@ -19,7 +19,11 @@ interface FormFields {
   recoveryPhrase: string
 }
 
-export const ImportRecoveryPhrase = () => {
+export const ImportRecoveryPhrase = ({
+  onComplete
+}: {
+  onComplete: () => void
+}) => {
   const { response, submit } = useWalletImport()
   const {
     control,
@@ -30,7 +34,12 @@ export const ImportRecoveryPhrase = () => {
   const passphrase = useWatch({ control, name: 'passphrase' })
 
   if (response) {
-    return <ImportSuccess walletPath={response.wallet.filePath} />
+    return (
+      <ImportSuccess
+        walletPath={response.wallet.filePath}
+        onComplete={onComplete}
+      />
+    )
   }
 
   return (

@@ -3,7 +3,6 @@ import { CreateWallet } from '../../api/service'
 import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { CreateWalletResponse } from '../../models/wallet'
-import { Link } from 'react-router-dom'
 import { Header } from '../../components/header'
 import { CodeBlock } from '../../components/code-block'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -11,7 +10,6 @@ import { addWalletAction } from '../../contexts/global/global-actions'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Copy } from '../../components/icons/copy'
-import { WalletPaths } from '../wallet'
 import { FormGroup } from '../../components/form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
@@ -24,7 +22,7 @@ interface FormFields {
   confirmPassphrase: string
 }
 
-export const WalletCreator = () => {
+export const WalletCreator = ({ onComplete }: { onComplete: () => void }) => {
   const { response, submit } = useCreateWallet()
   const {
     control,
@@ -36,7 +34,7 @@ export const WalletCreator = () => {
   const passphrase = useWatch({ control, name: 'passphrase' })
 
   if (response) {
-    return <WalletCreateSuccess response={response} />
+    return <WalletCreateSuccess response={response} onComplete={onComplete} />
   }
 
   return (
@@ -100,9 +98,13 @@ export const WalletCreator = () => {
 
 interface WalletCreateSuccessProps {
   response: CreateWalletResponse
+  onComplete: () => void
 }
 
-function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
+function WalletCreateSuccess({
+  response,
+  onComplete
+}: WalletCreateSuccessProps) {
   return (
     <>
       <Header style={{ marginTop: 0 }}>Wallet created</Header>
@@ -132,9 +134,9 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
           </CopyWithTooltip>
         </span>
       </p>
-      <Link to={WalletPaths.Detail}>
-        <Button data-testid='view-wallet-button'>View wallet</Button>
-      </Link>
+      <Button onClick={onComplete} data-testid='view-wallet-button'>
+        Complete
+      </Button>
     </>
   )
 }

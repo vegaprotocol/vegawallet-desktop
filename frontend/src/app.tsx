@@ -16,12 +16,13 @@ import { CheckVersion } from './api/service'
 import { AppToaster } from './components/toaster'
 import { ExternalLink } from './components/external-link'
 import { Intent } from './config/intent'
+import { Onboard } from './components/onboard'
 
 /**
  * Initialiases the app
  */
-function AppLoader({ children }: { children: React.ReactElement }) {
-  // useCheckForUpdate()
+function AppLoader({ children }: { children: any }) {
+  useCheckForUpdate()
   const { state, dispatch } = useGlobal()
 
   React.useEffect(() => {
@@ -45,7 +46,11 @@ function AppLoader({ children }: { children: React.ReactElement }) {
   }
 
   if (state.status === AppStatus.Onboarding) {
-    return <div>Onboarding</div>
+    return (
+      <Splash className='vega-bg' style={{ backgroundSize: 'cover' }}>
+        <Onboard />
+      </Splash>
+    )
   }
 
   return children
@@ -58,16 +63,16 @@ function App() {
   return (
     <Router>
       <GlobalProvider>
-        <AppLoader>
-          <NetworkProvider>
-            <ServiceProvider>
+        <NetworkProvider>
+          <ServiceProvider>
+            <AppLoader>
               <Chrome>
                 <AppRouter />
               </Chrome>
               <PassphraseModal />
-            </ServiceProvider>
-          </NetworkProvider>
-        </AppLoader>
+            </AppLoader>
+          </ServiceProvider>
+        </NetworkProvider>
       </GlobalProvider>
     </Router>
   )

@@ -14,10 +14,6 @@ export function initAppAction() {
     try {
       const isInit = await Service.IsAppInitialised()
 
-      // await Service.InitialiseApp({
-      //   vegaHome: process.env.REACT_APP_VEGA_HOME || ''
-      // })
-
       if (isInit) {
         // App initialised check what wallets are available
         const res = await Promise.all([

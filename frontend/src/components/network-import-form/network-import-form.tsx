@@ -19,7 +19,7 @@ interface FormFields {
   force: boolean
 }
 
-export function NetworkImportForm() {
+export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
   const [advancedFields, setAdvancedfields] = React.useState(false)
   const { response, submit, error } = useImportNetwork()
   const {
@@ -41,8 +41,11 @@ export function NetworkImportForm() {
     if (response) {
       reset()
       setAdvancedfields(false)
+      if (typeof onComplete === 'function') {
+        onComplete()
+      }
     }
-  }, [response, reset])
+  }, [response, reset, onComplete])
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
   // set the namee

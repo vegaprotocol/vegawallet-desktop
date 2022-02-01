@@ -24,6 +24,9 @@ export type GlobalAction =
       type: 'START_ONBOARDING'
     }
   | {
+      type: 'FINISH_ONBOARDING'
+    }
+  | {
       type: 'ADD_WALLET'
       wallet: string
       key: Key
@@ -76,6 +79,12 @@ export function globalReducer(
       return {
         ...state,
         status: AppStatus.Onboarding
+      }
+    }
+    case 'FINISH_ONBOARDING': {
+      return {
+        ...state,
+        status: AppStatus.Initialised
       }
     }
     case 'ADD_WALLET': {
