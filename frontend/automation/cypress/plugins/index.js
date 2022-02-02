@@ -9,6 +9,7 @@
 // ***********************************************************
 const { cypressConfigResolver } = require('../config/cypress-config-resolver')
 const cucumber = require('cypress-cucumber-preprocessor').default
+const clipboardy = require('clipboardy').default
 
 module.exports = (on, config) => {
   require('@cypress/code-coverage/task')(on, config)
@@ -21,6 +22,13 @@ module.exports = (on, config) => {
       launchOptions.args.push('--disable-dev-shm-usage')
     }
     return launchOptions
+  })
+  on('task', {
+    // Clipboard test plugin
+    getClipboard: () => {
+      const clipboard = clipboardy.readSync()
+      return clipboard
+    },
   })
   return cypressConfigResolver(config)
 }

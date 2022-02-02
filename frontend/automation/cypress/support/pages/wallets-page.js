@@ -14,7 +14,16 @@ export default class WalletPage {
     cy.getByTestId(keyPairName).should('have.text', keyPairName)
   }
 
-  validatePublicKey(keyPairName, publicKey) {
-    cy.getByTestId(`${keyPairName}-public-key`).should('have.text', publicKey)
+  validatePublicKey(keyPairName) {
+    cy.getByTestId(`${keyPairName}-public-key`).should('exist')
+  }
+
+  validateCopyKeyBtn(keyPairName, publicKey) {
+    cy.getByTestId(`${keyPairName}-public-key`).click()
+    cy.task('getClipboard').should('eq', publicKey)
+  }
+
+  validateWalletsDisplayed() {
+    cy.get('.wallet-list > li').should('have.length.of.at.least', 1)
   }
 }
