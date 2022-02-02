@@ -22,7 +22,8 @@ export function BulletListItem({ children, ...props }: BulletListItemProps) {
           top: 1,
           display: 'inline-block',
           marginRight: 10
-        }}>
+        }}
+      >
         <rect width='11' height='11' fill='currentColor'></rect>
       </svg>
       {children}

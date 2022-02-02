@@ -30,7 +30,8 @@ export function ChromeDrawer() {
         fontSize: 14,
         overflowY: 'auto',
         borderTop: `1px solid ${Colors.DARK_GRAY_3}`
-      }}>
+      }}
+    >
       {state.drawerOpen ? (
         <DrawerContent />
       ) : (

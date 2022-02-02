@@ -15,7 +15,8 @@ export const Header = ({ children, style }: Header) => {
         letterSpacing: '0.3em',
         lineHeight: 1.2,
         ...style
-      }}>
+      }}
+    >
       {children}
     </h1>
   )

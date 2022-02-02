@@ -24,7 +24,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           height: '100%',
           background: Colors.BLACK,
           overflowY: 'auto'
-        }}>
+        }}
+      >
         <main style={{ gridColumn: '2 / 3', padding: 20, overflowY: 'auto' }}>
           {children}
         </main>
@@ -35,7 +36,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             gridRow: '1 / 3',
             minWidth: 240,
             background: Colors.DARK_GRAY_1
-          }}>
+          }}
+        >
           <ChromeSidebar />
         </div>
       </div>

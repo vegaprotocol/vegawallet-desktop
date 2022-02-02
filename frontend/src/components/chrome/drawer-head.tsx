@@ -25,14 +25,16 @@ export function DrawerHead({ height, children }: DrawerHeadProps) {
         alignItems: 'center',
         padding: '10px 0 10px 20px',
         borderBottom: `1px solid ${Colors.DARK_GRAY_3}`
-      }}>
+      }}
+    >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
         {children}
       </div>
       <div>
         <ButtonUnstyled
           style={{ padding: 20 }}
-          onClick={() => globalDispatch(setDrawerAction(!drawerOpen))}>
+          onClick={() => globalDispatch(setDrawerAction(!drawerOpen))}
+        >
           <DropdownArrow
             style={{
               width: 16,
