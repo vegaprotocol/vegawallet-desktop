@@ -12,17 +12,14 @@ import { initAppAction } from './contexts/global/global-actions'
 import { ServiceProvider } from './contexts/service/service-provider'
 import { PassphraseModal } from './components/passphrase-modal'
 import { NetworkProvider } from './contexts/network/network-provider'
-import { CheckVersion } from './api/service'
-import { AppToaster } from './components/toaster'
-import { ExternalLink } from './components/external-link'
-import { Intent } from './config/intent'
 import { Onboard } from './components/onboard'
+import { useCheckForUpdate } from './hooks/use-check-for-update'
 
 /**
  * Initialiases the app
  */
 function AppLoader({ children }: { children: any }) {
-  useCheckForUpdate()
+  // useCheckForUpdate()
   const { state, dispatch } = useGlobal()
 
   React.useEffect(() => {
@@ -76,36 +73,6 @@ function App() {
       </GlobalProvider>
     </Router>
   )
-}
-
-/**
- * Calls CheckVersion and shows a toast if theres a new version to update to
- */
-function useCheckForUpdate() {
-  React.useEffect(() => {
-    const run = async () => {
-      try {
-        const res = await CheckVersion()
-        // if string is empty no version to update to
-        if (res) {
-          AppToaster.show({
-            message: (
-              <>
-                Version {res.version} is now available on{' '}
-                <ExternalLink href={res.releaseUrl}>Github</ExternalLink>
-              </>
-            ),
-            timeout: 0,
-            intent: Intent.PRIMARY
-          })
-        }
-      } catch (err) {
-        // No op
-      }
-    }
-
-    run()
-  }, [])
 }
 
 export default App

@@ -1,6 +1,5 @@
 import React from 'react'
-import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
-import { Paths } from '../router-config'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { ImportRecoveryPhrase } from './import-recovery-phrase'
 import { ImportSelect } from './import-select'
 import { WalletCreator } from './wallet-creator'
@@ -11,16 +10,15 @@ export enum ImportPaths {
 }
 
 export function WalletImport() {
-  const history = useHistory()
   const match = useRouteMatch()
 
   return (
     <Switch>
       <Route path={ImportPaths.Create}>
-        <WalletCreator onComplete={() => history.push(Paths.Wallet)} />
+        <WalletCreator />
       </Route>
       <Route path={ImportPaths.RecoveryPhrase}>
-        <ImportRecoveryPhrase onComplete={() => history.push(Paths.Wallet)} />
+        <ImportRecoveryPhrase />
       </Route>
       <Route path={match.path} exact>
         <ImportSelect />

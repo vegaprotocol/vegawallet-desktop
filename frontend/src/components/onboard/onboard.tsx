@@ -4,10 +4,10 @@ import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 import { InitialiseApp } from '../../api/service'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
-import { AppStatus, useGlobal } from '../../contexts/global/global-context'
+import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
-import { ImportRecoveryPhrase } from '../../routes/wallet-import/import-recovery-phrase'
-import { WalletCreator } from '../../routes/wallet-import/wallet-creator'
+import { useCreateWallet } from '../../hooks/use-create-wallet'
+import { useImportWallet } from '../../hooks/use-import-wallet'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -16,16 +16,18 @@ import { Header } from '../header'
 import { Vega } from '../icons'
 import { NetworkImportForm } from '../network-import-form'
 import { AppToaster } from '../toaster'
+import { WalletCreateForm } from '../wallet-create-form'
+import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
+import { WalletImportForm } from '../wallet-import-form'
 
 export function Onboard() {
-  const [isImport, setIsImport] = React.useState(false)
   return (
     <Switch>
       <Route path='/' exact={true}>
-        <OnboardHome setIsImport={setIsImport} />
+        <OnboardHome />
       </Route>
       <Route path='/onboard/settings'>
-        <OnboardSettings isImport={isImport} />
+        <OnboardSettings />
       </Route>
       <Route path='/onboard/wallet-create'>
         <OnboardWalletCreate />
@@ -40,14 +42,10 @@ export function Onboard() {
   )
 }
 
-interface OnboardHomeProps {
-  setIsImport: (isImport: boolean) => void
-}
-
-function OnboardHome({ setIsImport }: OnboardHomeProps) {
+function OnboardHome() {
   const history = useHistory()
   const {
-    state: { wallets, status, version }
+    state: { wallets, version }
   } = useGlobal()
   const {
     state: { networks }
@@ -75,7 +73,6 @@ function OnboardHome({ setIsImport }: OnboardHomeProps) {
         </Button>
         <Button
           onClick={async () => {
-            setIsImport(true)
             await InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
@@ -99,11 +96,9 @@ interface Fields {
   vegaHome: string
 }
 
-function OnboardSettings({ isImport }: { isImport: boolean }) {
+function OnboardSettings() {
   const history = useHistory()
-  const { register, handleSubmit } = useForm<Fields>({
-    defaultValues: { vegaHome: '' }
-  })
+  const { register, handleSubmit } = useForm<Fields>()
 
   const submit = React.useCallback(
     async (values: Fields) => {
@@ -117,7 +112,7 @@ function OnboardSettings({ isImport }: { isImport: boolean }) {
         console.error(err)
       }
     },
-    [isImport, history]
+    [history]
   )
 
   return (
@@ -141,27 +136,43 @@ function OnboardSettings({ isImport }: { isImport: boolean }) {
 
 function OnboardWalletCreate() {
   const history = useHistory()
-
-  const onComplete = React.useCallback(() => {
-    history.push('/onboard/network')
-  }, [history])
+  const { submit, response } = useCreateWallet()
 
   return (
     <OnboardPanel>
-      <WalletCreator onComplete={onComplete} />
+      {response ? (
+        <WalletCreateFormSuccess
+          response={response}
+          callToAction={
+            <Button onClick={() => history.push('/onboard/network')}>
+              Import network
+            </Button>
+          }
+        />
+      ) : (
+        <>
+          <Header style={{ marginTop: 0 }}>Create wallet</Header>
+          <WalletCreateForm submit={submit} />
+        </>
+      )}
     </OnboardPanel>
   )
 }
 
 function OnboardWalletImport() {
   const history = useHistory()
-  const onComplete = React.useCallback(() => {
-    history.push('/onboard/network')
-  }, [history])
+  const { submit, response } = useImportWallet()
+
+  React.useEffect(() => {
+    if (response) {
+      history.push('/onboard/network')
+    }
+  }, [response, history])
 
   return (
     <OnboardPanel>
-      <ImportRecoveryPhrase onComplete={onComplete} />
+      <Header style={{ marginTop: 0 }}>Import a wallet</Header>
+      <WalletImportForm submit={submit} />
     </OnboardPanel>
   )
 }
