@@ -85,7 +85,6 @@ interface KeypairToggleProps {
 }
 
 function KeypairToggle({ wallet, onClick }: KeypairToggleProps) {
-  const { dispatch } = useGlobal()
   const iconStyles: React.CSSProperties = {
     position: 'relative',
     top: -2,

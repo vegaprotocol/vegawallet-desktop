@@ -5,16 +5,37 @@ import { DRAWER_HEIGHT } from '.'
 import { ServiceStatus } from './service-status'
 import { DrawerHead } from './drawer-head'
 import { DrawerContent } from './drawer-content'
+import { usePrevious } from '../../hooks/use-previous'
 
 /**
  * Renders and controls the slide up drawer showing network information.
  */
 export function ChromeDrawer() {
   const { state } = useGlobal()
+  const prevDrawerState = usePrevious(state.drawerOpen)
+  const [windowHeight, setWindowHeight] = React.useState(window.innerHeight)
 
+  React.useEffect(() => {
+    function handleResize() {
+      setWindowHeight(window.innerHeight)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  // Move the drawer up to full screen if open, otherwise 'minimise' only showing the top DRAWER_HEIGHTpx
   const transform = state.drawerOpen
     ? 'translateY(0)'
-    : `translateY(${window.innerHeight - DRAWER_HEIGHT}px)`
+    : `translateY(${windowHeight - DRAWER_HEIGHT}px)`
+
+  // Only apply the transition animation if the drawer is opening or closing, this way resizing
+  // the window instantly renders the drawer in the correct position
+  const transition =
+    prevDrawerState !== state.drawerOpen ? 'transform .2s ease' : undefined
 
   return (
     <div
@@ -26,7 +47,7 @@ export function ChromeDrawer() {
         width: '100%',
         height: '100%',
         transform,
-        transition: 'transform .15s ease',
+        transition,
         fontSize: 14,
         overflowY: 'auto',
         borderTop: `1px solid ${Colors.DARK_GRAY_3}`
