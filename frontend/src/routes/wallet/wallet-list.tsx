@@ -29,11 +29,13 @@ export const WalletList = () => {
               key={wallet.name}
               style={{
                 marginBottom: 10
-              }}>
+              }}
+            >
               <ButtonUnstyled
                 className='link'
                 onClick={() => getKeys(wallet.name)}
-                style={{ color: 'inherit' }}>
+                style={{ color: 'inherit' }}
+              >
                 {wallet.name}
               </ButtonUnstyled>
             </li>

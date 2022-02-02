@@ -29,14 +29,16 @@ export function DrawerManageNetwork({
               display: 'flex',
               justifyContent: 'flex-start',
               alignItems: 'center'
-            }}>
+            }}
+          >
             <span>{n}</span>
             <ButtonUnstyled
               onClick={() => {
                 setSelectedNetwork(n)
                 setView('edit')
               }}
-              style={{ marginLeft: 'auto' }}>
+              style={{ marginLeft: 'auto' }}
+            >
               Edit
             </ButtonUnstyled>
           </BulletListItem>

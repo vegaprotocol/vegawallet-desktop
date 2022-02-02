@@ -28,7 +28,8 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
           justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: 20
-        }}>
+        }}
+      >
         <DropdownMenu
           trigger={
             <Button
@@ -39,7 +40,8 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                 gap: 5,
                 minWidth: 75,
                 background: Colors.BLACK
-              }}>
+              }}
+            >
               <span>{network}</span>
               <DropdownArrow
                 style={{ width: 13, height: 13, marginLeft: 10 }}
@@ -59,7 +61,8 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                     }}
                     onClick={() =>
                       networkDispatch(changeNetworkAction(network))
-                    }>
+                    }
+                  >
                     {network}
                   </ButtonUnstyled>
                 </DropdownItem>
