@@ -17,10 +17,10 @@ jobs:
       GO111MODULE: on # Needed by Wails
       CGO_ENABLED: 1 # Needed by Wails
     steps:
-      - name: Set up Node 14
+      - name: Set up Node 16
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
         id: npm
 
       - name: Set up Go ^1.17
@@ -63,10 +63,10 @@ jobs:
       GO111MODULE: on # Needed by Wails
       CGO_ENABLED: 1 # Needed by Wails
     steps:
-      - name: Set up Node 14
+      - name: Set up Node 16
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
         id: npm
 
       - name: Set up Go ^1.17
@@ -104,10 +104,10 @@ jobs:
       GO111MODULE: on # Needed by Wails
       CGO_ENABLED: 1 # Needed by Wails
     steps:
-      - name: Set up Node 14
+      - name: Set up Node 16
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
         id: npm
 
       - name: Set up Go ^1.17
