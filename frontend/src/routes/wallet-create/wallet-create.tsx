@@ -27,7 +27,10 @@ export const WalletCreate = () => {
   return (
     <>
       <Header style={{ marginTop: 0 }}>Create wallet</Header>
-      <WalletCreateForm submit={submit} />
+      <WalletCreateForm
+        submit={submit}
+        cancel={() => history.push(Paths.Wallet)}
+      />
     </>
   )
 }

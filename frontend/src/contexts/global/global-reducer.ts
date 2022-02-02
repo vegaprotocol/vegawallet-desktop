@@ -156,7 +156,7 @@ export function globalReducer(
           ...state.wallets.filter(w => w.name !== wallet.name),
           {
             ...wallet,
-            active: true
+            auth: true
           }
         ].sort(sortWallet)
       }
@@ -174,7 +174,7 @@ export function globalReducer(
           ...state.wallets.filter(w => w.name !== wallet.name),
           {
             ...wallet,
-            active: false,
+            auth: false,
             keypairs: null // remove keypairs so if you deactivate you are required password again
           }
         ].sort(sortWallet)

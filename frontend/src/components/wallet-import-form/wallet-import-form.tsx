@@ -2,6 +2,7 @@ import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Intent } from '../../config/intent'
 import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
 
 interface FormFields {
@@ -19,9 +20,10 @@ interface WalletImportFormProps {
     recoveryPhrase: string
     version: number
   }) => Promise<void>
+  cancel: () => void
 }
 
-export function WalletImportForm({ submit }: WalletImportFormProps) {
+export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
   const {
     control,
     register,
@@ -89,9 +91,10 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
           })}
         />
       </FormGroup>
-      <div>
+      <ButtonGroup>
         <Button type='submit'>Submit</Button>
-      </div>
+        <Button onClick={cancel}>Cancel</Button>
+      </ButtonGroup>
     </form>
   )
 }

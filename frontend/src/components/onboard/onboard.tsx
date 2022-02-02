@@ -155,7 +155,7 @@ function OnboardWalletCreate() {
           }
         />
       ) : (
-        <WalletCreateForm submit={submit} />
+        <WalletCreateForm submit={submit} cancel={() => history.push('/')} />
       )}
     </OnboardPanel>
   )
@@ -173,7 +173,7 @@ function OnboardWalletImport() {
 
   return (
     <OnboardPanel title='Import a wallet'>
-      <WalletImportForm submit={submit} />
+      <WalletImportForm submit={submit} cancel={() => history.push('/')} />
     </OnboardPanel>
   )
 }

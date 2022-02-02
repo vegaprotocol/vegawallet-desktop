@@ -18,7 +18,10 @@ export const WalletImport = () => {
   return (
     <>
       <Header style={{ marginTop: 0 }}>Import wallet</Header>
-      <WalletImportForm submit={submit} />
+      <WalletImportForm
+        submit={submit}
+        cancel={() => history.push(Paths.Wallet)}
+      />
     </>
   )
 }
