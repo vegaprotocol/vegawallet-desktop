@@ -14,11 +14,17 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         style={{
           paddingBottom: DRAWER_HEIGHT,
           height: '100%',
-          background: Colors.BLACK,
-          overflowY: 'auto'
+          background: Colors.BLACK
         }}
       >
-        <main style={{ gridColumn: '2 / 3', padding: 20, overflowY: 'auto' }}>
+        <main
+          style={{
+            gridColumn: '2 / 3',
+            height: '100%',
+            padding: 20,
+            overflowY: 'auto'
+          }}
+        >
           {children}
         </main>
       </div>

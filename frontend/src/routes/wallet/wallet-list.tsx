@@ -17,6 +17,8 @@ import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
 import { Copy } from '../../components/icons/copy'
 import { ButtonGroup } from '../../components/button-group'
+import { Lock } from '../../components/icons/lock'
+import { Unlock } from '../../components/icons/unlock'
 
 export const WalletList = () => {
   const {
@@ -33,46 +35,80 @@ export const WalletList = () => {
   }
 
   return (
-    <>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: 'min-content 1fr min-content',
+        height: '100%'
+      }}
+    >
       <Header style={{ marginTop: 0 }}>Wallets</Header>
-      {wallets.length ? (
-        <BulletList>
-          {wallets.map(wallet => (
-            <BulletListItem
-              key={wallet.name}
-              style={{
-                marginBottom: 10
-              }}
-            >
-              <div
+      <div>
+        {wallets.length ? (
+          <BulletList>
+            {wallets.map(wallet => (
+              <BulletListItem
+                key={wallet.name}
                 style={{
-                  flex: 1,
-                  display: 'flex',
-                  justifyContent: 'space-between'
+                  marginBottom: 10
                 }}
               >
-                <span>{wallet.name}</span>
-                <ButtonUnstyled
-                  className='link'
-                  onClick={() => toggleKeys(wallet)}
-                  style={{ color: 'inherit' }}
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  {wallet.auth ? 'Hide keys' : 'Show keys'}
-                </ButtonUnstyled>
-              </div>
-              {wallet.auth && <WalletDetail wallet={wallet} />}
-            </BulletListItem>
-          ))}
-        </BulletList>
-      ) : (
-        <p>No wallets</p>
-      )}
-      <AddButton />
-    </>
+                  <span>{wallet.name}</span>
+                  <KeypairToggle
+                    wallet={wallet}
+                    onClick={() => toggleKeys(wallet)}
+                  />
+                </div>
+                {wallet.auth && <WalletDetail wallet={wallet} />}
+              </BulletListItem>
+            ))}
+          </BulletList>
+        ) : (
+          <p>No wallets</p>
+        )}
+      </div>
+      <AddButtons />
+    </div>
   )
 }
 
-function AddButton() {
+interface KeypairToggleProps {
+  wallet: Wallet
+  onClick: () => void
+}
+
+function KeypairToggle({ wallet, onClick }: KeypairToggleProps) {
+  const { dispatch } = useGlobal()
+  const iconStyles: React.CSSProperties = {
+    position: 'relative',
+    top: -2,
+    width: 12,
+    height: 12
+  }
+
+  return (
+    <ButtonUnstyled onClick={onClick} style={{ textDecoration: 'none' }}>
+      {wallet.auth ? (
+        <>
+          Hide keys <Unlock style={iconStyles} />
+        </>
+      ) : (
+        <>
+          Show keys <Lock style={iconStyles} />
+        </>
+      )}
+    </ButtonUnstyled>
+  )
+}
+
+function AddButtons() {
   const history = useHistory()
   return (
     <div style={{ marginTop: 20 }}>
