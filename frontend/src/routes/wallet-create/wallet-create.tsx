@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { Paths } from '../router-config'
 import { Button } from '../../components/button'
 
-export const WalletCreator = () => {
+export const WalletCreate = () => {
   const history = useHistory()
   const { response, submit } = useCreateWallet()
 

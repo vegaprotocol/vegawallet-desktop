@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Header } from '../../components/header'
 import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
@@ -16,6 +16,7 @@ import { WalletPaths } from '.'
 import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
 import { Copy } from '../../components/icons/copy'
+import { ButtonGroup } from '../../components/button-group'
 
 export const WalletList = () => {
   const {
@@ -72,11 +73,33 @@ export const WalletList = () => {
 }
 
 function AddButton() {
+  const history = useHistory()
   return (
     <div style={{ marginTop: 20 }}>
-      <Link to={Paths.WalletImport}>
-        <Button style={{ width: '100%' }}>Add / Import Wallet</Button>
-      </Link>
+      <ButtonGroup orientation='vertical'>
+        {[
+          {
+            path: Paths.WalletCreate,
+            text: 'Create new',
+            testId: 'create-new-wallet'
+          },
+          {
+            path: Paths.WalletImport,
+            text: 'Import by recovery phrase',
+            testId: 'import-wallet'
+          }
+        ].map(route => {
+          return (
+            <Button
+              data-testid={route.testId}
+              key={route.path}
+              onClick={() => history.push(route.path)}
+            >
+              {route.text}
+            </Button>
+          )
+        })}
+      </ButtonGroup>
     </div>
   )
 }

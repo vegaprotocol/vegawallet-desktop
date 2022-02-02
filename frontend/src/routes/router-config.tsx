@@ -1,14 +1,22 @@
 import { Wallet } from './wallet'
 import { WalletImport } from './wallet-import'
 import { Home } from './home'
+import { WalletCreate } from './wallet-create'
 
 export enum Paths {
   Home = '/',
   Wallet = '/wallet',
+  WalletCreate = '/wallet-create',
   WalletImport = '/wallet-import'
 }
 
 const routerConfig = [
+  {
+    path: Paths.WalletCreate,
+    name: 'WalletCreate',
+    component: WalletCreate,
+    exact: false
+  },
   {
     path: Paths.WalletImport,
     name: 'WalletImport',
