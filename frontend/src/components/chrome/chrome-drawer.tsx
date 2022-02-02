@@ -28,6 +28,7 @@ export function ChromeDrawer() {
 
   return (
     <div
+      className='vega-border-image'
       style={{
         background: Colors.DARK_GRAY_1,
         position: 'fixed',
@@ -39,7 +40,7 @@ export function ChromeDrawer() {
         transition,
         fontSize: 14,
         overflowY: 'auto',
-        borderTop: `1px solid ${Colors.DARK_GRAY_3}`
+        borderTop: '3px solid'
       }}
     >
       {state.drawerOpen ? (

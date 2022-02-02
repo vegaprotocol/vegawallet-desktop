@@ -11,10 +11,12 @@ export function Chrome({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div
+        className='vega-border-image'
         style={{
           paddingBottom: DRAWER_HEIGHT,
           height: '100%',
-          background: Colors.BLACK
+          background: Colors.BLACK,
+          borderTop: '3px solid'
         }}
       >
         <main
