@@ -1,12 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict>
-	<key>CFBundlePackageType</key><string>APPL</string>
-	<key>CFBundleName</key><string>Vegawallet</string>
-	<key>CFBundleExecutable</key><string>vegawallet-desktop</string>
-	<key>CFBundleIdentifier</key><string>wails.Vegawallet.0.1.0</string>
-	<key>CFBundleVersion</key><string>0.1.0</string>
-	<key>CFBundleGetInfoString</key><string>Desktop application for Vegawallet</string>
-	<key>CFBundleShortVersionString</key><string>0.1.0</string>
-	<key>CFBundleIconFile</key><string>appicon.icns</string>
-	<key>NSHighResolutionCapable</key><string>true</string>
-</dict></plist>
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>vegawallet-desktop</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Application to manage your Vega Protocol wallet</string>
+	<key>CFBundleIconFile</key>
+	<string>iconfile.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>io.vegaprotocol.vegawallet.desktop</string>
+	<key>CFBundleName</key>
+	<string>Vegawallet</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1.0+dev</string>
+	<key>CFBundleVersion</key>
+	<string>0.1.0+dev</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.11</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
+</dict>
+</plist>
