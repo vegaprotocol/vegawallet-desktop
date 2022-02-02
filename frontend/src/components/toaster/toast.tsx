@@ -66,7 +66,7 @@ export function Toast({
       <div
         style={{
           display: 'flex',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           gap: 10,
           padding: '5px 15px',
           background: IntentBackgrounds[intent]

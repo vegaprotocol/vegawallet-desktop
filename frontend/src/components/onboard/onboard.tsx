@@ -201,7 +201,13 @@ interface OnboardPanelProps {
 function OnboardPanel({ children }: OnboardPanelProps) {
   return (
     <div
-      style={{ width: '90vw', background: Colors.BLACK, padding: '30px 25px' }}
+      style={{
+        width: '90vw',
+        maxWidth: 420,
+        background: Colors.BLACK,
+        padding: '30px 25px',
+        border: `1px solid ${Colors.LIGHT_GRAY_3}`
+      }}
     >
       {children}
     </div>

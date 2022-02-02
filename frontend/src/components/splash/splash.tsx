@@ -20,8 +20,9 @@ export function Splash({ children, style, ...props }: SplashProps) {
         alignItems: 'center',
         padding: 20,
         ...style
-      }}>
-      <div style={{ marginTop: 40 }}>{children}</div>
+      }}
+    >
+      <div style={{ marginTop: 70 }}>{children}</div>
     </div>
   )
 }

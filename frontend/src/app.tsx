@@ -22,35 +22,35 @@ function AppLoader({ children }: { children: any }) {
   // useCheckForUpdate()
   const { state, dispatch } = useGlobal()
 
-  React.useEffect(() => {
-    dispatch(initAppAction())
-  }, [dispatch])
+  // React.useEffect(() => {
+  //   dispatch(initAppAction())
+  // }, [dispatch])
 
-  if (state.status === AppStatus.Pending) {
-    return (
-      <Splash>
-        <SplashLoader />
-      </Splash>
-    )
-  }
+  // if (state.status === AppStatus.Pending) {
+  //   return (
+  //     <Splash>
+  //       <SplashLoader />
+  //     </Splash>
+  //   )
+  // }
 
-  if (state.status === AppStatus.Failed) {
-    return (
-      <Splash>
-        <p>Failed to initialise</p>
-      </Splash>
-    )
-  }
+  // if (state.status === AppStatus.Failed) {
+  //   return (
+  //     <Splash>
+  //       <p>Failed to initialise</p>
+  //     </Splash>
+  //   )
+  // }
 
-  if (state.status === AppStatus.Onboarding) {
-    return (
-      <Splash className='vega-bg' style={{ backgroundSize: 'cover' }}>
-        <Onboard />
-      </Splash>
-    )
-  }
+  // if (state.status === AppStatus.Onboarding) {
+  return (
+    <Splash className='vega-bg' style={{ backgroundSize: 'cover' }}>
+      <Onboard />
+    </Splash>
+  )
+  // }
 
-  return children
+  // return children
 }
 
 /**

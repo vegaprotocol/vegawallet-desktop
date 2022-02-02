@@ -33,14 +33,14 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <FormGroup
-        label='* Name'
+        label='Name'
         labelFor='wallet'
         helperText={errors.wallet?.message}
       >
         <input type='text' {...register('wallet', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
-        label='* Recovery phrase'
+        label='Recovery phrase'
         labelFor='recoveryPhrase'
         helperText={errors.recoveryPhrase?.message}
         intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
@@ -51,7 +51,7 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
         />
       </FormGroup>
       <FormGroup
-        label='* Version'
+        label='Version'
         labelFor='version'
         intent={errors.version?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.version?.message}
@@ -62,7 +62,7 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
         />
       </FormGroup>
       <FormGroup
-        label='* Choose passphrase'
+        label='Choose passphrase'
         labelFor='passphrase'
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.passphrase?.message}
@@ -73,7 +73,7 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
         />
       </FormGroup>
       <FormGroup
-        label='* Confirm passphrase'
+        label='Confirm passphrase'
         labelFor='confirmPassphrase'
         intent={errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.confirmPassphrase?.message}

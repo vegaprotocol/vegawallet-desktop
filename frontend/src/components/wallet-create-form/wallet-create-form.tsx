@@ -27,7 +27,7 @@ export function WalletCreateForm({ submit }: WalletCreateFormProps) {
   return (
     <form data-testid='create-wallet-form' onSubmit={handleSubmit(submit)}>
       <FormGroup
-        label='* Name'
+        label='Name'
         labelFor='wallet'
         intent={errors.wallet?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.wallet?.message}
@@ -40,7 +40,7 @@ export function WalletCreateForm({ submit }: WalletCreateFormProps) {
         />
       </FormGroup>
       <FormGroup
-        label='* Passphrase'
+        label='Passphrase'
         labelFor='passphrase'
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.passphrase?.message}
@@ -52,7 +52,7 @@ export function WalletCreateForm({ submit }: WalletCreateFormProps) {
         />
       </FormGroup>
       <FormGroup
-        label='* Confirm passphrase'
+        label='Confirm passphrase'
         labelFor='confirmPassphrase'
         intent={errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.confirmPassphrase?.message}

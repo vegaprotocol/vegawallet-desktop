@@ -2,13 +2,15 @@ import React, { ButtonHTMLAttributes, ForwardedRef } from 'react'
 import { Colors } from '../../config/colors'
 
 const style: React.CSSProperties = {
-  background: Colors.DARK_GRAY_1,
-  border: `1px solid ${Colors.DARK_GRAY_3}`,
-  borderRadius: 2,
+  background: 'transparent',
+  border: `1px solid ${Colors.WHITE}`,
+  borderRadius: 0,
   color: Colors.WHITE,
   cursor: 'pointer',
   fontSize: 16,
-  padding: '7px 17px'
+  padding: '7px 17px',
+  textTransform: 'uppercase',
+  minWidth: 145
 }
 
 export const Button = React.forwardRef(

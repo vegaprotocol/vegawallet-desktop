@@ -10,7 +10,7 @@ export const Header = ({ children, style }: Header) => {
     <h1
       style={{
         fontSize: 22,
-        margin: '30px 0 10px 0',
+        margin: '30px 0 20px 0',
         textTransform: 'uppercase',
         letterSpacing: '0.3em',
         lineHeight: 1.2,
