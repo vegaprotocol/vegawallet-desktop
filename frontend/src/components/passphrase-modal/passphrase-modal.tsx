@@ -96,6 +96,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
       >
         <input
+          data-testid='input-passphrase'
           type='password'
           autoComplete='off'
           autoFocus={true}

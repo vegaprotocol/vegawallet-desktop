@@ -26,6 +26,7 @@ export const WalletList = () => {
         <ul className='wallet-list'>
           {wallets.map(wallet => (
             <li
+              data-testid={wallet.name}
               key={wallet.name}
               style={{
                 marginBottom: 10

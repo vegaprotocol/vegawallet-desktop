@@ -50,7 +50,7 @@ export function WalletDetail() {
             {state.wallet.keypairs.map(kp => {
               return (
                 <tr key={kp.publicKey}>
-                  <td style={{ textAlign: 'left', padding: 0 }}>
+                  <td data-testid={kp.name} style={{ textAlign: 'left', padding: 0 }}>
                     <Link to={`${WalletPaths.Keypair}/${kp.publicKey}`}>
                       {kp.name}
                     </Link>
@@ -58,6 +58,7 @@ export function WalletDetail() {
                   <td style={{ padding: 0 }}>
                     <CopyWithTooltip text={kp.publicKey}>
                       <ButtonUnstyled
+                        data-testid={`${kp.name}-public-key`}
                         style={{
                           color: Colors.TEXT_COLOR_DEEMPHASISE,
                           fontFamily: Fonts.MONO

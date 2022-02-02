@@ -59,6 +59,7 @@ function AppLink({ children, to }: NavLinkProps) {
   return (
     <div>
       <NavLink
+        data-testid={children}
         to={to}
         style={isActive => ({
           display: 'block',
@@ -82,6 +83,7 @@ function NavExternalLink({ children, href }: ExternalLinkProps) {
   return (
     <div>
       <ExternalLink
+        data-testid={children}
         href={href}
         style={{
           display: 'flex',

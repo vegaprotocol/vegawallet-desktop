@@ -3,5 +3,6 @@
   "projectId": "t5pfg7",
   "env": {
     "TAGS": "not @todo and not @ignore and not @manual"
-  }
+  },
+  "fixturesFolder": false
 }
