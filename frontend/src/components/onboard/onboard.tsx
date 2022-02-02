@@ -205,6 +205,7 @@ function OnboardPanel({ children, title }: OnboardPanelProps) {
     <div
       style={{
         width: '90vw',
+        minWidth: 352,
         maxWidth: 520,
         background: Colors.BLACK,
         border: `1px solid ${Colors.LIGHT_GRAY_3}`

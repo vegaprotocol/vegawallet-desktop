@@ -19,10 +19,11 @@ export function Splash({ children, style, ...props }: SplashProps) {
         flexDirection: 'column',
         alignItems: 'center',
         padding: 20,
+        overflowY: 'auto',
         ...style
       }}
     >
-      <div style={{ marginTop: 70 }}>{children}</div>
+      <div style={{ marginTop: '13%' }}>{children}</div>
     </div>
   )
 }
