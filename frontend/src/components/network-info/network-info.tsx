@@ -4,8 +4,7 @@ import { Intent } from '../../config/intent'
 import { useNetwork } from '../../contexts/network/network-context'
 import {
   startProxyAction,
-  stopProxyAction,
-  stopServiceAction
+  stopProxyAction
 } from '../../contexts/service/service-actions'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { Network } from '../../models/network'
