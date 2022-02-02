@@ -116,7 +116,7 @@ export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
         </CollapsiblePrimitive.Content>
       </CollapsiblePrimitive.Root>
       <div>
-        <Button type='submit'>Submit</Button>
+        <Button type='submit'>Import</Button>
       </div>
     </form>
   )

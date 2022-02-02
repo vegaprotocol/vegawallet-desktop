@@ -20,31 +20,37 @@ export function DrawerManageNetwork({
   } = useNetwork()
   return (
     <>
-      <Header style={{ marginTop: 0 }}>Networks</Header>
-      <BulletList>
-        {networks.map(n => (
-          <BulletListItem
-            key={n}
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}
-          >
-            <span>{n}</span>
-            <ButtonUnstyled
-              onClick={() => {
-                setSelectedNetwork(n)
-                setView('edit')
-              }}
-              style={{ marginLeft: 'auto' }}
-            >
-              Edit
-            </ButtonUnstyled>
-          </BulletListItem>
-        ))}
-      </BulletList>
-      <Header>Add a network</Header>
+      {networks.length ? (
+        <>
+          <Header style={{ marginTop: 0 }}>Networks</Header>
+          <BulletList>
+            {networks.map(n => (
+              <BulletListItem
+                key={n}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center'
+                }}
+              >
+                <span>{n}</span>
+                <ButtonUnstyled
+                  onClick={() => {
+                    setSelectedNetwork(n)
+                    setView('edit')
+                  }}
+                  style={{ marginLeft: 'auto' }}
+                >
+                  Edit
+                </ButtonUnstyled>
+              </BulletListItem>
+            ))}
+          </BulletList>
+        </>
+      ) : null}
+      <Header style={{ marginTop: !networks.length ? 0 : undefined }}>
+        Add a network
+      </Header>
       <NetworkImportForm />
     </>
   )

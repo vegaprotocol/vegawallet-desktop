@@ -116,8 +116,7 @@ function OnboardSettings() {
   )
 
   return (
-    <OnboardPanel>
-      <Header style={{ marginTop: 0 }}>Advanced settings</Header>
+    <OnboardPanel title='Advanced settings'>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='Vega home'
@@ -139,21 +138,18 @@ function OnboardWalletCreate() {
   const { submit, response } = useCreateWallet()
 
   return (
-    <OnboardPanel>
+    <OnboardPanel title='Create wallet'>
       {response ? (
         <WalletCreateFormSuccess
           response={response}
           callToAction={
             <Button onClick={() => history.push('/onboard/network')}>
-              Import network
+              Next: Import network
             </Button>
           }
         />
       ) : (
-        <>
-          <Header style={{ marginTop: 0 }}>Create wallet</Header>
-          <WalletCreateForm submit={submit} />
-        </>
+        <WalletCreateForm submit={submit} />
       )}
     </OnboardPanel>
   )
@@ -170,8 +166,7 @@ function OnboardWalletImport() {
   }, [response, history])
 
   return (
-    <OnboardPanel>
-      <Header style={{ marginTop: 0 }}>Import a wallet</Header>
+    <OnboardPanel title='Import a wallet'>
       <WalletImportForm submit={submit} />
     </OnboardPanel>
   )
@@ -187,8 +182,7 @@ function OnboardNetwork() {
   }, [history, dispatch])
 
   return (
-    <OnboardPanel>
-      <Header style={{ marginTop: 0 }}>Import a network</Header>
+    <OnboardPanel title='Import a network'>
       <NetworkImportForm onComplete={onComplete} />
     </OnboardPanel>
   )
@@ -196,20 +190,34 @@ function OnboardNetwork() {
 
 interface OnboardPanelProps {
   children: React.ReactNode
+  title: React.ReactNode
 }
 
-function OnboardPanel({ children }: OnboardPanelProps) {
+function OnboardPanel({ children, title }: OnboardPanelProps) {
+  const history = useHistory()
   return (
     <div
       style={{
         width: '90vw',
-        maxWidth: 420,
+        maxWidth: 520,
         background: Colors.BLACK,
-        padding: '30px 25px',
         border: `1px solid ${Colors.LIGHT_GRAY_3}`
       }}
     >
-      {children}
+      <div
+        style={{
+          display: 'flex',
+          padding: '10px 25px',
+          borderBottom: `1px solid ${Colors.WHITE}`
+        }}
+      >
+        <span style={{ flex: 1 }}>
+          <ButtonUnstyled onClick={() => history.goBack()}>Back</ButtonUnstyled>
+        </span>
+        <span>{title}</span>
+        <span style={{ flex: 1 }} />
+      </div>
+      <div style={{ padding: '30px 25px' }}>{children}</div>
     </div>
   )
 }
