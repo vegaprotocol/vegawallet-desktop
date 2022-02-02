@@ -6,31 +6,20 @@ import { ServiceStatus } from './service-status'
 import { DrawerHead } from './drawer-head'
 import { DrawerContent } from './drawer-content'
 import { usePrevious } from '../../hooks/use-previous'
+import { useWindowSize } from '../../hooks/use-window-size'
 
 /**
  * Renders and controls the slide up drawer showing network information.
  */
 export function ChromeDrawer() {
   const { state } = useGlobal()
+  const { height } = useWindowSize()
   const prevDrawerState = usePrevious(state.drawerOpen)
-  const [windowHeight, setWindowHeight] = React.useState(window.innerHeight)
-
-  React.useEffect(() => {
-    function handleResize() {
-      setWindowHeight(window.innerHeight)
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
 
   // Move the drawer up to full screen if open, otherwise 'minimise' only showing the top DRAWER_HEIGHTpx
   const transform = state.drawerOpen
     ? 'translateY(0)'
-    : `translateY(${windowHeight - DRAWER_HEIGHT}px)`
+    : `translateY(${height - DRAWER_HEIGHT}px)`
 
   // Only apply the transition animation if the drawer is opening or closing, this way resizing
   // the window instantly renders the drawer in the correct position
