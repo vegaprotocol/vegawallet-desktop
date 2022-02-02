@@ -35,50 +35,49 @@ export const WalletList = () => {
     <>
       <Header style={{ marginTop: 0 }}>Wallets</Header>
       {wallets.length ? (
-        <>
-          <BulletList>
-            {wallets.map(wallet => (
-              <BulletListItem
-                key={wallet.name}
+        <BulletList>
+          {wallets.map(wallet => (
+            <BulletListItem
+              key={wallet.name}
+              style={{
+                marginBottom: 10
+              }}
+            >
+              <div
                 style={{
-                  marginBottom: 10
+                  flex: 1,
+                  display: 'flex',
+                  justifyContent: 'space-between'
                 }}
               >
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
+                <span>{wallet.name}</span>
+                <ButtonUnstyled
+                  className='link'
+                  onClick={() => toggleKeys(wallet)}
+                  style={{ color: 'inherit' }}
                 >
-                  <span>{wallet.name}</span>
-                  <ButtonUnstyled
-                    className='link'
-                    onClick={() => toggleKeys(wallet)}
-                    style={{ color: 'inherit' }}
-                  >
-                    {wallet.auth ? 'Hide keys' : 'Show keys'}
-                  </ButtonUnstyled>
-                </div>
-                {wallet.auth && <WalletDetail wallet={wallet} />}
-              </BulletListItem>
-            ))}
-          </BulletList>
-          <div>
-            <Link to={Paths.WalletImport}>
-              <Button>Add / Import Wallet</Button>
-            </Link>
-          </div>
-        </>
+                  {wallet.auth ? 'Hide keys' : 'Show keys'}
+                </ButtonUnstyled>
+              </div>
+              {wallet.auth && <WalletDetail wallet={wallet} />}
+            </BulletListItem>
+          ))}
+        </BulletList>
       ) : (
-        <>
-          <p>No wallets</p>
-          <Link to={Paths.WalletImport}>
-            <Button>Add / Import Wallet</Button>
-          </Link>
-        </>
+        <p>No wallets</p>
       )}
+      <AddButton />
     </>
+  )
+}
+
+function AddButton() {
+  return (
+    <div style={{ marginTop: 20 }}>
+      <Link to={Paths.WalletImport}>
+        <Button style={{ width: '100%' }}>Add / Import Wallet</Button>
+      </Link>
+    </div>
   )
 }
 
