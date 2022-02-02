@@ -1,7 +1,12 @@
 import React from 'react'
+import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useNetwork } from '../../contexts/network/network-context'
-import { startProxyAction } from '../../contexts/service/service-actions'
+import {
+  startProxyAction,
+  stopProxyAction,
+  stopServiceAction
+} from '../../contexts/service/service-actions'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { Network } from '../../models/network'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -64,7 +69,10 @@ function DAppsTable({ config }: DAppsTableProps) {
   const {
     state: { network }
   } = useNetwork()
-  const { dispatch } = useService()
+  const {
+    dispatch,
+    state: { proxy }
+  } = useService()
 
   function startProxy(app: ProxyApp) {
     if (!network || !config || app === ProxyApp.None) {
@@ -82,31 +90,61 @@ function DAppsTable({ config }: DAppsTableProps) {
 
     dispatch(startProxyAction(network, app, port))
   }
+
+  function stop() {
+    if (!network || !config) {
+      AppToaster.show({
+        message: 'No network config found',
+        intent: Intent.DANGER
+      })
+      return
+    }
+
+    dispatch(stopProxyAction(network, config.Port))
+  }
+
   return (
     <table>
       <tbody>
         <tr>
-          <th>Console</th>
+          <th>
+            Console{' '}
+            <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+              ({config.Console.URL})
+            </span>
+          </th>
           <td>
-            <ButtonUnstyled
-              style={{ textAlign: 'right' }}
-              onClick={() => startProxy(ProxyApp.Console)}
-            >
-              Start {config.Console.URL} on http://127.0.0.1:
-              {config.Console.LocalPort}
-            </ButtonUnstyled>
+            {proxy === ProxyApp.Console ? (
+              <ButtonUnstyled onClick={stop} style={{ textAlign: 'right' }}>
+                Stop
+              </ButtonUnstyled>
+            ) : (
+              <ButtonUnstyled
+                onClick={() => startProxy(ProxyApp.Console)}
+                style={{ textAlign: 'right' }}
+              >
+                Start
+              </ButtonUnstyled>
+            )}
           </td>
         </tr>
         <tr>
-          <th>Token App</th>
+          <th>
+            Token dApp{' '}
+            <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+              ({config.TokenDApp.URL})
+            </span>
+          </th>
           <td>
-            <ButtonUnstyled
-              style={{ textAlign: 'right' }}
-              onClick={() => startProxy(ProxyApp.TokenDApp)}
-            >
-              Start {config.TokenDApp.URL} on http://127.0.0.1:
-              {config.TokenDApp.LocalPort}
-            </ButtonUnstyled>
+            {proxy === ProxyApp.TokenDApp ? (
+              <ButtonUnstyled onClick={stop} style={{ textAlign: 'right' }}>
+                Stop
+              </ButtonUnstyled>
+            ) : (
+              <ButtonUnstyled onClick={() => startProxy(ProxyApp.TokenDApp)}>
+                Start
+              </ButtonUnstyled>
+            )}
           </td>
         </tr>
       </tbody>
