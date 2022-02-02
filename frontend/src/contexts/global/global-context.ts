@@ -17,14 +17,14 @@ export interface KeyPair extends NamedKeyPair {
 export interface Wallet {
   name: string
   keypairs: KeyPair[] | null
-  keypair: KeyPair | null
+  auth: boolean
 }
 
 export interface GlobalState {
   status: AppStatus
   version: string
-  wallets: Wallet[]
   wallet: Wallet | null
+  wallets: Wallet[]
   passphraseModalOpen: boolean
   drawerOpen: boolean
 }
