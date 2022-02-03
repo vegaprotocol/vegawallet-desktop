@@ -10,7 +10,6 @@ import {
 } from '../../contexts/global/global-actions'
 import { useGlobal, Wallet } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
-import { BulletList, BulletListItem } from '../../components/bulle-list'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { WalletPaths } from '.'
 import { Colors } from '../../config/colors'
@@ -26,7 +25,7 @@ export const WalletList = () => {
     dispatch
   } = useGlobal()
 
-  function toggleKeys(wallet: Wallet) {
+  function toggleLockKeypair(wallet: Wallet) {
     if (wallet.auth) {
       dispatch(deactivateWalletAction(wallet.name))
     } else {
@@ -42,49 +41,91 @@ export const WalletList = () => {
         height: '100%'
       }}
     >
-      <Header style={{ marginTop: 0 }}>Wallets</Header>
+      <div style={{ padding: 20 }}>
+        <Header
+          style={{
+            margin: 0
+          }}
+        >
+          Wallets
+        </Header>
+      </div>
       <div>
         {wallets.length ? (
-          <BulletList>
+          <ul>
             {wallets.map(wallet => (
-              <BulletListItem
+              <WalletListItem
                 key={wallet.name}
-                style={{
-                  marginBottom: 10
-                }}
-              >
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <span>{wallet.name}</span>
-                  <KeypairToggle
-                    wallet={wallet}
-                    onClick={() => toggleKeys(wallet)}
-                  />
-                </div>
-                {wallet.auth && <WalletDetail wallet={wallet} />}
-              </BulletListItem>
+                wallet={wallet}
+                onWalletSelect={toggleLockKeypair}
+              />
             ))}
-          </BulletList>
+          </ul>
         ) : (
           <p>No wallets</p>
         )}
       </div>
-      <AddButtons />
+      <div style={{ padding: 20 }}>
+        <AddButtons />
+      </div>
     </div>
   )
 }
 
-interface KeypairToggleProps {
+interface WalletListItemProps {
   wallet: Wallet
-  onClick: () => void
+  onWalletSelect: (wallet: Wallet) => void
 }
 
-function KeypairToggle({ wallet, onClick }: KeypairToggleProps) {
+function WalletListItem({ wallet, onWalletSelect }: WalletListItemProps) {
+  const [hover, setHover] = React.useState(false)
+
+  const getBgColor = (wallet: Wallet) => {
+    if (wallet.auth) {
+      return Colors.DARK_GRAY_2
+    }
+
+    if (hover) {
+      return Colors.DARK_GRAY_3
+    }
+
+    return 'none'
+  }
+
+  return (
+    <li
+      key={wallet.name}
+      tabIndex={0}
+      onClick={() => onWalletSelect(wallet)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        padding: 20,
+        background: getBgColor(wallet),
+        cursor: 'pointer',
+        borderTop: `1px solid ${Colors.BLACK}`
+      }}
+    >
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}
+      >
+        <span>{wallet.name}</span>
+        <KeypairLockStatus wallet={wallet} />
+      </div>
+      {wallet.auth && <WalletDetail wallet={wallet} />}
+    </li>
+  )
+}
+
+interface KeypairLockStatusProps {
+  wallet: Wallet
+}
+
+function KeypairLockStatus({ wallet }: KeypairLockStatusProps) {
   const iconStyles: React.CSSProperties = {
     position: 'relative',
     top: -2,
@@ -93,17 +134,17 @@ function KeypairToggle({ wallet, onClick }: KeypairToggleProps) {
   }
 
   return (
-    <ButtonUnstyled onClick={onClick} style={{ textDecoration: 'none' }}>
+    <div>
       {wallet.auth ? (
         <>
-          Hide keys <Unlock style={iconStyles} />
+          Unlocked <Unlock style={iconStyles} />
         </>
       ) : (
         <>
-          Show keys <Lock style={iconStyles} />
+          Locked <Lock style={iconStyles} />
         </>
       )}
-    </ButtonUnstyled>
+    </div>
   )
 }
 
@@ -149,7 +190,7 @@ function WalletDetail({ wallet }: WalletDetailProps) {
   return (
     <div style={{ marginTop: 20 }}>
       {wallet.keypairs?.length ? (
-        <table style={{ marginBottom: 15 }}>
+        <table>
           <thead>
             <tr>
               <th style={{ padding: 0 }}>Keypair name</th>

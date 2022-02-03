@@ -16,12 +16,12 @@ export const WalletImport = () => {
   }, [response, history])
 
   return (
-    <>
+    <div style={{ padding: 20 }}>
       <Header style={{ marginTop: 0 }}>Import wallet</Header>
       <WalletImportForm
         submit={submit}
         cancel={() => history.push(Paths.Wallet)}
       />
-    </>
+    </div>
   )
 }

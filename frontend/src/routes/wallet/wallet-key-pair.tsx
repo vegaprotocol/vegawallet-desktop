@@ -20,7 +20,7 @@ export function WalletKeyPair() {
   }
 
   return (
-    <>
+    <div style={{ padding: 20 }}>
       <Header style={{ marginTop: 0 }}>
         Keypair name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
@@ -44,6 +44,6 @@ export function WalletKeyPair() {
       <Link to={Paths.Wallet}>
         <Button>Back</Button>
       </Link>
-    </>
+    </div>
   )
 }

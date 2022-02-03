@@ -23,7 +23,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           style={{
             gridColumn: '2 / 3',
             height: '100%',
-            padding: 20,
             overflowY: 'auto'
           }}
         >
