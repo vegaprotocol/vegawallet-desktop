@@ -59,7 +59,7 @@ export const NetworkConfigForm = ({
       })}
     >
       <FormGroup
-        label='* Host'
+        label='Host'
         labelFor='host'
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.host?.message}
@@ -67,7 +67,7 @@ export const NetworkConfigForm = ({
         <input type='text' {...register('host', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
-        label='* Port'
+        label='Port'
         labelFor='port'
         intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.port?.message}
@@ -75,7 +75,7 @@ export const NetworkConfigForm = ({
         <input type='text' {...register('port', { required: 'Required' })} />
       </FormGroup>
       <FormGroup
-        label='* Console URL'
+        label='Console URL'
         labelFor='consoleUrl'
         intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.consoleUrl?.message}
@@ -86,7 +86,7 @@ export const NetworkConfigForm = ({
         />
       </FormGroup>
       <FormGroup
-        label='* Console port'
+        label='Console port'
         labelFor='consolePort'
         intent={errors.consolePort?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.consolePort?.message}
@@ -97,7 +97,7 @@ export const NetworkConfigForm = ({
         />
       </FormGroup>
       <FormGroup
-        label='* Token DApp URL'
+        label='Token DApp URL'
         labelFor='tokenDAppUrl'
         intent={errors.tokenDAppUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenDAppUrl?.message}
@@ -108,7 +108,7 @@ export const NetworkConfigForm = ({
         />
       </FormGroup>
       <FormGroup
-        label='* Token DApp port'
+        label='Token DApp port'
         labelFor='tokenDAppPort'
         intent={errors.tokenDAppPort?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenDAppPort?.message}
@@ -125,7 +125,7 @@ export const NetworkConfigForm = ({
       <h2>REST Nodes</h2>
       <HostEditor name='restHosts' control={control} register={register} />
       <FormGroup
-        label='* Log level'
+        label='Log level'
         labelFor='logLevel'
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.logLevel?.message}
@@ -139,7 +139,7 @@ export const NetworkConfigForm = ({
         </select>
       </FormGroup>
       <FormGroup
-        label='* gRPC Node retries'
+        label='gRPC Node retries'
         labelFor='grpcNodeRetries'
         intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.grpcNodeRetries?.message}
@@ -150,7 +150,7 @@ export const NetworkConfigForm = ({
         />
       </FormGroup>
       <FormGroup
-        label='* Token expiry'
+        label='Token expiry'
         labelFor='tokenExpiry'
         intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenExpiry?.message}

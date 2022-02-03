@@ -69,6 +69,7 @@ export function PassphraseModal() {
             position: 'fixed',
             top: 30,
             left: 'calc(50% - 170px)',
+            boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
             animation: 'fadeIn .2s ease',
             animationFillMode: 'forwards'
           }}
@@ -95,7 +96,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
   return (
     <form onSubmit={handleSubmit(values => onSubmit(values.passphrase))}>
       <FormGroup
-        label='* Passphrase'
+        label='Passphrase'
         labelFor='passphrase'
         helperText={errors.passphrase?.message}
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
