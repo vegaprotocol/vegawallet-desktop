@@ -5,20 +5,22 @@ Feature: Wallets page
     Given I have an existing Vega wallet
     And I am on the wallets page
     Then Wallets should be displayed on the page
-  @todo
-  Scenario: Wrong passphrase
-    Given I click on existing wallet
-    When I enter wrong passphrase
-    Then wrong passphrase is displayed
-  @todo
+
   Scenario: Wallet details page
     Given I click on existing wallet
     When I enter correct passphrase
     Then I am redirected to wallet details page
-  @todo
+
+  Scenario: Wrong passphrase
+    Given I am on the wallets page
+    And I click on existing wallet
+    When I enter wrong passphrase
+    Then wrong passphrase is displayed
+
   Scenario: Generate new key pair
     Given I am on wallet details page
     When I click generate Keypair
+    And enter passphrase
     Then new keypair is generated
   @todo
   Scenario: Copy public key

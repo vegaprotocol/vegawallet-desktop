@@ -85,7 +85,7 @@ export function WalletDetail() {
         <p>No keypairs</p>
       )}
       <p>
-        <Button onClick={generateKeypair}>Generate Keypair</Button>
+        <Button data-testid='generate-keypair' onClick={generateKeypair}>Generate Keypair</Button>
       </p>
     </>
   )

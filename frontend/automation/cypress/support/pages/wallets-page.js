@@ -1,13 +1,25 @@
 export default class WalletPage {
   passphraseInput = 'input-passphrase'
+  passphraseSubmit = 'input-submit'
+  walletList = '.wallet-list > li'
+  generateKeyPairBtn = 'generate-keypair'
+
+  validateUrl(url) {
+    cy.url().should('contain', url)
+  }
 
   clickOnWallet(walletName) {
     cy.getByTestId(walletName).click()
   }
 
   submitPassphrase(passphrase) {
-    cy.getByTestId(this.passphraseInput).type(passphrase)
-    cy.get('Submit').click()
+    cy.get('body')
+      .then(($body) => {
+        if ($body.find(`[data-testid=${this.passphraseInput}]`).length) {
+          cy.getByTestId(this.passphraseInput).type(passphrase)
+          cy.getByTestId(this.passphraseSubmit).click()
+        }
+      })
   }
 
   validateKeyPairDisplayed(keyPairName) {
@@ -24,6 +36,22 @@ export default class WalletPage {
   }
 
   validateWalletsDisplayed() {
-    cy.get('.wallet-list > li').should('have.length.of.at.least', 1)
+    cy.get(this.walletList).should('have.length.of.at.least', 1)
+  }
+
+  clickOnTopWallet() {
+    cy.get(this.walletList).last().find('button').click()
+  }
+
+  verifyErrorToastTxtIsDisplayed(expectedText) {
+    cy.contains('Error').should('have.text', expectedText)
+  }
+
+  clickGenerateKeyPair() {
+    cy.getByTestId(this.generateKeyPairBtn).click()
+  }
+
+  validateNumberOfKeyPairs(expectedNum) {
+    cy.get('tr').should('have.length.at.least', expectedNum)
   }
 }

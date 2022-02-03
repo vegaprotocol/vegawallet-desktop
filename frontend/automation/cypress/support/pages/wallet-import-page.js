@@ -15,6 +15,7 @@ export default class WalletImportPage {
     this.clickCreateNew()
     this.fillInNewWalletDetails(walletname, '123')
     this.clickSubmit()
+    this.verifyWalletCreated()
   }
 
   clickCreateNew() {
@@ -29,5 +30,9 @@ export default class WalletImportPage {
 
   clickSubmit() {
     cy.getByTestId(this.createteWalletSubmit).click()
+  }
+
+  verifyWalletCreated() {
+    cy.contains('Wallet created!')
   }
 }
