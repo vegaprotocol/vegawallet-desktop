@@ -25,24 +25,25 @@ export function DrawerManageNetwork({
           <Header style={{ marginTop: 0 }}>Networks</Header>
           <BulletList>
             {networks.map(n => (
-              <BulletListItem
-                key={n}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center'
-                }}
-              >
-                <span>{n}</span>
-                <ButtonUnstyled
-                  onClick={() => {
-                    setSelectedNetwork(n)
-                    setView('edit')
+              <BulletListItem key={n}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
                   }}
-                  style={{ marginLeft: 'auto' }}
                 >
-                  Edit
-                </ButtonUnstyled>
+                  <span>{n}</span>
+                  <ButtonUnstyled
+                    onClick={() => {
+                      setSelectedNetwork(n)
+                      setView('edit')
+                    }}
+                    style={{ marginLeft: 'auto' }}
+                  >
+                    Edit
+                  </ButtonUnstyled>
+                </div>
               </BulletListItem>
             ))}
           </BulletList>

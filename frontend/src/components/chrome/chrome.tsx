@@ -15,7 +15,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         style={{
           paddingBottom: DRAWER_HEIGHT,
           height: '100%',
-          background: Colors.BLACK,
+          background: Colors.DARK_GRAY_1,
           borderTop: '3px solid'
         }}
       >

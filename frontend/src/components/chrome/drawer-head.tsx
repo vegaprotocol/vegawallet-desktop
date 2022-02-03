@@ -24,7 +24,8 @@ export function DrawerHead({ height, children }: DrawerHeadProps) {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '10px 0 10px 20px',
-        borderBottom: `1px solid ${Colors.DARK_GRAY_3}`
+        borderBottom: `1px solid ${Colors.DARK_GRAY_3}`,
+        fontSize: 14
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>

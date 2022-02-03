@@ -24,13 +24,13 @@ export function ChromeDrawer() {
   // Only apply the transition animation if the drawer is opening or closing, this way resizing
   // the window instantly renders the drawer in the correct position
   const transition =
-    prevDrawerState !== state.drawerOpen ? 'transform .2s ease' : undefined
+    prevDrawerState !== state.drawerOpen ? 'transform .5s ease' : undefined
 
   return (
     <div
       className='vega-border-image'
       style={{
-        background: Colors.DARK_GRAY_1,
+        background: Colors.BLACK,
         position: 'fixed',
         top: 0,
         left: 0,
@@ -38,7 +38,6 @@ export function ChromeDrawer() {
         height: '100%',
         transform,
         transition,
-        fontSize: 14,
         overflowY: 'auto',
         borderTop: '3px solid'
       }}

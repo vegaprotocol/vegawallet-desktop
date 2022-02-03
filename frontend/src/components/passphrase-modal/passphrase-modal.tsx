@@ -1,3 +1,4 @@
+import './passphrase-modal.css'
 import React from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -54,7 +55,9 @@ export function PassphraseModal() {
             bottom: 0,
             left: 0,
             height: '100%',
-            background: 'rgba(54, 54, 54 ,0.8)'
+            background: 'rgba(54, 54, 54 ,0.8)',
+            animation: 'fadeIn .2s ease',
+            animationFillMode: 'forwards'
           }}
         />
         <Dialog.Content
@@ -65,7 +68,9 @@ export function PassphraseModal() {
             width: 340,
             position: 'fixed',
             top: 30,
-            left: 'calc(50% - 170px)'
+            left: 'calc(50% - 170px)',
+            animation: 'fadeIn .2s ease',
+            animationFillMode: 'forwards'
           }}
         >
           <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />

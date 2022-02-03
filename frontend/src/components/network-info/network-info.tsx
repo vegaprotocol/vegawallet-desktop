@@ -109,7 +109,7 @@ function DAppsTable({ config }: DAppsTableProps) {
           <th>
             Console{' '}
             <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.Console.URL})
+              ({config.Console.URL || 'Not set'})
             </span>
           </th>
           <td>
@@ -131,7 +131,7 @@ function DAppsTable({ config }: DAppsTableProps) {
           <th>
             Token dApp{' '}
             <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.TokenDApp.URL})
+              ({config.TokenDApp.URL || 'Not set'})
             </span>
           </th>
           <td>
