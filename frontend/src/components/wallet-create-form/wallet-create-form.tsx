@@ -37,6 +37,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         <input
           data-testid='create-wallet-form-name'
           type='text'
+          autoFocus={true}
           {...register('wallet', { required: 'Required' })}
           autoComplete='off'
         />

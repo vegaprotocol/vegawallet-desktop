@@ -39,7 +39,11 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         labelFor='wallet'
         helperText={errors.wallet?.message}
       >
-        <input type='text' {...register('wallet', { required: 'Required' })} />
+        <input
+          type='text'
+          {...register('wallet', { required: 'Required' })}
+          autoFocus={true}
+        />
       </FormGroup>
       <FormGroup
         label='Recovery phrase'
