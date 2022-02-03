@@ -14,12 +14,12 @@ export function ImportSelect() {
         {[
           {
             path: ImportPaths.Create,
-            text: 'Create new',
+            text: 'Create new wallet',
             testId: 'create-new-wallet'
           },
           {
             path: ImportPaths.RecoveryPhrase,
-            text: 'Import by recovery phrase',
+            text: 'Import with recovery phrase',
             testId: 'import-wallet'
           }
         ].map(route => {
