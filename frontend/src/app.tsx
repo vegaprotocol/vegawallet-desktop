@@ -14,6 +14,8 @@ import { PassphraseModal } from './components/passphrase-modal'
 import { NetworkProvider } from './contexts/network/network-provider'
 import { CheckVersion } from './api/service'
 import { AppToaster } from './components/toaster'
+import { ExternalLink } from './components/external-link'
+import { Intent } from './config/intent'
 
 /**
  * Initialiases the app
@@ -81,10 +83,11 @@ function useCheckForUpdate() {
             message: (
               <>
                 Version {res.version} is now available on{' '}
-                <a href={res.releaseUrl}>Github</a>
+                <ExternalLink href={res.releaseUrl}>Github</ExternalLink>
               </>
             ),
-            timeout: 0
+            timeout: 0,
+            intent: Intent.PRIMARY
           })
         }
       } catch (err) {

@@ -1,47 +1,37 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
 import { GetNetworkConfig } from '../../api/service'
-import { Button } from '../../components/button'
 import { Network } from '../../models/network'
-import { Paths } from '../router-config'
 
 interface NetworkConfigContainerProps {
   children: (config: Network) => React.ReactElement
+  name: string | null
 }
 
 export function NetworkConfigContainer({
-  children
+  children,
+  name
 }: NetworkConfigContainerProps) {
-  const { config, loading } = useNetworkConfig()
+  const { config, loading } = useNetworkConfig(name)
 
   if (loading) {
     return null
   }
 
   if (!config) {
-    return (
-      <>
-        <p>No network configuration found. </p>
-        <p>
-          <Link to={Paths.NetworkImport}>
-            <Button>Import network</Button>
-          </Link>
-        </p>
-      </>
-    )
+    return <p>No network configuration found. </p>
   }
 
   return children(config)
 }
 
-export function useNetworkConfig() {
-  const { name } = useParams<{ name: string }>()
+export function useNetworkConfig(name: string | null) {
   const [config, setConfig] = React.useState<Network | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
     const run = async () => {
+      if (!name) return
       setLoading(true)
       try {
         const res = await GetNetworkConfig(name)

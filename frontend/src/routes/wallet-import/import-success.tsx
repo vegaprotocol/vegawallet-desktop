@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Header } from '../../components/bullet-header'
+import { Header } from '../../components/header'
 import { Button } from '../../components/button'
 import { CodeBlock } from '../../components/code-block'
 import { Paths } from '../router-config'
@@ -12,7 +12,7 @@ export interface ImportSuccessProps {
 export function ImportSuccess({ walletPath }: ImportSuccessProps) {
   return (
     <>
-      <Header>Wallet successfully imported</Header>
+      <Header style={{ marginTop: 0 }}>Wallet successfully imported</Header>
       <p>Wallet location:</p>
       <p>
         <CodeBlock>{walletPath}</CodeBlock>

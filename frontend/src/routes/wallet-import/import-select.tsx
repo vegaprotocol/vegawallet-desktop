@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { ImportPaths } from '.'
-import { Header } from '../../components/bullet-header'
+import { Header } from '../../components/header'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 
@@ -9,7 +9,7 @@ export function ImportSelect() {
   const history = useHistory()
   return (
     <>
-      <Header>Create or import wallet</Header>
+      <Header style={{ marginTop: 0 }}>Create or import wallet</Header>
       <ButtonGroup orientation='vertical'>
         {[
           {

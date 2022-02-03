@@ -3,8 +3,8 @@ module code.vegaprotocol.io/vegawallet-desktop
 go 1.17
 
 require (
-	code.vegaprotocol.io/shared v0.0.0-20220127162227-dbe0bfac4efa
-	code.vegaprotocol.io/vegawallet v0.11.2-0.20220128112154-514ce4770c04
+	code.vegaprotocol.io/shared v0.0.0-20220202150846-b6aba31dcdb0
+	code.vegaprotocol.io/vegawallet v0.11.2-0.20220202151418-b8eb87ed6aa5
 	github.com/blang/semver/v4 v4.0.0
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/wailsapp/wails v1.16.9
@@ -12,7 +12,8 @@ require (
 )
 
 require (
-	code.vegaprotocol.io/protos v0.47.1-0.20220127103033-82bb68d654eb // indirect
+	code.vegaprotocol.io/protos v0.47.1-0.20220128102417-182c89e00442 // indirect
+	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/Masterminds/semver v1.4.2 // indirect
 	github.com/abadojack/whatlanggo v1.0.1 // indirect
 	github.com/adrg/xdg v0.3.3 // indirect
@@ -41,7 +42,6 @@ require (
 	github.com/syossan27/tebata v0.0.0-20180602121909-b283fe4bc5ba // indirect
 	github.com/tyler-smith/go-bip39 v1.1.0 // indirect
 	github.com/vegaprotocol/go-slip10 v0.1.0 // indirect
-	github.com/zannen/toml v0.3.2 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect

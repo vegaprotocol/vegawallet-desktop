@@ -25,6 +25,7 @@ export interface GlobalState {
   wallets: Wallet[]
   wallet: Wallet | null
   passphraseModalOpen: boolean
+  drawerOpen: boolean
 }
 
 export type GlobalDispatch = React.Dispatch<

@@ -39,8 +39,6 @@ function Menu() {
         <AppLink to={Paths.Wallet}>Wallets</AppLink>
         <AppLink to={Paths.WalletImport}>Add / Recover Wallet</AppLink>
         <AppLink to={Paths.Service}>Wallet Service</AppLink>
-        <AppLink to={Paths.Network}>Network Configuration</AppLink>
-        <AppLink to={Paths.NetworkImport}>Add Network</AppLink>
       </nav>
       <nav style={{ padding: 20 }}>
         <NavExternalLink href={Links.DOCS}>Docs</NavExternalLink>

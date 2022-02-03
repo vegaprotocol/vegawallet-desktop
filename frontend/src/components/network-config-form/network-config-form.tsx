@@ -7,9 +7,9 @@ import {
 } from 'react-hook-form'
 import { LogLevels } from '../../config/log-levels'
 import type { Network } from '../../models/network'
-import { FormGroup } from '../../components/form-group'
+import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
-import { Button } from '../../components/button'
+import { Button } from '../button'
 
 interface FormFields {
   logLevel: string

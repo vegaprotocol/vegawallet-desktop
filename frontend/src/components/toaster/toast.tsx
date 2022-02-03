@@ -58,18 +58,18 @@ export function Toast({
         borderRadius: 2,
         maxWidth: '90vw',
         margin: '15px 0 0 0',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        animation: 'drop .3s ease',
+        animationFillMode: 'forwards'
       }}
     >
       <div
         style={{
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           gap: 10,
           padding: '5px 15px',
-          background: IntentBackgrounds[intent],
-          animation: 'drop .3s ease',
-          animationFillMode: 'forwards'
+          background: IntentBackgrounds[intent]
         }}
         onBlur={startTimeout}
         onFocus={cancelTimeout}

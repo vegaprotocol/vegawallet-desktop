@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'react-hook-form'
 import { AppToaster } from '../../components/toaster'
 import { CreateWalletResponse } from '../../models/wallet'
 import { Link } from 'react-router-dom'
-import { Header } from '../../components/bullet-header'
+import { Header } from '../../components/header'
 import { CodeBlock } from '../../components/code-block'
 import { useGlobal } from '../../contexts/global/global-context'
 import { addWalletAction } from '../../contexts/global/global-actions'
@@ -17,8 +17,6 @@ import { Intent } from '../../config/intent'
 import { Button } from '../../components/button'
 import { Callout } from '../../components/callout'
 import { Warning } from '../../components/icons/warning'
-import { Paths } from '../router-config'
-import { useNetwork } from '../../contexts/network/network-context'
 
 interface FormFields {
   wallet: string
@@ -43,7 +41,7 @@ export const WalletCreator = () => {
 
   return (
     <>
-      <Header>Create wallet</Header>
+      <Header style={{ marginTop: 0 }}>Create wallet</Header>
       <form data-testid='create-wallet-form' onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='* Name'
@@ -105,12 +103,9 @@ interface WalletCreateSuccessProps {
 }
 
 function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
-  const {
-    state: { network }
-  } = useNetwork()
   return (
     <>
-      <Header>Wallet created</Header>
+      <Header style={{ marginTop: 0 }}>Wallet created</Header>
       <Callout
         title='Warning'
         intent={Intent.DANGER}
@@ -137,22 +132,9 @@ function WalletCreateSuccess({ response }: WalletCreateSuccessProps) {
           </CopyWithTooltip>
         </span>
       </p>
-      {network === null ? (
-        <>
-          <p>You'll need a network configuration to interact with Vega</p>
-          <p>
-            <Link to={Paths.NetworkImport}>
-              <Button data-testid='import-network-button'>
-                Import network
-              </Button>
-            </Link>
-          </p>
-        </>
-      ) : (
-        <Link to={WalletPaths.Detail}>
-          <Button data-testid='view-wallet-button'>View wallet</Button>
-        </Link>
-      )}
+      <Link to={WalletPaths.Detail}>
+        <Button data-testid='view-wallet-button'>View wallet</Button>
+      </Link>
     </>
   )
 }

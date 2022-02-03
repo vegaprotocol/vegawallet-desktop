@@ -1,5 +1,13 @@
-/build
-.DS_Store
+vendor
+deploy
+moc*
+rcc*
+*.exe.manifest
+*.rc
+*.syso
+
+build
+
 frontend/automation/.nyc_output/
 
 frontend/automation/test-wallets/
