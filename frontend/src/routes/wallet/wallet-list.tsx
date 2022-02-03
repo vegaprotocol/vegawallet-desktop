@@ -4,6 +4,7 @@ import { Header } from '../../components/header'
 import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import {
+  addKeypairAction,
   chnageWalletAction,
   deactivateWalletAction,
   getKeysAction
@@ -25,11 +26,15 @@ export const WalletList = () => {
     dispatch
   } = useGlobal()
 
-  function toggleLockKeypair(wallet: Wallet) {
+  function handleUnlock(wallet: Wallet) {
+    if (!wallet.auth) {
+      dispatch(getKeysAction(wallet.name))
+    }
+  }
+
+  function handleLock(wallet: Wallet) {
     if (wallet.auth) {
       dispatch(deactivateWalletAction(wallet.name))
-    } else {
-      dispatch(getKeysAction(wallet.name))
     }
   }
 
@@ -57,7 +62,8 @@ export const WalletList = () => {
               <WalletListItem
                 key={wallet.name}
                 wallet={wallet}
-                onWalletSelect={toggleLockKeypair}
+                onUnlock={handleUnlock}
+                onLock={handleLock}
               />
             ))}
           </ul>
@@ -74,10 +80,11 @@ export const WalletList = () => {
 
 interface WalletListItemProps {
   wallet: Wallet
-  onWalletSelect: (wallet: Wallet) => void
+  onUnlock: (wallet: Wallet) => void
+  onLock: (wallet: Wallet) => void
 }
 
-function WalletListItem({ wallet, onWalletSelect }: WalletListItemProps) {
+function WalletListItem({ wallet, onUnlock, onLock }: WalletListItemProps) {
   const [hover, setHover] = React.useState(false)
 
   const getBgColor = (wallet: Wallet) => {
@@ -96,13 +103,13 @@ function WalletListItem({ wallet, onWalletSelect }: WalletListItemProps) {
     <li
       key={wallet.name}
       tabIndex={0}
-      onClick={() => onWalletSelect(wallet)}
+      onClick={() => onUnlock(wallet)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
         padding: 20,
         background: getBgColor(wallet),
-        cursor: 'pointer',
+        cursor: wallet.auth ? 'default' : 'pointer',
         borderTop: `1px solid ${Colors.BLACK}`
       }}
     >
@@ -116,7 +123,7 @@ function WalletListItem({ wallet, onWalletSelect }: WalletListItemProps) {
         <span>{wallet.name}</span>
         <KeypairLockStatus wallet={wallet} />
       </div>
-      {wallet.auth && <WalletDetail wallet={wallet} />}
+      {wallet.auth && <WalletDetail wallet={wallet} onLock={onLock} />}
     </li>
   )
 }
@@ -182,9 +189,10 @@ function AddButtons() {
 
 interface WalletDetailProps {
   wallet: Wallet
+  onLock: (wallet: Wallet) => void
 }
 
-function WalletDetail({ wallet }: WalletDetailProps) {
+function WalletDetail({ wallet, onLock }: WalletDetailProps) {
   const { dispatch } = useGlobal()
 
   return (
@@ -216,7 +224,8 @@ function WalletDetail({ wallet }: WalletDetailProps) {
                       <ButtonUnstyled
                         style={{
                           color: Colors.TEXT_COLOR_DEEMPHASISE,
-                          fontFamily: Fonts.MONO
+                          fontFamily: Fonts.MONO,
+                          textDecoration: 'none'
                         }}
                       >
                         {kp.publicKeyShort}{' '}
@@ -236,9 +245,19 @@ function WalletDetail({ wallet }: WalletDetailProps) {
             })}
           </tbody>
         </table>
-      ) : (
-        <p>No keypairs</p>
-      )}
+      ) : null}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 20
+        }}
+      >
+        <ButtonUnstyled onClick={() => dispatch(addKeypairAction(wallet.name))}>
+          Generate key pair
+        </ButtonUnstyled>
+        <ButtonUnstyled onClick={() => onLock(wallet)}>Lock</ButtonUnstyled>
+      </div>
     </div>
   )
 }

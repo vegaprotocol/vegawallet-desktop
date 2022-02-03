@@ -41,9 +41,11 @@ export function WalletKeyPair() {
           </tr>
         </tbody>
       </table>
-      <Link to={Paths.Wallet}>
-        <Button>Back</Button>
-      </Link>
+      <div style={{ marginTop: 20 }}>
+        <Link to={Paths.Wallet}>
+          <Button>Back</Button>
+        </Link>
+      </div>
     </div>
   )
 }
