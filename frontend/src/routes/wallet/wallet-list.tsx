@@ -12,7 +12,7 @@ import {
 import { useGlobal, Wallet } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
-import { WalletPaths } from '.'
+import { createKeypairRoute } from '.'
 import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
 import { Copy } from '../../components/icons/copy'
@@ -214,7 +214,7 @@ function WalletDetail({ wallet, onLock }: WalletDetailProps) {
                       onClick={() => {
                         dispatch(chnageWalletAction(wallet.name))
                       }}
-                      to={`${WalletPaths.Keypair}/${kp.publicKey}`}
+                      to={createKeypairRoute(kp.publicKey)}
                     >
                       {kp.name}
                     </Link>

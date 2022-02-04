@@ -4,15 +4,10 @@ import { Route, Switch } from 'react-router-dom'
 import { WalletKeyPair } from './wallet-key-pair'
 import { Paths } from '../router-config'
 
-export enum WalletPaths {
-  Keypair = '/wallet/keypair',
-  Detail = '/wallet/detail'
-}
-
 export const Wallet = () => {
   return (
     <Switch>
-      <Route path={`${WalletPaths.Keypair}/:pubkey`}>
+      <Route path={`${Paths.Wallet}/keypair/:pubkey`}>
         <WalletKeyPair />
       </Route>
       <Route path={Paths.Wallet} exact={true}>
@@ -20,4 +15,8 @@ export const Wallet = () => {
       </Route>
     </Switch>
   )
+}
+
+export function createKeypairRoute(pubkey: string) {
+  return `${Paths.Wallet}/keypair/${pubkey}`
 }
