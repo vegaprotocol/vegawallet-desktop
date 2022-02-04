@@ -15,11 +15,11 @@ export function DropdownMenu({ trigger, content }: DropdownMenuProps) {
         {trigger}
       </DropdownPrimitive.Trigger>
       <DropdownPrimitive.Content
-        align='center'
+        align='start'
+        sideOffset={10}
         style={{ background: Colors.DARK_GRAY_3, padding: 10 }}
       >
         {content}
-        <DropdownPrimitive.Arrow fill={Colors.DARK_GRAY_3} />
       </DropdownPrimitive.Content>
     </DropdownPrimitive.Root>
   )

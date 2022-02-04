@@ -57,7 +57,10 @@ export function DrawerContent() {
       return (
         <>
           <DrawerHead height={DRAWER_HEIGHT}>
-            <ButtonUnstyled onClick={() => setView('network')}>
+            <ButtonUnstyled
+              style={{ textDecoration: 'none' }}
+              onClick={() => setView('network')}
+            >
               Back
             </ButtonUnstyled>
           </DrawerHead>
@@ -74,7 +77,10 @@ export function DrawerContent() {
       return (
         <>
           <DrawerHead height={DRAWER_HEIGHT}>
-            <ButtonUnstyled onClick={() => setView('manage')}>
+            <ButtonUnstyled
+              style={{ textDecoration: 'none' }}
+              onClick={() => setView('manage')}
+            >
               Back
             </ButtonUnstyled>
           </DrawerHead>
