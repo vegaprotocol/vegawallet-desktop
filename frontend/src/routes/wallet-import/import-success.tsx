@@ -1,15 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Header } from '../../components/header'
 import { Button } from '../../components/button'
 import { CodeBlock } from '../../components/code-block'
-import { Paths } from '../router-config'
 
 export interface ImportSuccessProps {
   walletPath: string
+  onComplete: () => void
 }
 
-export function ImportSuccess({ walletPath }: ImportSuccessProps) {
+export function ImportSuccess({ walletPath, onComplete }: ImportSuccessProps) {
   return (
     <>
       <Header style={{ marginTop: 0 }}>Wallet successfully imported</Header>
@@ -17,9 +16,7 @@ export function ImportSuccess({ walletPath }: ImportSuccessProps) {
       <p>
         <CodeBlock>{walletPath}</CodeBlock>
       </p>
-      <Link to={Paths.Wallet}>
-        <Button>Go to wallets</Button>
-      </Link>
+      <Button onClick={onComplete}>Complete</Button>
     </>
   )
 }

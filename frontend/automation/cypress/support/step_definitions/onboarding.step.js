@@ -1,15 +1,15 @@
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
 Given('I navigate to the wallet page', page => {
-  cy.visit('#/wallet-import')
+  cy.visit('#/')
 })
 
 Then('I can see the create new wallet button', () => {
-  cy.get("[data-testid='create-new-wallet']").should('exist')
+  cy.get("[data-testid='onboard-create-wallet']").should('exist')
 })
 
 When('I click create new', () => {
-  cy.get("[data-testid='create-new-wallet']").click()
+  cy.get("[data-testid='onboard-create-wallet']").click()
 })
 
 Then('I see the create wallet form', () => {
@@ -30,9 +30,9 @@ Then('I see a warning message, the wallet version and recovery phrase', () => {
 })
 
 When('I click view import network button', () => {
-  cy.get("[data-testid='import-network-button']").click()
+  cy.get("[data-testid='onboard-import-network-button']").click()
 })
 
-Then('I am redirected to the networks page', () => {
-  cy.url().should('include', '/network-import')
+Then('I am taken to the next step of onboarding', () => {
+  cy.url().should('include', '/onboard/network')
 })

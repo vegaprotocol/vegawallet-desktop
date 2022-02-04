@@ -62,10 +62,10 @@ export function PassphraseModal() {
           style={{
             padding: 20,
             background: 'black',
-            width: 250,
+            width: 340,
             position: 'fixed',
             top: 30,
-            left: 'calc(50% - 125px)'
+            left: 'calc(50% - 170px)'
           }}
         >
           <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />

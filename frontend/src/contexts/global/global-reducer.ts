@@ -21,6 +21,12 @@ export type GlobalAction =
       version: string
     }
   | {
+      type: 'START_ONBOARDING'
+    }
+  | {
+      type: 'FINISH_ONBOARDING'
+    }
+  | {
       type: 'ADD_WALLET'
       wallet: string
       key: Key
@@ -67,6 +73,18 @@ export function globalReducer(
           })
           .sort(sortWallet),
         version: action.version
+      }
+    }
+    case 'START_ONBOARDING': {
+      return {
+        ...state,
+        status: AppStatus.Onboarding
+      }
+    }
+    case 'FINISH_ONBOARDING': {
+      return {
+        ...state,
+        status: AppStatus.Initialised
       }
     }
     case 'ADD_WALLET': {
