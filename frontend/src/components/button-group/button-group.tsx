@@ -20,7 +20,8 @@ export function ButtonGroup({
         flexDirection: orientation === 'horizontal' ? 'row' : 'column',
         gap: 10,
         ...style
-      }}>
+      }}
+    >
       {React.Children.map(children, child => {
         return React.cloneElement(child as any, {
           style: {
