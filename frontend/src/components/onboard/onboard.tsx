@@ -62,6 +62,7 @@ function OnboardHome() {
       </Header>
       <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
         <Button
+          data-testid='onboard-create-wallet'
           onClick={async () => {
             await InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
@@ -143,7 +144,10 @@ function OnboardWalletCreate() {
         <WalletCreateFormSuccess
           response={response}
           callToAction={
-            <Button onClick={() => history.push('/onboard/network')}>
+            <Button
+              onClick={() => history.push('/onboard/network')}
+              data-testid='onboard-import-network-button'
+            >
               Next: Import network
             </Button>
           }
