@@ -21,27 +21,35 @@ import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-for
 import { WalletImportForm } from '../wallet-import-form'
 import * as Sentry from '@sentry/react'
 
+enum OnboardPaths {
+  Home = '/',
+  Settings = '/onboard/settings',
+  WalletCreate = '/onboard/wallet-create',
+  WalletImport = '/onboard/wallet-import',
+  Network = '/onboard/network'
+}
+
 export function Onboard() {
   return (
     <Switch>
-      <Route path='/onboard/settings'>
+      <Route path={OnboardPaths.Settings}>
         <OnboardSettings />
       </Route>
-      <Route path='/onboard/wallet-create'>
+      <Route path={OnboardPaths.WalletCreate}>
         <OnboardWalletCreate />
       </Route>
-      <Route path='/onboard/wallet-import'>
+      <Route path={OnboardPaths.WalletImport}>
         <OnboardWalletImport />
       </Route>
-      <Route path='/onboard/network'>
+      <Route path={OnboardPaths.Network}>
         <OnboardNetwork />
       </Route>
-      <Route path='/' exact={true}>
+      <Route path={OnboardPaths.Home} exact={true}>
         <OnboardHome />
       </Route>
+      {/* If none of the above routes are hit, something has probably gone wrong so redirect to home */}
       <Route>
-        {/* Unlikely this route ever gets hit but if none of the above routes are hit, we redirect to home */}
-        <Redirect to='/' />
+        <Redirect to={OnboardPaths.Home} />
       </Route>
     </Switch>
   )
@@ -57,7 +65,7 @@ function OnboardHome() {
   } = useNetwork()
 
   if (wallets.length && !networks.length) {
-    return <Redirect to='/onboard/network' />
+    return <Redirect to={OnboardPaths.Network} />
   }
 
   return (
@@ -72,7 +80,7 @@ function OnboardHome() {
             await InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
-            history.push('/onboard/wallet-create')
+            history.push(OnboardPaths.WalletCreate)
           }}
         >
           Create new wallet
@@ -82,14 +90,14 @@ function OnboardHome() {
             await InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
-            history.push('/onboard/wallet-import')
+            history.push(OnboardPaths.WalletImport)
           }}
         >
           Use recovery phrase
         </Button>
       </ButtonGroup>
       <p>
-        <ButtonUnstyled onClick={() => history.push('/onboard/settings')}>
+        <ButtonUnstyled onClick={() => history.push(OnboardPaths.Settings)}>
           Advanced options
         </ButtonUnstyled>
       </p>
@@ -113,7 +121,7 @@ function OnboardSettings() {
           vegaHome: values.vegaHome
         })
         AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })
-        history.push('/')
+        history.push(OnboardPaths.Home)
       } catch (err) {
         Sentry.captureException(err)
         console.error(err)
@@ -151,7 +159,7 @@ function OnboardWalletCreate() {
           response={response}
           callToAction={
             <Button
-              onClick={() => history.push('/onboard/network')}
+              onClick={() => history.push(OnboardPaths.Network)}
               data-testid='onboard-import-network-button'
             >
               Next: Import network
@@ -159,7 +167,10 @@ function OnboardWalletCreate() {
           }
         />
       ) : (
-        <WalletCreateForm submit={submit} cancel={() => history.push('/')} />
+        <WalletCreateForm
+          submit={submit}
+          cancel={() => history.push(OnboardPaths.Home)}
+        />
       )}
     </OnboardPanel>
   )
@@ -171,13 +182,16 @@ function OnboardWalletImport() {
 
   React.useEffect(() => {
     if (response) {
-      history.push('/onboard/network')
+      history.push(OnboardPaths.Network)
     }
   }, [response, history])
 
   return (
     <OnboardPanel title='Import a wallet'>
-      <WalletImportForm submit={submit} cancel={() => history.push('/')} />
+      <WalletImportForm
+        submit={submit}
+        cancel={() => history.push(OnboardPaths.Home)}
+      />
     </OnboardPanel>
   )
 }
@@ -188,7 +202,7 @@ function OnboardNetwork() {
 
   const onComplete = React.useCallback(() => {
     dispatch({ type: 'FINISH_ONBOARDING' })
-    history.push('/')
+    history.push(OnboardPaths.Home)
   }, [history, dispatch])
 
   return (
