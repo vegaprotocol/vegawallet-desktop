@@ -24,9 +24,6 @@ import * as Sentry from '@sentry/react'
 export function Onboard() {
   return (
     <Switch>
-      <Route path='/' exact={true}>
-        <OnboardHome />
-      </Route>
       <Route path='/onboard/settings'>
         <OnboardSettings />
       </Route>
@@ -38,6 +35,13 @@ export function Onboard() {
       </Route>
       <Route path='/onboard/network'>
         <OnboardNetwork />
+      </Route>
+      <Route path='/' exact={true}>
+        <OnboardHome />
+      </Route>
+      <Route>
+        {/* Unlikely this route ever gets hit but if none of the above routes are hit, we redirect to home */}
+        <Redirect to='/' />
       </Route>
     </Switch>
   )
