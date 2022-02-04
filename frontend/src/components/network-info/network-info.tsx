@@ -24,12 +24,17 @@ export function NetworkInfo() {
 
   return (
     <>
+      <Header>REST Service / DApp Proxies</Header>
+      <ServicesTable config={config} />
+      <Header>gRPC Nodes</Header>
+      <NodeList items={config.API.GRPC.Hosts} />
+      <Header>GraphQL Nodes</Header>
+      <NodeList items={config.API.GraphQL.Hosts} />
+      <Header>REST Nodes</Header>
+      <NodeList items={config.API.REST.Hosts} />
+      <Header>Application Settings</Header>
       <table>
         <tbody>
-          <tr>
-            <th>Name</th>
-            <td>{config.Name}</td>
-          </tr>
           <tr>
             <th>Log level</th>
             <td>{config.Level}</td>
@@ -38,36 +43,26 @@ export function NetworkInfo() {
             <th>Token expiry</th>
             <td>{config.TokenExpiry}</td>
           </tr>
-          <tr>
-            <th>Host</th>
-            <td>{config.Host}</td>
-          </tr>
-          <tr>
-            <th>Port</th>
-            <td>{config.Port}</td>
-          </tr>
         </tbody>
       </table>
-      <Header>Apps</Header>
-      <DAppsTable config={config} />
-      <Header>gRPC Nodes</Header>
-      <NodeList items={config.API.GRPC.Hosts} />
-      <Header>GraphQL Nodes</Header>
-      <NodeList items={config.API.GraphQL.Hosts} />
-      <Header>REST Nodes</Header>
-      <NodeList items={config.API.REST.Hosts} />
     </>
   )
 }
 
-interface DAppsTableProps {
+interface ServicesTableProps {
   config: Network
 }
 
-function DAppsTable({ config }: DAppsTableProps) {
+function ServicesTable({ config }: ServicesTableProps) {
   return (
     <table>
       <tbody>
+        <tr>
+          <th>REST Service URL</th>
+          <td>
+            {config.Host}:{config.Port}
+          </td>
+        </tr>
         <tr>
           <th>
             Console{' '}
