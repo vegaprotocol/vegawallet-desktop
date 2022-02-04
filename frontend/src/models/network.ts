@@ -1,4 +1,4 @@
-export interface AppConfig {
+export interface ProxyDAppConfig {
   URL: string
   LocalPort: number
 }
@@ -29,8 +29,8 @@ export interface Network {
   Host: string
   Port: number
   API: API
-  Console: AppConfig
-  TokenDApp: AppConfig
+  Console: ProxyDAppConfig
+  TokenDApp: ProxyDAppConfig
 }
 
 export interface ListNetworksResponse {
@@ -43,8 +43,8 @@ export interface SaveNetworkConfigRequest {
   TokenExpiry: string
   Port: number
   Host: string
-  Console: AppConfig
-  TokenDApp: AppConfig
+  Console: ProxyDAppConfig
+  TokenDApp: ProxyDAppConfig
   API: API
 }
 

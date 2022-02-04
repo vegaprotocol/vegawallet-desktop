@@ -7,7 +7,7 @@ import {
   stopProxyAction
 } from '../../contexts/service/service-actions'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
-import { Network } from '../../models/network'
+import { Network, ProxyDAppConfig } from '../../models/network'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 import { NodeList } from '../node-list'
@@ -65,43 +65,6 @@ interface DAppsTableProps {
 }
 
 function DAppsTable({ config }: DAppsTableProps) {
-  const {
-    state: { network }
-  } = useNetwork()
-  const {
-    dispatch,
-    state: { proxy }
-  } = useService()
-
-  function startProxy(app: ProxyApp) {
-    if (!network || !config || app === ProxyApp.None) {
-      AppToaster.show({
-        message: 'No network config found',
-        intent: Intent.DANGER
-      })
-      return
-    }
-
-    const port =
-      app === ProxyApp.Console
-        ? config.Console.LocalPort
-        : config.TokenDApp.LocalPort
-
-    dispatch(startProxyAction(network, app, port))
-  }
-
-  function stop() {
-    if (!network || !config) {
-      AppToaster.show({
-        message: 'No network config found',
-        intent: Intent.DANGER
-      })
-      return
-    }
-
-    dispatch(stopProxyAction(network, config.Port))
-  }
-
   return (
     <table>
       <tbody>
@@ -113,18 +76,10 @@ function DAppsTable({ config }: DAppsTableProps) {
             </span>
           </th>
           <td>
-            {proxy === ProxyApp.Console ? (
-              <ButtonUnstyled onClick={stop} style={{ textAlign: 'right' }}>
-                Stop
-              </ButtonUnstyled>
-            ) : (
-              <ButtonUnstyled
-                onClick={() => startProxy(ProxyApp.Console)}
-                style={{ textAlign: 'right' }}
-              >
-                Start
-              </ButtonUnstyled>
-            )}
+            <DAppProxyControl
+              proxyApp={ProxyApp.Console}
+              proxyConfig={config.Console}
+            />
           </td>
         </tr>
         <tr>
@@ -135,18 +90,71 @@ function DAppsTable({ config }: DAppsTableProps) {
             </span>
           </th>
           <td>
-            {proxy === ProxyApp.TokenDApp ? (
-              <ButtonUnstyled onClick={stop} style={{ textAlign: 'right' }}>
-                Stop
-              </ButtonUnstyled>
-            ) : (
-              <ButtonUnstyled onClick={() => startProxy(ProxyApp.TokenDApp)}>
-                Start
-              </ButtonUnstyled>
-            )}
+            <DAppProxyControl
+              proxyApp={ProxyApp.TokenDApp}
+              proxyConfig={config.TokenDApp}
+            />
           </td>
         </tr>
       </tbody>
     </table>
+  )
+}
+
+interface DAppProxyControlProps {
+  proxyApp: ProxyApp
+  proxyConfig: ProxyDAppConfig
+}
+
+function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
+  const {
+    state: { config, network }
+  } = useNetwork()
+  const {
+    dispatch,
+    state: { proxy: currentProxyApp }
+  } = useService()
+
+  function startProxy(c: ProxyDAppConfig) {
+    if (!network || !c) {
+      AppToaster.show({
+        message: 'No network config found',
+        intent: Intent.DANGER
+      })
+      return
+    }
+
+    dispatch(startProxyAction(network, proxyApp, c.LocalPort))
+  }
+
+  function stopProxy() {
+    if (!network || !config) {
+      AppToaster.show({
+        message: 'No network config found',
+        intent: Intent.DANGER
+      })
+      return
+    }
+
+    dispatch(stopProxyAction(network, config.Port))
+  }
+
+  // Need both of these set to start the proxy! User has the ability to edit these and
+  // they could be empty
+  if (!proxyConfig.URL || !proxyConfig.LocalPort) {
+    return <>Unavailable</>
+  }
+
+  return currentProxyApp === proxyApp ? (
+    <ButtonUnstyled onClick={stopProxy} style={{ textAlign: 'right' }}>
+      Stop
+    </ButtonUnstyled>
+  ) : (
+    <ButtonUnstyled
+      onClick={() => startProxy(proxyConfig)}
+      style={{ textAlign: 'right' }}
+    >
+      Start
+    </ButtonUnstyled>
   )
 }
