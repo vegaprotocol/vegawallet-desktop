@@ -18,7 +18,7 @@ import { useCheckForUpdate } from './hooks/use-check-for-update'
 /**
  * Initialiases the app
  */
-function AppLoader({ children }: { children: any }) {
+function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
   const { state, dispatch } = useGlobal()
 
@@ -50,7 +50,7 @@ function AppLoader({ children }: { children: any }) {
     )
   }
 
-  return children
+  return <>{children}</>
 }
 
 /**
