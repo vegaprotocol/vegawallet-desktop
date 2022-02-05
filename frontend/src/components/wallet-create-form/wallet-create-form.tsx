@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Intent } from '../../config/intent'
+import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
@@ -38,7 +39,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
           data-testid='create-wallet-form-name'
           type='text'
           autoFocus={true}
-          {...register('wallet', { required: 'Required' })}
+          {...register('wallet', { required: Validation.REQUIRED })}
           autoComplete='off'
         />
       </FormGroup>
@@ -51,7 +52,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         <input
           data-testid='create-wallet-form-passphrase'
           type='password'
-          {...register('passphrase', { required: 'Required' })}
+          {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
@@ -64,11 +65,8 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
           data-testid='create-wallet-form-passphrase-confirm'
           type='password'
           {...register('confirmPassphrase', {
-            required: 'Required',
-            pattern: {
-              message: 'Password does not match',
-              value: new RegExp(`^${passphrase}$`)
-            }
+            required: Validation.REQUIRED,
+            pattern: Validation.match(passphrase)
           })}
         />
       </FormGroup>

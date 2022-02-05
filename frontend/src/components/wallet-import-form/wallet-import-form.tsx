@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Intent } from '../../config/intent'
+import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
@@ -41,7 +42,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
       >
         <input
           type='text'
-          {...register('wallet', { required: 'Required' })}
+          {...register('wallet', { required: Validation.REQUIRED })}
           autoFocus={true}
         />
       </FormGroup>
@@ -52,7 +53,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
       >
         <textarea
-          {...register('recoveryPhrase', { required: 'Required' })}
+          {...register('recoveryPhrase', { required: Validation.REQUIRED })}
           style={{ minHeight: 75 }}
         />
       </FormGroup>
@@ -64,7 +65,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
       >
         <input
           type='number'
-          {...register('version', { required: 'Required' })}
+          {...register('version', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
@@ -75,7 +76,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
       >
         <input
           type='password'
-          {...register('passphrase', { required: 'Required' })}
+          {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
@@ -87,11 +88,8 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         <input
           type='password'
           {...register('confirmPassphrase', {
-            required: 'Required',
-            pattern: {
-              message: 'Password does not match',
-              value: new RegExp(`^${passphrase}$`)
-            }
+            required: Validation.REQUIRED,
+            pattern: Validation.match(passphrase)
           })}
         />
       </FormGroup>

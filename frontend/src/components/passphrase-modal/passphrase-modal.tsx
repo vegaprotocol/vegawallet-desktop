@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../button'
+import { Validation } from '../../lib/form-validation'
 
 interface ModalHandler {
   open: Function
@@ -105,7 +106,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
           type='password'
           autoComplete='off'
           autoFocus={true}
-          {...register('passphrase', { required: 'Required' })}
+          {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <div style={{ display: 'flex', gap: 10 }}>

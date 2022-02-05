@@ -9,6 +9,7 @@ import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 import * as Sentry from '@sentry/react'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { FormStatus } from '../../hooks/use-form-state'
+import { Validation } from '../../lib/form-validation'
 
 interface FormFields {
   name: string
@@ -78,7 +79,7 @@ export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
           id='fileOrUrl'
           type='text'
           {...register('fileOrUrl', {
-            required: 'Required'
+            required: Validation.REQUIRED
           })}
         />
       </FormGroup>
