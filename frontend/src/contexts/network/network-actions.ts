@@ -9,6 +9,7 @@ import { Intent } from '../../config/intent'
 import { ImportNetworkRequest, Network } from '../../models/network'
 import { NetworkDispatch, NetworkState } from './network-context'
 import { NetworkAction } from './network-reducer'
+import * as Sentry from '@sentry/react'
 
 export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
@@ -32,6 +33,7 @@ export function initNetworksAction() {
         })
       }
     } catch (err) {
+      Sentry.captureException(err)
       console.log(err)
     }
   }
@@ -39,6 +41,12 @@ export function initNetworksAction() {
 
 export function changeNetworkAction(network: string) {
   return async (dispatch: NetworkDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'ChangeNetwork',
+      level: Sentry.Severity.Log,
+      message: 'ChangeNetwork',
+      timestamp: Date.now()
+    })
     try {
       const config = await GetNetworkConfig(network)
 
@@ -48,6 +56,7 @@ export function changeNetworkAction(network: string) {
         config
       })
     } catch (err) {
+      Sentry.captureException(err)
       AppToaster.show({
         message: err as string,
         intent: Intent.DANGER
@@ -58,6 +67,12 @@ export function changeNetworkAction(network: string) {
 
 export function updateNetworkConfigAction(config: Network) {
   return async (dispatch: NetworkDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'UpdateNetworkConfig',
+      level: Sentry.Severity.Log,
+      message: 'UpdateNetworkConfig',
+      timestamp: Date.now()
+    })
     try {
       const isSuccessful = await SaveNetworkConfig(config)
       if (isSuccessful) {
@@ -70,6 +85,7 @@ export function updateNetworkConfigAction(config: Network) {
         AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
       }
     } catch (err) {
+      Sentry.captureException(err)
       AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       console.log(err)
     }
@@ -78,6 +94,12 @@ export function updateNetworkConfigAction(config: Network) {
 
 export function importNetworkAction(values: ImportNetworkRequest) {
   return async (dispatch: NetworkDispatch, getState: () => NetworkState) => {
+    Sentry.addBreadcrumb({
+      type: 'ImportNetworkConfig',
+      level: Sentry.Severity.Log,
+      message: 'ImportNetworkConfig',
+      timestamp: Date.now()
+    })
     try {
       const res = await ImportNetwork({
         name: values.name,
@@ -106,6 +128,7 @@ export function importNetworkAction(values: ImportNetworkRequest) {
         })
       }
     } catch (err) {
+      Sentry.captureException(err)
       AppToaster.show({
         message: `Error: ${err}`,
         intent: Intent.DANGER

@@ -13,6 +13,8 @@
     "@radix-ui/react-dropdown-menu": "^0.1.4",
     "@radix-ui/react-radio-group": "^0.1.4",
     "@radix-ui/react-tooltip": "^0.1.6",
+    "@sentry/react": "^6.17.4",
+    "@sentry/tracing": "^6.17.4",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

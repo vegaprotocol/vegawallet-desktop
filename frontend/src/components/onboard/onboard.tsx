@@ -19,6 +19,7 @@ import { AppToaster } from '../toaster'
 import { WalletCreateForm } from '../wallet-create-form'
 import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
 import { WalletImportForm } from '../wallet-import-form'
+import * as Sentry from '@sentry/react'
 
 export function Onboard() {
   return (
@@ -110,6 +111,7 @@ function OnboardSettings() {
         AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })
         history.push('/')
       } catch (err) {
+        Sentry.captureException(err)
         console.error(err)
       }
     },

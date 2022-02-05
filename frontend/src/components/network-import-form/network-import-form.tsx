@@ -12,6 +12,7 @@ import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Checkbox } from '../checkbox'
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
+import * as Sentry from '@sentry/react'
 
 interface FormFields {
   name: string
@@ -169,6 +170,7 @@ function useImportNetwork() {
           })
         }
       } catch (err) {
+        Sentry.captureException(err)
         // @ts-ignore
         setError(err)
         AppToaster.show({
