@@ -16,6 +16,12 @@ export function initAppAction() {
       const isInit = await Service.IsAppInitialised()
 
       if (isInit) {
+        Sentry.addBreadcrumb({
+          type: 'InitApp',
+          level: Sentry.Severity.Log,
+          message: 'InitApp',
+          timestamp: Date.now()
+        })
         // App initialised check what wallets are available
         const res = await Promise.all([
           await Service.ListWallets(),
@@ -25,6 +31,12 @@ export function initAppAction() {
 
         dispatch(initAppSuccessAction(...res))
       } else {
+        Sentry.addBreadcrumb({
+          type: 'StartApp',
+          level: Sentry.Severity.Log,
+          message: 'StartApp',
+          timestamp: Date.now()
+        })
         dispatch(startOnboardingAction())
       }
     } catch (err) {
@@ -66,6 +78,12 @@ export function addWalletAction(wallet: string, key: Key): GlobalAction {
 
 export function addKeypairAction(wallet: string) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+    Sentry.addBreadcrumb({
+      type: 'AddKeyPair',
+      level: Sentry.Severity.Log,
+      message: 'AddKeyPair',
+      timestamp: Date.now()
+    })
     try {
       const passphrase = await requestPassphrase()
       const res = await Service.GenerateKey({
@@ -94,6 +112,12 @@ export function getKeysAction(wallet: string, cb: Function) {
     const selectedWallet = state.wallets.find(w => w.name === wallet)
 
     if (selectedWallet?.keypairs) {
+      Sentry.addBreadcrumb({
+        type: 'ChangeWallet',
+        level: Sentry.Severity.Log,
+        message: 'ChangeWallet',
+        timestamp: Date.now()
+      })
       dispatch({ type: 'CHANGE_WALLET', wallet })
       cb()
     } else {

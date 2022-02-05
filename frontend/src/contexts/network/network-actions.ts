@@ -41,6 +41,12 @@ export function initNetworksAction() {
 
 export function changeNetworkAction(network: string) {
   return async (dispatch: NetworkDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'ChangeNetwork',
+      level: Sentry.Severity.Log,
+      message: 'ChangeNetwork',
+      timestamp: Date.now()
+    })
     try {
       const config = await GetNetworkConfig(network)
 
@@ -61,6 +67,12 @@ export function changeNetworkAction(network: string) {
 
 export function updateNetworkConfigAction(config: Network) {
   return async (dispatch: NetworkDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'UpdateNetworkConfig',
+      level: Sentry.Severity.Log,
+      message: 'UpdateNetworkConfig',
+      timestamp: Date.now()
+    })
     try {
       const isSuccessful = await SaveNetworkConfig(config)
       if (isSuccessful) {
@@ -82,6 +94,12 @@ export function updateNetworkConfigAction(config: Network) {
 
 export function importNetworkAction(values: ImportNetworkRequest) {
   return async (dispatch: NetworkDispatch, getState: () => NetworkState) => {
+    Sentry.addBreadcrumb({
+      type: 'ImportNetworkConfig',
+      level: Sentry.Severity.Log,
+      message: 'ImportNetworkConfig',
+      timestamp: Date.now()
+    })
     try {
       const res = await ImportNetwork({
         name: values.name,

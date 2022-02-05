@@ -16,6 +16,12 @@ export function useCreateWallet() {
   const submit = React.useCallback(
     async (values: { wallet: string; passphrase: string }) => {
       try {
+        Sentry.addBreadcrumb({
+          type: 'CreateWallet',
+          level: Sentry.Severity.Log,
+          message: 'CreateWallet',
+          timestamp: Date.now()
+        })
         const resp = await CreateWallet({
           wallet: values.wallet,
           passphrase: values.passphrase

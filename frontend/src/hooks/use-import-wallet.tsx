@@ -22,6 +22,12 @@ export function useImportWallet() {
       recoveryPhrase: string
       version: number
     }) => {
+      Sentry.addBreadcrumb({
+        type: 'ImportWallet',
+        level: Sentry.Severity.Log,
+        message: 'ImportWallet',
+        timestamp: Date.now()
+      })
       try {
         const resp = await ImportWallet({
           wallet: values.wallet,

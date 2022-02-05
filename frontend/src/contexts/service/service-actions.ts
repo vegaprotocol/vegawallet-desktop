@@ -4,6 +4,12 @@ import * as Sentry from '@sentry/react'
 
 export function startServiceAction(network: string, port: number) {
   return async (dispatch: ServiceDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'StartService',
+      level: Sentry.Severity.Log,
+      message: 'StartService',
+      timestamp: Date.now()
+    })
     try {
       const status = await GetServiceState()
 
@@ -22,6 +28,12 @@ export function startServiceAction(network: string, port: number) {
 
 export function stopServiceAction() {
   return async (dispatch: ServiceDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'StopService',
+      level: Sentry.Severity.Log,
+      message: 'StopService',
+      timestamp: Date.now()
+    })
     try {
       const status = await GetServiceState()
       if (status.Running) {
@@ -37,6 +49,16 @@ export function stopServiceAction() {
 
 export function startProxyAction(network: string, app: ProxyApp, port: number) {
   return async (dispatch: ServiceDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'StartProxy',
+      level: Sentry.Severity.Log,
+      message: 'StartProxy',
+      data: {
+        app,
+        network
+      },
+      timestamp: Date.now()
+    })
     try {
       const status = await GetServiceState()
 
