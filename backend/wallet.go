@@ -100,3 +100,27 @@ func (h *Handler) ListWallets() (*wallet.ListWalletsResponse, error) {
 
 	return wallet.ListWallets(wStore)
 }
+
+func (s *Handler) SignMessage(data string) (*wallet.SignMessageResponse, error) {
+	s.log.Debug("Entering SignMessage")
+	defer s.log.Debug("Leaving SignMessage")
+
+	req := &wallet.SignMessageRequest{}
+
+	if err := json.Unmarshal([]byte(data), req); err != nil {
+		s.log.Errorf("Couldn't unmarshall request: %v", err)
+		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
+	}
+
+	config, err := s.loadAppConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	wStore, err := s.getWalletsStore(config)
+	if err != nil {
+		return nil, err
+	}
+
+	return wallet.SignMessage(wStore, req)
+}
