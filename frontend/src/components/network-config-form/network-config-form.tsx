@@ -59,20 +59,40 @@ export const NetworkConfigForm = ({
       })}
     >
       <FormGroup
-        label='Host'
+        label='REST Service Host'
         labelFor='host'
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.host?.message}
       >
-        <input type='text' {...register('host', { required: 'Required' })} />
+        <input
+          type='text'
+          {...register('host', {
+            required: 'Required',
+            pattern: {
+              value:
+                /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
+              message: 'Invalid URL'
+            }
+          })}
+        />
       </FormGroup>
       <FormGroup
-        label='Port'
+        label='REST Service Port'
         labelFor='port'
         intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.port?.message}
       >
-        <input type='text' {...register('port', { required: 'Required' })} />
+        <input
+          type='number'
+          {...register('port', {
+            required: 'Required',
+            min: { value: 1, message: 'Port number must be greater than 1' },
+            max: {
+              value: 65535,
+              message: 'Port number must be less than 65535'
+            }
+          })}
+        />
       </FormGroup>
       <FormGroup
         label='Console URL'
@@ -82,7 +102,13 @@ export const NetworkConfigForm = ({
       >
         <input
           type='text'
-          {...register('consoleUrl', { required: 'Required' })}
+          {...register('consoleUrl', {
+            pattern: {
+              value:
+                /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
+              message: 'Invalid URL'
+            }
+          })}
         />
       </FormGroup>
       <FormGroup
@@ -92,8 +118,14 @@ export const NetworkConfigForm = ({
         helperText={errors.consolePort?.message}
       >
         <input
-          type='text'
-          {...register('consolePort', { required: 'Required' })}
+          type='number'
+          {...register('consolePort', {
+            min: { value: 1, message: 'Port number must be greater than 1' },
+            max: {
+              value: 65535,
+              message: 'Port number must be less than 65535'
+            }
+          })}
         />
       </FormGroup>
       <FormGroup
@@ -104,7 +136,13 @@ export const NetworkConfigForm = ({
       >
         <input
           type='text'
-          {...register('tokenDAppUrl', { required: 'Required' })}
+          {...register('tokenDAppUrl', {
+            pattern: {
+              value:
+                /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
+              message: 'Invalid URL'
+            }
+          })}
         />
       </FormGroup>
       <FormGroup
@@ -114,8 +152,14 @@ export const NetworkConfigForm = ({
         helperText={errors.tokenDAppPort?.message}
       >
         <input
-          type='text'
-          {...register('tokenDAppPort', { required: 'Required' })}
+          type='number'
+          {...register('tokenDAppPort', {
+            min: { value: 1, message: 'Port number must be greater than 1' },
+            max: {
+              value: 65535,
+              message: 'Port number must be less than 65535'
+            }
+          })}
         />
       </FormGroup>
       <h2>gRPC Nodes</h2>
@@ -145,8 +189,12 @@ export const NetworkConfigForm = ({
         helperText={errors.grpcNodeRetries?.message}
       >
         <input
-          type='text'
-          {...register('grpcNodeRetries', { required: 'Required' })}
+          type='number'
+          {...register('grpcNodeRetries', {
+            required: 'Required',
+            min: { value: 0, message: 'Retries cannot be less than 0' },
+            max: { value: 20, message: 'Retries cannot be more than 20' }
+          })}
         />
       </FormGroup>
       <FormGroup
@@ -157,7 +205,13 @@ export const NetworkConfigForm = ({
       >
         <input
           type='text'
-          {...register('tokenExpiry', { required: 'Required' })}
+          {...register('tokenExpiry', {
+            required: 'Required',
+            pattern: {
+              value: /[0-9]*h[0-9]*m[0-9]*s/,
+              message: 'Format invalid. Expected format XhXmXs (e.g. 12h30m10s)'
+            }
+          })}
         />
       </FormGroup>
       <Button type='submit'>Submit</Button>
