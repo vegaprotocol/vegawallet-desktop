@@ -10,6 +10,7 @@ import type { Network } from '../../models/network'
 import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../button'
+import { Validation } from '../../lib/form-validation'
 
 interface FormFields {
   logLevel: string
@@ -67,12 +68,8 @@ export const NetworkConfigForm = ({
         <input
           type='text'
           {...register('host', {
-            required: 'Required',
-            pattern: {
-              value:
-                /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
-              message: 'Invalid URL'
-            }
+            required: Validation.REQUIRED,
+            pattern: Validation.URL
           })}
         />
       </FormGroup>
@@ -85,12 +82,9 @@ export const NetworkConfigForm = ({
         <input
           type='number'
           {...register('port', {
-            required: 'Required',
-            min: { value: 1, message: 'Port number must be greater than 1' },
-            max: {
-              value: 65535,
-              message: 'Port number must be less than 65535'
-            }
+            required: Validation.REQUIRED,
+            min: Validation.NUMBER_MIN_PORT,
+            max: Validation.NUMBER_MAX_PORT
           })}
         />
       </FormGroup>
@@ -103,11 +97,7 @@ export const NetworkConfigForm = ({
         <input
           type='text'
           {...register('consoleUrl', {
-            pattern: {
-              value:
-                /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
-              message: 'Invalid URL'
-            }
+            pattern: Validation.URL
           })}
         />
       </FormGroup>
@@ -120,11 +110,8 @@ export const NetworkConfigForm = ({
         <input
           type='number'
           {...register('consolePort', {
-            min: { value: 1, message: 'Port number must be greater than 1' },
-            max: {
-              value: 65535,
-              message: 'Port number must be less than 65535'
-            }
+            min: Validation.NUMBER_MIN_PORT,
+            max: Validation.NUMBER_MAX_PORT
           })}
         />
       </FormGroup>
@@ -137,11 +124,7 @@ export const NetworkConfigForm = ({
         <input
           type='text'
           {...register('tokenDAppUrl', {
-            pattern: {
-              value:
-                /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
-              message: 'Invalid URL'
-            }
+            pattern: Validation.URL
           })}
         />
       </FormGroup>
@@ -154,11 +137,8 @@ export const NetworkConfigForm = ({
         <input
           type='number'
           {...register('tokenDAppPort', {
-            min: { value: 1, message: 'Port number must be greater than 1' },
-            max: {
-              value: 65535,
-              message: 'Port number must be less than 65535'
-            }
+            min: Validation.NUMBER_MIN_PORT,
+            max: Validation.NUMBER_MAX_PORT
           })}
         />
       </FormGroup>
@@ -174,7 +154,7 @@ export const NetworkConfigForm = ({
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.logLevel?.message}
       >
-        <select {...register('logLevel', { required: 'Required' })}>
+        <select {...register('logLevel', { required: Validation.REQUIRED })}>
           {Object.values(LogLevels).map(level => (
             <option key={level} value={level}>
               {level}
@@ -191,9 +171,9 @@ export const NetworkConfigForm = ({
         <input
           type='number'
           {...register('grpcNodeRetries', {
-            required: 'Required',
-            min: { value: 0, message: 'Retries cannot be less than 0' },
-            max: { value: 20, message: 'Retries cannot be more than 20' }
+            required: Validation.REQUIRED,
+            min: Validation.NUMBER_MIN_GRPC_RETRIES,
+            max: Validation.NUMBER_MAX_GRPC_RETRIES
           })}
         />
       </FormGroup>
@@ -206,11 +186,8 @@ export const NetworkConfigForm = ({
         <input
           type='text'
           {...register('tokenExpiry', {
-            required: 'Required',
-            pattern: {
-              value: /[0-9]*h[0-9]*m[0-9]*s/,
-              message: 'Format invalid. Expected format XhXmXs (e.g. 12h30m10s)'
-            }
+            required: Validation.REQUIRED,
+            pattern: Validation.GOLANG_DURATION
           })}
         />
       </FormGroup>
