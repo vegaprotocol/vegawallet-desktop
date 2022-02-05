@@ -9,6 +9,7 @@ import { Intent } from '../../config/intent'
 import { ImportNetworkRequest, Network } from '../../models/network'
 import { NetworkDispatch, NetworkState } from './network-context'
 import { NetworkAction } from './network-reducer'
+import * as Sentry from '@sentry/react'
 
 export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
@@ -32,6 +33,7 @@ export function initNetworksAction() {
         })
       }
     } catch (err) {
+      Sentry.captureException(err)
       console.log(err)
     }
   }
@@ -48,6 +50,7 @@ export function changeNetworkAction(network: string) {
         config
       })
     } catch (err) {
+      Sentry.captureException(err)
       AppToaster.show({
         message: err as string,
         intent: Intent.DANGER
@@ -70,6 +73,7 @@ export function updateNetworkConfigAction(config: Network) {
         AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
       }
     } catch (err) {
+      Sentry.captureException(err)
       AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       console.log(err)
     }
@@ -106,6 +110,7 @@ export function importNetworkAction(values: ImportNetworkRequest) {
         })
       }
     } catch (err) {
+      Sentry.captureException(err)
       AppToaster.show({
         message: `Error: ${err}`,
         intent: Intent.DANGER

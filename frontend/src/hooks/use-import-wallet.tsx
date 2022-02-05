@@ -6,6 +6,7 @@ import { Intent } from '../config/intent'
 import { addWalletAction } from '../contexts/global/global-actions'
 import { useGlobal } from '../contexts/global/global-context'
 import { ImportWalletResponse } from '../models/wallet'
+import * as Sentry from '@sentry/react'
 
 export function useImportWallet() {
   const { dispatch } = useGlobal()
@@ -50,6 +51,7 @@ export function useImportWallet() {
           setError(new Error('Something went wrong'))
         }
       } catch (err) {
+        Sentry.captureException(err)
         AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
         setError(err as Error)
       }

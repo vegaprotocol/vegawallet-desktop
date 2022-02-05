@@ -8,6 +8,7 @@ import { GlobalAction } from './global-reducer'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
 import { Key } from '../../models/keys'
+import * as Sentry from '@sentry/react'
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
@@ -27,6 +28,7 @@ export function initAppAction() {
         dispatch(startOnboardingAction())
       }
     } catch (err) {
+      Sentry.captureException(err)
       dispatch(initAppFailureAction())
     }
   }
@@ -78,6 +80,7 @@ export function addKeypairAction(wallet: string) {
       })
     } catch (err) {
       if (err !== 'dismissed') {
+        Sentry.captureException(err)
         console.log(err)
         AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
       }
@@ -102,6 +105,7 @@ export function getKeysAction(wallet: string, cb: Function) {
       } catch (err) {
         console.log(err)
         if (err !== 'dismissed') {
+          Sentry.captureException(err)
           AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
         }
       }
