@@ -9,6 +9,8 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../'
+import { CopyWithTooltip } from '../../components/copy-with-tooltip'
+import { ButtonUnstyled } from '../../components/button-unstyled'
 
 interface FormFields {
   message: string
