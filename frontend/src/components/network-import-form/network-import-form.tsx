@@ -5,7 +5,6 @@ import { Intent } from '../../config/intent'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Checkbox } from '../checkbox'
-import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { FormStatus } from '../../hooks/use-form-state'
 import { Validation } from '../../lib/form-validation'
@@ -17,7 +16,8 @@ interface FormFields {
 }
 
 export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
-  const [advancedFields, setAdvancedfields] = React.useState(false)
+  const [showOverwriteCheckbox, setShowOverwriteCheckbox] =
+    React.useState(false)
   const { status, response, submit, error } = useImportNetwork()
   const {
     control,
@@ -37,7 +37,7 @@ export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
   React.useEffect(() => {
     if (response) {
       reset()
-      setAdvancedfields(false)
+      setShowOverwriteCheckbox(false)
       if (typeof onComplete === 'function') {
         onComplete()
       }
@@ -48,10 +48,13 @@ export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
   // set the namee
   React.useEffect(() => {
     if (error && /already exists/.test(error)) {
-      setAdvancedfields(true)
+      setShowOverwriteCheckbox(true)
       setError(
         'name',
-        { message: 'Network with name already exists' },
+        {
+          message:
+            'Network with name already exists. Provide a new name or overwrite by checking the box below'
+        },
         { shouldFocus: true }
       )
     }
@@ -81,37 +84,23 @@ export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
           })}
         />
       </FormGroup>
-      <CollapsiblePrimitive.Root
-        open={advancedFields}
-        onOpenChange={() => setAdvancedfields(curr => !curr)}
+      <FormGroup
+        label='Network name'
+        labelFor='name'
+        intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+        helperText={
+          errors.name
+            ? errors.name?.message
+            : 'Uses name specified in the config by default'
+        }
       >
-        <CollapsiblePrimitive.Trigger asChild={true}>
-          <p>
-            <ButtonUnstyled>
-              {advancedFields ? 'Hide advanced fields' : 'Show advanced fields'}
-            </ButtonUnstyled>
-          </p>
-        </CollapsiblePrimitive.Trigger>
-        <CollapsiblePrimitive.Content>
-          <>
-            <FormGroup
-              label='Network name'
-              labelFor='name'
-              intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-              helperText={
-                errors.name
-                  ? errors.name?.message
-                  : 'Uses name specified in config by default'
-              }
-            >
-              <input type='text' id='name' {...register('name')} />
-            </FormGroup>
-            <FormGroup helperText='Overwrite existing network configuration if it already exists'>
-              <Checkbox name='force' control={control} label='Overwrite' />
-            </FormGroup>
-          </>
-        </CollapsiblePrimitive.Content>
-      </CollapsiblePrimitive.Root>
+        <input type='text' id='name' {...register('name')} />
+      </FormGroup>
+      {showOverwriteCheckbox && (
+        <FormGroup helperText='Overwrite existing network configuration'>
+          <Checkbox name='force' control={control} label='Overwrite' />
+        </FormGroup>
+      )}
       <div>
         <Button type='submit' loading={status === FormStatus.Pending}>
           Import
