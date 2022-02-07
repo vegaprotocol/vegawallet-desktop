@@ -1,7 +1,9 @@
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Intent } from '../../config/intent'
+import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
 
 interface FormFields {
@@ -12,9 +14,10 @@ interface FormFields {
 
 interface WalletCreateFormProps {
   submit: (fields: { wallet: string; passphrase: string }) => void
+  cancel: () => void
 }
 
-export function WalletCreateForm({ submit }: WalletCreateFormProps) {
+export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
   const {
     control,
     register,
@@ -35,7 +38,8 @@ export function WalletCreateForm({ submit }: WalletCreateFormProps) {
         <input
           data-testid='create-wallet-form-name'
           type='text'
-          {...register('wallet', { required: 'Required' })}
+          autoFocus={true}
+          {...register('wallet', { required: Validation.REQUIRED })}
           autoComplete='off'
         />
       </FormGroup>
@@ -48,7 +52,7 @@ export function WalletCreateForm({ submit }: WalletCreateFormProps) {
         <input
           data-testid='create-wallet-form-passphrase'
           type='password'
-          {...register('passphrase', { required: 'Required' })}
+          {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
@@ -61,19 +65,17 @@ export function WalletCreateForm({ submit }: WalletCreateFormProps) {
           data-testid='create-wallet-form-passphrase-confirm'
           type='password'
           {...register('confirmPassphrase', {
-            required: 'Required',
-            pattern: {
-              message: 'Password does not match',
-              value: new RegExp(`^${passphrase}$`)
-            }
+            required: Validation.REQUIRED,
+            pattern: Validation.match(passphrase)
           })}
         />
       </FormGroup>
-      <div>
+      <ButtonGroup>
         <Button data-testid='create-wallet-form-submit' type='submit'>
           Submit
         </Button>
-      </div>
+        <Button onClick={cancel}>Cancel</Button>
+      </ButtonGroup>
     </form>
   )
 }

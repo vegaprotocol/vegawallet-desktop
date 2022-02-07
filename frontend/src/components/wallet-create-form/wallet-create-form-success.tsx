@@ -5,7 +5,6 @@ import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
-import { Header } from '../header'
 import { Copy } from '../icons/copy'
 import { Warning } from '../icons/warning'
 
@@ -20,7 +19,6 @@ export function WalletCreateFormSuccess({
 }: WalletCreateFormSuccessProps) {
   return (
     <>
-      <Header style={{ marginTop: 0 }}>Wallet created</Header>
       <Callout
         title='Warning'
         intent={Intent.DANGER}

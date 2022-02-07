@@ -7,27 +7,28 @@ import { useHistory } from 'react-router-dom'
 import { Paths } from '../router-config'
 import { Button } from '../../components/button'
 
-export const WalletCreator = () => {
+export const WalletCreate = () => {
   const history = useHistory()
   const { response, submit } = useCreateWallet()
 
-  if (response) {
-    return (
-      <WalletCreateFormSuccess
-        response={response}
-        callToAction={
-          <Button onClick={() => history.push(Paths.Wallet)}>
-            View wallet
-          </Button>
-        }
-      />
-    )
-  }
-
   return (
-    <>
+    <div style={{ padding: 20 }}>
       <Header style={{ marginTop: 0 }}>Create wallet</Header>
-      <WalletCreateForm submit={submit} />
-    </>
+      {response ? (
+        <WalletCreateFormSuccess
+          response={response}
+          callToAction={
+            <Button onClick={() => history.push(Paths.Wallet)}>
+              View wallet
+            </Button>
+          }
+        />
+      ) : (
+        <WalletCreateForm
+          submit={submit}
+          cancel={() => history.push(Paths.Wallet)}
+        />
+      )}
+    </div>
   )
 }

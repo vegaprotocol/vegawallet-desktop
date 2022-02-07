@@ -1,28 +1,27 @@
 import React from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import { ImportRecoveryPhrase } from './import-recovery-phrase'
-import { ImportSelect } from './import-select'
-import { WalletCreator } from './wallet-creator'
+import { useHistory } from 'react-router-dom'
+import { Header } from '../../components/header'
+import { WalletImportForm } from '../../components/wallet-import-form'
+import { useImportWallet } from '../../hooks/use-import-wallet'
+import { Paths } from '../router-config'
 
-export enum ImportPaths {
-  Create = '/wallet-import/create',
-  RecoveryPhrase = '/wallet-import/recovery-phrase'
-}
+export const WalletImport = () => {
+  const history = useHistory()
+  const { submit, response } = useImportWallet()
 
-export function WalletImport() {
-  const match = useRouteMatch()
+  React.useEffect(() => {
+    if (response) {
+      history.push(Paths.Wallet)
+    }
+  }, [response, history])
 
   return (
-    <Switch>
-      <Route path={ImportPaths.Create}>
-        <WalletCreator />
-      </Route>
-      <Route path={ImportPaths.RecoveryPhrase}>
-        <ImportRecoveryPhrase />
-      </Route>
-      <Route path={match.path} exact>
-        <ImportSelect />
-      </Route>
-    </Switch>
+    <div style={{ padding: 20 }}>
+      <Header style={{ marginTop: 0 }}>Import wallet</Header>
+      <WalletImportForm
+        submit={submit}
+        cancel={() => history.push(Paths.Wallet)}
+      />
+    </div>
   )
 }

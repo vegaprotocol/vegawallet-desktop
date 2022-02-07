@@ -106,7 +106,7 @@ export function addKeypairAction(wallet: string) {
   }
 }
 
-export function getKeysAction(wallet: string, cb: Function) {
+export function getKeysAction(wallet: string) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     const state = getState()
     const selectedWallet = state.wallets.find(w => w.name === wallet)
@@ -118,14 +118,12 @@ export function getKeysAction(wallet: string, cb: Function) {
         message: 'ChangeWallet',
         timestamp: Date.now()
       })
-      dispatch({ type: 'CHANGE_WALLET', wallet })
-      cb()
+      dispatch({ type: 'ACTIVATE_WALLET', wallet })
     } else {
       try {
         const passphrase = await requestPassphrase()
         const keys = await Service.ListKeys({ wallet, passphrase })
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
-        cb()
       } catch (err) {
         console.log(err)
         if (err !== 'dismissed') {
@@ -148,5 +146,19 @@ export function setDrawerAction(open: boolean): GlobalAction {
 export function startOnboardingAction(): GlobalAction {
   return {
     type: 'START_ONBOARDING'
+  }
+}
+
+export function chnageWalletAction(wallet: string): GlobalAction {
+  return {
+    type: 'CHANGE_WALLET',
+    wallet
+  }
+}
+
+export function deactivateWalletAction(wallet: string): GlobalAction {
+  return {
+    type: 'DEACTIVATE_WALLET',
+    wallet
   }
 }

@@ -1,7 +1,9 @@
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Intent } from '../../config/intent'
+import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
 
 interface FormFields {
@@ -19,9 +21,10 @@ interface WalletImportFormProps {
     recoveryPhrase: string
     version: number
   }) => Promise<void>
+  cancel: () => void
 }
 
-export function WalletImportForm({ submit }: WalletImportFormProps) {
+export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
   const {
     control,
     register,
@@ -37,7 +40,11 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
         labelFor='wallet'
         helperText={errors.wallet?.message}
       >
-        <input type='text' {...register('wallet', { required: 'Required' })} />
+        <input
+          type='text'
+          {...register('wallet', { required: Validation.REQUIRED })}
+          autoFocus={true}
+        />
       </FormGroup>
       <FormGroup
         label='Recovery phrase'
@@ -46,7 +53,7 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
         intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
       >
         <textarea
-          {...register('recoveryPhrase', { required: 'Required' })}
+          {...register('recoveryPhrase', { required: Validation.REQUIRED })}
           style={{ minHeight: 75 }}
         />
       </FormGroup>
@@ -58,7 +65,7 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
       >
         <input
           type='number'
-          {...register('version', { required: 'Required' })}
+          {...register('version', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
@@ -69,7 +76,7 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
       >
         <input
           type='password'
-          {...register('passphrase', { required: 'Required' })}
+          {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
@@ -81,17 +88,15 @@ export function WalletImportForm({ submit }: WalletImportFormProps) {
         <input
           type='password'
           {...register('confirmPassphrase', {
-            required: 'Required',
-            pattern: {
-              message: 'Password does not match',
-              value: new RegExp(`^${passphrase}$`)
-            }
+            required: Validation.REQUIRED,
+            pattern: Validation.match(passphrase)
           })}
         />
       </FormGroup>
-      <div>
+      <ButtonGroup>
         <Button type='submit'>Submit</Button>
-      </div>
+        <Button onClick={cancel}>Cancel</Button>
+      </ButtonGroup>
     </form>
   )
 }

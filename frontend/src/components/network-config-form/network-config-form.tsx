@@ -10,6 +10,7 @@ import type { Network } from '../../models/network'
 import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../button'
+import { Validation } from '../../lib/form-validation'
 
 interface FormFields {
   logLevel: string
@@ -59,63 +60,86 @@ export const NetworkConfigForm = ({
       })}
     >
       <FormGroup
-        label='* Host'
+        label='REST Service Host'
         labelFor='host'
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.host?.message}
       >
-        <input type='text' {...register('host', { required: 'Required' })} />
+        <input
+          type='text'
+          {...register('host', {
+            required: Validation.REQUIRED,
+            pattern: Validation.URL
+          })}
+        />
       </FormGroup>
       <FormGroup
-        label='* Port'
+        label='REST Service Port'
         labelFor='port'
         intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.port?.message}
       >
-        <input type='text' {...register('port', { required: 'Required' })} />
+        <input
+          type='number'
+          {...register('port', {
+            required: Validation.REQUIRED,
+            min: Validation.NUMBER_MIN_PORT,
+            max: Validation.NUMBER_MAX_PORT
+          })}
+        />
       </FormGroup>
       <FormGroup
-        label='* Console URL'
+        label='Console URL'
         labelFor='consoleUrl'
         intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.consoleUrl?.message}
       >
         <input
           type='text'
-          {...register('consoleUrl', { required: 'Required' })}
+          {...register('consoleUrl', {
+            pattern: Validation.URL
+          })}
         />
       </FormGroup>
       <FormGroup
-        label='* Console port'
+        label='Console port'
         labelFor='consolePort'
         intent={errors.consolePort?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.consolePort?.message}
       >
         <input
-          type='text'
-          {...register('consolePort', { required: 'Required' })}
+          type='number'
+          {...register('consolePort', {
+            min: Validation.NUMBER_MIN_PORT,
+            max: Validation.NUMBER_MAX_PORT
+          })}
         />
       </FormGroup>
       <FormGroup
-        label='* Token DApp URL'
+        label='Token DApp URL'
         labelFor='tokenDAppUrl'
         intent={errors.tokenDAppUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenDAppUrl?.message}
       >
         <input
           type='text'
-          {...register('tokenDAppUrl', { required: 'Required' })}
+          {...register('tokenDAppUrl', {
+            pattern: Validation.URL
+          })}
         />
       </FormGroup>
       <FormGroup
-        label='* Token DApp port'
+        label='Token DApp port'
         labelFor='tokenDAppPort'
         intent={errors.tokenDAppPort?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenDAppPort?.message}
       >
         <input
-          type='text'
-          {...register('tokenDAppPort', { required: 'Required' })}
+          type='number'
+          {...register('tokenDAppPort', {
+            min: Validation.NUMBER_MIN_PORT,
+            max: Validation.NUMBER_MAX_PORT
+          })}
         />
       </FormGroup>
       <h2>gRPC Nodes</h2>
@@ -125,12 +149,12 @@ export const NetworkConfigForm = ({
       <h2>REST Nodes</h2>
       <HostEditor name='restHosts' control={control} register={register} />
       <FormGroup
-        label='* Log level'
+        label='Log level'
         labelFor='logLevel'
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.logLevel?.message}
       >
-        <select {...register('logLevel', { required: 'Required' })}>
+        <select {...register('logLevel', { required: Validation.REQUIRED })}>
           {Object.values(LogLevels).map(level => (
             <option key={level} value={level}>
               {level}
@@ -139,25 +163,32 @@ export const NetworkConfigForm = ({
         </select>
       </FormGroup>
       <FormGroup
-        label='* gRPC Node retries'
+        label='gRPC Node retries'
         labelFor='grpcNodeRetries'
         intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.grpcNodeRetries?.message}
       >
         <input
-          type='text'
-          {...register('grpcNodeRetries', { required: 'Required' })}
+          type='number'
+          {...register('grpcNodeRetries', {
+            required: Validation.REQUIRED,
+            min: Validation.NUMBER_MIN_GRPC_RETRIES,
+            max: Validation.NUMBER_MAX_GRPC_RETRIES
+          })}
         />
       </FormGroup>
       <FormGroup
-        label='* Token expiry'
+        label='Token expiry'
         labelFor='tokenExpiry'
         intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenExpiry?.message}
       >
         <input
           type='text'
-          {...register('tokenExpiry', { required: 'Required' })}
+          {...register('tokenExpiry', {
+            required: Validation.REQUIRED,
+            pattern: Validation.GOLANG_DURATION
+          })}
         />
       </FormGroup>
       <Button type='submit'>Submit</Button>
