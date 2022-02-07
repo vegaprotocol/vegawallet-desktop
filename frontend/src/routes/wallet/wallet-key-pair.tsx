@@ -1,86 +1,14 @@
 import React from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'
-import { FormGroup } from '../../components/form-group'
 import { Header } from '../../components/header'
-import { requestPassphrase } from '../../components/passphrase-modal'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
+import { Sign } from './sign'
 import { Paths } from '../'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { ButtonUnstyled } from '../../components/button-unstyled'
-
-interface FormFields {
-  message: string
-}
-
-export const Sign = ({
-  wallet,
-  pubKey
-}: {
-  wallet: string
-  pubKey: string
-}) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormFields>()
-
-  const [signedData, setSignedData] = useState<string>('')
-  const submit = React.useCallback(
-    async (values: { message: string }) => {
-      try {
-        const passphrase = await requestPassphrase()
-        const resp = await SignMessage({
-          wallet,
-          pubKey,
-          message: btoa(values.message),
-          passphrase
-        })
-        setSignedData(resp.hexSignature)
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    [pubKey, wallet]
-  )
-  return (
-    <>
-      <Header style={{ marginTop: 32, fontSize: 18 }}>Sign</Header>
-      <form onSubmit={handleSubmit(submit)}>
-        <FormGroup
-          label='Message'
-          labelFor='message'
-          helperText={errors.message?.message}
-        >
-          <textarea
-            {...register('message', { required: 'Required' })}
-          ></textarea>
-        </FormGroup>
-        <Button type='submit'>Sign</Button>
-      </form>
-      {signedData && (
-        <>
-          <h4>Signed message:</h4>
-          <CopyWithTooltip text={signedData}>
-            <ButtonUnstyled
-              style={{
-                textAlign: 'left',
-                wordBreak: 'break-all',
-                color: Colors.TEXT_COLOR_DEEMPHASISE
-              }}
-            >
-              {signedData}
-            </ButtonUnstyled>
-          </CopyWithTooltip>
-        </>
-      )}
-    </>
-  )
-}
 
 export function WalletKeyPair() {
   const {
