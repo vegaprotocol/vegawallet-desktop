@@ -1,6 +1,6 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
-import routerConfig from './router-config'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import routerConfig, { Paths } from './router-config'
 
 export const AppRouter = () => {
   return (
@@ -12,6 +12,10 @@ export const AppRouter = () => {
           </Route>
         )
       })}
+      {/* Redirect to home if no route match */}
+      <Route>
+        <Redirect to={Paths.Home} />
+      </Route>
     </Switch>
   )
 }
