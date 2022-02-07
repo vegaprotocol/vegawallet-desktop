@@ -1,6 +1,5 @@
 import './spinner.css'
 import React from 'react'
-import { Colors } from '../../config/colors'
 
 export function Spinner() {
   return (
@@ -18,7 +17,7 @@ export function Spinner() {
     >
       <circle
         style={{
-          stroke: Colors.WHITE,
+          stroke: 'currentcolor',
           strokeLinecap: 'square',
           animation: 'dash 1.5s ease-in-out infinite'
         }}
