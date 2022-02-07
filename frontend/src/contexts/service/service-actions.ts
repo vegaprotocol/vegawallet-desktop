@@ -98,6 +98,7 @@ export function stopProxyAction(network: string, port: number) {
       dispatch({ type: 'START_SERVICE', port })
       await StartService({ network, withConsole: false, withTokenDApp: false })
     } catch (err) {
+      Sentry.captureException(err)
       console.log(err)
     }
   }

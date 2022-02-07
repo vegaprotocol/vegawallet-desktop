@@ -7,6 +7,7 @@ import { addNetworkAction } from '../contexts/network/network-actions'
 import { useNetwork } from '../contexts/network/network-context'
 import { ImportNetworkResponse } from '../models/network'
 import { FormStatus, useFormState } from './use-form-state'
+import * as Sentry from '@sentry/react'
 
 export function useImportNetwork() {
   const { dispatch } = useNetwork()
@@ -60,6 +61,7 @@ export function useImportNetwork() {
           })
         }
       } catch (err) {
+        Sentry.captureException(err)
         // @ts-ignore
         setError(err)
         setStatus(FormStatus.Error)
