@@ -71,7 +71,7 @@ export const Sign = ({
                 color: Colors.TEXT_COLOR_DEEMPHASISE
               }}
             >
-              {signedData} <Copy style={{ width: 13, height: 13 }} />
+              {signedData}
             </ButtonUnstyled>
           </CopyWithTooltip>
         </>
