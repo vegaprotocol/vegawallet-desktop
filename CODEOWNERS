@@ -1,4 +1,4 @@
-backend @ValentinTrinque
-frontend  @mattrussel36 @dexturr
+backend @vegaprotocol/core
+frontend @vegaprotocol/frontend
 
-* @ValentinTrinque
+* @vegaprotocol/core @vegaprotocol/frontend
