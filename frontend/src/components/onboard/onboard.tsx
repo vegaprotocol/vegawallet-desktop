@@ -70,7 +70,7 @@ function OnboardHome() {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Header style={{ margin: '0 0 30px 0' }}>
+      <Header style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
         <Vega />
       </Header>
       <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
