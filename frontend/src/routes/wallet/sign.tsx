@@ -63,7 +63,7 @@ export const Sign = ({
         >
           <textarea
             {...register('message', { required: 'Required' })}
-          />
+          ></textarea>
         </FormGroup>
         <Button type='submit'>Sign</Button>
       </form>
