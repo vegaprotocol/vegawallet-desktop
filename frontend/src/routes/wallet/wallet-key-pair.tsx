@@ -1,6 +1,8 @@
 import React from 'react'
 import { Redirect, useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import { BreakText } from '../../components/break-text'
+import { Button } from '../../components/button'
 import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -18,7 +20,7 @@ export function WalletKeyPair() {
   }
 
   return (
-    <>
+    <div style={{ padding: 20 }}>
       <Header style={{ marginTop: 0 }}>
         Keypair name:{' '}
         <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
@@ -39,6 +41,11 @@ export function WalletKeyPair() {
           </tr>
         </tbody>
       </table>
-    </>
+      <div style={{ marginTop: 20 }}>
+        <Link to={Paths.Wallet}>
+          <Button>Back</Button>
+        </Link>
+      </div>
+    </div>
   )
 }

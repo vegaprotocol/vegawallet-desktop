@@ -12,15 +12,13 @@ import { initAppAction } from './contexts/global/global-actions'
 import { ServiceProvider } from './contexts/service/service-provider'
 import { PassphraseModal } from './components/passphrase-modal'
 import { NetworkProvider } from './contexts/network/network-provider'
-import { CheckVersion } from './api/service'
-import { AppToaster } from './components/toaster'
-import { ExternalLink } from './components/external-link'
-import { Intent } from './config/intent'
+import { Onboard } from './components/onboard'
+import { useCheckForUpdate } from './hooks/use-check-for-update'
 
 /**
  * Initialiases the app
  */
-function AppLoader({ children }: { children: React.ReactElement }) {
+function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
   const { state, dispatch } = useGlobal()
 
@@ -44,7 +42,15 @@ function AppLoader({ children }: { children: React.ReactElement }) {
     )
   }
 
-  return children
+  if (state.status === AppStatus.Onboarding) {
+    return (
+      <Splash className='vega-bg' style={{ backgroundSize: 'cover' }}>
+        <Onboard />
+      </Splash>
+    )
+  }
+
+  return <>{children}</>
 }
 
 /**
@@ -54,49 +60,19 @@ function App() {
   return (
     <Router>
       <GlobalProvider>
-        <AppLoader>
-          <NetworkProvider>
-            <ServiceProvider>
+        <NetworkProvider>
+          <ServiceProvider>
+            <AppLoader>
               <Chrome>
                 <AppRouter />
               </Chrome>
               <PassphraseModal />
-            </ServiceProvider>
-          </NetworkProvider>
-        </AppLoader>
+            </AppLoader>
+          </ServiceProvider>
+        </NetworkProvider>
       </GlobalProvider>
     </Router>
   )
-}
-
-/**
- * Calls CheckVersion and shows a toast if theres a new version to update to
- */
-function useCheckForUpdate() {
-  React.useEffect(() => {
-    const run = async () => {
-      try {
-        const res = await CheckVersion()
-        // if string is empty no version to update to
-        if (res) {
-          AppToaster.show({
-            message: (
-              <>
-                Version {res.version} is now available on{' '}
-                <ExternalLink href={res.releaseUrl}>Github</ExternalLink>
-              </>
-            ),
-            timeout: 0,
-            intent: Intent.PRIMARY
-          })
-        }
-      } catch (err) {
-        // No op
-      }
-    }
-
-    run()
-  }, [])
 }
 
 export default App

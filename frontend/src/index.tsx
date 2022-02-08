@@ -7,12 +7,22 @@ import App from './app'
 import reportWebVitals from './report-web-vitals'
 import * as Wails from '@wailsapp/runtime'
 
-/**
-TODO:
-- Investigate input type file for import path
-- Tests
-- make validation DRY
-*/
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
+import packageJson from '../package.json'
+
+const dsn = process.env.REACT_APP_SENTRY_DSN || false
+
+if (dsn) {
+  Sentry.init({
+    dsn,
+    integrations: [new BrowserTracing()],
+    release: packageJson.version,
+    // We recommend adjusting this value in production, or using tracesSampler
+    // for finer control
+    tracesSampleRate: 1.0
+  })
+}
 
 Wails.Init(() => {
   ReactDOM.render(

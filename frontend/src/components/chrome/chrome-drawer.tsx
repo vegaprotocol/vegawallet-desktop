@@ -5,31 +5,41 @@ import { DRAWER_HEIGHT } from '.'
 import { ServiceStatus } from './service-status'
 import { DrawerHead } from './drawer-head'
 import { DrawerContent } from './drawer-content'
+import { usePrevious } from '../../hooks/use-previous'
+import { useWindowSize } from '../../hooks/use-window-size'
 
 /**
  * Renders and controls the slide up drawer showing network information.
  */
 export function ChromeDrawer() {
   const { state } = useGlobal()
+  const { height } = useWindowSize()
+  const prevDrawerState = usePrevious(state.drawerOpen)
 
+  // Move the drawer up to full screen if open, otherwise 'minimise' only showing the top DRAWER_HEIGHTpx
   const transform = state.drawerOpen
     ? 'translateY(0)'
-    : `translateY(${window.innerHeight - DRAWER_HEIGHT}px)`
+    : `translateY(${height - DRAWER_HEIGHT}px)`
+
+  // Only apply the transition animation if the drawer is opening or closing, this way resizing
+  // the window instantly renders the drawer in the correct position
+  const transition =
+    prevDrawerState !== state.drawerOpen ? 'transform .5s ease' : undefined
 
   return (
     <div
+      className='vega-border-image'
       style={{
-        background: Colors.DARK_GRAY_1,
+        background: Colors.BLACK,
         position: 'fixed',
         top: 0,
         left: 0,
         width: '100%',
         height: '100%',
         transform,
-        transition: 'transform .15s ease',
-        fontSize: 14,
+        transition,
         overflowY: 'auto',
-        borderTop: `1px solid ${Colors.DARK_GRAY_3}`
+        borderTop: '3px solid'
       }}
     >
       {state.drawerOpen ? (

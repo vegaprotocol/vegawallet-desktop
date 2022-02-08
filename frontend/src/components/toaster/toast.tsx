@@ -65,10 +65,8 @@ export function Toast({
     >
       <div
         style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: 10,
-          padding: '5px 15px',
+          position: 'relative',
+          padding: '10px 45px 10px 15px',
           background: IntentBackgrounds[intent]
         }}
         onBlur={startTimeout}
@@ -81,7 +79,7 @@ export function Toast({
         <span style={{ wordBreak: 'break-word' }}>{message}</span>
         <ButtonUnstyled
           onClick={dismiss}
-          style={{ position: 'relative', top: -5, right: -15 }}
+          style={{ position: 'absolute', top: 0, right: 0 }}
         >
           <Cross style={{ width: 40, height: 40 }} />
         </ButtonUnstyled>

@@ -1,3 +1,4 @@
+import './passphrase-modal.css'
 import React from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -6,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../button'
+import { Validation } from '../../lib/form-validation'
 
 interface ModalHandler {
   open: Function
@@ -54,7 +56,9 @@ export function PassphraseModal() {
             bottom: 0,
             left: 0,
             height: '100%',
-            background: 'rgba(54, 54, 54 ,0.8)'
+            background: 'rgba(54, 54, 54 ,0.8)',
+            animation: 'fadeIn .2s ease',
+            animationFillMode: 'forwards'
           }}
         />
         <Dialog.Content
@@ -62,10 +66,13 @@ export function PassphraseModal() {
           style={{
             padding: 20,
             background: 'black',
-            width: 250,
+            width: 340,
             position: 'fixed',
             top: 30,
-            left: 'calc(50% - 125px)'
+            left: 'calc(50% - 170px)',
+            boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
+            animation: 'fadeIn .2s ease',
+            animationFillMode: 'forwards'
           }}
         >
           <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
@@ -90,7 +97,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
   return (
     <form onSubmit={handleSubmit(values => onSubmit(values.passphrase))}>
       <FormGroup
-        label='* Passphrase'
+        label='Passphrase'
         labelFor='passphrase'
         helperText={errors.passphrase?.message}
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
@@ -100,7 +107,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
           type='password'
           autoComplete='off'
           autoFocus={true}
-          {...register('passphrase', { required: 'Required' })}
+          {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <div style={{ display: 'flex', gap: 10 }}>

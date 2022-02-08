@@ -3,12 +3,15 @@
 ## Unreleased
 
 ### 🚨 Breaking changes
-- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) - 
+
+- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
 
 ### 🗑️ Deprecation
-- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) - 
+
+- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
 
 ### 🛠 Improvements
+
 - [34](https://github.com/vegaprotocol/vegawallet-desktop/pull/34) - Update to latest version of the vegawallet
 - [38](https://github.com/vegaprotocol/vegawallet-desktop/pull/38) - Add changelog, project board Github actions and linked PR action version
 - [34](https://github.com/vegaprotocol/vegawallet-desktop/pull/34) - Find the definitive name for this project
@@ -28,10 +31,9 @@
 - [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/75) - Display wallet version on wallet creation
 - [75](https://github.com/vegaprotocol/vegawallet-desktop/pull/75) - Generate first key on wallet creation and import
 - [80](https://github.com/vegaprotocol/vegawallet-desktop/pull/80) - Add verification of software updateg
+- [88](https://github.com/vegaprotocol/vegawallet-desktop/pull/88) - Adds an onboarding flow prompting user to initialise the app, create a wallet and import a network configuration
+- [104](https://github.com/vegaprotocol/vegawallet-desktop/pull/104) - Remove the advanced fields section of network import, plus various minor fixes
 
 ### 🐛 Fixes
+
 - [21](https://github.com/vegaprotocol/vegawallet-desktop/pull/21) - No service config if you create a new wallet
-
-
-
-

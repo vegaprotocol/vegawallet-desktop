@@ -1,17 +1,12 @@
 import React from 'react'
 import { FieldError, useForm } from 'react-hook-form'
-import { GetNetworkConfig, ImportNetwork } from '../../api/service'
-import { CodeBlock } from '../code-block'
-import { AppToaster } from '../toaster'
-import { addNetworkAction } from '../../contexts/network/network-actions'
-import { useNetwork } from '../../contexts/network/network-context'
-import { ImportNetworkResponse } from '../../models/network'
 import { FormGroup } from '../form-group'
 import { Intent } from '../../config/intent'
 import { Button } from '../button'
-import { ButtonUnstyled } from '../button-unstyled'
 import { Checkbox } from '../checkbox'
-import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
+import { useImportNetwork } from '../../hooks/use-import-network'
+import { FormStatus } from '../../hooks/use-form-state'
+import { Validation } from '../../lib/form-validation'
 
 interface FormFields {
   name: string
@@ -19,9 +14,14 @@ interface FormFields {
   force: boolean
 }
 
-export function NetworkImportForm() {
-  const [advancedFields, setAdvancedfields] = React.useState(false)
-  const { response, submit, error } = useImportNetwork()
+interface NetworkImportFormProps {
+  onComplete?: () => void
+}
+
+export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
+  const [showOverwriteCheckbox, setShowOverwriteCheckbox] =
+    React.useState(false)
+  const { status, submit, error } = useImportNetwork()
   const {
     control,
     register,
@@ -38,24 +38,30 @@ export function NetworkImportForm() {
   })
 
   React.useEffect(() => {
-    if (response) {
+    if (status === FormStatus.Success) {
       reset()
-      setAdvancedfields(false)
+      setShowOverwriteCheckbox(false)
+      if (typeof onComplete === 'function') {
+        onComplete()
+      }
     }
-  }, [response, reset])
+  }, [status, reset, onComplete])
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
-  // set the namee
+  // set the name
   React.useEffect(() => {
-    if (error && /already exists/.test(error)) {
-      setAdvancedfields(true)
+    if (status === FormStatus.Error && error && /already exists/.test(error)) {
+      setShowOverwriteCheckbox(true)
       setError(
         'name',
-        { message: 'Network with name already exists' },
+        {
+          message:
+            'Network with name already exists. Provide a new name or overwrite by checking the box below'
+        },
         { shouldFocus: true }
       )
     }
-  }, [error, setError])
+  }, [error, status, setError])
 
   const renderFileOrUrlHelperText = (error: FieldError | undefined) => {
     if (error) {
@@ -77,109 +83,32 @@ export function NetworkImportForm() {
           id='fileOrUrl'
           type='text'
           {...register('fileOrUrl', {
-            required: 'Required'
+            required: Validation.REQUIRED
           })}
         />
       </FormGroup>
-      <CollapsiblePrimitive.Root
-        open={advancedFields}
-        onOpenChange={() => setAdvancedfields(curr => !curr)}
+      <FormGroup
+        label='Network name'
+        labelFor='name'
+        intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+        helperText={
+          errors.name
+            ? errors.name?.message
+            : 'Uses name specified in the config by default'
+        }
       >
-        <CollapsiblePrimitive.Trigger asChild={true}>
-          <p>
-            <ButtonUnstyled>
-              {advancedFields ? 'Hide advanced fields' : 'Show advanced fields'}
-            </ButtonUnstyled>
-          </p>
-        </CollapsiblePrimitive.Trigger>
-        <CollapsiblePrimitive.Content>
-          <>
-            <FormGroup
-              label='Network name'
-              labelFor='name'
-              intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-              helperText={
-                errors.name
-                  ? errors.name?.message
-                  : 'Uses name specified in config by default'
-              }
-            >
-              <input type='text' id='name' {...register('name')} />
-            </FormGroup>
-            <FormGroup helperText='Overwrite existing network configuration if it already exists'>
-              <Checkbox name='force' control={control} label='Overwrite' />
-            </FormGroup>
-          </>
-        </CollapsiblePrimitive.Content>
-      </CollapsiblePrimitive.Root>
+        <input type='text' id='name' {...register('name')} />
+      </FormGroup>
+      {showOverwriteCheckbox && (
+        <FormGroup helperText='Overwrite existing network configuration'>
+          <Checkbox name='force' control={control} label='Overwrite' />
+        </FormGroup>
+      )}
       <div>
-        <Button type='submit'>Submit</Button>
+        <Button type='submit' loading={status === FormStatus.Pending}>
+          Import
+        </Button>
       </div>
     </form>
   )
-}
-
-function useImportNetwork() {
-  const { dispatch } = useNetwork()
-  const [response, setResponse] = React.useState<ImportNetworkResponse | null>(
-    null
-  )
-  const [error, setError] = React.useState<string | null>(null)
-
-  const submit = React.useCallback(
-    async (values: FormFields) => {
-      const isUrl = /^(http|https):\/\/[^ "]+$/i.test(values.fileOrUrl)
-      try {
-        const res = await ImportNetwork({
-          name: values.name,
-          url: isUrl ? values.fileOrUrl : '',
-          filePath: !isUrl ? values.fileOrUrl : '',
-          force: values.force
-        })
-
-        if (res) {
-          setResponse(res)
-
-          const config = await GetNetworkConfig(res.name)
-          dispatch(addNetworkAction(res.name, config))
-
-          AppToaster.show({
-            message: (
-              <div>
-                <p>Network imported to:</p>
-                <p>
-                  <CodeBlock style={{ background: 'transparent' }}>
-                    {res.filePath}
-                  </CodeBlock>
-                </p>
-              </div>
-            ),
-            intent: Intent.SUCCESS,
-            timeout: 0
-          })
-        } else {
-          const message = 'Error: Could not import network'
-          setError(message)
-          AppToaster.show({
-            message,
-            intent: Intent.DANGER
-          })
-        }
-      } catch (err) {
-        // @ts-ignore
-        setError(err)
-        AppToaster.show({
-          message: `Error: ${err}`,
-          intent: Intent.DANGER
-        })
-      }
-    },
-    [dispatch]
-  )
-
-  return {
-    response,
-    submit,
-    error
-  }
 }

@@ -21,6 +21,12 @@ export type GlobalAction =
       version: string
     }
   | {
+      type: 'START_ONBOARDING'
+    }
+  | {
+      type: 'FINISH_ONBOARDING'
+    }
+  | {
       type: 'ADD_WALLET'
       wallet: string
       key: Key
@@ -37,6 +43,14 @@ export type GlobalAction =
     }
   | {
       type: 'CHANGE_WALLET'
+      wallet: string
+    }
+  | {
+      type: 'ACTIVATE_WALLET'
+      wallet: string
+    }
+  | {
+      type: 'DEACTIVATE_WALLET'
       wallet: string
     }
   | {
@@ -62,11 +76,23 @@ export function globalReducer(
             return {
               name: w,
               keypairs: null,
-              keypair: null
+              auth: false
             }
           })
           .sort(sortWallet),
         version: action.version
+      }
+    }
+    case 'START_ONBOARDING': {
+      return {
+        ...state,
+        status: AppStatus.Onboarding
+      }
+    }
+    case 'FINISH_ONBOARDING': {
+      return {
+        ...state,
+        status: AppStatus.Initialised
       }
     }
     case 'ADD_WALLET': {
@@ -74,12 +100,11 @@ export function globalReducer(
       const newWallet: Wallet = {
         name: action.wallet,
         keypairs: [keypairExtended],
-        keypair: keypairExtended
+        auth: false
       }
       return {
         ...state,
-        wallets: [...state.wallets, newWallet].sort(sortWallet),
-        wallet: newWallet
+        wallets: [...state.wallets, newWallet].sort(sortWallet)
       }
     }
     case 'SET_KEYPAIRS': {
@@ -89,7 +114,7 @@ export function globalReducer(
         ...currWallet,
         name: action.wallet,
         keypairs: keypairsExtended,
-        keypair: keypairsExtended[0]
+        auth: true
       }
 
       return {
@@ -97,8 +122,7 @@ export function globalReducer(
         wallets: [
           ...state.wallets.filter(w => w.name !== action.wallet),
           newWallet
-        ].sort(sortWallet),
-        wallet: newWallet
+        ].sort(sortWallet)
       }
     }
     case 'ADD_KEYPAIR': {
@@ -116,11 +140,46 @@ export function globalReducer(
       }
       return {
         ...state,
-        wallets: [...wallets, updatedWallet].sort(sortWallet),
-        wallet: updatedWallet
+        wallets: [...wallets, updatedWallet].sort(sortWallet)
       }
     }
+    case 'ACTIVATE_WALLET': {
+      const wallet = state.wallets.find(w => w.name === action.wallet)
 
+      if (!wallet) {
+        throw new Error('Wallet not found')
+      }
+
+      return {
+        ...state,
+        wallets: [
+          ...state.wallets.filter(w => w.name !== wallet.name),
+          {
+            ...wallet,
+            auth: true
+          }
+        ].sort(sortWallet)
+      }
+    }
+    case 'DEACTIVATE_WALLET': {
+      const wallet = state.wallets.find(w => w.name === action.wallet)
+
+      if (!wallet) {
+        throw new Error('Wallet not found')
+      }
+
+      return {
+        ...state,
+        wallets: [
+          ...state.wallets.filter(w => w.name !== wallet.name),
+          {
+            ...wallet,
+            auth: false,
+            keypairs: null // remove keypairs so if you deactivate you are required password again
+          }
+        ].sort(sortWallet)
+      }
+    }
     case 'CHANGE_WALLET': {
       const wallet = state.wallets.find(w => w.name === action.wallet)
 

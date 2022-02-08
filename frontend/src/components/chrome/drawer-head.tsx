@@ -12,10 +12,6 @@ interface DrawerHeadProps {
 
 /** The part of the drawer that remains exposed */
 export function DrawerHead({ height, children }: DrawerHeadProps) {
-  const {
-    state: { drawerOpen },
-    dispatch: globalDispatch
-  } = useGlobal()
   return (
     <div
       style={{
@@ -23,27 +19,50 @@ export function DrawerHead({ height, children }: DrawerHeadProps) {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '10px 0 10px 20px',
-        borderBottom: `1px solid ${Colors.DARK_GRAY_3}`
+        padding: '10px 20px 10px 20px',
+        borderBottom: `1px solid ${Colors.DARK_GRAY_3}`,
+        fontSize: 14
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
         {children}
       </div>
       <div>
-        <ButtonUnstyled
-          style={{ padding: 20 }}
-          onClick={() => globalDispatch(setDrawerAction(!drawerOpen))}
-        >
-          <DropdownArrow
-            style={{
-              width: 16,
-              height: 16,
-              transform: drawerOpen ? '' : 'rotate(180deg)'
-            }}
-          />
-        </ButtonUnstyled>
+        <DrawerToggle />
       </div>
     </div>
+  )
+}
+
+function DrawerToggle() {
+  const {
+    state: { drawerOpen },
+    dispatch: globalDispatch
+  } = useGlobal()
+  const [hover, setHover] = React.useState(false)
+
+  return (
+    <ButtonUnstyled
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 45,
+        height: 45,
+        borderRadius: '50%',
+        background: hover ? Colors.DARK_GRAY_2 : 'transparent'
+      }}
+      onClick={() => globalDispatch(setDrawerAction(!drawerOpen))}
+    >
+      <DropdownArrow
+        style={{
+          width: 16,
+          height: 16,
+          transform: drawerOpen ? '' : 'rotate(180deg)'
+        }}
+      />
+    </ButtonUnstyled>
   )
 }
