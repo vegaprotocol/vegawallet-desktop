@@ -21,3 +21,10 @@ Feature: Import network
     And enter network name
     And click submit
     Then new network is added
+
+  Scenario: Import unsuccessfully via file path
+    Given I am on the import network page
+    When I enter file path “”
+    And enter network name
+    And click submit
+    Then network is not added

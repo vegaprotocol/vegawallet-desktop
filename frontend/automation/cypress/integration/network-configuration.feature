@@ -18,7 +18,7 @@ Feature: Network Configuration page
     Then I am redirected to edit “stagnet” page
   # (possibly more steps to check validation)
 
-  Scenario: Go to import network page
-    Given I am on the Network configuration page
-    When I click on import network
-    Then I am redirected to add network page
+  # Scenario: Go to import network page
+  #   Given I am on the Network configuration page
+  #   When I click on import network
+  #   Then I am redirected to add network page

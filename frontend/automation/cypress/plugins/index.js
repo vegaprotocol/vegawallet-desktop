@@ -9,7 +9,7 @@
 // ***********************************************************
 const { cypressConfigResolver } = require('../config/cypress-config-resolver')
 const cucumber = require('cypress-cucumber-preprocessor').default
-const clipboardy = require('clipboardy').default
+const clipboardy = require('clipboardy')
 
 module.exports = (on, config) => {
   require('@cypress/code-coverage/task')(on, config)

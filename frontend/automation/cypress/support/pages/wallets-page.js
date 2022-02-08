@@ -1,8 +1,11 @@
 export default class WalletPage {
   passphraseInput = 'input-passphrase'
   passphraseSubmit = 'input-submit'
-  walletList = '.wallet-list > li'
+  walletList = 'wallet-list'
   generateKeyPairBtn = 'generate-keypair'
+  lockWalletBtn = 'lock'
+  keyPair = 'tr > td > a'
+  copyPublicKeyBtn = 'public-key'
 
   validateUrl(url) {
     cy.url().should('contain', url)
@@ -22,25 +25,36 @@ export default class WalletPage {
       })
   }
 
-  validateKeyPairDisplayed(keyPairName) {
-    cy.getByTestId(keyPairName).should('have.text', keyPairName)
+  copyTopPublicKey() {
+    cy.getByTestId(this.copyPublicKeyBtn).first().click()
   }
 
-  validatePublicKey(keyPairName) {
-    cy.getByTestId(`${keyPairName}-public-key`).should('exist')
-  }
+  validateCopyKeyBtn(){
+    cy.task('getClipboard')
+    .then(($copiedText) => {
+      console.log($copiedText)
+      cy.getByTestId(this.copyPublicKeyBtn).eq(0)
+      .invoke('text')
+      .then(text => {
+        const partText = text.slice(0,-6)
+        // cy.log(partText)
 
-  validateCopyKeyBtn(keyPairName, publicKey) {
-    cy.getByTestId(`${keyPairName}-public-key`).click()
-    cy.task('getClipboard').should('eq', publicKey)
+        expect($copiedText).to.contain(partText)
+      })
+    })
   }
 
   validateWalletsDisplayed() {
-    cy.get(this.walletList).should('have.length.of.at.least', 1)
+    cy.getByTestId(this.walletList).should('have.length.of.at.least', 1)
+  }
+
+  validateWalletUnlocked() {
+    cy.getByTestId(this.generateKeyPairBtn).should('have.length.of.at.least', 1)
+    cy.getByTestId(this.lockWalletBtn).should('have.length.of.at.least', 1)
   }
 
   clickOnTopWallet() {
-    cy.get(this.walletList).last().find('button').click()
+    cy.getByTestId(this.walletList).last().click()
   }
 
   verifyErrorToastTxtIsDisplayed(expectedText) {
@@ -53,5 +67,9 @@ export default class WalletPage {
 
   validateNumberOfKeyPairs(expectedNum) {
     cy.get('tr').should('have.length.at.least', expectedNum)
+  }
+
+  clickOnTopKeyPair() {
+    cy.get(this.keyPair).eq(0).click()
   }
 }

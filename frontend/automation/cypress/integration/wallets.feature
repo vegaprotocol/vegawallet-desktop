@@ -9,7 +9,7 @@ Feature: Wallets page
   Scenario: Wallet details page
     Given I click on existing wallet
     When I enter correct passphrase
-    Then I am redirected to wallet details page
+    Then wallet is unlocked
 
   Scenario: Wrong passphrase
     Given I am on the wallets page
@@ -18,25 +18,27 @@ Feature: Wallets page
     Then wrong passphrase is displayed
 
   Scenario: Generate new key pair
-    Given I am on wallet details page
+    Given I have unlocked wallet
     When I click generate Keypair
     And enter passphrase
     Then new keypair is generated
-  @todo
-  Scenario: Copy public key
-    Given I am on wallet details page
-    When I click on copy public key
-    Then public key is copied
-  @todo
+
   Scenario: Key pair page
-    Given I am on wallet details page
+    Given I have unlocked wallet
     When I click on key pair
     Then I am redirected to key pair page
-  @todo
-  Scenario: Go to Docs
-    When I click on Docs
-    Then I am redirected to Docs page
-  @todo
-  Scenario: Go to Github
-    When I click on Github
-    Then I am redirected to Github page
+
+  @ignore
+  Scenario: Copy public key
+    Given I have unlocked wallet
+    When I click on copy public key
+    Then public key is copied
+
+# @todo
+# Scenario: Go to Docs
+#   When I click on Docs
+#   Then I am redirected to Docs page
+# @todo
+# Scenario: Go to Github
+#   When I click on Github
+#   Then I am redirected to Github page
