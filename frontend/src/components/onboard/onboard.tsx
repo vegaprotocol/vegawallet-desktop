@@ -197,13 +197,11 @@ function OnboardWalletImport() {
 }
 
 function OnboardNetwork() {
-  const history = useHistory()
   const { dispatch } = useGlobal()
 
   const onComplete = React.useCallback(() => {
     dispatch({ type: 'FINISH_ONBOARDING' })
-    history.push(OnboardPaths.Home)
-  }, [history, dispatch])
+  }, [dispatch])
 
   return (
     <OnboardPanel title='Import a network'>

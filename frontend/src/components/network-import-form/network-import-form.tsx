@@ -14,10 +14,14 @@ interface FormFields {
   force: boolean
 }
 
-export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
+interface NetworkImportFormProps {
+  onComplete?: () => void
+}
+
+export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   const [showOverwriteCheckbox, setShowOverwriteCheckbox] =
     React.useState(false)
-  const { status, response, submit, error } = useImportNetwork()
+  const { status, submit, error } = useImportNetwork()
   const {
     control,
     register,
@@ -34,19 +38,19 @@ export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
   })
 
   React.useEffect(() => {
-    if (response) {
+    if (status === FormStatus.Success) {
       reset()
       setShowOverwriteCheckbox(false)
       if (typeof onComplete === 'function') {
         onComplete()
       }
     }
-  }, [response, reset, onComplete])
+  }, [status, reset, onComplete])
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
-  // set the namee
+  // set the name
   React.useEffect(() => {
-    if (error && /already exists/.test(error)) {
+    if (status === FormStatus.Error && error && /already exists/.test(error)) {
       setShowOverwriteCheckbox(true)
       setError(
         'name',
@@ -57,7 +61,7 @@ export function NetworkImportForm({ onComplete }: { onComplete?: () => void }) {
         { shouldFocus: true }
       )
     }
-  }, [error, setError])
+  }, [error, status, setError])
 
   const renderFileOrUrlHelperText = (error: FieldError | undefined) => {
     if (error) {
