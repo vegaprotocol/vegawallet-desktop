@@ -13,14 +13,6 @@ export const Button = React.forwardRef(
   ) => {
     const [hover, setHover] = React.useState(false)
 
-    const renderChildren = () => {
-      if (loading) {
-        return <Spinner />
-      }
-
-      return children
-    }
-
     const handleMouseEnter = (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
@@ -70,7 +62,7 @@ export const Button = React.forwardRef(
             gap: 5
           }}
         >
-          {renderChildren()}
+          {loading ? <Spinner /> : children}
         </span>
       </button>
     )

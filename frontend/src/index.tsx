@@ -24,13 +24,6 @@ if (dsn) {
   })
 }
 
-/**
-TODO:
-- Investigate input type file for import path
-- Tests
-- make validation DRY
-*/
-
 Wails.Init(() => {
   ReactDOM.render(
     <React.StrictMode>

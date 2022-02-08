@@ -30,13 +30,14 @@ export function useImportNetwork() {
         })
 
         if (res) {
-          setResponse(res)
-
           const config = await GetNetworkConfig(res.name)
 
+          // Update the config
           dispatch(addNetworkAction(res.name, config))
 
           setStatus(FormStatus.Success)
+          setResponse(res)
+
           AppToaster.show({
             message: (
               <div>
