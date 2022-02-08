@@ -60,7 +60,7 @@ export const NetworkConfigForm = ({
       })}
     >
       <FormGroup
-        label='REST Service Host'
+        label='Wallet Service Host'
         labelFor='host'
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.host?.message}
@@ -74,7 +74,7 @@ export const NetworkConfigForm = ({
         />
       </FormGroup>
       <FormGroup
-        label='REST Service Port'
+        label='Wallet Service Port'
         labelFor='port'
         intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.port?.message}
