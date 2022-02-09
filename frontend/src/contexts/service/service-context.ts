@@ -1,6 +1,7 @@
 import React from 'react'
-import { Thunk } from 'react-hook-thunk-reducer'
-import { ServiceAction } from './service-reducer'
+import type { Thunk } from 'react-hook-thunk-reducer'
+
+import type { ServiceAction } from './service-reducer'
 
 export enum ProxyApp {
   None = 'None',

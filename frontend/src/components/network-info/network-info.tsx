@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useNetwork } from '../../contexts/network/network-context'
@@ -7,7 +8,7 @@ import {
   stopProxyAction
 } from '../../contexts/service/service-actions'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
-import { Network, ProxyDAppConfig } from '../../models/network'
+import type { Network, ProxyDAppConfig } from '../../models/network'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 import { NodeList } from '../node-list'

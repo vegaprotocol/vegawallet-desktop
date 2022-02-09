@@ -1,4 +1,4 @@
-import { Key } from './keys'
+import type { Key } from './keys'
 
 export interface Wallet {
   name: string

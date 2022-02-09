@@ -1,6 +1,7 @@
-import React from 'react'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
+import React from 'react'
 import { Controller } from 'react-hook-form'
+
 import { Colors } from '../../config/colors'
 
 interface RadioGroupProps {

@@ -1,5 +1,5 @@
-import { Network } from '../../models/network'
-import { NetworkState } from './network-context'
+import type { Network } from '../../models/network'
+import type { NetworkState } from './network-context'
 
 export const initialNetworkState: NetworkState = {
   network: null,

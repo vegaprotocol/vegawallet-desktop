@@ -1,6 +1,6 @@
 import React from 'react'
-import { Intent } from '../../config/intent'
-import { CreateWalletResponse } from '../../models/wallet'
+
+import type { CreateWalletResponse } from '../../models/wallet'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
@@ -21,7 +21,8 @@ export function WalletCreateFormSuccess({
     <>
       <Callout
         title='Warning'
-        intent={Intent.DANGER}
+        className='vega-bg'
+        style={{ background: 'image-set()', backgroundSize: 'cover' }}
         icon={<Warning style={{ width: 15, height: 15 }} />}
       >
         <p data-testid='wallet-warning'>

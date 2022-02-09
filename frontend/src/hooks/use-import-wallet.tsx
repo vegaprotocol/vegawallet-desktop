@@ -1,12 +1,13 @@
+import * as Sentry from '@sentry/react'
 import React from 'react'
-import { ImportWallet } from '../api/service'
+
 import { CodeBlock } from '../components/code-block'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { addWalletAction } from '../contexts/global/global-actions'
 import { useGlobal } from '../contexts/global/global-context'
-import { ImportWalletResponse } from '../models/wallet'
-import * as Sentry from '@sentry/react'
+import type { ImportWalletResponse } from '../models/wallet'
+import { Service } from '../service'
 
 export function useImportWallet() {
   const { dispatch } = useGlobal()
@@ -29,7 +30,7 @@ export function useImportWallet() {
         timestamp: Date.now()
       })
       try {
-        const resp = await ImportWallet({
+        const resp = await Service.ImportWallet({
           wallet: values.wallet,
           passphrase: values.passphrase,
           recoveryPhrase: values.recoveryPhrase,

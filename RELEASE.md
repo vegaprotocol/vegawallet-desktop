@@ -7,9 +7,11 @@ A default version is hard-coded. This is done for people that use the developmen
 This requires additional steps during the release process.
 
 1. Set the `defaultVersion` variable to the desired version in the `backend/version.go` file.
-2. Commit the change right before the tagging.
-3. Tag and release with the exact same name set on `defaultVersion` variable.
-4. Right after the release, push a new commit to set the version to a next
+2. Set the `version` property to the desired version in the `wails.json`.
+2. Set the `version` property to the desired version in the `frontend/package.json`.
+3. Commit the change right before the tagging.
+4. Tag and release with the exact same name set on `defaultVersion` variable.
+5. Right after the release, push a new commit to set the version to a next
    development version. A development version is suffixed by `+dev`.
 
 ### Example on stable release

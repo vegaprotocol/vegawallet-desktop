@@ -1,7 +1,8 @@
 import React from 'react'
-import { Header } from '../../components/header'
+
 import { Button } from '../../components/button'
 import { CodeBlock } from '../../components/code-block'
+import { Header } from '../../components/header'
 
 export interface ImportSuccessProps {
   walletPath: string

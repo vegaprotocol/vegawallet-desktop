@@ -1,4 +1,6 @@
-import React, { HTMLAttributes } from 'react'
+import type { HTMLAttributes } from 'react'
+import React from 'react'
+
 import { Colors } from '../../config/colors'
 
 interface CodeBlockProps extends HTMLAttributes<HTMLDivElement> {

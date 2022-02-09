@@ -1,6 +1,7 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import { Key, NamedKeyPair } from '../../models/keys'
-import { AppStatus, GlobalState, KeyPair, Wallet } from './global-context'
+import type { Key, NamedKeyPair } from '../../models/keys'
+import type { GlobalState, KeyPair, Wallet } from './global-context'
+import { AppStatus } from './global-context'
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,

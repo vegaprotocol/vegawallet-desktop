@@ -1,11 +1,12 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+
+import { Button } from '../../components/button'
 import { Header } from '../../components/header'
 import { WalletCreateForm } from '../../components/wallet-create-form'
-import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
-import { useHistory } from 'react-router-dom'
+import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { Paths } from '../router-config'
-import { Button } from '../../components/button'
 
 export const WalletCreate = () => {
   const history = useHistory()

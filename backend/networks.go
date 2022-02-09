@@ -1,23 +1,15 @@
 package backend
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 
 	"code.vegaprotocol.io/vegawallet/network"
 )
 
-func (h *Handler) ImportNetwork(data string) (*network.ImportNetworkFromSourceResponse, error) {
+func (h *Handler) ImportNetwork(req *network.ImportNetworkFromSourceRequest) (*network.ImportNetworkFromSourceResponse, error) {
 	h.log.Debug("Entering ImportNetwork")
 	defer h.log.Debug("Leaving ImportNetwork")
-
-	req := &network.ImportNetworkFromSourceRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	c, err := h.loadAppConfig()
 	if err != nil {
@@ -76,7 +68,7 @@ func (h *Handler) ListNetworks() (*network.ListNetworksResponse, error) {
 	return network.ListNetworks(st)
 }
 
-func (h *Handler) SaveNetworkConfig(jsonConfig string) (bool, error) {
+func (h *Handler) SaveNetworkConfig(cfg *network.Network) (bool, error) {
 	h.log.Debug("Entering SaveNetworkConfig")
 	defer h.log.Debug("Leaving SaveNetworkConfig")
 
@@ -90,16 +82,9 @@ func (h *Handler) SaveNetworkConfig(jsonConfig string) (bool, error) {
 		return false, err
 	}
 
-	cfg := &network.Network{}
-	err = json.Unmarshal([]byte(jsonConfig), cfg)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall JSON config: %v", err)
-		return false, fmt.Errorf("couldn't unmarshal configuration: %w", err)
-	}
-
 	err = st.SaveNetwork(cfg)
 	if err != nil {
-		h.log.Errorf("Couldn't save the network configuration: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't save the network configuration: %v", err))
 		return false, fmt.Errorf("couldn't save the network configuration: %w", err)
 	}
 

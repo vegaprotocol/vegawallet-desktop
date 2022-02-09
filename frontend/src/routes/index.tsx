@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+
 import routerConfig, { Paths } from './router-config'
 
 export const AppRouter = () => {

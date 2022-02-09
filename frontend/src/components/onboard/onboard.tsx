@@ -1,13 +1,15 @@
+import * as Sentry from '@sentry/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
-import { InitialiseApp } from '../../api/service'
+
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
+import { Service } from '../../service'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -19,10 +21,9 @@ import { AppToaster } from '../toaster'
 import { WalletCreateForm } from '../wallet-create-form'
 import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
 import { WalletImportForm } from '../wallet-import-form'
-import * as Sentry from '@sentry/react'
 
-enum OnboardPaths {
-  Home = '/',
+export enum OnboardPaths {
+  Home = '/onboard',
   Settings = '/onboard/settings',
   WalletCreate = '/onboard/wallet-create',
   WalletImport = '/onboard/wallet-import',
@@ -44,7 +45,7 @@ export function Onboard() {
       <Route path={OnboardPaths.Network}>
         <OnboardNetwork />
       </Route>
-      <Route path={OnboardPaths.Home} exact={true}>
+      <Route path={OnboardPaths.Home}>
         <OnboardHome />
       </Route>
       {/* If none of the above routes are hit, something has probably gone wrong so redirect to home */}
@@ -77,7 +78,7 @@ function OnboardHome() {
         <Button
           data-testid='onboard-create-wallet'
           onClick={async () => {
-            await InitialiseApp({
+            await Service.InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
             history.push(OnboardPaths.WalletCreate)
@@ -87,7 +88,7 @@ function OnboardHome() {
         </Button>
         <Button
           onClick={async () => {
-            await InitialiseApp({
+            await Service.InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
             history.push(OnboardPaths.WalletImport)
@@ -117,7 +118,7 @@ function OnboardSettings() {
   const submit = React.useCallback(
     async (values: Fields) => {
       try {
-        await InitialiseApp({
+        await Service.InitialiseApp({
           vegaHome: values.vegaHome
         })
         AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })

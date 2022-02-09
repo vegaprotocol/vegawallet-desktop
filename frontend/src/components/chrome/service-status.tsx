@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
 import { useNetwork } from '../../contexts/network/network-context'
@@ -14,7 +15,7 @@ export function ServiceStatus() {
   } = useNetwork()
   return (
     <>
-      <div>
+      <div style={{ whiteSpace: 'nowrap' }}>
         <StatusCircle running={serviceRunning} />
         {serviceRunning ? (
           <>
@@ -34,7 +35,7 @@ export function ServiceStatus() {
           <>Wallet Service: Not running</>
         )}
       </div>
-      <div>
+      <div style={{ whiteSpace: 'nowrap' }}>
         <>
           <StatusCircle running={proxy !== ProxyApp.None} />
           {proxy !== ProxyApp.None ? (

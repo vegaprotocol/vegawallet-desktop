@@ -1,5 +1,5 @@
-import { KeyPair, Wallet } from '../contexts/global/global-context'
-import { Key, NamedKeyPair } from '../models/keys'
+import type { KeyPair, Wallet } from '../contexts/global/global-context'
+import type { Key, NamedKeyPair } from '../models/keys'
 import { truncateMiddle } from './truncate-middle'
 
 export function extendKeypair(kp: Key | NamedKeyPair): KeyPair {

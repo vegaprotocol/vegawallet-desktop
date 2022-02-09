@@ -1,7 +1,7 @@
-import { Wallet } from './wallet'
-import { WalletImport } from './wallet-import'
 import { Home } from './home'
+import { Wallet } from './wallet'
 import { WalletCreate } from './wallet-create'
+import { WalletImport } from './wallet-import'
 
 export enum Paths {
   Home = '/',

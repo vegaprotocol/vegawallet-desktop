@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Intent } from '../../config/intent'
-import { Toast } from './toast'
+
+import type { Intent } from '../../config/intent'
+import { Toast as ToastComponent } from './toast'
 
 // Toast object to be stored in state
 export interface Toast {
@@ -40,6 +41,8 @@ export class Toaster extends React.Component<any, ToasterState> {
     container.style.right = '0'
     container.style.left = '0'
     container.style.position = 'absolute'
+    container.style.pointerEvents = 'none'
+    container.style.padding = '30px 20px 20px'
     document.body.appendChild(container)
     // @ts-ignore
     const toaster = ReactDOM.render(<Toaster />, container) as Toaster
@@ -81,8 +84,8 @@ export class Toaster extends React.Component<any, ToasterState> {
 
     return (
       <>
-        {this.state.toasts.map((t, i) => (
-          <Toast key={t.id} onDismiss={this.handleDismiss} {...t} />
+        {this.state.toasts.map(t => (
+          <ToastComponent key={t.id} onDismiss={this.handleDismiss} {...t} />
         ))}
       </>
     )

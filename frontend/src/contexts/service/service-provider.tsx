@@ -1,7 +1,8 @@
 import React from 'react'
 import useThunkReducer from 'react-hook-thunk-reducer'
+
 import { useNetwork } from '../network/network-context'
-import { startServiceAction } from './service-actions'
+import { startServiceAction, stopServiceAction } from './service-actions'
 import { ServiceContext } from './service-context'
 import { initialServiceState, serviceReducer } from './service-reducer'
 
@@ -22,6 +23,10 @@ export function ServiceProvider({ children }: ServiceProviderProps) {
     if (!isFirstMount.current || !network || !config) return
     dispatch(startServiceAction(network, config.Port))
     isFirstMount.current = false
+
+    return () => {
+      dispatch(stopServiceAction())
+    }
   }, [network, config, dispatch])
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Redirect, useParams } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, useParams } from 'react-router-dom'
+
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'
 import { Header } from '../../components/header'

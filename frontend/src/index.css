@@ -124,9 +124,9 @@ which isn't a great dev experience when inspecting the DOM
 https://create-react-app.dev/docs/adding-images-fonts-and-files/
 */
 .vega-bg {
-  background-image: url(./images/vega-bg.png);
+  background-image: url('./images/vega-bg.png');
 }
 
 .vega-border-image {
-  border-image: url(./images/vega-bg.png) 15%;
+  border-image: url('./images/vega-bg.png') 15%;
 }

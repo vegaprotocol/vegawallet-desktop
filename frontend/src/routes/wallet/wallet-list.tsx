@@ -1,24 +1,26 @@
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { Header } from '../../components/header'
+
 import { Button } from '../../components/button'
+import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
+import { CopyWithTooltip } from '../../components/copy-with-tooltip'
+import { Header } from '../../components/header'
+import { Copy } from '../../components/icons/copy'
+import { Lock } from '../../components/icons/lock'
+import { Unlock } from '../../components/icons/unlock'
+import { Colors } from '../../config/colors'
+import { Fonts } from '../../config/fonts'
 import {
   addKeypairAction,
   chnageWalletAction,
   deactivateWalletAction,
   getKeysAction
 } from '../../contexts/global/global-actions'
-import { useGlobal, Wallet } from '../../contexts/global/global-context'
+import type { Wallet } from '../../contexts/global/global-context'
+import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
-import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { createKeypairRoute } from '.'
-import { Colors } from '../../config/colors'
-import { Fonts } from '../../config/fonts'
-import { Copy } from '../../components/icons/copy'
-import { ButtonGroup } from '../../components/button-group'
-import { Lock } from '../../components/icons/lock'
-import { Unlock } from '../../components/icons/unlock'
 
 export const WalletList = () => {
   const {

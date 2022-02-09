@@ -1,8 +1,9 @@
 import React from 'react'
-import { WalletList } from './wallet-list'
 import { Route, Switch } from 'react-router-dom'
-import { WalletKeyPair } from './wallet-key-pair'
+
 import { Paths } from '../router-config'
+import { WalletKeyPair } from './wallet-key-pair'
+import { WalletList } from './wallet-list'
 
 export const Wallet = () => {
   return (
@@ -10,7 +11,7 @@ export const Wallet = () => {
       <Route path={`${Paths.Wallet}/keypair/:pubkey`}>
         <WalletKeyPair />
       </Route>
-      <Route path={Paths.Wallet} exact={true}>
+      <Route path={Paths.Wallet}>
         <WalletList />
       </Route>
     </Switch>
