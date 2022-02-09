@@ -43,6 +43,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   } = useForm<FormFields>({
     defaultValues: {
       name: '',
+      network: '',
       fileOrUrl: '',
       force: false
     }
@@ -99,7 +100,6 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
           {...register('network', {
             required: Validation.REQUIRED
           })}
-          defaultValue=''
         >
           <option disabled={true} value=''>
             Please select
@@ -108,7 +108,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
             return (
               <option
                 key={option.name}
-                value={option.name}
+                value={option.configFileUrl}
                 disabled={Boolean(networks.find(n => n === option.name))}
               >
                 {option.name}
