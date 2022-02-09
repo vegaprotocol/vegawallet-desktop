@@ -24,7 +24,7 @@ export function NetworkInfo() {
 
   return (
     <>
-      <Header>REST Service / DApp Proxies</Header>
+      <Header>Wallet Service / DApps</Header>
       <ServicesTable config={config} />
       <Header>gRPC Nodes</Header>
       <NodeList items={config.API.GRPC.Hosts} />
@@ -58,10 +58,8 @@ function ServicesTable({ config }: ServicesTableProps) {
     <table>
       <tbody>
         <tr>
-          <th>REST Service URL</th>
-          <td>
-            {config.Host}:{config.Port}
-          </td>
+          <th>Walelt Service URL</th>
+          <td>{`http://${config.Host}:${config.Port}`}</td>
         </tr>
         <tr>
           <th>
