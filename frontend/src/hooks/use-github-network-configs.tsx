@@ -1,6 +1,9 @@
 import * as Sentry from '@sentry/react'
 import React from 'react'
 
+import { AppToaster } from '../components/toaster'
+import { Intent } from '../config/intent'
+
 interface NetworkOption {
   name: string
   configFileUrl: string
@@ -57,6 +60,10 @@ export function useGithubNetworkConfigs() {
       } catch (err) {
         setError(err as Error)
         setLoading(false)
+        AppToaster.show({
+          message: 'Could not load network presets',
+          intent: Intent.DANGER
+        })
         Sentry.captureException(err)
       }
     }
