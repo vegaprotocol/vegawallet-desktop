@@ -85,7 +85,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
     return 'Enter a path to a configuration file for a new network, for example https://mynetwork.com/config.toml or /file/on/mysystem/config.toml'
   }
 
-  if (!networks) return null
+  if (!networkOptions) return null
 
   return (
     <form onSubmit={handleSubmit(submit)}>
