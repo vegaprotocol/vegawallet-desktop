@@ -29,7 +29,6 @@ export function useImportNetwork() {
 
   const submit = React.useCallback(
     async (values: ImportNetworkArgs) => {
-      console.log(values)
       try {
         setStatus(FormStatus.Pending)
 
