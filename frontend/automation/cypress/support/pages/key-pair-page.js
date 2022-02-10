@@ -10,4 +10,12 @@ export default class KeypairPage {
         expect(text.length).to.equal(64)
       })
   }
+
+  validatePublicKey(expectedKey) {
+    cy.getByTestId(this.publicKey)
+      .invoke('text')
+      .then(text => {
+        expect(text).to.eq(expectedKey)
+      })
+  }
 }

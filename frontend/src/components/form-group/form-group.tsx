@@ -38,6 +38,7 @@ export function FormGroup({
         {children}
         {helperText && (
           <div
+            data-testid={helperText}
             style={{
               marginTop: 5,
               fontSize: 14,

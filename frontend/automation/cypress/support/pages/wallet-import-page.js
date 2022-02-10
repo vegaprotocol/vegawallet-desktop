@@ -5,13 +5,13 @@ export default class WalletImportPage {
   newWalletName = 'create-wallet-form-name'
   newWalletPassphrase = 'create-wallet-form-passphrase'
   confirmPassphrase = 'create-wallet-form-passphrase-confirm'
-  createteWalletSubmit = 'create-wallet-form-submit'
+  walletSubmit = 'submit'
   importWalletName = 'wallet-name'
   importRecoveryPhrase = 'recovery-phrase'
   importVersion = 'version'
   importPassphrase = 'passphrase'
   importConfirmPassphrase = 'confirm-passphrase'
-  importSubmit = 'submit'
+  validationRequired = 'Required'
 
   createNewWallet() {
     const randomNum = Math.floor(Math.random() * 101)
@@ -33,7 +33,7 @@ export default class WalletImportPage {
     // }
     cy.getByTestId(this.importPassphrase).type(passphrase)
     cy.getByTestId(this.importConfirmPassphrase).type(passphrase)
-    cy.getByTestId(this.importSubmit).click()
+    this.clickSubmit()
   }
 
   clickCreateNew() {
@@ -51,7 +51,7 @@ export default class WalletImportPage {
   }
 
   clickSubmit() {
-    cy.getByTestId(this.createteWalletSubmit).click()
+    cy.getByTestId(this.walletSubmit).click()
   }
 
   verifyWalletCreated() {
@@ -60,6 +60,11 @@ export default class WalletImportPage {
 
   verifyWalletImportedSuccessfully()
   {
-    cy.contains('Wallet imported!')
+    cy.contains('Wallet imported to:')
   }
+
+  verifyNumberOfEmptyFields(expecterNum) {
+    cy.getByTestId(this.validationRequired).should('have.length', expecterNum)
+  }
+
 }

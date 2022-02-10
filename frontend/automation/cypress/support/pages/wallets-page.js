@@ -6,6 +6,9 @@ export default class WalletPage {
   lockWalletBtn = 'lock'
   keyPair = 'tr > td > a'
   copyPublicKeyBtn = 'public-key'
+  networkDrawer = 'network-drawer'
+  serviceStatus = 'service-status'
+  dAppStatus = 'dapp-status'
 
   validateUrl(url) {
     cy.url().should('contain', url)
@@ -37,8 +40,6 @@ export default class WalletPage {
       .invoke('text')
       .then(text => {
         const partText = text.slice(0,-6)
-        // cy.log(partText)
-
         expect($copiedText).to.contain(partText)
       })
     })
@@ -53,8 +54,23 @@ export default class WalletPage {
     cy.getByTestId(this.lockWalletBtn).should('have.length.of.at.least', 1)
   }
 
+  validateServiceRunning(serviceName) {
+    cy.getByTestId(this.serviceStatus).should('have.text', 'Connected to ')
+    cy.getByTestId(this.serviceStatus).should('have.text', serviceName)
+    cy.getByTestId(this.serviceStatus).should('have.text', 'http://')
+  }
+
+  validateDAppRunning() {
+    cy.getByTestId(this.serviceStatus).should('have.text', 'dApp running:')
+    cy.getByTestId(this.serviceStatus).should('have.text', 'http://')
+  }
+
+  validateDAppNotRunning() {
+    cy.getByTestId(this.serviceStatus).should('have.text', 'dApp not running')
+  }
+
   clickOnTopWallet() {
-    cy.getByTestId(this.walletList).last().click()
+    cy.getByTestId(this.walletList).last().click({force:true})
   }
 
   verifyErrorToastTxtIsDisplayed(expectedText) {
@@ -70,6 +86,10 @@ export default class WalletPage {
   }
 
   clickOnTopKeyPair() {
-    cy.get(this.keyPair).eq(0).click()
+    cy.get(this.keyPair).eq(0).click({force:true})
+  }
+
+  clickNetworkDrawer(){
+    cy.getByTestId(this.networkDrawer).click()
   }
 }

@@ -43,6 +43,7 @@ function DrawerToggle() {
 
   return (
     <ButtonUnstyled
+      data-testid='network-drawer'
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

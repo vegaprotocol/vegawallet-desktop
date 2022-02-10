@@ -12,7 +12,7 @@ export function ServiceStatus() {
   } = useNetwork()
   return (
     <>
-      <div>
+      <div data-testid='service-status'>
         <StatusCircle running={serviceRunning} />
         {serviceRunning ? (
           <>
@@ -22,7 +22,7 @@ export function ServiceStatus() {
           <>Service not running</>
         )}
       </div>
-      <div>
+      <div data-testid='dapp-status'>
         <>
           <StatusCircle running={proxy !== ProxyApp.None} />
           {proxy !== ProxyApp.None ? (
