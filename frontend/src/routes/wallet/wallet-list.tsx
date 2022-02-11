@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
@@ -19,8 +19,7 @@ import {
 } from '../../contexts/global/global-actions'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
-import { Paths } from '../router-config'
-import { createKeypairRoute } from '.'
+import { Paths } from '../'
 
 export const WalletList = () => {
   const {
@@ -158,7 +157,7 @@ function KeypairLockStatus({ wallet }: KeypairLockStatusProps) {
 }
 
 function AddButtons() {
-  const history = useHistory()
+  const navigate = useNavigate()
   return (
     <div style={{ marginTop: 20 }}>
       <ButtonGroup orientation='vertical'>
@@ -178,7 +177,7 @@ function AddButtons() {
             <Button
               data-testid={route.testId}
               key={route.path}
-              onClick={() => history.push(route.path)}
+              onClick={() => navigate(route.path)}
             >
               {route.text}
             </Button>
@@ -216,7 +215,7 @@ function WalletDetail({ wallet, onLock }: WalletDetailProps) {
                       onClick={() => {
                         dispatch(chnageWalletAction(wallet.name))
                       }}
-                      to={createKeypairRoute(kp.publicKey)}
+                      to={`keypair/${kp.publicKey}`}
                     >
                       {kp.name}
                     </Link>

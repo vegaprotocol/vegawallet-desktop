@@ -1,7 +1,7 @@
 import React from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
-import { HashRouter as Router, useRouteMatch } from 'react-router-dom'
+import { HashRouter as Router, useLocation } from 'react-router-dom'
 
 import { Chrome } from './components/chrome'
 import { Onboard, OnboardPaths } from './components/onboard'
@@ -88,7 +88,8 @@ interface AppFrameProps {
 }
 
 function AppFrame({ children }: AppFrameProps) {
-  const match = useRouteMatch(OnboardPaths.Home)
+  const location = useLocation()
+  const isOnboard = location.pathname.startsWith(OnboardPaths.Home)
   return (
     <div
       style={{
@@ -96,7 +97,7 @@ function AppFrame({ children }: AppFrameProps) {
         paddingTop: APP_FRAME_HEIGHT,
         backgroundSize: 'cover'
       }}
-      className={match ? 'vega-bg' : undefined}
+      className={isOnboard ? 'vega-bg' : undefined}
     >
       <div
         style={{
@@ -105,7 +106,7 @@ function AppFrame({ children }: AppFrameProps) {
           left: 0,
           width: '100%',
           height: APP_FRAME_HEIGHT,
-          backgroundColor: match ? 'transparent' : Colors.BLACK
+          backgroundColor: isOnboard ? 'transparent' : Colors.BLACK
         }}
         // The app is frameless by default so this element creates a space at the top of the app
         // which you can click and drag to move the app around. The drag function is triggered
