@@ -1,8 +1,8 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import { useGlobal } from '../../contexts/global/global-context'
-import { Paths } from '../router-config'
+import { Paths } from '../'
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -13,8 +13,8 @@ export const Home = () => {
   } = useGlobal()
 
   if (wallets.length) {
-    return <Redirect to={Paths.Wallet} />
+    return <Navigate to={Paths.Wallet} />
   }
 
-  return <Redirect to={Paths.WalletImport} />
+  return <Navigate to={Paths.WalletImport} />
 }

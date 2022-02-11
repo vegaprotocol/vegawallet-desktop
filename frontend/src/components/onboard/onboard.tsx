@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
@@ -10,6 +10,7 @@ import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { Service } from '../../service'
+import { Paths } from '../../routes'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -32,32 +33,26 @@ export enum OnboardPaths {
 
 export function Onboard() {
   return (
-    <Switch>
-      <Route path={OnboardPaths.Settings}>
-        <OnboardSettings />
-      </Route>
-      <Route path={OnboardPaths.WalletCreate}>
-        <OnboardWalletCreate />
-      </Route>
-      <Route path={OnboardPaths.WalletImport}>
-        <OnboardWalletImport />
-      </Route>
-      <Route path={OnboardPaths.Network}>
-        <OnboardNetwork />
-      </Route>
-      <Route path={OnboardPaths.Home}>
-        <OnboardHome />
-      </Route>
+    <Routes>
+      <Route path={OnboardPaths.Settings} element={<OnboardSettings />} />
+      <Route
+        path={OnboardPaths.WalletCreate}
+        element={<OnboardWalletCreate />}
+      />
+      <Route
+        path={OnboardPaths.WalletImport}
+        element={<OnboardWalletImport />}
+      />
+      <Route path={OnboardPaths.Network} element={<OnboardNetwork />} />
+      <Route path={OnboardPaths.Home} element={<OnboardHome />} />
       {/* If none of the above routes are hit, something has probably gone wrong so redirect to home */}
-      <Route>
-        <Redirect to={OnboardPaths.Home} />
-      </Route>
-    </Switch>
+      <Route path='*' element={<Navigate to={OnboardPaths.Home} />} />
+    </Routes>
   )
 }
 
 function OnboardHome() {
-  const history = useHistory()
+  const navigate = useNavigate()
   const {
     state: { wallets, version }
   } = useGlobal()
@@ -66,7 +61,7 @@ function OnboardHome() {
   } = useNetwork()
 
   if (wallets.length && !networks.length) {
-    return <Redirect to={OnboardPaths.Network} />
+    return <Navigate to={OnboardPaths.Network} />
   }
 
   return (
@@ -81,7 +76,7 @@ function OnboardHome() {
             await Service.InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
-            history.push(OnboardPaths.WalletCreate)
+            navigate(OnboardPaths.WalletCreate)
           }}
         >
           Create new wallet
@@ -91,14 +86,14 @@ function OnboardHome() {
             await Service.InitialiseApp({
               vegaHome: process.env.REACT_APP_VEGA_HOME || ''
             })
-            history.push(OnboardPaths.WalletImport)
+            navigate(OnboardPaths.WalletImport)
           }}
         >
           Use recovery phrase
         </Button>
       </ButtonGroup>
       <p>
-        <ButtonUnstyled onClick={() => history.push(OnboardPaths.Settings)}>
+        <ButtonUnstyled onClick={() => navigate(OnboardPaths.Settings)}>
           Advanced options
         </ButtonUnstyled>
       </p>
@@ -112,7 +107,7 @@ interface Fields {
 }
 
 function OnboardSettings() {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { register, handleSubmit } = useForm<Fields>()
 
   const submit = React.useCallback(
@@ -122,13 +117,13 @@ function OnboardSettings() {
           vegaHome: values.vegaHome
         })
         AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })
-        history.push(OnboardPaths.Home)
+        navigate(OnboardPaths.Home)
       } catch (err) {
         Sentry.captureException(err)
         console.error(err)
       }
     },
-    [history]
+    [navigate]
   )
 
   return (
@@ -150,7 +145,7 @@ function OnboardSettings() {
 }
 
 function OnboardWalletCreate() {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { submit, response } = useCreateWallet()
 
   return (
@@ -160,7 +155,7 @@ function OnboardWalletCreate() {
           response={response}
           callToAction={
             <Button
-              onClick={() => history.push(OnboardPaths.Network)}
+              onClick={() => navigate(OnboardPaths.Network)}
               data-testid='onboard-import-network-button'
             >
               Next: Import network
@@ -170,7 +165,7 @@ function OnboardWalletCreate() {
       ) : (
         <WalletCreateForm
           submit={submit}
-          cancel={() => history.push(OnboardPaths.Home)}
+          cancel={() => navigate(OnboardPaths.Home)}
         />
       )}
     </OnboardPanel>
@@ -178,31 +173,33 @@ function OnboardWalletCreate() {
 }
 
 function OnboardWalletImport() {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { submit, response } = useImportWallet()
 
   React.useEffect(() => {
     if (response) {
-      history.push(OnboardPaths.Network)
+      navigate(OnboardPaths.Network)
     }
-  }, [response, history])
+  }, [response, navigate])
 
   return (
     <OnboardPanel title='Import a wallet'>
       <WalletImportForm
         submit={submit}
-        cancel={() => history.push(OnboardPaths.Home)}
+        cancel={() => navigate(OnboardPaths.Home)}
       />
     </OnboardPanel>
   )
 }
 
 function OnboardNetwork() {
+  const navigate = useNavigate()
   const { dispatch } = useGlobal()
 
   const onComplete = React.useCallback(() => {
     dispatch({ type: 'FINISH_ONBOARDING' })
-  }, [dispatch])
+    navigate(Paths.Home)
+  }, [dispatch, navigate])
 
   return (
     <OnboardPanel title='Import a network'>
@@ -217,7 +214,7 @@ interface OnboardPanelProps {
 }
 
 function OnboardPanel({ children, title }: OnboardPanelProps) {
-  const history = useHistory()
+  const navigate = useNavigate()
   return (
     <div
       style={{
@@ -236,7 +233,7 @@ function OnboardPanel({ children, title }: OnboardPanelProps) {
         }}
       >
         <span style={{ flex: 1 }}>
-          <ButtonUnstyled onClick={() => history.goBack()}>Back</ButtonUnstyled>
+          <ButtonUnstyled onClick={() => navigate(-1)}>Back</ButtonUnstyled>
         </span>
         <span>{title}</span>
         <span style={{ flex: 1 }} />
