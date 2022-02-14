@@ -35,6 +35,7 @@ export function DrawerManageNetwork({
                 >
                   <span>{n}</span>
                   <ButtonUnstyled
+                    data-testid='edit'
                     onClick={() => {
                       setSelectedNetwork(n)
                       setView('edit')

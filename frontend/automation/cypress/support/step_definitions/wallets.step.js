@@ -20,6 +20,7 @@ Given('I have unlocked wallet', () => {
       walletPage.clickOnTopWallet()
       walletPage.submitPassphrase('123')
     }
+    walletPage.validateUnlockedIconDisplayed()
   })
 })
 
@@ -47,6 +48,10 @@ When('I click on copy public key', () => {
   walletPage.copyTopPublicKey()
 })
 
+When('I click lock', () => {
+  walletPage.clickLockWallet()
+})
+
 Then('Wallets should be displayed on the page', () => {
   walletPage.validateWalletsDisplayed()
 })
@@ -70,4 +75,8 @@ Then('I am redirected to key pair page', () => {
 
 Then('public key is copied', () => {
   walletPage.validateCopyKeyBtn()
+})
+
+Then('wallet is locked', () => {
+  walletPage.validateLockIconDisplayed()
 })

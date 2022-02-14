@@ -17,7 +17,7 @@ export default class WalletImportPage {
     const randomNum = Math.floor(Math.random() * 101)
     const walletname = `Test ${randomNum.toString()}`
 
-    cy.visit('/')
+    cy.visit('#/wallet')
     this.clickCreateNew()
     this.fillInNewWalletDetails(walletname, '123')
     this.clickSubmit()

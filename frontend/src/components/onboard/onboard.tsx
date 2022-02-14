@@ -235,7 +235,7 @@ function OnboardPanel({ children, title }: OnboardPanelProps) {
         }}
       >
         <span style={{ flex: 1 }}>
-          <ButtonUnstyled onClick={() => history.goBack()}>Back</ButtonUnstyled>
+          <ButtonUnstyled data-testid='back' onClick={() => history.goBack()}>Back</ButtonUnstyled>
         </span>
         <span>{title}</span>
         <span style={{ flex: 1 }} />

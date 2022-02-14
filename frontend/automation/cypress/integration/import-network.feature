@@ -4,6 +4,7 @@ Feature: Import network
     Given I am on the import network page
     When I import using valid network import url
     Then new network is added
+    And network page is populated as expected
 @todo
   Scenario: Import unsuccessfully using url
     Given I am on the import network page

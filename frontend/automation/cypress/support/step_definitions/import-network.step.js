@@ -9,6 +9,14 @@ Given('I am on the import network page', () => {
   walletPage.clickNetworkDrawer()
 })
 
+Given('I have an imported network', () => {
+  cy.visit('#/wallet')
+  walletPage.clickNetworkDrawer()
+  const url = "https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml"
+
+  networkDrawer.ImportNetwork(url)
+})
+
 When('I import using valid network import url', () => {
   const url = "https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml"
 
@@ -36,8 +44,13 @@ When('I import using url and specify network name', () => {
 
 Then('new network is added', () => {
   networkDrawer.verifyNetworkImportedSuccessfully()
+  networkDrawer.clickBack()
 })
 
 Then('network is not added', () => {
   networkDrawer.verifyNetworkImportError()
+})
+
+Then('network page is populated as expected', () => {
+  networkDrawer.verifyNetworkPage()
 })

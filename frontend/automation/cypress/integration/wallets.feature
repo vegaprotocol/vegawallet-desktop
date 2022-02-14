@@ -28,9 +28,15 @@ Feature: Wallets page
     When I click on key pair
     Then I am redirected to key pair page
 
+  Scenario: Wallets can be locked
+    Given I have unlocked wallet
+    When I click lock
+    Then wallet is locked
+
   @ignore
   Scenario: Copy public key
     Given I have unlocked wallet
+    And unlocked icon is displayed
     When I click on copy public key
     Then public key is copied
 

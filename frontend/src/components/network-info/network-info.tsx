@@ -146,6 +146,7 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
     </ButtonUnstyled>
   ) : (
     <ButtonUnstyled
+      data-testid='start'
       onClick={() => startProxy(proxyConfig)}
       style={{ textAlign: 'right' }}
     >

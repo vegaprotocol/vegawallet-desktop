@@ -5,6 +5,8 @@ export default class WalletPage {
   generateKeyPairBtn = 'generate-keypair'
   lockWalletBtn = 'lock'
   keyPair = 'tr > td > a'
+  lockIcon = 'lock-icon'
+  unlockedIcon = 'unlocked-icon'
   copyPublicKeyBtn = 'public-key'
   networkDrawer = 'network-drawer'
   serviceStatus = 'service-status'
@@ -19,29 +21,28 @@ export default class WalletPage {
   }
 
   submitPassphrase(passphrase) {
-    cy.get('body')
-      .then(($body) => {
-        if ($body.find(`[data-testid=${this.passphraseInput}]`).length) {
-          cy.getByTestId(this.passphraseInput).type(passphrase)
-          cy.getByTestId(this.passphraseSubmit).click()
-        }
-      })
+    cy.get('body').then($body => {
+      if ($body.find(`[data-testid=${this.passphraseInput}]`).length) {
+        cy.getByTestId(this.passphraseInput).type(passphrase)
+        cy.getByTestId(this.passphraseSubmit).click()
+      }
+    })
   }
 
   copyTopPublicKey() {
     cy.getByTestId(this.copyPublicKeyBtn).first().click()
   }
 
-  validateCopyKeyBtn(){
-    cy.task('getClipboard')
-    .then(($copiedText) => {
+  validateCopyKeyBtn() {
+    cy.task('getClipboard').then($copiedText => {
       console.log($copiedText)
-      cy.getByTestId(this.copyPublicKeyBtn).eq(0)
-      .invoke('text')
-      .then(text => {
-        const partText = text.slice(0,-6)
-        expect($copiedText).to.contain(partText)
-      })
+      cy.getByTestId(this.copyPublicKeyBtn)
+        .eq(0)
+        .invoke('text')
+        .then(text => {
+          const partText = text.slice(0, -6)
+          expect($copiedText).to.contain(partText)
+        })
     })
   }
 
@@ -61,8 +62,8 @@ export default class WalletPage {
   }
 
   validateDAppRunning() {
-    cy.getByTestId(this.serviceStatus).should('have.text', 'dApp running:')
-    cy.getByTestId(this.serviceStatus).should('have.text', 'http://')
+    cy.getByTestId(this.dAppStatus).should('have.text', 'dApp running:')
+    cy.getByTestId(this.dAppStatus).should('have.text', 'http://')
   }
 
   validateDAppNotRunning() {
@@ -70,7 +71,7 @@ export default class WalletPage {
   }
 
   clickOnTopWallet() {
-    cy.getByTestId(this.walletList).last().click({force:true})
+    cy.getByTestId(this.walletList).last().click({ force: true })
   }
 
   verifyErrorToastTxtIsDisplayed(expectedText) {
@@ -86,10 +87,27 @@ export default class WalletPage {
   }
 
   clickOnTopKeyPair() {
-    cy.get(this.keyPair).eq(0).click({force:true})
+    cy.get(this.keyPair).eq(0).click({ force: true })
   }
 
-  clickNetworkDrawer(){
+  clickLockWallet() {
+    cy.getByTestId(this.lockWalletBtn).click()
+  }
+
+  clickNetworkDrawer() {
     cy.getByTestId(this.networkDrawer).click()
+  }
+
+  validateLockIconDisplayed() {
+    cy.getByTestId(this.lockIcon).should('have.length.of.at.least', 1)
+  }
+
+  validateUnlockedIconDisplayed() {
+    cy.getByTestId(this.unlockedIcon).should('have.length.of.at.least', 1)
+  }
+
+  CheckEndpoint(url,expectedStatus) {
+    cy.request(url).as('status')
+    cy.get('@status').should('have.a.property', 'status', expectedStatus)
   }
 }

@@ -66,6 +66,7 @@ export const NetworkConfigForm = ({
         helperText={errors.host?.message}
       >
         <input
+          data-testid='service-host'
           type='text'
           {...register('host', {
             required: Validation.REQUIRED,
@@ -80,6 +81,7 @@ export const NetworkConfigForm = ({
         helperText={errors.port?.message}
       >
         <input
+          data-testid='service-port'
           type='number'
           {...register('port', {
             required: Validation.REQUIRED,
@@ -95,6 +97,7 @@ export const NetworkConfigForm = ({
         helperText={errors.consoleUrl?.message}
       >
         <input
+          data-testid='console-url'
           type='text'
           {...register('consoleUrl', {
             pattern: Validation.URL
@@ -108,6 +111,7 @@ export const NetworkConfigForm = ({
         helperText={errors.consolePort?.message}
       >
         <input
+          data-testid='console-port'
           type='number'
           {...register('consolePort', {
             min: Validation.NUMBER_MIN_PORT,
@@ -122,6 +126,7 @@ export const NetworkConfigForm = ({
         helperText={errors.tokenDAppUrl?.message}
       >
         <input
+          data-testid='token-url'
           type='text'
           {...register('tokenDAppUrl', {
             pattern: Validation.URL
@@ -135,6 +140,7 @@ export const NetworkConfigForm = ({
         helperText={errors.tokenDAppPort?.message}
       >
         <input
+          data-testid='token-port'
           type='number'
           {...register('tokenDAppPort', {
             min: Validation.NUMBER_MIN_PORT,
@@ -154,7 +160,7 @@ export const NetworkConfigForm = ({
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.logLevel?.message}
       >
-        <select {...register('logLevel', { required: Validation.REQUIRED })}>
+        <select data-testid='log-level' {...register('logLevel', { required: Validation.REQUIRED })}>
           {Object.values(LogLevels).map(level => (
             <option key={level} value={level}>
               {level}
@@ -169,6 +175,7 @@ export const NetworkConfigForm = ({
         helperText={errors.grpcNodeRetries?.message}
       >
         <input
+          data-testid='node-retries'
           type='number'
           {...register('grpcNodeRetries', {
             required: Validation.REQUIRED,
@@ -184,6 +191,7 @@ export const NetworkConfigForm = ({
         helperText={errors.tokenExpiry?.message}
       >
         <input
+          data-testid='token-expiry'
           type='text'
           {...register('tokenExpiry', {
             required: Validation.REQUIRED,
@@ -191,7 +199,7 @@ export const NetworkConfigForm = ({
           })}
         />
       </FormGroup>
-      <Button type='submit'>Submit</Button>
+      <Button data-testid='submit' type='submit'>Submit</Button>
     </form>
   )
 }
@@ -217,8 +225,9 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
               key={field.id}
               style={{ display: 'flex', gap: 10, marginBottom: 5 }}
             >
-              <input type='text' {...register(`${name}.${i}.value` as any)} />
+              <input data-testid='node-list' type='text' {...register(`${name}.${i}.value` as any)} />
               <Button
+                data-testid='remove'
                 type='button'
                 disabled={fields.length <= 1}
                 onClick={() => {
@@ -234,7 +243,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
         })}
       </ul>
       <div>
-        <Button type='button' onClick={() => append('')}>
+        <Button data-testid='add' type='button' onClick={() => append('')}>
           Add
         </Button>
       </div>
