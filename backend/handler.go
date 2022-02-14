@@ -27,83 +27,83 @@ type Handler struct {
 	service      *serviceState
 }
 
-func (s *Handler) WailsInit(runtime *wails.Runtime) error {
-	s.log = runtime.Log.New("Handler")
+func (h *Handler) WailsInit(runtime *wails.Runtime) error {
+	h.log = runtime.Log.New("Handler")
 
-	s.log.Debug("Entering WailsInit")
-	defer s.log.Debug("Leaving WailsInit")
+	h.log.Debug("Entering WailsInit")
+	defer h.log.Debug("Leaving WailsInit")
 
-	s.runtime = runtime
+	h.runtime = runtime
 
 	loader, err := config.NewLoader()
 	if err != nil {
-		s.log.Errorf("Couldn't create configuration loader: %v", err)
+		h.log.Errorf("Couldn't create configuration loader: %v", err)
 		return fmt.Errorf("couldn't create configuration loader: %w", err)
 	}
 
-	s.configLoader = loader
-	s.service = &serviceState{}
+	h.configLoader = loader
+	h.service = &serviceState{}
 
 	return nil
 }
 
-func (s *Handler) WailsShutdown() {
-	s.log.Debug("Entering WailsShutdown")
-	defer s.log.Debug("Leaving WailsShutdown")
+func (h *Handler) WailsShutdown() {
+	h.log.Debug("Entering WailsShutdown")
+	defer h.log.Debug("Leaving WailsShutdown")
 
-	if s.service.IsRunning() {
-		s.log.Info("Shutting down the console")
-		s.service.Shutdown()
+	if h.service.IsRunning() {
+		h.log.Info("Shutting down the console")
+		h.service.Shutdown()
 	}
 }
 
-func (s *Handler) IsAppInitialised() (bool, error) {
-	return s.configLoader.IsConfigInitialised()
+func (h *Handler) IsAppInitialised() (bool, error) {
+	return h.configLoader.IsConfigInitialised()
 }
 
-func (s *Handler) InitialiseApp(data string) error {
+func (h *Handler) InitialiseApp(data string) error {
 	cfg := &config.Config{}
 	if err := json.Unmarshal([]byte(data), cfg); err != nil {
-		s.log.Errorf("Couldn't unmarshall config: %v", err)
+		h.log.Errorf("Couldn't unmarshall config: %v", err)
 		return fmt.Errorf("couldn't unmarshal config: %w", err)
 	}
 
-	return s.configLoader.SaveConfig(*cfg)
+	return h.configLoader.SaveConfig(*cfg)
 }
 
-func (s *Handler) getServiceStore(config config.Config) (*svcstore.Store, error) {
+func (h *Handler) getServiceStore(config config.Config) (*svcstore.Store, error) {
 	st, err := svcstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
-		s.log.Errorf("Couldn't initialise the service store: %v", err)
+		h.log.Errorf("Couldn't initialise the service store: %v", err)
 		return nil, fmt.Errorf("couldn't initialise the service store: %w", err)
 	}
 
 	return st, nil
 }
 
-func (s *Handler) getNetworksStore(config config.Config) (*netstore.Store, error) {
+func (h *Handler) getNetworksStore(config config.Config) (*netstore.Store, error) {
 	st, err := netstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
-		s.log.Errorf("Couldn't initialise the networks store: %v", err)
+		h.log.Errorf("Couldn't initialise the networks store: %v", err)
 		return nil, fmt.Errorf("couldn't initialise the networks store: %w", err)
 	}
 
 	return st, nil
 }
 
-func (s *Handler) getWalletsStore(config config.Config) (*wstore.Store, error) {
+func (h *Handler) getWalletsStore(config config.Config) (*wstore.Store, error) {
 	store, err := wallets.InitialiseStore(config.VegaHome)
 	if err != nil {
-		s.log.Errorf("Couldn't initialise the wallets store: %v", err)
+		h.log.Errorf("Couldn't initialise the wallets store: %v", err)
 		return nil, fmt.Errorf("couldn't initialise the wallets store: %w", err)
 	}
 	return store, nil
 }
 
-func (s *Handler) loadAppConfig() (config.Config, error) {
-	c, err := s.configLoader.GetConfig()
+func (h *Handler) loadAppConfig() (config.Config, error) {
+	c, err := h.configLoader.GetConfig()
 	if err != nil {
-		s.log.Errorf("Couldn't load configuration: %v", err)
+		h.log.Errorf("Couldn't load configuration: %v", err)
 		return config.Config{}, fmt.Errorf("couldn't load configuration: %w", err)
 	}
 
