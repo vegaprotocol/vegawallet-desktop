@@ -27,9 +27,9 @@ type GetVersionResponse struct {
 	GitHash string `json:"gitHash"`
 }
 
-func (s *Handler) GetVersion() *GetVersionResponse {
-	s.log.Debug("Entering GetVersion")
-	defer s.log.Debug("Leaving GetVersion")
+func (h *Handler) GetVersion() *GetVersionResponse {
+	h.log.Debug("Entering GetVersion")
+	defer h.log.Debug("Leaving GetVersion")
 
 	return &GetVersionResponse{
 		Version: Version,
@@ -42,9 +42,9 @@ type CheckVersionResponse struct {
 	ReleaseURL string `json:"releaseUrl"`
 }
 
-func (s *Handler) CheckVersion() (*CheckVersionResponse, error) {
-	s.log.Debug("Entering CheckVersion")
-	defer s.log.Debug("Leaving CheckVersion")
+func (h *Handler) CheckVersion() (*CheckVersionResponse, error) {
+	h.log.Debug("Entering CheckVersion")
+	defer h.log.Debug("Leaving CheckVersion")
 
 	// TODO To remove once we are open source.
 	v, _ := semver.New("0.1.0")
