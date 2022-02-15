@@ -31,7 +31,8 @@ export const AppRouter = () => {
         {
           // default child route, Wallet only renders an Outlet
           path: '',
-          element: <WalletList />
+          element: <WalletList />,
+          index: true
         },
         {
           path: 'keypair/:pubkey',
@@ -41,7 +42,8 @@ export const AppRouter = () => {
     },
     {
       path: Paths.Home,
-      element: <Home />
+      element: <Home />,
+      index: true
     }
   ])
 
