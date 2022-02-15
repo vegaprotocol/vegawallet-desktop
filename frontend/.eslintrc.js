@@ -3,7 +3,7 @@ module.exports = {
   extends: ['react-app', 'react-app/jest'],
   rules: {
     'prefer-const': 'warn',
-    'no-console': 'warn',
+    'no-console': 'off',
     'simple-import-sort/imports': 'warn',
     'sort-imports': 'off',
     'no-unused-vars': 'off',

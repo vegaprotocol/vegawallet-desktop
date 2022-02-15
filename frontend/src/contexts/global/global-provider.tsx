@@ -1,5 +1,6 @@
 import React from 'react'
 import useThunkReducer from 'react-hook-thunk-reducer'
+
 import { GlobalContext } from './global-context'
 import { globalReducer, initialGlobalState } from './global-reducer'
 

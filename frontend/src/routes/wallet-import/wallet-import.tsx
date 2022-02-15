@@ -1,5 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { Header } from '../../components/header'
 import { WalletImportForm } from '../../components/wallet-import-form'
 import { useImportWallet } from '../../hooks/use-import-wallet'

@@ -1,16 +1,13 @@
 import React from 'react'
-import {
-  Control,
-  useFieldArray,
-  useForm,
-  UseFormRegister
-} from 'react-hook-form'
-import { LogLevels } from '../../config/log-levels'
-import type { Network } from '../../models/network'
-import { FormGroup } from '../form-group'
+import type { Control, UseFormRegister } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
+
 import { Intent } from '../../config/intent'
-import { Button } from '../button'
+import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
+import type { Network } from '../../models/network'
+import { Button } from '../button'
+import { FormGroup } from '../form-group'
 
 interface FormFields {
   logLevel: string

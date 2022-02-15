@@ -1,5 +1,5 @@
 package config
 
 type Config struct {
-	VegaHome string
+	VegaHome string `json:"vegaHome"`
 }

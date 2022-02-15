@@ -1,13 +1,14 @@
+import * as Sentry from '@sentry/react'
 import React from 'react'
-import { GetNetworkConfig, ImportNetwork } from '../api/service'
+
 import { CodeBlock } from '../components/code-block'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { addNetworkAction } from '../contexts/network/network-actions'
 import { useNetwork } from '../contexts/network/network-context'
-import { ImportNetworkResponse } from '../models/network'
+import type { ImportNetworkResponse } from '../models/network'
+import { Service } from '../service'
 import { FormStatus, useFormState } from './use-form-state'
-import * as Sentry from '@sentry/react'
 
 export function useImportNetwork() {
   const { dispatch } = useNetwork()
@@ -22,7 +23,7 @@ export function useImportNetwork() {
       const isUrl = /^(http|https):\/\/[^ "]+$/i.test(values.fileOrUrl)
       try {
         setStatus(FormStatus.Pending)
-        const res = await ImportNetwork({
+        const res = await Service.ImportNetwork({
           name: values.name,
           url: isUrl ? values.fileOrUrl : '',
           filePath: !isUrl ? values.fileOrUrl : '',
@@ -30,7 +31,7 @@ export function useImportNetwork() {
         })
 
         if (res) {
-          const config = await GetNetworkConfig(res.name)
+          const config = await Service.GetNetworkConfig(res.name)
 
           // Update the config
           dispatch(addNetworkAction(res.name, config))

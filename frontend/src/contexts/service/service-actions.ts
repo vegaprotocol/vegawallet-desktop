@@ -1,6 +1,8 @@
-import { GetServiceState, StartService, StopService } from '../../api/service'
-import { ProxyApp, ServiceDispatch } from './service-context'
 import * as Sentry from '@sentry/react'
+
+import { Service } from '../../service'
+import type { ServiceDispatch } from './service-context'
+import { ProxyApp } from './service-context'
 
 export function startServiceAction(network: string, port: number) {
   return async (dispatch: ServiceDispatch) => {
@@ -11,14 +13,18 @@ export function startServiceAction(network: string, port: number) {
       timestamp: Date.now()
     })
     try {
-      const status = await GetServiceState()
+      const status = await Service.GetServiceState()
 
-      if (status.Running) {
-        await StopService()
+      if (status.running) {
+        await Service.StopService()
       }
 
       dispatch({ type: 'START_SERVICE', port })
-      await StartService({ network, withConsole: false, withTokenDApp: false })
+      await Service.StartService({
+        network,
+        withConsole: false,
+        withTokenDApp: false
+      })
     } catch (err) {
       Sentry.captureException(err)
       console.log(err)
@@ -35,9 +41,9 @@ export function stopServiceAction() {
       timestamp: Date.now()
     })
     try {
-      const status = await GetServiceState()
-      if (status.Running) {
-        await StopService()
+      const status = await Service.GetServiceState()
+      if (status.running) {
+        await Service.StopService()
         dispatch({ type: 'STOP_SERVICE' })
       }
     } catch (err) {
@@ -60,16 +66,16 @@ export function startProxyAction(network: string, app: ProxyApp, port: number) {
       timestamp: Date.now()
     })
     try {
-      const status = await GetServiceState()
+      const status = await Service.GetServiceState()
 
       // Stop service so it can be restarted with dApp proxy
-      if (status.Running) {
-        await StopService()
+      if (status.running) {
+        await Service.StopService()
       }
 
       dispatch({ type: 'START_PROXY', app, port })
 
-      await StartService({
+      await Service.StartService({
         network,
         withConsole: app === ProxyApp.Console,
         withTokenDApp: app === ProxyApp.TokenDApp
@@ -84,11 +90,11 @@ export function startProxyAction(network: string, app: ProxyApp, port: number) {
 export function stopProxyAction(network: string, port: number) {
   return async (dispatch: ServiceDispatch) => {
     try {
-      const status = await GetServiceState()
+      const status = await Service.GetServiceState()
 
       // This will stop proxies AND default service
-      if (status.Running) {
-        await StopService()
+      if (status.running) {
+        await Service.StopService()
       }
 
       // Proxies already stopped but update service state to indicate so
@@ -96,7 +102,12 @@ export function stopProxyAction(network: string, port: number) {
 
       // Restart default service only
       dispatch({ type: 'START_SERVICE', port })
-      await StartService({ network, withConsole: false, withTokenDApp: false })
+
+      await Service.StartService({
+        network,
+        withConsole: false,
+        withTokenDApp: false
+      })
     } catch (err) {
       Sentry.captureException(err)
       console.log(err)

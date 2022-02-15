@@ -1,22 +1,12 @@
 package backend
 
 import (
-	"encoding/json"
-	"fmt"
-
 	"code.vegaprotocol.io/vegawallet/wallet"
 )
 
-func (h *Handler) GenerateKey(data string) (*wallet.GenerateKeyResponse, error) {
+func (h *Handler) GenerateKey(req *wallet.GenerateKeyRequest) (*wallet.GenerateKeyResponse, error) {
 	h.log.Debug("Entering GenerateKey")
 	defer h.log.Debug("Leaving GenerateKey")
-
-	req := &wallet.GenerateKeyRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {
@@ -31,16 +21,9 @@ func (h *Handler) GenerateKey(data string) (*wallet.GenerateKeyResponse, error) 
 	return wallet.GenerateKey(wStore, req)
 }
 
-func (h *Handler) AnnotateKey(data string) error {
+func (h *Handler) AnnotateKey(req *wallet.AnnotateKeyRequest) error {
 	h.log.Debug("Entering AnnotateKey")
 	defer h.log.Debug("Leaving AnnotateKey")
-
-	req := &wallet.AnnotateKeyRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {
@@ -55,16 +38,9 @@ func (h *Handler) AnnotateKey(data string) error {
 	return wallet.AnnotateKey(wStore, req)
 }
 
-func (h *Handler) DescribeKey(data string) (*wallet.DescribeKeyResponse, error) {
+func (h *Handler) DescribeKey(req *wallet.DescribeKeyRequest) (*wallet.DescribeKeyResponse, error) {
 	h.log.Debug("Entering DescribeKey")
 	defer h.log.Debug("Leaving DescribeKey")
-
-	req := &wallet.DescribeKeyRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {
@@ -79,16 +55,9 @@ func (h *Handler) DescribeKey(data string) (*wallet.DescribeKeyResponse, error) 
 	return wallet.DescribeKey(wStore, req)
 }
 
-func (h *Handler) IsolateKey(data string) (*wallet.IsolateKeyResponse, error) {
+func (h *Handler) IsolateKey(req *wallet.IsolateKeyRequest) (*wallet.IsolateKeyResponse, error) {
 	h.log.Debug("Entering IsolateKey")
 	defer h.log.Debug("Leaving IsolateKey")
-
-	req := &wallet.IsolateKeyRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {
@@ -103,16 +72,9 @@ func (h *Handler) IsolateKey(data string) (*wallet.IsolateKeyResponse, error) {
 	return wallet.IsolateKey(wStore, req)
 }
 
-func (h *Handler) ListKeys(data string) (*wallet.ListKeysResponse, error) {
+func (h *Handler) ListKeys(req *wallet.ListKeysRequest) (*wallet.ListKeysResponse, error) {
 	h.log.Debug("Entering ListKeys")
 	defer h.log.Debug("Leaving ListKeys")
-
-	req := &wallet.ListKeysRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {
@@ -127,16 +89,9 @@ func (h *Handler) ListKeys(data string) (*wallet.ListKeysResponse, error) {
 	return wallet.ListKeys(wStore, req)
 }
 
-func (h *Handler) TaintKey(data string) error {
+func (h *Handler) TaintKey(req *wallet.TaintKeyRequest) error {
 	h.log.Debug("Entering TaintKey")
 	defer h.log.Debug("Leaving TaintKey")
-
-	req := &wallet.TaintKeyRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {
@@ -151,16 +106,9 @@ func (h *Handler) TaintKey(data string) error {
 	return wallet.TaintKey(wStore, req)
 }
 
-func (h *Handler) UntaintKey(data string) error {
+func (h *Handler) UntaintKey(req *wallet.UntaintKeyRequest) error {
 	h.log.Debug("Entering UntaintKey")
 	defer h.log.Debug("Leaving UntaintKey")
-
-	req := &wallet.UntaintKeyRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		h.log.Errorf("Couldn't unmarshall request: %v", err)
-		return fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {

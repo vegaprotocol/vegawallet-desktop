@@ -1,7 +1,8 @@
 import React from 'react'
-import { Thunk } from 'react-hook-thunk-reducer'
-import { Network } from '../../models/network'
-import { NetworkAction } from './network-reducer'
+import type { Thunk } from 'react-hook-thunk-reducer'
+
+import type { Network } from '../../models/network'
+import type { NetworkAction } from './network-reducer'
 
 export interface NetworkState {
   network: string | null

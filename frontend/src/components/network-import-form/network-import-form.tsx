@@ -1,12 +1,14 @@
 import React from 'react'
-import { FieldError, useForm } from 'react-hook-form'
-import { FormGroup } from '../form-group'
+import type { FieldError } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
+
 import { Intent } from '../../config/intent'
+import { FormStatus } from '../../hooks/use-form-state'
+import { useImportNetwork } from '../../hooks/use-import-network'
+import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { Checkbox } from '../checkbox'
-import { useImportNetwork } from '../../hooks/use-import-network'
-import { FormStatus } from '../../hooks/use-form-state'
-import { Validation } from '../../lib/form-validation'
+import { FormGroup } from '../form-group'
 
 interface FormFields {
   name: string

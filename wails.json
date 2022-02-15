@@ -1,1 +1,16 @@
-{"email":"dev@vegaprotocol.io","name":"Vega Protocol"}
+{
+  "name": "Vegawallet",
+  "assetdir": "./frontend/build",
+  "frontend:build": "npm run build",
+  "frontend:install": "npm install",
+  "frontend:dev": "npm run build",
+  "wailsjsdir": "./frontend",
+  "version": "0.1.0+dev",
+  "outputfilename": "Vegawallet",
+  "author": {
+    "name": "Gobalsky Labs Ltd."
+  },
+  "debounceMS": 100,
+  "devserverurl": "http://localhost:34115",
+  "appargs": ""
+}

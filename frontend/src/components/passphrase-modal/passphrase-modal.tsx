@@ -1,13 +1,15 @@
 import './passphrase-modal.css'
-import React from 'react'
+
 import * as Dialog from '@radix-ui/react-dialog'
-import { useGlobal } from '../../contexts/global/global-context'
-import { setPassphraseModalAction } from '../../contexts/global/global-actions'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import { FormGroup } from '../form-group'
+
 import { Intent } from '../../config/intent'
-import { Button } from '../button'
+import { setPassphraseModalAction } from '../../contexts/global/global-actions'
+import { useGlobal } from '../../contexts/global/global-context'
 import { Validation } from '../../lib/form-validation'
+import { Button } from '../button'
+import { FormGroup } from '../form-group'
 
 interface ModalHandler {
   open: Function
@@ -57,7 +59,7 @@ export function PassphraseModal() {
             left: 0,
             height: '100%',
             background: 'rgba(54, 54, 54 ,0.8)',
-            animation: 'fadeIn .2s ease',
+            animation: 'fade-in .2s ease',
             animationFillMode: 'forwards'
           }}
         />
@@ -71,7 +73,7 @@ export function PassphraseModal() {
             top: 30,
             left: 'calc(50% - 170px)',
             boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
-            animation: 'fadeIn .2s ease',
+            animation: 'fade-in .2s ease',
             animationFillMode: 'forwards'
           }}
         >

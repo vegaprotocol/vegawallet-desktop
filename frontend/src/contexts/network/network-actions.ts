@@ -1,23 +1,19 @@
-import {
-  GetNetworkConfig,
-  ImportNetwork,
-  ListNetworks,
-  SaveNetworkConfig
-} from '../../api/service'
+import * as Sentry from '@sentry/react'
+
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
-import { ImportNetworkRequest, Network } from '../../models/network'
-import { NetworkDispatch, NetworkState } from './network-context'
-import { NetworkAction } from './network-reducer'
-import * as Sentry from '@sentry/react'
+import type { ImportNetworkRequest, Network } from '../../models/network'
+import { Service } from '../../service'
+import type { NetworkDispatch } from './network-context'
+import type { NetworkAction } from './network-reducer'
 
 export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
     try {
-      const networks = await ListNetworks()
+      const networks = await Service.ListNetworks()
       if (networks.networks.length) {
         const defaultNetwork = networks.networks[0]
-        const config = await GetNetworkConfig(defaultNetwork)
+        const config = await Service.GetNetworkConfig(defaultNetwork)
         dispatch({
           type: 'SET_NETWORKS',
           network: defaultNetwork,
@@ -48,7 +44,7 @@ export function changeNetworkAction(network: string) {
       timestamp: Date.now()
     })
     try {
-      const config = await GetNetworkConfig(network)
+      const config = await Service.GetNetworkConfig(network)
 
       dispatch({
         type: 'CHANGE_NETWORK',
@@ -74,7 +70,7 @@ export function updateNetworkConfigAction(config: Network) {
       timestamp: Date.now()
     })
     try {
-      const isSuccessful = await SaveNetworkConfig(config)
+      const isSuccessful = await Service.SaveNetworkConfig(config)
       if (isSuccessful) {
         AppToaster.show({
           message: 'Configuration saved. All services stopped.',
@@ -93,7 +89,7 @@ export function updateNetworkConfigAction(config: Network) {
 }
 
 export function importNetworkAction(values: ImportNetworkRequest) {
-  return async (dispatch: NetworkDispatch, getState: () => NetworkState) => {
+  return async (dispatch: NetworkDispatch) => {
     Sentry.addBreadcrumb({
       type: 'ImportNetworkConfig',
       level: Sentry.Severity.Log,
@@ -101,7 +97,7 @@ export function importNetworkAction(values: ImportNetworkRequest) {
       timestamp: Date.now()
     })
     try {
-      const res = await ImportNetwork({
+      const res = await Service.ImportNetwork({
         name: values.name,
         url: values.url,
         filePath: values.filePath,
@@ -109,7 +105,7 @@ export function importNetworkAction(values: ImportNetworkRequest) {
       })
 
       if (res) {
-        const config = await GetNetworkConfig(res.name)
+        const config = await Service.GetNetworkConfig(res.name)
 
         dispatch({
           type: 'ADD_NETWORK',

@@ -1,7 +1,8 @@
-import React from 'react'
-import { GetNetworkConfig } from '../../api/service'
-import { Network } from '../../models/network'
 import * as Sentry from '@sentry/react'
+import React from 'react'
+
+import type { Network } from '../../models/network'
+import { Service } from '../../service'
 
 interface NetworkConfigContainerProps {
   children: (config: Network) => React.ReactElement
@@ -35,7 +36,7 @@ export function useNetworkConfig(name: string | null) {
       if (!name) return
       setLoading(true)
       try {
-        const res = await GetNetworkConfig(name)
+        const res = await Service.GetNetworkConfig(name)
         setConfig(res)
       } catch (err) {
         Sentry.captureException(err)

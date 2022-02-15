@@ -1,4 +1,6 @@
-import React, { ButtonHTMLAttributes, ForwardedRef } from 'react'
+import type { ButtonHTMLAttributes, ForwardedRef } from 'react'
+import React from 'react'
+
 import { Colors } from '../../config/colors'
 
 const style: React.CSSProperties = {

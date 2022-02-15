@@ -1,4 +1,6 @@
-import React, { ButtonHTMLAttributes, ForwardedRef } from 'react'
+import type { ButtonHTMLAttributes, ForwardedRef } from 'react'
+import React from 'react'
+
 import { Colors } from '../../config/colors'
 import { Spinner } from '../spinner'
 
@@ -26,8 +28,8 @@ export const Button = React.forwardRef(
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
       setHover(false)
-      if (typeof onMouseEnter === 'function') {
-        onMouseEnter(e)
+      if (typeof onMouseLeave === 'function') {
+        onMouseLeave(e)
       }
     }
 

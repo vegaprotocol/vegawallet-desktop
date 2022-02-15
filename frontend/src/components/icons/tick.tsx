@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { style as defaultStyle } from './style'
 
 export function Tick({ style }: { style?: React.CSSProperties }) {

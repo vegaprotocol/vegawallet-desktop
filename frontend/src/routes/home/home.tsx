@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../router-config'
 

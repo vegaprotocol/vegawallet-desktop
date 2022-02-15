@@ -1,4 +1,5 @@
-import { ProxyApp, ServiceState } from './service-context'
+import type { ServiceState } from './service-context'
+import { ProxyApp } from './service-context'
 
 export const initialServiceState: ServiceState = {
   serviceRunning: false,
