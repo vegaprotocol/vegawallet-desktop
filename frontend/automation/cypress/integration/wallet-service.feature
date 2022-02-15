@@ -7,6 +7,7 @@ Feature: Wallet Service Page
     Then wallet service is shown as running
     And wallet service is returning "200"
 
+@ignore
 Scenario: Service with Token DApp
     Given I am on the Wallet Service page
     When I click start service for Token dApp

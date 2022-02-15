@@ -12,12 +12,12 @@ When('I click start service for Token dApp', () => {
   networkDrawer.clickStartService()
 })
 Then('wallet service is shown as running', () => {
-   networkDrawer.clickBack()
+  //  networkDrawer.clickBack()
   // walletPage.validateServiceRunning("mainnet1")
 })
 
-Then('wallet service is returning {string}', (serviceStatus) => {
-  const url = 'http://127.0.0.1:1789/api/v1/version'
+Then('wallet service is returning {string}', serviceStatus => {
+  const url = Cypress.env('walletServiceUrl')
   walletPage.CheckEndpoint(url, parseInt(serviceStatus))
 })
 
@@ -25,7 +25,7 @@ Then('dApp running is shown', () => {
   walletPage.validateDAppRunning()
 })
 
-Then('dApp service is returning {string}', (serviceStatus) => {
-  const url = 'http://127.0.0.1:1848'
+Then('dApp service is returning {string}', serviceStatus => {
+  const url = Cypress.env('tokenServiceUrl')
   walletPage.CheckEndpoint(url, parseInt(serviceStatus))
 })

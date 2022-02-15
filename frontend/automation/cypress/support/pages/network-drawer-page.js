@@ -1,4 +1,3 @@
-
 export default class NetworkDrawer {
   networkDrawerBtn = 'network-drawer'
   importBtn = 'import'
@@ -29,14 +28,15 @@ export default class NetworkDrawer {
     }
     this.clickImportBtn()
 
-    if (overwrite == true)
-    {
+    if (overwrite == true) {
       this.OverwriteNetwork(networkName)
     }
   }
 
   OverwriteNetwork(newNetworkName = null) {
-    cy.contains("Network with name already exists. Provide a new name or overwrite by checking the box below")
+    cy.contains(
+      'Network with name already exists. Provide a new name or overwrite by checking the box below'
+    )
     if (newNetworkName != null) {
       cy.getByTestId(this.networkNameField).type(newNetworkName)
     }
@@ -57,21 +57,27 @@ export default class NetworkDrawer {
   }
 
   clickBack() {
-    cy.getByTestId(this.backBtn).click({force:true})
+    cy.getByTestId(this.backBtn).click({ force: true })
   }
 
   clickStartService() {
-    cy.getByTestId(this.startServiceBtn).click({force:true})
+    cy.getByTestId(this.startServiceBtn).click({ force: true })
   }
 
   verifyNetworkImportedSuccessfully() {
     cy.contains('Network imported to:')
   }
 
-  verifyNetworkImportError() {
+  verifyNetworkImporturlError() {
     cy.contains("Error: couldn't fetch network configuration")
     cy.contains("couldn't load file:")
     cy.contains('no such host')
+  }
+
+  verifyNetworkImportFilePathError() {
+    cy.contains("Error: couldn't read network configuration")
+    cy.contains("couldn't read file:")
+    cy.contains('no such file or directory')
   }
 
   IsNetworkEmpty() {
@@ -101,7 +107,7 @@ export default class NetworkDrawer {
     cy.getByTestId(this.restServiceUrl).should('not.be.empty')
     cy.getByTestId(this.consoleUrl).should('not.be.empty')
     cy.getByTestId(this.tokenUrl).should('not.be.empty')
-    cy.getByTestId(this.nodeList).each(($node) => {
+    cy.getByTestId(this.nodeList).each($node => {
       expect($node).not.to.be.empty
     })
     cy.getByTestId(this.logLevel).should('have.text', 'info')
@@ -111,7 +117,7 @@ export default class NetworkDrawer {
   expandNetworkDrawer() {
     cy.get('body').then($body => {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
-      } else cy.getByTestId(this.networkDrawerBtn).click({force:true})
+      } else cy.getByTestId(this.networkDrawerBtn).click({ force: true })
     })
   }
 }

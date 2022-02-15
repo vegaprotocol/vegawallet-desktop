@@ -28,8 +28,8 @@ export default class WalletImportPage {
     cy.getByTestId(this.importWalletName).type(walletName)
     cy.getByTestId(this.importRecoveryPhrase).type(recoveryPhrase)
     // if (version != 2) {
-      cy.getByTestId(this.importVersion).clear()
-      cy.getByTestId(this.importVersion).type(version)
+    cy.getByTestId(this.importVersion).clear()
+    cy.getByTestId(this.importVersion).type(version)
     // }
     cy.getByTestId(this.importPassphrase).type(passphrase)
     cy.getByTestId(this.importConfirmPassphrase).type(passphrase)
@@ -58,13 +58,11 @@ export default class WalletImportPage {
     cy.contains('Wallet created!')
   }
 
-  verifyWalletImportedSuccessfully()
-  {
+  verifyWalletImportedSuccessfully() {
     cy.contains('Wallet imported to:')
   }
 
   verifyNumberOfEmptyFields(expecterNum) {
     cy.getByTestId(this.validationRequired).should('have.length', expecterNum)
   }
-
 }

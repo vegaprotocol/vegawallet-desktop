@@ -39,12 +39,3 @@ Feature: Wallets page
     And unlocked icon is displayed
     When I click on copy public key
     Then public key is copied
-
-# @todo
-# Scenario: Go to Docs
-#   When I click on Docs
-#   Then I am redirected to Docs page
-# @todo
-# Scenario: Go to Github
-#   When I click on Github
-#   Then I am redirected to Github page

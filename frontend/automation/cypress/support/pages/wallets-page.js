@@ -106,7 +106,7 @@ export default class WalletPage {
     cy.getByTestId(this.unlockedIcon).should('have.length.of.at.least', 1)
   }
 
-  CheckEndpoint(url,expectedStatus) {
+  CheckEndpoint(url, expectedStatus) {
     cy.request(url).as('status')
     cy.get('@status').should('have.a.property', 'status', expectedStatus)
   }

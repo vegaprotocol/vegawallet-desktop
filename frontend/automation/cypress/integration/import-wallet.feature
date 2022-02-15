@@ -37,10 +37,3 @@ Feature: Add/Recover wallet page
     When I click Import by recovery phrase
     And I fill in details with incorrect recovery phrase
     Then error shown for incorrect recovery phrase
-
-  @todo
-  Scenario: Invalid recovery phrase
-    Given I am on the wallets page
-    When I click “Import by recovery phrase”
-    And fill in “invalid” recovery phrase
-    Then error message should be displayed

@@ -6,7 +6,6 @@ const walletImportPage = new WalletImportPage()
 const walletPage = new WalletPage()
 const keyPairPage = new KeypairPage()
 
-
 Given('I am on the add or recover wallet page', () => {
   cy.visit('#/wallet-import')
 })
@@ -22,25 +21,30 @@ When('I click submit', () => {
 When('fill in details for wallet recovery', () => {
   const recoveryPhrase =
     'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold'
-  walletImportPage.importWallet('import test', recoveryPhrase, 2, "123",)
+  walletImportPage.importWallet('import test', recoveryPhrase, 2, '123')
 })
 
 When('fill in details for wallet recovery with different name', () => {
   const recoveryPhrase =
     'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold'
-  walletImportPage.importWallet('import new test', recoveryPhrase, 2, "123",)
+  walletImportPage.importWallet('import new test', recoveryPhrase, 2, '123')
 })
 
 When('fill in details for wallet recovery with version 1', () => {
   const recoveryPhrase =
     'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold'
-  walletImportPage.importWallet('import old version', recoveryPhrase, 1, "123",)
+  walletImportPage.importWallet('import old version', recoveryPhrase, 1, '123')
 })
 
 When('I fill in details with incorrect recovery phrase', () => {
   const recoveryPhrase =
     'brown eternal intact name raw memory squeeze two social road click small gadget vote kitchen best split hungry rail coin season visa category hold'
-  walletImportPage.importWallet('incorrect recovery phrase test', recoveryPhrase, 2, "123",)
+  walletImportPage.importWallet(
+    'incorrect recovery phrase test',
+    recoveryPhrase,
+    2,
+    '123'
+  )
 })
 
 Then('wallet should be recovered', () => {
@@ -48,7 +52,8 @@ Then('wallet should be recovered', () => {
 })
 
 Then('public key is as expected', () => {
-  const publicKey = '355bc85ef9d8e3d1018ee81dc36a94ba0e15615457da2a496ea32a8badec2d41'
+  const publicKey =
+    '355bc85ef9d8e3d1018ee81dc36a94ba0e15615457da2a496ea32a8badec2d41'
 
   walletPage.clickOnTopWallet()
   walletPage.submitPassphrase('123')
@@ -57,7 +62,9 @@ Then('public key is as expected', () => {
 })
 
 Then('error shown for wallet already exists', () => {
-  walletPage.verifyErrorToastTxtIsDisplayed('Error: a wallet with the same name already exists')
+  walletPage.verifyErrorToastTxtIsDisplayed(
+    'Error: a wallet with the same name already exists'
+  )
 })
 
 Then('empty fields are marked required', () => {
@@ -65,5 +72,7 @@ Then('empty fields are marked required', () => {
 })
 
 Then('error shown for incorrect recovery phrase', () => {
-  walletPage.verifyErrorToastTxtIsDisplayed("Error: couldn't import the wallet: recovery phrase is not valid")
+  walletPage.verifyErrorToastTxtIsDisplayed(
+    "Error: couldn't import the wallet: recovery phrase is not valid"
+  )
 })
