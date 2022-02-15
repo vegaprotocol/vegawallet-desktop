@@ -34,6 +34,7 @@
 - [88](https://github.com/vegaprotocol/vegawallet-desktop/pull/88) - Adds an onboarding flow prompting user to initialise the app, create a wallet and import a network configuration
 - [104](https://github.com/vegaprotocol/vegawallet-desktop/pull/104) - Remove the advanced fields section of network import, plus various minor fixes
 - [106](https://github.com/vegaprotocol/vegawallet-desktop/pull/106) - Copy changes to align services terminology
+- [112](https://github.com/vegaprotocol/vegawallet-desktop/pull/112) - Upgrade to react router v6
 
 ### 🐛 Fixes
 
