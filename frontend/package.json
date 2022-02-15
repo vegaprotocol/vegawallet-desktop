@@ -30,20 +30,17 @@
     "react-hook-form": "^7.12.2",
     "react-hook-thunk-reducer": "^0.2.4",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "^5.0.0",
-    "resize-observer-polyfill": "^1.5.1",
     "stylelint": "^14.0.0",
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.3.5",
     "web-vitals": "^2.0.0"
   },
   "scripts": {
-    "serve": "react-scripts start",
-    "serve:test": "REACT_APP_VEGA_HOME=\"./frontend/automation/test-wallets\" REACT_APP_TESTING=1 react-scripts -r @cypress/instrument-cra start",
-    "build": "react-scripts build",
+    "dev": "npx vite build --mode development --watch",
+    "build": "npx vite build",
     "build:test": "CYPRESS_INSTRUMENT_PRODUCTION=true REACT_APP_VEGA_HOME=\"./frontend/automation/test-wallets\" REACT_APP_TESTING=1 react-scripts -r @cypress/instrument-cra build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "serve:test": "REACT_APP_VEGA_HOME=\"./frontend/automation/test-wallets\" REACT_APP_TESTING=1 react-scripts -r @cypress/instrument-cra start",
+    "test": "echo \"No unit test runner configured\" && exit 1",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
     "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\""
   },
@@ -69,9 +66,12 @@
   "devDependencies": {
     "@cypress/instrument-cra": "^1.4.0",
     "@types/react-copy-to-clipboard": "^5.0.2",
+    "@vitejs/plugin-react": "^1.2.0",
+    "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-jest": "^26.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "eslint-plugin-testing-library": "^5.0.2"
-  },
-  "cypressWebpackConfigPath": "./node_modules/react-scripts/config/webpack.config.js"
+    "eslint-plugin-testing-library": "^5.0.2",
+    "vite": "^2.8.2",
+    "vite-plugin-eslint": "^1.3.0"
+  }
 }

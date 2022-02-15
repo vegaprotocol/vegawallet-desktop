@@ -298,8 +298,139 @@ export class GenerateKeyResponse {
 	    return a;
 	}
 }
-export class Network {
+export class ConsoleConfig {
+    url: string;
+    localPort: number;
 
+    static createFrom(source: any = {}) {
+        return new ConsoleConfig(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.url = source["url"];
+        this.localPort = source["localPort"];
+    }
+}
+export class TokenDAppConfig {
+    url: string;
+    localPort: number;
+
+    static createFrom(source: any = {}) {
+        return new TokenDAppConfig(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.url = source["url"];
+        this.localPort = source["localPort"];
+    }
+}
+export class GraphQLConfig {
+    hosts: string[];
+
+    static createFrom(source: any = {}) {
+        return new GraphQLConfig(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.hosts = source["hosts"];
+    }
+}
+export class RESTConfig {
+    hosts: string[];
+
+    static createFrom(source: any = {}) {
+        return new RESTConfig(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.hosts = source["hosts"];
+    }
+}
+export class GRPCConfig {
+    hosts: string[];
+    retries: number;
+
+    static createFrom(source: any = {}) {
+        return new GRPCConfig(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.hosts = source["hosts"];
+        this.retries = source["retries"];
+    }
+}
+export class APIConfig {
+    grpc: GRPCConfig;
+    rest: RESTConfig;
+    graphQl: GraphQLConfig;
+
+    static createFrom(source: any = {}) {
+        return new APIConfig(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.grpc = this.convertValues(source["grpc"], GRPCConfig);
+        this.rest = this.convertValues(source["rest"], RESTConfig);
+        this.graphQl = this.convertValues(source["graphQl"], GraphQLConfig);
+    }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
+}
+export class Duration {
+
+
+    static createFrom(source: any = {}) {
+        return new Duration(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+
+    }
+}
+export class LogLevel {
+
+
+    static createFrom(source: any = {}) {
+        return new LogLevel(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+
+    }
+}
+export class Network {
+    name: string;
+    level: LogLevel;
+    tokenExpiry: Duration;
+    port: number;
+    host: string;
+    api: APIConfig;
+    tokenDApp: TokenDAppConfig;
+    console: ConsoleConfig;
 
     static createFrom(source: any = {}) {
         return new Network(source);
@@ -307,8 +438,33 @@ export class Network {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
-
+        this.name = source["name"];
+        this.level = this.convertValues(source["level"], LogLevel);
+        this.tokenExpiry = this.convertValues(source["tokenExpiry"], Duration);
+        this.port = source["port"];
+        this.host = source["host"];
+        this.api = this.convertValues(source["api"], APIConfig);
+        this.tokenDApp = this.convertValues(source["tokenDApp"], TokenDAppConfig);
+        this.console = this.convertValues(source["console"], ConsoleConfig);
     }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
 }
 export class GetServiceStateResponse {
     url: string;

@@ -12,6 +12,8 @@ import { Colors } from './config/colors'
 import { initAppAction } from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
+import { initNetworksAction } from './contexts/network/network-actions'
+import { useNetwork } from './contexts/network/network-context'
 import { NetworkProvider } from './contexts/network/network-provider'
 import { ServiceProvider } from './contexts/service/service-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
@@ -22,13 +24,20 @@ import { AppRouter } from './routes'
  */
 function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
-  const { state, dispatch } = useGlobal()
+  const { state: globalState, dispatch: globalDispatch } = useGlobal()
+  const { dispatch: networkDispatch } = useNetwork()
 
   React.useEffect(() => {
-    dispatch(initAppAction())
-  }, [dispatch])
+    globalDispatch(initAppAction())
+  }, [globalDispatch])
 
-  if (state.status === AppStatus.Pending) {
+  React.useEffect(() => {
+    if (globalState.status === AppStatus.Initialised) {
+      networkDispatch(initNetworksAction())
+    }
+  }, [globalState.status, networkDispatch])
+
+  if (globalState.status === AppStatus.Pending) {
     return (
       <Splash>
         <SplashLoader />
@@ -36,7 +45,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (state.status === AppStatus.Failed) {
+  if (globalState.status === AppStatus.Failed) {
     return (
       <Splash>
         <p>Failed to initialise</p>
@@ -44,7 +53,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (state.status === AppStatus.Onboarding) {
+  if (globalState.status === AppStatus.Onboarding) {
     return (
       <Splash>
         <Onboard />

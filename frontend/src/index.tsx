@@ -1,5 +1,4 @@
 import 'core-js/stable'
-import './polyfills'
 import './index.css'
 
 import * as Sentry from '@sentry/react'

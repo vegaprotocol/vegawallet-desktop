@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	code.vegaprotocol.io/shared v0.0.0-20220202150846-b6aba31dcdb0
-	code.vegaprotocol.io/vegawallet v0.12.1-0.20220210211449-5fa453cb21e1
+	code.vegaprotocol.io/vegawallet v0.12.1-0.20220215193236-62a1689f606f
 	github.com/blang/semver/v4 v4.0.0
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/wailsapp/wails/v2 v2.0.0-beta.30
