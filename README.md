@@ -46,11 +46,28 @@ More at the [Wails documentation](https://wails.app/reference/cli/#build).
 
 ### Develop
 
-Start the development environment using the following command:
+The backend embeds files from the `frontend/dist` folder. On a new environment, the `frontend/dist` folder is not populated, and will result of the following failure if wails is run first:
+
+```
+pattern frontend/dist: cannot embed directory frontend/dist: contains no embeddable files
+```
+
+As a result, we need to run the frontend first, so wails can embed actual files.
+
+```sh
+cd frontend
+npm run dev
+```
+
+This will build the frontend and watch for further changes. Note we don't run vite in its default development mode as this will also start its on dev server. Instead, we just want to compile the frontend and serve the assets to the wails development server.
+
+Then, in a separate tab, start the development environment using the following command:
 
 ```sh
 wails dev
 ```
+
+This will start the app running on `localhost:34115`. See the `devserverurl` property in `wails.json`.
 
 #### Generate Go binding
 
@@ -74,7 +91,6 @@ It appears on MacOS. It's fixed by installing `watchman`:
 ```sh
 brew install watchman
 ```
-
 
 ### Testing
 

@@ -1,10 +1,6 @@
 name: Test frontend
 
 on:
-  push:
-    branches:
-      - main
-      - develop
   pull_request:
     branches:
       - main
@@ -35,8 +31,9 @@ jobs:
       - name: Get Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
-      - name: Get dependencies
-        run: go get -v -t -d ./...
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
 
       - name: Download packages
         run: cd frontend && npm i
@@ -72,27 +69,6 @@ jobs:
         with:
           name: coverage
           path: frontend/automation/coverage
-
-  jest-run:
-    name: Run unit tests
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Use Node.js 16
-        id: Node
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: 16
-
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
-
-      - name: Run jest
-        working-directory: frontend
-        run: npm test -- --watchAll=false --passWithNoTests
 
   sanity-checks:
     name: Run sanity checks
