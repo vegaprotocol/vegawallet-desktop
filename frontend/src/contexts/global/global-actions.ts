@@ -19,7 +19,13 @@ export function initAppAction() {
     try {
       const isInit = await Service.IsAppInitialised()
 
-      if (isInit) {
+      if (process.env['REACT_APP_TESTING']) {
+        await Service.InitialiseApp({
+          vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+        })
+      }
+
+      if (isInit || process.env['REACT_APP_TESTING']) {
         Sentry.addBreadcrumb({
           type: 'InitApp',
           level: Sentry.Severity.Log,

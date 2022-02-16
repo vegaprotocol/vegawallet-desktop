@@ -46,7 +46,7 @@ jobs:
 
       # Start wails in the first process
       - name: Start backend in background
-        run: wails dev &
+        run: CYPRESS_INSTRUMENT_PRODUCTION=true REACT_APP_VEGA_HOME="./frontend/automation/test-wallets" REACT_APP_TESTING=1 wails dev &
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly

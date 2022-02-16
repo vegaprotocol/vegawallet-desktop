@@ -41,6 +41,7 @@
     "serve": "react-scripts start",
     "serve:test": "REACT_APP_VEGA_HOME=\"./frontend/automation/test-wallets\" REACT_APP_TESTING=1 react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
+    "build:test": "CYPRESS_INSTRUMENT_PRODUCTION=true REACT_APP_VEGA_HOME=\"./frontend/automation/test-wallets\" REACT_APP_TESTING=1 react-scripts -r @cypress/instrument-cra build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
