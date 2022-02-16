@@ -101,23 +101,42 @@ func (h *Handler) ListWallets() (*wallet.ListWalletsResponse, error) {
 	return wallet.ListWallets(wStore)
 }
 
-func (s *Handler) SignMessage(data string) (*wallet.SignMessageResponse, error) {
-	s.log.Debug("Entering SignMessage")
-	defer s.log.Debug("Leaving SignMessage")
-
-	req := &wallet.SignMessageRequest{}
-
-	if err := json.Unmarshal([]byte(data), req); err != nil {
-		s.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
+func CheckSignMessageRequest(req *wallet.SignMessageRequest) error {
+	if len(req.Wallet) == 0 {
+		return errors.New("wallet is required")
 	}
 
-	config, err := s.loadAppConfig()
+	if len(req.PubKey) == 0 {
+		return errors.New("pubkey is required")
+	}
+
+	if len(req.Message) == 0 {
+		return errors.New("message is required")
+	}
+
+	if len(req.Passphrase) == 0 {
+		return errors.New("passphrase is required")
+	}
+
+	return nil
+}
+
+func (h *Handler) SignMessage(req *wallet.SignMessageRequest) (*wallet.SignMessageResponse, error) {
+	h.log.Debug("Entering SignMessage")
+	defer h.log.Debug("Leaving SignMessage")
+
+	err := CheckSignMessageRequest(req)
+
 	if err != nil {
 		return nil, err
 	}
 
-	wStore, err := s.getWalletsStore(config)
+	config, err := h.loadAppConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	wStore, err := h.getWalletsStore(config)
 	if err != nil {
 		return nil, err
 	}
