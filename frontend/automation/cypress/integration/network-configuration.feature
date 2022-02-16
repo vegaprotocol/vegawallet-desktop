@@ -1,4 +1,3 @@
-
 Feature: Network Configuration page
 @todo
   Scenario: Change network

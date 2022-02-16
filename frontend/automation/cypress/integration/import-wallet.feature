@@ -1,4 +1,3 @@
-
 Feature: Add/Recover wallet page
 
   Scenario: Recover wallet

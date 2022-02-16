@@ -1,4 +1,5 @@
-@ignore
+@todo
+#Need to rewrite tests for onboarding feature
 Feature: Create wallet tests
 
   Scenario: Create new wallet
@@ -9,4 +10,4 @@ Feature: Create wallet tests
     When I submit the create wallet form
     Then I see a warning message, the wallet version and recovery phrase
     When I click view import network button
-    Then I am taken to the next step of onboarding 
+    Then I am taken to the next step of onboarding

@@ -1,4 +1,3 @@
-
 Feature: Wallets page
 
   Scenario: Wallet page displayed
@@ -33,7 +32,7 @@ Feature: Wallets page
     When I click lock
     Then wallet is locked
 
-  @ignore
+  @todo
   Scenario: Copy public key
     Given I have unlocked wallet
     And unlocked icon is displayed
