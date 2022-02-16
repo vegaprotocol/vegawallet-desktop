@@ -6,20 +6,34 @@ import type { Handler } from './types/handler'
  * @returns
  */
 const wrapFn = function <S, T>(
-  fn: (args: S) => Promise<T>
-): (args: S) => Promise<T> {
-  return (args: S) => {
-    return fn(args)
-      .then((res: T | Error) => {
-        if (res instanceof Error) throw res
-        return res
-      })
-      .catch((res: Error | string) => {
-        if (typeof res === 'string') {
-          res = new Error(res)
-        }
-        throw res
-      })
+  fn: (args?: S) => Promise<T>
+): (args?: S) => Promise<T> {
+  return (args?: S) => {
+    if (args) {
+      return fn(args)
+        .then((res: T | Error) => {
+          if (res instanceof Error) throw res
+          return res
+        })
+        .catch((res: Error | string) => {
+          if (typeof res === 'string') {
+            res = new Error(res)
+          }
+          throw res
+        })
+    } else {
+      return fn()
+        .then((res: T | Error) => {
+          if (res instanceof Error) throw res
+          return res
+        })
+        .catch((res: Error | string) => {
+          if (typeof res === 'string') {
+            res = new Error(res)
+          }
+          throw res
+        })
+    }
   }
 }
 
