@@ -13,15 +13,13 @@ Given('I am on the import network page', () => {
 Given('I have an imported network', () => {
   cy.visit('#/wallet')
   walletPage.clickNetworkDrawer()
-  const url =
-    'https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml'
+  const url = Cypress.env('mainnetConfigUrl')
 
   networkDrawer.ImportNetwork(url)
 })
 
 When('I import using valid network import url', () => {
-  const url =
-    'https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml'
+  const url = Cypress.env('mainnetConfigUrl')
 
   networkDrawer.ImportNetwork(url)
 })
@@ -43,14 +41,13 @@ When('I import using invalid network import file path', () => {
 
 When('I import using unknown network import url', () => {
   const url =
-    'https://githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml'
+    'https://githubusercontent.com/vegaprotocol/networks/master/mainnet1/fake.toml'
 
   networkDrawer.ImportNetwork(url)
 })
 
 When('I import using url and specify network name', () => {
-  const url =
-    'https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml'
+  const url = Cypress.env('mainnetConfigUrl')
   const networkName = 'New Mainnet'
 
   networkDrawer.ImportNetwork(url, networkName)

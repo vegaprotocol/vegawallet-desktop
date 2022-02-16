@@ -19,20 +19,17 @@ When('I click submit', () => {
 })
 
 When('fill in details for wallet recovery', () => {
-  const recoveryPhrase =
-    'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold'
+  const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
   walletImportPage.importWallet('import test', recoveryPhrase, 2, '123')
 })
 
 When('fill in details for wallet recovery with different name', () => {
-  const recoveryPhrase =
-    'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold'
+  const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
   walletImportPage.importWallet('import new test', recoveryPhrase, 2, '123')
 })
 
 When('fill in details for wallet recovery with version 1', () => {
-  const recoveryPhrase =
-    'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold'
+  const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
   walletImportPage.importWallet('import old version', recoveryPhrase, 1, '123')
 })
 

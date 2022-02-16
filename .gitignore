@@ -6,8 +6,7 @@ frontend/build
 
 # Cypress
 frontend/automation/.nyc_output/
+frontend/automation/test-wallets/
 
 # Misc
 .DS_Store
-
-frontend/automation/test-wallets/
