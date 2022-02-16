@@ -38,6 +38,12 @@ jobs:
       - name: Get dependencies
         run: go get -v -t -d ./...
 
+      - name: Download packages
+        run: cd frontend && npm i
+
+      - name: Build frontend
+        run: cd frontend && npm run build
+
       # Start wails in the first process
       - name: Start backend in background
         run: wails dev &
