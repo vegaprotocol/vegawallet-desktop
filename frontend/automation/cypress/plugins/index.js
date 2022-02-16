@@ -28,7 +28,7 @@ module.exports = (on, config) => {
     getClipboard: () => {
       const clipboard = clipboardy.readSync()
       return clipboard
-    },
+    }
   })
   return cypressConfigResolver(config)
 }

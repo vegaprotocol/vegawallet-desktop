@@ -38,7 +38,7 @@ export function NetworkInfo() {
         <tbody>
           <tr>
             <th>Log level</th>
-            <td data-testid='log-level' >{config.Level}</td>
+            <td data-testid='log-level'>{config.Level}</td>
           </tr>
           <tr>
             <th>Token expiry</th>

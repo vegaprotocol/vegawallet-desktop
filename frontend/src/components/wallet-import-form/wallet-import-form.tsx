@@ -101,8 +101,12 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         />
       </FormGroup>
       <ButtonGroup>
-        <Button data-testid='submit' type='submit'>Submit</Button>
-        <Button data-testid='cancel' onClick={cancel}>Cancel</Button>
+        <Button data-testid='submit' type='submit'>
+          Submit
+        </Button>
+        <Button data-testid='cancel' onClick={cancel}>
+          Cancel
+        </Button>
       </ButtonGroup>
     </form>
   )

@@ -157,7 +157,10 @@ export const NetworkConfigForm = ({
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.logLevel?.message}
       >
-        <select data-testid='log-level' {...register('logLevel', { required: Validation.REQUIRED })}>
+        <select
+          data-testid='log-level'
+          {...register('logLevel', { required: Validation.REQUIRED })}
+        >
           {Object.values(LogLevels).map(level => (
             <option key={level} value={level}>
               {level}
@@ -196,7 +199,9 @@ export const NetworkConfigForm = ({
           })}
         />
       </FormGroup>
-      <Button data-testid='submit' type='submit'>Submit</Button>
+      <Button data-testid='submit' type='submit'>
+        Submit
+      </Button>
     </form>
   )
 }
@@ -222,7 +227,11 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
               key={field.id}
               style={{ display: 'flex', gap: 10, marginBottom: 5 }}
             >
-              <input data-testid='node-list' type='text' {...register(`${name}.${i}.value` as any)} />
+              <input
+                data-testid='node-list'
+                type='text'
+                {...register(`${name}.${i}.value` as any)}
+              />
               <Button
                 data-testid='remove'
                 type='button'

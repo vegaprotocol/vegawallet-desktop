@@ -4,7 +4,11 @@ import { style as defaultStyle } from './style'
 
 export function Unlock({ style }: { style?: React.CSSProperties }) {
   return (
-    <svg data-testid='unlocked-icon' style={{ ...defaultStyle, ...style }} viewBox='0 0 16 16'>
+    <svg
+      data-testid='unlocked-icon'
+      style={{ ...defaultStyle, ...style }}
+      viewBox='0 0 16 16'
+    >
       <path
         fillRule='evenodd'
         clipRule='evenodd'

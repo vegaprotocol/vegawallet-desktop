@@ -72,13 +72,18 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
               </div>
             }
           />
-          <ButtonUnstyled data-testid='manage-networks' onClick={() => setView('manage')}>
+          <ButtonUnstyled
+            data-testid='manage-networks'
+            onClick={() => setView('manage')}
+          >
             Manage networks
           </ButtonUnstyled>
         </div>
       ) : (
         <div>
-          <Button data-testid='import' onClick={() => setView('manage')}>Import</Button>
+          <Button data-testid='import' onClick={() => setView('manage')}>
+            Import
+          </Button>
         </div>
       )}
       <NetworkInfo />

@@ -255,10 +255,15 @@ function WalletDetail({ wallet, onLock }: WalletDetailProps) {
           marginTop: 20
         }}
       >
-        <ButtonUnstyled data-testid='generate-keypair' onClick={() => dispatch(addKeypairAction(wallet.name))}>
+        <ButtonUnstyled
+          data-testid='generate-keypair'
+          onClick={() => dispatch(addKeypairAction(wallet.name))}
+        >
           Generate key pair
         </ButtonUnstyled>
-        <ButtonUnstyled data-testid='lock'onClick={() => onLock(wallet)}>Lock</ButtonUnstyled>
+        <ButtonUnstyled data-testid='lock' onClick={() => onLock(wallet)}>
+          Lock
+        </ButtonUnstyled>
       </div>
     </div>
   )
