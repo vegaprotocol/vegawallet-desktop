@@ -38,11 +38,11 @@ export function NetworkInfo() {
         <tbody>
           <tr>
             <th>Log level</th>
-            <td>{config.Level}</td>
+            <td data-testid='log-level'>{config.Level}</td>
           </tr>
           <tr>
             <th>Token expiry</th>
-            <td>{config.TokenExpiry}</td>
+            <td data-testid='token-expiry'>{config.TokenExpiry}</td>
           </tr>
         </tbody>
       </table>
@@ -57,10 +57,10 @@ interface ServicesTableProps {
 function ServicesTable({ config }: ServicesTableProps) {
   return (
     <table>
-      <tbody>
+      <tbody data-testid='services'>
         <tr>
           <th>Walelt Service URL</th>
-          <td>{`http://${config.Host}:${config.Port}`}</td>
+          <td data-testid='service-url'>{`http://${config.Host}:${config.Port}`}</td>
         </tr>
         <tr>
           <th>
@@ -69,7 +69,7 @@ function ServicesTable({ config }: ServicesTableProps) {
               ({config.Console.URL || 'Not set'})
             </span>
           </th>
-          <td>
+          <td data-testid='service-console'>
             <DAppProxyControl
               proxyApp={ProxyApp.Console}
               proxyConfig={config.Console}
@@ -83,7 +83,7 @@ function ServicesTable({ config }: ServicesTableProps) {
               ({config.TokenDApp.URL || 'Not set'})
             </span>
           </th>
-          <td>
+          <td data-testid='service-token'>
             <DAppProxyControl
               proxyApp={ProxyApp.TokenDApp}
               proxyConfig={config.TokenDApp}
@@ -145,6 +145,7 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
     </ButtonUnstyled>
   ) : (
     <ButtonUnstyled
+      data-testid='start'
       onClick={() => startProxy(proxyConfig)}
       style={{ textAlign: 'right' }}
     >

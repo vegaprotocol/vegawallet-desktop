@@ -105,6 +105,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
       >
         <input
+          data-testid='input-passphrase'
           type='password'
           autoComplete='off'
           autoFocus={true}
@@ -112,8 +113,12 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         />
       </FormGroup>
       <div style={{ display: 'flex', gap: 10 }}>
-        <Button type='submit'>Submit</Button>
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button data-testid='input-submit' type='submit'>
+          Submit
+        </Button>
+        <Button data-testid='input-cancel' onClick={onCancel}>
+          Cancel
+        </Button>
       </div>
     </form>
   )

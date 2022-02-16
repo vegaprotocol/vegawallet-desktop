@@ -1,3 +1,4 @@
+@ignore
 Feature: Create wallet tests
 
   Scenario: Create new wallet

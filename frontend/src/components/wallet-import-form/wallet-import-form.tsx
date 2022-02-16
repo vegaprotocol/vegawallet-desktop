@@ -42,6 +42,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         helperText={errors.wallet?.message}
       >
         <input
+          data-testid='wallet-name'
           type='text'
           {...register('wallet', { required: Validation.REQUIRED })}
           autoFocus={true}
@@ -54,6 +55,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
       >
         <textarea
+          data-testid='recovery-phrase'
           {...register('recoveryPhrase', { required: Validation.REQUIRED })}
           style={{ minHeight: 75 }}
         />
@@ -65,6 +67,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         helperText={errors.version?.message}
       >
         <input
+          data-testid='version'
           type='number'
           {...register('version', { required: Validation.REQUIRED })}
         />
@@ -76,17 +79,20 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         helperText={errors.passphrase?.message}
       >
         <input
+          data-testid='passphrase'
           type='password'
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
+        data-testid='confirm-passphrase'
         label='Confirm passphrase'
         labelFor='confirmPassphrase'
         intent={errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.confirmPassphrase?.message}
       >
         <input
+          data-testid='confirm-passphrase'
           type='password'
           {...register('confirmPassphrase', {
             required: Validation.REQUIRED,
@@ -95,8 +101,12 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         />
       </FormGroup>
       <ButtonGroup>
-        <Button type='submit'>Submit</Button>
-        <Button onClick={cancel}>Cancel</Button>
+        <Button data-testid='submit' type='submit'>
+          Submit
+        </Button>
+        <Button data-testid='cancel' onClick={cancel}>
+          Cancel
+        </Button>
       </ButtonGroup>
     </form>
   )

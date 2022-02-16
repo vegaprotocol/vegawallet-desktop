@@ -6,7 +6,7 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { addNetworkAction } from '../contexts/network/network-actions'
 import { useNetwork } from '../contexts/network/network-context'
-import type { ImportNetworkResponse } from '../models/network'
+import type { ImportNetworkResponse, Network } from '../models/network'
 import { Service } from '../service'
 import { FormStatus, useFormState } from './use-form-state'
 
@@ -29,9 +29,9 @@ export function useImportNetwork() {
           filePath: !isUrl ? values.fileOrUrl : '',
           force: values.force
         })
-
+        if (res instanceof Error) throw res
         if (res) {
-          const config = await Service.GetNetworkConfig(res.name)
+          const config = (await Service.GetNetworkConfig(res.name)) as Network
 
           // Update the config
           dispatch(addNetworkAction(res.name, config))

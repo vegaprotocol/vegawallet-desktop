@@ -35,6 +35,7 @@
 - [104](https://github.com/vegaprotocol/vegawallet-desktop/pull/104) - Remove the advanced fields section of network import, plus various minor fixes
 - [106](https://github.com/vegaprotocol/vegawallet-desktop/pull/106) - Copy changes to align services terminology
 - [112](https://github.com/vegaprotocol/vegawallet-desktop/pull/112) - Upgrade to react router v6
+- [121](https://github.com/vegaprotocol/vegawallet-desktop/pull/121) - E2e tests
 
 ### 🐛 Fixes
 

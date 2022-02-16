@@ -34,6 +34,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
           <DropdownMenu
             trigger={
               <Button
+                data-testid='network-select'
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -53,6 +54,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                 {networks.map(network => (
                   <DropdownItem key={network}>
                     <ButtonUnstyled
+                      data-testid={`select-${network}`}
                       style={{
                         width: '100%',
                         padding: '10px 15px',
@@ -70,13 +72,18 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
               </div>
             }
           />
-          <ButtonUnstyled onClick={() => setView('manage')}>
+          <ButtonUnstyled
+            data-testid='manage-networks'
+            onClick={() => setView('manage')}
+          >
             Manage networks
           </ButtonUnstyled>
         </div>
       ) : (
         <div>
-          <Button onClick={() => setView('manage')}>Import</Button>
+          <Button data-testid='import' onClick={() => setView('manage')}>
+            Import
+          </Button>
         </div>
       )}
       <NetworkInfo />

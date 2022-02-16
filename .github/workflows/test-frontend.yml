@@ -13,7 +13,7 @@ on:
 jobs:
   cypress-run:
     name: Run end-to-end tests
-    runs-on: ubuntu-20.04
+    runs-on: macos-latest
     env:
       GO111MODULE: on # Needed by Wails
       CGO_ENABLED: 1 # Needed by Wails
@@ -38,14 +38,15 @@ jobs:
       - name: Get dependencies
         run: go get -v -t -d ./...
 
+      - name: Download packages
+        run: cd frontend && npm i
+
+      - name: Build frontend
+        run: cd frontend && npm run build
+
       # Start wails in the first process
       - name: Start backend in background
-        run: wails dev &
-
-      # Start frontend in a second process
-      - name: Start app in background
-        working-directory: frontend
-        run: npm run serve:coverage &
+        run: CYPRESS_INSTRUMENT_PRODUCTION=true REACT_APP_VEGA_HOME="./frontend/automation/test-wallets" REACT_APP_TESTING=1 wails dev &
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
@@ -53,7 +54,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          wait-on: "http://localhost:3000"
+          wait-on: "http://localhost:34115"
           working-directory: frontend/automation
           wait-on-timeout: 120
           record: true
@@ -67,6 +68,7 @@ jobs:
           CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
 
       - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
         with:
           name: coverage
           path: frontend/automation/coverage

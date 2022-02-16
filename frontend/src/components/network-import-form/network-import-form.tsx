@@ -82,6 +82,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
         helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}
       >
         <input
+          data-testid='url-path'
           id='fileOrUrl'
           type='text'
           {...register('fileOrUrl', {
@@ -99,7 +100,12 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
             : 'Uses name specified in the config by default'
         }
       >
-        <input type='text' id='name' {...register('name')} />
+        <input
+          data-testid='network-name'
+          type='text'
+          id='name'
+          {...register('name')}
+        />
       </FormGroup>
       {showOverwriteCheckbox && (
         <FormGroup helperText='Overwrite existing network configuration'>
@@ -107,7 +113,11 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
         </FormGroup>
       )}
       <div>
-        <Button type='submit' loading={status === FormStatus.Pending}>
+        <Button
+          data-testid='import'
+          type='submit'
+          loading={status === FormStatus.Pending}
+        >
           Import
         </Button>
       </div>

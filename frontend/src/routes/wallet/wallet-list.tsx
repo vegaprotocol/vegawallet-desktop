@@ -102,6 +102,7 @@ function WalletListItem({ wallet, onUnlock, onLock }: WalletListItemProps) {
 
   return (
     <li
+      data-testid='wallet-list'
       key={wallet.name}
       tabIndex={0}
       onClick={() => onUnlock(wallet)}
@@ -254,10 +255,15 @@ function WalletDetail({ wallet, onLock }: WalletDetailProps) {
           marginTop: 20
         }}
       >
-        <ButtonUnstyled onClick={() => dispatch(addKeypairAction(wallet.name))}>
+        <ButtonUnstyled
+          data-testid='generate-keypair'
+          onClick={() => dispatch(addKeypairAction(wallet.name))}
+        >
           Generate key pair
         </ButtonUnstyled>
-        <ButtonUnstyled onClick={() => onLock(wallet)}>Lock</ButtonUnstyled>
+        <ButtonUnstyled data-testid='lock' onClick={() => onLock(wallet)}>
+          Lock
+        </ButtonUnstyled>
       </div>
     </div>
   )

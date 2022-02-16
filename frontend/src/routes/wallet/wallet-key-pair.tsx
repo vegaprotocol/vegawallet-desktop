@@ -31,11 +31,11 @@ export function WalletKeyPair() {
         <tbody>
           <tr>
             <th>Name</th>
-            <td>{keypair.name}</td>
+            <td data-testid='keypair-name'>{keypair.name}</td>
           </tr>
           <tr>
             <th>Public key</th>
-            <td>
+            <td data-testid='public-key'>
               <BreakText>{keypair.publicKey}</BreakText>
             </td>
           </tr>

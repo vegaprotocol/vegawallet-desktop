@@ -5,8 +5,8 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { addWalletAction } from '../contexts/global/global-actions'
 import { useGlobal } from '../contexts/global/global-context'
-import type { CreateWalletResponse } from '../models/wallet'
 import { Service } from '../service'
+import type { CreateWalletResponse } from '../wailsjs/go/models'
 
 export function useCreateWallet() {
   const { dispatch } = useGlobal()
@@ -27,6 +27,7 @@ export function useCreateWallet() {
           wallet: values.wallet,
           passphrase: values.passphrase
         })
+        if (resp instanceof Error) throw resp
         if (resp) {
           setResponse(resp)
           AppToaster.show({

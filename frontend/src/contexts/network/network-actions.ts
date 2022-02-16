@@ -11,9 +11,13 @@ export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
     try {
       const networks = await Service.ListNetworks()
+      if (networks instanceof Error) throw networks
+
       if (networks.networks.length) {
         const defaultNetwork = networks.networks[0]
-        const config = await Service.GetNetworkConfig(defaultNetwork)
+        const config = (await Service.GetNetworkConfig(
+          defaultNetwork
+        )) as Network
         dispatch({
           type: 'SET_NETWORKS',
           network: defaultNetwork,
@@ -44,7 +48,7 @@ export function changeNetworkAction(network: string) {
       timestamp: Date.now()
     })
     try {
-      const config = await Service.GetNetworkConfig(network)
+      const config = (await Service.GetNetworkConfig(network)) as Network
 
       dispatch({
         type: 'CHANGE_NETWORK',
@@ -103,14 +107,14 @@ export function importNetworkAction(values: ImportNetworkRequest) {
         filePath: values.filePath,
         force: values.force
       })
+      if (res instanceof Error) throw res
 
       if (res) {
-        const config = await Service.GetNetworkConfig(res.name)
-
+        const config = (await Service.GetNetworkConfig(res.name)) as Network
         dispatch({
           type: 'ADD_NETWORK',
           network: res.name,
-          config
+          config: config
         })
 
         AppToaster.show({

@@ -3,11 +3,14 @@ import * as Sentry from '@sentry/react'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
-import type { GetServiceStateResponse } from '../../models/console-state'
 import type { Key } from '../../models/keys'
-import type { GetVersionResponse } from '../../models/version'
-import type { ListWalletsResponse } from '../../models/wallet'
 import { Service } from '../../service'
+import type {
+  GetServiceStateResponse,
+  GetVersionResponse,
+  ListWalletsResponse
+} from '../../wailsjs/go/models'
+import { GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
@@ -16,7 +19,13 @@ export function initAppAction() {
     try {
       const isInit = await Service.IsAppInitialised()
 
-      if (isInit) {
+      if (process.env['REACT_APP_TESTING']) {
+        await Service.InitialiseApp({
+          vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+        })
+      }
+
+      if (isInit || process.env['REACT_APP_TESTING']) {
         Sentry.addBreadcrumb({
           type: 'InitApp',
           level: Sentry.Severity.Log,
@@ -24,13 +33,17 @@ export function initAppAction() {
           timestamp: Date.now()
         })
         // App initialised check what wallets are available
-        const res = await Promise.all([
+        const [wallets, service, version] = await Promise.all([
           await Service.ListWallets(),
           await Service.GetServiceState(),
           await Service.GetVersion()
         ])
 
-        dispatch(initAppSuccessAction(...res))
+        if (wallets instanceof Error) {
+          throw wallets
+        }
+
+        dispatch(initAppSuccessAction(wallets, service, version))
       } else {
         Sentry.addBreadcrumb({
           type: 'StartApp',
@@ -87,11 +100,16 @@ export function addKeypairAction(wallet: string) {
     })
     try {
       const passphrase = await requestPassphrase()
-      const res = await Service.GenerateKey({
-        wallet,
-        passphrase,
-        metadata: []
-      })
+      const res = await Service.GenerateKey(
+        new GenerateKeyRequest({
+          wallet,
+          passphrase,
+          metadata: []
+        })
+      )
+
+      if (res instanceof Error) throw res
+
       dispatch({
         type: 'ADD_KEYPAIR',
         wallet,
@@ -127,6 +145,9 @@ export function getKeysAction(wallet: string) {
           wallet,
           passphrase
         })
+        if (keys instanceof Error) {
+          throw keys
+        }
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
       } catch (err) {
         console.log(err)

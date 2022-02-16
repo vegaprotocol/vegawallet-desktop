@@ -1,6 +1,6 @@
 import React from 'react'
 
-import type { CreateWalletResponse } from '../../models/wallet'
+import type { CreateWalletResponse } from '../../wailsjs/go/models'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
