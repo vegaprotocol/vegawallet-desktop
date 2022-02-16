@@ -38,6 +38,9 @@ jobs:
       - name: Get dependencies
         run: go get -v -t -d ./...
 
+      - name: Create a config file
+        run: echo 'VegaHome = "./frontend/automation/test-wallets"' > ~/Library/'Application Support'/vega/wallet-app/config.toml
+
       - name: Download packages
         run: cd frontend && npm i
 
