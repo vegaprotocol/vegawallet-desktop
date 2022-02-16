@@ -13,7 +13,7 @@ on:
 jobs:
   cypress-run:
     name: Run end-to-end tests
-    runs-on: ubuntu-20.04
+    runs-on: macos-latest
     env:
       GO111MODULE: on # Needed by Wails
       CGO_ENABLED: 1 # Needed by Wails
@@ -53,7 +53,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          wait-on: "http://localhost:3000"
+          wait-on: "http://localhost:34115"
           working-directory: frontend/automation
           wait-on-timeout: 120
           record: true
