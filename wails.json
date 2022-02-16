@@ -3,7 +3,6 @@
   "assetdir": "./frontend/dist",
   "frontend:build": "npm run build",
   "frontend:install": "npm install",
-  "frontend:dev": "npm run build",
   "wailsjsdir": "./frontend/src",
   "version": "0.1.0+dev",
   "outputfilename": "Vegawallet",
