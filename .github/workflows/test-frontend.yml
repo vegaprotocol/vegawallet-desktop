@@ -38,15 +38,15 @@ jobs:
       - name: Get dependencies
         run: go get -v -t -d ./...
 
+      # Start wails in the first process
+      - name: Start backend in background
+        run: wails dev &
+
       - name: Download packages
         run: cd frontend && npm i
 
       - name: Build frontend
         run: cd frontend && npm run build:test
-
-      # Start wails in the first process
-      - name: Start backend in background
-        run: wails dev
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
