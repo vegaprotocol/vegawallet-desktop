@@ -1,12 +1,13 @@
 import React from 'react'
+
 import { Colors } from '../../config/colors'
 
-interface Header {
+interface HeaderProps {
   children: React.ReactNode
   style?: React.CSSProperties
 }
 
-export const Header = ({ children, style }: Header) => {
+export const Header = ({ children, style }: HeaderProps) => {
   return (
     <h1
       style={{

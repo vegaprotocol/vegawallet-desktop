@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useNetwork } from '../../contexts/network/network-context'
@@ -7,7 +8,7 @@ import {
   stopProxyAction
 } from '../../contexts/service/service-actions'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
-import { Network, ProxyDAppConfig } from '../../models/network'
+import type { Network, ProxyDAppConfig } from '../../models/network'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 import { NodeList } from '../node-list'
@@ -24,7 +25,7 @@ export function NetworkInfo() {
 
   return (
     <>
-      <Header>REST Service / DApp Proxies</Header>
+      <Header>Wallet Service / DApps</Header>
       <ServicesTable config={config} />
       <Header>gRPC Nodes</Header>
       <NodeList items={config.API.GRPC.Hosts} />
@@ -58,10 +59,8 @@ function ServicesTable({ config }: ServicesTableProps) {
     <table>
       <tbody data-testid='services'>
         <tr>
-          <th>REST Service URL</th>
-          <td data-testid='service-url'>
-            {config.Host}:{config.Port}
-          </td>
+          <th>Walelt Service URL</th>
+          <td data-testid='service-url'>{`http://${config.Host}:${config.Port}`}</td>
         </tr>
         <tr>
           <th>

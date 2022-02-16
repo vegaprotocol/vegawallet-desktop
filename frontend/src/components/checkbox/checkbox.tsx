@@ -1,6 +1,7 @@
-import React from 'react'
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
+import React from 'react'
 import { Controller } from 'react-hook-form'
+
 import { Colors } from '../../config/colors'
 import { Tick } from '../icons/tick'
 

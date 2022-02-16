@@ -1,7 +1,6 @@
 package backend
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -20,28 +19,21 @@ func CheckCreateWalletRequest(req *wallet.CreateWalletRequest) error {
 	return nil
 }
 
-func (s *Handler) CreateWallet(data string) (*wallet.CreateWalletResponse, error) {
-	s.log.Debug("Entering CreateWallet")
-	defer s.log.Debug("Leaving CreateWallet")
+func (h *Handler) CreateWallet(req *wallet.CreateWalletRequest) (*wallet.CreateWalletResponse, error) {
+	h.log.Debug("Entering CreateWallet")
+	defer h.log.Debug("Leaving CreateWallet")
 
-	req := &wallet.CreateWalletRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		s.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
-
-	if err = CheckCreateWalletRequest(req); err != nil {
-		s.log.Errorf("Request is invalid: %v", err)
+	if err := CheckCreateWalletRequest(req); err != nil {
+		h.log.Error(fmt.Sprintf("Request is invalid: %v", err))
 		return nil, fmt.Errorf("request is invalid: %w", err)
 	}
 
-	config, err := s.loadAppConfig()
+	config, err := h.loadAppConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	wStore, err := s.getWalletsStore(config)
+	wStore, err := h.getWalletsStore(config)
 	if err != nil {
 		return nil, err
 	}
@@ -69,28 +61,22 @@ type ImportWalletResponse struct {
 	WalletPath string
 }
 
-func (s *Handler) ImportWallet(data string) (*wallet.ImportWalletResponse, error) {
-	s.log.Debug("Entering ImportWallet")
-	defer s.log.Debug("Leaving ImportWallet")
-
-	req := &wallet.ImportWalletRequest{}
-	if err := json.Unmarshal([]byte(data), req); err != nil {
-		s.log.Errorf("Couldn't unmarshall request: %v", err)
-		return nil, fmt.Errorf("couldn't unmarshal request: %w", err)
-	}
+func (h *Handler) ImportWallet(req *wallet.ImportWalletRequest) (*wallet.ImportWalletResponse, error) {
+	h.log.Debug("Entering ImportWallet")
+	defer h.log.Debug("Leaving ImportWallet")
 
 	if err := CheckImportWalletRequest(req); err != nil {
-		s.log.Errorf("Request is invalid: %v", err)
+		h.log.Error(fmt.Sprintf("Request is invalid: %v", err))
 		return nil, fmt.Errorf("request is invalid: %w", err)
 	}
-	s.log.Debug(fmt.Sprintf("request 2 %v", req))
+	h.log.Debug(fmt.Sprintf("request 2 %v", req))
 
-	config, err := s.loadAppConfig()
+	config, err := h.loadAppConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	wStore, err := s.getWalletsStore(config)
+	wStore, err := h.getWalletsStore(config)
 	if err != nil {
 		return nil, err
 	}
@@ -98,16 +84,16 @@ func (s *Handler) ImportWallet(data string) (*wallet.ImportWalletResponse, error
 	return wallet.ImportWallet(wStore, req)
 }
 
-func (s *Handler) ListWallets() (*wallet.ListWalletsResponse, error) {
-	s.log.Debug("Entering ListWallets")
-	defer s.log.Debug("Leaving ListWallets")
+func (h *Handler) ListWallets() (*wallet.ListWalletsResponse, error) {
+	h.log.Debug("Entering ListWallets")
+	defer h.log.Debug("Leaving ListWallets")
 
-	config, err := s.loadAppConfig()
+	config, err := h.loadAppConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	wStore, err := s.getWalletsStore(config)
+	wStore, err := h.getWalletsStore(config)
 	if err != nil {
 		return nil, err
 	}

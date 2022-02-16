@@ -1,10 +1,12 @@
 import './toast.css'
+
 import React from 'react'
+
+import { Colors, IntentBackgrounds } from '../../config/colors'
 import { Intent } from '../../config/intent'
-import { IntentBackgrounds, Colors } from '../../config/colors'
-import { Toast as IToast } from '.'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Cross } from '../icons/cross'
+import type { Toast as IToast } from '.'
 
 export interface ToastProps {
   id: string
@@ -60,7 +62,8 @@ export function Toast({
         margin: '15px 0 0 0',
         overflow: 'hidden',
         animation: 'drop .3s ease',
-        animationFillMode: 'forwards'
+        animationFillMode: 'forwards',
+        pointerEvents: 'all' // Re enable pointer events as overlay container disables
       }}
     >
       <div

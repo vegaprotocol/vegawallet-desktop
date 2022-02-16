@@ -1,14 +1,15 @@
-import * as Service from '../../api/service'
+import * as Sentry from '@sentry/react'
+
 import { requestPassphrase } from '../../components/passphrase-modal'
-import { GetServiceStateResponse } from '../../models/console-state'
-import { ListWalletsResponse } from '../../models/wallet'
-import { GetVersionResponse } from '../../models/version'
-import { GlobalDispatch, GlobalState } from './global-context'
-import { GlobalAction } from './global-reducer'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
-import { Key } from '../../models/keys'
-import * as Sentry from '@sentry/react'
+import type { GetServiceStateResponse } from '../../models/console-state'
+import type { Key } from '../../models/keys'
+import type { GetVersionResponse } from '../../models/version'
+import type { ListWalletsResponse } from '../../models/wallet'
+import { Service } from '../../service'
+import type { GlobalDispatch, GlobalState } from './global-context'
+import type { GlobalAction } from './global-reducer'
 
 const truthy = ['true', '1']
 
@@ -57,8 +58,8 @@ export function initAppSuccessAction(
     type: 'INIT_APP',
     isInit: true,
     wallets: wallets.wallets,
-    serviceRunning: service.Running,
-    serviceUrl: service.URL,
+    serviceRunning: service.running,
+    serviceUrl: service.url,
     version: version.version
   }
 }
@@ -79,7 +80,7 @@ export function addWalletAction(wallet: string, key: Key): GlobalAction {
 }
 
 export function addKeypairAction(wallet: string) {
-  return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+  return async (dispatch: GlobalDispatch) => {
     Sentry.addBreadcrumb({
       type: 'AddKeyPair',
       level: Sentry.Severity.Log,
@@ -124,7 +125,10 @@ export function getKeysAction(wallet: string) {
     } else {
       try {
         const passphrase = await requestPassphrase()
-        const keys = await Service.ListKeys({ wallet, passphrase })
+        const keys = await Service.ListKeys({
+          wallet,
+          passphrase
+        })
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
       } catch (err) {
         console.log(err)

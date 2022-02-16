@@ -1,0 +1,34 @@
+name: Verify Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  verify-linked-issue:
+    if: startsWith(github.head_ref, 'renovate/') != true
+    runs-on: ubuntu-latest
+    name: Ensure linked issue
+    steps:
+      - name: Verify linked issue
+        uses: hattan/verify-linked-issue-action@2d8e2e47a462cc7b07ba5e6cab6f9d57bd36672e
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  changelog-checker:
+    if: startsWith(github.head_ref, 'renovate/') != true
+    name: Verify CHANGELOG update
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Check changelog
+        uses: Zomzog/changelog-checker@v1.2.0
+        with:
+          fileName: CHANGELOG.md
+          noChangelogLabel: "no changelog"
+          checkNotification: Simple
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

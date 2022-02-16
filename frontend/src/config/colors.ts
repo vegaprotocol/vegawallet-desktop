@@ -1,4 +1,4 @@
-import { Intent } from './intent'
+import type { Intent } from './intent'
 
 export const Colors = {
   VEGA_RED: 'var(--vega-red)',

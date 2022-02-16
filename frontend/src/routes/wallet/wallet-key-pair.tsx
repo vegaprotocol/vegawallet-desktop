@@ -1,12 +1,12 @@
 import React from 'react'
-import { Redirect, useParams } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
+
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'
 import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
-import { Paths } from '../router-config'
+import { Paths } from '../'
 
 export function WalletKeyPair() {
   const {
@@ -16,7 +16,7 @@ export function WalletKeyPair() {
   const keypair = wallet?.keypairs?.find(kp => kp.publicKey === pubkey)
 
   if (!keypair) {
-    return <Redirect to={Paths.Wallet} />
+    return <Navigate to={Paths.Wallet} />
   }
 
   return (

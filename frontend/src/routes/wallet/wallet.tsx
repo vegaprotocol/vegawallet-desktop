@@ -1,22 +1,7 @@
 import React from 'react'
-import { WalletList } from './wallet-list'
-import { Route, Switch } from 'react-router-dom'
-import { WalletKeyPair } from './wallet-key-pair'
-import { Paths } from '../router-config'
+import { Outlet } from 'react-router-dom'
 
 export const Wallet = () => {
-  return (
-    <Switch>
-      <Route path={`${Paths.Wallet}/keypair/:pubkey`}>
-        <WalletKeyPair />
-      </Route>
-      <Route path={Paths.Wallet} exact={true}>
-        <WalletList />
-      </Route>
-    </Switch>
-  )
-}
-
-export function createKeypairRoute(pubkey: string) {
-  return `${Paths.Wallet}/keypair/${pubkey}`
+  // Wallet page doesnt have any consistent UI shared amongs child pages so just render the <Outlet />
+  return <Outlet />
 }

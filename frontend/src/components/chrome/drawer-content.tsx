@@ -1,8 +1,9 @@
 import React from 'react'
-import { DRAWER_HEIGHT } from '.'
+
 import { setDrawerAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
+import { DRAWER_HEIGHT } from '.'
 import { DrawerEditNetwork } from './drawer-edit-network'
 import { DrawerHead } from './drawer-head'
 import { DrawerManageNetwork } from './drawer-manage-network'

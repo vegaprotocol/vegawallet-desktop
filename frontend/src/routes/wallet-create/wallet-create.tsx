@@ -1,14 +1,15 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { Button } from '../../components/button'
 import { Header } from '../../components/header'
 import { WalletCreateForm } from '../../components/wallet-create-form'
-import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
-import { useHistory } from 'react-router-dom'
-import { Paths } from '../router-config'
-import { Button } from '../../components/button'
+import { useCreateWallet } from '../../hooks/use-create-wallet'
+import { Paths } from '../'
 
 export const WalletCreate = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { response, submit } = useCreateWallet()
 
   return (
@@ -18,15 +19,13 @@ export const WalletCreate = () => {
         <WalletCreateFormSuccess
           response={response}
           callToAction={
-            <Button onClick={() => history.push(Paths.Wallet)}>
-              View wallet
-            </Button>
+            <Button onClick={() => navigate(Paths.Wallet)}>View wallet</Button>
           }
         />
       ) : (
         <WalletCreateForm
           submit={submit}
-          cancel={() => history.push(Paths.Wallet)}
+          cancel={() => navigate(Paths.Wallet)}
         />
       )}
     </div>

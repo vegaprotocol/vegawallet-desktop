@@ -1,4 +1,4 @@
 export interface GetServiceStateResponse {
-  URL: string
-  Running: boolean
+  url: string
+  running: boolean
 }

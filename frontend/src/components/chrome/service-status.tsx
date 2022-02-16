@@ -1,4 +1,7 @@
 import React from 'react'
+
+import { Colors } from '../../config/colors'
+import { Fonts } from '../../config/fonts'
 import { useNetwork } from '../../contexts/network/network-context'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
@@ -12,28 +15,36 @@ export function ServiceStatus() {
   } = useNetwork()
   return (
     <>
-      <div data-testid='service-status'>
+      <div style={{ whiteSpace: 'nowrap' }}>
         <StatusCircle running={serviceRunning} />
         {serviceRunning ? (
           <>
-            Connected to {network} on {serviceUrl}
+            Wallet Service:{' '}
+            <span
+              style={{
+                fontFamily: Fonts.MONO,
+                background: Colors.DARK_GRAY_4,
+                padding: '1px 5px'
+              }}
+            >
+              {network}
+            </span>{' '}
+            on {serviceUrl}
           </>
         ) : (
-          <>Service not running</>
+          <>Wallet Service: Not running</>
         )}
       </div>
-      <div data-testid='dapp-status'>
+      <div style={{ whiteSpace: 'nowrap' }}>
         <>
           <StatusCircle running={proxy !== ProxyApp.None} />
           {proxy !== ProxyApp.None ? (
             <>
-              dApp running:{' '}
-              <ExternalLink href={proxyUrl}>
-                {proxy} @ {proxyUrl}
-              </ExternalLink>
+              DApp: {proxy} on{' '}
+              <ExternalLink href={proxyUrl}>{proxyUrl}</ExternalLink>
             </>
           ) : (
-            <>dApp not running</>
+            <>DApp: Not running</>
           )}
         </>
       </div>

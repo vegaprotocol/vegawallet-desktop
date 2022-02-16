@@ -1,10 +1,11 @@
 import React from 'react'
+
 import { useNetwork } from '../../contexts/network/network-context'
 import { BulletList, BulletListItem } from '../bulle-list'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 import { NetworkImportForm } from '../network-import-form'
-import { DrawerViews } from './drawer-content'
+import type { DrawerViews } from './drawer-content'
 
 interface DrawerManageNetworkProps {
   setView: React.Dispatch<React.SetStateAction<DrawerViews>>

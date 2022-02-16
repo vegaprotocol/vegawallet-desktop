@@ -1,8 +1,6 @@
 # vegawallet-desktop
 
-vegawallet-desktop is a graphical desktop application of Vega
-Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/) for Windows, MacOS
-and Linux.
+vegawallet-desktop is a graphical desktop application of Vega Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/) for Windows, MacOS and Linux.
 
 ## Development
 
@@ -10,9 +8,7 @@ and Linux.
 
 #### Wails
 
-This project uses [Wails](https://wails.app) to build the desktop app. To
-install Wails, follow the instruction on
-its [Getting started](https://wails.app/gettingstarted/) page.
+This project uses [Wails](https://wails.app) to build the desktop app. To install Wails, follow the instruction on its [Getting started](https://wails.app/gettingstarted/) page.
 
 Be sure to have the following environment variables set:
 
@@ -20,17 +16,13 @@ Be sure to have the following environment variables set:
 - `GO111MODULE=on`
 
 ```sh
-go install github.com/wailsapp/wails/cmd/wails@v1.16.9
+go install github.com/wailsapp/wails/v2/cmd/wails@latest
 ```
 
-##### Common issues
-
-###### Error: open HOME/.wails/wails.json no such file or directory
-
-Before building the project for the first time, ensure you have run:
+To check if you have the correct dependencies installed, use the following command:
 
 ```sh
-wails setup
+wails doctor
 ```
 
 #### Frontend
@@ -44,33 +36,45 @@ The supported version of Typescript is **4.3.5**.
 Compile the project using the `build` command.
 
 ```sh
-wails build -p
+wails build
 ```
 
-If all went well, you should have a compiled program in your `build` directory.
-Go to the `build` directory and run the program with `./vegawallet-desktop` or
-double click `vegawallet-desktop.exe` if on Windows.
+This will compile your project and save the production-ready binary in the `build/bin`
+directory.
 
 More at the [Wails documentation](https://wails.app/reference/cli/#build).
 
-### Serve
+### Develop
 
-#### Backend
-
-While developing your apps using wails the preferred method is by the `serve`
-command:
+Start the development environment using the following command:
 
 ```sh
-wails serve
+wails dev
 ```
 
-#### Frontend
+#### Generate Go binding
 
-Go to the `frontend` directory, and serve your GUI using:
+Use the following command:
 
 ```sh
-npm run serve
+wails generate module
 ```
+
+#### Common issues
+
+##### Too many open files
+
+```
+Error: EMFILE: too many open files, watch
+    at FSEvent.FSWatcher._handle.onchange (node:internal/fs/watchers:204:21)
+```
+
+It appears on MacOS. It's fixed by installing `watchman`:
+
+```sh
+brew install watchman
+```
+
 
 ### Testing
 
@@ -94,10 +98,9 @@ npm run test
 
 **[Documentation](https://docs.vega.xyz/)**
 
-Get API reference documentation, learn more about how Vega works, and explore
-sample scripts for API trading
+Get API reference documentation, learn more about how Vega works, and explore sample scripts for API trading
 
-**[Wallet documentation](https://docs.vega.xyz/docs/tools/overview)**
+**[Wallet documentation](https://docs.vega.xyz/docs/tools/vega-wallet/desktop-wallet)**
 
 Learn about how Vega interacts with wallets.
 
@@ -107,16 +110,11 @@ Raise issues and see what others have raised.
 
 **[Discord](https://vega.xyz/discord)**
 
-Ask us for help, find out about scheduled open sessions, and keep up with Vega
-generally.
+Ask us for help, find out about scheduled open sessions, and keep up with Vega generally.
 
 ## About Vega
 
-[Vega][vega-website] is a protocol for creating and trading derivatives on a
-fully decentralised network. The network, secured with proof-of-stake, will
-facilitate fully automated, end-to-end margin trading and execution of complex
-financial products. Anyone will be able to build decentralised markets using the
-protocol.
+[Vega][vega-website] is a protocol for creating and trading derivatives on a fully decentralised network. The network, secured with proof-of-stake, will facilitate fully automated, end-to-end margin trading and execution of complex financial products. Anyone will be able to build decentralised markets using the protocol.
 
 Read more at [https://vega.xyz][vega-website].
 

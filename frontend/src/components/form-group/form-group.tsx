@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { IntentColors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 

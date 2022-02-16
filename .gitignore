@@ -1,13 +1,13 @@
-vendor
-deploy
-moc*
-rcc*
-*.exe.manifest
-*.rc
-*.syso
+# Created when applications are built
+build/bin
 
-build
+# Created when frontend is built
+frontend/build
 
+# Cypress
 frontend/automation/.nyc_output/
+
+# Misc
+.DS_Store
 
 frontend/automation/test-wallets/

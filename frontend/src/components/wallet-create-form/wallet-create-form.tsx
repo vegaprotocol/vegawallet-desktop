@@ -1,5 +1,6 @@
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+
 import { Intent } from '../../config/intent'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'

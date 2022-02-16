@@ -2,7 +2,6 @@ package backend
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -38,9 +37,9 @@ func (s *serviceState) Shutdown() {
 }
 
 type StartServiceRequest struct {
-	Network       string
-	WithConsole   bool
-	WithTokenDApp bool
+	Network       string `json:"network"`
+	WithConsole   bool   `json:"withConsole"`
+	WithTokenDApp bool   `json:"withTokenDApp"`
 }
 
 func (r StartServiceRequest) Check() error {
@@ -51,32 +50,25 @@ func (r StartServiceRequest) Check() error {
 	return nil
 }
 
-func (s *Handler) StartService(data string) (bool, error) {
-	s.log.Debug("Entering StartService")
-	defer s.log.Debug("Leaving StartService")
+func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
+	h.log.Debug("Entering StartService")
+	defer h.log.Debug("Leaving StartService")
 
-	if s.service.IsRunning() {
-		s.log.Error("A console already started")
+	if h.service.IsRunning() {
+		h.log.Error("A console already started")
 		return false, ErrConsoleAlreadyRunning
-	}
-
-	req := &StartServiceRequest{}
-	err := json.Unmarshal([]byte(data), req)
-	if err != nil {
-		s.log.Errorf("Couldn't unmarshall request: %v", err)
-		return false, fmt.Errorf("couldn't unmarshal request: %w", err)
 	}
 
 	if err := req.Check(); err != nil {
 		return false, err
 	}
 
-	config, err := s.loadAppConfig()
+	config, err := h.loadAppConfig()
 	if err != nil {
 		return false, err
 	}
 
-	wStore, err := s.getWalletsStore(config)
+	wStore, err := h.getWalletsStore(config)
 	if err != nil {
 		return false, err
 	}
@@ -85,23 +77,23 @@ func (s *Handler) StartService(data string) (bool, error) {
 
 	netStore, err := netstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
-		s.log.Errorf("Couldn't initialise network store: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't initialise network store: %v", err))
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
 	exists, err := netStore.NetworkExists(req.Network)
 	if err != nil {
-		s.log.Errorf("Couldn't verify the network existence: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't verify the network existence: %v", err))
 		return false, fmt.Errorf("couldn't verify the network existence: %w", err)
 	}
 	if !exists {
-		s.log.Errorf("Network %s does not exist", req.Network)
+		h.log.Error(fmt.Sprintf("Network %s does not exist", req.Network))
 		return false, network.NewNetworkDoesNotExistError(req.Network)
 	}
 
 	cfg, err := netStore.GetNetwork(req.Network)
 	if err != nil {
-		s.log.Errorf("Couldn't initialise network store: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't initialise network store: %v", err))
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
@@ -114,37 +106,37 @@ func (s *Handler) StartService(data string) (bool, error) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	s.service.shutdownFunc = cancel
+	h.service.shutdownFunc = cancel
 
 	svcStore, err := svcstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
-		s.log.Errorf("Couldn't initialise service store: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't initialise service store: %v", err))
 		return false, fmt.Errorf("couldn't initialise service store: %w", err)
 	}
 
 	auth, err := service.NewAuth(log.Named("auth"), svcStore, cfg.TokenExpiry.Get())
 	if err != nil {
-		s.log.Errorf("Couldn't initialise authentication: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't initialise authentication: %v", err))
 		return false, fmt.Errorf("couldn't initialise authentication: %w", err)
 	}
 
 	forwarder, err := node.NewForwarder(log.Named("forwarder"), cfg.API.GRPC)
 	if err != nil {
-		s.log.Errorf("Couldn't initialise the node forwarder: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't initialise the node forwarder: %v", err))
 		return false, fmt.Errorf("couldn't initialise the node forwarder: %w", err)
 	}
 
 	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder)
 	if err != nil {
-		s.log.Errorf("Couldn't initialise the service: %v", err)
+		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
 		return false, err
 	}
 
 	go func() {
 		defer cancel()
-		s.log.Info("Starting the service")
+		h.log.Info("Starting the service")
 		if err := srv.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			s.log.Errorf("Error while starting HTTP server: %v", err)
+			h.log.Error(fmt.Sprintf("Error while starting HTTP server: %v", err))
 		}
 	}()
 
@@ -159,18 +151,18 @@ func (s *Handler) StartService(data string) (bool, error) {
 
 		go func() {
 			defer cancel()
-			s.log.Info("Starting the console")
+			h.log.Info("Starting the console")
 			if err := cs.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-				s.log.Errorf("Error while starting the console proxy: %v", err)
+				h.log.Error(fmt.Sprintf("Error while starting the console proxy: %v", err))
 			}
 		}()
 
-		s.service.consoleURL = cs.GetBrowserURL()
+		h.service.consoleURL = cs.GetBrowserURL()
 
-		s.log.Infof("Opening the console at %s", cs.GetBrowserURL())
+		h.log.Info(fmt.Sprintf("Opening the console at %s", cs.GetBrowserURL()))
 
 		if err = open.Run(cs.GetBrowserURL()); err != nil {
-			s.log.Errorf("Unable to open the console in the default browser: %v", err)
+			h.log.Error(fmt.Sprintf("Unable to open the console in the default browser: %v", err))
 			return false, fmt.Errorf("unable to open the console in the default browser: %w", err)
 		}
 	}
@@ -186,81 +178,81 @@ func (s *Handler) StartService(data string) (bool, error) {
 
 		go func() {
 			defer cancel()
-			s.log.Info("Starting the token dApp")
+			h.log.Info("Starting the token dApp")
 			if err := tokenDApp.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-				s.log.Errorf("Error while starting the token dApp proxy: %v", err)
+				h.log.Error(fmt.Sprintf("Error while starting the token dApp proxy: %v", err))
 			}
 		}()
 
-		s.service.consoleURL = tokenDApp.GetBrowserURL()
+		h.service.consoleURL = tokenDApp.GetBrowserURL()
 
-		s.log.Infof("Opening the token dApp at %s", tokenDApp.GetBrowserURL())
+		h.log.Info(fmt.Sprintf("Opening the token dApp at %s", tokenDApp.GetBrowserURL()))
 
 		if err = open.Run(tokenDApp.GetBrowserURL()); err != nil {
-			s.log.Errorf("Unable to open the token dApp in the default browser: %v", err)
+			h.log.Error(fmt.Sprintf("Unable to open the token dApp in the default browser: %v", err))
 			return false, fmt.Errorf("unable to open the token dApp in the default browser: %w", err)
 		}
 	}
 
-	s.waitSignal(ctx, cancel)
+	h.waitSignal(ctx, cancel)
 
 	if req.WithConsole {
 		if err = cs.Stop(); err != nil {
-			s.log.Errorf("Error while stopping console proxy: %v", err)
+			h.log.Error(fmt.Sprintf("Error while stopping console proxy: %v", err))
 		} else {
-			s.log.Info("Console proxy stopped with success")
+			h.log.Info("Console proxy stopped with success")
 		}
 	}
 
 	if req.WithTokenDApp {
 		if err = tokenDApp.Stop(); err != nil {
-			s.log.Errorf("Error while stopping token dApp proxy: %v", err)
+			h.log.Error(fmt.Sprintf("Error while stopping token dApp proxy: %v", err))
 		} else {
-			s.log.Info("Token dApp proxy stopped with success")
+			h.log.Info("Token dApp proxy stopped with success")
 		}
 	}
 
 	if err = srv.Stop(); err != nil {
-		s.log.Errorf("Error while stopping HTTP server: %v", err)
+		h.log.Error(fmt.Sprintf("Error while stopping HTTP server: %v", err))
 	} else {
-		s.log.Info("HTTP server stopped with success")
+		h.log.Info("HTTP server stopped with success")
 	}
 
 	return true, nil
 }
 
 type GetServiceStateResponse struct {
-	URL     string
-	Running bool
+	URL     string `json:"url"`
+	Running bool   `json:"running"`
 }
 
-func (s *Handler) GetServiceState() GetServiceStateResponse {
-	s.log.Debug("Entering GetServiceState")
-	defer s.log.Debug("Leaving GetServiceState")
+func (h *Handler) GetServiceState() GetServiceStateResponse {
+	h.log.Debug("Entering GetServiceState")
+	defer h.log.Debug("Leaving GetServiceState")
 
 	return GetServiceStateResponse{
-		URL:     s.service.consoleURL,
-		Running: s.service.IsRunning(),
+		URL:     h.service.consoleURL,
+		Running: h.service.IsRunning(),
 	}
 }
 
-func (s *Handler) StopService() (bool, error) {
-	s.log.Debug("Entering StopService")
-	defer s.log.Debug("Leaving StopService")
+func (h *Handler) StopService() (bool, error) {
+	h.log.Debug("Entering StopService")
+	defer h.log.Debug("Leaving StopService")
 
-	if !s.service.IsRunning() {
-		s.log.Error("No service running")
+	if !h.service.IsRunning() {
+		h.log.Error("No service running")
 		return false, ErrConsoleNotRunning
 	}
 
-	s.log.Info("Shutting down the service")
-	s.service.Shutdown()
+	h.log.Info("Shutting down the service")
+	h.service.Shutdown()
 
 	return true, nil
 }
 
 // waitSignal will wait for a sigterm or sigint interrupt.
-func (s *Handler) waitSignal(ctx context.Context, shutdownFunc func()) {
+func (h *Handler) waitSignal(ctx context.Context, shutdownFunc func()) {
 	var gracefulStop = make(chan os.Signal, 1)
 	signal.Notify(gracefulStop, syscall.SIGTERM)
 	signal.Notify(gracefulStop, syscall.SIGINT)
@@ -268,7 +260,7 @@ func (s *Handler) waitSignal(ctx context.Context, shutdownFunc func()) {
 
 	select {
 	case sig := <-gracefulStop:
-		s.log.Infof("Caught signal %+v", sig)
+		h.log.Info(fmt.Sprintf("Caught signal %+v", sig))
 		shutdownFunc()
 	case <-ctx.Done():
 		// nothing to do
@@ -314,7 +306,7 @@ func buildLogger(level string) (*zap.Logger, error) {
 
 func getLoggerLevel(level string) (*zapcore.Level, error) {
 	if !isSupportedLogLevel(level) {
-		return nil, errors.New(fmt.Sprintf("unsupported logger level %s", level))
+		return nil, fmt.Errorf("unsupported logger level %s", level)
 	}
 
 	l := new(zapcore.Level)

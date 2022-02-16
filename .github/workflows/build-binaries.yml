@@ -3,70 +3,30 @@ name: Build binaries
 on:
   push:
     branches:
-      - master
+      - main
+      - develop
   pull_request:
     branches:
-      - master
+      - main
       - develop
 
 jobs:
-  build-linux:
-    name: Build on Linux
-    runs-on: ubuntu-latest
-    env:
-      GO111MODULE: on # Needed by Wails
-      CGO_ENABLED: 1 # Needed by Wails
+  build:
+    name: On ${{ matrix.os }} ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - windows-2019
+        arch:
+          - amd64
+          - arm64
     steps:
-      - name: Set up Node 14
+      - name: Set up Node 16
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
-        id: npm
-
-      - name: Set up Go ^1.17
-        uses: actions/setup-go@v2
-        with:
-          go-version: ^1.17
-        id: go
-
-      - name: Install Wails dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev
-
-      - name: Get Wails
-        run: |
-          go install github.com/wailsapp/wails/cmd/wails@v1.16.9
-
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-
-      - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
-
-      - name: Build
-        run: wails build
-
-      - name: Tests backend
-        run: go test -v ./...
-
-      - name: Check formatting
-        run: |
-          cd frontend
-          npm run check_format
-
-  build-macos:
-    name: Build on MacOS
-    runs-on: macos-latest
-    env:
-      GO111MODULE: on # Needed by Wails
-      CGO_ENABLED: 1 # Needed by Wails
-    steps:
-      - name: Set up Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
+          node-version: 16
         id: npm
 
       - name: Set up Go ^1.17
@@ -76,66 +36,22 @@ jobs:
         id: go
 
       - name: Get Wails
-        run: |
-          go install github.com/wailsapp/wails/cmd/wails@v1.16.9
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
       - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
+        run: go get -v -t -d ./...
 
-      - name: Build
-        run: wails build
+      - name: Build binary for Windows
+        if: ${{ runner.os == 'Windows' }}
+        run: wails build -f -platform=windows/${{ matrix.arch }}
 
-      - name: Tests backend
-        run: go test -v ./...
-
-      - name: Check formatting
-        run: |
-          cd frontend
-          npm run check_format
-
-  build-windows:
-    name: Build on Windows
-    runs-on: windows-latest
-    env:
-      GO111MODULE: on # Needed by Wails
-      CGO_ENABLED: 1 # Needed by Wails
-    steps:
-      - name: Set up Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-        id: npm
-
-      - name: Set up Go ^1.17
-        uses: actions/setup-go@v2
-        with:
-          go-version: ^1.17
-        id: go
-
-      - name: Set up GCC for Wails
-        uses: egor-tensin/setup-gcc@v1
-        with:
-          version: latest
-          cygwin: 1
-          cc: 0
-
-      - name: Get Wails
-        run: |
-          go install github.com/wailsapp/wails/cmd/wails@v1.16.9
-
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-
-      - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
-
-      - name: Build
-        run: wails build
+      - name: Build binary for macOS
+        if: ${{ runner.os == 'macOS' }}
+        run: wails build -f -platform=darwin/${{ matrix.arch }}
 
       - name: Tests backend
+        if: ${{ matrix.arch == 'amd64' }}
         run: go test -v ./...

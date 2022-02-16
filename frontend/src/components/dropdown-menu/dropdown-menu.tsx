@@ -1,5 +1,6 @@
-import React from 'react'
 import * as DropdownPrimitive from '@radix-ui/react-dropdown-menu'
+import React from 'react'
+
 import { Colors } from '../../config/colors'
 
 interface DropdownMenuProps {

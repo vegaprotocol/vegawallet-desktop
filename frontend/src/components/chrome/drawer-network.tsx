@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
 import { Button } from '../button'
@@ -7,7 +8,7 @@ import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 import { Header } from '../header'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { NetworkInfo } from '../network-info'
-import { DrawerViews } from './drawer-content'
+import type { DrawerViews } from './drawer-content'
 
 interface DrawerNetworkProps {
   setView: React.Dispatch<React.SetStateAction<DrawerViews>>

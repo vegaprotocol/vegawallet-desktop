@@ -1,7 +1,8 @@
 import React from 'react'
-import { Thunk } from 'react-hook-thunk-reducer'
-import { NamedKeyPair } from '../../models/keys'
-import { GlobalAction } from './global-reducer'
+import type { Thunk } from 'react-hook-thunk-reducer'
+
+import type { NamedKeyPair } from '../../models/keys'
+import type { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
   Pending,

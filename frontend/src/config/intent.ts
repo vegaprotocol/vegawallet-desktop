@@ -6,4 +6,5 @@ export const Intent = {
   DANGER: 'danger' as 'danger'
 }
 
+// eslint-disable-next-line
 export type Intent = typeof Intent[keyof typeof Intent]

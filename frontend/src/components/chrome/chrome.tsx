@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Colors } from '../../config/colors'
 import { ChromeDrawer } from './chrome-drawer'
 
@@ -21,7 +22,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       >
         <main
           style={{
-            gridColumn: '2 / 3',
             height: '100%',
             overflowY: 'auto'
           }}

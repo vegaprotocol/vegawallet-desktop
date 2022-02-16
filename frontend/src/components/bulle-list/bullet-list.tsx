@@ -1,4 +1,5 @@
-import React, { LiHTMLAttributes, OlHTMLAttributes } from 'react'
+import type { LiHTMLAttributes, OlHTMLAttributes } from 'react'
+import React from 'react'
 
 type BulletListProps = OlHTMLAttributes<HTMLUListElement>
 
