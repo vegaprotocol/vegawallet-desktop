@@ -1,5 +1,6 @@
+@ignore
 Feature: Import network
-
+  @ignore
   Scenario: Import successfully using url
     Given I am on the import network page
     When I import using valid network import url
