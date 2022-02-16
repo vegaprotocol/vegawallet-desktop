@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { SignMessage } from '../../api/service'
+
 import { Button } from '../../components/button'
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { FormGroup } from '../../components/form-group'
 import { Header } from '../../components/header'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { Colors } from '../../config/colors'
-import { CopyWithTooltip } from '../../components/copy-with-tooltip'
-import { ButtonUnstyled } from '../../components/button-unstyled'
+import { Service } from '../../service'
 
 interface FormFields {
   message: string
@@ -19,12 +20,14 @@ const useSign = (pubKey: string, wallet: string) => {
     async (values: { message: string }) => {
       try {
         const passphrase = await requestPassphrase()
-        const resp = await SignMessage({
+        const resp = await Service.SignMessage({
           wallet,
           pubKey,
+          // @ts-ignore
           message: btoa(values.message),
           passphrase
         })
+        // @ts-ignore
         setSignedData(resp.hexSignature)
       } catch (e) {
         console.log(e)

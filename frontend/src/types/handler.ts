@@ -21,6 +21,8 @@ import type {
   ListNetworksResponse,
   ListWalletsResponse,
   Network,
+  SignMessageRequest,
+  SignMessageResponse,
   StartServiceRequest,
   TaintKeyRequest,
   UntaintKeyRequest
@@ -48,6 +50,7 @@ export interface Handler {
   SaveNetworkConfig(arg1: Network): Promise<boolean | Error>
   StartService(arg1: StartServiceRequest): Promise<boolean | Error>
   StopService(): Promise<boolean | Error>
+  SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse | Error>
   TaintKey(arg1: TaintKeyRequest): Promise<Error>
   UntaintKey(arg1: UntaintKeyRequest): Promise<Error>
 }
