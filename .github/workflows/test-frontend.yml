@@ -70,6 +70,27 @@ jobs:
           name: coverage
           path: frontend/automation/coverage
 
+  jest-run:
+    name: Run unit tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16
+        id: Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Run jest
+        working-directory: frontend
+        run: npm run test -- --watchAll=false --passWithNoTests
+
   sanity-checks:
     name: Run sanity checks
     runs-on: ubuntu-latest
