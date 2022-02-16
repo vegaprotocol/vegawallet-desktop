@@ -109,8 +109,6 @@ export function addKeypairAction(wallet: string) {
         })
       )
 
-      if (res instanceof Error) throw res
-
       dispatch({
         type: 'ADD_KEYPAIR',
         wallet,

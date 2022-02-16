@@ -36,7 +36,6 @@ export function useImportWallet() {
           recoveryPhrase: values.recoveryPhrase,
           version: Number(values.version)
         })
-        if (resp instanceof Error) throw resp
         if (resp) {
           setResponse(resp)
           dispatch(addWalletAction(values.wallet, resp.key))

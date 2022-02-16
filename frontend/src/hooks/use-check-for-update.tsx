@@ -13,7 +13,6 @@ export function useCheckForUpdate() {
     const run = async () => {
       try {
         const res = await Service.CheckVersion()
-        if (res instanceof Error) throw res
         // if string is empty no version to update to
         if (res) {
           AppToaster.show({

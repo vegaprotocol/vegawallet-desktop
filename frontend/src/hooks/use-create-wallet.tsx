@@ -27,7 +27,6 @@ export function useCreateWallet() {
           wallet: values.wallet,
           passphrase: values.passphrase
         })
-        if (resp instanceof Error) throw resp
         if (resp) {
           setResponse(resp)
           AppToaster.show({

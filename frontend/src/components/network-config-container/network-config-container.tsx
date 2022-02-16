@@ -36,7 +36,7 @@ export function useNetworkConfig(name: string | null) {
       if (!name) return
       setLoading(true)
       try {
-        const res = (await Service.GetNetworkConfig(name)) as Network
+        const res = await Service.GetNetworkConfig(name)
         setConfig(res)
       } catch (err) {
         Sentry.captureException(err)
