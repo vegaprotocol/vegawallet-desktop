@@ -29,28 +29,28 @@ import type {
 } from '../wailsjs/go/models'
 
 export interface Handler {
-  AnnotateKey(arg1: AnnotateKeyRequest): Promise<Error>
-  CheckVersion(): Promise<CheckVersionResponse | Error>
-  CreateWallet(arg1: CreateWalletRequest): Promise<CreateWalletResponse | Error>
-  DescribeKey(arg1: DescribeKeyRequest): Promise<DescribeKeyResponse | Error>
-  GenerateKey(arg1: GenerateKeyRequest): Promise<GenerateKeyResponse | Error>
-  GetNetworkConfig(arg1: string): Promise<Network | Error>
+  AnnotateKey(arg1: AnnotateKeyRequest): Promise<void>
+  CheckVersion(): Promise<CheckVersionResponse>
+  CreateWallet(arg1: CreateWalletRequest): Promise<CreateWalletResponse>
+  DescribeKey(arg1: DescribeKeyRequest): Promise<DescribeKeyResponse>
+  GenerateKey(arg1: GenerateKeyRequest): Promise<GenerateKeyResponse>
+  GetNetworkConfig(arg1: string): Promise<Network>
   GetServiceState(): Promise<GetServiceStateResponse>
   GetVersion(): Promise<GetVersionResponse>
   ImportNetwork(
     arg1: ImportNetworkFromSourceRequest
-  ): Promise<ImportNetworkFromSourceResponse | Error>
-  ImportWallet(arg1: ImportWalletRequest): Promise<ImportWalletResponse | Error>
-  InitialiseApp(arg1: Config): Promise<Error>
-  IsAppInitialised(): Promise<boolean | Error>
-  IsolateKey(arg1: IsolateKeyRequest): Promise<IsolateKeyResponse | Error>
-  ListKeys(arg1: ListKeysRequest): Promise<ListKeysResponse | Error>
-  ListNetworks(): Promise<ListNetworksResponse | Error>
-  ListWallets(): Promise<ListWalletsResponse | Error>
-  SaveNetworkConfig(arg1: Network): Promise<boolean | Error>
-  StartService(arg1: StartServiceRequest): Promise<boolean | Error>
-  StopService(): Promise<boolean | Error>
+  ): Promise<ImportNetworkFromSourceResponse>
+  ImportWallet(arg1: ImportWalletRequest): Promise<ImportWalletResponse>
+  InitialiseApp(arg1: Config): Promise<void>
+  IsAppInitialised(): Promise<boolean>
+  IsolateKey(arg1: IsolateKeyRequest): Promise<IsolateKeyResponse>
+  ListKeys(arg1: ListKeysRequest): Promise<ListKeysResponse>
+  ListNetworks(): Promise<ListNetworksResponse>
+  ListWallets(): Promise<ListWalletsResponse>
+  SaveNetworkConfig(arg1: Network): Promise<boolean>
+  StartService(arg1: StartServiceRequest): Promise<boolean>
+  StopService(): Promise<boolean>
+  TaintKey(arg1: TaintKeyRequest): Promise<void>
+  UntaintKey(arg1: UntaintKeyRequest): Promise<void>
   SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse | Error>
-  TaintKey(arg1: TaintKeyRequest): Promise<Error>
-  UntaintKey(arg1: UntaintKeyRequest): Promise<Error>
 }

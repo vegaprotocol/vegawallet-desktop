@@ -15,9 +15,7 @@ export function initNetworksAction() {
 
       if (networks.networks.length) {
         const defaultNetwork = networks.networks[0]
-        const config = (await Service.GetNetworkConfig(
-          defaultNetwork
-        )) as Network
+        const config = await Service.GetNetworkConfig(defaultNetwork)
         dispatch({
           type: 'SET_NETWORKS',
           network: defaultNetwork,
@@ -48,7 +46,7 @@ export function changeNetworkAction(network: string) {
       timestamp: Date.now()
     })
     try {
-      const config = (await Service.GetNetworkConfig(network)) as Network
+      const config = await Service.GetNetworkConfig(network)
 
       dispatch({
         type: 'CHANGE_NETWORK',
@@ -107,10 +105,9 @@ export function importNetworkAction(values: ImportNetworkRequest) {
         filePath: values.filePath,
         force: values.force
       })
-      if (res instanceof Error) throw res
 
       if (res) {
-        const config = (await Service.GetNetworkConfig(res.name)) as Network
+        const config = await Service.GetNetworkConfig(res.name)
         dispatch({
           type: 'ADD_NETWORK',
           network: res.name,
