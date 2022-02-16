@@ -39,7 +39,7 @@ export function useCreateWallet() {
         }
       } catch (err) {
         Sentry.captureException(err)
-        AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
+        AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       }
     },
     [dispatch]
