@@ -67,7 +67,7 @@ export function useImportNetwork() {
         setError(err)
         setStatus(FormStatus.Error)
         AppToaster.show({
-          message: `Error: ${err}`,
+          message: `${err}`,
           intent: Intent.DANGER
         })
       }

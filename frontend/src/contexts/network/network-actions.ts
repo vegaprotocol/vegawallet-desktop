@@ -84,7 +84,7 @@ export function updateNetworkConfigAction(config: Network) {
       }
     } catch (err) {
       Sentry.captureException(err)
-      AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
+      AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       console.log(err)
     }
   }
@@ -127,7 +127,7 @@ export function importNetworkAction(values: ImportNetworkRequest) {
     } catch (err) {
       Sentry.captureException(err)
       AppToaster.show({
-        message: `Error: ${err}`,
+        message: `${err}`,
         intent: Intent.DANGER
       })
     }

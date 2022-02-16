@@ -118,7 +118,7 @@ export function addKeypairAction(wallet: string) {
       if (err !== 'dismissed') {
         Sentry.captureException(err)
         console.log(err)
-        AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
+        AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       }
     }
   }
@@ -152,7 +152,7 @@ export function getKeysAction(wallet: string) {
         console.log(err)
         if (err !== 'dismissed') {
           Sentry.captureException(err)
-          AppToaster.show({ message: `Error: ${err}`, intent: Intent.DANGER })
+          AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
         }
       }
     }
