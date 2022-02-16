@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react'
 
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
+import { DEFAULT_VEGA_HOME, IS_TEST_MODE } from '../../config/environment'
 import { Intent } from '../../config/intent'
 import type { Key } from '../../models/keys'
 import { Service } from '../../service'
@@ -19,13 +20,13 @@ export function initAppAction() {
     try {
       const isInit = await Service.IsAppInitialised()
 
-      if (process.env['REACT_APP_TESTING']) {
+      if (IS_TEST_MODE) {
         await Service.InitialiseApp({
-          vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+          vegaHome: DEFAULT_VEGA_HOME
         })
       }
 
-      if (isInit || process.env['REACT_APP_TESTING']) {
+      if (isInit || IS_TEST_MODE) {
         Sentry.addBreadcrumb({
           type: 'InitApp',
           level: Sentry.Severity.Log,

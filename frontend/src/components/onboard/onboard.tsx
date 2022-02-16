@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
+import { DEFAULT_VEGA_HOME } from '../../config/environment'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
@@ -74,7 +75,7 @@ function OnboardHome() {
           data-testid='onboard-create-wallet'
           onClick={async () => {
             await Service.InitialiseApp({
-              vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+              vegaHome: DEFAULT_VEGA_HOME
             })
             navigate(OnboardPaths.WalletCreate)
           }}
@@ -84,7 +85,7 @@ function OnboardHome() {
         <Button
           onClick={async () => {
             await Service.InitialiseApp({
-              vegaHome: process.env.REACT_APP_VEGA_HOME || ''
+              vegaHome: DEFAULT_VEGA_HOME
             })
             navigate(OnboardPaths.WalletImport)
           }}
