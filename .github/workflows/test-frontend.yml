@@ -46,7 +46,7 @@ jobs:
 
       # Start wails in the first process
       - name: Start backend in background
-        run: wails dev &
+        run: wails dev
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
