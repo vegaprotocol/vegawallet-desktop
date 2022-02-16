@@ -11,7 +11,7 @@ Feature: Network Configuration page
     Given I am on the Network configuration page
     When I click view on “stagnet”
     Then I am redirected to “stagenet” page
-
+@ignore
   Scenario: Edit network details displayed
     Given I am on the network edit page for 'mainnet'
     Then I am redirected to edit network page

@@ -1,6 +1,6 @@
 
 Feature: Wallet Service Page
-
+@ignore
   Scenario: Wallet service running
     Given I have an existing Vega wallet
     And I have an imported network
