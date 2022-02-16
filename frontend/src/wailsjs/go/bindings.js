@@ -135,6 +135,14 @@ const go = {
         return window.go.backend.Handler.SaveNetworkConfig(arg1);
       },
       /**
+       * SignMessage
+       * @param {SignMessageRequest} arg1 - Go Type: *wallet.SignMessageRequest
+       * @returns {Promise<SignMessageResponse|Error>}  - Go Type: *wallet.SignMessageResponse
+       */
+      "SignMessage": (arg1) => {
+        return window.go.backend.Handler.SignMessage(arg1);
+      },
+      /**
        * StartService
        * @param {StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
        * @returns {Promise<boolean|Error>}  - Go Type: bool
