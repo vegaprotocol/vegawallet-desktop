@@ -14,8 +14,6 @@ import { GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
-const truthy = ['true', '1']
-
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
     try {

@@ -9,8 +9,8 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
-import { Service } from '../../service'
 import { Paths } from '../../routes'
+import { Service } from '../../service'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -233,7 +233,9 @@ function OnboardPanel({ children, title }: OnboardPanelProps) {
         }}
       >
         <span style={{ flex: 1 }}>
-          <ButtonUnstyled data-testid='back' onClick={() => navigate(-1)}>Back</ButtonUnstyled>
+          <ButtonUnstyled data-testid='back' onClick={() => navigate(-1)}>
+            Back
+          </ButtonUnstyled>
         </span>
         <span>{title}</span>
         <span style={{ flex: 1 }} />
