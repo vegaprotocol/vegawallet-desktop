@@ -48,11 +48,6 @@ jobs:
       - name: Start backend in background
         run: wails dev &
 
-      # Start frontend in a second process
-      - name: Start app in background
-        working-directory: frontend
-        run: npm run serve:test &
-
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
       # and run all Cypress tests
