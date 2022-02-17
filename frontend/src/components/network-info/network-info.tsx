@@ -63,7 +63,7 @@ function ServicesTable({ config }: ServicesTableProps) {
     <table>
       <tbody data-testid='services'>
         <tr>
-          <th>Walelt Service URL</th>
+          <th>Wallet Service URL</th>
           <td data-testid='service-url'>{`http://${config.host}:${config.port}`}</td>
         </tr>
         <tr>
@@ -134,7 +134,7 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
       return
     }
 
-    dispatch(stopProxyAction(network, config.port))
+    dispatch(stopProxyAction(proxyApp))
   }
 
   // Need both of these set to start the proxy! User has the ability to edit these and

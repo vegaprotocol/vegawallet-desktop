@@ -23,6 +23,7 @@ export type ServiceAction =
     }
   | {
       type: 'STOP_PROXY'
+      app: ProxyApp
     }
 
 export function serviceReducer(

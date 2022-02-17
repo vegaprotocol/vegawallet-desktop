@@ -15,6 +15,8 @@ import { GlobalProvider } from './contexts/global/global-provider'
 import { initNetworksAction } from './contexts/network/network-actions'
 import { useNetwork } from './contexts/network/network-context'
 import { NetworkProvider } from './contexts/network/network-provider'
+import { startServiceAction } from './contexts/service/service-actions'
+import { useService } from './contexts/service/service-context'
 import { ServiceProvider } from './contexts/service/service-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { AppRouter } from './routes'
@@ -25,17 +27,28 @@ import { AppRouter } from './routes'
 function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
   const { state: globalState, dispatch: globalDispatch } = useGlobal()
-  const { dispatch: networkDispatch } = useNetwork()
+  const { state: networkState, dispatch: networkDispatch } = useNetwork()
+  const { dispatch: serviceDispatch } = useService()
 
+  // Get wallets, service state and version
   React.useEffect(() => {
     globalDispatch(initAppAction())
   }, [globalDispatch])
 
+  // Get stored networks and the default network config
   React.useEffect(() => {
     if (globalState.status === AppStatus.Initialised) {
       networkDispatch(initNetworksAction())
     }
   }, [globalState.status, networkDispatch])
+
+  // Start service on app startup and when network or config changes
+  React.useEffect(() => {
+    if (!networkState.network || !networkState.config) return
+    serviceDispatch(
+      startServiceAction(networkState.network, networkState.config.port)
+    )
+  }, [networkState.network, networkState.config, serviceDispatch])
 
   if (globalState.status === AppStatus.Pending) {
     return (

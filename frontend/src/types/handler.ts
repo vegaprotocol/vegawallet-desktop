@@ -37,6 +37,8 @@ export interface Handler {
   GenerateKey(arg1: GenerateKeyRequest): Promise<GenerateKeyResponse>
   GetNetworkConfig(arg1: string): Promise<Network>
   GetServiceState(): Promise<GetServiceStateResponse>
+  GetConsoleState(): Promise<GetServiceStateResponse>
+  GetTokenDAppState(): Promise<GetServiceStateResponse>
   GetVersion(): Promise<GetVersionResponse>
   ImportNetwork(
     arg1: ImportNetworkFromSourceRequest
@@ -53,7 +55,12 @@ export interface Handler {
   StopService(): Promise<boolean>
   TaintKey(arg1: TaintKeyRequest): Promise<void>
   UntaintKey(arg1: UntaintKeyRequest): Promise<void>
-  SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse | Error>
+  StartConsole(arg1: StartServiceRequest): Promise<boolean>
+  StartTokenDApp(arg1: StartServiceRequest): Promise<boolean>
+  StopService(): Promise<boolean>
+  StopConsole(): Promise<boolean>
+  StopTokenDApp(): Promise<boolean>
+  SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse>
 }
 
 // Add Wails backend handler and runtime to window object
