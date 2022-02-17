@@ -4,9 +4,9 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DEFAULT_VEGA_HOME, IS_TEST_MODE } from '../../config/environment'
 import { Intent } from '../../config/intent'
-import type { Key } from '../../models/keys'
 import { Service } from '../../service'
 import type {
+  FirstPublicKey,
   GetServiceStateResponse,
   GetVersionResponse,
   ListWalletsResponse
@@ -87,7 +87,10 @@ export function initAppFailureAction(): GlobalAction {
   }
 }
 
-export function addWalletAction(wallet: string, key: Key): GlobalAction {
+export function addWalletAction(
+  wallet: string,
+  key: FirstPublicKey
+): GlobalAction {
   return { type: 'ADD_WALLET', wallet, key }
 }
 

@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/react'
 import React from 'react'
 
-import type { Network } from '../../models/network'
 import { Service } from '../../service'
+import type { Network } from '../../wailsjs/go/models'
 
 interface NetworkConfigContainerProps {
   children: (config: Network) => React.ReactElement

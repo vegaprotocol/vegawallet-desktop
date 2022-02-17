@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
-import type { Network } from '../../models/network'
+import type { Network } from '../../wailsjs/go/models'
 import type { NetworkAction } from './network-reducer'
 
 export interface NetworkState {

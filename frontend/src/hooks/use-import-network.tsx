@@ -6,16 +6,15 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { addNetworkAction } from '../contexts/network/network-actions'
 import { useNetwork } from '../contexts/network/network-context'
-import type { ImportNetworkResponse } from '../models/network'
 import { Service } from '../service'
+import type { ImportNetworkFromSourceResponse } from '../wailsjs/go/models'
 import { FormStatus, useFormState } from './use-form-state'
 
 export function useImportNetwork() {
   const { dispatch } = useNetwork()
   const [status, setStatus] = useFormState()
-  const [response, setResponse] = React.useState<ImportNetworkResponse | null>(
-    null
-  )
+  const [response, setResponse] =
+    React.useState<ImportNetworkFromSourceResponse | null>(null)
   const [error, setError] = React.useState<string | null>(null)
 
   const submit = React.useCallback(
