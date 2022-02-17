@@ -1,14 +1,13 @@
 import React from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
+
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'
 import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
-import { Sign } from './sign'
 import { Paths } from '../'
-import { CopyWithTooltip } from '../../components/copy-with-tooltip'
-import { ButtonUnstyled } from '../../components/button-unstyled'
+import { Sign } from './sign'
 
 export function WalletKeyPair() {
   const {
@@ -17,7 +16,7 @@ export function WalletKeyPair() {
   const { pubkey } = useParams<{ pubkey: string }>()
   const keypair = wallet?.keypairs?.find(kp => kp.publicKey === pubkey)
 
-  if (!keypair) {
+  if (!keypair || !wallet) {
     return <Navigate to={Paths.Wallet} />
   }
 
