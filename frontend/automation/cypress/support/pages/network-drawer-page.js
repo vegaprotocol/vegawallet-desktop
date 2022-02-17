@@ -24,7 +24,7 @@ export default class NetworkDrawer {
       } else this.clickImportBtn()
     })
 
-    cy.getByTestId(this.urlPathField).type(urlPath)
+    cy.getByTestId(this.urlPathField).type(urlPath, {force:true})
     if (networkName != null) {
       cy.getByTestId(this.networkNameField).type(networkName)
     }
