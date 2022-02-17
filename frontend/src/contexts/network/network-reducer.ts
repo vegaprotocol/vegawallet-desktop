@@ -56,7 +56,10 @@ export function networkReducer(
       }
     }
     case 'ADD_NETWORK': {
-      const networks = [...state.networks, action.network].sort()
+      const networks = [
+        ...state.networks.filter(n => n !== action.network),
+        action.network
+      ].sort()
       const changeToNewNetwork =
         state.networks === null || state.networks.length === 0
       const network = changeToNewNetwork ? action.network : state.network
