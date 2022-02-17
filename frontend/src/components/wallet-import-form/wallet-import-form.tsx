@@ -66,11 +66,14 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         intent={errors.version?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.version?.message}
       >
-        <input
+        <select
           data-testid='version'
-          type='number'
+          defaultValue={2}
           {...register('version', { required: Validation.REQUIRED })}
-        />
+        >
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+        </select>
       </FormGroup>
       <FormGroup
         label='Choose passphrase'
