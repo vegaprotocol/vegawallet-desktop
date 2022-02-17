@@ -12,7 +12,7 @@ export function ServiceStatus() {
 
   return (
     <>
-      <div style={{ whiteSpace: 'nowrap' }}>
+      <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
         <StatusCircle running={serviceRunning} />
         {serviceRunning ? (
           <>
@@ -32,7 +32,7 @@ export function ServiceStatus() {
           <>Wallet Service: Not running</>
         )}
       </div>
-      <div style={{ whiteSpace: 'nowrap' }}>
+      <div data-testid='dapp-status' style={{ whiteSpace: 'nowrap' }}>
         <>
           <StatusCircle running={console.running || tokenDapp.running} />
           {console.running || tokenDapp.running ? (
