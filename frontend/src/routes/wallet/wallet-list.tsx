@@ -69,7 +69,9 @@ export const WalletList = () => {
             ))}
           </ul>
         ) : (
-          <p>No wallets</p>
+          <div style={{ padding: '0 20px' }}>
+            <p>No wallets</p>
+          </div>
         )}
       </div>
       <div style={{ padding: 20 }}>
