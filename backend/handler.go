@@ -8,6 +8,7 @@ import (
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
+	"code.vegaprotocol.io/vegawallet/service"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
@@ -15,8 +16,9 @@ import (
 )
 
 var (
-	ErrConsoleAlreadyRunning = errors.New("the console is already running")
-	ErrConsoleNotRunning     = errors.New("the console is not running")
+	ErrConsoleAlreadyRunning   = errors.New("the console is already running")
+	ErrConsoleNotRunning       = errors.New("the console is not running")
+	ErrProgramIsNotInitialised = errors.New("program hasn't been initialised correctly")
 )
 
 type Handler struct {
@@ -69,11 +71,54 @@ func (h *Handler) Shutdown(_ context.Context) {
 }
 
 func (h *Handler) IsAppInitialised() (bool, error) {
-	return h.configLoader.IsConfigInitialised()
+	isConfigInit, err := h.configLoader.IsConfigInitialised()
+
+	if err != nil {
+		return false, fmt.Errorf("couldn't verify application configuration state: %w", err)
+	}
+
+	if !isConfigInit {
+		return false, nil
+	}
+
+	cfg, err := h.loadAppConfig()
+	if err != nil {
+		return false, err
+	}
+
+	svcStore, err := svcstore.InitialiseStore(paths.New(cfg.VegaHome))
+	if err != nil {
+		return false, fmt.Errorf("couldn't initialise service store: %w", err)
+	}
+
+	isServiceInit, err := service.IsInitialised(svcStore)
+	if err != nil {
+		return false, fmt.Errorf("couldn't verify service initialisation state: %w", err)
+	}
+
+	return isServiceInit, nil
 }
 
 func (h *Handler) InitialiseApp(cfg *config.Config) error {
-	return h.configLoader.SaveConfig(*cfg)
+	_, err := wallets.InitialiseStore(cfg.VegaHome)
+	if err != nil {
+		return fmt.Errorf("couldn't initialise wallets store: %w", err)
+	}
+
+	svcStore, err := svcstore.InitialiseStore(paths.New(cfg.VegaHome))
+	if err != nil {
+		return fmt.Errorf("couldn't initialise service store: %w", err)
+	}
+
+	if err = service.InitialiseService(svcStore, true); err != nil {
+		return fmt.Errorf("couldn't initialise the service: %w", err)
+	}
+
+	if err := h.configLoader.SaveConfig(*cfg); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (h *Handler) getServiceStore(config config.Config) (*svcstore.Store, error) {
