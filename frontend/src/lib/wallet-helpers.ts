@@ -1,8 +1,8 @@
 import type { KeyPair, Wallet } from '../contexts/global/global-context'
-import type { Key, NamedKeyPair } from '../models/keys'
+import type { FirstPublicKey, NamedPubKey } from '../wailsjs/go/models'
 import { truncateMiddle } from './truncate-middle'
 
-export function extendKeypair(kp: Key | NamedKeyPair): KeyPair {
+export function extendKeypair(kp: FirstPublicKey | NamedPubKey): KeyPair {
   const publicKeyShort = truncateMiddle(kp.publicKey)
 
   if ('meta' in kp) {

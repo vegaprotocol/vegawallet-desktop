@@ -2,8 +2,11 @@ import * as Sentry from '@sentry/react'
 
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
-import type { ImportNetworkRequest, Network } from '../../models/network'
 import { Service } from '../../service'
+import type {
+  ImportNetworkFromSourceRequest,
+  Network
+} from '../../wailsjs/go/models'
 import type { NetworkDispatch } from './network-context'
 import type { NetworkAction } from './network-reducer'
 
@@ -90,7 +93,7 @@ export function updateNetworkConfigAction(config: Network) {
   }
 }
 
-export function importNetworkAction(values: ImportNetworkRequest) {
+export function importNetworkAction(values: ImportNetworkFromSourceRequest) {
   return async (dispatch: NetworkDispatch) => {
     Sentry.addBreadcrumb({
       type: 'ImportNetworkConfig',

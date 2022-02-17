@@ -5,7 +5,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
-import type { Network } from '../../models/network'
+import type { Network } from '../../wailsjs/go/models'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
 
@@ -272,6 +272,7 @@ function fieldsToConfig(config: Network, values: FormFields): Network {
       url: values.tokenDAppUrl,
       localPort: Number(values.tokenDAppPort)
     },
+    // @ts-ignore ignore missing convertValues
     api: {
       grpc: {
         hosts: values.grpcHosts.map(x => x.value),
@@ -285,8 +286,8 @@ function fieldsToConfig(config: Network, values: FormFields): Network {
 
 function configToFields(config: Network): FormFields {
   return {
-    logLevel: config.level,
-    tokenExpiry: config.tokenExpiry,
+    logLevel: config.level as string,
+    tokenExpiry: config.tokenExpiry as string,
     port: config.port,
     host: config.host,
     grpcNodeRetries: config.api.grpc.retries,

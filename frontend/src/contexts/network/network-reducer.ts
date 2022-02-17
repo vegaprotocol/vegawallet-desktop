@@ -1,4 +1,4 @@
-import type { Network } from '../../models/network'
+import type { Network } from '../../wailsjs/go/models'
 import type { NetworkState } from './network-context'
 
 export const initialNetworkState: NetworkState = {

@@ -8,7 +8,11 @@ import {
   stopProxyAction
 } from '../../contexts/service/service-actions'
 import { ProxyApp, useService } from '../../contexts/service/service-context'
-import type { Network, ProxyDAppConfig } from '../../models/network'
+import type {
+  ConsoleConfig,
+  Network,
+  TokenDAppConfig
+} from '../../wailsjs/go/models'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 import { NodeList } from '../node-list'
@@ -97,7 +101,7 @@ function ServicesTable({ config }: ServicesTableProps) {
 
 interface DAppProxyControlProps {
   proxyApp: ProxyApp
-  proxyConfig: ProxyDAppConfig
+  proxyConfig: ConsoleConfig | TokenDAppConfig
 }
 
 function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
@@ -109,7 +113,7 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
     state: { proxy: currentProxyApp }
   } = useService()
 
-  function startProxy(c: ProxyDAppConfig) {
+  function startProxy(c: ConsoleConfig | TokenDAppConfig) {
     if (!network || !c) {
       AppToaster.show({
         message: 'No network config found',

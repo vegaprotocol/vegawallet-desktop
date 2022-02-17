@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
-import type { NamedKeyPair } from '../../models/keys'
+import type { NamedPubKey } from '../../wailsjs/go/models'
 import type { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
@@ -11,7 +11,7 @@ export enum AppStatus {
   Onboarding
 }
 
-export interface KeyPair extends NamedKeyPair {
+export interface KeyPair extends NamedPubKey {
   publicKeyShort: string
 }
 

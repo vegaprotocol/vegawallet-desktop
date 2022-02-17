@@ -1,5 +1,5 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type { Key, NamedKeyPair } from '../../models/keys'
+import type { FirstPublicKey, NamedPubKey } from '../../wailsjs/go/models'
 import type { GlobalState, KeyPair, Wallet } from './global-context'
 import { AppStatus } from './global-context'
 
@@ -30,17 +30,17 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
-      key: Key
+      key: FirstPublicKey
     }
   | {
       type: 'SET_KEYPAIRS'
       wallet: string
-      keypairs: NamedKeyPair[]
+      keypairs: NamedPubKey[]
     }
   | {
       type: 'ADD_KEYPAIR'
       wallet: string
-      keypair: Key
+      keypair: FirstPublicKey
     }
   | {
       type: 'CHANGE_WALLET'
