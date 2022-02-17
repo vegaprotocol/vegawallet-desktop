@@ -97,6 +97,15 @@ table td {
 }
 
 /* FORMS */
+select {
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-appearance: none;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}
+
 input[type='text'],
 input[type='password'],
 input[type='number'],
