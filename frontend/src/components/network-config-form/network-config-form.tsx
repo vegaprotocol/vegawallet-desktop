@@ -259,43 +259,43 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
 
 function fieldsToConfig(config: Network, values: FormFields): Network {
   return {
-    Name: config.Name,
-    Level: values.logLevel,
-    TokenExpiry: values.tokenExpiry,
-    Port: Number(values.port),
-    Host: values.host,
-    Console: {
-      URL: values.consoleUrl,
-      LocalPort: Number(values.consolePort)
+    name: config.name,
+    level: values.logLevel,
+    tokenExpiry: values.tokenExpiry,
+    port: Number(values.port),
+    host: values.host,
+    console: {
+      url: values.consoleUrl,
+      localPort: Number(values.consolePort)
     },
-    TokenDApp: {
-      URL: values.tokenDAppUrl,
-      LocalPort: Number(values.tokenDAppPort)
+    tokenDApp: {
+      url: values.tokenDAppUrl,
+      localPort: Number(values.tokenDAppPort)
     },
-    API: {
-      GRPC: {
-        Hosts: values.grpcHosts.map(x => x.value),
-        Retries: Number(values.grpcNodeRetries)
+    api: {
+      grpc: {
+        hosts: values.grpcHosts.map(x => x.value),
+        retries: Number(values.grpcNodeRetries)
       },
-      GraphQL: config.API.GraphQL,
-      REST: config.API.REST
+      graphQl: config.api.graphQl,
+      rest: config.api.rest
     }
   }
 }
 
 function configToFields(config: Network): FormFields {
   return {
-    logLevel: config.Level,
-    tokenExpiry: config.TokenExpiry,
-    port: config.Port,
-    host: config.Host,
-    grpcNodeRetries: config.API.GRPC.Retries,
-    consoleUrl: config.Console.URL,
-    consolePort: config.Console.LocalPort,
-    tokenDAppUrl: config.TokenDApp.URL,
-    tokenDAppPort: config.TokenDApp.LocalPort,
-    grpcHosts: config.API.GRPC.Hosts.map(x => ({ value: x })),
-    graphqlHosts: config.API.GraphQL.Hosts.map(x => ({ value: x })),
-    restHosts: config.API.REST.Hosts.map(x => ({ value: x }))
+    logLevel: config.level,
+    tokenExpiry: config.tokenExpiry,
+    port: config.port,
+    host: config.host,
+    grpcNodeRetries: config.api.grpc.retries,
+    consoleUrl: config.console.url,
+    consolePort: config.console.localPort,
+    tokenDAppUrl: config.tokenDApp.url,
+    tokenDAppPort: config.tokenDApp.localPort,
+    grpcHosts: config.api.grpc.hosts.map(x => ({ value: x })),
+    graphqlHosts: config.api.graphQl.hosts.map(x => ({ value: x })),
+    restHosts: config.api.rest.hosts.map(x => ({ value: x }))
   }
 }
