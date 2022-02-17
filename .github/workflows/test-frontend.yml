@@ -42,11 +42,11 @@ jobs:
         run: cd frontend && npm i
 
       - name: Build frontend
-        run: cd frontend && npm run build:test
+        run: cd frontend && npm run build
 
       # Start wails in the first process
       - name: Start backend in background
-        run: wails dev &
+        run: CYPRESS_INSTRUMENT_PRODUCTION=true VITE_VEGA_HOME="./frontend/automation/test-wallets" VITE_TESTING=1 wails dev &
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
