@@ -44,7 +44,7 @@ export default class NetworkDrawer {
   }
 
   clickImportBtn() {
-    cy.getByTestId(this.importBtn).click()
+    cy.getByTestId(this.importBtn).click({force:true})
   }
 
   clickManageNetworks() {
