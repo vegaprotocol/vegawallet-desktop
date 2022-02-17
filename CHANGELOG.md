@@ -36,6 +36,7 @@
 - [106](https://github.com/vegaprotocol/vegawallet-desktop/pull/106) - Copy changes to align services terminology
 - [112](https://github.com/vegaprotocol/vegawallet-desktop/pull/112) - Upgrade to react router v6
 - [121](https://github.com/vegaprotocol/vegawallet-desktop/pull/121) - E2e tests
+- [137](https://github.com/vegaprotocol/vegawallet-desktop/pull/137) - Eslint depndency explictly added back in instead of relying on implict dependency via react scripts
 
 ### 🐛 Fixes
 
