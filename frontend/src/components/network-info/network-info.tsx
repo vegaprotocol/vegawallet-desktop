@@ -28,21 +28,21 @@ export function NetworkInfo() {
       <Header>Wallet Service / DApps</Header>
       <ServicesTable config={config} />
       <Header>gRPC Nodes</Header>
-      <NodeList items={config.API.GRPC.Hosts} />
+      <NodeList items={config.api.grpc.hosts} />
       <Header>GraphQL Nodes</Header>
-      <NodeList items={config.API.GraphQL.Hosts} />
+      <NodeList items={config.api.graphQl.hosts} />
       <Header>REST Nodes</Header>
-      <NodeList items={config.API.REST.Hosts} />
+      <NodeList items={config.api.rest.hosts} />
       <Header>Application Settings</Header>
       <table>
         <tbody>
           <tr>
             <th>Log level</th>
-            <td data-testid='log-level'>{config.Level}</td>
+            <td data-testid='log-level'>{config.level}</td>
           </tr>
           <tr>
             <th>Token expiry</th>
-            <td data-testid='token-expiry'>{config.TokenExpiry}</td>
+            <td data-testid='token-expiry'>{config.tokenExpiry}</td>
           </tr>
         </tbody>
       </table>
@@ -60,19 +60,19 @@ function ServicesTable({ config }: ServicesTableProps) {
       <tbody data-testid='services'>
         <tr>
           <th>Walelt Service URL</th>
-          <td data-testid='service-url'>{`http://${config.Host}:${config.Port}`}</td>
+          <td data-testid='service-url'>{`http://${config.host}:${config.port}`}</td>
         </tr>
         <tr>
           <th>
             Console{' '}
             <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.Console.URL || 'Not set'})
+              ({config.console.url || 'Not set'})
             </span>
           </th>
           <td data-testid='service-console'>
             <DAppProxyControl
               proxyApp={ProxyApp.Console}
-              proxyConfig={config.Console}
+              proxyConfig={config.console}
             />
           </td>
         </tr>
@@ -80,13 +80,13 @@ function ServicesTable({ config }: ServicesTableProps) {
           <th>
             Token dApp{' '}
             <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.TokenDApp.URL || 'Not set'})
+              ({config.tokenDApp.url || 'Not set'})
             </span>
           </th>
           <td data-testid='service-token'>
             <DAppProxyControl
               proxyApp={ProxyApp.TokenDApp}
-              proxyConfig={config.TokenDApp}
+              proxyConfig={config.tokenDApp}
             />
           </td>
         </tr>
@@ -118,7 +118,7 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
       return
     }
 
-    dispatch(startProxyAction(network, proxyApp, c.LocalPort))
+    dispatch(startProxyAction(network, proxyApp, c.localPort))
   }
 
   function stopProxy() {
@@ -130,12 +130,12 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
       return
     }
 
-    dispatch(stopProxyAction(network, config.Port))
+    dispatch(stopProxyAction(network, config.port))
   }
 
   // Need both of these set to start the proxy! User has the ability to edit these and
   // they could be empty
-  if (!proxyConfig.URL || !proxyConfig.LocalPort) {
+  if (!proxyConfig.url || !proxyConfig.localPort) {
     return <>Unavailable</>
   }
 

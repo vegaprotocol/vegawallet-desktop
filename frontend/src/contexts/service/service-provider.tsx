@@ -21,7 +21,7 @@ export function ServiceProvider({ children }: ServiceProviderProps) {
   // Start service on app startup
   React.useEffect(() => {
     if (!isFirstMount.current || !network || !config) return
-    dispatch(startServiceAction(network, config.Port))
+    dispatch(startServiceAction(network, config.port))
     isFirstMount.current = false
 
     return () => {

@@ -1,36 +1,36 @@
 export interface ProxyDAppConfig {
-  URL: string
-  LocalPort: number
+  url: string
+  localPort: number
 }
 
 export interface API {
-  GRPC: GRPCConfig
-  GraphQL: GraphQLConfig
-  REST: RESTConfig
+  grpc: GRPCConfig
+  graphQl: GraphQLConfig
+  rest: RESTConfig
 }
 
 export interface GRPCConfig {
-  Hosts: string[]
-  Retries: number
+  hosts: string[]
+  retries: number
 }
 
 export interface GraphQLConfig {
-  Hosts: string[]
+  hosts: string[]
 }
 
 export interface RESTConfig {
-  Hosts: string[]
+  hosts: string[]
 }
 
 export interface Network {
-  Name: string
-  Level: string
-  TokenExpiry: string
-  Host: string
-  Port: number
-  API: API
-  Console: ProxyDAppConfig
-  TokenDApp: ProxyDAppConfig
+  name: string
+  level: string
+  tokenExpiry: string
+  host: string
+  port: number
+  api: API
+  console: ProxyDAppConfig
+  tokenDApp: ProxyDAppConfig
 }
 
 export interface ListNetworksResponse {
@@ -38,14 +38,14 @@ export interface ListNetworksResponse {
 }
 
 export interface SaveNetworkConfigRequest {
-  Name: string
-  Level: string
-  TokenExpiry: string
-  Port: number
-  Host: string
-  Console: ProxyDAppConfig
-  TokenDApp: ProxyDAppConfig
-  API: API
+  name: string
+  level: string
+  tokenExpiry: string
+  port: number
+  host: string
+  console: ProxyDAppConfig
+  tokenDApp: ProxyDAppConfig
+  api: API
 }
 
 export interface ImportNetworkRequest {

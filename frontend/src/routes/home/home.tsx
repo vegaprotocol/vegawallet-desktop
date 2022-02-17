@@ -16,5 +16,5 @@ export const Home = () => {
     return <Navigate to={Paths.Wallet} />
   }
 
-  return <Navigate to={Paths.WalletImport} />
+  return <Navigate to={Paths.WalletCreate} />
 }
