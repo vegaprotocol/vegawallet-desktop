@@ -65,7 +65,7 @@ Then('error shown for wallet already exists', () => {
 })
 
 Then('empty fields are marked required', () => {
-  walletImportPage.verifyNumberOfEmptyFields(5)
+  walletImportPage.verifyNumberOfEmptyFields(4)
 })
 
 Then('error shown for incorrect recovery phrase', () => {
