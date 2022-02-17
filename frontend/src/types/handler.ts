@@ -27,6 +27,7 @@ import type {
   TaintKeyRequest,
   UntaintKeyRequest
 } from '../wailsjs/go/models'
+import type { runtime } from '../wailsjs/runtime/runtime'
 
 export interface Handler {
   AnnotateKey(arg1: AnnotateKeyRequest): Promise<void>
@@ -53,4 +54,16 @@ export interface Handler {
   TaintKey(arg1: TaintKeyRequest): Promise<void>
   UntaintKey(arg1: UntaintKeyRequest): Promise<void>
   SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse | Error>
+}
+
+// Add Wails backend handler and runtime to window object
+declare global {
+  interface Window {
+    go: {
+      backend: {
+        Handler: Handler
+      }
+    }
+    runtime: runtime
+  }
 }
