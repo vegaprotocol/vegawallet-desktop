@@ -38,6 +38,7 @@
 - [121](https://github.com/vegaprotocol/vegawallet-desktop/pull/121) - E2e tests
 - [137](https://github.com/vegaprotocol/vegawallet-desktop/pull/137) - Eslint depndency explictly added back in instead of relying on implict dependency via react scripts
 - [100](https://github.com/vegaprotocol/vegawallet-desktop/pull/100) - Allow signing of arbitary messages
+- [139](https://github.com/vegaprotocol/vegawallet-desktop/pull/139) - Change version input to be a select
 
 ### 🐛 Fixes
 
