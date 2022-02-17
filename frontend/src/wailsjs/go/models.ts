@@ -717,6 +717,38 @@ export class ListWalletsResponse {
     }
 }
 
+export class SignMessageRequest {
+    wallet: string;
+    pubKey: string;
+    message: number[];
+    passphrase: string;
+
+    static createFrom(source: any = {}) {
+        return new SignMessageRequest(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.wallet = source["wallet"];
+        this.pubKey = source["pubKey"];
+        this.message = source["message"];
+        this.passphrase = source["passphrase"];
+    }
+}
+export class SignMessageResponse {
+    hexSignature: string;
+    bytesSignature: number[];
+
+    static createFrom(source: any = {}) {
+        return new SignMessageResponse(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.hexSignature = source["hexSignature"];
+        this.bytesSignature = source["bytesSignature"];
+    }
+}
 export class StartServiceRequest {
     network: string;
     withConsole: boolean;

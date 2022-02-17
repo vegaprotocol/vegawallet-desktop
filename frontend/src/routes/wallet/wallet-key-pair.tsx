@@ -7,6 +7,7 @@ import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../'
+import { Sign } from './sign'
 
 export function WalletKeyPair() {
   const {
@@ -15,7 +16,7 @@ export function WalletKeyPair() {
   const { pubkey } = useParams<{ pubkey: string }>()
   const keypair = wallet?.keypairs?.find(kp => kp.publicKey === pubkey)
 
-  if (!keypair) {
+  if (!keypair || !wallet) {
     return <Navigate to={Paths.Wallet} />
   }
 
@@ -27,6 +28,7 @@ export function WalletKeyPair() {
           {keypair.name}
         </span>
       </Header>
+      <Header style={{ marginTop: 0, fontSize: 18 }}>Details</Header>
       <table>
         <tbody>
           <tr>
@@ -46,6 +48,7 @@ export function WalletKeyPair() {
           <Button>Back</Button>
         </Link>
       </div>
+      <Sign wallet={wallet.name} pubKey={keypair.publicKey} />
     </div>
   )
 }

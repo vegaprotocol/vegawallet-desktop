@@ -18,6 +18,7 @@ export interface go {
 		ListNetworks():Promise<ListNetworksResponse|Error>
 		ListWallets():Promise<ListWalletsResponse|Error>
 		SaveNetworkConfig(arg1:Network):Promise<boolean|Error>
+		SignMessage(arg1:SignMessageRequest):Promise<SignMessageResponse|Error>
 		StartService(arg1:StartServiceRequest):Promise<boolean|Error>
 		StopService():Promise<boolean|Error>
 		TaintKey(arg1:TaintKeyRequest):Promise<Error>
