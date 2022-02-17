@@ -18,9 +18,11 @@ export default class NetworkDrawer {
   backBtn = 'back'
 
   ImportNetwork(urlPath, networkName = null, overwrite = false) {
-    if (this.IsNetworkEmpty() == false) {
-      this.clickManageNetworks()
-    } else this.clickImportBtn()
+    cy.get('body').then($body => {
+      if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
+        this.clickManageNetworks()
+      } else this.clickImportBtn()
+    })
 
     cy.getByTestId(this.urlPathField).type(urlPath)
     if (networkName != null) {
@@ -28,19 +30,16 @@ export default class NetworkDrawer {
     }
     this.clickImportBtn()
 
-    if (overwrite == true) {
+    if (overwrite === true) {
       this.OverwriteNetwork(networkName)
     }
   }
 
   OverwriteNetwork(newNetworkName = null) {
-    cy.contains(
-      'Network with name already exists. Provide a new name or overwrite by checking the box below'
-    )
     if (newNetworkName != null) {
       cy.getByTestId(this.networkNameField).type(newNetworkName)
     }
-    cy.get('[type="checkbox"]').click()
+    this.clickOverwrite()
     this.clickImportBtn()
   }
 
@@ -64,6 +63,11 @@ export default class NetworkDrawer {
     cy.getByTestId(this.startServiceBtn).click({ force: true })
   }
 
+  clickOverwrite() {
+    // cy.get('[type="checkbox"]').click()
+    cy.get('button[role="checkbox"]').click()
+  }
+
   verifyNetworkImportedSuccessfully() {
     cy.contains('Network imported to:')
   }
@@ -80,12 +84,8 @@ export default class NetworkDrawer {
     cy.contains('no such file or directory')
   }
 
-  IsNetworkEmpty() {
-    cy.get('body').then($body => {
-      if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
-        return false
-      } else return true
-    })
+  verifyNetworkSameNameError() {
+    cy.contains("Network with name already exists. Provide a new name or overwrite by checking the box below")
   }
 
   changeNetwork(networkName) {

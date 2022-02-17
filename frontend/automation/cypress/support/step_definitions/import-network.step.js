@@ -53,13 +53,25 @@ When('I import using url and specify network name', () => {
   networkDrawer.ImportNetwork(url, networkName)
 })
 
+When('overwrite is clicked', () => {
+  networkDrawer.clickOverwrite()
+})
+
+When('I import is clicked', () => {
+  networkDrawer.clickImportBtn()
+})
+
 Then('new network is added', () => {
   networkDrawer.verifyNetworkImportedSuccessfully()
   networkDrawer.clickBack()
 })
 
 Then('network is not added', () => {
-  networkDrawer.verifyNetworkImportError()
+  networkDrawer.verifyNetworkImporturlError()
+})
+
+Then('network with same name error is shown', () => {
+  networkDrawer.verifyNetworkSameNameError()
 })
 
 Then('network page is populated as expected', () => {
