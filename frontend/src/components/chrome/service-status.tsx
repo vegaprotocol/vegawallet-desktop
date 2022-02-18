@@ -3,12 +3,12 @@ import React from 'react'
 import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
 import { useNetwork } from '../../contexts/network/network-context'
-import { ProxyApp, useService } from '../../contexts/service/service-context'
+import { useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
 
 export function ServiceStatus() {
   const {
-    state: { serviceRunning, serviceUrl, proxy, proxyUrl }
+    state: { serviceRunning, serviceUrl, console, tokenDapp }
   } = useService()
   const {
     state: { network }
@@ -37,14 +37,18 @@ export function ServiceStatus() {
       </div>
       <div style={{ whiteSpace: 'nowrap' }}>
         <>
-          <StatusCircle running={proxy !== ProxyApp.None} />
-          {proxy !== ProxyApp.None ? (
+          <StatusCircle running={console.running || tokenDapp.running} />
+          {console.running || tokenDapp.running ? (
             <>
-              DApp: {proxy} on{' '}
-              <ExternalLink href={proxyUrl}>{proxyUrl}</ExternalLink>
+              DApps:{' '}
+              {[console, tokenDapp]
+                .filter(app => app.running)
+                .map(app => {
+                  return <ExternalLink href={app.url}>{app.name}</ExternalLink>
+                })}
             </>
           ) : (
-            <>DApp: Not running</>
+            <>DApp: None running</>
           )}
         </>
       </div>

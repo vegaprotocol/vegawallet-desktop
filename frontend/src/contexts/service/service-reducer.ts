@@ -4,8 +4,16 @@ import { ProxyApp } from './service-context'
 export const initialServiceState: ServiceState = {
   serviceRunning: false,
   serviceUrl: '',
-  proxy: ProxyApp.None,
-  proxyUrl: ''
+  console: {
+    name: ProxyApp.Console,
+    running: false,
+    url: ''
+  },
+  tokenDapp: {
+    name: ProxyApp.TokenDApp,
+    running: false,
+    url: ''
+  }
 }
 
 export type ServiceAction =
@@ -19,7 +27,7 @@ export type ServiceAction =
   | {
       type: 'START_PROXY'
       app: ProxyApp
-      port: number
+      url: string
     }
   | {
       type: 'STOP_PROXY'
@@ -42,24 +50,53 @@ export function serviceReducer(
       return {
         ...state,
         serviceRunning: false,
-        serviceUrl: '',
-        proxy: ProxyApp.None,
-        proxyUrl: ''
+        serviceUrl: ''
       }
     }
     case 'START_PROXY': {
-      return {
-        ...state,
-        serviceRunning: true,
-        proxy: action.app,
-        proxyUrl: `http://127.0.0.1:${action.port}`
+      if (action.app === ProxyApp.Console) {
+        return {
+          ...state,
+          console: {
+            ...state.console,
+            running: true,
+            url: action.url
+          }
+        }
+      } else if (action.app === ProxyApp.TokenDApp) {
+        return {
+          ...state,
+          tokenDapp: {
+            ...state.tokenDapp,
+            running: true,
+            url: action.url
+          }
+        }
+      } else {
+        throw new Error(`Invalid ProxyApp: ${action.app}`)
       }
     }
     case 'STOP_PROXY': {
-      return {
-        ...state,
-        proxy: ProxyApp.None,
-        proxyUrl: ''
+      if (action.app === ProxyApp.Console) {
+        return {
+          ...state,
+          console: {
+            ...state.console,
+            running: false,
+            url: ''
+          }
+        }
+      } else if (action.app === ProxyApp.TokenDApp) {
+        return {
+          ...state,
+          tokenDapp: {
+            ...state.tokenDapp,
+            running: false,
+            url: ''
+          }
+        }
+      } else {
+        throw new Error(`Invalid ProxyApp: ${action.app}`)
       }
     }
     default: {

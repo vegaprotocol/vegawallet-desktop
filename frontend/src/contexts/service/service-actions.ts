@@ -2,8 +2,10 @@ import * as Sentry from '@sentry/react'
 
 import { Service } from '../../service'
 import type {
+  ConsoleConfig,
   GetServiceStateResponse,
-  StartServiceRequest
+  StartServiceRequest,
+  TokenDAppConfig
 } from '../../wailsjs/go/models'
 import type { ServiceDispatch } from './service-context'
 import { ProxyApp } from './service-context'
@@ -56,8 +58,12 @@ export function stopServiceAction() {
   }
 }
 
-export function startProxyAction(network: string, app: ProxyApp, port: number) {
-  const proxyFns = ProxyFns[app]
+export function startProxyAction(
+  network: string,
+  proxyApp: { name: ProxyApp; running: boolean; url: string },
+  proxyConfig: ConsoleConfig | TokenDAppConfig
+) {
+  const proxyFns = ProxyFns[proxyApp.name]
 
   return async (dispatch: ServiceDispatch) => {
     Sentry.addBreadcrumb({
@@ -65,7 +71,7 @@ export function startProxyAction(network: string, app: ProxyApp, port: number) {
       level: Sentry.Severity.Log,
       message: 'StartProxy',
       data: {
-        app,
+        app: proxyApp,
         network
       },
       timestamp: Date.now()
@@ -77,7 +83,11 @@ export function startProxyAction(network: string, app: ProxyApp, port: number) {
         await proxyFns.Stop()
       }
 
-      dispatch({ type: 'START_PROXY', app, port })
+      dispatch({
+        type: 'START_PROXY',
+        app: proxyApp.name,
+        url: `${proxyConfig.url}:${proxyConfig.localPort}`
+      })
 
       await proxyFns.Start({
         network
@@ -89,8 +99,8 @@ export function startProxyAction(network: string, app: ProxyApp, port: number) {
   }
 }
 
-export function stopProxyAction(app: ProxyApp) {
-  const proxyFns = ProxyFns[app]
+export function stopProxyAction(proxyAppName: ProxyApp) {
+  const proxyFns = ProxyFns[proxyAppName]
 
   return async (dispatch: ServiceDispatch) => {
     try {
@@ -100,7 +110,7 @@ export function stopProxyAction(app: ProxyApp) {
         await proxyFns.Stop()
       }
 
-      dispatch({ type: 'STOP_PROXY', app })
+      dispatch({ type: 'STOP_PROXY', app: proxyAppName })
     } catch (err) {
       Sentry.captureException(err)
       console.log(err)
@@ -124,16 +134,5 @@ const ProxyFns: {
     GetState: Service.GetTokenDAppState,
     Start: Service.StartTokenDApp,
     Stop: Service.StopTokenDApp
-  },
-  [ProxyApp.None]: {
-    GetState: () => {
-      throw new Error('ProxyApp is None')
-    },
-    Start: () => {
-      throw new Error('ProxyApp is None')
-    },
-    Stop: () => {
-      throw new Error('ProxyApp is None')
-    }
   }
 }
