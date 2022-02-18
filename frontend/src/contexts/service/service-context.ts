@@ -3,23 +3,22 @@ import type { Thunk } from 'react-hook-thunk-reducer'
 
 import type { ServiceAction } from './service-reducer'
 
-export enum ProxyApp {
+export enum ProxyName {
   Console = 'Console',
   TokenDApp = 'TokenDApp'
 }
+
+export interface ProxyApp {
+  name: ProxyName
+  running: boolean
+  url: string
+}
+
 export interface ServiceState {
   serviceRunning: boolean
   serviceUrl: string
-  console: {
-    name: ProxyApp.Console
-    running: boolean
-    url: string
-  }
-  tokenDapp: {
-    name: ProxyApp.TokenDApp
-    running: boolean
-    url: string
-  }
+  console: ProxyApp
+  tokenDapp: ProxyApp
 }
 
 export type ServiceDispatch = React.Dispatch<

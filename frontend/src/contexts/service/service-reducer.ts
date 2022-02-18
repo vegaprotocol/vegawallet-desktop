@@ -1,16 +1,16 @@
 import type { ServiceState } from './service-context'
-import { ProxyApp } from './service-context'
+import { ProxyName } from './service-context'
 
 export const initialServiceState: ServiceState = {
   serviceRunning: false,
   serviceUrl: '',
   console: {
-    name: ProxyApp.Console,
+    name: ProxyName.Console,
     running: false,
     url: ''
   },
   tokenDapp: {
-    name: ProxyApp.TokenDApp,
+    name: ProxyName.TokenDApp,
     running: false,
     url: ''
   }
@@ -26,12 +26,12 @@ export type ServiceAction =
     }
   | {
       type: 'START_PROXY'
-      app: ProxyApp
+      app: ProxyName
       url: string
     }
   | {
       type: 'STOP_PROXY'
-      app: ProxyApp
+      app: ProxyName
     }
 
 export function serviceReducer(
@@ -54,7 +54,7 @@ export function serviceReducer(
       }
     }
     case 'START_PROXY': {
-      if (action.app === ProxyApp.Console) {
+      if (action.app === ProxyName.Console) {
         return {
           ...state,
           console: {
@@ -63,7 +63,7 @@ export function serviceReducer(
             url: action.url
           }
         }
-      } else if (action.app === ProxyApp.TokenDApp) {
+      } else if (action.app === ProxyName.TokenDApp) {
         return {
           ...state,
           tokenDapp: {
@@ -77,7 +77,7 @@ export function serviceReducer(
       }
     }
     case 'STOP_PROXY': {
-      if (action.app === ProxyApp.Console) {
+      if (action.app === ProxyName.Console) {
         return {
           ...state,
           console: {
@@ -86,7 +86,7 @@ export function serviceReducer(
             url: ''
           }
         }
-      } else if (action.app === ProxyApp.TokenDApp) {
+      } else if (action.app === ProxyName.TokenDApp) {
         return {
           ...state,
           tokenDapp: {

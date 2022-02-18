@@ -8,7 +8,7 @@ import type {
   TokenDAppConfig
 } from '../../wailsjs/go/models'
 import type { ServiceDispatch } from './service-context'
-import { ProxyApp } from './service-context'
+import { ProxyName } from './service-context'
 
 export function startServiceAction(network: string, port: number) {
   return async (dispatch: ServiceDispatch) => {
@@ -60,7 +60,7 @@ export function stopServiceAction() {
 
 export function startProxyAction(
   network: string,
-  proxyApp: { name: ProxyApp; running: boolean; url: string },
+  proxyApp: { name: ProxyName; running: boolean; url: string },
   proxyConfig: ConsoleConfig | TokenDAppConfig
 ) {
   const proxyFns = ProxyFns[proxyApp.name]
@@ -99,7 +99,7 @@ export function startProxyAction(
   }
 }
 
-export function stopProxyAction(proxyAppName: ProxyApp) {
+export function stopProxyAction(proxyAppName: ProxyName) {
   const proxyFns = ProxyFns[proxyAppName]
 
   return async (dispatch: ServiceDispatch) => {
@@ -119,18 +119,18 @@ export function stopProxyAction(proxyAppName: ProxyApp) {
 }
 
 const ProxyFns: {
-  [A in ProxyApp]: {
+  [A in ProxyName]: {
     GetState: () => Promise<GetServiceStateResponse>
     Start: (req: StartServiceRequest) => Promise<boolean | Error>
     Stop: () => Promise<boolean | Error>
   }
 } = {
-  [ProxyApp.Console]: {
+  [ProxyName.Console]: {
     GetState: Service.GetConsoleState,
     Start: Service.StartConsole,
     Stop: Service.StopConsole
   },
-  [ProxyApp.TokenDApp]: {
+  [ProxyName.TokenDApp]: {
     GetState: Service.GetTokenDAppState,
     Start: Service.StartTokenDApp,
     Stop: Service.StopTokenDApp

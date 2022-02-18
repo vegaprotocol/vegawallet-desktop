@@ -7,7 +7,10 @@ import {
   startProxyAction,
   stopProxyAction
 } from '../../contexts/service/service-actions'
-import type { ProxyApp } from '../../contexts/service/service-context'
+import type {
+  ProxyApp,
+  ProxyName
+} from '../../contexts/service/service-context'
 import { useService } from '../../contexts/service/service-context'
 import type {
   ConsoleConfig,
@@ -103,11 +106,7 @@ function ServicesTable({ config }: ServicesTableProps) {
 
 interface DAppProxyControlProps {
   proxyConfig: ConsoleConfig | TokenDAppConfig
-  proxyApp: {
-    name: ProxyApp
-    running: boolean
-    url: string
-  }
+  proxyApp: ProxyApp
 }
 
 function DAppProxyControl({ proxyConfig, proxyApp }: DAppProxyControlProps) {
