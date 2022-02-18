@@ -2,10 +2,8 @@ import * as Sentry from '@sentry/react'
 
 import { Service } from '../../service'
 import type {
-  ConsoleConfig,
   GetServiceStateResponse,
-  StartServiceRequest,
-  TokenDAppConfig
+  StartServiceRequest
 } from '../../wailsjs/go/models'
 import type { ServiceDispatch } from './service-context'
 import { ProxyName } from './service-context'
@@ -60,10 +58,10 @@ export function stopServiceAction() {
 
 export function startProxyAction(
   network: string,
-  proxyApp: { name: ProxyName; running: boolean; url: string },
-  proxyConfig: ConsoleConfig | TokenDAppConfig
+  proxyAppName: ProxyName,
+  url: string
 ) {
-  const proxyFns = ProxyFns[proxyApp.name]
+  const proxyFns = ProxyFns[proxyAppName]
 
   return async (dispatch: ServiceDispatch) => {
     Sentry.addBreadcrumb({
@@ -71,7 +69,7 @@ export function startProxyAction(
       level: Sentry.Severity.Log,
       message: 'StartProxy',
       data: {
-        app: proxyApp,
+        app: proxyAppName,
         network
       },
       timestamp: Date.now()
@@ -85,8 +83,8 @@ export function startProxyAction(
 
       dispatch({
         type: 'START_PROXY',
-        app: proxyApp.name,
-        url: `${proxyConfig.url}:${proxyConfig.localPort}`
+        app: proxyAppName,
+        url
       })
 
       await proxyFns.Start({

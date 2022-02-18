@@ -13,6 +13,7 @@ export function ServiceStatus() {
   const {
     state: { network }
   } = useNetwork()
+
   return (
     <>
       <div style={{ whiteSpace: 'nowrap' }}>
@@ -43,8 +44,13 @@ export function ServiceStatus() {
               DApps:{' '}
               {[console, tokenDapp]
                 .filter(app => app.running)
-                .map(app => {
-                  return <ExternalLink href={app.url}>{app.name}</ExternalLink>
+                .map((app, i, arr) => {
+                  return (
+                    <>
+                      <ExternalLink href={app.url}>{app.name}</ExternalLink>
+                      {i < arr.length - 1 ? ', ' : ''}
+                    </>
+                  )
                 })}
             </>
           ) : (

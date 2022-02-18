@@ -116,18 +116,6 @@ function DAppProxyControl({ proxyConfig, proxyApp }: DAppProxyControlProps) {
   const { dispatch } = useService()
 
   function startProxy() {
-    if (!network) {
-      AppToaster.show({
-        message: 'No network config found',
-        intent: Intent.DANGER
-      })
-      return
-    }
-
-    dispatch(startProxyAction(network, proxyApp, proxyConfig))
-  }
-
-  function stopProxy() {
     if (!network || !config) {
       AppToaster.show({
         message: 'No network config found',
@@ -136,6 +124,16 @@ function DAppProxyControl({ proxyConfig, proxyApp }: DAppProxyControlProps) {
       return
     }
 
+    dispatch(
+      startProxyAction(
+        network,
+        proxyApp.name,
+        `http://${config.host}:${proxyConfig.localPort}`
+      )
+    )
+  }
+
+  function stopProxy() {
     dispatch(stopProxyAction(proxyApp.name))
   }
 
