@@ -53,17 +53,7 @@ export function changeNetworkAction(network: string) {
     })
 
     try {
-      // Stop Console
-      const consoleStatus = await Service.GetConsoleState()
-      if (consoleStatus.running) {
-        await Service.StopConsole()
-      }
-
-      // Stop TokenDapp
-      const tokenDappStatus = await Service.GetTokenDAppState()
-      if (tokenDappStatus.running) {
-        await Service.StopTokenDApp()
-      }
+      await stopProxies()
 
       const config = await Service.GetNetworkConfig(network)
 
@@ -104,17 +94,7 @@ export function updateNetworkConfigAction(
         }
       }
 
-      // Stop Console
-      const consoleStatus = await Service.GetConsoleState()
-      if (consoleStatus.running) {
-        await Service.StopConsole()
-      }
-
-      // Stop TokenDapp
-      const tokenDappStatus = await Service.GetTokenDAppState()
-      if (tokenDappStatus.running) {
-        await Service.StopTokenDApp()
-      }
+      await stopProxies()
 
       const isSuccessful = await Service.SaveNetworkConfig(config)
 
@@ -306,34 +286,6 @@ export function stopProxyAction(proxyAppName: ProxyName) {
   }
 }
 
-export function stopAllProxiesAction() {
-  return async (dispatch: NetworkDispatch) => {
-    // Stop Console
-    try {
-      const status = await Service.GetConsoleState()
-      if (status.running) {
-        await Service.StopConsole()
-      }
-    } catch (err) {
-      Sentry.captureException(err)
-      console.log(err)
-    }
-
-    // Stop TokenDapp
-    try {
-      const status = await Service.GetTokenDAppState()
-      if (status.running) {
-        await Service.StopTokenDApp()
-      }
-    } catch (err) {
-      Sentry.captureException(err)
-      console.log(err)
-    }
-
-    dispatch({ type: 'STOP_ALL_PROXIES' })
-  }
-}
-
 const ProxyFns: {
   [A in ProxyName]: {
     GetState: () => Promise<GetServiceStateResponse>
@@ -350,5 +302,24 @@ const ProxyFns: {
     GetState: Service.GetTokenDAppState,
     Start: Service.StartTokenDApp,
     Stop: Service.StopTokenDApp
+  }
+}
+
+async function stopProxies() {
+  try {
+    // Stop Console
+    const consoleStatus = await Service.GetConsoleState()
+    if (consoleStatus.running) {
+      await Service.StopConsole()
+    }
+
+    // Stop TokenDapp
+    const tokenDappStatus = await Service.GetTokenDAppState()
+    if (tokenDappStatus.running) {
+      await Service.StopTokenDApp()
+    }
+  } catch (err) {
+    Sentry.captureException(err)
+    console.log(err)
   }
 }
