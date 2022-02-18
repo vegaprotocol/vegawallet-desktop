@@ -33,6 +33,9 @@ export type ServiceAction =
       type: 'STOP_PROXY'
       app: ProxyName
     }
+  | {
+      type: 'STOP_ALL_PROXIES'
+    }
 
 export function serviceReducer(
   state: ServiceState,
@@ -97,6 +100,21 @@ export function serviceReducer(
         }
       } else {
         throw new Error(`Invalid ProxyApp: ${action.app}`)
+      }
+    }
+    case 'STOP_ALL_PROXIES': {
+      return {
+        ...state,
+        console: {
+          ...state.console,
+          running: false,
+          url: ''
+        },
+        tokenDapp: {
+          ...state.tokenDapp,
+          running: false,
+          url: ''
+        }
       }
     }
     default: {

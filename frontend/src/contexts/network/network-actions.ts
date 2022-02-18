@@ -48,6 +48,27 @@ export function changeNetworkAction(network: string) {
       message: 'ChangeNetwork',
       timestamp: Date.now()
     })
+
+    // Shut down console proxy
+    try {
+      const status = await Service.GetConsoleState()
+      if (status.running) {
+        await Service.StopConsole()
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
+    // Shut down token proxy
+    try {
+      const status = await Service.GetTokenDAppState()
+      if (status.running) {
+        await Service.StopTokenDApp()
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     try {
       const config = await Service.GetNetworkConfig(network)
 

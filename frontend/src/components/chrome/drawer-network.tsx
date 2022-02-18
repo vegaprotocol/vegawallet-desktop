@@ -2,6 +2,8 @@ import React from 'react'
 
 import { changeNetworkAction } from '../../contexts/network/network-actions'
 import { useNetwork } from '../../contexts/network/network-context'
+import { stopAllProxiesAction } from '../../contexts/service/service-actions'
+import { useService } from '../../contexts/service/service-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
@@ -19,6 +21,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
     state: { network, networks },
     dispatch: networkDispatch
   } = useNetwork()
+  const { dispatch: serviceDispatch } = useService()
   return (
     <>
       <Header style={{ marginTop: 0 }}>Network</Header>
@@ -61,9 +64,10 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                         lineHeight: 1,
                         textAlign: 'left'
                       }}
-                      onClick={() =>
+                      onClick={() => {
+                        serviceDispatch(stopAllProxiesAction())
                         networkDispatch(changeNetworkAction(network))
-                      }
+                      }}
                     >
                       {network}
                     </ButtonUnstyled>
