@@ -2,13 +2,12 @@ import React from 'react'
 
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
-import { useNetwork } from '../../contexts/network/network-context'
 import {
   startProxyAction,
   stopProxyAction
-} from '../../contexts/service/service-actions'
-import type { ProxyApp } from '../../contexts/service/service-context'
-import { useService } from '../../contexts/service/service-context'
+} from '../../contexts/network/network-actions'
+import type { ProxyApp } from '../../contexts/network/network-context'
+import { useNetwork } from '../../contexts/network/network-context'
 import type {
   ConsoleConfig,
   Network,
@@ -62,7 +61,7 @@ interface ServicesTableProps {
 function ServicesTable({ config }: ServicesTableProps) {
   const {
     state: { console, tokenDapp }
-  } = useService()
+  } = useNetwork()
 
   return (
     <table>
@@ -108,9 +107,9 @@ interface DAppProxyControlProps {
 
 function DAppProxyControl({ proxyConfig, proxyApp }: DAppProxyControlProps) {
   const {
+    dispatch,
     state: { config, network }
   } = useNetwork()
-  const { dispatch } = useService()
 
   function startProxy() {
     if (!network || !config) {

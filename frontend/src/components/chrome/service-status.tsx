@@ -3,15 +3,11 @@ import React from 'react'
 import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
 import { useNetwork } from '../../contexts/network/network-context'
-import { useService } from '../../contexts/service/service-context'
 import { ExternalLink } from '../external-link'
 
 export function ServiceStatus() {
   const {
-    state: { serviceRunning, serviceUrl, console, tokenDapp }
-  } = useService()
-  const {
-    state: { network }
+    state: { network, serviceRunning, serviceUrl, console, tokenDapp }
   } = useNetwork()
 
   return (

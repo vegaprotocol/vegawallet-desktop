@@ -4,10 +4,25 @@ import type { Thunk } from 'react-hook-thunk-reducer'
 import type { Network } from '../../wailsjs/go/models'
 import type { NetworkAction } from './network-reducer'
 
+export enum ProxyName {
+  Console = 'Console',
+  TokenDApp = 'TokenDApp'
+}
+
+export interface ProxyApp {
+  name: ProxyName
+  running: boolean
+  url: string
+}
+
 export interface NetworkState {
   network: string | null
   networks: string[]
   config: Network | null
+  serviceRunning: boolean
+  serviceUrl: string
+  console: ProxyApp
+  tokenDapp: ProxyApp
 }
 
 export type NetworkDispatch = React.Dispatch<
