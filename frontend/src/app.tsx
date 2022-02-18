@@ -76,14 +76,6 @@ function App() {
             <AppFrame>
               <AppLoader>
                 <Chrome>
-                  {/* TODO DO NOT PUSH THIS LIVE WITH THIS PRESENT OR MERGE THE PR */}
-                  <button
-                    onClick={() => {
-                      throw new Error('ERROR')
-                    }}
-                  >
-                    Error
-                  </button>
                   <AppRouter />
                 </Chrome>
                 <PassphraseModal />
