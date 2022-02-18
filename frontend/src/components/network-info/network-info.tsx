@@ -7,10 +7,7 @@ import {
   startProxyAction,
   stopProxyAction
 } from '../../contexts/service/service-actions'
-import type {
-  ProxyApp,
-  ProxyName
-} from '../../contexts/service/service-context'
+import type { ProxyApp } from '../../contexts/service/service-context'
 import { useService } from '../../contexts/service/service-context'
 import type {
   ConsoleConfig,
