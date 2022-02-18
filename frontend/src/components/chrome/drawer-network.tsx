@@ -62,7 +62,6 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                         textAlign: 'left'
                       }}
                       onClick={() => {
-                        // TODO: serviceDispatch(stopAllProxiesAction())
                         networkDispatch(changeNetworkAction(network))
                       }}
                     >

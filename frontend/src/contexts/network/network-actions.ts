@@ -85,6 +85,7 @@ export function updateNetworkConfigAction(
       message: 'UpdateNetworkConfig',
       timestamp: Date.now()
     })
+
     try {
       // Stop main REST service if you are editing the active network config
       if (state.network === editingNetwork) {
