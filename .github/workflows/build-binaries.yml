@@ -10,9 +10,6 @@ on:
       - main
       - develop
 
-env:
-  REACT_APP_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-
 jobs:
   build:
     name: On ${{ matrix.os }} ${{ matrix.arch }}
