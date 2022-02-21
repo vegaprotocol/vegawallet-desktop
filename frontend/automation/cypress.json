@@ -1,7 +1,7 @@
 {
   "baseUrl": "http://localhost:34115/",
   "projectId": "t5pfg7",
-  "defaultCommandTimeout": 10000,
+  "defaultCommandTimeout": 60000,
   "env": {
     "walletServiceUrl": "http://127.0.0.1:1789/api/v1/version",
     "tokenServiceUrl": "http://127.0.0.1:1848",
