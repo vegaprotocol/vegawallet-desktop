@@ -20,7 +20,7 @@ export function initAppAction() {
     try {
       const isInit = await Service.IsAppInitialised()
 
-      if (IS_TEST_MODE && !isInit) {
+      if (IS_TEST_MODE) {
         await Service.InitialiseApp({
           vegaHome: DEFAULT_VEGA_HOME
         })
