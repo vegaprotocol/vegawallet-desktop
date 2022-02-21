@@ -95,6 +95,10 @@ interface AppFrameProps {
   children: React.ReactNode
 }
 
+/**
+ * Renders a bar at the top of the app with the data-wails-drag attribute which lets you
+ * drag the app window aroung. Also renders the vega-bg className if onboard mode
+ */
 function AppFrame({ children }: AppFrameProps) {
   const isOnboard = useIsOnboard()
 

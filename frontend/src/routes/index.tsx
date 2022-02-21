@@ -78,9 +78,8 @@ export const AppRouter = () => {
       children: [
         {
           // default child route, Wallet only renders an Outlet
-          path: '',
-          element: <WalletList />,
-          index: true
+          index: true,
+          element: <WalletList />
         },
         {
           path: 'keypair/:pubkey',
@@ -100,6 +99,6 @@ export const AppRouter = () => {
     return <Splash>{routes}</Splash>
   }
 
-  // Rest of the pages get regular chrome with network drawer
+  // Rest of the pages get regular chrome with network
   return <Chrome>{routes}</Chrome>
 }

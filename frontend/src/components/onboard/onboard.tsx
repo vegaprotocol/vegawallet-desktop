@@ -10,7 +10,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
-import { Paths } from '../../routes'
+import { OnboardPaths, Paths } from '../../routes'
 import { Service } from '../../service'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -24,20 +24,13 @@ import { WalletCreateForm } from '../wallet-create-form'
 import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
 import { WalletImportForm } from '../wallet-import-form'
 
-export enum OnboardPaths {
-  Home = '/onboard',
-  Settings = '/onboard/settings',
-  WalletCreate = '/onboard/wallet-create',
-  WalletImport = '/onboard/wallet-import',
-  Network = '/onboard/network'
-}
-
 export function Onboard() {
   return <Outlet />
 }
 
 export function OnboardHome() {
   const navigate = useNavigate()
+  const [loading, setLoading] = React.useState<'create' | 'import' | null>(null)
   const {
     state: { wallets, version }
   } = useGlobal()
@@ -56,8 +49,10 @@ export function OnboardHome() {
       </Header>
       <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
         <Button
+          loading={loading === 'create'}
           data-testid='onboard-create-wallet'
           onClick={async () => {
+            setLoading('create')
             await Service.InitialiseApp({
               vegaHome: DEFAULT_VEGA_HOME
             })
@@ -67,7 +62,9 @@ export function OnboardHome() {
           Create new wallet
         </Button>
         <Button
+          loading={loading === 'import'}
           onClick={async () => {
+            setLoading('import')
             await Service.InitialiseApp({
               vegaHome: DEFAULT_VEGA_HOME
             })
@@ -94,18 +91,21 @@ interface Fields {
 export function OnboardSettings() {
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm<Fields>()
+  const [loading, setLoading] = React.useState(false)
 
   const submit = React.useCallback(
     async (values: Fields) => {
       try {
+        setLoading(true)
         await Service.InitialiseApp({
           vegaHome: values.vegaHome
         })
         AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })
-        navigate(OnboardPaths.Home)
+        navigate('/')
       } catch (err) {
         Sentry.captureException(err)
         console.error(err)
+        setLoading(false)
       }
     },
     [navigate]
@@ -122,7 +122,9 @@ export function OnboardSettings() {
           <input type='text' {...register('vegaHome')} />
         </FormGroup>
         <div>
-          <Button type='submit'>Initialise</Button>
+          <Button type='submit' loading={loading}>
+            Initialise
+          </Button>
         </div>
       </form>
     </OnboardPanel>
