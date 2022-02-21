@@ -12,6 +12,7 @@ export default class WalletImportPage {
   importPassphrase = 'passphrase'
   importConfirmPassphrase = 'confirm-passphrase'
   validationRequired = 'Required'
+  advancedOption = 'advanced-options'
 
   createNewWallet() {
     const randomNum = Math.floor(Math.random() * 101)
