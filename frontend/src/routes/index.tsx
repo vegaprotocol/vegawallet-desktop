@@ -1,5 +1,6 @@
-import { useRoutes } from 'react-router-dom'
+import { useMatch, useRoutes } from 'react-router-dom'
 
+import { Chrome } from '../components/chrome'
 import { Home } from './home'
 import { Wallet } from './wallet'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
@@ -16,6 +17,8 @@ export enum Paths {
 }
 
 export const AppRouter = () => {
+  const onboardMatch = useMatch(Paths.Onboard)
+
   const routes = useRoutes([
     {
       path: Paths.Onboard,
@@ -52,5 +55,9 @@ export const AppRouter = () => {
     }
   ])
 
-  return routes
+  if (onboardMatch) {
+    return routes
+  }
+
+  return <Chrome>{routes}</Chrome>
 }

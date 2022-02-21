@@ -1,10 +1,8 @@
 import React from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
-import { HashRouter as Router, useLocation } from 'react-router-dom'
+import { HashRouter as Router, useMatch } from 'react-router-dom'
 
-import { Chrome } from './components/chrome'
-import { Onboard, OnboardPaths } from './components/onboard'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
@@ -19,7 +17,7 @@ import {
 import { useNetwork } from './contexts/network/network-context'
 import { NetworkProvider } from './contexts/network/network-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
-import { AppRouter } from './routes'
+import { AppRouter, Paths } from './routes'
 
 /**
  * Initialiases the app
@@ -78,9 +76,7 @@ function App() {
         <NetworkProvider>
           <AppFrame>
             <AppLoader>
-              <Chrome>
-                <AppRouter />
-              </Chrome>
+              <AppRouter />
               <PassphraseModal />
             </AppLoader>
           </AppFrame>
@@ -99,8 +95,8 @@ interface AppFrameProps {
 }
 
 function AppFrame({ children }: AppFrameProps) {
-  const location = useLocation()
-  const isOnboard = location.pathname.startsWith(OnboardPaths.Home)
+  const onboardMatch = useMatch(Paths.Onboard)
+
   return (
     <div
       style={{
@@ -108,7 +104,7 @@ function AppFrame({ children }: AppFrameProps) {
         paddingTop: APP_FRAME_HEIGHT,
         backgroundSize: 'cover'
       }}
-      className={isOnboard ? 'vega-bg' : undefined}
+      className={onboardMatch ? 'vega-bg' : undefined}
     >
       <div
         style={{
@@ -117,7 +113,7 @@ function AppFrame({ children }: AppFrameProps) {
           left: 0,
           width: '100%',
           height: APP_FRAME_HEIGHT,
-          backgroundColor: isOnboard ? 'transparent' : Colors.BLACK
+          backgroundColor: onboardMatch ? 'transparent' : Colors.BLACK
         }}
         // The app is frameless by default so this element creates a space at the top of the app
         // which you can click and drag to move the app around. The drag function is triggered
