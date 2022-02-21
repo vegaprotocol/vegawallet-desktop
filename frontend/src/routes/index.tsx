@@ -9,6 +9,7 @@ import { WalletImport } from './wallet-import'
 
 export enum Paths {
   Home = '/',
+  Onboard = '/onboard',
   Wallet = '/wallet',
   WalletCreate = '/wallet-create',
   WalletImport = '/wallet-import'
@@ -16,6 +17,10 @@ export enum Paths {
 
 export const AppRouter = () => {
   const routes = useRoutes([
+    {
+      path: Paths.Onboard,
+      element: <div>Onboard</div>
+    },
     {
       path: Paths.WalletCreate,
       element: <WalletCreate />

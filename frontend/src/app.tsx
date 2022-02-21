@@ -65,14 +65,6 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (globalState.status === AppStatus.Onboarding) {
-    return (
-      <Splash>
-        <Onboard />
-      </Splash>
-    )
-  }
-
   return <>{children}</>
 }
 
