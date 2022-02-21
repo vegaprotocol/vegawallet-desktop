@@ -61,9 +61,9 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                         lineHeight: 1,
                         textAlign: 'left'
                       }}
-                      onClick={() =>
+                      onClick={() => {
                         networkDispatch(changeNetworkAction(network))
-                      }
+                      }}
                     >
                       {network}
                     </ButtonUnstyled>

@@ -2,12 +2,12 @@ import React from 'react'
 
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
-import { useNetwork } from '../../contexts/network/network-context'
 import {
   startProxyAction,
   stopProxyAction
-} from '../../contexts/service/service-actions'
-import { ProxyApp, useService } from '../../contexts/service/service-context'
+} from '../../contexts/network/network-actions'
+import type { ProxyApp } from '../../contexts/network/network-context'
+import { useNetwork } from '../../contexts/network/network-context'
 import type {
   ConsoleConfig,
   Network,
@@ -59,11 +59,15 @@ interface ServicesTableProps {
 }
 
 function ServicesTable({ config }: ServicesTableProps) {
+  const {
+    state: { console, tokenDapp }
+  } = useNetwork()
+
   return (
     <table>
       <tbody data-testid='services'>
         <tr>
-          <th>Walelt Service URL</th>
+          <th>Wallet Service URL</th>
           <td data-testid='service-url'>{`http://${config.host}:${config.port}`}</td>
         </tr>
         <tr>
@@ -74,10 +78,7 @@ function ServicesTable({ config }: ServicesTableProps) {
             </span>
           </th>
           <td data-testid='service-console'>
-            <DAppProxyControl
-              proxyApp={ProxyApp.Console}
-              proxyConfig={config.console}
-            />
+            <DAppProxyControl proxyApp={console} proxyConfig={config.console} />
           </td>
         </tr>
         <tr>
@@ -89,7 +90,7 @@ function ServicesTable({ config }: ServicesTableProps) {
           </th>
           <td data-testid='service-token'>
             <DAppProxyControl
-              proxyApp={ProxyApp.TokenDApp}
+              proxyApp={tokenDapp}
               proxyConfig={config.tokenDApp}
             />
           </td>
@@ -100,32 +101,17 @@ function ServicesTable({ config }: ServicesTableProps) {
 }
 
 interface DAppProxyControlProps {
-  proxyApp: ProxyApp
   proxyConfig: ConsoleConfig | TokenDAppConfig
+  proxyApp: ProxyApp
 }
 
-function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
-  const {
-    state: { config, network }
-  } = useNetwork()
+function DAppProxyControl({ proxyConfig, proxyApp }: DAppProxyControlProps) {
   const {
     dispatch,
-    state: { proxy: currentProxyApp }
-  } = useService()
+    state: { config, network }
+  } = useNetwork()
 
-  function startProxy(c: ConsoleConfig | TokenDAppConfig) {
-    if (!network || !c) {
-      AppToaster.show({
-        message: 'No network config found',
-        intent: Intent.DANGER
-      })
-      return
-    }
-
-    dispatch(startProxyAction(network, proxyApp, c.localPort))
-  }
-
-  function stopProxy() {
+  function startProxy() {
     if (!network || !config) {
       AppToaster.show({
         message: 'No network config found',
@@ -134,7 +120,17 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
       return
     }
 
-    dispatch(stopProxyAction(network, config.port))
+    dispatch(
+      startProxyAction(
+        network,
+        proxyApp.name,
+        `http://${config.host}:${proxyConfig.localPort}`
+      )
+    )
+  }
+
+  function stopProxy() {
+    dispatch(stopProxyAction(proxyApp.name))
   }
 
   // Need both of these set to start the proxy! User has the ability to edit these and
@@ -143,14 +139,14 @@ function DAppProxyControl({ proxyApp, proxyConfig }: DAppProxyControlProps) {
     return <>Unavailable</>
   }
 
-  return currentProxyApp === proxyApp ? (
+  return proxyApp.running ? (
     <ButtonUnstyled onClick={stopProxy} style={{ textAlign: 'right' }}>
       Stop
     </ButtonUnstyled>
   ) : (
     <ButtonUnstyled
       data-testid='start'
-      onClick={() => startProxy(proxyConfig)}
+      onClick={startProxy}
       style={{ textAlign: 'right' }}
     >
       Start

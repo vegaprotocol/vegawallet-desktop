@@ -12,10 +12,12 @@ import { Colors } from './config/colors'
 import { initAppAction } from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
-import { initNetworksAction } from './contexts/network/network-actions'
+import {
+  initNetworksAction,
+  startServiceAction
+} from './contexts/network/network-actions'
 import { useNetwork } from './contexts/network/network-context'
 import { NetworkProvider } from './contexts/network/network-provider'
-import { ServiceProvider } from './contexts/service/service-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { AppRouter } from './routes'
 
@@ -25,17 +27,27 @@ import { AppRouter } from './routes'
 function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
   const { state: globalState, dispatch: globalDispatch } = useGlobal()
-  const { dispatch: networkDispatch } = useNetwork()
+  const { state: networkState, dispatch: networkDispatch } = useNetwork()
 
+  // Get wallets, service state and version
   React.useEffect(() => {
     globalDispatch(initAppAction())
   }, [globalDispatch])
 
+  // Get stored networks and the default network config
   React.useEffect(() => {
     if (globalState.status === AppStatus.Initialised) {
       networkDispatch(initNetworksAction())
     }
   }, [globalState.status, networkDispatch])
+
+  // Start service on app startup and when network or config changes
+  React.useEffect(() => {
+    if (!networkState.network || !networkState.config) return
+    networkDispatch(
+      startServiceAction(networkState.network, networkState.config.port)
+    )
+  }, [networkState.network, networkState.config, networkDispatch])
 
   if (globalState.status === AppStatus.Pending) {
     return (
@@ -72,16 +84,14 @@ function App() {
     <Router>
       <GlobalProvider>
         <NetworkProvider>
-          <ServiceProvider>
-            <AppFrame>
-              <AppLoader>
-                <Chrome>
-                  <AppRouter />
-                </Chrome>
-                <PassphraseModal />
-              </AppLoader>
-            </AppFrame>
-          </ServiceProvider>
+          <AppFrame>
+            <AppLoader>
+              <Chrome>
+                <AppRouter />
+              </Chrome>
+              <PassphraseModal />
+            </AppLoader>
+          </AppFrame>
         </NetworkProvider>
       </GlobalProvider>
     </Router>

@@ -13,17 +13,15 @@ import (
 	"code.vegaprotocol.io/vegawallet/network"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
 	"code.vegaprotocol.io/vegawallet/node"
-	"code.vegaprotocol.io/vegawallet/proxy"
 	"code.vegaprotocol.io/vegawallet/service"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
-	"github.com/skratchdot/open-golang/open"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 type serviceState struct {
-	consoleURL   string
+	url          string
 	shutdownFunc func()
 }
 
@@ -33,13 +31,15 @@ func (s *serviceState) IsRunning() bool {
 
 func (s *serviceState) Shutdown() {
 	s.shutdownFunc()
+}
+
+func (s *serviceState) Reset() {
 	s.shutdownFunc = nil
+	s.url = ""
 }
 
 type StartServiceRequest struct {
-	Network       string `json:"network"`
-	WithConsole   bool   `json:"withConsole"`
-	WithTokenDApp bool   `json:"withTokenDApp"`
+	Network string `json:"network"`
 }
 
 func (r StartServiceRequest) Check() error {
@@ -55,8 +55,8 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	defer h.log.Debug("Leaving StartService")
 
 	if h.service.IsRunning() {
-		h.log.Error("A console already started")
-		return false, ErrConsoleAlreadyRunning
+		h.log.Error("The service is already running")
+		return false, ErrServiceAlreadyRunning
 	}
 
 	if err := req.Check(); err != nil {
@@ -132,6 +132,8 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, err
 	}
 
+	h.service.url = fmt.Sprintf("%s:%v", cfg.Host, cfg.Port)
+
 	go func() {
 		defer cancel()
 		h.log.Info("Starting the service")
@@ -140,77 +142,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		}
 	}()
 
-	var cs *proxy.Proxy
-	if req.WithConsole {
-		cons := proxy.NewProxy(
-			cfg.Console.LocalPort,
-			cfg.Console.URL,
-			cfg.API.GRPC.Hosts[0],
-		)
-		cs = cons
-
-		go func() {
-			defer cancel()
-			h.log.Info("Starting the console")
-			if err := cs.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-				h.log.Error(fmt.Sprintf("Error while starting the console proxy: %v", err))
-			}
-		}()
-
-		h.service.consoleURL = cs.GetBrowserURL()
-
-		h.log.Info(fmt.Sprintf("Opening the console at %s", cs.GetBrowserURL()))
-
-		if err = open.Run(cs.GetBrowserURL()); err != nil {
-			h.log.Error(fmt.Sprintf("Unable to open the console in the default browser: %v", err))
-			return false, fmt.Errorf("unable to open the console in the default browser: %w", err)
-		}
-	}
-
-	var tokenDApp *proxy.Proxy
-	if req.WithTokenDApp {
-		tda := proxy.NewProxy(
-			cfg.TokenDApp.LocalPort,
-			cfg.TokenDApp.URL,
-			cfg.API.GRPC.Hosts[0],
-		)
-		tokenDApp = tda
-
-		go func() {
-			defer cancel()
-			h.log.Info("Starting the token dApp")
-			if err := tokenDApp.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-				h.log.Error(fmt.Sprintf("Error while starting the token dApp proxy: %v", err))
-			}
-		}()
-
-		h.service.consoleURL = tokenDApp.GetBrowserURL()
-
-		h.log.Info(fmt.Sprintf("Opening the token dApp at %s", tokenDApp.GetBrowserURL()))
-
-		if err = open.Run(tokenDApp.GetBrowserURL()); err != nil {
-			h.log.Error(fmt.Sprintf("Unable to open the token dApp in the default browser: %v", err))
-			return false, fmt.Errorf("unable to open the token dApp in the default browser: %w", err)
-		}
-	}
-
 	h.waitSignal(ctx, cancel)
-
-	if req.WithConsole {
-		if err = cs.Stop(); err != nil {
-			h.log.Error(fmt.Sprintf("Error while stopping console proxy: %v", err))
-		} else {
-			h.log.Info("Console proxy stopped with success")
-		}
-	}
-
-	if req.WithTokenDApp {
-		if err = tokenDApp.Stop(); err != nil {
-			h.log.Error(fmt.Sprintf("Error while stopping token dApp proxy: %v", err))
-		} else {
-			h.log.Info("Token dApp proxy stopped with success")
-		}
-	}
 
 	if err = srv.Stop(); err != nil {
 		h.log.Error(fmt.Sprintf("Error while stopping HTTP server: %v", err))
@@ -231,7 +163,7 @@ func (h *Handler) GetServiceState() GetServiceStateResponse {
 	defer h.log.Debug("Leaving GetServiceState")
 
 	return GetServiceStateResponse{
-		URL:     h.service.consoleURL,
+		URL:     h.service.url,
 		Running: h.service.IsRunning(),
 	}
 }
@@ -242,11 +174,12 @@ func (h *Handler) StopService() (bool, error) {
 
 	if !h.service.IsRunning() {
 		h.log.Error("No service running")
-		return false, ErrConsoleNotRunning
+		return false, ErrServiceNotRunning
 	}
 
 	h.log.Info("Shutting down the service")
 	h.service.Shutdown()
+	h.service.Reset()
 
 	return true, nil
 }

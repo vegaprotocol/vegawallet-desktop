@@ -3,6 +3,7 @@ build/bin
 
 # Created when frontend is built
 frontend/build
+frontend/dist
 
 # Cypress
 frontend/automation/.nyc_output/

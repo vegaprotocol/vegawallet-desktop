@@ -298,6 +298,20 @@ export class GenerateKeyResponse {
 	    return a;
 	}
 }
+export class GetServiceStateResponse {
+    url: string;
+    running: boolean;
+
+    static createFrom(source: any = {}) {
+        return new GetServiceStateResponse(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.url = source["url"];
+        this.running = source["running"];
+    }
+}
 export class ConsoleConfig {
     url: string;
     localPort: number;
@@ -466,20 +480,8 @@ export class Network {
 	    return a;
 	}
 }
-export class GetServiceStateResponse {
-    url: string;
-    running: boolean;
 
-    static createFrom(source: any = {}) {
-        return new GetServiceStateResponse(source);
-    }
 
-    constructor(source: any = {}) {
-        if ('string' === typeof source) source = JSON.parse(source);
-        this.url = source["url"];
-        this.running = source["running"];
-    }
-}
 export class GetVersionResponse {
     version: string;
     gitHash: string;
@@ -751,8 +753,6 @@ export class SignMessageResponse {
 }
 export class StartServiceRequest {
     network: string;
-    withConsole: boolean;
-    withTokenDApp: boolean;
 
     static createFrom(source: any = {}) {
         return new StartServiceRequest(source);
@@ -761,10 +761,10 @@ export class StartServiceRequest {
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
         this.network = source["network"];
-        this.withConsole = source["withConsole"];
-        this.withTokenDApp = source["withTokenDApp"];
     }
 }
+
+
 export class TaintKeyRequest {
     wallet: string;
     pubKey: string;

@@ -44,6 +44,13 @@ const go = {
         return window.go.backend.Handler.GenerateKey(arg1);
       },
       /**
+       * GetConsoleState
+       * @returns {Promise<GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
+       */
+      "GetConsoleState": () => {
+        return window.go.backend.Handler.GetConsoleState();
+      },
+      /**
        * GetNetworkConfig
        * @param {string} arg1 - Go Type: string
        * @returns {Promise<Network|Error>}  - Go Type: *network.Network
@@ -57,6 +64,13 @@ const go = {
        */
       "GetServiceState": () => {
         return window.go.backend.Handler.GetServiceState();
+      },
+      /**
+       * GetTokenDAppState
+       * @returns {Promise<GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
+       */
+      "GetTokenDAppState": () => {
+        return window.go.backend.Handler.GetTokenDAppState();
       },
       /**
        * GetVersion
@@ -143,6 +157,14 @@ const go = {
         return window.go.backend.Handler.SignMessage(arg1);
       },
       /**
+       * StartConsole
+       * @param {StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
+       * @returns {Promise<boolean|Error>}  - Go Type: bool
+       */
+      "StartConsole": (arg1) => {
+        return window.go.backend.Handler.StartConsole(arg1);
+      },
+      /**
        * StartService
        * @param {StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
        * @returns {Promise<boolean|Error>}  - Go Type: bool
@@ -151,11 +173,33 @@ const go = {
         return window.go.backend.Handler.StartService(arg1);
       },
       /**
+       * StartTokenDApp
+       * @param {StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
+       * @returns {Promise<boolean|Error>}  - Go Type: bool
+       */
+      "StartTokenDApp": (arg1) => {
+        return window.go.backend.Handler.StartTokenDApp(arg1);
+      },
+      /**
+       * StopConsole
+       * @returns {Promise<boolean|Error>}  - Go Type: bool
+       */
+      "StopConsole": () => {
+        return window.go.backend.Handler.StopConsole();
+      },
+      /**
        * StopService
        * @returns {Promise<boolean|Error>}  - Go Type: bool
        */
       "StopService": () => {
         return window.go.backend.Handler.StopService();
+      },
+      /**
+       * StopTokenDApp
+       * @returns {Promise<boolean|Error>}  - Go Type: bool
+       */
+      "StopTokenDApp": () => {
+        return window.go.backend.Handler.StopTokenDApp();
       },
       /**
        * TaintKey

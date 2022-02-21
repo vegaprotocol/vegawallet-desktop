@@ -16,9 +16,12 @@ import (
 )
 
 var (
-	ErrConsoleAlreadyRunning   = errors.New("the console is already running")
-	ErrConsoleNotRunning       = errors.New("the console is not running")
-	ErrProgramIsNotInitialised = errors.New("program hasn't been initialised correctly")
+	ErrServiceAlreadyRunning   = errors.New("the service is already running")
+	ErrServiceNotRunning       = errors.New("the service is not running")
+	ErrConsoleAlreadyRunning   = errors.New("the console proxy is already running")
+	ErrConsoleNotRunning       = errors.New("the console proxy is not running")
+	ErrTokenDAppAlreadyRunning = errors.New("the token dApp proxy is already running")
+	ErrTokenDAppNotRunning     = errors.New("the token dApp proxy is not running")
 )
 
 type Handler struct {
@@ -29,7 +32,10 @@ type Handler struct {
 	log logger.Logger
 
 	configLoader *config.Loader
-	service      *serviceState
+
+	service   *serviceState
+	console   *serviceState
+	tokenDApp *serviceState
 }
 
 func NewHandler(log logger.Logger) *Handler {
@@ -52,6 +58,8 @@ func (h *Handler) Startup(ctx context.Context) {
 
 	h.configLoader = loader
 	h.service = &serviceState{}
+	h.console = &serviceState{}
+	h.tokenDApp = &serviceState{}
 }
 
 // DOMReady is called after the front-end dom has been loaded
@@ -64,8 +72,18 @@ func (h *Handler) Shutdown(_ context.Context) {
 	h.log.Debug("Entering WailsShutdown")
 	defer h.log.Debug("Leaving WailsShutdown")
 
+	if h.console.IsRunning() {
+		h.log.Info("Shutting down the console proxy")
+		h.console.Shutdown()
+	}
+
+	if h.tokenDApp.IsRunning() {
+		h.log.Info("Shutting down the token dApp proxy")
+		h.tokenDApp.Shutdown()
+	}
+
 	if h.service.IsRunning() {
-		h.log.Info("Shutting down the console")
+		h.log.Info("Shutting down the service")
 		h.service.Shutdown()
 	}
 }
