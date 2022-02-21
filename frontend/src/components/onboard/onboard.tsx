@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Outlet, useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import { DEFAULT_VEGA_HOME } from '../../config/environment'
@@ -33,26 +33,10 @@ export enum OnboardPaths {
 }
 
 export function Onboard() {
-  return (
-    <Routes>
-      <Route path={OnboardPaths.Settings} element={<OnboardSettings />} />
-      <Route
-        path={OnboardPaths.WalletCreate}
-        element={<OnboardWalletCreate />}
-      />
-      <Route
-        path={OnboardPaths.WalletImport}
-        element={<OnboardWalletImport />}
-      />
-      <Route path={OnboardPaths.Network} element={<OnboardNetwork />} />
-      <Route path={OnboardPaths.Home} element={<OnboardHome />} />
-      {/* If none of the above routes are hit, something has probably gone wrong so redirect to home */}
-      <Route path='*' element={<Navigate to={OnboardPaths.Home} />} />
-    </Routes>
-  )
+  return <Outlet />
 }
 
-function OnboardHome() {
+export function OnboardHome() {
   const navigate = useNavigate()
   const {
     state: { wallets, version }
@@ -107,7 +91,7 @@ interface Fields {
   vegaHome: string
 }
 
-function OnboardSettings() {
+export function OnboardSettings() {
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm<Fields>()
 
@@ -145,7 +129,7 @@ function OnboardSettings() {
   )
 }
 
-function OnboardWalletCreate() {
+export function OnboardWalletCreate() {
   const navigate = useNavigate()
   const { submit, response } = useCreateWallet()
 
@@ -173,7 +157,7 @@ function OnboardWalletCreate() {
   )
 }
 
-function OnboardWalletImport() {
+export function OnboardWalletImport() {
   const navigate = useNavigate()
   const { submit, response } = useImportWallet()
 
@@ -193,7 +177,7 @@ function OnboardWalletImport() {
   )
 }
 
-function OnboardNetwork() {
+export function OnboardNetwork() {
   const navigate = useNavigate()
   const { dispatch } = useGlobal()
 
@@ -214,7 +198,7 @@ interface OnboardPanelProps {
   title: React.ReactNode
 }
 
-function OnboardPanel({ children, title }: OnboardPanelProps) {
+export function OnboardPanel({ children, title }: OnboardPanelProps) {
   const navigate = useNavigate()
   return (
     <div

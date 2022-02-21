@@ -1,7 +1,7 @@
 import React from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
-import { HashRouter as Router, useMatch } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom'
 
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
@@ -17,7 +17,8 @@ import {
 import { useNetwork } from './contexts/network/network-context'
 import { NetworkProvider } from './contexts/network/network-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
-import { AppRouter, Paths } from './routes'
+import { useIsOnboard } from './hooks/use-is-onboard'
+import { AppRouter } from './routes'
 
 /**
  * Initialiases the app
@@ -95,7 +96,7 @@ interface AppFrameProps {
 }
 
 function AppFrame({ children }: AppFrameProps) {
-  const onboardMatch = useMatch(Paths.Onboard)
+  const isOnboard = useIsOnboard()
 
   return (
     <div
@@ -104,7 +105,7 @@ function AppFrame({ children }: AppFrameProps) {
         paddingTop: APP_FRAME_HEIGHT,
         backgroundSize: 'cover'
       }}
-      className={onboardMatch ? 'vega-bg' : undefined}
+      className={isOnboard ? 'vega-bg' : undefined}
     >
       <div
         style={{
@@ -113,7 +114,7 @@ function AppFrame({ children }: AppFrameProps) {
           left: 0,
           width: '100%',
           height: APP_FRAME_HEIGHT,
-          backgroundColor: onboardMatch ? 'transparent' : Colors.BLACK
+          backgroundColor: isOnboard ? 'transparent' : Colors.BLACK
         }}
         // The app is frameless by default so this element creates a space at the top of the app
         // which you can click and drag to move the app around. The drag function is triggered
