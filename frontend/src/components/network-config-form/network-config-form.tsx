@@ -8,6 +8,7 @@ import { Validation } from '../../lib/form-validation'
 import type { Network } from '../../wailsjs/go/models'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
+import { Select } from '../select'
 
 interface FormFields {
   logLevel: string
@@ -157,7 +158,7 @@ export const NetworkConfigForm = ({
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.logLevel?.message}
       >
-        <select
+        <Select
           data-testid='log-level'
           {...register('logLevel', { required: Validation.REQUIRED })}
         >
@@ -166,7 +167,7 @@ export const NetworkConfigForm = ({
               {level}
             </option>
           ))}
-        </select>
+        </Select>
       </FormGroup>
       <FormGroup
         label='gRPC Node retries'
