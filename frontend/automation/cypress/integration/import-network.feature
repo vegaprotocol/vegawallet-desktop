@@ -39,6 +39,5 @@ Feature: Import network
 
   Scenario: Import unsuccessfully via file path
     Given I am on the import network page
-    And I select "Other" on the dropdown
     When I import using invalid network import file path
     Then file path error is displayed
