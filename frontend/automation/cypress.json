@@ -6,7 +6,7 @@
     "walletServiceUrl": "http://127.0.0.1:1789/api/v1/version",
     "tokenServiceUrl": "http://127.0.0.1:1848",
     "mainnetConfigUrl": "https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml",
-    "testnetConfigUrl": "https://raw.githubusercontent.com/vegaprotocol/devops-infra/master/wallets/networks/testnet.toml?token=GHSAT0AAAAAABRVWDMK2KRAI5YREQI5RWD6YQXOTBA",
+    "testnetConfigUrl": "https://raw.githubusercontent.com/vegaprotocol/networks/master/fairground/fairground.toml",
     "testWalletRecoveryPhrase": "brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold",
     "TAGS": "not @todo and not @ignore and not @manual"
   },
