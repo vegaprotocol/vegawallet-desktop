@@ -8,12 +8,11 @@ import ReactDOM from 'react-dom'
 
 import packageJson from '../package.json'
 import App from './app'
+import { SENTRY_DSN } from './config/environment'
 
-const dsn = process.env.VITE_SENTRY_DSN || false
-
-if (dsn) {
+if (SENTRY_DSN) {
   Sentry.init({
-    dsn,
+    dsn: SENTRY_DSN,
     integrations: [new BrowserTracing()],
     release: packageJson.version,
     tracesSampleRate: 1.0
