@@ -22,7 +22,6 @@ export function initNetworksAction() {
       dispatch({ type: 'SET_PRESETS', presets: json })
     } catch (err) {
       Sentry.captureException(err)
-      console.log(err)
     }
 
     try {
@@ -48,7 +47,6 @@ export function initNetworksAction() {
       }
     } catch (err) {
       Sentry.captureException(err)
-      console.log(err)
     }
   }
 }
@@ -129,7 +127,6 @@ export function updateNetworkConfigAction(
     } catch (err) {
       Sentry.captureException(err)
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-      console.log(err)
     }
   }
 }
@@ -167,7 +164,6 @@ export function startServiceAction(network: string, port: number) {
       })
     } catch (err) {
       Sentry.captureException(err)
-      console.log(err)
     }
   }
 }
@@ -188,7 +184,6 @@ export function stopServiceAction() {
       }
     } catch (err) {
       Sentry.captureException(err)
-      console.log(err)
     }
   }
 }
@@ -229,7 +224,6 @@ export function startProxyAction(
       })
     } catch (err) {
       Sentry.captureException(err)
-      console.log(err)
     }
   }
 }
@@ -248,7 +242,6 @@ export function stopProxyAction(proxyAppName: ProxyName) {
       dispatch({ type: 'STOP_PROXY', app: proxyAppName })
     } catch (err) {
       Sentry.captureException(err)
-      console.log(err)
     }
   }
 }
@@ -287,6 +280,5 @@ async function stopProxies() {
     }
   } catch (err) {
     Sentry.captureException(err)
-    console.log(err)
   }
 }
