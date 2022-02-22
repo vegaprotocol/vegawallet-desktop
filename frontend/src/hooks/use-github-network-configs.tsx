@@ -20,16 +20,16 @@ export function useGithubNetworkConfigs() {
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState<Error | null>(null)
 
-  // TODO: Fix anys
   React.useEffect(() => {
     const getNetworksRepo = async () => {
       setLoading(true)
 
       try {
         // Get contents of the repo
-        const networkDirs: NetworkRepoResponse = await fetch(
+        const res = await fetch(
           'https://api.github.com/repos/vegaprotocol/networks/contents'
-        ).then(res => res.json())
+        )
+        const networkDirs: NetworkRepoResponse = await res.json()
 
         if (!Array.isArray(networkDirs)) {
           throw new Error('Expected networks repo to be an array')
@@ -44,9 +44,9 @@ export function useGithubNetworkConfigs() {
 
         // Get contents of each subdirectory
         const networksContents: NetworkRepoResponse[] = await Promise.all(
-          networks.map(content => {
-            console.log(content.url)
-            return fetch(content.url).then(res => res.json())
+          networks.map(async content => {
+            const res = await fetch(content.url)
+            return res.json()
           })
         )
 
