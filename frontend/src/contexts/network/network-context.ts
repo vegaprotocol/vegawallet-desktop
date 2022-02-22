@@ -15,9 +15,16 @@ export interface ProxyApp {
   url: string
 }
 
+export interface NetworkPreset {
+  name: string
+  configFileUrl: string
+  sha: string
+}
+
 export interface NetworkState {
   network: string | null
   networks: string[]
+  presets: NetworkPreset[]
   config: Network | null
   serviceRunning: boolean
   serviceUrl: string

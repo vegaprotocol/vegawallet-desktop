@@ -3,11 +3,9 @@ import type { FieldError } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
-import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useNetwork } from '../../contexts/network/network-context'
 import { FormStatus } from '../../hooks/use-form-state'
-import { useGithubNetworkConfigs } from '../../hooks/use-github-network-configs'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
@@ -28,10 +26,8 @@ interface NetworkImportFormProps {
 export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   const [showOverwriteCheckbox, setShowOverwriteCheckbox] =
     React.useState(false)
-  const { networkOptions, loading: networksOptionsLoading } =
-    useGithubNetworkConfigs()
   const {
-    state: { networks }
+    state: { networks, presets }
   } = useNetwork()
   const { status, submit, error } = useImportNetwork()
 
@@ -95,35 +91,29 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
         intent={errors.network?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.network?.message}
       >
-        {networksOptionsLoading ? (
-          <p style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-            Network presets loading...
-          </p>
-        ) : (
-          <select
-            data-testid='import-network-select'
-            id='network'
-            {...register('network', {
-              required: Validation.REQUIRED
-            })}
-          >
-            <option disabled={true} value=''>
-              Please select
-            </option>
-            {networkOptions?.map(option => {
-              return (
-                <option
-                  key={option.name}
-                  value={option.configFileUrl}
-                  disabled={Boolean(networks.find(n => n === option.name))}
-                >
-                  {option.name}
-                </option>
-              )
-            })}
-            <option value='other'>Other</option>
-          </select>
-        )}
+        <select
+          data-testid='import-network-select'
+          id='network'
+          {...register('network', {
+            required: Validation.REQUIRED
+          })}
+        >
+          <option disabled={true} value=''>
+            Please select
+          </option>
+          {presets.map(preset => {
+            return (
+              <option
+                key={preset.name}
+                value={preset.configFileUrl}
+                disabled={Boolean(networks.find(n => n === preset.name))}
+              >
+                {preset.name}
+              </option>
+            )
+          })}
+          <option value='other'>Other</option>
+        </select>
       </FormGroup>
       {presetNetwork === 'other' && (
         <>

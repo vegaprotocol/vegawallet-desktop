@@ -1,10 +1,11 @@
 import type { Network } from '../../wailsjs/go/models'
-import type { NetworkState } from './network-context'
+import type { NetworkPreset, NetworkState } from './network-context'
 import { ProxyName } from './network-context'
 
 export const initialNetworkState: NetworkState = {
   network: null,
   networks: [],
+  presets: [],
   config: null,
   serviceRunning: false,
   serviceUrl: '',
@@ -26,6 +27,10 @@ export type NetworkAction =
       network: string | null
       networks: string[]
       config: Network | null
+    }
+  | {
+      type: 'SET_PRESETS'
+      presets: NetworkPreset[]
     }
   | {
       type: 'CHANGE_NETWORK'
@@ -72,6 +77,12 @@ export function networkReducer(
         network: action.network,
         networks: action.networks.sort(),
         config: action.config
+      }
+    }
+    case 'SET_PRESETS': {
+      return {
+        ...state,
+        presets: action.presets
       }
     }
     case 'CHANGE_NETWORK': {

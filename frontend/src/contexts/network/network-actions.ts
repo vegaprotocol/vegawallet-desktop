@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/react'
 
 import { AppToaster } from '../../components/toaster'
+import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import { Service } from '../../service'
 import type {
@@ -14,6 +15,16 @@ import type { NetworkAction } from './network-reducer'
 
 export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
+    // fetch network presets
+    try {
+      const res = await fetch(DataSources.NETWORKS)
+      const json = await res.json()
+      dispatch({ type: 'SET_PRESETS', presets: json })
+    } catch (err) {
+      Sentry.captureException(err)
+      console.log(err)
+    }
+
     try {
       const networks = await Service.ListNetworks()
       if (networks instanceof Error) throw networks

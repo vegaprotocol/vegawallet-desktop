@@ -67,7 +67,6 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@cypress/instrument-cra": "^1.4.0",
-    "@octokit/types": "^6.34.0",
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@vitejs/plugin-react": "^1.2.0",
     "eslint": "^8.9.0",
