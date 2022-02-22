@@ -101,6 +101,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
           </p>
         ) : (
           <select
+            data-testid='import-network-select'
             id='network'
             {...register('network', {
               required: Validation.REQUIRED
