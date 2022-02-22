@@ -1,3 +1,5 @@
+import '../cleanup'
+
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
 Given('I navigate to the wallet page', () => {

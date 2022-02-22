@@ -1,3 +1,5 @@
+import '../cleanup'
+
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
 import NetworkDrawer from '../pages/network-drawer-page'
