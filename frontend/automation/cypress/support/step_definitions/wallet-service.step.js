@@ -13,7 +13,9 @@ When('I click start service for Token dApp', () => {
 })
 Then('wallet service is shown as running', () => {
   networkDrawer.clickBack()
-  walletPage.validateServiceRunning('mainnet1')
+  walletPage.validateServiceRunning(
+    'Wallet Service: New Mainnet on http://127.0.0.1:1789'
+  )
 })
 
 Then('wallet service is returning {string}', serviceStatus => {
