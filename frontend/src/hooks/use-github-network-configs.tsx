@@ -1,3 +1,4 @@
+import type { Endpoints } from '@octokit/types'
 import * as Sentry from '@sentry/react'
 import React from 'react'
 
@@ -8,6 +9,9 @@ interface NetworkOption {
   name: string
   configFileUrl: string
 }
+
+type NetworkRepoResponse =
+  Endpoints['GET /repos/{owner}/{repo}/contents/{path}']['response']['data']
 
 export function useGithubNetworkConfigs() {
   const [networkOptions, setNetworkOptions] = React.useState<
@@ -22,37 +26,57 @@ export function useGithubNetworkConfigs() {
       setLoading(true)
 
       try {
-        const networkDirs = await fetch(
+        // Get contents of the repo
+        const networkDirs: NetworkRepoResponse = await fetch(
           'https://api.github.com/repos/vegaprotocol/networks/contents'
         ).then(res => res.json())
 
-        const networks = networkDirs.filter((content: any) => {
+        if (!Array.isArray(networkDirs)) {
+          throw new Error('Expected networks repo to be an array')
+        }
+
+        // Filter, keeping only directories that dont start with '.'
+        const networks = networkDirs.filter(content => {
           if (content.type !== 'dir') return false
           if (content.name.startsWith('.')) return false
           return true
         })
 
-        const networksContents = await Promise.all(
-          networks.map((content: any) => {
+        // Get contents of each subdirectory
+        const networksContents: NetworkRepoResponse[] = await Promise.all(
+          networks.map(content => {
+            console.log(content.url)
             return fetch(content.url).then(res => res.json())
           })
         )
 
+        // Reduce each directory into a NetworkOption with name and raw download link
         const configFiles = networksContents.reduce(
           (arr, networkContent, i) => {
             const network = networks[i]
-            const configFile = networkContent.find(
-              (item: any) => item.name === `${network.name}.toml`
-            )
-            if (configFile) {
-              arr.push({
-                name: network.name,
-                configFileUrl: configFile.download_url
-              })
+
+            if (Array.isArray(networkContent)) {
+              const configFile = networkContent.find(
+                (item: any) => item.name === `${network.name}.toml`
+              )
+
+              if (configFile?.download_url) {
+                arr.push({
+                  name: network.name,
+                  configFileUrl: configFile.download_url
+                })
+              } else {
+                Sentry.captureMessage(
+                  `No .toml file found for network: ${network.name}`
+                )
+              }
+            } else {
+              Sentry.captureException('Network repo content is not an array')
             }
+
             return arr
           },
-          []
+          [] as NetworkOption[]
         )
 
         setNetworkOptions(configFiles)
