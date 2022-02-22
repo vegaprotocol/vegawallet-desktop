@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom'
 import packageJson from '../package.json'
 import App from './app'
 
-const dsn = process.env.REACT_APP_SENTRY_DSN || false
+const dsn = process.env.VITE_SENTRY_DSN || false
 
 if (dsn) {
   Sentry.init({
