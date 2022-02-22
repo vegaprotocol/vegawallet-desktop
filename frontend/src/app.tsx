@@ -1,10 +1,8 @@
 import React from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
-import { HashRouter as Router, useLocation } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom'
 
-import { Chrome } from './components/chrome'
-import { Onboard, OnboardPaths } from './components/onboard'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
@@ -19,6 +17,7 @@ import {
 import { useNetwork } from './contexts/network/network-context'
 import { NetworkProvider } from './contexts/network/network-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
+import { useIsOnboard } from './hooks/use-is-onboard'
 import { AppRouter } from './routes'
 
 /**
@@ -65,14 +64,6 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (globalState.status === AppStatus.Onboarding) {
-    return (
-      <Splash>
-        <Onboard />
-      </Splash>
-    )
-  }
-
   return <>{children}</>
 }
 
@@ -86,9 +77,7 @@ function App() {
         <NetworkProvider>
           <AppFrame>
             <AppLoader>
-              <Chrome>
-                <AppRouter />
-              </Chrome>
+              <AppRouter />
               <PassphraseModal />
             </AppLoader>
           </AppFrame>
@@ -106,9 +95,13 @@ interface AppFrameProps {
   children: React.ReactNode
 }
 
+/**
+ * Renders a bar at the top of the app with the data-wails-drag attribute which lets you
+ * drag the app window aroung. Also renders the vega-bg className if onboard mode
+ */
 function AppFrame({ children }: AppFrameProps) {
-  const location = useLocation()
-  const isOnboard = location.pathname.startsWith(OnboardPaths.Home)
+  const isOnboard = useIsOnboard()
+
   return (
     <div
       style={{
