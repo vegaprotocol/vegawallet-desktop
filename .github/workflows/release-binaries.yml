@@ -183,7 +183,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-windows:
-        needs: check-version
+    needs: check-version
     name: Release on Windows ${{ matrix.arch }}
     runs-on: windows-2019
     strategy:
