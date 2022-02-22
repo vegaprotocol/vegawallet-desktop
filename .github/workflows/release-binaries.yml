@@ -10,79 +10,79 @@ env:
   VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
 jobs:
-  # check-version:
-  #   name: Verify hard-coded version
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v2
+  check-version:
+    name: Verify hard-coded version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
 
-  #     - name: Verify hard-coded version
-  #       run: |
-  #         # Filter the content backend/version.go to find the `defaultVersion`
-  #         # constant with its line number. It should look like this:
-  #         #     13: defaultVersion = v0.12.0+dev
-  #         #     ^ the line number in backend/version.go
-  #         #         ^ the constant
-  #         #                          ^ the hard-coded version
-  #         version_info=$(grep -n "defaultVersion\s*=" backend/version.go | xargs)
-  #         echo "Found info: ${version_info}"
-  #         # Extract the version from the version_info found.
-  #         #   - awk '{print $4}'
-  #         #       get the 4th segment in the version_info output, the hard-coded
-  #         #       version.
-  #         #   - xargs
-  #         #       trim the output of spaces and quotes.
-  #         version=$(echo $version_info | awk '{print $4}' | xargs )
-  #         echo "Found version: ${version}"
-  #         # Get the line at which the version is set in version.go
-  #         #   - awk '{print $1}'
-  #         #       get the 1st segment in the version_info output, the line number.
-  #         #   - cut -d: -f1
-  #         #       get rid of the colon (`:`)
-  #         line=$(echo $version_info | awk '{print $1}' | cut -d: -f1)
-  #         echo "Found line: ${line}"
-  #         if [ "v$version" = "${{github.ref_name}}" ]; then
-  #           echo "The version matches the tag."
-  #         else
-  #           echo "::error file=backend/version.go,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
-  #           exit 1
-  #         fi
+      - name: Verify hard-coded version
+        run: |
+          # Filter the content backend/version.go to find the `defaultVersion`
+          # constant with its line number. It should look like this:
+          #     13: defaultVersion = v0.12.0+dev
+          #     ^ the line number in backend/version.go
+          #         ^ the constant
+          #                          ^ the hard-coded version
+          version_info=$(grep -n "defaultVersion\s*=" backend/version.go | xargs)
+          echo "Found info: ${version_info}"
+          # Extract the version from the version_info found.
+          #   - awk '{print $4}'
+          #       get the 4th segment in the version_info output, the hard-coded
+          #       version.
+          #   - xargs
+          #       trim the output of spaces and quotes.
+          version=$(echo $version_info | awk '{print $4}' | xargs )
+          echo "Found version: ${version}"
+          # Get the line at which the version is set in version.go
+          #   - awk '{print $1}'
+          #       get the 1st segment in the version_info output, the line number.
+          #   - cut -d: -f1
+          #       get rid of the colon (`:`)
+          line=$(echo $version_info | awk '{print $1}' | cut -d: -f1)
+          echo "Found line: ${line}"
+          if [ "$version" = "${{github.ref_name}}" ]; then
+            echo "The version matches the tag."
+          else
+            echo "::error file=backend/version.go,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
+            exit 1
+          fi
 
-  #     - name: Verify wails.json version
-  #       run: |
-  #         # Get the line at which the version is set in wails.json
-  #         #   - xargs
-  #         #       trim the output of spaces and quotes.
-  #         #   - awk '{print $1}'
-  #         #       get the 1st segment in the version_info output, the line number.
-  #         #   - cut -d: -f1
-  #         #       get rid of the colon (`:`)
-  #         line=$(grep -n "\"version\"" wails.json | xargs | awk '{print $1}' | cut -d: -f1)
-  #         version=$(cat wails.json | jq .version)
-  #         echo "Found version: ${version}"
-  #         if [ "$version" = "${{github.ref_name}}" ]; then
-  #           echo "The version in wails.json matches the tag."
-  #         else
-  #           echo "::error file=wails.json,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
-  #           exit 1
-  #         fi
+      - name: Verify wails.json version
+        run: |
+          # Get the line at which the version is set in wails.json
+          #   - xargs
+          #       trim the output of spaces and quotes.
+          #   - awk '{print $1}'
+          #       get the 1st segment in the version_info output, the line number.
+          #   - cut -d: -f1
+          #       get rid of the colon (`:`)
+          line=$(grep -n "\"version\"" wails.json | xargs | awk '{print $1}' | cut -d: -f1)
+          version=$(cat wails.json | jq .version)
+          echo "Found version: ${version}"
+          if [ "$version" = "${{github.ref_name}}" ]; then
+            echo "The version in wails.json matches the tag."
+          else
+            echo "::error file=wails.json,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
+            exit 1
+          fi
 
-  #     - name: Verify wails.json version
-  #       run: |
-  #         version_info=$(grep -n "\"version\"" wails.json | xargs)
-  #         line=$(echo $version_info | awk '{print $1}' | cut -d: -f1)
-  #         version=$(cat wails.json | jq .version)
-  #         echo "Found version: ${version}"
-  #         if [ "$version" = "${{github.ref_name}}" ]; then
-  #           echo "The version in wails.json matches the tag."
-  #         else
-  #           echo "::error file=wails.json,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
-  #           exit 1
-  #         fi
+      - name: Verify wails.json version
+        run: |
+          version_info=$(grep -n "\"version\"" wails.json | xargs)
+          line=$(echo $version_info | awk '{print $1}' | cut -d: -f1)
+          version=$(cat wails.json | jq .version)
+          echo "Found version: ${version}"
+          if [ "$version" = "${{github.ref_name}}" ]; then
+            echo "The version in wails.json matches the tag."
+          else
+            echo "::error file=wails.json,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
+            exit 1
+          fi
 
   release-macos:
-    # needs: check-version
+    needs: check-version
     name: Release on MacOS ${{ matrix.arch }}
     runs-on: macos-latest
     strategy:
@@ -182,67 +182,67 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # release-windows:
-  #   needs: check-version
-  #   name: Release on Windows ${{ matrix.arch }}
-  #   runs-on: windows-2019
-  #   strategy:
-  #     matrix:
-  #       arch:
-  #         - amd64
-  #         - arm64
-  #   steps:
-  #     - name: Set up Node 16
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: 16
-  #       id: npm
+  release-windows:
+    needs: check-version
+    name: Release on Windows ${{ matrix.arch }}
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        arch:
+          - amd64
+          - arm64
+    steps:
+      - name: Set up Node 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+        id: npm
 
-  #     - name: Set up Go
-  #       uses: actions/setup-go@v2
-  #       with:
-  #         go-version: 1.17
-  #       id: go
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+        id: go
 
-  #     - name: Check out code
-  #       uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-  #     - name: Get Wails
-  #       run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+      - name: Get Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
-  #     - name: Build binary
-  #       run: |
-  #         $hash= "${{ github.sha }}".substring(0,8)
-  #         wails build -f -platform windows/${{ matrix.arch }} -ldflags "-X code.vegaprotocol.io/vegawallet-desktop/backend.VersionHash=$hash"
+      - name: Build binary
+        run: |
+          $hash= "${{ github.sha }}".substring(0,8)
+          wails build -f -platform windows/${{ matrix.arch }} -ldflags "-X code.vegaprotocol.io/vegawallet-desktop/backend.VersionHash=$hash"
 
-  #     - name: Run tests
-  #       if: ${{ matrix.arch == 'amd64' }}
-  #       run: go test -v ./...
+      - name: Run tests
+        if: ${{ matrix.arch == 'amd64' }}
+        run: go test -v ./...
 
-  #     - name: Import signing certificate
-  #       run: |
-  #         echo "${{ secrets.WINDOWS_CERTIFICATE }}" > certificate.pfx
-  #         Certutil -f -p "${{ secrets.WINDOWS_CERTIFICATE_PASS }}" -importpfx certificate.pfx
+      - name: Import signing certificate
+        run: |
+          echo "${{ secrets.WINDOWS_CERTIFICATE }}" > certificate.pfx
+          Certutil -f -p "${{ secrets.WINDOWS_CERTIFICATE_PASS }}" -importpfx certificate.pfx
 
-  #     - name: Sign binary
-  #       uses: Dana-Prajea/code-sign-action@98c79121b376beab8d6a9484f445089db4461bca
-  #       with:
-  #         certificate: ${{ secrets.WINDOWS_CERTIFICATE }}
-  #         password: ${{ secrets.WINDOWS_CERTIFICATE_PASS }}
-  #         certificatesha1: ${{ secrets.WINDOWS_CERTIFICATE_HASH }}
-  #         folder: build/bin
-  #         timestampUrl: "http://timestamp.sectigo.com"
+      - name: Sign binary
+        uses: Dana-Prajea/code-sign-action@98c79121b376beab8d6a9484f445089db4461bca
+        with:
+          certificate: ${{ secrets.WINDOWS_CERTIFICATE }}
+          password: ${{ secrets.WINDOWS_CERTIFICATE_PASS }}
+          certificatesha1: ${{ secrets.WINDOWS_CERTIFICATE_HASH }}
+          folder: build/bin
+          timestampUrl: "http://timestamp.sectigo.com"
 
-  #     - name: Bundle binary in archive
-  #       uses: thedoctor0/zip-release@master
-  #       with:
-  #         type: zip
-  #         directory: build/bin
-  #         filename: vegawallet-desktop-windows-${{ matrix.arch }}.zip
+      - name: Bundle binary in archive
+        uses: thedoctor0/zip-release@master
+        with:
+          type: zip
+          directory: build/bin
+          filename: vegawallet-desktop-windows-${{ matrix.arch }}.zip
 
-  #     - name: Release
-  #       uses: softprops/action-gh-release@v1
-  #       with:
-  #         files: build/bin/*.zip
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/bin/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
