@@ -42,7 +42,7 @@ export function OnboardHome() {
       <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
         <Button
           loading={loading === 'create'}
-          data-testid='onboard-create-wallet'
+          data-testid='create-new-wallet'
           onClick={async () => {
             setLoading('create')
             await Service.InitialiseApp({
@@ -54,6 +54,7 @@ export function OnboardHome() {
           Create new wallet
         </Button>
         <Button
+          data-testid='import-wallet'
           loading={loading === 'import'}
           onClick={async () => {
             setLoading('import')

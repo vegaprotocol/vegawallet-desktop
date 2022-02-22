@@ -19,7 +19,9 @@ export default class NetworkDrawer {
   backBtn = 'back'
 
   SelectNetwork(networkName) {
-    cy.getByTestId(this.importNetworkSelect).select(networkName)
+    cy.getByTestId(this.importNetworkSelect).select(networkName, {
+      force: true
+    })
   }
 
   ImportNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
@@ -105,7 +107,7 @@ export default class NetworkDrawer {
 
   changeNetwork(networkName) {
     cy.getByTestId(this.networkDropDown).click({ force: true })
-    cy.getByTestId(`select-${networkName}`).click()
+    cy.getByTestId(`select-${networkName}`).click({ force: true })
   }
 
   verifyNetworkSelectable(networkName) {
