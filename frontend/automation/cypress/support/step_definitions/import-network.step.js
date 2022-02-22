@@ -1,7 +1,8 @@
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
-import WalletPage from '../pages/wallets-page'
-import NetworkDrawer from '../pages/network-drawer-page'
 import path from 'path'
+
+import NetworkDrawer from '../pages/network-drawer-page'
+import WalletPage from '../pages/wallets-page'
 const walletPage = new WalletPage()
 const networkDrawer = new NetworkDrawer()
 
@@ -53,17 +54,29 @@ When('I import using url and specify network name', () => {
   networkDrawer.ImportNetwork(url, networkName)
 })
 
+When('overwrite is clicked', () => {
+  networkDrawer.clickOverwrite()
+})
+
+When('I import is clicked', () => {
+  networkDrawer.clickImportBtn()
+})
+
 Then('new network is added', () => {
   networkDrawer.verifyNetworkImportedSuccessfully()
   networkDrawer.clickBack()
 })
 
 Then('network is not added', () => {
-  networkDrawer.verifyNetworkImportError()
+  networkDrawer.verifyNetworkImporturlError()
+})
+
+Then('network with same name error is shown', () => {
+  networkDrawer.verifyNetworkSameNameError()
 })
 
 Then('network page is populated as expected', () => {
-  networkDrawer.verifyNetworkPage()
+  networkDrawer.validateNetworkPage('mainnet1')
 })
 
 Then('file path error is displayed', () => {

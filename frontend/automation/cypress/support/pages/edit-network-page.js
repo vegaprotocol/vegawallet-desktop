@@ -16,7 +16,6 @@ export default class EditNetworkPage {
   verifyEditNetworkFields() {
     cy.getByTestId(this.serviceHostField).invoke('val').should('not.be.empty')
     cy.getByTestId(this.servicePortField).invoke('val').should('not.be.empty')
-    cy.getByTestId(this.consoleUrl).invoke('val').should('not.be.empty')
     cy.getByTestId(this.tokenUrl).invoke('val').should('not.be.empty')
     cy.getByTestId(this.nodes).invoke('val').should('not.be.empty')
     cy.getByTestId(this.logLevel).invoke('val').should('not.be.empty')

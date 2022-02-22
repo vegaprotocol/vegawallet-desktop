@@ -18,42 +18,41 @@ export default class NetworkDrawer {
   backBtn = 'back'
 
   ImportNetwork(urlPath, networkName = null, overwrite = false) {
-    if (this.IsNetworkEmpty() == false) {
-      this.clickManageNetworks()
-    } else this.clickImportBtn()
+    cy.get('body').then($body => {
+      if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
+        this.clickManageNetworks()
+      } else this.clickImportBtn()
+    })
 
-    cy.getByTestId(this.urlPathField).type(urlPath)
+    cy.getByTestId(this.urlPathField).type(urlPath, { force: true })
     if (networkName != null) {
       cy.getByTestId(this.networkNameField).type(networkName)
     }
     this.clickImportBtn()
 
-    if (overwrite == true) {
+    if (overwrite === true) {
       this.OverwriteNetwork(networkName)
     }
   }
 
   OverwriteNetwork(newNetworkName = null) {
-    cy.contains(
-      'Network with name already exists. Provide a new name or overwrite by checking the box below'
-    )
     if (newNetworkName != null) {
       cy.getByTestId(this.networkNameField).type(newNetworkName)
     }
-    cy.get('[type="checkbox"]').click()
+    this.clickOverwrite()
     this.clickImportBtn()
   }
 
   clickImportBtn() {
-    cy.getByTestId(this.importBtn).click()
+    cy.getByTestId(this.importBtn).click({ force: true })
   }
 
   clickManageNetworks() {
-    cy.getByTestId(this.manageNetworkBtn).click()
+    cy.getByTestId(this.manageNetworkBtn).click({ force: true })
   }
 
   clickEdit() {
-    cy.getByTestId(this.editNetworkBtn).click()
+    cy.getByTestId(this.editNetworkBtn).first().click()
   }
 
   clickBack() {
@@ -62,6 +61,19 @@ export default class NetworkDrawer {
 
   clickStartService() {
     cy.getByTestId(this.startServiceBtn).click({ force: true })
+  }
+
+  clickOverwrite() {
+    // cy.get('[type="checkbox"]').click()
+    cy.get('button[role="checkbox"]').click()
+  }
+
+  navigateBackToNetworkConfigPage() {
+    cy.get('body').then($body => {
+      if ($body.find(`[data-testid=${this.urlPathField}]`).length) {
+        this.clickBack()
+      }
+    })
   }
 
   verifyNetworkImportedSuccessfully() {
@@ -80,21 +92,19 @@ export default class NetworkDrawer {
     cy.contains('no such file or directory')
   }
 
-  IsNetworkEmpty() {
-    cy.get('body').then($body => {
-      if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
-        return false
-      } else return true
-    })
+  verifyNetworkSameNameError() {
+    cy.contains(
+      'Network with name already exists. Provide a new name or overwrite by checking the box below'
+    )
   }
 
   changeNetwork(networkName) {
-    cy.getByTestId(this.networkDropDown).click()
+    cy.getByTestId(this.networkDropDown).click({ force: true })
     cy.getByTestId(`select-${networkName}`).click()
   }
 
   verifyNetworkSelectable(networkName) {
-    cy.getByTestId(this.networkDropDown).click()
+    cy.getByTestId(this.networkDropDown).click({ force: true })
 
     cy.get('body').then($body => {
       if ($body.find(`[data-testid=select-${networkName}]`).length) {
@@ -103,7 +113,8 @@ export default class NetworkDrawer {
     })
   }
 
-  verifyNetworkPage() {
+  validateNetworkPage(selectedNetwork) {
+    cy.getByTestId(this.networkDropDown).should('have.text', selectedNetwork)
     cy.getByTestId(this.restServiceUrl).should('not.be.empty')
     cy.getByTestId(this.consoleUrl).should('not.be.empty')
     cy.getByTestId(this.tokenUrl).should('not.be.empty')

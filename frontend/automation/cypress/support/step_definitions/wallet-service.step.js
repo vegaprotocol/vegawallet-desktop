@@ -1,6 +1,8 @@
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
-import WalletPage from '../pages/wallets-page'
+
 import NetworkDrawer from '../pages/network-drawer-page'
+import WalletPage from '../pages/wallets-page'
+
 const walletPage = new WalletPage()
 const networkDrawer = new NetworkDrawer()
 
@@ -13,7 +15,7 @@ When('I click start service for Token dApp', () => {
 })
 Then('wallet service is shown as running', () => {
   networkDrawer.clickBack()
-  walletPage.validateServiceRunning('mainnet1')
+  walletPage.validateServiceRunning('New Mainnet')
 })
 
 Then('wallet service is returning {string}', serviceStatus => {

@@ -1,6 +1,6 @@
-@ignore
+
 Feature: Import network
-  @ignore
+
   Scenario: Import successfully using url
     Given I am on the import network page
     When I import using valid network import url
@@ -15,16 +15,17 @@ Feature: Import network
   Scenario: Overwrite network that already exists
     Given I am on the import network page
     When I import using valid network import url
-    Then network is not added
-    When overwrite is clicked
-    And I import using valid network import url
-    Then new network is added
+    Then network with same name error is shown
+    And overwrite is clicked
+    And I import is clicked
+    And new network is added
 
   Scenario: Import same network with different name
     Given I am on the import network page
     When I import using url and specify network name
     Then new network is added
 
+  @ignore
   Scenario: Import successfully via file path
     Given I am on the import network page
     When I import using valid network import file path
