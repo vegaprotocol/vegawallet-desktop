@@ -1,7 +1,10 @@
+import '../cleanup'
+
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
+
+import KeypairPage from '../pages/key-pair-page'
 import WalletImportPage from '../pages/wallet-import-page'
 import WalletPage from '../pages/wallets-page'
-import KeypairPage from '../pages/key-pair-page'
 const walletImportPage = new WalletImportPage()
 const walletPage = new WalletPage()
 const keyPairPage = new KeypairPage()

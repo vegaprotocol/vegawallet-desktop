@@ -1,3 +1,5 @@
+import '../cleanup'
+
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
 import EditNetworkPage from '../pages/edit-network-page'

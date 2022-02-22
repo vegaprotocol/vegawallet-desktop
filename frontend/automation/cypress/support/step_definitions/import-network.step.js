@@ -1,3 +1,5 @@
+import '../cleanup'
+
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 import path from 'path'
 
@@ -19,7 +21,7 @@ Given('I have an imported network', () => {
   networkDrawer.ImportNetworkUsingPath(url)
 })
 
-When('I select {string} on the dropdown', (networkName) => {
+When('I select {string} on the dropdown', networkName => {
   networkDrawer.clickImportBtn()
   networkDrawer.SelectNetwork(networkName)
 })
@@ -80,7 +82,7 @@ Then('network with same name error is shown', () => {
   networkDrawer.verifyNetworkSameNameError()
 })
 
-Then('network page is populated with {string} as expected', (expectedNetwork) => {
+Then('network page is populated with {string} as expected', expectedNetwork => {
   networkDrawer.validateNetworkPage(expectedNetwork)
 })
 
