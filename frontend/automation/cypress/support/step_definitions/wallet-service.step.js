@@ -17,7 +17,7 @@ When('I click start service for Token dApp', () => {
 })
 Then('wallet service is shown as running', () => {
   networkDrawer.clickBack()
-  walletPage.validateServiceRunning('New Mainnet')
+  walletPage.validateServiceRunning('mainnet1')
 })
 
 Then('wallet service is returning {string}', serviceStatus => {
