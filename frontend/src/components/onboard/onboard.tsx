@@ -1,13 +1,12 @@
 import * as Sentry from '@sentry/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Navigate, Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import { DEFAULT_VEGA_HOME } from '../../config/environment'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
-import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { OnboardPaths, Paths } from '../../routes'
@@ -32,15 +31,8 @@ export function OnboardHome() {
   const navigate = useNavigate()
   const [loading, setLoading] = React.useState<'create' | 'import' | null>(null)
   const {
-    state: { wallets, version }
+    state: { version }
   } = useGlobal()
-  const {
-    state: { networks }
-  } = useNetwork()
-
-  if (wallets.length && !networks.length) {
-    return <Navigate to={OnboardPaths.Network} />
-  }
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -112,7 +104,7 @@ export function OnboardSettings() {
   )
 
   return (
-    <OnboardPanel title='Advanced settings'>
+    <OnboardPanel title='Advanced settings' back={OnboardPaths.Home}>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup
           label='Vega home'
@@ -136,7 +128,7 @@ export function OnboardWalletCreate() {
   const { submit, response } = useCreateWallet()
 
   return (
-    <OnboardPanel title='Create wallet'>
+    <OnboardPanel title='Create wallet' back={OnboardPaths.Home}>
       {response ? (
         <WalletCreateFormSuccess
           response={response}
@@ -170,7 +162,7 @@ export function OnboardWalletImport() {
   }, [response, navigate])
 
   return (
-    <OnboardPanel title='Import a wallet'>
+    <OnboardPanel title='Import a wallet' back={OnboardPaths.Home}>
       <WalletImportForm
         submit={submit}
         cancel={() => navigate(OnboardPaths.Home)}
@@ -189,7 +181,7 @@ export function OnboardNetwork() {
   }, [dispatch, navigate])
 
   return (
-    <OnboardPanel title='Import a network'>
+    <OnboardPanel title='Import a network' back={OnboardPaths.WalletCreate}>
       <NetworkImportForm onComplete={onComplete} />
     </OnboardPanel>
   )
@@ -198,9 +190,10 @@ export function OnboardNetwork() {
 interface OnboardPanelProps {
   children: React.ReactNode
   title: React.ReactNode
+  back: OnboardPaths
 }
 
-export function OnboardPanel({ children, title }: OnboardPanelProps) {
+export function OnboardPanel({ children, title, back }: OnboardPanelProps) {
   const navigate = useNavigate()
   return (
     <div
@@ -220,7 +213,7 @@ export function OnboardPanel({ children, title }: OnboardPanelProps) {
         }}
       >
         <span style={{ flex: 1 }}>
-          <ButtonUnstyled data-testid='back' onClick={() => navigate(-1)}>
+          <ButtonUnstyled data-testid='back' onClick={() => navigate(back)}>
             Back
           </ButtonUnstyled>
         </span>
