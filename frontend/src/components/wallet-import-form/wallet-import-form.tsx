@@ -6,6 +6,7 @@ import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
+import { Select } from '../select'
 
 interface FormFields {
   wallet: string
@@ -66,14 +67,14 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         intent={errors.version?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.version?.message}
       >
-        <select
+        <Select
           data-testid='version'
           defaultValue={2}
           {...register('version', { required: Validation.REQUIRED })}
         >
           <option value={1}>1</option>
           <option value={2}>2</option>
-        </select>
+        </Select>
       </FormGroup>
       <FormGroup
         label='Choose passphrase'

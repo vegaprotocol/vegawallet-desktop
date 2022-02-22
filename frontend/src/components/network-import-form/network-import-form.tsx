@@ -11,6 +11,7 @@ import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { Checkbox } from '../checkbox'
 import { FormGroup } from '../form-group'
+import { Select } from '../select'
 
 interface FormFields {
   name: string
@@ -91,7 +92,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
         intent={errors.network?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.network?.message}
       >
-        <select
+        <Select
           data-testid='import-network-select'
           id='network'
           {...register('network', {
@@ -113,7 +114,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
             )
           })}
           <option value='other'>Other</option>
-        </select>
+        </Select>
       </FormGroup>
       {presetNetwork === 'other' && (
         <>
