@@ -76,7 +76,7 @@ Then('network with same name error is shown', () => {
 })
 
 Then('network page is populated as expected', () => {
-  networkDrawer.validateNetworkPage("mainnet1")
+  networkDrawer.validateNetworkPage('mainnet1')
 })
 
 Then('file path error is displayed', () => {

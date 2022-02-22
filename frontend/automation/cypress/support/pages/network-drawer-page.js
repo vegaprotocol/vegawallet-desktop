@@ -24,7 +24,7 @@ export default class NetworkDrawer {
       } else this.clickImportBtn()
     })
 
-    cy.getByTestId(this.urlPathField).type(urlPath, {force:true})
+    cy.getByTestId(this.urlPathField).type(urlPath, { force: true })
     if (networkName != null) {
       cy.getByTestId(this.networkNameField).type(networkName)
     }
@@ -44,7 +44,7 @@ export default class NetworkDrawer {
   }
 
   clickImportBtn() {
-    cy.getByTestId(this.importBtn).click({force:true})
+    cy.getByTestId(this.importBtn).click({ force: true })
   }
 
   clickManageNetworks() {
