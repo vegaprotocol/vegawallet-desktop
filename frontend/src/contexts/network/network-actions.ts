@@ -5,7 +5,6 @@ import { Intent } from '../../config/intent'
 import { Service } from '../../service'
 import type {
   GetServiceStateResponse,
-  ImportNetworkFromSourceRequest,
   Network,
   StartServiceRequest
 } from '../../wailsjs/go/models'
