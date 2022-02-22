@@ -42,7 +42,7 @@ jobs:
           #       get rid of the colon (`:`)
           line=$(echo $version_info | awk '{print $1}' | cut -d: -f1)
           echo "Found line: ${line}"
-          if [ "$version" = "${{github.ref_name}}" ]; then
+          if [ "v$version" = "${{github.ref_name}}" ]; then
             echo "The version matches the tag."
           else
             echo "::error file=backend/version.go,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
