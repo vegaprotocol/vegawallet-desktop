@@ -1,6 +1,7 @@
 export default class NetworkDrawer {
   networkDrawerBtn = 'network-drawer'
   importBtn = 'import'
+  importNetworkSelect = 'import-network-select'
   urlPathField = 'url-path'
   networkNameField = 'network-name'
   networkDropDown = 'network-select'
@@ -17,13 +18,17 @@ export default class NetworkDrawer {
   editNetworkBtn = 'edit'
   backBtn = 'back'
 
-  ImportNetwork(urlPath, networkName = null, overwrite = false) {
+  SelectNetwork(networkName) {
+    cy.getByTestId(this.importNetworkSelect).select(networkName)
+  }
+
+  ImportNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
     cy.get('body').then($body => {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
         this.clickManageNetworks()
       } else this.clickImportBtn()
     })
-
+    this.SelectNetwork('Other')
     cy.getByTestId(this.urlPathField).type(urlPath, { force: true })
     if (networkName != null) {
       cy.getByTestId(this.networkNameField).type(networkName)

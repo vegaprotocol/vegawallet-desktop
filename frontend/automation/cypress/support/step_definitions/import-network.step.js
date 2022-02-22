@@ -16,13 +16,18 @@ Given('I have an imported network', () => {
   walletPage.clickNetworkDrawer()
   const url = Cypress.env('mainnetConfigUrl')
 
-  networkDrawer.ImportNetwork(url)
+  networkDrawer.ImportNetworkUsingPath(url)
+})
+
+When('I select {string} on the dropdown', (networkName) => {
+  networkDrawer.clickImportBtn()
+  networkDrawer.SelectNetwork(networkName)
 })
 
 When('I import using valid network import url', () => {
   const url = Cypress.env('mainnetConfigUrl')
 
-  networkDrawer.ImportNetwork(url)
+  networkDrawer.ImportNetworkUsingPath(url)
 })
 
 When('I import using valid network import file path', () => {
@@ -31,34 +36,34 @@ When('I import using valid network import file path', () => {
     'network-config/mainnet1.toml'
   )
 
-  networkDrawer.ImportNetwork(filePath)
+  networkDrawer.ImportNetworkUsingPath(filePath)
 })
 
 When('I import using invalid network import file path', () => {
   const invalidFilePath = './network-config/mainnet1'
 
-  networkDrawer.ImportNetwork(invalidFilePath)
+  networkDrawer.ImportNetworkUsingPath(invalidFilePath)
 })
 
 When('I import using unknown network import url', () => {
   const url =
     'https://githubusercontent.com/vegaprotocol/networks/master/mainnet1/fake.toml'
 
-  networkDrawer.ImportNetwork(url)
+  networkDrawer.ImportNetworkUsingPath(url)
 })
 
 When('I import using url and specify network name', () => {
   const url = Cypress.env('mainnetConfigUrl')
   const networkName = 'New Mainnet'
 
-  networkDrawer.ImportNetwork(url, networkName)
+  networkDrawer.ImportNetworkUsingPath(url, networkName)
 })
 
 When('overwrite is clicked', () => {
   networkDrawer.clickOverwrite()
 })
 
-When('I import is clicked', () => {
+When('Import is clicked', () => {
   networkDrawer.clickImportBtn()
 })
 
@@ -75,8 +80,8 @@ Then('network with same name error is shown', () => {
   networkDrawer.verifyNetworkSameNameError()
 })
 
-Then('network page is populated as expected', () => {
-  networkDrawer.validateNetworkPage('mainnet1')
+Then('network page is populated with {string} as expected', (expectedNetwork) => {
+  networkDrawer.validateNetworkPage(expectedNetwork)
 })
 
 Then('file path error is displayed', () => {

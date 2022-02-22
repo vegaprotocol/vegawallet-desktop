@@ -1,11 +1,17 @@
 
 Feature: Import network
 
+  Scenario: Import network using dropdown
+    Given I am on the import network page
+    When I select "fairground" on the dropdown
+    And Import is clicked
+    Then new network is added
+    And network page is populated with "fairground" as expected
+
   Scenario: Import successfully using url
     Given I am on the import network page
     When I import using valid network import url
     Then new network is added
-    And network page is populated as expected
 
   Scenario: Import unsuccessfully using url
     Given I am on the import network page
@@ -17,7 +23,7 @@ Feature: Import network
     When I import using valid network import url
     Then network with same name error is shown
     And overwrite is clicked
-    And I import is clicked
+    And Import is clicked
     And new network is added
 
   Scenario: Import same network with different name
@@ -30,7 +36,6 @@ Feature: Import network
     Given I am on the import network page
     When I import using valid network import file path
     Then new network is added
-
 
   Scenario: Import unsuccessfully via file path
     Given I am on the import network page

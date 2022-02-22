@@ -7,8 +7,18 @@ import { Intent } from '../config/intent'
 import { addNetworkAction } from '../contexts/network/network-actions'
 import { useNetwork } from '../contexts/network/network-context'
 import { Service } from '../service'
-import type { ImportNetworkFromSourceResponse } from '../wailsjs/go/models'
+import type {
+  ImportNetworkFromSourceRequest,
+  ImportNetworkFromSourceResponse
+} from '../wailsjs/go/models'
 import { FormStatus, useFormState } from './use-form-state'
+
+interface ImportNetworkArgs {
+  name: string
+  network: string
+  fileOrUrl: string
+  force: boolean
+}
 
 export function useImportNetwork() {
   const { dispatch } = useNetwork()
@@ -18,16 +28,13 @@ export function useImportNetwork() {
   const [error, setError] = React.useState<string | null>(null)
 
   const submit = React.useCallback(
-    async (values: { name: string; fileOrUrl: string; force: boolean }) => {
-      const isUrl = /^(http|https):\/\/[^ "]+$/i.test(values.fileOrUrl)
+    async (values: ImportNetworkArgs) => {
       try {
         setStatus(FormStatus.Pending)
-        const res = await Service.ImportNetwork({
-          name: values.name,
-          url: isUrl ? values.fileOrUrl : '',
-          filePath: !isUrl ? values.fileOrUrl : '',
-          force: values.force
-        })
+
+        const args = createImportNetworkArgs(values)
+        const res = await Service.ImportNetwork(args)
+
         if (res) {
           const config = await Service.GetNetworkConfig(res.name)
 
@@ -79,5 +86,29 @@ export function useImportNetwork() {
     response,
     submit,
     error
+  }
+}
+
+function createImportNetworkArgs(
+  values: ImportNetworkArgs
+): ImportNetworkFromSourceRequest {
+  // Other option is selected so figure out whether the fileOrUrl input is a url or not
+  // and use the relevent object property
+  if (values.network === 'other') {
+    const isUrl = /^(http|https):\/\/[^ "]+$/i.test(values.fileOrUrl)
+    return {
+      name: values.name,
+      url: isUrl ? values.fileOrUrl : '',
+      filePath: !isUrl ? values.fileOrUrl : '',
+      force: values.force
+    }
+  }
+
+  // One of the presets have been used
+  return {
+    name: '',
+    url: values.network,
+    filePath: '',
+    force: false
   }
 }

@@ -124,50 +124,6 @@ export function updateNetworkConfigAction(
   }
 }
 
-export function importNetworkAction(values: ImportNetworkFromSourceRequest) {
-  return async (dispatch: NetworkDispatch) => {
-    Sentry.addBreadcrumb({
-      type: 'ImportNetworkConfig',
-      level: Sentry.Severity.Log,
-      message: 'ImportNetworkConfig',
-      timestamp: Date.now()
-    })
-    try {
-      const res = await Service.ImportNetwork({
-        name: values.name,
-        url: values.url,
-        filePath: values.filePath,
-        force: values.force
-      })
-
-      if (res) {
-        const config = await Service.GetNetworkConfig(res.name)
-        dispatch({
-          type: 'ADD_NETWORK',
-          network: res.name,
-          config: config
-        })
-
-        AppToaster.show({
-          message: `Network imported from ${res.filePath}`,
-          intent: Intent.SUCCESS
-        })
-      } else {
-        AppToaster.show({
-          message: 'Error: Could not import network',
-          intent: Intent.DANGER
-        })
-      }
-    } catch (err) {
-      Sentry.captureException(err)
-      AppToaster.show({
-        message: `${err}`,
-        intent: Intent.DANGER
-      })
-    }
-  }
-}
-
 export function addNetworkAction(
   network: string,
   config: Network
