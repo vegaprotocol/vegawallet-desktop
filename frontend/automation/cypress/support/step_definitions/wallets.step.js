@@ -1,6 +1,7 @@
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
-import WalletPage from '../pages/wallets-page'
+
 import KeypairPage from '../pages/key-pair-page'
+import WalletPage from '../pages/wallets-page'
 const walletPage = new WalletPage()
 const keyPairPage = new KeypairPage()
 

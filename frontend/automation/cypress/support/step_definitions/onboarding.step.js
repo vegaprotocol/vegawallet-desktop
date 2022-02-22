@@ -1,6 +1,6 @@
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
-Given('I navigate to the wallet page', page => {
+Given('I navigate to the wallet page', () => {
   cy.visit('#/')
 })
 
