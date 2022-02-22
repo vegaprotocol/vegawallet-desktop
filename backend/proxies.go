@@ -1,7 +1,6 @@
 package backend
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -60,10 +59,6 @@ func (h *Handler) StartConsole(req *StartServiceRequest) (bool, error) {
 	}
 	defer syncLogger(log)
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	h.console.shutdownFunc = cancel
-
 	cs := proxy.NewProxy(
 		cfg.Console.LocalPort,
 		cfg.Console.URL,
@@ -71,28 +66,26 @@ func (h *Handler) StartConsole(req *StartServiceRequest) (bool, error) {
 	)
 
 	go func() {
-		defer cancel()
 		h.log.Info("Starting the console")
 		if err := cs.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			h.log.Error(fmt.Sprintf("Error while starting the console proxy: %v", err))
+			h.console.Reset()
+			h.log.Info("Console proxy state has been reset")
 		}
 	}()
 
 	h.console.url = cs.GetBrowserURL()
+	h.console.shutdownFunc = func() {
+		if err := cs.Stop(); err != nil {
+			h.log.Error(fmt.Sprintf("Couldn't stop the console proxy: %v", err))
+		}
+	}
 
 	h.log.Info(fmt.Sprintf("Opening the console at %s", h.console.url))
 
 	if err = open.Run(cs.GetBrowserURL()); err != nil {
 		h.log.Error(fmt.Sprintf("Unable to open the console in the default browser: %v", err))
 		return false, fmt.Errorf("unable to open the console in the default browser: %w", err)
-	}
-
-	h.waitSignal(ctx, cancel)
-
-	if err = cs.Stop(); err != nil {
-		h.log.Error(fmt.Sprintf("Error while stopping console proxy: %v", err))
-	} else {
-		h.log.Info("Console proxy stopped with success")
 	}
 
 	return true, nil
@@ -171,10 +164,6 @@ func (h *Handler) StartTokenDApp(req *StartServiceRequest) (bool, error) {
 	}
 	defer syncLogger(log)
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	h.tokenDApp.shutdownFunc = cancel
-
 	tokenDApp := proxy.NewProxy(
 		cfg.TokenDApp.LocalPort,
 		cfg.TokenDApp.URL,
@@ -182,28 +171,26 @@ func (h *Handler) StartTokenDApp(req *StartServiceRequest) (bool, error) {
 	)
 
 	go func() {
-		defer cancel()
 		h.log.Info("Starting the token dApp")
 		if err := tokenDApp.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			h.log.Error(fmt.Sprintf("Error while starting the token dApp proxy: %v", err))
+			h.tokenDApp.Reset()
+			h.log.Info("Token dApp proxy state has been reset")
 		}
 	}()
 
 	h.tokenDApp.url = tokenDApp.GetBrowserURL()
+	h.tokenDApp.shutdownFunc = func() {
+		if err := tokenDApp.Stop(); err != nil {
+			h.log.Error(fmt.Sprintf("Couldn't stop the token dApp proxy: %v", err))
+		}
+	}
 
 	h.log.Info(fmt.Sprintf("Opening the token dApp at %s", h.tokenDApp.url))
 
 	if err = open.Run(tokenDApp.GetBrowserURL()); err != nil {
 		h.log.Error(fmt.Sprintf("Unable to open the token dApp in the default browser: %v", err))
 		return false, fmt.Errorf("unable to open the token dApp in the default browser: %w", err)
-	}
-
-	h.waitSignal(ctx, cancel)
-
-	if err = tokenDApp.Stop(); err != nil {
-		h.log.Error(fmt.Sprintf("Error while stopping token dApp proxy: %v", err))
-	} else {
-		h.log.Info("Token dApp proxy stopped with success")
 	}
 
 	return true, nil

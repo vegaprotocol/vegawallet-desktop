@@ -1,13 +1,10 @@
 package backend
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
-	"os/signal"
-	"syscall"
 
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet/network"
@@ -104,10 +101,6 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 	defer syncLogger(log)
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	h.service.shutdownFunc = cancel
-
 	svcStore, err := svcstore.InitialiseStore(paths.New(config.VegaHome))
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise service store: %v", err))
@@ -133,22 +126,20 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 
 	h.service.url = fmt.Sprintf("%s:%v", cfg.Host, cfg.Port)
+	h.service.shutdownFunc = func() {
+		if err := srv.Stop(); err != nil {
+			h.log.Error(fmt.Sprintf("Couldn't stop the service: %v", err))
+		}
+	}
 
 	go func() {
-		defer cancel()
 		h.log.Info("Starting the service")
 		if err := srv.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			h.log.Error(fmt.Sprintf("Error while starting HTTP server: %v", err))
+			h.service.Reset()
+			h.log.Info("Service state has been reset")
 		}
 	}()
-
-	h.waitSignal(ctx, cancel)
-
-	if err = srv.Stop(); err != nil {
-		h.log.Error(fmt.Sprintf("Error while stopping HTTP server: %v", err))
-	} else {
-		h.log.Info("HTTP server stopped with success")
-	}
 
 	return true, nil
 }
@@ -182,22 +173,6 @@ func (h *Handler) StopService() (bool, error) {
 	h.service.Reset()
 
 	return true, nil
-}
-
-// waitSignal will wait for a sigterm or sigint interrupt.
-func (h *Handler) waitSignal(ctx context.Context, shutdownFunc func()) {
-	var gracefulStop = make(chan os.Signal, 1)
-	signal.Notify(gracefulStop, syscall.SIGTERM)
-	signal.Notify(gracefulStop, syscall.SIGINT)
-	signal.Notify(gracefulStop, syscall.SIGQUIT)
-
-	select {
-	case sig := <-gracefulStop:
-		h.log.Info(fmt.Sprintf("Caught signal %+v", sig))
-		shutdownFunc()
-	case <-ctx.Done():
-		// nothing to do
-	}
 }
 
 func buildLogger(level string) (*zap.Logger, error) {
