@@ -1,10 +1,10 @@
 name: Verify Pull Request
 
-# on:
-#   pull_request:
-#     branches:
-#       - main
-#       - develop
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
   verify-linked-issue:
