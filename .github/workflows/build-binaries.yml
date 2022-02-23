@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         os:
+          - ubuntu-latest
           - macos-latest
           - windows-2019
         arch:
@@ -48,6 +49,11 @@ jobs:
       - name: Build binary for macOS
         if: ${{ runner.os == 'macOS' }}
         run: wails build -f -platform=darwin/${{ matrix.arch }}
+
+      # Cross-compiling to ARM64 is not supported for Linux.
+      - name: Build binary for Linux AMD-64
+        if: ${{ runner.os == 'Linux' && matrix.arch == 'amd64' }}
+        run: wails build -f -platform=linux/${{ matrix.arch }}
 
       - name: Tests backend
         if: ${{ matrix.arch == 'amd64' }}
