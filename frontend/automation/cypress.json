@@ -1,0 +1,15 @@
+{
+  "baseUrl": "http://localhost:34115/",
+  "projectId": "t5pfg7",
+  "defaultCommandTimeout": 20000,
+  "env": {
+    "walletServiceUrl": "http://127.0.0.1:1789/api/v1/version",
+    "tokenServiceUrl": "http://127.0.0.1:1848",
+    "consoleServiceUrl": "http://127.0.0.1:1847",
+    "mainnetConfigUrl": "https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml",
+    "testnetConfigUrl": "https://raw.githubusercontent.com/vegaprotocol/networks/master/fairground/fairground.toml",
+    "testWalletRecoveryPhrase": "brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold",
+    "TAGS": "not @todo and not @ignore and not @manual"
+  },
+  "fixturesFolder": false
+}

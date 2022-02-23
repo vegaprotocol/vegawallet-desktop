@@ -1,0 +1,4 @@
+backend @vegaprotocol/core
+frontend @vegaprotocol/frontend
+
+* @vegaprotocol/core @vegaprotocol/frontend

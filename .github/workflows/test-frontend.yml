@@ -1,0 +1,122 @@
+name: Test frontend
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  cypress-run:
+    name: Run end-to-end tests
+    runs-on: macos-latest
+    env:
+      GO111MODULE: on # Needed by Wails
+      CGO_ENABLED: 1 # Needed by Wails
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js 16
+        id: Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 16
+
+      - name: Set up Go ^1.17
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+        id: go
+
+      - name: Get Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Get dependencies
+        run: go get -v -t -d ./...
+
+      - name: Download packages
+        run: cd frontend && npm i
+
+      - name: Build frontend
+        run: cd frontend && npm run build
+        env:
+          VITE_VEGA_HOME: "./frontend/automation/test-wallets"
+          VITE_TESTING: 1
+
+      # Start wails in the first process
+      - name: Start backend in background
+        run: wails dev &
+        env:
+          VITE_VEGA_HOME: "./frontend/automation/test-wallets"
+          VITE_TESTING: 1
+
+      # Run cypress in this process
+      # Install yarn automation/ dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          wait-on: "http://localhost:34115"
+          working-directory: frontend/automation
+          wait-on-timeout: 120
+          record: true
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # Recommended: pass the GitHub token lets this action correctly
+          # determine the unique run id necessary to re-run the checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # pass the project ID from the secrets through environment variable
+          CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: coverage
+          path: frontend/automation/coverage
+
+  jest-run:
+    name: Run unit tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16
+        id: Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Run jest
+        working-directory: frontend
+        run: npm run test -- --watchAll=false --passWithNoTests
+
+  sanity-checks:
+    name: Run sanity checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Node 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+        id: npm
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Check formatting
+        working-directory: frontend
+        run: npm run check_format

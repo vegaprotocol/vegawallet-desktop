@@ -1,0 +1,60 @@
+name: Build binaries
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    name: On ${{ matrix.os }} ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-2019
+        arch:
+          - amd64
+          - arm64
+    steps:
+      - name: Set up Node 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+        id: npm
+
+      - name: Set up Go ^1.17
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+        id: go
+
+      - name: Get Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Build binary for Windows
+        if: ${{ runner.os == 'Windows' }}
+        run: wails build -f -platform=windows/${{ matrix.arch }}
+
+      - name: Build binary for macOS
+        if: ${{ runner.os == 'macOS' }}
+        run: wails build -f -platform=darwin/${{ matrix.arch }}
+
+      # Cross-compiling to ARM64 is not supported for Linux.
+      - name: Build binary for Linux AMD-64
+        if: ${{ runner.os == 'Linux' && matrix.arch == 'amd64' }}
+        run: wails build -f -platform=linux/${{ matrix.arch }}
+
+      - name: Tests backend
+        if: ${{ matrix.arch == 'amd64' }}
+        run: go test -v ./...

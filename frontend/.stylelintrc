@@ -1,0 +1,11 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "string-quotes": "single",
+    "selector-class-pattern": null,
+    "max-nesting-depth": null,
+    "selector-max-compound-selectors": 5,
+    "selector-max-id": 1,
+    "selector-no-qualifying-type": null
+  }
+}
