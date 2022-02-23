@@ -7,7 +7,9 @@ import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { FormGroup } from '../../components/form-group'
 import { Header } from '../../components/header'
 import { requestPassphrase } from '../../components/passphrase-modal'
+import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
+import { Intent } from '../../config/intent'
 import { Service } from '../../service'
 
 interface FormFields {
@@ -29,8 +31,12 @@ const useSign = (pubKey: string, wallet: string) => {
         })
         // @ts-ignore
         setSignedData(resp.hexSignature)
-      } catch (e) {
-        console.log(e)
+        AppToaster.show({
+          message: `Message signed successfully`,
+          intent: Intent.SUCCESS
+        })
+      } catch (err) {
+        AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       }
     },
     [pubKey, wallet]
