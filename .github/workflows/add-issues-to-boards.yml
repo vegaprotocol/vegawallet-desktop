@@ -6,7 +6,7 @@ on:
       - opened
 
 jobs:
-  add-to-core-board:
+  add-to-boards:
     runs-on: ubuntu-latest
     steps:
       - name: Add issue to Core board
@@ -24,11 +24,8 @@ jobs:
               }
             }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectNextItem.projectNextItem.id'
 
-  add-to-frontend-board:
-    if: contains(github.event.pull_request.labels.*.name, 'ui')
-    runs-on: ubuntu-latest
-    steps:
       - name: Add issue to Frontend board
+        if: contains(github.event.issue.labels.*.name, 'ui')
         env:
           GITHUB_TOKEN: ${{ secrets.GH_NEW_CARD_TO_PROJECT }}
           PROJECT_ID: ${{ secrets.FRONT_END_PROJECT_ID }}
