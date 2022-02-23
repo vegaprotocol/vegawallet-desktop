@@ -4,7 +4,7 @@
   "frontend:build": "npm run build",
   "frontend:install": "npm install",
   "wailsjsdir": "./frontend/src",
-  "version": "0.1.0",
+  "version": "0.2.0+dev",
   "outputfilename": "Vegawallet",
   "author": {
     "name": "Gobalsky Labs Ltd."
