@@ -5,7 +5,6 @@ go 1.17
 require (
 	code.vegaprotocol.io/shared v0.0.0-20220202150846-b6aba31dcdb0
 	code.vegaprotocol.io/vegawallet v0.12.1-0.20220215193236-62a1689f606f
-	github.com/blang/semver/v4 v4.0.0
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/wailsapp/wails/v2 v2.0.0-beta.32
 	go.uber.org/zap v1.20.0
@@ -16,6 +15,7 @@ require (
 	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/adrg/xdg v0.3.3 // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect
+	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.0.2 // indirect
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1 // indirect
 	github.com/fasthttp/websocket v0.0.0-20200320073529-1554a54587ab // indirect
