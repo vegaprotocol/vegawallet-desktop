@@ -10,79 +10,7 @@ env:
   VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
 jobs:
-  check-version:
-    name: Verify hard-coded version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Verify hard-coded version
-        run: |
-          # Filter the content backend/version.go to find the `defaultVersion`
-          # constant with its line number. It should look like this:
-          #     13: defaultVersion = v0.12.0+dev
-          #     ^ the line number in backend/version.go
-          #         ^ the constant
-          #                          ^ the hard-coded version
-          version_info=$(grep -n "defaultVersion\s*=" backend/version.go | xargs)
-          echo "Found info: ${version_info}"
-          # Extract the version from the version_info found.
-          #   - awk '{print $4}'
-          #       get the 4th segment in the version_info output, the hard-coded
-          #       version.
-          #   - xargs
-          #       trim the output of spaces and quotes.
-          version=$(echo $version_info | awk '{print $4}' | xargs )
-          echo "Found version: ${version}"
-          # Get the line at which the version is set in version.go
-          #   - awk '{print $1}'
-          #       get the 1st segment in the version_info output, the line number.
-          #   - cut -d: -f1
-          #       get rid of the colon (`:`)
-          line=$(echo $version_info | awk '{print $1}' | cut -d: -f1)
-          echo "Found line: ${line}"
-          if [ "$version" = "${{github.ref_name}}" ]; then
-            echo "The version matches the tag."
-          else
-            echo "::error file=backend/version.go,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
-            exit 1
-          fi
-
-      - name: Verify wails.json version
-        run: |
-          # Get the line at which the version is set in wails.json
-          #   - xargs
-          #       trim the output of spaces and quotes.
-          #   - awk '{print $1}'
-          #       get the 1st segment in the version_info output, the line number.
-          #   - cut -d: -f1
-          #       get rid of the colon (`:`)
-          line=$(grep -n "\"version\"" wails.json | xargs | awk '{print $1}' | cut -d: -f1)
-          version=$(cat wails.json | jq .version)
-          echo "Found version: ${version}"
-          if [ "$version" = "${{github.ref_name}}" ]; then
-            echo "The version in wails.json matches the tag."
-          else
-            echo "::error file=wails.json,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
-            exit 1
-          fi
-
-      - name: Verify wails.json version
-        run: |
-          version_info=$(grep -n "\"version\"" wails.json | xargs)
-          line=$(echo $version_info | awk '{print $1}' | cut -d: -f1)
-          version=$(cat wails.json | jq .version)
-          echo "Found version: ${version}"
-          if [ "$version" = "${{github.ref_name}}" ]; then
-            echo "The version in wails.json matches the tag."
-          else
-            echo "::error file=wails.json,line=$line::The version \"$version\" does not match the tag \"${{github.ref_name}}\". Please, update this version."
-            exit 1
-          fi
-
   release-macos:
-    needs: check-version
     name: Release on MacOS ${{ matrix.arch }}
     runs-on: macos-latest
     strategy:
@@ -183,7 +111,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-windows:
-    needs: check-version
     name: Release on Windows ${{ matrix.arch }}
     runs-on: windows-2019
     strategy:
@@ -248,7 +175,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-linux:
-    needs: check-version
     name: Release on Linux ${{ matrix.arch }}
     runs-on: ubuntu-latest
     strategy:
