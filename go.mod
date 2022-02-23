@@ -7,7 +7,7 @@ require (
 	code.vegaprotocol.io/vegawallet v0.12.1-0.20220215193236-62a1689f606f
 	github.com/blang/semver/v4 v4.0.0
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
-	github.com/wailsapp/wails/v2 v2.0.0-beta.30
+	github.com/wailsapp/wails/v2 v2.0.0-beta.32
 	go.uber.org/zap v1.20.0
 )
 
@@ -36,7 +36,7 @@ require (
 	github.com/leaanthony/gosod v1.0.3 // indirect
 	github.com/leaanthony/slicer v1.5.0 // indirect
 	github.com/leaanthony/typescriptify-golang-structs v0.1.7 // indirect
-	github.com/leaanthony/winc v0.0.0-20220202120322-32d63aaf77de // indirect
+	github.com/leaanthony/winc v0.0.0-20220208061147-37b059b9dc3b // indirect
 	github.com/oasisprotocol/curve25519-voi v0.0.0-20210716083614-f38f8e8b0b84 // indirect
 	github.com/pkg/browser v0.0.0-20210706143420-7d21f8c997e2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
