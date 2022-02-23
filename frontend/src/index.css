@@ -139,3 +139,19 @@ https://create-react-app.dev/docs/adding-images-fonts-and-files/
 .vega-border-image {
   border-image: url('./images/vega-bg.png') 15%;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-gray5);
+}

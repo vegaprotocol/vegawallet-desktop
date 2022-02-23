@@ -7,7 +7,9 @@ import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { FormGroup } from '../../components/form-group'
 import { Header } from '../../components/header'
 import { requestPassphrase } from '../../components/passphrase-modal'
+import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
+import { Intent } from '../../config/intent'
 import { Service } from '../../service'
 
 interface FormFields {
@@ -29,14 +31,19 @@ const useSign = (pubKey: string, wallet: string) => {
         })
         // @ts-ignore
         setSignedData(resp.hexSignature)
-      } catch (e) {
-        console.log(e)
+        AppToaster.show({
+          message: `Message signed successfully`,
+          intent: Intent.SUCCESS
+        })
+      } catch (err) {
+        AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       }
     },
     [pubKey, wallet]
   )
   return {
     signedData,
+    setSignedData,
     sign
   }
 }
@@ -54,23 +61,12 @@ export const Sign = ({
     formState: { errors }
   } = useForm<FormFields>()
 
-  const { sign, signedData } = useSign(pubKey, wallet)
+  const { sign, signedData, setSignedData } = useSign(pubKey, wallet)
   return (
     <>
       <Header style={{ marginTop: 32, fontSize: 18 }}>Sign</Header>
-      <form onSubmit={handleSubmit(sign)}>
-        <FormGroup
-          label='Message'
-          labelFor='message'
-          helperText={errors.message?.message}
-        >
-          <textarea
-            {...register('message', { required: 'Required' })}
-          ></textarea>
-        </FormGroup>
-        <Button type='submit'>Sign</Button>
-      </form>
-      {signedData && (
+
+      {signedData ? (
         <>
           <h4>Signed message:</h4>
           <CopyWithTooltip text={signedData}>
@@ -84,7 +80,23 @@ export const Sign = ({
               {signedData}
             </ButtonUnstyled>
           </CopyWithTooltip>
+          <Button style={{ marginTop: 12 }} onClick={() => setSignedData('')}>
+            Sign more
+          </Button>
         </>
+      ) : (
+        <form onSubmit={handleSubmit(sign)}>
+          <FormGroup
+            label='Message'
+            labelFor='message'
+            helperText={errors.message?.message}
+          >
+            <textarea
+              {...register('message', { required: 'Required' })}
+            ></textarea>
+          </FormGroup>
+          <Button type='submit'>Sign</Button>
+        </form>
       )}
     </>
   )
