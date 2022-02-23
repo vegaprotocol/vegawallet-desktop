@@ -64,8 +64,16 @@ export default class WalletPage {
     // cy.getByTestId(this.serviceStatus).should('contain.text', 'http://')
   }
 
-  validateDAppRunning() {
-    cy.getByTestId(this.dAppStatus).should('contain.text', 'TokenDApp')
+  validateDAppRunning(serviceName) {
+    if (serviceName === "token")
+    {
+      cy.getByTestId(this.dAppStatus).should('contain.text', 'TokenDApp')
+    }
+    else if (serviceName === "console")
+    {
+      cy.getByTestId(this.dAppStatus).should('contain.text', 'Console')
+    }
+
   }
 
   validateDAppNotRunning() {

@@ -10,13 +10,11 @@ Feature: Wallet Service Page
 Scenario: Service with Token DApp
     Given I am on the Wallet Service page
     When I click start service for Token dApp
-    And dApp running is shown
+    And dApp "token" is shown running
     And dApp service is returning "200"
 
-@todo
   Scenario: Service with console
     Given I am on the Wallet Service page
-    When I click “Start service with Console”
-    Then I am redirected to console
-    And dApp running is shown
-
+    When I click start service with console
+    Then dApp "console" is shown running
+    And console service is returning "200"

@@ -68,7 +68,7 @@ export default class NetworkDrawer {
   }
 
   clickStartService() {
-    cy.getByTestId(this.startServiceBtn).click({ force: true })
+    cy.getByTestId(this.startServiceBtn).last().click({ force: true })
   }
 
   clickOverwrite() {

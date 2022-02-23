@@ -16,9 +16,9 @@ Given('I am on the import network page', () => {
 Given('I have an imported network', () => {
   cy.visit('#/wallet')
   walletPage.clickNetworkDrawer()
-  const url = Cypress.env('mainnetConfigUrl')
-
-  networkDrawer.ImportNetworkUsingPath(url)
+  networkDrawer.clickImportBtn()
+  networkDrawer.SelectNetwork('fairground')
+  networkDrawer.clickImportBtn()
 })
 
 When('I select {string} on the dropdown', networkName => {

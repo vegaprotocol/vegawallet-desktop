@@ -15,9 +15,14 @@ Given('I am on the Wallet Service page', () => {
 When('I click start service for Token dApp', () => {
   networkDrawer.clickStartService()
 })
+
+When('I click start service with console', () => {
+  networkDrawer.clickStartService()
+})
+
 Then('wallet service is shown as running', () => {
   networkDrawer.clickBack()
-  walletPage.validateServiceRunning('mainnet1')
+  walletPage.validateServiceRunning('fairground')
 })
 
 Then('wallet service is returning {string}', serviceStatus => {
@@ -25,11 +30,16 @@ Then('wallet service is returning {string}', serviceStatus => {
   walletPage.CheckEndpoint(url, parseInt(serviceStatus))
 })
 
-Then('dApp running is shown', () => {
-  walletPage.validateDAppRunning()
+Then('dApp {string} is shown running', serviceName => {
+    walletPage.validateDAppRunning(serviceName)
 })
 
 Then('dApp service is returning {string}', serviceStatus => {
   const url = Cypress.env('tokenServiceUrl')
+  walletPage.CheckEndpoint(url, parseInt(serviceStatus))
+})
+
+Then('console service is returning {string}', serviceStatus => {
+  const url = Cypress.env('consoleServiceUrl')
   walletPage.CheckEndpoint(url, parseInt(serviceStatus))
 })
