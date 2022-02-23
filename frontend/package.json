@@ -1,7 +1,7 @@
 {
   "name": "vegawallet",
   "author": "Gobalsky Labs Ltd.",
-  "version": "0.1.0+dev",
+  "version": "0.1.0",
   "private": true,
   "engines": {
     "node": "^16.13.2"
