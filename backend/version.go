@@ -1,8 +1,11 @@
 package backend
 
 import (
+	"context"
+	"fmt"
+	"time"
+
 	vgversion "code.vegaprotocol.io/shared/libs/version"
-	"github.com/blang/semver/v4"
 )
 
 const (
@@ -10,6 +13,7 @@ const (
 	ReleasesURL        = "https://github.com/vegaprotocol/vegawallet-desktop/releases"
 	defaultVersionHash = "unknown"
 	defaultVersion     = "v0.1.0+dev"
+	requestTimeout     = 5 * time.Second
 )
 
 var (
@@ -46,24 +50,17 @@ func (h *Handler) CheckVersion() (*CheckVersionResponse, error) {
 	h.log.Debug("Entering CheckVersion")
 	defer h.log.Debug("Leaving CheckVersion")
 
-	// TODO To remove once we are open source.
-	v, _ := semver.New("0.1.0")
+	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
+	defer cancel()
+	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), Version)
+	if err != nil {
+		return nil, fmt.Errorf("couldn't check latest releases: %w", err)
+	}
+	if v == nil {
+		return nil, nil
+	}
 	return &CheckVersionResponse{
 		Version:    v.String(),
 		ReleaseURL: vgversion.GetGithubReleaseURL(ReleasesURL, v),
 	}, nil
-
-	// ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
-	// defer cancel()
-	// v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), Version)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("couldn't check latest releases: %w", err)
-	// }
-	// if v == nil {
-	// 	return nil, nil
-	// }
-	// return &CheckVersionResponse{
-	// 	Version:    v.String(),
-	// 	ReleaseURL: vgversion.GetGithubReleaseURL(ReleasesAPI, v),
-	// }, nil
 }
