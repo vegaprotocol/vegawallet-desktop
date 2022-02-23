@@ -10,6 +10,7 @@
 const { cypressConfigResolver } = require('../config/cypress-config-resolver')
 const cucumber = require('cypress-cucumber-preprocessor').default
 const clipboardy = require('clipboardy')
+const { downloadFile } = require('cypress-downloadfile/lib/addPlugin')
 
 module.exports = (on, config) => {
   require('@cypress/code-coverage/task')(on, config)
@@ -30,5 +31,7 @@ module.exports = (on, config) => {
       return clipboard
     }
   })
+
+  on('task', { downloadFile }) // download file plugin
   return cypressConfigResolver(config)
 }
