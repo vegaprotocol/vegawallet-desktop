@@ -70,8 +70,9 @@ export function OnboardHome() {
       <p>
         <ButtonUnstyled
           data-testid='advanced-options'
-          onClick={() => navigate(OnboardPaths.Settings)}>
-            Advanced options
+          onClick={() => navigate(OnboardPaths.Settings)}
+        >
+          Advanced options
         </ButtonUnstyled>
       </p>
       {version && <p>version {version}</p>}

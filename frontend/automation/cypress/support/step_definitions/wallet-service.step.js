@@ -31,7 +31,7 @@ Then('wallet service is returning {string}', serviceStatus => {
 })
 
 Then('dApp {string} is shown running', serviceName => {
-    walletPage.validateDAppRunning(serviceName)
+  walletPage.validateDAppRunning(serviceName)
 })
 
 Then('dApp service is returning {string}', serviceStatus => {
