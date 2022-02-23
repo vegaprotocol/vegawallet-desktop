@@ -31,9 +31,9 @@ Feature: Import network
     When I import using url and specify network name
     Then new network is added
 
-  @ignore
   Scenario: Import successfully via file path
-    Given I am on the import network page
+    Given I have downloaded network config file
+    And I am on the import network page
     When I import using valid network import file path
     Then new network is added
 
