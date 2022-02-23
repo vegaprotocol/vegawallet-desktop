@@ -81,6 +81,7 @@ export function Toast({
       >
         <span style={{ wordBreak: 'break-word' }}>{message}</span>
         <ButtonUnstyled
+          data-testid='close'
           onClick={dismiss}
           style={{ position: 'absolute', top: 0, right: 0 }}
         >

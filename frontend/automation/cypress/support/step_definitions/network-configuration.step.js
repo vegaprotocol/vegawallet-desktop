@@ -18,8 +18,10 @@ Given('I have more than one imported network', () => {
   cy.visit('#/wallet')
   walletPage.clickNetworkDrawer()
   networkDrawer.ImportNetworkUsingPath(Cypress.env('mainnetConfigUrl'))
+  networkDrawer.closeToast()
   networkDrawer.navigateBackToNetworkConfigPage()
   networkDrawer.ImportNetworkUsingPath(Cypress.env('testnetConfigUrl'))
+  networkDrawer.closeToast()
   networkDrawer.navigateBackToNetworkConfigPage()
 })
 

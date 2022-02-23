@@ -17,6 +17,7 @@ export default class NetworkDrawer {
   startServiceBtn = 'start'
   editNetworkBtn = 'edit'
   backBtn = 'back'
+  closeToastBtn = 'close'
 
   SelectNetwork(networkName) {
     cy.getByTestId(this.importNetworkSelect).select(networkName, {
@@ -77,7 +78,7 @@ export default class NetworkDrawer {
 
   navigateBackToNetworkConfigPage() {
     cy.get('body').then($body => {
-      if ($body.find(`[data-testid=${this.urlPathField}]`).length) {
+      if ($body.find(`[data-testid=${this.importNetworkSelect}]`).length) {
         this.clickBack()
       }
     })
@@ -137,5 +138,9 @@ export default class NetworkDrawer {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
       } else cy.getByTestId(this.networkDrawerBtn).click({ force: true })
     })
+  }
+
+  closeToast() {
+    cy.getByTestId(this.closeToastBtn).first().click()
   }
 }
