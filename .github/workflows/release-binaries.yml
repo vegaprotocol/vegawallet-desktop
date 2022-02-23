@@ -210,6 +210,13 @@ jobs:
         if: ${{ matrix.arch == 'amd64' }}
         run: go test -v ./...
 
+      - name: Bundle binary in archive
+        uses: thedoctor0/zip-release@master
+        with:
+          type: zip
+          directory: build/bin
+          filename: vegawallet-desktop-linux-${{ matrix.arch }}.zip
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
