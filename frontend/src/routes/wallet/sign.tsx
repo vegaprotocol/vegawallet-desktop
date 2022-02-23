@@ -37,6 +37,7 @@ const useSign = (pubKey: string, wallet: string) => {
   )
   return {
     signedData,
+    setSignedData,
     sign
   }
 }
@@ -54,23 +55,12 @@ export const Sign = ({
     formState: { errors }
   } = useForm<FormFields>()
 
-  const { sign, signedData } = useSign(pubKey, wallet)
+  const { sign, signedData, setSignedData } = useSign(pubKey, wallet)
   return (
     <>
       <Header style={{ marginTop: 32, fontSize: 18 }}>Sign</Header>
-      <form onSubmit={handleSubmit(sign)}>
-        <FormGroup
-          label='Message'
-          labelFor='message'
-          helperText={errors.message?.message}
-        >
-          <textarea
-            {...register('message', { required: 'Required' })}
-          ></textarea>
-        </FormGroup>
-        <Button type='submit'>Sign</Button>
-      </form>
-      {signedData && (
+
+      {signedData ? (
         <>
           <h4>Signed message:</h4>
           <CopyWithTooltip text={signedData}>
@@ -84,7 +74,23 @@ export const Sign = ({
               {signedData}
             </ButtonUnstyled>
           </CopyWithTooltip>
+          <Button style={{ marginTop: 12 }} onClick={() => setSignedData('')}>
+            Sign more
+          </Button>
         </>
+      ) : (
+        <form onSubmit={handleSubmit(sign)}>
+          <FormGroup
+            label='Message'
+            labelFor='message'
+            helperText={errors.message?.message}
+          >
+            <textarea
+              {...register('message', { required: 'Required' })}
+            ></textarea>
+          </FormGroup>
+          <Button type='submit'>Sign</Button>
+        </form>
       )}
     </>
   )
