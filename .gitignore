@@ -8,6 +8,7 @@ frontend/dist
 # Cypress
 frontend/automation/.nyc_output/
 frontend/automation/test-wallets/
+frontend/automation/network-config/
 
 # Misc
 .DS_Store

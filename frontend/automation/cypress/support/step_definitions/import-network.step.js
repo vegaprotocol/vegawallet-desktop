@@ -21,6 +21,11 @@ Given('I have an imported network', () => {
   networkDrawer.clickImportBtn()
 })
 
+Given('I have downloaded network config file', () => {
+  const url = Cypress.env('mainnetConfigUrl')
+  cy.downloadFile(url, 'network-config', 'mainnet-config.toml')
+})
+
 When('I select {string} on the dropdown', networkName => {
   networkDrawer.clickImportBtn()
   networkDrawer.SelectNetwork(networkName)
@@ -35,10 +40,10 @@ When('I import using valid network import url', () => {
 When('I import using valid network import file path', () => {
   const filePath = path.join(
     Cypress.config('projectRoot'),
-    'network-config/mainnet1.toml'
+    'network-config/mainnet-config.toml'
   )
 
-  networkDrawer.ImportNetworkUsingPath(filePath)
+  networkDrawer.ImportNetworkUsingPath(filePath, null, true)
 })
 
 When('I import using invalid network import file path', () => {

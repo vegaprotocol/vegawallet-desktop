@@ -35,6 +35,7 @@
     "nonGlobalStepDefinitions": false
   },
   "devDependencies": {
+    "cypress-downloadfile": "^1.2.1",
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
     "eslint-plugin-cypress": "^2.11.3"
