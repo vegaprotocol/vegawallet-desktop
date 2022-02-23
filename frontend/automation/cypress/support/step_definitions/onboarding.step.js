@@ -2,39 +2,54 @@ import '../cleanup'
 
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
-Given('I navigate to the wallet page', () => {
-  cy.visit('#/')
-})
+import NetworkDrawer from '../pages/network-drawer-page'
+import WalletImportPage from '../pages/wallet-import-page'
 
-Then('I can see the create new wallet button', () => {
-  cy.get("[data-testid='onboard-create-wallet']").should('exist')
-})
+const walletImportPage = new WalletImportPage()
+const networkDrawer = new NetworkDrawer()
 
-When('I click create new', () => {
-  cy.get("[data-testid='onboard-create-wallet']").click()
-})
+Given('I am on the onboarding page', page => {
+  cy.visit('#/onboard')
 
-Then('I see the create wallet form', () => {
-  cy.get("[data-testid='create-wallet-form']").should('exist')
-})
+  Given('I click create new wallet', () => {
+    walletImportPage.clickCreateNew()
+  })
 
-When('I submit the create wallet form', () => {
-  cy.get("[data-testid='create-wallet-form-name']").type('test')
-  cy.get("[data-testid='create-wallet-form-passphrase']").type('123')
-  cy.get("[data-testid='create-wallet-form-passphrase-confirm']").type('123')
-  cy.get("[data-testid='create-wallet-form-submit']").click()
-})
+  Given('I click use recovery phrase', () => {
+    walletImportPage.clickImport()
+  })
 
-Then('I see a warning message, the wallet version and recovery phrase', () => {
-  cy.get("[data-testid='wallet-warning']").should('exist')
-  cy.get("[data-testid='wallet-version']").should('exist')
-  cy.get("[data-testid='wallet-recovery-phrase']").should('exist')
-})
+  Given('I click back', () => {
+    networkDrawer.clickBack()
+  })
 
-When('I click view import network button', () => {
-  cy.get("[data-testid='onboard-import-network-button']").click()
-})
+  When('I submit wallet details', () => {
+    walletImportPage.createNewWallet()
+  })
 
-Then('I am taken to the next step of onboarding', () => {
-  cy.url().should('include', '/onboard/network')
+  When('I submit a existing recovery phrase', () => {
+    const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
+    walletImportPage.importWallet('import test', recoveryPhrase, 2, '123')
+  })
+
+  Then('wallet is successfully created', () => {
+    walletImportPage.verifyWalletCreated()
+  })
+
+  Then('I click import network', () => {
+    walletImportPage.clickImportNetwork()
+  })
+
+  Then('wallet is successfully imported', () => {
+    walletImportPage.verifyWalletImportedSuccessfully()
+  })
+
+  Then('import {string} network', networkName => {
+    networkDrawer.SelectNetwork(networkName)
+    networkDrawer.clickImportBtn()
+  })
+
+  Then('network is imported successfully', () => {
+    networkDrawer.verifyNetworkImportedSuccessfully()
+  })
 })

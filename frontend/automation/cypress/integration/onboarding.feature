@@ -1,12 +1,30 @@
-@ignore
-Feature: Create wallet tests
+
+Feature: Onboarding tests
 
   Scenario: Create new wallet
-    Given I navigate to the wallet page
-    Then I can see the create new wallet button
-    When I click create new
-    Then I see the create wallet form
-    When I submit the create wallet form
-    Then I see a warning message, the wallet version and recovery phrase
-    When I click view import network button
-    Then I am taken to the next step of onboarding 
+    Given I am on the onboarding page
+    When I submit wallet details
+    Then wallet is successfully created
+    When I click import network
+    And import "fairground" network
+    Then network is imported successfully
+    And test wallet is cleaned
+
+  Scenario: Import wallet
+    Given I am on the onboarding page
+    And I click use recovery phrase
+    When I submit a existing recovery phrase
+    Then wallet is successfully imported
+    And test wallet is cleaned
+
+  Scenario: Submit form with blank fields
+    Given I am on the onboarding page
+    When I click Import by recovery phrase
+    And I click submit
+    Then empty fields are marked required
+
+  Scenario: Import wallet with incorrect recovery phrase
+    Given I am on the onboarding page
+    When I click Import by recovery phrase
+    And I fill in details with incorrect recovery phrase
+    Then error shown for incorrect recovery phrase

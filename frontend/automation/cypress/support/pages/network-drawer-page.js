@@ -17,9 +17,12 @@ export default class NetworkDrawer {
   startServiceBtn = 'start'
   editNetworkBtn = 'edit'
   backBtn = 'back'
+  closeToastBtn = 'close'
 
   SelectNetwork(networkName) {
-    cy.getByTestId(this.importNetworkSelect).select(networkName)
+    cy.getByTestId(this.importNetworkSelect).select(networkName, {
+      force: true
+    })
   }
 
   ImportNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
@@ -65,7 +68,7 @@ export default class NetworkDrawer {
   }
 
   clickStartService() {
-    cy.getByTestId(this.startServiceBtn).click({ force: true })
+    cy.getByTestId(this.startServiceBtn).last().click({ force: true })
   }
 
   clickOverwrite() {
@@ -75,7 +78,7 @@ export default class NetworkDrawer {
 
   navigateBackToNetworkConfigPage() {
     cy.get('body').then($body => {
-      if ($body.find(`[data-testid=${this.urlPathField}]`).length) {
+      if ($body.find(`[data-testid=${this.importNetworkSelect}]`).length) {
         this.clickBack()
       }
     })
@@ -105,7 +108,7 @@ export default class NetworkDrawer {
 
   changeNetwork(networkName) {
     cy.getByTestId(this.networkDropDown).click({ force: true })
-    cy.getByTestId(`select-${networkName}`).click()
+    cy.getByTestId(`select-${networkName}`).click({ force: true })
   }
 
   verifyNetworkSelectable(networkName) {
@@ -135,5 +138,9 @@ export default class NetworkDrawer {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
       } else cy.getByTestId(this.networkDrawerBtn).click({ force: true })
     })
+  }
+
+  closeToast() {
+    cy.getByTestId(this.closeToastBtn).first().click()
   }
 }

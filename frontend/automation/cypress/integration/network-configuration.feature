@@ -1,10 +1,10 @@
 
 Feature: Network Configuration page
-@ignore
+
   Scenario: Change network
     Given I have more than one imported network
-    When I change network to "testnet"
-    Then Current network is now "testnet"
+    When I change network to "fairground"
+    Then Current network is now "fairground"
     When I change network to "mainnet1"
     Then Current network is now "mainnet1"
 

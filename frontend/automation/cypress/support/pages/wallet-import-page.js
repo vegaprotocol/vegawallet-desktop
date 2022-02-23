@@ -12,12 +12,13 @@ export default class WalletImportPage {
   importPassphrase = 'passphrase'
   importConfirmPassphrase = 'confirm-passphrase'
   validationRequired = 'Required'
+  advancedOption = 'advanced-options'
+  onboardImportNetwork = 'onboard-import-network-button'
 
   createNewWallet() {
     const randomNum = Math.floor(Math.random() * 101)
     const walletname = `Test ${randomNum.toString()}`
 
-    cy.visit('#/wallet')
     this.clickCreateNew()
     this.fillInNewWalletDetails(walletname, '123')
     this.clickSubmit()
@@ -49,6 +50,10 @@ export default class WalletImportPage {
 
   clickSubmit() {
     cy.getByTestId(this.walletSubmit).click()
+  }
+
+  clickImportNetwork() {
+    cy.getByTestId(this.onboardImportNetwork).click()
   }
 
   verifyWalletCreated() {
