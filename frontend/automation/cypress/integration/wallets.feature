@@ -33,13 +33,19 @@ Feature: Wallets page
     When I click lock
     Then wallet is locked
 
-  Scenario: Message signing
+  Scenario: Message signing successfully
     Given I have unlocked wallet
     When I click on key pair
     And I sign message with correct passphrase
     Then message signed successfully
     When I sign more with correct passphrase
     Then message signed successfully
+
+  Scenario: Message signing unsuccessfully
+    Given I have unlocked wallet
+    When I click on key pair
+    And I sign message with incorrect passphrase
+    Then wrong passphrase is displayed
 
   @ignore
   Scenario: Copy public key
