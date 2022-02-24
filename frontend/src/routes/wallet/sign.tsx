@@ -80,7 +80,7 @@ export const Sign = ({
               {signedData}
             </ButtonUnstyled>
           </CopyWithTooltip>
-          <Button style={{ marginTop: 12 }} onClick={() => setSignedData('')}>
+          <Button data-testid='sign-more' style={{ marginTop: 12 }} onClick={() => setSignedData('')}>
             Sign more
           </Button>
         </>
@@ -92,10 +92,11 @@ export const Sign = ({
             helperText={errors.message?.message}
           >
             <textarea
+              data-testid='message-field'
               {...register('message', { required: 'Required' })}
             ></textarea>
           </FormGroup>
-          <Button type='submit'>Sign</Button>
+          <Button data-testid='sign' type='submit'>Sign</Button>
         </form>
       )}
     </>

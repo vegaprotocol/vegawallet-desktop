@@ -55,6 +55,17 @@ When('I click lock', () => {
   walletPage.clickLockWallet()
 })
 
+When('I sign message with correct passphrase', () => {
+  keyPairPage.signmessage("Sign message successfully")
+  walletPage.submitPassphrase('123')
+})
+
+When('I sign more with correct passphrase', () => {
+  keyPairPage.clickSignMore()
+  keyPairPage.signmessage("Additional text")
+  walletPage.submitPassphrase('123')
+})
+
 Then('Wallets should be displayed on the page', () => {
   walletPage.validateWalletsDisplayed()
 })
@@ -82,4 +93,8 @@ Then('public key is copied', () => {
 
 Then('wallet is locked', () => {
   walletPage.validateLockIconDisplayed()
+})
+
+Then('message signed successfully', () => {
+  keyPairPage.validateMessageSignedSuccessfully()
 })
