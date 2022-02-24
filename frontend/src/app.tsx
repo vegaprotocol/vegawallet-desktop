@@ -35,7 +35,10 @@ function AppLoader({ children }: { children: React.ReactNode }) {
 
   // Get stored networks and the default network config
   React.useEffect(() => {
-    if (globalState.status === AppStatus.Initialised) {
+    if (
+      globalState.status === AppStatus.Initialised ||
+      globalState.status === AppStatus.Onboarding
+    ) {
       networkDispatch(initNetworksAction())
     }
   }, [globalState.status, networkDispatch])

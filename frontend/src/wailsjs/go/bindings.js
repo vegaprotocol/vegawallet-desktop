@@ -150,6 +150,13 @@ const go = {
         return window.go.backend.Handler.SaveNetworkConfig(arg1);
       },
       /**
+       * SearchForExistingConfiguration
+       * @returns {Promise<SearchForExistingConfigurationResponse|Error>}  - Go Type: *backend.SearchForExistingConfigurationResponse
+       */
+      "SearchForExistingConfiguration": () => {
+        return window.go.backend.Handler.SearchForExistingConfiguration();
+      },
+      /**
        * SignMessage
        * @param {SignMessageRequest} arg1 - Go Type: *wallet.SignMessageRequest
        * @returns {Promise<SignMessageResponse|Error>}  - Go Type: *wallet.SignMessageResponse

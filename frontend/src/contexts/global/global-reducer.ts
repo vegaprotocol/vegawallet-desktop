@@ -9,28 +9,37 @@ export const initialGlobalState: GlobalState = {
   wallet: null,
   wallets: [],
   passphraseModalOpen: false,
-  drawerOpen: false
+  drawerOpen: false,
+  onboarding: {
+    wallets: [],
+    networks: []
+  }
 }
 
 export type GlobalAction =
   | {
       type: 'INIT_APP'
       isInit: boolean
-      wallets: string[]
-      serviceRunning: boolean
-      serviceUrl: string
+    }
+  | {
+      type: 'SET_VERSION'
       version: string
     }
   | {
       type: 'START_ONBOARDING'
-    }
-  | {
-      type: 'FINISH_ONBOARDING'
+      existing: {
+        wallets: string[]
+        networks: string[]
+      }
     }
   | {
       type: 'ADD_WALLET'
       wallet: string
       key: FirstPublicKey
+    }
+  | {
+      type: 'ADD_WALLETS'
+      wallets: string[]
     }
   | {
       type: 'SET_KEYPAIRS'
@@ -71,29 +80,20 @@ export function globalReducer(
     case 'INIT_APP': {
       return {
         ...state,
-        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
-        wallets: action.wallets
-          .map(w => {
-            return {
-              name: w,
-              keypairs: null,
-              auth: false
-            }
-          })
-          .sort(sortWallet),
+        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed
+      }
+    }
+    case 'SET_VERSION': {
+      return {
+        ...state,
         version: action.version
       }
     }
     case 'START_ONBOARDING': {
       return {
         ...state,
-        status: AppStatus.Onboarding
-      }
-    }
-    case 'FINISH_ONBOARDING': {
-      return {
-        ...state,
-        status: AppStatus.Initialised
+        status: AppStatus.Onboarding,
+        onboarding: action.existing
       }
     }
     case 'ADD_WALLET': {
@@ -106,6 +106,17 @@ export function globalReducer(
       return {
         ...state,
         wallets: [...state.wallets, newWallet].sort(sortWallet)
+      }
+    }
+    case 'ADD_WALLETS': {
+      const newWallets = action.wallets.map(name => ({
+        name,
+        keypairs: null,
+        auth: false
+      }))
+      return {
+        ...state,
+        wallets: [...state.wallets, ...newWallets].sort(sortWallet)
       }
     }
     case 'SET_KEYPAIRS': {

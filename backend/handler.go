@@ -7,9 +7,10 @@ import (
 
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
+	"code.vegaprotocol.io/vegawallet/network"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
-	"code.vegaprotocol.io/vegawallet/service"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
+	"code.vegaprotocol.io/vegawallet/wallet"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
 	"github.com/wailsapp/wails/v2/pkg/logger"
@@ -73,18 +74,15 @@ func (h *Handler) Shutdown(_ context.Context) {
 	defer h.log.Debug("Leaving WailsShutdown")
 
 	if h.console.IsRunning() {
-		h.log.Info("Shutting down the console proxy")
-		h.console.Shutdown()
+		_, _ = h.StopConsole()
 	}
 
 	if h.tokenDApp.IsRunning() {
-		h.log.Info("Shutting down the token dApp proxy")
-		h.tokenDApp.Shutdown()
+		_, _ = h.StopTokenDApp()
 	}
 
 	if h.service.IsRunning() {
-		h.log.Info("Shutting down the service")
-		h.service.Shutdown()
+		_, _ = h.StopService()
 	}
 }
 
@@ -95,47 +93,48 @@ func (h *Handler) IsAppInitialised() (bool, error) {
 		return false, fmt.Errorf("couldn't verify application configuration state: %w", err)
 	}
 
-	if !isConfigInit {
-		return false, nil
+	return isConfigInit, nil
+}
+
+type SearchForExistingConfigurationResponse struct {
+	Wallets  []string `json:"wallets"`
+	Networks []string `json:"networks"`
+}
+
+// SearchForExistingConfiguration searches for existing wallets and networks.
+// This endpoint should be used to help the user to restore existing wallet
+// setup in the app.
+func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurationResponse, error) {
+	h.log.Debug("Entering ListWallets")
+	defer h.log.Debug("Leaving ListWallets")
+
+	defaultCfg := config.Config{
+		VegaHome: "",
 	}
 
-	cfg, err := h.loadAppConfig()
+	wStore, err := h.getWalletsStore(defaultCfg)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
-	svcStore, err := svcstore.InitialiseStore(paths.New(cfg.VegaHome))
+	netStore, err := h.getNetworksStore(defaultCfg)
 	if err != nil {
-		return false, fmt.Errorf("couldn't initialise service store: %w", err)
+		return nil, err
 	}
 
-	isServiceInit, err := service.IsInitialised(svcStore)
-	if err != nil {
-		return false, fmt.Errorf("couldn't verify service initialisation state: %w", err)
-	}
+	listWallets, _ := wallet.ListWallets(wStore)
+	listNetworks, _ := network.ListNetworks(netStore)
 
-	return isServiceInit, nil
+	return &SearchForExistingConfigurationResponse{
+		Wallets:  listWallets.Wallets,
+		Networks: listNetworks.Networks,
+	}, nil
 }
 
 func (h *Handler) InitialiseApp(cfg *config.Config) error {
-	_, err := wallets.InitialiseStore(cfg.VegaHome)
-	if err != nil {
-		return fmt.Errorf("couldn't initialise wallets store: %w", err)
-	}
-
-	svcStore, err := svcstore.InitialiseStore(paths.New(cfg.VegaHome))
-	if err != nil {
-		return fmt.Errorf("couldn't initialise service store: %w", err)
-	}
-
-	if err = service.InitialiseService(svcStore, true); err != nil {
-		return fmt.Errorf("couldn't initialise the service: %w", err)
-	}
-
 	if err := h.configLoader.SaveConfig(*cfg); err != nil {
 		return err
 	}
-
 	return nil
 }
 

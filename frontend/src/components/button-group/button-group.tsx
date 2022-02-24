@@ -24,12 +24,14 @@ export function ButtonGroup({
       }}
     >
       {React.Children.map(children, child => {
-        return React.cloneElement(child as any, {
-          style: {
-            flexGrow: 1,
-            flexBasis: 0
-          }
-        })
+        if (child) {
+          return React.cloneElement(child as any, {
+            style: {
+              flexGrow: 1,
+              flexBasis: 0
+            }
+          })
+        }
       })}
     </div>
   )

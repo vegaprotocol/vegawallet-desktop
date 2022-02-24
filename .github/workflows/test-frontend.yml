@@ -39,10 +39,12 @@ jobs:
         run: go get -v -t -d ./...
 
       - name: Download packages
-        run: cd frontend && npm i
+        working-directory: frontend
+        run: npm install
 
       - name: Build frontend
-        run: cd frontend && npm run build
+        working-directory: frontend
+        run: npm run build
         env:
           VITE_VEGA_HOME: "./frontend/automation/test-wallets"
           VITE_TESTING: 1

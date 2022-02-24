@@ -5,12 +5,7 @@ import { AppToaster } from '../../components/toaster'
 import { DEFAULT_VEGA_HOME, IS_TEST_MODE } from '../../config/environment'
 import { Intent } from '../../config/intent'
 import { Service } from '../../service'
-import type {
-  FirstPublicKey,
-  GetServiceStateResponse,
-  GetVersionResponse,
-  ListWalletsResponse
-} from '../../wailsjs/go/models'
+import type { FirstPublicKey } from '../../wailsjs/go/models'
 import { GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -18,72 +13,59 @@ import type { GlobalAction } from './global-reducer'
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
     try {
-      const isInit = await Service.IsAppInitialised()
+      const [isInit, version] = await Promise.all([
+        Service.IsAppInitialised(),
+        Service.GetVersion()
+      ])
 
-      if (IS_TEST_MODE && !isInit) {
-        await Service.InitialiseApp({
-          vegaHome: DEFAULT_VEGA_HOME
-        })
-      }
+      dispatch({ type: 'SET_VERSION', version: version.version })
 
-      if (isInit || IS_TEST_MODE) {
-        Sentry.addBreadcrumb({
-          type: 'InitApp',
-          level: Sentry.Severity.Log,
-          message: 'InitApp',
-          timestamp: Date.now()
-        })
-        // App initialised check what wallets are available
-        const [wallets, service, version] = await Promise.all([
-          await Service.ListWallets(),
-          await Service.GetServiceState(),
-          await Service.GetVersion()
-        ])
+      if (IS_TEST_MODE) {
+        await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
+      } else if (!isInit) {
+        const config = await Service.SearchForExistingConfiguration()
 
-        if (wallets instanceof Error) {
-          throw wallets
-        }
-
-        dispatch(initAppSuccessAction(wallets, service, version))
-      } else {
         Sentry.addBreadcrumb({
           type: 'StartApp',
           level: Sentry.Severity.Log,
           message: 'StartApp',
           timestamp: Date.now()
         })
-        dispatch(startOnboardingAction())
+
+        // start default onboarding
+        dispatch({ type: 'START_ONBOARDING', existing: config })
+        return
       }
+
+      Sentry.addBreadcrumb({
+        type: 'InitApp',
+        level: Sentry.Severity.Log,
+        message: 'InitApp',
+        timestamp: Date.now()
+      })
+
+      // HAPPY PATH: returning desktop wallet user
+      const res = await Service.ListWallets()
+      dispatch({ type: 'ADD_WALLETS', wallets: res.wallets })
+      dispatch({ type: 'INIT_APP', isInit: true })
     } catch (err) {
       Sentry.captureException(err)
-      dispatch(initAppFailureAction())
+      dispatch({ type: 'INIT_APP', isInit: false })
     }
   }
 }
 
-export function initAppSuccessAction(
-  wallets: ListWalletsResponse,
-  service: GetServiceStateResponse,
-  version: GetVersionResponse
-): GlobalAction {
+export function initAppSuccessAction(): GlobalAction {
   return {
     type: 'INIT_APP',
-    isInit: true,
-    wallets: wallets.wallets,
-    serviceRunning: service.running,
-    serviceUrl: service.url,
-    version: version.version
+    isInit: true
   }
 }
 
 export function initAppFailureAction(): GlobalAction {
   return {
     type: 'INIT_APP',
-    isInit: false,
-    wallets: [],
-    serviceRunning: false,
-    serviceUrl: '',
-    version: ''
+    isInit: false
   }
 }
 
@@ -120,7 +102,6 @@ export function addKeypairAction(wallet: string) {
     } catch (err) {
       if (err !== 'dismissed') {
         Sentry.captureException(err)
-        console.log(err)
         AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       }
     }
@@ -152,7 +133,6 @@ export function getKeysAction(wallet: string) {
         }
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
       } catch (err) {
-        console.log(err)
         if (err !== 'dismissed') {
           Sentry.captureException(err)
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
@@ -168,12 +148,6 @@ export function setPassphraseModalAction(open: boolean): GlobalAction {
 
 export function setDrawerAction(open: boolean): GlobalAction {
   return { type: 'SET_DRAWER', open }
-}
-
-export function startOnboardingAction(): GlobalAction {
-  return {
-    type: 'START_ONBOARDING'
-  }
 }
 
 export function chnageWalletAction(wallet: string): GlobalAction {

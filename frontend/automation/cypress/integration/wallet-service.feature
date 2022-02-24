@@ -1,8 +1,7 @@
 Feature: Wallet Service Page
 
   Scenario: Wallet service running
-    Given I have an existing Vega wallet
-    And I have an imported network
+    Given I have an imported network
     Then wallet service is shown as running
     And wallet service is returning "200"
 

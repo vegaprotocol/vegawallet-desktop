@@ -107,6 +107,17 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise service store: %w", err)
 	}
 
+	isInit, err := service.IsInitialised(svcStore)
+	if err != nil {
+		return false, fmt.Errorf("couldn't verify service initialisation state: %w", err)
+	}
+
+	if !isInit {
+		if err = service.InitialiseService(svcStore, false); err != nil {
+			return false, fmt.Errorf("couldn't initialise the service: %w", err)
+		}
+	}
+
 	auth, err := service.NewAuth(log.Named("auth"), svcStore, cfg.TokenExpiry.Get())
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise authentication: %v", err))

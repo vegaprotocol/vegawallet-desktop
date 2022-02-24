@@ -18,6 +18,7 @@ import { WalletList } from './wallet/wallet-list'
 import { WalletCreate } from './wallet-create'
 import { WalletImport } from './wallet-import'
 
+// Root paths start with '/'
 export enum Paths {
   Home = '/',
   Onboard = '/onboard',
@@ -26,8 +27,8 @@ export enum Paths {
   WalletImport = '/wallet-import'
 }
 
+// Nested paths DONT have '/'
 export enum OnboardPaths {
-  Home = '/onboard',
   Settings = '/onboard/settings',
   WalletCreate = '/onboard/wallet-create',
   WalletImport = '/onboard/wallet-import',
@@ -88,7 +89,6 @@ export const AppRouter = () => {
       ]
     },
     {
-      path: Paths.Home,
       element: <Home />,
       index: true
     }

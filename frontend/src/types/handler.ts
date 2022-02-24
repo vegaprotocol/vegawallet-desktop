@@ -21,6 +21,7 @@ import type {
   ListNetworksResponse,
   ListWalletsResponse,
   Network,
+  SearchForExistingConfigurationResponse,
   SignMessageRequest,
   SignMessageResponse,
   StartServiceRequest,
@@ -55,6 +56,7 @@ export interface Handler {
   StopService(): Promise<boolean>
   TaintKey(arg1: TaintKeyRequest): Promise<void>
   UntaintKey(arg1: UntaintKeyRequest): Promise<void>
+  SearchForExistingConfiguration(): Promise<SearchForExistingConfigurationResponse>
   StartConsole(arg1: StartServiceRequest): Promise<boolean>
   StartTokenDApp(arg1: StartServiceRequest): Promise<boolean>
   StopService(): Promise<boolean>
