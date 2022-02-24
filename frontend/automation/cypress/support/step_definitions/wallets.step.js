@@ -66,6 +66,11 @@ When('I sign more with correct passphrase', () => {
   walletPage.submitPassphrase('123')
 })
 
+When('I sign message with incorrect passphrase', () => {
+  keyPairPage.signmessage("Sign message unsuccessfully")
+  walletPage.submitPassphrase('777')
+})
+
 Then('Wallets should be displayed on the page', () => {
   walletPage.validateWalletsDisplayed()
 })
