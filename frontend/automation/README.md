@@ -1,19 +1,21 @@
-# Cypress - Cucumber - Boilerplate
+# End-to-end test for Vegawallet
 
-This is a boilerplate repository of the cucumber-cypress framework used within Vega. Download or pull the contents of this repo into another repo and you can start writing tests with minimal set up
+## Set up
 
-## set up
+Install dependencies:
 
-Install dependencies :
+```sh
 npm install
+```
 
-ensure also you have localhost running before starting tests if you are running against a localhost environment
+Ensure also you have localhost running before starting tests if you are running against a localhost environment
 
-Run the tests through cli :
+Run the tests through CLI:
+
 Open Cypress
 
 ```
-npm cypress:open
+npm run cypress:open
 ```
 
 Run Cypress tests from CLI
@@ -26,7 +28,7 @@ Run Cypress tests from CLI
 "test": "cypress run --env TAGS='@e2e-test' --spec 'cypress/integration/**/*.feature'"
 ```
 
-if you pass in the CYPRESS_ENV it will run the tests with the corresponding config file in your config folder
+If you pass in the `CYPRESS_ENV` it will run the tests with the corresponding config file in your config folder.
 
 ### Environment configs
 
@@ -34,36 +36,38 @@ By default , When cypress is opened locally it will use the cypress.json file . 
 
 in cypress > Config
 
-You can find a list of config files here , or you can create a new one . Always ensure that you add this correctly to the command 'CYPRESS_ENV' when running tests
+You can find a list of config files here , or you can create a new one . Always ensure that you add this correctly to the command `CYPRESS_ENV` when running tests
 
 ## Folder structure
 
-Feature File : Cypress > Integration > .feature at the root of integration folder
-Steps : Cypress > Support > step_definitions
-Page Objects : cypress > support > pages
+- Feature File: `Cypress > Integration > .feature` at the root of integration folder
+- Steps: `Cypress > Support > step_definitions`
+- Page Objects: `cypress > support > pages`
 
 NOTE: The way that the cucumber-preprocessor package resolves the path between feature and step is that you must create a folder that shares the same name as the feature , within that folder you put in your steps
 
-example :
-workspace.feature = workspace folder > x.steps.js
+**Example:**
+
+`workspace.feature = workspace folder > x.steps.js`
 
 ### Page-Objects
 
-Page objects are located in the cypress > support > pages > x.page.js
+Page objects are located in the
+`cypress > support > pages > x.page.js`
 
 examples
 
-```
+```js
 // Selectors
 workspaceTabItem() {
   return cy.get('[data-testid="workspace-item"]')
 }
 ```
 
-```
+```js
 // Functions
-  visit() {
-    cy.visit('/');
-    cy.url().should('include','trading')
-  }
+visit() {
+  cy.visit('/');
+  cy.url().should('include','trading')
+}
 ```

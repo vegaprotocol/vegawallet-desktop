@@ -1,4 +1,3 @@
-
 Feature: Wallet Service Page
 
   Scenario: Wallet service running
@@ -7,7 +6,7 @@ Feature: Wallet Service Page
     Then wallet service is shown as running
     And wallet service is returning "200"
 
-Scenario: Service with Token DApp
+  Scenario: Service with Token DApp
     Given I am on the Wallet Service page
     When I click start service for Token dApp
     And dApp "token" is shown running
