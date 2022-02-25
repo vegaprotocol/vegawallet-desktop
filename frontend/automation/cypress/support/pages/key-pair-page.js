@@ -28,7 +28,7 @@ export default class KeypairPage {
   }
 
   validateMessageSignedSuccessfully() {
-    cy.contains("Message signed successfully")
+    cy.contains('Message signed successfully')
   }
 
   clickSignMore() {
