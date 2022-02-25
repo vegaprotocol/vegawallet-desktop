@@ -12,6 +12,7 @@ import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
 import {
   initNetworksAction,
+  initProxies,
   startServiceAction
 } from './contexts/network/network-actions'
 import { useNetwork } from './contexts/network/network-context'
@@ -40,6 +41,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
       globalState.status === AppStatus.Onboarding
     ) {
       networkDispatch(initNetworksAction())
+      networkDispatch(initProxies())
     }
   }, [globalState.status, networkDispatch])
 

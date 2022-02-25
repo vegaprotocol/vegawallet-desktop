@@ -42,10 +42,10 @@ export function ServiceStatus() {
                 .filter(app => app.running)
                 .map((app, i, arr) => {
                   return (
-                    <>
+                    <span key={app.name}>
                       <ExternalLink href={app.url}>{app.name}</ExternalLink>
                       {i < arr.length - 1 ? ', ' : ''}
-                    </>
+                    </span>
                   )
                 })}
             </>
