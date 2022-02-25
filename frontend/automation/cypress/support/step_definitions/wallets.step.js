@@ -56,18 +56,18 @@ When('I click lock', () => {
 })
 
 When('I sign message with correct passphrase', () => {
-  keyPairPage.signmessage("Sign message successfully")
+  keyPairPage.signmessage('Sign message successfully')
   walletPage.submitPassphrase('123')
 })
 
 When('I sign more with correct passphrase', () => {
   keyPairPage.clickSignMore()
-  keyPairPage.signmessage("Additional text")
+  keyPairPage.signmessage('Additional text')
   walletPage.submitPassphrase('123')
 })
 
 When('I sign message with incorrect passphrase', () => {
-  keyPairPage.signmessage("Sign message unsuccessfully")
+  keyPairPage.signmessage('Sign message unsuccessfully')
   walletPage.submitPassphrase('777')
 })
 
