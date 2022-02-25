@@ -28,7 +28,8 @@ export function ButtonGroup({
           return React.cloneElement(child, {
             style: {
               flexGrow: 1,
-              flexBasis: 0
+              flexBasis: 0,
+              ...child.props.style
             }
           })
         }

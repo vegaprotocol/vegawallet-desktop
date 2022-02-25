@@ -53,28 +53,67 @@ export function OnboardHome() {
 
       await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
 
-      const [wallets, networks] = await Promise.all([
-        Service.ListWallets(),
-        Service.ListNetworks()
-      ])
-
-      globalDispatch({ type: 'ADD_WALLETS', wallets: wallets.wallets })
+      // Add wallets and networks to state
+      globalDispatch({ type: 'ADD_WALLETS', wallets: onboarding.wallets })
       networkDispatch({
         type: 'ADD_NETWORKS',
-        networks: networks.networks
+        networks: onboarding.networks
       })
-      globalDispatch({ type: 'INIT_APP', isInit: true })
+
+      // Navigate to wallet create onboarding if no wallets are found
+      if (!onboarding.wallets.length) {
+        navigate(OnboardPaths.WalletCreate)
+        return
+      }
 
       // If use doesnt have networks go to the import network section on onboarding
       // otherwise go to home to complete onboarding
       if (!onboarding.networks.length) {
         navigate(OnboardPaths.Network)
-      } else {
-        navigate(Paths.Home)
+        return
       }
+
+      // Found wallets and networks, go to the main app
+      globalDispatch({ type: 'INIT_APP', isInit: true })
+      navigate(Paths.Home)
     } catch (err) {
       Sentry.captureException(err)
     }
+  }
+
+  const renderExistingMessage = () => {
+    if (!onboarding.wallets.length && !onboarding.networks.length) {
+      return null
+    }
+
+    let message: string
+    let buttonText: string
+
+    if (onboarding.wallets.length && !onboarding.networks.length) {
+      message = 'Existing wallets found, but no networks.'
+      buttonText = 'Import network'
+    } else if (!onboarding.wallets.length && onboarding.networks.length) {
+      message = 'Existing networks found, but no wallets'
+      buttonText = 'Create wallet'
+    } else {
+      message = 'Existing wallets and networks found'
+      buttonText = 'Use existing'
+    }
+
+    return (
+      <>
+        <p>{message}</p>
+        <ButtonGroup>
+          <Button
+            loading={loading === 'existing'}
+            onClick={handleImportExistingWallet}
+          >
+            {buttonText}
+          </Button>
+        </ButtonGroup>
+        <p style={{ margin: '20px 0' }}>OR</p>
+      </>
+    )
   }
 
   return (
@@ -82,21 +121,8 @@ export function OnboardHome() {
       <Header style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
         <Vega />
       </Header>
-      {onboarding.wallets.length ? (
-        <p style={{ maxWidth: 370 }}>
-          Existing wallet found. Either use existing, create a new wallet or
-          import from your recovery phrase
-        </p>
-      ) : null}
+      {renderExistingMessage()}
       <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
-        {onboarding.wallets.length || onboarding.networks.length ? (
-          <Button
-            loading={loading === 'existing'}
-            onClick={handleImportExistingWallet}
-          >
-            Use existing
-          </Button>
-        ) : null}
         <Button
           loading={loading === 'create'}
           data-testid='create-new-wallet'
@@ -181,6 +207,10 @@ export function OnboardSettings() {
 }
 
 export function OnboardWalletCreate() {
+  const {
+    state: { onboarding },
+    dispatch
+  } = useGlobal()
   const navigate = useNavigate()
   const { submit, response } = useCreateWallet()
 
@@ -191,10 +221,17 @@ export function OnboardWalletCreate() {
           response={response}
           callToAction={
             <Button
-              onClick={() => navigate(OnboardPaths.Network)}
+              onClick={() => {
+                if (!onboarding.networks.length) {
+                  navigate(OnboardPaths.Network)
+                } else {
+                  dispatch({ type: 'INIT_APP', isInit: true })
+                  navigate(Paths.Home)
+                }
+              }}
               data-testid='onboard-import-network-button'
             >
-              Next: Import network
+              Continue
             </Button>
           }
         />
@@ -206,14 +243,23 @@ export function OnboardWalletCreate() {
 }
 
 export function OnboardWalletImport() {
+  const {
+    state: { onboarding },
+    dispatch
+  } = useGlobal()
   const navigate = useNavigate()
   const { submit, response } = useImportWallet()
 
   React.useEffect(() => {
     if (response) {
-      navigate(OnboardPaths.Network)
+      if (!onboarding.networks.length) {
+        navigate(OnboardPaths.Network)
+      } else {
+        dispatch({ type: 'INIT_APP', isInit: true })
+        navigate(Paths.Home)
+      }
     }
-  }, [response, navigate])
+  }, [response, navigate, dispatch, onboarding])
 
   return (
     <OnboardPanel title='Import a wallet' back={Paths.Onboard}>
