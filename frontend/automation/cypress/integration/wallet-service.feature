@@ -1,8 +1,13 @@
 Feature: Wallet Service Page
 
+  Scenario: Wallet service running
+    Given I have an imported network
+    Given I am on the Wallet Service page
+    Then wallet service is shown as running
+    And wallet service is returning "200"
 
   Scenario: Service with Token DApp
-    Given I have an imported network
+    Given I am on the Wallet Service page
     When I click start service for Token dApp
     And dApp "token" is shown running
     And dApp service is returning "200"
@@ -13,7 +18,3 @@ Feature: Wallet Service Page
     Then dApp "console" is shown running
     And console service is returning "200"
 
-  Scenario: Wallet service running
-    Given I am on the Wallet Service page
-    Then wallet service is shown as running
-    And wallet service is returning "200"

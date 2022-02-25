@@ -157,11 +157,11 @@ export function startServiceAction(network: string, port: number) {
         await Service.StopService()
       }
 
-      dispatch({ type: 'START_SERVICE', port })
-
       await Service.StartService({
         network
       })
+
+      dispatch({ type: 'START_SERVICE', port })
     } catch (err) {
       Sentry.captureException(err)
     }
