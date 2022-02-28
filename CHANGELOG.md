@@ -13,6 +13,7 @@
 ### 🛠 Improvements
 
 - [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
+- [180](https://github.com/vegaprotocol/vegawallet-desktop/pull/180) - Test Coverage for message signing
 
 ### 🐛 Fixes
 
