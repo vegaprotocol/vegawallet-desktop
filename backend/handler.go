@@ -105,8 +105,8 @@ type SearchForExistingConfigurationResponse struct {
 // This endpoint should be used to help the user to restore existing wallet
 // setup in the app.
 func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurationResponse, error) {
-	h.log.Debug("Entering ListWallets")
-	defer h.log.Debug("Leaving ListWallets")
+	h.log.Debug("Entering SearchForExistingConfiguration")
+	defer h.log.Debug("Leaving SearchForExistingConfiguration")
 
 	defaultCfg := config.Config{
 		VegaHome: "",
