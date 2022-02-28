@@ -51,6 +51,40 @@ export function initNetworksAction() {
   }
 }
 
+/**
+ * Set proxy state on startup. When running the actual app proxies will never be running at
+ * startup but if using a browser this ensures proxy state is correct if you reload the window
+ * without stopping the backend process.
+ */
+export function initProxies() {
+  return async (dispatch: NetworkDispatch) => {
+    try {
+      const [consoleState, tokenDappState] = await Promise.all([
+        Service.GetConsoleState(),
+        Service.GetTokenDAppState()
+      ])
+
+      if (consoleState.running) {
+        dispatch({
+          type: 'START_PROXY',
+          app: ProxyName.Console,
+          url: consoleState.url
+        })
+      }
+
+      if (tokenDappState.running) {
+        dispatch({
+          type: 'START_PROXY',
+          app: ProxyName.TokenDApp,
+          url: tokenDappState.url
+        })
+      }
+    } catch (err) {
+      Sentry.captureException(err)
+    }
+  }
+}
+
 export function changeNetworkAction(network: string) {
   return async (dispatch: NetworkDispatch) => {
     Sentry.addBreadcrumb({
@@ -62,6 +96,7 @@ export function changeNetworkAction(network: string) {
 
     try {
       await stopProxies()
+      dispatch({ type: 'STOP_ALL_PROXIES' })
 
       const config = await Service.GetNetworkConfig(network)
 
@@ -104,6 +139,7 @@ export function updateNetworkConfigAction(
       }
 
       await stopProxies()
+      dispatch({ type: 'STOP_ALL_PROXIES' })
 
       const isSuccessful = await Service.SaveNetworkConfig(config)
 
@@ -157,11 +193,11 @@ export function startServiceAction(network: string, port: number) {
         await Service.StopService()
       }
 
-      dispatch({ type: 'START_SERVICE', port })
-
       await Service.StartService({
         network
       })
+
+      dispatch({ type: 'START_SERVICE', port })
     } catch (err) {
       Sentry.captureException(err)
     }

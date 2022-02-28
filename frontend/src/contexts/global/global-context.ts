@@ -28,6 +28,10 @@ export interface GlobalState {
   wallets: Wallet[]
   passphraseModalOpen: boolean
   drawerOpen: boolean
+  onboarding: {
+    wallets: string[]
+    networks: string[]
+  }
 }
 
 export type GlobalDispatch = React.Dispatch<

@@ -47,6 +47,10 @@ export type NetworkAction =
       config: Network
     }
   | {
+      type: 'ADD_NETWORKS'
+      networks: string[]
+    }
+  | {
       type: 'START_SERVICE'
       port: number
     }
@@ -112,6 +116,15 @@ export function networkReducer(
         network,
         networks,
         config
+      }
+    }
+    case 'ADD_NETWORKS': {
+      const newNetworks = action.networks.filter(
+        n => state.networks.indexOf(n) < 0
+      )
+      return {
+        ...state,
+        networks: [...state.networks, ...newNetworks]
       }
     }
     case 'START_SERVICE': {

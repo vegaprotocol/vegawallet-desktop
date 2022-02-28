@@ -20,6 +20,7 @@ export interface go {
 		ListNetworks():Promise<ListNetworksResponse|Error>
 		ListWallets():Promise<ListWalletsResponse|Error>
 		SaveNetworkConfig(arg1:Network):Promise<boolean|Error>
+		SearchForExistingConfiguration():Promise<SearchForExistingConfigurationResponse|Error>
 		SignMessage(arg1:SignMessageRequest):Promise<SignMessageResponse|Error>
 		StartConsole(arg1:StartServiceRequest):Promise<boolean|Error>
 		StartService(arg1:StartServiceRequest):Promise<boolean|Error>

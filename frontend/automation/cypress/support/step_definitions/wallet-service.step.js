@@ -21,7 +21,6 @@ When('I click start service with console', () => {
 })
 
 Then('wallet service is shown as running', () => {
-  networkDrawer.clickBack()
   walletPage.validateServiceRunning('fairground')
 })
 

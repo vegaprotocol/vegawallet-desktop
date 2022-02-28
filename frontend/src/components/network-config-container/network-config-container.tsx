@@ -40,7 +40,6 @@ export function useNetworkConfig(name: string | null) {
         setConfig(res)
       } catch (err) {
         Sentry.captureException(err)
-        console.log(err)
         setError(err as Error)
       } finally {
         setLoading(false)
