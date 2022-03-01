@@ -14,7 +14,7 @@ export default defineConfig(args => {
       eslint(),
       istanbul({
         include: 'src/*',
-        // exclude: ['node_modules', 'automation/'],
+        exclude: ['node_modules', 'automation/', 'src/wailsjs'],
         extension: ['.js', '.ts', '.tsx'],
         // requireEnv: true,
         forceBuildInstrument: true
