@@ -3,6 +3,8 @@ import { defineConfig } from 'vite'
 import eslint from 'vite-plugin-eslint'
 import istanbul from 'vite-plugin-istanbul'
 
+const truthy = ['1', 'true']
+
 export default defineConfig(args => {
   return {
     build: {
@@ -16,8 +18,7 @@ export default defineConfig(args => {
         include: 'src/*',
         exclude: ['node_modules', 'automation/', 'src/wailsjs'],
         extension: ['.js', '.ts', '.tsx'],
-        // requireEnv: true,
-        forceBuildInstrument: true
+        forceBuildInstrument: truthy.includes(process.env['VITE_COVERAGE'])
       })
     ]
   }
