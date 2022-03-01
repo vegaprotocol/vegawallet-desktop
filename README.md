@@ -116,7 +116,7 @@ npm run test
 
 Get API reference documentation, learn more about how Vega works, and explore sample scripts for API trading
 
-**[Wallet documentation](https://docs.vega.xyz/docs/tools/vega-wallet/desktop-wallet)**
+**[Wallet documentation](https://docs.vega.xyz/docs/tools/vega-wallet/desktop-app)**
 
 Learn about how Vega interacts with wallets.
 
