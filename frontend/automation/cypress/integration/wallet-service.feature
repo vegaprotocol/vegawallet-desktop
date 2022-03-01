@@ -1,13 +1,12 @@
-
 Feature: Wallet Service Page
 
   Scenario: Wallet service running
-    Given I have an existing Vega wallet
-    And I have an imported network
+    Given I have an imported network
+    Given I am on the Wallet Service page
     Then wallet service is shown as running
     And wallet service is returning "200"
 
-Scenario: Service with Token DApp
+  Scenario: Service with Token DApp
     Given I am on the Wallet Service page
     When I click start service for Token dApp
     And dApp "token" is shown running
@@ -18,3 +17,4 @@ Scenario: Service with Token DApp
     When I click start service with console
     Then dApp "console" is shown running
     And console service is returning "200"
+

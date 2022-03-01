@@ -1,4 +1,3 @@
-import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
@@ -9,16 +8,12 @@ import { Paths } from '../'
  */
 export const Home = () => {
   const {
-    state: { status, wallets }
+    state: { status }
   } = useGlobal()
 
   if (status === AppStatus.Onboarding) {
     return <Navigate to={Paths.Onboard} />
   }
 
-  if (wallets.length) {
-    return <Navigate to={Paths.Wallet} />
-  }
-
-  return <Navigate to={Paths.WalletCreate} />
+  return <Navigate to={Paths.Wallet} />
 }

@@ -12,6 +12,7 @@ import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
 import {
   initNetworksAction,
+  initProxies,
   startServiceAction
 } from './contexts/network/network-actions'
 import { useNetwork } from './contexts/network/network-context'
@@ -35,8 +36,12 @@ function AppLoader({ children }: { children: React.ReactNode }) {
 
   // Get stored networks and the default network config
   React.useEffect(() => {
-    if (globalState.status === AppStatus.Initialised) {
+    if (
+      globalState.status === AppStatus.Initialised ||
+      globalState.status === AppStatus.Onboarding
+    ) {
       networkDispatch(initNetworksAction())
+      networkDispatch(initProxies())
     }
   }, [globalState.status, networkDispatch])
 

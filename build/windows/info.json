@@ -4,7 +4,7 @@
 	},
 	"info": {
 		"0000": {
-			"ProductVersion": "0.1.0",
+			"ProductVersion": "0.1.1",
 			"CompanyName": "Gobalsky Labs Ltd",
 			"FileDescription": "Vegawallet",
 			"LegalCopyright": "Copyright (c) 2022 Gobalsky Labs Ltd.",

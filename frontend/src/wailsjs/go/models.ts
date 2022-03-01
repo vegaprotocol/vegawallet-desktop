@@ -719,6 +719,20 @@ export class ListWalletsResponse {
     }
 }
 
+export class SearchForExistingConfigurationResponse {
+    wallets: string[];
+    networks: string[];
+
+    static createFrom(source: any = {}) {
+        return new SearchForExistingConfigurationResponse(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.wallets = source["wallets"];
+        this.networks = source["networks"];
+    }
+}
 export class SignMessageRequest {
     wallet: string;
     pubKey: string;
