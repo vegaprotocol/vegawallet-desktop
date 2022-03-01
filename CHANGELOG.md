@@ -13,6 +13,15 @@
 ### 🛠 Improvements
 
 - [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
+
+### 🐛 Fixes
+
+- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
+
+## 0.1.1
+
+### 🛠 Improvements
+
 - [180](https://github.com/vegaprotocol/vegawallet-desktop/pull/180) - Test Coverage for message signing
 
 ### 🐛 Fixes
@@ -22,6 +31,7 @@
 ## 0.1.0
 
 ### 🛠 Features
+
 - Create a wallet
 - Import a wallet
 - Add key to a wallet
