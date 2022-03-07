@@ -580,8 +580,8 @@ github.com/valyala/tcplisten v1.0.0 h1:rBHj/Xf+E1tRGZyWIWwJDiRY0zc1Js+CV5DqwacVS
 github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
 github.com/vegaprotocol/go-slip10 v0.1.0 h1:pP3XF2gSKM6OuaAURobHZlXZ9AzZ5LgeWvXFudL7Mb4=
 github.com/vegaprotocol/go-slip10 v0.1.0/go.mod h1:zTjs9hXxElXfZvPRWWFMtEYSe7udGFP1iUM1ktJ72HI=
-github.com/wailsapp/wails/v2 v2.0.0-beta.32 h1:AGONjh56zAs230wrp3YUBeW3ufyrUQq2lVwLy6nhuFc=
-github.com/wailsapp/wails/v2 v2.0.0-beta.32/go.mod h1:BczaKn29wsLFJYIAYvuuLvUJRwmpYsimhhW8BLNONtI=
+github.com/wailsapp/wails/v2 v2.0.0-beta.33 h1:ZkMfsNJFSnwV+oxp4t3Cnki9DzC2MPvMRfw7Mv2YdFs=
+github.com/wailsapp/wails/v2 v2.0.0-beta.33/go.mod h1:BczaKn29wsLFJYIAYvuuLvUJRwmpYsimhhW8BLNONtI=
 github.com/wzshiming/ctc v1.2.3/go.mod h1:2tVAtIY7SUyraSk0JxvwmONNPFL4ARavPuEsg5+KA28=
 github.com/wzshiming/winseq v0.0.0-20200112104235-db357dc107ae/go.mod h1:VTAq37rkGeV+WOybvZwjXiJOicICdpLCN8ifpISjK20=
 github.com/xanzy/ssh-agent v0.3.0/go.mod h1:3s9xbODqPuuhK9JV1R321M/FlMZSBvE5aY6eAcqrDh0=
