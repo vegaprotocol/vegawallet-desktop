@@ -6,7 +6,7 @@ require (
 	code.vegaprotocol.io/shared v0.0.0-20220202150846-b6aba31dcdb0
 	code.vegaprotocol.io/vegawallet v0.12.1-0.20220215193236-62a1689f606f
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
-	github.com/wailsapp/wails/v2 v2.0.0-beta.30
+	github.com/wailsapp/wails/v2 v2.0.0-beta.33
 	go.uber.org/zap v1.20.0
 )
 
