@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Add issue to Core board
+        if: contains(github.event.issue.labels.*.name, 'ui') != true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_NEW_CARD_TO_PROJECT }}
           PROJECT_ID: ${{ secrets.CORE_PROJECT_ID }}
