@@ -7,10 +7,8 @@ import (
 
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
-	"code.vegaprotocol.io/vegawallet/network"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
-	"code.vegaprotocol.io/vegawallet/wallet"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
 	"go.uber.org/zap"
@@ -110,41 +108,6 @@ func (h *Handler) IsAppInitialised() (bool, error) {
 	}
 
 	return isConfigInit, nil
-}
-
-type SearchForExistingConfigurationResponse struct {
-	Wallets  []string `json:"wallets"`
-	Networks []string `json:"networks"`
-}
-
-// SearchForExistingConfiguration searches for existing wallets and networks.
-// This endpoint should be used to help the user to restore existing wallet
-// setup in the app.
-func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurationResponse, error) {
-	h.log.Debug("Entering SearchForExistingConfiguration")
-	defer h.log.Debug("Leaving SearchForExistingConfiguration")
-
-	defaultCfg := config.Config{
-		VegaHome: "",
-	}
-
-	wStore, err := h.getWalletsStore(defaultCfg)
-	if err != nil {
-		return nil, err
-	}
-
-	netStore, err := h.getNetworksStore(defaultCfg)
-	if err != nil {
-		return nil, err
-	}
-
-	listWallets, _ := wallet.ListWallets(wStore)
-	listNetworks, _ := network.ListNetworks(netStore)
-
-	return &SearchForExistingConfigurationResponse{
-		Wallets:  listWallets.Wallets,
-		Networks: listNetworks.Networks,
-	}, nil
 }
 
 type InitialiseAppRequest struct {

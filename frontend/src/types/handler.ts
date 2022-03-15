@@ -29,6 +29,7 @@ import type {
   UntaintKeyRequest
 } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
+import {Config} from "../wailsjs/go/models";
 import {DeleteWalletRequest} from "../wailsjs/go/models";
 
 export interface Handler {
@@ -37,6 +38,7 @@ export interface Handler {
   CreateWallet(arg1: CreateWalletRequest): Promise<CreateWalletResponse>
   DescribeKey(arg1: DescribeKeyRequest): Promise<DescribeKeyResponse>
   GenerateKey(arg1: GenerateKeyRequest): Promise<GenerateKeyResponse>
+  GetAppConfig(): Promise<Config>
   GetNetworkConfig(arg1: string): Promise<Network>
   GetServiceState(): Promise<GetServiceStateResponse>
   GetConsoleState(): Promise<GetServiceStateResponse>
@@ -52,6 +54,7 @@ export interface Handler {
   ListKeys(arg1: ListKeysRequest): Promise<ListKeysResponse>
   ListNetworks(): Promise<ListNetworksResponse>
   ListWallets(): Promise<ListWalletsResponse>
+  SaveAppConfig(arg1: Config): Promise<void>
   SaveNetworkConfig(arg1: Network): Promise<boolean>
   StartService(arg1: StartServiceRequest): Promise<boolean>
   StopService(): Promise<boolean>

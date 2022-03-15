@@ -310,6 +310,20 @@ export class GenerateKeyResponse {
 	    return a;
 	}
 }
+export class Config {
+    logLevel: string;
+    vegaHome: string;
+
+    static createFrom(source: any = {}) {
+        return new Config(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.logLevel = source["logLevel"];
+        this.vegaHome = source["vegaHome"];
+    }
+}
 export class GetServiceStateResponse {
     url: string;
     running: boolean;
