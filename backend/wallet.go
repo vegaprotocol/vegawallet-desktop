@@ -9,7 +9,7 @@ import (
 
 func CheckCreateWalletRequest(req *wallet.CreateWalletRequest) error {
 	if len(req.Wallet) == 0 {
-		return errors.New("name is required")
+		return errors.New("wallet name is required")
 	}
 
 	if len(req.Passphrase) == 0 {
@@ -43,7 +43,7 @@ func (h *Handler) CreateWallet(req *wallet.CreateWalletRequest) (*wallet.CreateW
 
 func CheckImportWalletRequest(req *wallet.ImportWalletRequest) error {
 	if len(req.Wallet) == 0 {
-		return errors.New("name is required")
+		return errors.New("wallet name is required")
 	}
 
 	if len(req.RecoveryPhrase) == 0 {
@@ -101,45 +101,36 @@ func (h *Handler) ListWallets() (*wallet.ListWalletsResponse, error) {
 	return wallet.ListWallets(wStore)
 }
 
-func CheckSignMessageRequest(req *wallet.SignMessageRequest) error {
+type DeleteWalletRequest struct {
+	Wallet string `json:"wallet"`
+}
+
+func CheckDeleteWalletRequest(req *DeleteWalletRequest) error {
 	if len(req.Wallet) == 0 {
-		return errors.New("wallet is required")
-	}
-
-	if len(req.PubKey) == 0 {
-		return errors.New("pubkey is required")
-	}
-
-	if len(req.Message) == 0 {
-		return errors.New("message is required")
-	}
-
-	if len(req.Passphrase) == 0 {
-		return errors.New("passphrase is required")
+		return errors.New("wallet name is required")
 	}
 
 	return nil
 }
 
-func (h *Handler) SignMessage(req *wallet.SignMessageRequest) (*wallet.SignMessageResponse, error) {
-	h.log.Debug("Entering SignMessage")
-	defer h.log.Debug("Leaving SignMessage")
+func (h *Handler) DeleteWallet(req *DeleteWalletRequest) error {
+	h.log.Debug("Entering DeleteWallet")
+	defer h.log.Debug("Leaving DeleteWallet")
 
-	err := CheckSignMessageRequest(req)
-
-	if err != nil {
-		return nil, err
+	if err := CheckDeleteWalletRequest(req); err != nil {
+		h.log.Error(fmt.Sprintf("Request is invalid: %v", err))
+		return fmt.Errorf("request is invalid: %w", err)
 	}
 
 	config, err := h.loadAppConfig()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	wStore, err := h.getWalletsStore(config)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return wallet.SignMessage(wStore, req)
+	return wStore.DeleteWallet(req.Wallet)
 }
