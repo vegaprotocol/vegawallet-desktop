@@ -52,13 +52,6 @@ func (h *Handler) StartConsole(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
-	logLevel := cfg.Level.String()
-	log, err := buildLogger(logLevel)
-	if err != nil {
-		return false, err
-	}
-	defer syncLogger(log)
-
 	cs := proxy.NewProxy(
 		cfg.Console.LocalPort,
 		cfg.Console.URL,
@@ -156,13 +149,6 @@ func (h *Handler) StartTokenDApp(req *StartServiceRequest) (bool, error) {
 		h.log.Error(fmt.Sprintf("Couldn't initialise network store: %v", err))
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
-
-	logLevel := cfg.Level.String()
-	log, err := buildLogger(logLevel)
-	if err != nil {
-		return false, err
-	}
-	defer syncLogger(log)
 
 	tokenDApp := proxy.NewProxy(
 		cfg.TokenDApp.LocalPort,
