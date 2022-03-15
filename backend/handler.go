@@ -47,11 +47,7 @@ func NewHandler() (*Handler, error) {
 	if cfg, err := loader.GetConfig(); err != nil {
 		logLevel = zap.InfoLevel.String()
 	} else {
-		if len(cfg.LogLevel) == 0 {
-			logLevel = zap.InfoLevel.String()
-		} else {
-			logLevel = cfg.LogLevel
-		}
+		logLevel = cfg.LogLevel
 	}
 
 	log, err := buildLogger(logLevel, loader.LogFilePathForApp())
@@ -121,6 +117,12 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 	cfg := &config.Config{
 		LogLevel: zap.InfoLevel.String(),
 		VegaHome: req.VegaHome,
+		// We will opt in first. We will remove this once the on-boarding
+		// workflow is rework to ask for user explicit consent.
+		Telemetry: &config.TelemetryConfig{
+			ConsentAsked: false,
+			Enabled:      true,
+		},
 	}
 
 	if err := h.configLoader.SaveConfig(*cfg); err != nil {

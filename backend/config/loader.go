@@ -6,6 +6,7 @@ import (
 
 	vgfs "code.vegaprotocol.io/shared/libs/fs"
 	"code.vegaprotocol.io/shared/paths"
+	"go.uber.org/zap"
 )
 
 type Loader struct {
@@ -60,6 +61,19 @@ func (l *Loader) GetConfig() (Config, error) {
 	config := Config{}
 	if err := paths.ReadStructuredFile(l.configFilePath, &config); err != nil {
 		return Config{}, fmt.Errorf("couldn't read configuration file: %w", err)
+	}
+
+	if len(config.LogLevel) == 0 {
+		config.LogLevel = zap.InfoLevel.String()
+	}
+
+	if config.Telemetry == nil {
+		// We will opt in first. We will remove this once the on-boarding
+		// workflow is rework to ask for user explicit consent.
+		config.Telemetry = &TelemetryConfig{
+			ConsentAsked: false,
+			Enabled:      true,
+		}
 	}
 
 	return config, nil
