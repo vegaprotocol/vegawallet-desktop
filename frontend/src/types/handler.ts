@@ -1,7 +1,7 @@
 import type {
   AnnotateKeyRequest,
   CheckVersionResponse,
-  Config,
+  InitialiseAppRequest,
   CreateWalletRequest,
   CreateWalletResponse,
   DescribeKeyRequest,
@@ -45,7 +45,7 @@ export interface Handler {
     arg1: ImportNetworkFromSourceRequest
   ): Promise<ImportNetworkFromSourceResponse>
   ImportWallet(arg1: ImportWalletRequest): Promise<ImportWalletResponse>
-  InitialiseApp(arg1: Config): Promise<void>
+  InitialiseApp(arg1: InitialiseAppRequest): Promise<void>
   IsAppInitialised(): Promise<boolean>
   IsolateKey(arg1: IsolateKeyRequest): Promise<IsolateKeyResponse>
   ListKeys(arg1: ListKeysRequest): Promise<ListKeysResponse>

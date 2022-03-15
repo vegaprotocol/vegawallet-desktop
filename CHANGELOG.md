@@ -12,7 +12,7 @@
 
 ### 🛠 Improvements
 
-- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
+- [198](https://github.com/vegaprotocol/vegawallet-desktop/pull/198) - Output runtime logs in files.
 
 ### 🐛 Fixes
 

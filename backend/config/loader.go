@@ -2,13 +2,16 @@ package config
 
 import (
 	"fmt"
+	"time"
 
 	vgfs "code.vegaprotocol.io/shared/libs/fs"
 	"code.vegaprotocol.io/shared/paths"
 )
 
 type Loader struct {
-	configFilePath string
+	configFilePath    string
+	logFilePathForApp string
+	logFilePathForSvc string
 }
 
 func NewLoader() (*Loader, error) {
@@ -17,13 +20,36 @@ func NewLoader() (*Loader, error) {
 		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppDefaultConfigFile, err)
 	}
 
+	y, m, d := time.Now().UTC().Date()
+	logFileForApp := fmt.Sprintf("app-%d-%d-%d.log", y, m, d)
+	logPathForApp, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, logFileForApp))
+	if err != nil {
+		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppDefaultConfigFile, err)
+	}
+
+	logFileForSvc := fmt.Sprintf("service-%d-%d-%d.log", y, m, d)
+	logPathForSvc, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, logFileForSvc))
+	if err != nil {
+		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppDefaultConfigFile, err)
+	}
+
 	return &Loader{
-		configFilePath: configPath,
+		configFilePath:    configPath,
+		logFilePathForApp: logPathForApp,
+		logFilePathForSvc: logPathForSvc,
 	}, nil
 }
 
 func (l *Loader) ConfigFilePath() string {
 	return l.configFilePath
+}
+
+func (l *Loader) LogFilePathForApp() string {
+	return l.logFilePathForApp
+}
+
+func (l *Loader) LogFilePathForSvc() string {
+	return l.logFilePathForSvc
 }
 
 func (l *Loader) IsConfigInitialised() (bool, error) {

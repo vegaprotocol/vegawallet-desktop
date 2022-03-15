@@ -23,10 +23,13 @@ func main() {
 	log := logger.NewDefaultLogger()
 
 	// Create an instance of the handler structure
-	handler := backend.NewHandler(log)
+	handler, err := backend.NewHandler()
+	if err != nil {
+		log.Fatal(fmt.Sprintf("Couldn't instantiate backend: %v", err))
+	}
 
 	// Create application with options
-	err := wails.Run(&options.App{
+	if err := wails.Run(&options.App{
 		Title:      "Vegawallet",
 		Width:      460,
 		Height:     760,
@@ -56,9 +59,7 @@ func main() {
 				Icon:    icon,
 			},
 		},
-	})
-
-	if err != nil {
+	}); err != nil {
 		log.Fatal(fmt.Sprintf("Couldn't run the application: %v", err))
 	}
 }

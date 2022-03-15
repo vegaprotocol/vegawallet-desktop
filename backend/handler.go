@@ -13,7 +13,7 @@ import (
 	"code.vegaprotocol.io/vegawallet/wallet"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
-	"github.com/wailsapp/wails/v2/pkg/logger"
+	"go.uber.org/zap"
 )
 
 var (
@@ -30,7 +30,7 @@ type Handler struct {
 	// the one to inject on runtime methods like menu, event, dialogs, etc.
 	ctx context.Context
 
-	log logger.Logger
+	log *zap.Logger
 
 	configLoader *config.Loader
 
@@ -39,25 +39,41 @@ type Handler struct {
 	tokenDApp *serviceState
 }
 
-func NewHandler(log logger.Logger) *Handler {
-	return &Handler{
-		log: log,
+func NewHandler() (*Handler, error) {
+	loader, err := config.NewLoader()
+	if err != nil {
+		return nil, fmt.Errorf("couldn't create configuration loader: %w", err)
 	}
+
+	var logLevel string
+	if cfg, err := loader.GetConfig(); err != nil {
+		logLevel = zap.InfoLevel.String()
+	} else {
+		if len(cfg.LogLevel) == 0 {
+			logLevel = zap.InfoLevel.String()
+		} else {
+			logLevel = cfg.LogLevel
+		}
+	}
+
+	log, err := buildLogger(logLevel, loader.LogFilePathForApp())
+	if err != nil {
+		return nil, err
+	}
+
+	return &Handler{
+		log:          log,
+		configLoader: loader,
+	}, nil
 }
 
 // Startup is called at application Startup
 func (h *Handler) Startup(ctx context.Context) {
 	h.ctx = ctx
 
-	h.log.Debug("Entering WailsInit")
-	defer h.log.Debug("Leaving WailsInit")
+	h.log.Debug("Entering Startup")
+	defer h.log.Debug("Leaving Startup")
 
-	loader, err := config.NewLoader()
-	if err != nil {
-		h.log.Error(fmt.Sprintf("Couldn't create configuration loader: %v", err))
-	}
-
-	h.configLoader = loader
 	h.service = &serviceState{}
 	h.console = &serviceState{}
 	h.tokenDApp = &serviceState{}
@@ -70,8 +86,8 @@ func (h *Handler) DOMReady(ctx context.Context) {
 
 // Shutdown is called at application termination
 func (h *Handler) Shutdown(_ context.Context) {
-	h.log.Debug("Entering WailsShutdown")
-	defer h.log.Debug("Leaving WailsShutdown")
+	h.log.Debug("Entering Shutdown")
+	defer h.log.Debug("Leaving Shutdown")
 
 	if h.console.IsRunning() {
 		_, _ = h.StopConsole()
@@ -131,7 +147,19 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 	}, nil
 }
 
-func (h *Handler) InitialiseApp(cfg *config.Config) error {
+type InitialiseAppRequest struct {
+	VegaHome string `json:"vegaHome"`
+}
+
+func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
+	h.log.Debug("Entering InitialiseApp")
+	defer h.log.Debug("Leaving InitialiseApp")
+
+	cfg := &config.Config{
+		LogLevel: zap.InfoLevel.String(),
+		VegaHome: req.VegaHome,
+	}
+
 	if err := h.configLoader.SaveConfig(*cfg); err != nil {
 		return err
 	}

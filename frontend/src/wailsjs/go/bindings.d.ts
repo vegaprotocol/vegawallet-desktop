@@ -13,7 +13,7 @@ export interface go {
 		GetVersion():Promise<GetVersionResponse>
 		ImportNetwork(arg1:ImportNetworkFromSourceRequest):Promise<ImportNetworkFromSourceResponse|Error>
 		ImportWallet(arg1:ImportWalletRequest):Promise<ImportWalletResponse|Error>
-		InitialiseApp(arg1:Config):Promise<Error>
+		InitialiseApp(arg1:InitialiseAppRequest):Promise<Error>
 		IsAppInitialised():Promise<boolean|Error>
 		IsolateKey(arg1:IsolateKeyRequest):Promise<IsolateKeyResponse|Error>
 		ListKeys(arg1:ListKeysRequest):Promise<ListKeysResponse|Error>

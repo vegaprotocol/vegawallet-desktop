@@ -594,11 +594,11 @@ export class ImportWalletResponse {
 	    return a;
 	}
 }
-export class Config {
+export class InitialiseAppRequest {
     vegaHome: string;
 
     static createFrom(source: any = {}) {
-        return new Config(source);
+        return new InitialiseAppRequest(source);
     }
 
     constructor(source: any = {}) {
