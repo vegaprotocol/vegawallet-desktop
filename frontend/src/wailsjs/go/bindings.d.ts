@@ -4,6 +4,7 @@ export interface go {
 		AnnotateKey(arg1:AnnotateKeyRequest):Promise<Error>
 		CheckVersion():Promise<CheckVersionResponse|Error>
 		CreateWallet(arg1:CreateWalletRequest):Promise<CreateWalletResponse|Error>
+		DeleteWallet(arg1:DeleteWalletRequest):Promise<Error>
 		DescribeKey(arg1:DescribeKeyRequest):Promise<DescribeKeyResponse|Error>
 		GenerateKey(arg1:GenerateKeyRequest):Promise<GenerateKeyResponse|Error>
 		GetConsoleState():Promise<GetServiceStateResponse>

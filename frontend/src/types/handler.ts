@@ -29,6 +29,7 @@ import type {
   UntaintKeyRequest
 } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
+import {DeleteWalletRequest} from "../wailsjs/go/models";
 
 export interface Handler {
   AnnotateKey(arg1: AnnotateKeyRequest): Promise<void>
@@ -63,6 +64,7 @@ export interface Handler {
   StopConsole(): Promise<boolean>
   StopTokenDApp(): Promise<boolean>
   SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse>
+  DeleteWallet(arg1: DeleteWalletRequest): Promise<void>
 }
 
 // Add Wails backend handler and runtime to window object

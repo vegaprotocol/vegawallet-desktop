@@ -178,6 +178,18 @@ export class CreateWalletResponse {
 	    return a;
 	}
 }
+export class DeleteWalletRequest {
+    wallet: string;
+
+    static createFrom(source: any = {}) {
+        return new DeleteWalletRequest(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.wallet = source["wallet"];
+    }
+}
 export class DescribeKeyRequest {
     wallet: string;
     passphrase: string;
