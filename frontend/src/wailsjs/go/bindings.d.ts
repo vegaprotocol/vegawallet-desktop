@@ -7,6 +7,7 @@ export interface go {
 		DeleteWallet(arg1:DeleteWalletRequest):Promise<Error>
 		DescribeKey(arg1:DescribeKeyRequest):Promise<DescribeKeyResponse|Error>
 		GenerateKey(arg1:GenerateKeyRequest):Promise<GenerateKeyResponse|Error>
+		GetAppConfig():Promise<Config|Error>
 		GetConsoleState():Promise<GetServiceStateResponse>
 		GetNetworkConfig(arg1:string):Promise<Network|Error>
 		GetServiceState():Promise<GetServiceStateResponse>
@@ -31,6 +32,7 @@ export interface go {
 		StopTokenDApp():Promise<boolean|Error>
 		TaintKey(arg1:TaintKeyRequest):Promise<Error>
 		UntaintKey(arg1:UntaintKeyRequest):Promise<Error>
+		UpdateAppConfig(arg1:Config):Promise<Error>
     },
   }
 
