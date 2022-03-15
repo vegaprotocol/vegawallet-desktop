@@ -310,9 +310,24 @@ export class GenerateKeyResponse {
 	    return a;
 	}
 }
+export class TelemetryConfig {
+    consentAsked: boolean;
+    enabled: boolean;
+
+    static createFrom(source: any = {}) {
+        return new TelemetryConfig(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.consentAsked = source["consentAsked"];
+        this.enabled = source["enabled"];
+    }
+}
 export class Config {
     logLevel: string;
     vegaHome: string;
+    telemetry?: TelemetryConfig;
 
     static createFrom(source: any = {}) {
         return new Config(source);
@@ -322,7 +337,26 @@ export class Config {
         if ('string' === typeof source) source = JSON.parse(source);
         this.logLevel = source["logLevel"];
         this.vegaHome = source["vegaHome"];
+        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
     }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
 }
 export class GetServiceStateResponse {
     url: string;

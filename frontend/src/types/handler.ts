@@ -29,8 +29,8 @@ import type {
   UntaintKeyRequest
 } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
-import {Config} from "../wailsjs/go/models";
-import {DeleteWalletRequest} from "../wailsjs/go/models";
+import { Config } from '../wailsjs/go/models'
+import { DeleteWalletRequest } from '../wailsjs/go/models'
 
 export interface Handler {
   AnnotateKey(arg1: AnnotateKeyRequest): Promise<void>
