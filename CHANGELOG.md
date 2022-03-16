@@ -13,6 +13,7 @@
 ### 🛠 Improvements
 
 - [198](https://github.com/vegaprotocol/vegawallet-desktop/pull/198) - Output runtime logs in files.
+- [162](https://github.com/vegaprotocol/vegawallet-desktop/pull/162) - Reword the message about unset endpoints.
 
 ### 🐛 Fixes
 
