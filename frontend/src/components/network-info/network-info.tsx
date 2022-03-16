@@ -74,7 +74,7 @@ function ServicesTable({ config }: ServicesTableProps) {
           <th>
             Console{' '}
             <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.console.url || 'Not set'})
+              ({config.console.url || 'Endpoint not configured'})
             </span>
           </th>
           <td data-testid='service-console'>
@@ -85,7 +85,7 @@ function ServicesTable({ config }: ServicesTableProps) {
           <th>
             Token dApp{' '}
             <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.tokenDApp.url || 'Not set'})
+              ({config.tokenDApp.url || 'Endpoint not configured'})
             </span>
           </th>
           <td data-testid='service-token'>
