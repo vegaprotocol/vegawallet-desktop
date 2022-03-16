@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	vgfs "code.vegaprotocol.io/shared/libs/fs"
@@ -21,17 +22,18 @@ func NewLoader() (*Loader, error) {
 		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppDefaultConfigFile, err)
 	}
 
-	y, m, d := time.Now().UTC().Date()
-	logFileForApp := fmt.Sprintf("app-%d-%d-%d.log", y, m, d)
-	logPathForApp, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, logFileForApp))
+	pid := os.Getpid()
+	date := time.Now().UTC().Format("2006-01-02-15-04-05")
+	logFileName := fmt.Sprintf("%d-%s.log", pid, date)
+
+	logPathForApp, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, logFileName))
 	if err != nil {
-		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppDefaultConfigFile, err)
+		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppLogsHome, err)
 	}
 
-	logFileForSvc := fmt.Sprintf("service-%d-%d-%d.log", y, m, d)
-	logPathForSvc, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, logFileForSvc))
+	logPathForSvc, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletServiceLogsHome, logFileName))
 	if err != nil {
-		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletAppDefaultConfigFile, err)
+		return nil, fmt.Errorf("couldn't get path for %s: %w", paths.WalletServiceLogsHome, err)
 	}
 
 	return &Loader{
