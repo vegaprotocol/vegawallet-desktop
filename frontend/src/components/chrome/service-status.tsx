@@ -64,11 +64,10 @@ function StatusCircle({ running }: any) {
     width: 11,
     height: 11,
     borderRadius: '50%',
-    border: '2px solid white',
     marginRight: 5
   }
   const contextualStyles: React.CSSProperties = {
-    background: running ? 'white' : 'transparent'
+    background: running ? Colors.VEGA_GREEN : Colors.VEGA_RED
   }
   return <span style={{ ...baseStyles, ...contextualStyles }} />
 }
