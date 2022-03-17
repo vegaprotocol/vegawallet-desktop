@@ -327,6 +327,7 @@ export class TelemetryConfig {
 export class Config {
     logLevel: string;
     vegaHome: string;
+    defaultNetwork: string;
     telemetry?: TelemetryConfig;
 
     static createFrom(source: any = {}) {
@@ -337,6 +338,7 @@ export class Config {
         if ('string' === typeof source) source = JSON.parse(source);
         this.logLevel = source["logLevel"];
         this.vegaHome = source["vegaHome"];
+        this.defaultNetwork = source["defaultNetwork"];
         this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
     }
 
