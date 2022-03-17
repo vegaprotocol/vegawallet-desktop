@@ -10,7 +10,6 @@ import (
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
 	"code.vegaprotocol.io/vegawallet/node"
 	"code.vegaprotocol.io/vegawallet/service"
-	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
 )
 
@@ -98,10 +97,9 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 	defer syncLogger(log)
 
-	svcStore, err := svcstore.InitialiseStore(paths.New(config.VegaHome))
+	svcStore, err := h.getServiceStore(config)
 	if err != nil {
-		h.log.Error(fmt.Sprintf("Couldn't initialise service store: %v", err))
-		return false, fmt.Errorf("couldn't initialise service store: %w", err)
+		return false, err
 	}
 
 	isInit, err := service.IsInitialised(svcStore)
