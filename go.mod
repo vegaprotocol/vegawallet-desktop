@@ -3,15 +3,15 @@ module code.vegaprotocol.io/vegawallet-desktop
 go 1.17
 
 require (
-	code.vegaprotocol.io/shared v0.0.0-20220202150846-b6aba31dcdb0
-	code.vegaprotocol.io/vegawallet v0.13.2-0.20220307184319-b0c6bf6be67d
+	code.vegaprotocol.io/shared v0.0.0-20220316120021-93b67baf439a
+	code.vegaprotocol.io/vegawallet v0.13.2-0.20220318145033-e10ba6ba6ad7
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/wailsapp/wails/v2 v2.0.0-beta.33
 	go.uber.org/zap v1.20.0
 )
 
 require (
-	code.vegaprotocol.io/protos v0.49.1 // indirect
+	code.vegaprotocol.io/protos v0.49.3-0.20220318095248-d80bc0e691ff // indirect
 	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/adrg/xdg v0.3.3 // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect
@@ -50,11 +50,11 @@ require (
 	github.com/vegaprotocol/go-slip10 v0.1.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
-	golang.org/x/net v0.0.0-20210610132358-84b48f89b13b // indirect
-	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
-	golang.org/x/text v0.3.6 // indirect
-	google.golang.org/genproto v0.0.0-20220118154757-00ab72f36ad5 // indirect
-	google.golang.org/grpc v1.43.0 // indirect
+	golang.org/x/crypto v0.0.0-20220314234724-5d542ad81a58 // indirect
+	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
+	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
+	golang.org/x/text v0.3.7 // indirect
+	google.golang.org/genproto v0.0.0-20220314164441-57ef72a4c106 // indirect
+	google.golang.org/grpc v1.45.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
