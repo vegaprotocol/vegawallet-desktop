@@ -3,6 +3,7 @@ export interface go {
     "Handler": {
 		AnnotateKey(arg1:AnnotateKeyRequest):Promise<Error>
 		CheckVersion():Promise<CheckVersionResponse|Error>
+		ConsentPendingTransaction(arg1:ConsentPendingTransactionRequest):Promise<Error>
 		CreateWallet(arg1:CreateWalletRequest):Promise<CreateWalletResponse|Error>
 		DeleteWallet(arg1:DeleteWalletRequest):Promise<Error>
 		DescribeKey(arg1:DescribeKeyRequest):Promise<DescribeKeyResponse|Error>
@@ -10,6 +11,8 @@ export interface go {
 		GetAppConfig():Promise<Config|Error>
 		GetConsoleState():Promise<GetServiceStateResponse>
 		GetNetworkConfig(arg1:string):Promise<Network|Error>
+		GetPendingTransaction(arg1:GetPendingTransactionRequest):Promise<PendingTransaction|Error>
+		GetPendingTransactions():Promise<GetPendingTransactionsResponse>
 		GetServiceState():Promise<GetServiceStateResponse>
 		GetTokenDAppState():Promise<GetServiceStateResponse>
 		GetVersion():Promise<GetVersionResponse>

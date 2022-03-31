@@ -20,12 +20,45 @@ import {
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../'
+import {
+  ConsentPendingTransactionRequest,
+  GetPendingTransactionsResponse,
+  PendingTransaction
+} from '../../wailsjs/go/models'
+import { Service } from '../../service'
 
 export const WalletList = () => {
   const {
     state: { wallets },
     dispatch
   } = useGlobal()
+
+  const [newPendingTransactionHash, setNewPendingTransactionHash] =
+    React.useState<string>("")
+  const [pendingTransactions, setPendingTransactions] = React.useState<
+    Array<PendingTransaction>
+  >([])
+
+  window.runtime.EventsOn('new_pending_transaction', function (hash) {
+    setNewPendingTransactionHash(hash);
+    (async () => {
+      try {
+        const r = await Service.GetPendingTransactions()
+        setPendingTransactions(r.transactions)
+        return r.transactions
+      } catch (err) {
+        console.log('problem getting pending tx')
+        console.log(err)
+      }
+    })()
+  })
+
+  let consentFn = (hash: string, consent :boolean) => {
+    Service.ConsentPendingTransaction(new ConsentPendingTransactionRequest({
+      hash: hash,
+      consent: consent,
+    }))
+  }
 
   function handleUnlock(wallet: Wallet) {
     if (!wallet.auth) {
@@ -56,7 +89,29 @@ export const WalletList = () => {
           Wallets
         </Header>
       </div>
+
+      <br/><br/>
       <div>
+        {newPendingTransactionHash != ""
+          ? <div>
+            New pending transaction hash: { newPendingTransactionHash }
+            <button onClick={() => consentFn(newPendingTransactionHash, true)}>Approve</button>
+            <button onClick={() => consentFn(newPendingTransactionHash, false)}>Decline</button>
+          </div>
+          : <div>No pending transaction</div>
+        }
+        <div>
+          Pending transactions:
+          <ul>
+            {pendingTransactions.map((transaction: PendingTransaction) => (
+              <li>
+                {transaction.pubKey}: {atob(transaction.command)}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <br/><br/>
+
         {wallets.length ? (
           <ul>
             {wallets.map(wallet => (

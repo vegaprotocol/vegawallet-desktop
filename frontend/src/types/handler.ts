@@ -29,7 +29,12 @@ import type {
   UntaintKeyRequest
 } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
-import { Config } from '../wailsjs/go/models'
+import {
+  Config, ConsentPendingTransactionRequest,
+  GetPendingTransactionRequest,
+  GetPendingTransactionsResponse,
+  PendingTransaction
+} from '../wailsjs/go/models'
 import { DeleteWalletRequest } from '../wailsjs/go/models'
 
 export interface Handler {
@@ -68,6 +73,11 @@ export interface Handler {
   StopTokenDApp(): Promise<boolean>
   SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse>
   DeleteWallet(arg1: DeleteWalletRequest): Promise<void>
+  GetPendingTransaction(
+    arg1: GetPendingTransactionRequest
+  ): Promise<PendingTransaction>
+  GetPendingTransactions(): Promise<GetPendingTransactionsResponse>
+  ConsentPendingTransaction(arg1: ConsentPendingTransactionRequest): Promise<void>
 }
 
 // Add Wails backend handler and runtime to window object
