@@ -11,6 +11,7 @@ import (
 	"code.vegaprotocol.io/vegawallet/node"
 	"code.vegaprotocol.io/vegawallet/service"
 	"code.vegaprotocol.io/vegawallet/wallets"
+	"go.uber.org/zap"
 )
 
 type serviceState struct {
@@ -125,7 +126,10 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise the node forwarder: %w", err)
 	}
 
-	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder)
+	h.pendingSignConsentRequests = make(chan service.ConsentRequest)
+
+	policy := service.NewExplicitConsentPolicy(h.pendingSignConsentRequests)
+	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
 		return false, err
@@ -148,6 +152,19 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}()
 
 	return true, nil
+}
+
+func (h *Handler) ProcessSignRequest() {
+	for signRequest := range h.pendingSignConsentRequests {
+		txStr, err := signRequest.String()
+		if err != nil {
+			h.log.Info("failed to marshall sign request content", zap.Any("request", signRequest))
+			return
+		}
+
+		h.log.Info("Received TX sign request: ", zap.String("request", txStr))
+		h.pendingSignRequests[txStr] = signRequest
+	}
 }
 
 type GetServiceStateResponse struct {

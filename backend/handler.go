@@ -8,6 +8,7 @@ import (
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
+	"code.vegaprotocol.io/vegawallet/service"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
@@ -35,6 +36,9 @@ type Handler struct {
 	service   *serviceState
 	console   *serviceState
 	tokenDApp *serviceState
+
+	pendingSignConsentRequests chan service.ConsentRequest
+	pendingSignRequests        map[string]service.ConsentRequest
 }
 
 func NewHandler() (*Handler, error) {
@@ -56,8 +60,9 @@ func NewHandler() (*Handler, error) {
 	}
 
 	return &Handler{
-		log:          log,
-		configLoader: loader,
+		log:                 log,
+		configLoader:        loader,
+		pendingSignRequests: make(map[string]service.ConsentRequest),
 	}, nil
 }
 
@@ -98,7 +103,6 @@ func (h *Handler) Shutdown(_ context.Context) {
 
 func (h *Handler) IsAppInitialised() (bool, error) {
 	isConfigInit, err := h.configLoader.IsConfigInitialised()
-
 	if err != nil {
 		return false, fmt.Errorf("couldn't verify application configuration state: %w", err)
 	}
