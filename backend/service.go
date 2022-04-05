@@ -156,14 +156,8 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 
 func (h *Handler) ProcessSignRequest() {
 	for signRequest := range h.pendingSignConsentRequests {
-		txHash, err := signRequest.TxID
-		if err != nil {
-			h.log.Info("failed to marshall sign request content", zap.Any("request", signRequest))
-			return
-		}
-
 		h.log.Info("Received TX sign request: ", zap.Any("request", signRequest))
-		h.pendingSignRequests.Store(txHash, signRequest)
+		h.pendingSignRequests.Store(signRequest.TxID, signRequest)
 	}
 }
 
