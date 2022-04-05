@@ -10,6 +10,7 @@ import (
 const NewPendingTxEvent = "new_pending_transaction"
 
 type PendingTransaction struct {
+	Hash    string `json:hash`
 	PubKey  string `json:"pubKey"`
 	Command string `json:"command"`
 }
@@ -65,6 +66,7 @@ func (h *Handler) GetPendingTransaction(req *GetPendingTransactionRequest) (*Pen
 	return &PendingTransaction{
 		PubKey:  unmarshalled.PubKey,
 		Command: unmarshalled.String(),
+		Hash:    signRequest.TxHash(),
 	}, nil
 }
 
@@ -93,6 +95,7 @@ func (h *Handler) GetPendingTransactions() *GetPendingTransactionsResponse {
 		currentPending := &PendingTransaction{
 			PubKey:  unmarshalled.PubKey,
 			Command: unmarshalled.String(),
+			Hash:    request.TxHash(),
 		}
 
 		allPending = append(allPending, currentPending)
