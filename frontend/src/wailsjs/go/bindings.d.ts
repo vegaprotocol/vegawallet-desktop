@@ -3,16 +3,18 @@ export interface go {
     "Handler": {
 		AnnotateKey(arg1:AnnotateKeyRequest):Promise<Error>
 		CheckVersion():Promise<CheckVersionResponse|Error>
+		ClearApprovedTransaction(arg1:ClearApprovedTransactionRequest):Promise<Error>
 		ConsentPendingTransaction(arg1:ConsentPendingTransactionRequest):Promise<Error>
 		CreateWallet(arg1:CreateWalletRequest):Promise<CreateWalletResponse|Error>
 		DeleteWallet(arg1:DeleteWalletRequest):Promise<Error>
 		DescribeKey(arg1:DescribeKeyRequest):Promise<DescribeKeyResponse|Error>
 		GenerateKey(arg1:GenerateKeyRequest):Promise<GenerateKeyResponse|Error>
 		GetAppConfig():Promise<Config|Error>
+		GetApprovedTransactions():Promise<GetApprovedTransactionsResponse|Error>
 		GetConsoleState():Promise<GetServiceStateResponse>
 		GetNetworkConfig(arg1:string):Promise<Network|Error>
 		GetPendingTransaction(arg1:GetPendingTransactionRequest):Promise<PendingTransaction|Error>
-		GetPendingTransactions():Promise<GetPendingTransactionsResponse>
+		GetPendingTransactions():Promise<GetPendingTransactionsResponse|Error>
 		GetServiceState():Promise<GetServiceStateResponse>
 		GetTokenDAppState():Promise<GetServiceStateResponse>
 		GetVersion():Promise<GetVersionResponse>
@@ -24,6 +26,7 @@ export interface go {
 		ListKeys(arg1:ListKeysRequest):Promise<ListKeysResponse|Error>
 		ListNetworks():Promise<ListNetworksResponse|Error>
 		ListWallets():Promise<ListWalletsResponse|Error>
+		ProcessSignRequest():Promise<void>
 		SaveNetworkConfig(arg1:Network):Promise<boolean|Error>
 		SearchForExistingConfiguration():Promise<SearchForExistingConfigurationResponse|Error>
 		SignMessage(arg1:SignMessageRequest):Promise<SignMessageResponse|Error>

@@ -66,8 +66,20 @@ export class CheckVersionResponse {
         this.releaseUrl = source["releaseUrl"];
     }
 }
+export class ClearApprovedTransactionRequest {
+    txId: string;
+
+    static createFrom(source: any = {}) {
+        return new ClearApprovedTransactionRequest(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.txId = source["txId"];
+    }
+}
 export class ConsentPendingTransactionRequest {
-    hash: string;
+    txId: string;
     decision: boolean;
 
     static createFrom(source: any = {}) {
@@ -76,7 +88,7 @@ export class ConsentPendingTransactionRequest {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
-        this.hash = source["hash"];
+        this.txId = source["txId"];
         this.decision = source["decision"];
     }
 }
@@ -374,6 +386,84 @@ export class Config {
 	    return a;
 	}
 }
+export class Time {
+
+
+    static createFrom(source: any = {}) {
+        return new Time(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+
+    }
+}
+export class ApprovedTransaction {
+    pubKey: string;
+    command: string;
+    receivedAt: Time;
+    approveddAt: Time;
+
+    static createFrom(source: any = {}) {
+        return new ApprovedTransaction(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.pubKey = source["pubKey"];
+        this.command = source["command"];
+        this.receivedAt = this.convertValues(source["receivedAt"], Time);
+        this.approveddAt = this.convertValues(source["approveddAt"], Time);
+    }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
+}
+export class GetApprovedTransactionsResponse {
+    transactions: ApprovedTransaction[];
+
+    static createFrom(source: any = {}) {
+        return new GetApprovedTransactionsResponse(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.transactions = this.convertValues(source["transactions"], ApprovedTransaction);
+    }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
+}
 export class GetServiceStateResponse {
     url: string;
     running: boolean;
@@ -557,7 +647,7 @@ export class Network {
 	}
 }
 export class GetPendingTransactionRequest {
-    hash: string;
+    txId: string;
 
     static createFrom(source: any = {}) {
         return new GetPendingTransactionRequest(source);
@@ -565,12 +655,13 @@ export class GetPendingTransactionRequest {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
-        this.hash = source["hash"];
+        this.txId = source["txId"];
     }
 }
 export class PendingTransaction {
     pubKey: string;
     command: string;
+    receivedAt: Time;
 
     static createFrom(source: any = {}) {
         return new PendingTransaction(source);
@@ -580,7 +671,26 @@ export class PendingTransaction {
         if ('string' === typeof source) source = JSON.parse(source);
         this.pubKey = source["pubKey"];
         this.command = source["command"];
+        this.receivedAt = this.convertValues(source["receivedAt"], Time);
     }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
 }
 export class GetPendingTransactionsResponse {
     transactions: PendingTransaction[];
