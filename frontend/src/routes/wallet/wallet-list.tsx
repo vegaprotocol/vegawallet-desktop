@@ -33,24 +33,20 @@ export const WalletList = () => {
     dispatch
   } = useGlobal()
 
-  const [newPendingTransactionHash, setNewPendingTransactionHash] =
+  const [newPendingTransactionId, setNewPendingTransactionId] =
     React.useState<string>("")
   const [pendingTransactions, setPendingTransactions] = React.useState<
     Array<PendingTransaction>
   >([])
 
-  window.runtime.EventsOn('new_pending_transaction', function (hash) {
-    setNewPendingTransactionHash(hash);
-    (async () => {
-      try {
-        const r = await Service.GetPendingTransactions()
-        setPendingTransactions(r.transactions)
-        return r.transactions
-      } catch (err) {
-        console.log('problem getting pending tx')
-        console.log(err)
-      }
-    })()
+  window.runtime.EventsOn('new_pending_transaction', function (id?: any): void {
+    setNewPendingTransactionId(id);
+    Service.GetPendingTransactions().then(resp => {
+      setPendingTransactions(resp.transactions)
+    }, err => {
+      console.log('problem getting pending tx')
+      console.log(err)
+    })
   })
 
   let consentFn = (hash: string, consent :boolean) => {
@@ -92,11 +88,11 @@ export const WalletList = () => {
 
       <br/><br/>
       <div>
-        {newPendingTransactionHash != ""
+        {newPendingTransactionId != ""
           ? <div>
-            New pending transaction hash: { newPendingTransactionHash }
-            <button onClick={() => consentFn(newPendingTransactionHash, true)}>Approve</button>
-            <button onClick={() => consentFn(newPendingTransactionHash, false)}>Decline</button>
+            New pending transaction hash: { newPendingTransactionId }
+            <button onClick={() => consentFn(newPendingTransactionId, true)}>Approve</button>
+            <button onClick={() => consentFn(newPendingTransactionId, false)}>Decline</button>
           </div>
           : <div>No pending transaction</div>
         }

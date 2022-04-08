@@ -402,7 +402,7 @@ export class ApprovedTransaction {
     pubKey: string;
     command: string;
     receivedAt: Time;
-    approveddAt: Time;
+    approvedAt: Time;
 
     static createFrom(source: any = {}) {
         return new ApprovedTransaction(source);
@@ -413,7 +413,7 @@ export class ApprovedTransaction {
         this.pubKey = source["pubKey"];
         this.command = source["command"];
         this.receivedAt = this.convertValues(source["receivedAt"], Time);
-        this.approveddAt = this.convertValues(source["approveddAt"], Time);
+        this.approvedAt = this.convertValues(source["approvedAt"], Time);
     }
 
 	convertValues(a: any, classs: any, asMap: boolean = false): any {

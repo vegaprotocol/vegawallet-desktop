@@ -30,7 +30,8 @@ import type {
 } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
 import {
-  Config, ConsentPendingTransactionRequest,
+  ClearApprovedTransactionRequest,
+  Config, ConsentPendingTransactionRequest, GetApprovedTransactionsResponse,
   GetPendingTransactionRequest,
   GetPendingTransactionsResponse,
   PendingTransaction
@@ -78,6 +79,8 @@ export interface Handler {
   ): Promise<PendingTransaction>
   GetPendingTransactions(): Promise<GetPendingTransactionsResponse>
   ConsentPendingTransaction(arg1: ConsentPendingTransactionRequest): Promise<void>
+  GetApprovedTransactions(): Promise<GetApprovedTransactionsResponse>
+  ClearApprovedTransaction(arg1: ClearApprovedTransactionRequest): Promise<void>
 }
 
 // Add Wails backend handler and runtime to window object

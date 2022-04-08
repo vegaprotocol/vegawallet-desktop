@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"code.vegaprotocol.io/vegawallet/node"
 	"code.vegaprotocol.io/vegawallet/service"
 	"code.vegaprotocol.io/vegawallet/wallets"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 )
 
@@ -135,12 +137,31 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, err
 	}
 
+	ctx, cancel := context.WithCancel(context.Background())
+
 	h.service.url = fmt.Sprintf("%s:%v", cfg.Host, cfg.Port)
 	h.service.shutdownFunc = func() {
 		if err := srv.Stop(); err != nil {
 			h.log.Error(fmt.Sprintf("Couldn't stop the service: %v", err))
 		}
+		cancel()
 	}
+
+	go func() {
+		h.log.Info("Start listening to pending request channel")
+		for {
+			select {
+			case <-ctx.Done():
+				h.log.Info("Stop listening to pending request channel")
+				return
+			case r := <-h.pendingSignConsentRequests:
+				h.log.Info(fmt.Sprintf("Received a new pending request with ID: %s", r.TxID))
+				go func() {
+					runtime.EventsEmit(h.ctx, NewPendingTxEvent, r.TxID)
+				}()
+			}
+		}
+	}()
 
 	go func() {
 		h.log.Info("Starting the service")
@@ -148,6 +169,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 			h.log.Error(fmt.Sprintf("Error while starting HTTP server: %v", err))
 			h.service.Reset()
 			h.log.Info("Service state has been reset")
+			cancel()
 		}
 	}()
 
@@ -188,6 +210,7 @@ func (h *Handler) StopService() (bool, error) {
 	h.log.Info("Shutting down the service")
 	h.service.Shutdown()
 	h.service.Reset()
+	close(h.pendingSignConsentRequests)
 
 	return true, nil
 }

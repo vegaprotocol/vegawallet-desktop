@@ -24,7 +24,7 @@ type ApprovedTransaction struct {
 	PubKey     string    `json:"pubKey"`
 	Command    string    `json:"command"`
 	ReceivedAt time.Time `json:"receivedAt"`
-	ApprovedAt time.Time `json:"approveddAt"`
+	ApprovedAt time.Time `json:"approvedAt"`
 }
 
 type ConsentPendingTransactionRequest struct {
