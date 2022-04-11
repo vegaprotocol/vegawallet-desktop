@@ -1,3 +1,5 @@
+import * as models from './models';
+
 export interface go {
   "backend": {
     "Handler": {
@@ -36,9 +38,9 @@ export interface go {
 		StopConsole():Promise<boolean|Error>
 		StopService():Promise<boolean|Error>
 		StopTokenDApp():Promise<boolean|Error>
-		TaintKey(arg1:TaintKeyRequest):Promise<Error>
-		UntaintKey(arg1:UntaintKeyRequest):Promise<Error>
-		UpdateAppConfig(arg1:Config):Promise<Error>
+		TaintKey(arg1:models.TaintKeyRequest):Promise<Error>
+		UntaintKey(arg1:models.UntaintKeyRequest):Promise<Error>
+		UpdateAppConfig(arg1:models.Config):Promise<Error>
     },
   }
 

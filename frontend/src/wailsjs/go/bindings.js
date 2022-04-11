@@ -7,7 +7,7 @@ const go = {
     "Handler": {
       /**
        * AnnotateKey
-       * @param {AnnotateKeyRequest} arg1 - Go Type: *wallet.AnnotateKeyRequest
+       * @param {models.AnnotateKeyRequest} arg1 - Go Type: *wallet.AnnotateKeyRequest
        * @returns {Promise<Error>}  - Go Type: error
        */
       "AnnotateKey": (arg1) => {
@@ -15,7 +15,7 @@ const go = {
       },
       /**
        * CheckVersion
-       * @returns {Promise<CheckVersionResponse|Error>}  - Go Type: *backend.CheckVersionResponse
+       * @returns {Promise<models.CheckVersionResponse|Error>}  - Go Type: *backend.CheckVersionResponse
        */
       "CheckVersion": () => {
         return window.go.backend.Handler.CheckVersion();
@@ -30,7 +30,7 @@ const go = {
       },
       /**
        * ConsentPendingTransaction
-       * @param {ConsentPendingTransactionRequest} arg1 - Go Type: *backend.ConsentPendingTransactionRequest
+       * @param {models.ConsentPendingTransactionRequest} arg1 - Go Type: *backend.ConsentPendingTransactionRequest
        * @returns {Promise<Error>}  - Go Type: error
        */
       "ConsentPendingTransaction": (arg1) => {
@@ -38,15 +38,15 @@ const go = {
       },
       /**
        * CreateWallet
-       * @param {CreateWalletRequest} arg1 - Go Type: *wallet.CreateWalletRequest
-       * @returns {Promise<CreateWalletResponse|Error>}  - Go Type: *wallet.CreateWalletResponse
+       * @param {models.CreateWalletRequest} arg1 - Go Type: *wallet.CreateWalletRequest
+       * @returns {Promise<models.CreateWalletResponse|Error>}  - Go Type: *wallet.CreateWalletResponse
        */
       "CreateWallet": (arg1) => {
         return window.go.backend.Handler.CreateWallet(arg1);
       },
       /**
        * DeleteWallet
-       * @param {DeleteWalletRequest} arg1 - Go Type: *backend.DeleteWalletRequest
+       * @param {models.DeleteWalletRequest} arg1 - Go Type: *backend.DeleteWalletRequest
        * @returns {Promise<Error>}  - Go Type: error
        */
       "DeleteWallet": (arg1) => {
@@ -54,23 +54,23 @@ const go = {
       },
       /**
        * DescribeKey
-       * @param {DescribeKeyRequest} arg1 - Go Type: *wallet.DescribeKeyRequest
-       * @returns {Promise<DescribeKeyResponse|Error>}  - Go Type: *wallet.DescribeKeyResponse
+       * @param {models.DescribeKeyRequest} arg1 - Go Type: *wallet.DescribeKeyRequest
+       * @returns {Promise<models.DescribeKeyResponse|Error>}  - Go Type: *wallet.DescribeKeyResponse
        */
       "DescribeKey": (arg1) => {
         return window.go.backend.Handler.DescribeKey(arg1);
       },
       /**
        * GenerateKey
-       * @param {GenerateKeyRequest} arg1 - Go Type: *wallet.GenerateKeyRequest
-       * @returns {Promise<GenerateKeyResponse|Error>}  - Go Type: *wallet.GenerateKeyResponse
+       * @param {models.GenerateKeyRequest} arg1 - Go Type: *wallet.GenerateKeyRequest
+       * @returns {Promise<models.GenerateKeyResponse|Error>}  - Go Type: *wallet.GenerateKeyResponse
        */
       "GenerateKey": (arg1) => {
         return window.go.backend.Handler.GenerateKey(arg1);
       },
       /**
        * GetAppConfig
-       * @returns {Promise<Config|Error>}  - Go Type: config.Config
+       * @returns {Promise<models.Config|Error>}  - Go Type: config.Config
        */
       "GetAppConfig": () => {
         return window.go.backend.Handler.GetAppConfig();
@@ -84,7 +84,7 @@ const go = {
       },
       /**
        * GetConsoleState
-       * @returns {Promise<GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
+       * @returns {Promise<models.GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
        */
       "GetConsoleState": () => {
         return window.go.backend.Handler.GetConsoleState();
@@ -92,15 +92,15 @@ const go = {
       /**
        * GetNetworkConfig
        * @param {string} arg1 - Go Type: string
-       * @returns {Promise<Network|Error>}  - Go Type: *network.Network
+       * @returns {Promise<models.Network|Error>}  - Go Type: *network.Network
        */
       "GetNetworkConfig": (arg1) => {
         return window.go.backend.Handler.GetNetworkConfig(arg1);
       },
       /**
        * GetPendingTransaction
-       * @param {GetPendingTransactionRequest} arg1 - Go Type: *backend.GetPendingTransactionRequest
-       * @returns {Promise<PendingTransaction|Error>}  - Go Type: *backend.PendingTransaction
+       * @param {models.GetPendingTransactionRequest} arg1 - Go Type: *backend.GetPendingTransactionRequest
+       * @returns {Promise<models.PendingTransaction|Error>}  - Go Type: *backend.PendingTransaction
        */
       "GetPendingTransaction": (arg1) => {
         return window.go.backend.Handler.GetPendingTransaction(arg1);
@@ -114,44 +114,44 @@ const go = {
       },
       /**
        * GetServiceState
-       * @returns {Promise<GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
+       * @returns {Promise<models.GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
        */
       "GetServiceState": () => {
         return window.go.backend.Handler.GetServiceState();
       },
       /**
        * GetTokenDAppState
-       * @returns {Promise<GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
+       * @returns {Promise<models.GetServiceStateResponse>}  - Go Type: backend.GetServiceStateResponse
        */
       "GetTokenDAppState": () => {
         return window.go.backend.Handler.GetTokenDAppState();
       },
       /**
        * GetVersion
-       * @returns {Promise<GetVersionResponse>}  - Go Type: *backend.GetVersionResponse
+       * @returns {Promise<models.GetVersionResponse>}  - Go Type: *backend.GetVersionResponse
        */
       "GetVersion": () => {
         return window.go.backend.Handler.GetVersion();
       },
       /**
        * ImportNetwork
-       * @param {ImportNetworkFromSourceRequest} arg1 - Go Type: *network.ImportNetworkFromSourceRequest
-       * @returns {Promise<ImportNetworkFromSourceResponse|Error>}  - Go Type: *network.ImportNetworkFromSourceResponse
+       * @param {models.ImportNetworkFromSourceRequest} arg1 - Go Type: *network.ImportNetworkFromSourceRequest
+       * @returns {Promise<models.ImportNetworkFromSourceResponse|Error>}  - Go Type: *network.ImportNetworkFromSourceResponse
        */
       "ImportNetwork": (arg1) => {
         return window.go.backend.Handler.ImportNetwork(arg1);
       },
       /**
        * ImportWallet
-       * @param {ImportWalletRequest} arg1 - Go Type: *wallet.ImportWalletRequest
-       * @returns {Promise<ImportWalletResponse|Error>}  - Go Type: *wallet.ImportWalletResponse
+       * @param {models.ImportWalletRequest} arg1 - Go Type: *wallet.ImportWalletRequest
+       * @returns {Promise<models.ImportWalletResponse|Error>}  - Go Type: *wallet.ImportWalletResponse
        */
       "ImportWallet": (arg1) => {
         return window.go.backend.Handler.ImportWallet(arg1);
       },
       /**
        * InitialiseApp
-       * @param {InitialiseAppRequest} arg1 - Go Type: *backend.InitialiseAppRequest
+       * @param {models.InitialiseAppRequest} arg1 - Go Type: *backend.InitialiseAppRequest
        * @returns {Promise<Error>}  - Go Type: error
        */
       "InitialiseApp": (arg1) => {
@@ -166,30 +166,30 @@ const go = {
       },
       /**
        * IsolateKey
-       * @param {IsolateKeyRequest} arg1 - Go Type: *wallet.IsolateKeyRequest
-       * @returns {Promise<IsolateKeyResponse|Error>}  - Go Type: *wallet.IsolateKeyResponse
+       * @param {models.IsolateKeyRequest} arg1 - Go Type: *wallet.IsolateKeyRequest
+       * @returns {Promise<models.IsolateKeyResponse|Error>}  - Go Type: *wallet.IsolateKeyResponse
        */
       "IsolateKey": (arg1) => {
         return window.go.backend.Handler.IsolateKey(arg1);
       },
       /**
        * ListKeys
-       * @param {ListKeysRequest} arg1 - Go Type: *wallet.ListKeysRequest
-       * @returns {Promise<ListKeysResponse|Error>}  - Go Type: *wallet.ListKeysResponse
+       * @param {models.ListKeysRequest} arg1 - Go Type: *wallet.ListKeysRequest
+       * @returns {Promise<models.ListKeysResponse|Error>}  - Go Type: *wallet.ListKeysResponse
        */
       "ListKeys": (arg1) => {
         return window.go.backend.Handler.ListKeys(arg1);
       },
       /**
        * ListNetworks
-       * @returns {Promise<ListNetworksResponse|Error>}  - Go Type: *network.ListNetworksResponse
+       * @returns {Promise<models.ListNetworksResponse|Error>}  - Go Type: *network.ListNetworksResponse
        */
       "ListNetworks": () => {
         return window.go.backend.Handler.ListNetworks();
       },
       /**
        * ListWallets
-       * @returns {Promise<ListWalletsResponse|Error>}  - Go Type: *wallet.ListWalletsResponse
+       * @returns {Promise<models.ListWalletsResponse|Error>}  - Go Type: *wallet.ListWalletsResponse
        */
       "ListWallets": () => {
         return window.go.backend.Handler.ListWallets();
@@ -203,7 +203,7 @@ const go = {
       },
       /**
        * SaveNetworkConfig
-       * @param {Network} arg1 - Go Type: *network.Network
+       * @param {models.Network} arg1 - Go Type: *network.Network
        * @returns {Promise<boolean|Error>}  - Go Type: bool
        */
       "SaveNetworkConfig": (arg1) => {
@@ -211,22 +211,22 @@ const go = {
       },
       /**
        * SearchForExistingConfiguration
-       * @returns {Promise<SearchForExistingConfigurationResponse|Error>}  - Go Type: *backend.SearchForExistingConfigurationResponse
+       * @returns {Promise<models.SearchForExistingConfigurationResponse|Error>}  - Go Type: *backend.SearchForExistingConfigurationResponse
        */
       "SearchForExistingConfiguration": () => {
         return window.go.backend.Handler.SearchForExistingConfiguration();
       },
       /**
        * SignMessage
-       * @param {SignMessageRequest} arg1 - Go Type: *wallet.SignMessageRequest
-       * @returns {Promise<SignMessageResponse|Error>}  - Go Type: *wallet.SignMessageResponse
+       * @param {models.SignMessageRequest} arg1 - Go Type: *wallet.SignMessageRequest
+       * @returns {Promise<models.SignMessageResponse|Error>}  - Go Type: *wallet.SignMessageResponse
        */
       "SignMessage": (arg1) => {
         return window.go.backend.Handler.SignMessage(arg1);
       },
       /**
        * StartConsole
-       * @param {StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
+       * @param {models.StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
        * @returns {Promise<boolean|Error>}  - Go Type: bool
        */
       "StartConsole": (arg1) => {
@@ -234,7 +234,7 @@ const go = {
       },
       /**
        * StartService
-       * @param {StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
+       * @param {models.StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
        * @returns {Promise<boolean|Error>}  - Go Type: bool
        */
       "StartService": (arg1) => {
@@ -242,7 +242,7 @@ const go = {
       },
       /**
        * StartTokenDApp
-       * @param {StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
+       * @param {models.StartServiceRequest} arg1 - Go Type: *backend.StartServiceRequest
        * @returns {Promise<boolean|Error>}  - Go Type: bool
        */
       "StartTokenDApp": (arg1) => {
@@ -271,7 +271,7 @@ const go = {
       },
       /**
        * TaintKey
-       * @param {TaintKeyRequest} arg1 - Go Type: *wallet.TaintKeyRequest
+       * @param {models.TaintKeyRequest} arg1 - Go Type: *wallet.TaintKeyRequest
        * @returns {Promise<Error>}  - Go Type: error
        */
       "TaintKey": (arg1) => {
@@ -279,7 +279,7 @@ const go = {
       },
       /**
        * UntaintKey
-       * @param {UntaintKeyRequest} arg1 - Go Type: *wallet.UntaintKeyRequest
+       * @param {models.UntaintKeyRequest} arg1 - Go Type: *wallet.UntaintKeyRequest
        * @returns {Promise<Error>}  - Go Type: error
        */
       "UntaintKey": (arg1) => {
@@ -287,7 +287,7 @@ const go = {
       },
       /**
        * UpdateAppConfig
-       * @param {Config} arg1 - Go Type: *config.Config
+       * @param {models.Config} arg1 - Go Type: *config.Config
        * @returns {Promise<Error>}  - Go Type: error
        */
       "UpdateAppConfig": (arg1) => {

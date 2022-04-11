@@ -8,7 +8,7 @@ require (
 	code.vegaprotocol.io/vegawallet v0.13.3-0.20220408133500-2297122d6401
 	github.com/golang/protobuf v1.5.2
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
-	github.com/wailsapp/wails/v2 v2.0.0-beta.33
+	github.com/wailsapp/wails/v2 v2.0.0-beta.34
 	go.uber.org/zap v1.21.0
 )
 
@@ -32,7 +32,7 @@ require (
 	github.com/klauspost/compress v1.12.2 // indirect
 	github.com/leaanthony/go-ansi-parser v1.0.1 // indirect
 	github.com/leaanthony/go-common-file-dialog v1.0.3 // indirect
-	github.com/leaanthony/go-webview2 v1.0.3-0.20220125181555-00f20a61c17d // indirect
+	github.com/leaanthony/go-webview2 v1.0.3-0.20220314105146-f44268990abe // indirect
 	github.com/leaanthony/gosod v1.0.3 // indirect
 	github.com/leaanthony/slicer v1.5.0 // indirect
 	github.com/leaanthony/typescriptify-golang-structs v0.1.7 // indirect
