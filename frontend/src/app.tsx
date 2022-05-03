@@ -6,6 +6,7 @@ import { HashRouter as Router } from 'react-router-dom'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
+import { TransactionManager } from './components/transaction-manager'
 import { Colors } from './config/colors'
 import { initAppAction } from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
@@ -84,6 +85,7 @@ function App() {
             <AppLoader>
               <AppRouter />
               <PassphraseModal />
+              <TransactionManager />
             </AppLoader>
           </AppFrame>
         </NetworkProvider>
