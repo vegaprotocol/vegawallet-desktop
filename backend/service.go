@@ -158,12 +158,12 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 			case r := <-h.pendingSignConsentRequests:
 				h.log.Info(fmt.Sprintf("Received a new pending request with ID: %s", r.TxID))
 				go func() {
-					runtime.EventsEmit(h.ctx, NewPendingTxEvent, r.TxID)
+					runtime.EventsEmit(h.ctx, NewPendingTxEvent, r)
 				}()
 			case r := <-h.sentTxs:
 				h.log.Info(fmt.Sprintf("Received a new sent TX with ID: %s", r.TxID))
 				go func() {
-					runtime.EventsEmit(h.ctx, NewSentTxEvent, r.TxID)
+					runtime.EventsEmit(h.ctx, NewSentTxEvent, r)
 				}()
 			}
 

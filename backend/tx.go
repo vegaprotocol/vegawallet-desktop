@@ -56,7 +56,7 @@ func (h *Handler) ConsentPendingTransaction(req *ConsentPendingTransactionReques
 	rawSignRequest, ok := h.pendingSignRequests.Load(req.TxID)
 	if !ok {
 		h.log.Error("failed to find transaction", zap.Any("request", req))
-		return fmt.Errorf("Transaction not found")
+		return fmt.Errorf("transaction not found")
 	}
 	signRequest := rawSignRequest.(service.ConsentRequest)
 	txStr, err := signRequest.String()
