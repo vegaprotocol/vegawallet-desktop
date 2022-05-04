@@ -10,8 +10,10 @@ import (
 	"go.uber.org/zap"
 )
 
-const NewPendingTxEvent = "new_pending_transaction"
-const NewSentTxEvent = "new_sent_transaction"
+const (
+	NewPendingTxEvent = "new_pending_transaction"
+	NewSentTxEvent    = "new_sent_transaction"
+)
 
 type PendingTransaction struct {
 	TxID       string    `json:"txId""`

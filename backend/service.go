@@ -166,7 +166,6 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 					runtime.EventsEmit(h.ctx, NewSentTxEvent, r)
 				}()
 			}
-
 		}
 	}()
 
