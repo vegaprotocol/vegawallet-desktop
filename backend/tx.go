@@ -11,16 +11,17 @@ import (
 )
 
 const NewPendingTxEvent = "new_pending_transaction"
+const NewSentTxEvent = "new_sent_transaction"
 
 type PendingTransaction struct {
-	TxID       string    `json:txId`
+	TxID       string    `json:"txId""`
 	PubKey     string    `json:"pubKey"`
 	Command    string    `json:"command"`
 	ReceivedAt time.Time `json:"receivedAt"`
 }
 
 type ApprovedTransaction struct {
-	TxID       string    `json:txId`
+	TxID       string    `json:"txId""`
 	PubKey     string    `json:"pubKey"`
 	Command    string    `json:"command"`
 	ReceivedAt time.Time `json:"receivedAt"`
