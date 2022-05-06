@@ -39,8 +39,10 @@ type Handler struct {
 	tokenDApp *serviceState
 
 	pendingSignConsentRequests chan service.ConsentRequest
-	pendingSignRequests        sync.Map
-	approvedSignRequests       sync.Map
+	sentTxs                    chan service.SentTransaction
+
+	pendingSignRequests  sync.Map
+	approvedSignRequests sync.Map
 }
 
 func NewHandler() (*Handler, error) {

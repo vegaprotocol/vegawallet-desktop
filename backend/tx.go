@@ -10,17 +10,20 @@ import (
 	"go.uber.org/zap"
 )
 
-const NewPendingTxEvent = "new_pending_transaction"
+const (
+	NewPendingTxEvent = "new_pending_transaction"
+	NewSentTxEvent    = "new_sent_transaction"
+)
 
 type PendingTransaction struct {
-	TxID       string    `json:txId`
+	TxID       string    `json:"txId""`
 	PubKey     string    `json:"pubKey"`
 	Command    string    `json:"command"`
 	ReceivedAt time.Time `json:"receivedAt"`
 }
 
 type ApprovedTransaction struct {
-	TxID       string    `json:txId`
+	TxID       string    `json:"txId""`
 	PubKey     string    `json:"pubKey"`
 	Command    string    `json:"command"`
 	ReceivedAt time.Time `json:"receivedAt"`
@@ -55,7 +58,7 @@ func (h *Handler) ConsentPendingTransaction(req *ConsentPendingTransactionReques
 	rawSignRequest, ok := h.pendingSignRequests.Load(req.TxID)
 	if !ok {
 		h.log.Error("failed to find transaction", zap.Any("request", req))
-		return fmt.Errorf("Transaction not found")
+		return fmt.Errorf("transaction not found")
 	}
 	signRequest := rawSignRequest.(service.ConsentRequest)
 	txStr, err := signRequest.String()

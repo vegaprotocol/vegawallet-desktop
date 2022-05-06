@@ -128,9 +128,10 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise the node forwarder: %w", err)
 	}
 
-	h.pendingSignConsentRequests = make(chan service.ConsentRequest)
+	h.pendingSignConsentRequests = make(chan service.ConsentRequest, 1)
+	h.sentTxs = make(chan service.SentTransaction, 1)
 
-	policy := service.NewExplicitConsentPolicy(h.pendingSignConsentRequests)
+	policy := service.NewExplicitConsentPolicy(h.pendingSignConsentRequests, h.sentTxs)
 	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
@@ -148,7 +149,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 
 	go func() {
-		h.log.Info("Start listening to pending request channel")
+		h.log.Info("Starting to listen to pending request channel")
 		for {
 			select {
 			case <-ctx.Done():
@@ -157,7 +158,12 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 			case r := <-h.pendingSignConsentRequests:
 				h.log.Info(fmt.Sprintf("Received a new pending request with ID: %s", r.TxID))
 				go func() {
-					runtime.EventsEmit(h.ctx, NewPendingTxEvent, r.TxID)
+					runtime.EventsEmit(h.ctx, NewPendingTxEvent, r)
+				}()
+			case r := <-h.sentTxs:
+				h.log.Info(fmt.Sprintf("Received a new sent TX with ID: %s", r.TxID))
+				go func() {
+					runtime.EventsEmit(h.ctx, NewSentTxEvent, r)
 				}()
 			}
 		}
