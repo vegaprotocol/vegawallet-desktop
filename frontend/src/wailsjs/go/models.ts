@@ -399,6 +399,7 @@ export class Time {
     }
 }
 export class ApprovedTransaction {
+    txId: string;
     pubKey: string;
     command: string;
     receivedAt: Time;
@@ -410,6 +411,7 @@ export class ApprovedTransaction {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
+        this.txId = source["txId"];
         this.pubKey = source["pubKey"];
         this.command = source["command"];
         this.receivedAt = this.convertValues(source["receivedAt"], Time);
@@ -659,6 +661,7 @@ export class GetPendingTransactionRequest {
     }
 }
 export class PendingTransaction {
+    txId: string;
     pubKey: string;
     command: string;
     receivedAt: Time;
@@ -669,6 +672,7 @@ export class PendingTransaction {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
+        this.txId = source["txId"];
         this.pubKey = source["pubKey"];
         this.command = source["command"];
         this.receivedAt = this.convertValues(source["receivedAt"], Time);
