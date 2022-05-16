@@ -124,8 +124,8 @@ func (h *Handler) GetPendingTransaction(req *GetPendingTransactionRequest) (*Pen
 }
 
 func (h *Handler) GetPendingTransactions() (*GetPendingTransactionsResponse, error) {
-	h.log.Debug("Entering GetPendingTransaction")
-	defer h.log.Debug("Leaving GetPendingTransaction")
+	h.log.Debug("Entering GetPendingTransactions")
+	defer h.log.Debug("Leaving GetPendingTransactions")
 
 	allPending := []*PendingTransaction{}
 
@@ -165,10 +165,10 @@ func (h *Handler) GetPendingTransactions() (*GetPendingTransactionsResponse, err
 }
 
 func (h *Handler) GetApprovedTransactions() (*GetApprovedTransactionsResponse, error) {
-	h.log.Debug("Entering GetApprovedTransaction")
-	defer h.log.Debug("Leaving GetApprovedTransaction")
+	h.log.Debug("Entering GetApprovedTransactions")
+	defer h.log.Debug("Leaving GetApprovedTransactions")
 
-	allApproved := make([]*ApprovedTransaction, 3)
+	allApproved := []*ApprovedTransaction{}
 
 	var err error
 	h.approvedSignRequests.Range(func(rawId, rawTx interface{}) bool {
