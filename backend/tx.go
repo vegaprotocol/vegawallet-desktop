@@ -12,18 +12,18 @@ import (
 
 const (
 	NewPendingTxEvent = "new_pending_transaction"
-	NewSentTxEvent    = "new_sent_transaction"
+	NewSentTxEvent    = "sent_transaction"
 )
 
 type PendingTransaction struct {
-	TxID       string    `json:"txId""`
+	TxID       string    `json:"txId"`
 	PubKey     string    `json:"pubKey"`
 	Command    string    `json:"command"`
 	ReceivedAt time.Time `json:"receivedAt"`
 }
 
 type ApprovedTransaction struct {
-	TxID       string    `json:"txId""`
+	TxID       string    `json:"txId"`
 	PubKey     string    `json:"pubKey"`
 	Command    string    `json:"command"`
 	ReceivedAt time.Time `json:"receivedAt"`
@@ -130,7 +130,7 @@ func (h *Handler) GetPendingTransactions() (*GetPendingTransactionsResponse, err
 	allPending := make([]*PendingTransaction, 3)
 
 	var err error
-	h.pendingSignRequests.Range(func(rawId, rawConsentRequest interface{}) bool {
+	h.pendingSignRequests.Range(func(rawID, rawConsentRequest interface{}) bool {
 		var txStr string
 		signRequest := rawConsentRequest.(service.ConsentRequest)
 		txStr, err = signRequest.String()
@@ -145,11 +145,11 @@ func (h *Handler) GetPendingTransactions() (*GetPendingTransactionsResponse, err
 			return false
 		}
 
-		txtxId := rawId.(string)
+		txID := rawID.(string)
 		currentPending := &PendingTransaction{
 			PubKey:  unmarshalled.PubKey,
 			Command: unmarshalled.String(),
-			TxID:    txtxId,
+			TxID:    txID,
 		}
 
 		allPending = append(allPending, currentPending)
