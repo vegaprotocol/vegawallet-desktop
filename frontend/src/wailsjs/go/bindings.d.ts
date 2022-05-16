@@ -1,46 +1,44 @@
-import * as models from './models';
-
 export interface go {
   "backend": {
     "Handler": {
-		AnnotateKey(arg1:models.AnnotateKeyRequest):Promise<Error>
-		CheckVersion():Promise<models.CheckVersionResponse|Error>
-		ClearApprovedTransaction(arg1:models.ClearApprovedTransactionRequest):Promise<Error>
-		ConsentPendingTransaction(arg1:models.ConsentPendingTransactionRequest):Promise<Error>
-		CreateWallet(arg1:models.CreateWalletRequest):Promise<models.CreateWalletResponse|Error>
-		DeleteWallet(arg1:models.DeleteWalletRequest):Promise<Error>
-		DescribeKey(arg1:models.DescribeKeyRequest):Promise<models.DescribeKeyResponse|Error>
-		GenerateKey(arg1:models.GenerateKeyRequest):Promise<models.GenerateKeyResponse|Error>
-		GetAppConfig():Promise<models.Config|Error>
-		GetApprovedTransactions():Promise<models.GetApprovedTransactionsResponse|Error>
-		GetConsoleState():Promise<models.GetServiceStateResponse>
-		GetNetworkConfig(arg1:string):Promise<models.Network|Error>
-		GetPendingTransaction(arg1:models.GetPendingTransactionRequest):Promise<models.PendingTransaction|Error>
-		GetPendingTransactions():Promise<models.GetPendingTransactionsResponse|Error>
-		GetServiceState():Promise<models.GetServiceStateResponse>
-		GetTokenDAppState():Promise<models.GetServiceStateResponse>
-		GetVersion():Promise<models.GetVersionResponse>
-		ImportNetwork(arg1:models.ImportNetworkFromSourceRequest):Promise<models.ImportNetworkFromSourceResponse|Error>
-		ImportWallet(arg1:models.ImportWalletRequest):Promise<models.ImportWalletResponse|Error>
-		InitialiseApp(arg1:models.InitialiseAppRequest):Promise<Error>
+		AnnotateKey(arg1:AnnotateKeyRequest):Promise<Error>
+		CheckVersion():Promise<CheckVersionResponse|Error>
+		ClearApprovedTransaction(arg1:ClearApprovedTransactionRequest):Promise<Error>
+		ConsentPendingTransaction(arg1:ConsentPendingTransactionRequest):Promise<Error>
+		CreateWallet(arg1:CreateWalletRequest):Promise<CreateWalletResponse|Error>
+		DeleteWallet(arg1:DeleteWalletRequest):Promise<Error>
+		DescribeKey(arg1:DescribeKeyRequest):Promise<DescribeKeyResponse|Error>
+		GenerateKey(arg1:GenerateKeyRequest):Promise<GenerateKeyResponse|Error>
+		GetAppConfig():Promise<Config|Error>
+		GetApprovedTransactions():Promise<GetApprovedTransactionsResponse|Error>
+		GetConsoleState():Promise<GetServiceStateResponse>
+		GetNetworkConfig(arg1:string):Promise<Network|Error>
+		GetPendingTransaction(arg1:GetPendingTransactionRequest):Promise<PendingTransaction|Error>
+		GetPendingTransactions():Promise<GetPendingTransactionsResponse|Error>
+		GetServiceState():Promise<GetServiceStateResponse>
+		GetTokenDAppState():Promise<GetServiceStateResponse>
+		GetVersion():Promise<GetVersionResponse>
+		ImportNetwork(arg1:ImportNetworkFromSourceRequest):Promise<ImportNetworkFromSourceResponse|Error>
+		ImportWallet(arg1:ImportWalletRequest):Promise<ImportWalletResponse|Error>
+		InitialiseApp(arg1:InitialiseAppRequest):Promise<Error>
 		IsAppInitialised():Promise<boolean|Error>
-		IsolateKey(arg1:models.IsolateKeyRequest):Promise<models.IsolateKeyResponse|Error>
-		ListKeys(arg1:models.ListKeysRequest):Promise<models.ListKeysResponse|Error>
-		ListNetworks():Promise<models.ListNetworksResponse|Error>
-		ListWallets():Promise<models.ListWalletsResponse|Error>
+		IsolateKey(arg1:IsolateKeyRequest):Promise<IsolateKeyResponse|Error>
+		ListKeys(arg1:ListKeysRequest):Promise<ListKeysResponse|Error>
+		ListNetworks():Promise<ListNetworksResponse|Error>
+		ListWallets():Promise<ListWalletsResponse|Error>
 		ProcessSignRequest():Promise<void>
-		SaveNetworkConfig(arg1:models.Network):Promise<boolean|Error>
-		SearchForExistingConfiguration():Promise<models.SearchForExistingConfigurationResponse|Error>
-		SignMessage(arg1:models.SignMessageRequest):Promise<models.SignMessageResponse|Error>
-		StartConsole(arg1:models.StartServiceRequest):Promise<boolean|Error>
-		StartService(arg1:models.StartServiceRequest):Promise<boolean|Error>
-		StartTokenDApp(arg1:models.StartServiceRequest):Promise<boolean|Error>
+		SaveNetworkConfig(arg1:Network):Promise<boolean|Error>
+		SearchForExistingConfiguration():Promise<SearchForExistingConfigurationResponse|Error>
+		SignMessage(arg1:SignMessageRequest):Promise<SignMessageResponse|Error>
+		StartConsole(arg1:StartServiceRequest):Promise<boolean|Error>
+		StartService(arg1:StartServiceRequest):Promise<boolean|Error>
+		StartTokenDApp(arg1:StartServiceRequest):Promise<boolean|Error>
 		StopConsole():Promise<boolean|Error>
 		StopService():Promise<boolean|Error>
 		StopTokenDApp():Promise<boolean|Error>
-		TaintKey(arg1:models.TaintKeyRequest):Promise<Error>
-		UntaintKey(arg1:models.UntaintKeyRequest):Promise<Error>
-		UpdateAppConfig(arg1:models.Config):Promise<Error>
+		TaintKey(arg1:TaintKeyRequest):Promise<Error>
+		UntaintKey(arg1:UntaintKeyRequest):Promise<Error>
+		UpdateAppConfig(arg1:Config):Promise<Error>
     },
   }
 
