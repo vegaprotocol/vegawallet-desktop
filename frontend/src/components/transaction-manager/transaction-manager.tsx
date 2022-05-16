@@ -29,6 +29,7 @@ export function TransactionManager() {
 
   // Mount listener for incoming transactions
   React.useEffect(() => {
+    console.log('binding new_pending_transaction event')
     window.runtime.EventsOn('new_pending_transaction', (txId: string) => {
       console.log('new_pending_transaction event', txId)
       // TODO:
