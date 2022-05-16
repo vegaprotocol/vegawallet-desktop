@@ -127,7 +127,7 @@ func (h *Handler) GetPendingTransactions() (*GetPendingTransactionsResponse, err
 	h.log.Debug("Entering GetPendingTransaction")
 	defer h.log.Debug("Leaving GetPendingTransaction")
 
-	allPending := make([]*PendingTransaction, 3)
+	allPending := []*PendingTransaction{}
 
 	var err error
 	h.pendingSignRequests.Range(func(rawID, rawConsentRequest interface{}) bool {
