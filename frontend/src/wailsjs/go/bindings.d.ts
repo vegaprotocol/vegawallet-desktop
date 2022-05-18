@@ -5,18 +5,16 @@ export interface go {
     "Handler": {
 		AnnotateKey(arg1:models.AnnotateKeyRequest):Promise<Error>
 		CheckVersion():Promise<models.CheckVersionResponse|Error>
-		ClearApprovedTransaction(arg1:models.ClearApprovedTransactionRequest):Promise<Error>
-		ConsentPendingTransaction(arg1:models.ConsentPendingTransactionRequest):Promise<Error>
+		ClearSentTransaction(arg1:models.ClearSentTransactionRequest):Promise<Error>
+		ConsentToTransaction(arg1:models.ConsentToTransactionRequest):Promise<Error>
 		CreateWallet(arg1:models.CreateWalletRequest):Promise<models.CreateWalletResponse|Error>
 		DeleteWallet(arg1:models.DeleteWalletRequest):Promise<Error>
 		DescribeKey(arg1:models.DescribeKeyRequest):Promise<models.DescribeKeyResponse|Error>
 		GenerateKey(arg1:models.GenerateKeyRequest):Promise<models.GenerateKeyResponse|Error>
 		GetAppConfig():Promise<models.Config|Error>
-		GetApprovedTransactions():Promise<models.GetApprovedTransactionsResponse|Error>
+		GetConsentRequest(arg1:models.GetConsentRequestRequest):Promise<models.ConsentRequest|Error>
 		GetConsoleState():Promise<models.GetServiceStateResponse>
 		GetNetworkConfig(arg1:string):Promise<models.Network|Error>
-		GetPendingTransaction(arg1:models.GetPendingTransactionRequest):Promise<models.PendingTransaction|Error>
-		GetPendingTransactions():Promise<models.GetPendingTransactionsResponse|Error>
 		GetServiceState():Promise<models.GetServiceStateResponse>
 		GetTokenDAppState():Promise<models.GetServiceStateResponse>
 		GetVersion():Promise<models.GetVersionResponse>
@@ -25,10 +23,11 @@ export interface go {
 		InitialiseApp(arg1:models.InitialiseAppRequest):Promise<Error>
 		IsAppInitialised():Promise<boolean|Error>
 		IsolateKey(arg1:models.IsolateKeyRequest):Promise<models.IsolateKeyResponse|Error>
+		ListConsentRequests():Promise<models.ListConsentRequestsResponse|Error>
 		ListKeys(arg1:models.ListKeysRequest):Promise<models.ListKeysResponse|Error>
 		ListNetworks():Promise<models.ListNetworksResponse|Error>
+		ListSentTransactions():Promise<models.ListSentTransactionsResponse|Error>
 		ListWallets():Promise<models.ListWalletsResponse|Error>
-		ProcessSignRequest():Promise<void>
 		SaveNetworkConfig(arg1:models.Network):Promise<boolean|Error>
 		SearchForExistingConfiguration():Promise<models.SearchForExistingConfigurationResponse|Error>
 		SignMessage(arg1:models.SignMessageRequest):Promise<models.SignMessageResponse|Error>

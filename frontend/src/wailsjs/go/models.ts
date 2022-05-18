@@ -66,11 +66,11 @@ export class CheckVersionResponse {
         this.releaseUrl = source["releaseUrl"];
     }
 }
-export class ClearApprovedTransactionRequest {
+export class ClearSentTransactionRequest {
     txId: string;
 
     static createFrom(source: any = {}) {
-        return new ClearApprovedTransactionRequest(source);
+        return new ClearSentTransactionRequest(source);
     }
 
     constructor(source: any = {}) {
@@ -78,12 +78,12 @@ export class ClearApprovedTransactionRequest {
         this.txId = source["txId"];
     }
 }
-export class ConsentPendingTransactionRequest {
+export class ConsentToTransactionRequest {
     txId: string;
     decision: boolean;
 
     static createFrom(source: any = {}) {
-        return new ConsentPendingTransactionRequest(source);
+        return new ConsentToTransactionRequest(source);
     }
 
     constructor(source: any = {}) {
@@ -386,6 +386,18 @@ export class Config {
 	    return a;
 	}
 }
+export class GetConsentRequestRequest {
+    txId: string;
+
+    static createFrom(source: any = {}) {
+        return new GetConsentRequestRequest(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.txId = source["txId"];
+    }
+}
 export class Time {
 
 
@@ -398,54 +410,20 @@ export class Time {
 
     }
 }
-export class ApprovedTransaction {
+export class ConsentRequest {
     txId: string;
-    pubKey: string;
-    command: string;
+    tx: string;
     receivedAt: Time;
-    approvedAt: Time;
 
     static createFrom(source: any = {}) {
-        return new ApprovedTransaction(source);
+        return new ConsentRequest(source);
     }
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
         this.txId = source["txId"];
-        this.pubKey = source["pubKey"];
-        this.command = source["command"];
+        this.tx = source["tx"];
         this.receivedAt = this.convertValues(source["receivedAt"], Time);
-        this.approvedAt = this.convertValues(source["approvedAt"], Time);
-    }
-
-	convertValues(a: any, classs: any, asMap: boolean = false): any {
-	    if (!a) {
-	        return a;
-	    }
-	    if (a.slice) {
-	        return (a as any[]).map(elem => this.convertValues(elem, classs));
-	    } else if ("object" === typeof a) {
-	        if (asMap) {
-	            for (const key of Object.keys(a)) {
-	                a[key] = new classs(a[key]);
-	            }
-	            return a;
-	        }
-	        return new classs(a);
-	    }
-	    return a;
-	}
-}
-export class GetApprovedTransactionsResponse {
-    transactions: ApprovedTransaction[];
-
-    static createFrom(source: any = {}) {
-        return new GetApprovedTransactionsResponse(source);
-    }
-
-    constructor(source: any = {}) {
-        if ('string' === typeof source) source = JSON.parse(source);
-        this.transactions = this.convertValues(source["transactions"], ApprovedTransaction);
     }
 
 	convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -648,84 +626,6 @@ export class Network {
 	    return a;
 	}
 }
-export class GetPendingTransactionRequest {
-    txId: string;
-
-    static createFrom(source: any = {}) {
-        return new GetPendingTransactionRequest(source);
-    }
-
-    constructor(source: any = {}) {
-        if ('string' === typeof source) source = JSON.parse(source);
-        this.txId = source["txId"];
-    }
-}
-export class PendingTransaction {
-    txId: string;
-    pubKey: string;
-    command: string;
-    receivedAt: Time;
-
-    static createFrom(source: any = {}) {
-        return new PendingTransaction(source);
-    }
-
-    constructor(source: any = {}) {
-        if ('string' === typeof source) source = JSON.parse(source);
-        this.txId = source["txId"];
-        this.pubKey = source["pubKey"];
-        this.command = source["command"];
-        this.receivedAt = this.convertValues(source["receivedAt"], Time);
-    }
-
-	convertValues(a: any, classs: any, asMap: boolean = false): any {
-	    if (!a) {
-	        return a;
-	    }
-	    if (a.slice) {
-	        return (a as any[]).map(elem => this.convertValues(elem, classs));
-	    } else if ("object" === typeof a) {
-	        if (asMap) {
-	            for (const key of Object.keys(a)) {
-	                a[key] = new classs(a[key]);
-	            }
-	            return a;
-	        }
-	        return new classs(a);
-	    }
-	    return a;
-	}
-}
-export class GetPendingTransactionsResponse {
-    transactions: PendingTransaction[];
-
-    static createFrom(source: any = {}) {
-        return new GetPendingTransactionsResponse(source);
-    }
-
-    constructor(source: any = {}) {
-        if ('string' === typeof source) source = JSON.parse(source);
-        this.transactions = this.convertValues(source["transactions"], PendingTransaction);
-    }
-
-	convertValues(a: any, classs: any, asMap: boolean = false): any {
-	    if (!a) {
-	        return a;
-	    }
-	    if (a.slice) {
-	        return (a as any[]).map(elem => this.convertValues(elem, classs));
-	    } else if ("object" === typeof a) {
-	        if (asMap) {
-	            for (const key of Object.keys(a)) {
-	                a[key] = new classs(a[key]);
-	            }
-	            return a;
-	        }
-	        return new classs(a);
-	    }
-	    return a;
-	}
-}
 
 
 export class GetVersionResponse {
@@ -882,6 +782,36 @@ export class IsolateKeyResponse {
         this.filePath = source["filePath"];
     }
 }
+export class ListConsentRequestsResponse {
+    requests: ConsentRequest[];
+
+    static createFrom(source: any = {}) {
+        return new ListConsentRequestsResponse(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.requests = this.convertValues(source["requests"], ConsentRequest);
+    }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
+}
 export class ListKeysRequest {
     wallet: string;
     passphrase: string;
@@ -951,6 +881,76 @@ export class ListNetworksResponse {
         if ('string' === typeof source) source = JSON.parse(source);
         this.networks = source["networks"];
     }
+}
+export class SentTransaction {
+    txId: string;
+    txHash: string;
+    tx: string;
+    receivedAt: Time;
+    error: any;
+    errorDetails: string[];
+
+    static createFrom(source: any = {}) {
+        return new SentTransaction(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.txId = source["txId"];
+        this.txHash = source["txHash"];
+        this.tx = source["tx"];
+        this.receivedAt = this.convertValues(source["receivedAt"], Time);
+        this.error = source["error"];
+        this.errorDetails = source["errorDetails"];
+    }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
+}
+export class ListSentTransactionsResponse {
+    transactions: SentTransaction[];
+
+    static createFrom(source: any = {}) {
+        return new ListSentTransactionsResponse(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.transactions = this.convertValues(source["transactions"], SentTransaction);
+    }
+
+	convertValues(a: any, classs: any, asMap: boolean = false): any {
+	    if (!a) {
+	        return a;
+	    }
+	    if (a.slice) {
+	        return (a as any[]).map(elem => this.convertValues(elem, classs));
+	    } else if ("object" === typeof a) {
+	        if (asMap) {
+	            for (const key of Object.keys(a)) {
+	                a[key] = new classs(a[key]);
+	            }
+	            return a;
+	        }
+	        return new classs(a);
+	    }
+	    return a;
+	}
 }
 export class ListWalletsResponse {
     wallets: string[];

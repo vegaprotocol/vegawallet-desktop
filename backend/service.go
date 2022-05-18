@@ -12,8 +12,6 @@ import (
 	"code.vegaprotocol.io/vegawallet/node"
 	"code.vegaprotocol.io/vegawallet/service"
 	"code.vegaprotocol.io/vegawallet/wallets"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
-	"go.uber.org/zap"
 )
 
 type serviceState struct {
@@ -128,10 +126,10 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise the node forwarder: %w", err)
 	}
 
-	h.pendingSignConsentRequests = make(chan service.ConsentRequest, 1)
-	h.sentTxs = make(chan service.SentTransaction, 1)
+	h.consentRequestChan = make(chan service.ConsentRequest, 1)
+	h.sentTransactionChan = make(chan service.SentTransaction, 1)
 
-	policy := service.NewExplicitConsentPolicy(h.pendingSignConsentRequests, h.sentTxs)
+	policy := service.NewExplicitConsentPolicy(h.consentRequestChan, h.sentTransactionChan)
 	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
@@ -155,16 +153,10 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 			case <-ctx.Done():
 				h.log.Info("Stop listening to pending request channel")
 				return
-			case r := <-h.pendingSignConsentRequests:
-				h.log.Info(fmt.Sprintf("Received a new pending request with ID: %s", r.TxID))
-				go func() {
-					runtime.EventsEmit(h.ctx, NewPendingTxEvent, r)
-				}()
-			case r := <-h.sentTxs:
-				h.log.Info(fmt.Sprintf("Received a new sent TX with ID: %s", r.TxID))
-				go func() {
-					runtime.EventsEmit(h.ctx, NewSentTxEvent, r)
-				}()
+			case consentRequest := <-h.consentRequestChan:
+				h.emitNewConsentRequestEvent(consentRequest)
+			case sentTransaction := <-h.sentTransactionChan:
+				h.emitTransactionSentEvent(sentTransaction)
 			}
 		}
 	}()
@@ -180,13 +172,6 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}()
 
 	return true, nil
-}
-
-func (h *Handler) ProcessSignRequest() {
-	for signRequest := range h.pendingSignConsentRequests {
-		h.log.Info("Received TX sign request: ", zap.Any("request", signRequest))
-		h.pendingSignRequests.Store(signRequest.TxID, signRequest)
-	}
 }
 
 type GetServiceStateResponse struct {
@@ -216,7 +201,7 @@ func (h *Handler) StopService() (bool, error) {
 	h.log.Info("Shutting down the service")
 	h.service.Shutdown()
 	h.service.Reset()
-	close(h.pendingSignConsentRequests)
+	close(h.consentRequestChan)
 
 	return true, nil
 }

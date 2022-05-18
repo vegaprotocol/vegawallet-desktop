@@ -2,193 +2,282 @@ package backend
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
-	walletv1 "code.vegaprotocol.io/protos/vega/wallet/v1"
 	"code.vegaprotocol.io/vegawallet/service"
 	"github.com/golang/protobuf/jsonpb"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 )
 
 const (
-	NewPendingTxEvent = "new_pending_transaction"
-	NewSentTxEvent    = "sent_transaction"
+	NewConsentRequestEvent = "new_consent_request"
+	TransactionSentEvent   = "transaction_sent"
 )
 
-type PendingTransaction struct {
+type ConsentRequests struct {
+	storage sync.Map
+}
+
+func NewConsentRequests() *ConsentRequests {
+	return &ConsentRequests{
+		storage: sync.Map{},
+	}
+}
+
+// Load return the ConsentRequest and true if found, return false otherwise.
+func (rs *ConsentRequests) Load(txID string) (service.ConsentRequest, bool) {
+	rawConsentRequest, ok := rs.storage.Load(txID)
+	if !ok {
+		return service.ConsentRequest{}, false
+	}
+	consentRequest, ok := rawConsentRequest.(service.ConsentRequest)
+	if !ok {
+		panic(fmt.Sprintf("consent requests store doesn't contain a consent request: %v", rawConsentRequest))
+	}
+	return consentRequest, true
+}
+
+func (rs *ConsentRequests) Range(f func(string, service.ConsentRequest) bool) {
+	rs.storage.Range(func(rawTxID, rawConsentRequest interface{}) bool {
+		consentRequest, ok := rawConsentRequest.(service.ConsentRequest)
+		if !ok {
+			panic(fmt.Sprintf("consent requests store doesn't contain a consent request: %v", rawConsentRequest))
+		}
+		return f(rawTxID.(string), consentRequest)
+	})
+}
+
+func (rs *ConsentRequests) Store(req service.ConsentRequest) {
+	rs.storage.Store(req.TxID, req)
+}
+
+func (rs *ConsentRequests) Delete(txID string) {
+	rs.storage.Delete(txID)
+}
+
+type SentTransactions struct {
+	storage sync.Map
+}
+
+func NewSentTransactions() *SentTransactions {
+	return &SentTransactions{
+		storage: sync.Map{},
+	}
+}
+
+// Load return the SentTransaction and true if found, return false otherwise.
+func (ts *SentTransactions) Load(txID string) (service.SentTransaction, bool) {
+	rawSentTransaction, ok := ts.storage.Load(txID)
+	if !ok {
+		return service.SentTransaction{}, false
+	}
+	sentTransaction, ok := rawSentTransaction.(service.SentTransaction)
+	if !ok {
+		panic(fmt.Sprintf("sent transaction store doesn't contain a sent transaction: %v", rawSentTransaction))
+	}
+	return sentTransaction, true
+}
+
+func (ts *SentTransactions) Range(f func(string, service.SentTransaction) bool) {
+	ts.storage.Range(func(rawTxID, rawSentTransaction interface{}) bool {
+		sentTransaction, ok := rawSentTransaction.(service.SentTransaction)
+		if !ok {
+			panic(fmt.Sprintf("sent transaction store doesn't contain a sent transaction: %v", rawSentTransaction))
+		}
+		return f(rawTxID.(string), sentTransaction)
+	})
+}
+
+func (ts *SentTransactions) Store(req service.SentTransaction) {
+	ts.storage.Store(req.TxID, req)
+}
+
+func (ts *SentTransactions) Delete(txID string) {
+	ts.storage.Delete(txID)
+}
+
+type ConsentRequest struct {
 	TxID       string    `json:"txId"`
-	PubKey     string    `json:"pubKey"`
-	Command    string    `json:"command"`
+	Tx         string    `json:"tx"`
 	ReceivedAt time.Time `json:"receivedAt"`
 }
 
-type ApprovedTransaction struct {
-	TxID       string    `json:"txId"`
-	PubKey     string    `json:"pubKey"`
-	Command    string    `json:"command"`
-	ReceivedAt time.Time `json:"receivedAt"`
-	ApprovedAt time.Time `json:"approvedAt"`
+type SentTransaction struct {
+	TxID         string    `json:"txId"`
+	TxHash       string    `json:"txHash"`
+	Tx           string    `json:"tx"`
+	ReceivedAt   time.Time `json:"receivedAt"`
+	Error        error     `json:"error"`
+	ErrorDetails []string  `json:"errorDetails"`
 }
 
-type ConsentPendingTransactionRequest struct {
+type ConsentToTransactionRequest struct {
 	TxID     string `json:"txId"`
 	Decision bool   `json:"decision"`
 }
 
-type ClearApprovedTransactionRequest struct {
+type ClearSentTransactionRequest struct {
 	TxID string `json:"txId"`
 }
 
-type GetPendingTransactionRequest struct {
+type GetConsentRequestRequest struct {
 	TxID string `json:"txId"`
 }
 
-type GetPendingTransactionsResponse struct {
-	Transactions []*PendingTransaction `json:"transactions"`
+type ListConsentRequestsResponse struct {
+	Requests []*ConsentRequest `json:"requests"`
 }
 
-type GetApprovedTransactionsResponse struct {
-	Transactions []*ApprovedTransaction `json:"transactions"`
+type ListSentTransactionsResponse struct {
+	Transactions []*SentTransaction `json:"transactions"`
 }
 
-func (h *Handler) ConsentPendingTransaction(req *ConsentPendingTransactionRequest) error {
-	h.log.Debug("Entering ConsentPendingTransaction")
-	defer h.log.Debug("Leaving ConsentPendingTransaction")
+func (h *Handler) ConsentToTransaction(req *ConsentToTransactionRequest) error {
+	h.log.Debug("Entering ConsentToTransaction")
+	defer h.log.Debug("Leaving ConsentToTransaction")
 
-	rawSignRequest, ok := h.pendingSignRequests.Load(req.TxID)
-	if !ok {
-		h.log.Error("failed to find transaction", zap.Any("request", req))
-		return fmt.Errorf("transaction not found")
+	consentRequest, exists := h.consentRequests.Load(req.TxID)
+	if !exists {
+		return ErrConsentRequestNotFound
 	}
-	signRequest := rawSignRequest.(service.ConsentRequest)
-	txStr, err := signRequest.String()
+	marshalledTx, err := consentRequest.String()
 	if err != nil {
-		h.log.Error("failed to marshall sign request content", zap.Any("request", signRequest))
-		return err
+		h.log.Error("couldn't marshall transaction", zap.Any("request", consentRequest))
+		return fmt.Errorf("couldn't marshall transaction: %w", err)
 	}
 	if req.Decision {
-		h.log.Info("user approved sign request for transaction", zap.Any("transaction", signRequest))
-		signRequest.Confirmations <- service.ConsentConfirmation{Decision: true, TxStr: txStr}
-		unmarshalled := &walletv1.SubmitTransactionRequest{}
-		if err := jsonpb.UnmarshalString(txStr, unmarshalled); err != nil {
-			h.log.Error("failed to unmarshall request content", zap.String("tx", txStr), zap.Error(err))
-			return ErrCouldNotDecodeTransaction
-		}
-
-		approvedTx := &ApprovedTransaction{
-			PubKey:     unmarshalled.PubKey,
-			Command:    unmarshalled.String(),
-			TxID:       req.TxID,
-			ReceivedAt: signRequest.ReceivedAt,
-			ApprovedAt: time.Now(),
-		}
-		h.approvedSignRequests.Store(req.TxID, approvedTx)
-
+		h.log.Info("user approved transaction", zap.Any("transaction", consentRequest))
+		consentRequest.Confirmations <- service.ConsentConfirmation{Decision: true, TxStr: marshalledTx}
 	} else {
-		h.log.Info("user declined sign request for transaction", zap.Any("transaction", signRequest))
-		signRequest.Confirmations <- service.ConsentConfirmation{Decision: false, TxStr: txStr}
+		h.log.Info("user declined transaction", zap.Any("transaction", consentRequest))
+		consentRequest.Confirmations <- service.ConsentConfirmation{Decision: false, TxStr: marshalledTx}
 	}
-	close(signRequest.Confirmations)
+	close(consentRequest.Confirmations)
 
-	h.pendingSignRequests.Delete(req.TxID)
+	h.consentRequests.Delete(req.TxID)
 	return nil
 }
 
-func (h *Handler) GetPendingTransaction(req *GetPendingTransactionRequest) (*PendingTransaction, error) {
-	h.log.Debug("Entering GetPendingTransaction")
-	defer h.log.Debug("Leaving GetPendingTransaction")
+func (h *Handler) GetConsentRequest(req *GetConsentRequestRequest) (*ConsentRequest, error) {
+	h.log.Debug("Entering GetConsentRequest")
+	defer h.log.Debug("Leaving GetConsentRequest")
 
-	rawSignRequest, ok := h.pendingSignRequests.Load(req.TxID)
-	if !ok {
-		h.log.Error("failed to find transaction", zap.Any("request", req))
+	consentRequest, exists := h.consentRequests.Load(req.TxID)
+	if !exists {
 		return nil, ErrTransactionNotFound
 	}
-	consentRequest := rawSignRequest.(service.ConsentRequest)
-	txStr, err := consentRequest.String()
+
+	m := jsonpb.Marshaler{}
+	marshaledTransaction, err := m.MarshalToString(consentRequest.Tx)
 	if err != nil {
-		h.log.Error("failed to get sign request content", zap.Any("request", consentRequest), zap.Error(err))
-		return nil, ErrCouldNotGetTransactionConsent
+		panic("couldn't marshal transaction")
 	}
 
-	unmarshalled := &walletv1.SubmitTransactionRequest{}
-	if err := jsonpb.UnmarshalString(txStr, unmarshalled); err != nil {
-		h.log.Error("failed to unmarshall request content", zap.String("tx", txStr), zap.Error(err))
-		return nil, ErrCouldNotDecodeTransaction
-	}
-
-	return &PendingTransaction{
-		PubKey:  unmarshalled.PubKey,
-		Command: unmarshalled.String(),
-		TxID:    consentRequest.TxID,
+	return &ConsentRequest{
+		Tx:         marshaledTransaction,
+		TxID:       consentRequest.TxID,
+		ReceivedAt: consentRequest.ReceivedAt,
 	}, nil
 }
 
-func (h *Handler) GetPendingTransactions() (*GetPendingTransactionsResponse, error) {
-	h.log.Debug("Entering GetPendingTransactions")
-	defer h.log.Debug("Leaving GetPendingTransactions")
+func (h *Handler) ListConsentRequests() (*ListConsentRequestsResponse, error) {
+	h.log.Debug("Entering ListConsentRequests")
+	defer h.log.Debug("Leaving ListConsentRequests")
 
-	allPending := []*PendingTransaction{}
+	m := jsonpb.Marshaler{}
 
-	var err error
-	h.pendingSignRequests.Range(func(rawID, rawConsentRequest interface{}) bool {
-		var txStr string
-		signRequest := rawConsentRequest.(service.ConsentRequest)
-		txStr, err = signRequest.String()
+	consentRequests := []*ConsentRequest{}
+	h.consentRequests.Range(func(txID string, consentRequest service.ConsentRequest) bool {
+		marshaledTransaction, err := m.MarshalToString(consentRequest.Tx)
 		if err != nil {
-			h.log.Error("failed to get sign request content", zap.Any("request", signRequest), zap.Error(err))
-			return false
+			panic("couldn't marshal transaction")
 		}
 
-		unmarshalled := &walletv1.SubmitTransactionRequest{}
-		if err = jsonpb.UnmarshalString(txStr, unmarshalled); err != nil {
-			h.log.Error("failed to unmarshall request content", zap.String("tx", txStr), zap.Error(err))
-			return false
-		}
-
-		txID := rawID.(string)
-		currentPending := &PendingTransaction{
-			PubKey:  unmarshalled.PubKey,
-			Command: unmarshalled.String(),
-			TxID:    txID,
-		}
-
-		allPending = append(allPending, currentPending)
+		consentRequests = append(consentRequests, &ConsentRequest{
+			Tx:         marshaledTransaction,
+			TxID:       txID,
+			ReceivedAt: consentRequest.ReceivedAt,
+		})
 		return true
 	})
-	if err != nil {
-		return nil, ErrCouldNotListTransactions
-	}
 
-	return &GetPendingTransactionsResponse{
-		Transactions: allPending,
+	return &ListConsentRequestsResponse{
+		Requests: consentRequests,
 	}, nil
 }
 
-func (h *Handler) GetApprovedTransactions() (*GetApprovedTransactionsResponse, error) {
-	h.log.Debug("Entering GetApprovedTransactions")
-	defer h.log.Debug("Leaving GetApprovedTransactions")
+func (h *Handler) ListSentTransactions() (*ListSentTransactionsResponse, error) {
+	h.log.Debug("Entering ListSentTransactions")
+	defer h.log.Debug("Leaving ListSentTransactions")
 
-	allApproved := []*ApprovedTransaction{}
+	m := jsonpb.Marshaler{}
 
-	var err error
-	h.approvedSignRequests.Range(func(rawId, rawTx interface{}) bool {
-		approvedTx := rawTx.(ApprovedTransaction)
-		allApproved = append(allApproved, &approvedTx)
+	sentTransactions := []*SentTransaction{}
+	h.sentTransactions.Range(func(txID string, sentTransaction service.SentTransaction) bool {
+		marshaledTransaction, err := m.MarshalToString(sentTransaction.Tx)
+		if err != nil {
+			panic("couldn't marshal transaction")
+		}
+
+		sentTransactions = append(sentTransactions, &SentTransaction{
+			TxID:         txID,
+			TxHash:       sentTransaction.TxHash,
+			Tx:           marshaledTransaction,
+			ReceivedAt:   sentTransaction.ReceivedAt,
+			Error:        sentTransaction.Error,
+			ErrorDetails: sentTransaction.ErrorDetails,
+		})
 		return true
 	})
-	if err != nil {
-		return nil, ErrCouldNotListTransactions
-	}
 
-	return &GetApprovedTransactionsResponse{
-		Transactions: allApproved,
+	return &ListSentTransactionsResponse{
+		Transactions: sentTransactions,
 	}, nil
 }
 
-func (h *Handler) ClearApprovedTransaction(req *ClearApprovedTransactionRequest) error {
-	h.log.Debug("Entering ClearApprovedTransaction")
-	defer h.log.Debug("Leaving ClearApprovedTransaction")
+func (h *Handler) ClearSentTransaction(req *ClearSentTransactionRequest) error {
+	h.log.Debug("Entering ClearSentTransaction")
+	defer h.log.Debug("Leaving ClearSentTransaction")
 
-	h.approvedSignRequests.Delete(req.TxID)
+	h.sentTransactions.Delete(req.TxID)
 	return nil
+}
+
+func (h *Handler) emitTransactionSentEvent(sentTransaction service.SentTransaction) {
+	h.log.Info(fmt.Sprintf("Received a \"transaction_sent\" event with ID: %s", sentTransaction.TxID))
+	h.sentTransactions.Store(sentTransaction)
+	go func() {
+		m := jsonpb.Marshaler{}
+		marshaledTransaction, err := m.MarshalToString(sentTransaction.Tx)
+		if err != nil {
+			panic("couldn't marshal transaction")
+		}
+		runtime.EventsEmit(h.ctx, TransactionSentEvent, &SentTransaction{
+			TxID:         sentTransaction.TxID,
+			TxHash:       sentTransaction.TxHash,
+			Tx:           marshaledTransaction,
+			ReceivedAt:   sentTransaction.ReceivedAt,
+			Error:        sentTransaction.Error,
+			ErrorDetails: sentTransaction.ErrorDetails,
+		})
+	}()
+}
+
+func (h *Handler) emitNewConsentRequestEvent(consentRequest service.ConsentRequest) {
+	h.log.Info(fmt.Sprintf("Received a \"new_consent_request\" event with ID: %s", consentRequest.TxID))
+	h.consentRequests.Store(consentRequest)
+	go func() {
+		m := jsonpb.Marshaler{}
+		marshaledTransaction, err := m.MarshalToString(consentRequest.Tx)
+		if err != nil {
+			panic("couldn't marshal transaction")
+		}
+		runtime.EventsEmit(h.ctx, NewConsentRequestEvent, &ConsentRequest{
+			TxID:       consentRequest.TxID,
+			Tx:         marshaledTransaction,
+			ReceivedAt: consentRequest.ReceivedAt,
+		})
+	}()
 }

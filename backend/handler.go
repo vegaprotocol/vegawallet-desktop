@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"sync"
 
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
@@ -38,11 +37,11 @@ type Handler struct {
 	console   *serviceState
 	tokenDApp *serviceState
 
-	pendingSignConsentRequests chan service.ConsentRequest
-	sentTxs                    chan service.SentTransaction
+	consentRequestChan  chan service.ConsentRequest
+	sentTransactionChan chan service.SentTransaction
 
-	pendingSignRequests  sync.Map
-	approvedSignRequests sync.Map
+	consentRequests  *ConsentRequests
+	sentTransactions *SentTransactions
 }
 
 func NewHandler() (*Handler, error) {
@@ -64,10 +63,10 @@ func NewHandler() (*Handler, error) {
 	}
 
 	return &Handler{
-		log:                  log,
-		configLoader:         loader,
-		pendingSignRequests:  sync.Map{},
-		approvedSignRequests: sync.Map{},
+		log:              log,
+		configLoader:     loader,
+		consentRequests:  NewConsentRequests(),
+		sentTransactions: NewSentTransactions(),
 	}, nil
 }
 

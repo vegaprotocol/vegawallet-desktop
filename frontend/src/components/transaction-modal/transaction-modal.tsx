@@ -20,8 +20,7 @@ export function TransactionModal({
           return (
             <div>
               <p>id: {txId}</p>
-              <p>command: {tx.command}</p>
-              <p>pubkey: {tx.pubKey}</p>
+              <p>transaction: {tx.tx}</p>
               <p>received at: {tx.receivedAt}</p>
               <Button onClick={() => onRespond(txId, true)}>Confirm</Button>
               <Button onClick={() => onRespond(txId, false)}>Reject</Button>

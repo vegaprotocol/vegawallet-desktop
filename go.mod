@@ -3,7 +3,6 @@ module code.vegaprotocol.io/vegawallet-desktop
 go 1.17
 
 require (
-	code.vegaprotocol.io/protos v0.51.1-0.20220517145005-fc5e0192af7c
 	code.vegaprotocol.io/shared v0.0.0-20220321185018-3b5684b00533
 	code.vegaprotocol.io/vegawallet v0.15.1-0.20220518111047-fcee9508b4fe
 	github.com/golang/protobuf v1.5.2
@@ -13,6 +12,7 @@ require (
 )
 
 require (
+	code.vegaprotocol.io/protos v0.51.1-0.20220517145005-fc5e0192af7c // indirect
 	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect

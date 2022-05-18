@@ -1,11 +1,11 @@
 import * as React from 'react'
 
 import { Service } from '../../service'
-import type { PendingTransaction } from '../../wailsjs/go/models'
+import type { ConsentRequest } from '../../wailsjs/go/models'
 import { TransactionModal } from '../transaction-modal'
 
 export type TransactionsState = {
-  [id: string]: PendingTransaction
+  [id: string]: ConsentRequest
 }
 
 export function TransactionManager() {
@@ -14,13 +14,13 @@ export function TransactionManager() {
   const handleResponse = React.useCallback(
     async (txId: string, decision: boolean) => {
       try {
-        const res = await Service.ConsentPendingTransaction({
+        const res = await Service.ConsentToTransaction({
           txId,
           decision
         })
-        console.log('ConsentPendingTransaction successful', res)
+        console.log('ConsentToTransaction successful', res)
       } catch (err) {
-        console.log('ConsentPendingTransaction failed')
+        console.log('ConsentToTransaction failed')
         console.error(err)
       }
     },
@@ -29,9 +29,9 @@ export function TransactionManager() {
 
   // Mount listener for incoming transactions
   React.useEffect(() => {
-    console.log('binding new_pending_transaction event')
-    window.runtime.EventsOn('new_pending_transaction', (txId: string) => {
-      console.log('new_pending_transaction event', txId)
+    console.log('binding new_consent_request event')
+    window.runtime.EventsOn('new_consent_request', (txId: string) => {
+      console.log('new_consent_request event', txId)
       // TODO:
       // setTransactions()
     })
@@ -41,12 +41,12 @@ export function TransactionManager() {
   React.useEffect(() => {
     const run = async () => {
       try {
-        const res = await Service.GetPendingTransactions()
-        console.log('GetPendingTransactions success', res)
+        const res = await Service.ListConsentRequests()
+        console.log('ListConsentRequests success', res)
         // TODO:
         // setTransactions()
       } catch (err) {
-        console.log('GetPendingTransactions failed')
+        console.log('ListConsentRequests failed')
         console.error(err)
       }
     }

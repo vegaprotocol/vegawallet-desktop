@@ -30,11 +30,11 @@ import type {
 } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
 import {
-  ClearApprovedTransactionRequest,
-  Config, ConsentPendingTransactionRequest, GetApprovedTransactionsResponse,
-  GetPendingTransactionRequest,
-  GetPendingTransactionsResponse,
-  PendingTransaction
+  ClearSentTransactionRequest,
+  Config, ConsentToTransactionRequest, ListSentTransactionsResponse,
+  GetConsentRequestRequest,
+  ListConsentRequestsResponse,
+  ConsentRequest
 } from '../wailsjs/go/models'
 import { DeleteWalletRequest } from '../wailsjs/go/models'
 
@@ -74,13 +74,13 @@ export interface Handler {
   StopTokenDApp(): Promise<boolean>
   SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse>
   DeleteWallet(arg1: DeleteWalletRequest): Promise<void>
-  GetPendingTransaction(
-    arg1: GetPendingTransactionRequest
-  ): Promise<PendingTransaction>
-  GetPendingTransactions(): Promise<GetPendingTransactionsResponse>
-  ConsentPendingTransaction(arg1: ConsentPendingTransactionRequest): Promise<void>
-  GetApprovedTransactions(): Promise<GetApprovedTransactionsResponse>
-  ClearApprovedTransaction(arg1: ClearApprovedTransactionRequest): Promise<void>
+  GetConsentRequest(
+    arg1: GetConsentRequestRequest
+  ): Promise<ConsentRequest>
+  ListConsentRequests(): Promise<ListConsentRequestsResponse>
+  ConsentToTransaction(arg1: ConsentToTransactionRequest): Promise<void>
+  ListSentTransactions(): Promise<ListSentTransactionsResponse>
+  ClearSentTransaction(arg1: ClearSentTransactionRequest): Promise<void>
 }
 
 // Add Wails backend handler and runtime to window object
