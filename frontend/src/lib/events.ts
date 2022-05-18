@@ -1,1 +1,1 @@
-export const NEW_PENDING_TRANSACTION = 'new_pending_transaction'
+export const NEW_CONSENT_REQUEST = 'new_consent_request'

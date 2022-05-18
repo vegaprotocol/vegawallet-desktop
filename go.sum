@@ -30,12 +30,12 @@ cloud.google.com/go/storage v1.5.0/go.mod h1:tpKbwo567HUNpVclU5sGELwQWBDZ8gh0Zeo
 cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohlUTyfDhBk=
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
-code.vegaprotocol.io/protos v0.50.4-0.20220503163151-7fc5916bf54e h1:8r9buW3Cl2aBkZj37Yuboq2Pj+pxcmXSRXI8lc3Z7Sk=
-code.vegaprotocol.io/protos v0.50.4-0.20220503163151-7fc5916bf54e/go.mod h1:4BqwDw6jhc/mnwbXq8ZFUtYBFCnk8tBW6zuPsBt8OrQ=
+code.vegaprotocol.io/protos v0.51.1-0.20220517145005-fc5e0192af7c h1:UtDLlSEiMHY8gNb4nHtJWhN59mu5GPXVymdAJ7UrQJ0=
+code.vegaprotocol.io/protos v0.51.1-0.20220517145005-fc5e0192af7c/go.mod h1:4BqwDw6jhc/mnwbXq8ZFUtYBFCnk8tBW6zuPsBt8OrQ=
 code.vegaprotocol.io/shared v0.0.0-20220321185018-3b5684b00533 h1:IxTWvyF0i0AgUAS+FTgQKIpbsS6Ki/Y9Ug0GSlgChJw=
 code.vegaprotocol.io/shared v0.0.0-20220321185018-3b5684b00533/go.mod h1:pNHKwqRDkotUN0s6jErl7Eb2EpZa2HAf03lyPMTCUT0=
-code.vegaprotocol.io/vegawallet v0.14.2-pre1.0.20220512072833-50027a5c9d21 h1:if3//BfomadoomRZetHbbAmaea2iXgir5cpndw0T9c8=
-code.vegaprotocol.io/vegawallet v0.14.2-pre1.0.20220512072833-50027a5c9d21/go.mod h1:BXq2rLRqRcC92iKfwJ6h+XodHnlTlc3dQttlTkiOrfo=
+code.vegaprotocol.io/vegawallet v0.15.1-0.20220518111047-fcee9508b4fe h1:SvdAiQZCfiSbo1LJK+OWXu76DsJpq0DdOM3OhorNvPk=
+code.vegaprotocol.io/vegawallet v0.15.1-0.20220518111047-fcee9508b4fe/go.mod h1:bUlZdDrYq3XuVLoL07QjFsmH6/9RS/QFuaHukt6qmsY=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.0.0 h1:dtDWrepsVPfW9H/4y7dDgFc2MBUSeJhlaDtK13CxFlU=

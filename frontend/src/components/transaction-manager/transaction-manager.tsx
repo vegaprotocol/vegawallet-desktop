@@ -1,16 +1,14 @@
 import * as Sentry from '@sentry/react'
 import * as React from 'react'
 
-import { NEW_PENDING_TRANSACTION } from '../../lib/events'
+import { NEW_CONSENT_REQUEST } from '../../lib/events'
 import { Service } from '../../service'
-import type { PendingTransaction } from '../../wailsjs/go/models'
+import type { ConsentRequest } from '../../wailsjs/go/models'
 import { TransactionModal } from '../transaction-modal'
 
-// Generated types from wails contains convertValues which we don't want
-export type Tx = Pick<
-  PendingTransaction,
-  'txId' | 'command' | 'pubKey' | 'receivedAt'
->
+export type TransactionsState = {
+  [id: string]: ConsentRequest
+}
 
 export function TransactionManager() {
   const [transactions, setTransactions] = React.useState<Tx[]>([])
@@ -18,19 +16,13 @@ export function TransactionManager() {
   const handleResponse = React.useCallback(
     async (txId: string, decision: boolean) => {
       try {
-        console.log(`Consent for tx: ${txId} ${decision}`)
-        const res = await Service.ConsentPendingTransaction({
+        const res = await Service.ConsentToTransaction({
           txId,
           decision
         })
-        console.log('ConsentPendingTransaction successful', res)
-
-        // Consent successful remove it from state
-        setTransactions(curr => {
-          return curr.filter(tx => tx.txId !== txId)
-        })
+        console.log('ConsentToTransaction successful', res)
       } catch (err) {
-        console.log('ConsentPendingTransaction failed')
+        console.log('ConsentToTransaction failed')
         console.error(err)
       }
     },
@@ -39,9 +31,11 @@ export function TransactionManager() {
 
   // Mount listener for incoming transactions
   React.useEffect(() => {
-    window.runtime.EventsOn(NEW_PENDING_TRANSACTION, (tx: Tx) => {
-      console.log('new_pending_transaction event', tx)
-      setTransactions(curr => [...curr, tx])
+    console.log('binding new_consent_request event')
+    window.runtime.EventsOn(NEW_CONSENT_REQUEST, (txId: string) => {
+      console.log('new_consent_request event', txId)
+      // TODO:
+      // setTransactions()
     })
   }, [])
 
@@ -49,12 +43,12 @@ export function TransactionManager() {
   React.useEffect(() => {
     const run = async () => {
       try {
-        const res = await Service.GetPendingTransactions()
-        console.log('GetPendingTransactions success', res)
-        setTransactions(res.transactions)
+        const res = await Service.ListConsentRequests()
+        console.log('ListConsentRequests success', res)
+        // TODO:
+        // setTransactions()
       } catch (err) {
-        Sentry.captureException(err)
-        console.log('GetPendingTransactions failed')
+        console.log('ListConsentRequests failed')
         console.error(err)
       }
     }
