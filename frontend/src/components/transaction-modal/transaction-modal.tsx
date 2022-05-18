@@ -1,5 +1,4 @@
-import { formatDate } from '../../lib/date'
-import { truncateMiddle } from '../../lib/truncate-middle'
+import { Colors } from '../../config/colors'
 import { Button } from '../button'
 import { CodeBlock } from '../code-block'
 import { Dialog } from '../dialog'
@@ -20,19 +19,45 @@ export function TransactionModal({
     <Dialog open={isOpen}>
       <div>
         {transactions.map(tx => {
+          const txObj = JSON.parse(tx.tx)
+          const txData = parseTx(txObj)
           return (
             <div key={tx.txId}>
-              <p>id: {tx.txId}</p>
-              <p>pubkey: {truncateMiddle(tx.pubKey)}</p>
-              <p>
-                received at: {formatDate(new Date(tx.receivedAt as string))}
-              </p>
+              <h2 style={{ margin: 0 }}>{txData.type}</h2>
+              <table style={{ fontSize: 12, marginBottom: 10 }}>
+                <tbody>
+                  <tr>
+                    <th
+                      style={{
+                        color: Colors.TEXT_COLOR_DEEMPHASISE
+                      }}
+                    >
+                      Public key:
+                    </th>
+                    <td style={{ textAlign: 'right', wordBreak: 'break-all' }}>
+                      {txObj.pubKey}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      style={{
+                        color: Colors.TEXT_COLOR_DEEMPHASISE
+                      }}
+                    >
+                      Signature:
+                    </th>
+                    <td style={{ textAlign: 'right', wordBreak: 'break-all' }}>
+                      {tx.txId}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               <CodeBlock style={{ fontSize: 12 }}>
-                <pre>{JSON.stringify(JSON.parse(tx.command), null, 2)}</pre>
+                <pre>{JSON.stringify(txData.payload, null, 2)}</pre>
               </CodeBlock>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
                 <Button onClick={() => onRespond(tx.txId, true)}>
-                  Confirm
+                  Approve
                 </Button>
                 <Button onClick={() => onRespond(tx.txId, false)}>
                   Reject
@@ -44,4 +69,31 @@ export function TransactionModal({
       </div>
     </Dialog>
   )
+}
+
+const parseTx = (tx: unknown): { type: string; payload: object | null } => {
+  if (tx !== null && tx !== undefined && typeof tx === 'object') {
+    if ('orderSubmission' in tx) {
+      // @ts-ignore
+      return { type: 'Order submission', payload: tx.orderSubmission }
+    }
+    if ('withdrawSubmission' in tx) {
+      // @ts-ignore
+      return { type: 'Withdrawal submission', payload: tx.withdrawSubmission }
+    }
+    if ('voteSubmission' in tx) {
+      // @ts-ignore
+      return { type: 'Vote submission', payload: tx.voteSubmission }
+    }
+    if ('delegateSubmission' in tx) {
+      // @ts-ignore
+      return { type: 'Delegate submission', payload: tx.delegateSubmission }
+    }
+    if ('undelegateSubmission' in tx) {
+      // @ts-ignore
+      return { type: 'Undelegate submission', payload: tx.undelegateSubmission }
+    }
+  }
+
+  return { type: 'Unknown transaction', payload: null }
 }
