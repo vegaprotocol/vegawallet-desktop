@@ -35,7 +35,9 @@ export function Dialog({ open, children }: DialogProps) {
             left: 'calc(50% - 170px)',
             boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
             animation: 'fade-in .2s ease',
-            animationFillMode: 'forwards'
+            animationFillMode: 'forwards',
+            overflowY: 'auto',
+            maxHeight: 'calc(100vh - 60px)'
           }}
         >
           {children}

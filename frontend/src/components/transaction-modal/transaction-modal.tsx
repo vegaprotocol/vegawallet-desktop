@@ -1,11 +1,13 @@
-import { Colors } from '../../config/colors'
+import { formatDate } from '../../lib/date'
+import { BreakText } from '../break-text'
 import { Button } from '../button'
 import { CodeBlock } from '../code-block'
 import { Dialog } from '../dialog'
-import type { Tx } from '../transaction-manager'
+import { KeyValueTable } from '../key-value-table'
+import type { ParsedTx } from '../transaction-manager'
 
 interface TransactionModalProps {
-  transactions: Tx[]
+  transactions: ParsedTx[]
   onRespond: (txId: string, decision: boolean) => void
 }
 
@@ -13,53 +15,52 @@ export function TransactionModal({
   transactions,
   onRespond
 }: TransactionModalProps) {
-  const isOpen = transactions.length > 0
-
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={Boolean(transactions.length)}>
       <div>
-        {transactions.map(tx => {
-          const txObj = JSON.parse(tx.tx)
-          const txData = parseTx(txObj)
+        {transactions.length > 1 && (
+          <h2 style={{ marginTop: 0, fontSize: 18 }}>
+            {transactions.length} pending transactions
+          </h2>
+        )}
+        {transactions.map((transaction, i) => {
+          const itemStyles =
+            i < transactions.length - 1
+              ? {
+                  marginBottom: 20,
+                  paddingBottom: 20,
+                  borderBottom: '1px solid white'
+                }
+              : undefined
+
           return (
-            <div key={tx.txId}>
-              <h2 style={{ margin: 0 }}>{txData.type}</h2>
-              <table style={{ fontSize: 12, marginBottom: 10 }}>
-                <tbody>
-                  <tr>
-                    <th
-                      style={{
-                        color: Colors.TEXT_COLOR_DEEMPHASISE
-                      }}
-                    >
-                      Public key:
-                    </th>
-                    <td style={{ textAlign: 'right', wordBreak: 'break-all' }}>
-                      {txObj.pubKey}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{
-                        color: Colors.TEXT_COLOR_DEEMPHASISE
-                      }}
-                    >
-                      Signature:
-                    </th>
-                    <td style={{ textAlign: 'right', wordBreak: 'break-all' }}>
-                      {tx.txId}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div key={transaction.txId} style={itemStyles}>
+              <h2 style={{ margin: 0 }}>{transaction.type}</h2>
+              <KeyValueTable
+                style={{ marginBottom: 10 }}
+                rows={[
+                  {
+                    key: 'Public key',
+                    value: <BreakText>{transaction.pubKey}</BreakText>
+                  },
+                  {
+                    key: 'Signature',
+                    value: <BreakText>{transaction.txId}</BreakText>
+                  },
+                  {
+                    key: 'Received at',
+                    value: formatDate(transaction.receivedAt)
+                  }
+                ]}
+              />
               <CodeBlock style={{ fontSize: 12 }}>
-                <pre>{JSON.stringify(txData.payload, null, 2)}</pre>
+                <pre>{JSON.stringify(transaction.tx, null, 2)}</pre>
               </CodeBlock>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <Button onClick={() => onRespond(tx.txId, true)}>
+                <Button onClick={() => onRespond(transaction.txId, true)}>
                   Approve
                 </Button>
-                <Button onClick={() => onRespond(tx.txId, false)}>
+                <Button onClick={() => onRespond(transaction.txId, false)}>
                   Reject
                 </Button>
               </div>
@@ -69,31 +70,4 @@ export function TransactionModal({
       </div>
     </Dialog>
   )
-}
-
-const parseTx = (tx: unknown): { type: string; payload: object | null } => {
-  if (tx !== null && tx !== undefined && typeof tx === 'object') {
-    if ('orderSubmission' in tx) {
-      // @ts-ignore
-      return { type: 'Order submission', payload: tx.orderSubmission }
-    }
-    if ('withdrawSubmission' in tx) {
-      // @ts-ignore
-      return { type: 'Withdrawal submission', payload: tx.withdrawSubmission }
-    }
-    if ('voteSubmission' in tx) {
-      // @ts-ignore
-      return { type: 'Vote submission', payload: tx.voteSubmission }
-    }
-    if ('delegateSubmission' in tx) {
-      // @ts-ignore
-      return { type: 'Delegate submission', payload: tx.delegateSubmission }
-    }
-    if ('undelegateSubmission' in tx) {
-      // @ts-ignore
-      return { type: 'Undelegate submission', payload: tx.undelegateSubmission }
-    }
-  }
-
-  return { type: 'Unknown transaction', payload: null }
 }
