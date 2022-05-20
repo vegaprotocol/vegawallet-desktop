@@ -14,24 +14,6 @@ import (
 	"code.vegaprotocol.io/vegawallet/wallets"
 )
 
-type serviceState struct {
-	url          string
-	shutdownFunc func()
-}
-
-func (s *serviceState) IsRunning() bool {
-	return s.shutdownFunc != nil
-}
-
-func (s *serviceState) Shutdown() {
-	s.shutdownFunc()
-}
-
-func (s *serviceState) Reset() {
-	s.shutdownFunc = nil
-	s.url = ""
-}
-
 type StartServiceRequest struct {
 	Network string `json:"network"`
 }
@@ -126,36 +108,40 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise the node forwarder: %w", err)
 	}
 
-	h.consentRequestChan = make(chan service.ConsentRequest, 1)
-	h.sentTransactionChan = make(chan service.SentTransaction, 1)
+	ctx, cancel := context.WithCancel(context.Background())
+	loggingCancelFn := func() {
+		log.Info("Triggering cancel function")
+		cancel()
+	}
 
-	policy := service.NewExplicitConsentPolicy(h.consentRequestChan, h.sentTransactionChan)
+	policy := service.NewExplicitConsentPolicy(ctx, h.service.ConsentRequestsChan, h.service.SentTransactionsChan)
 	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
+		loggingCancelFn()
 		return false, err
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
-
-	h.service.url = fmt.Sprintf("%s:%v", cfg.Host, cfg.Port)
-	h.service.shutdownFunc = func() {
-		if err := srv.Stop(); err != nil {
-			h.log.Error(fmt.Sprintf("Couldn't stop the service: %v", err))
-		}
-		cancel()
-	}
+	h.service.Set(
+		fmt.Sprintf("%s:%v", cfg.Host, cfg.Port),
+		func() {
+			loggingCancelFn()
+			if err := srv.Stop(); err != nil {
+				h.log.Error(fmt.Sprintf("Couldn't stop the service: %v", err))
+			}
+		},
+	)
 
 	go func() {
 		h.log.Info("Starting to listen to pending request channel")
 		for {
 			select {
 			case <-ctx.Done():
-				h.log.Info("Stop listening to pending request channel")
+				h.log.Info("Stop listening to channels")
 				return
-			case consentRequest := <-h.consentRequestChan:
+			case consentRequest := <-h.service.ConsentRequestsChan:
 				h.emitNewConsentRequestEvent(consentRequest)
-			case sentTransaction := <-h.sentTransactionChan:
+			case sentTransaction := <-h.service.SentTransactionsChan:
 				h.emitTransactionSentEvent(sentTransaction)
 			}
 		}
@@ -165,9 +151,9 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		h.log.Info("Starting the service")
 		if err := srv.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			h.log.Error(fmt.Sprintf("Error while starting HTTP server: %v", err))
+			loggingCancelFn()
 			h.service.Reset()
 			h.log.Info("Service state has been reset")
-			cancel()
 		}
 	}()
 
@@ -184,7 +170,7 @@ func (h *Handler) GetServiceState() GetServiceStateResponse {
 	defer h.log.Debug("Leaving GetServiceState")
 
 	return GetServiceStateResponse{
-		URL:     h.service.url,
+		URL:     h.service.URL(),
 		Running: h.service.IsRunning(),
 	}
 }
@@ -198,10 +184,10 @@ func (h *Handler) StopService() (bool, error) {
 		return false, ErrServiceNotRunning
 	}
 
-	h.log.Info("Shutting down the service")
+	h.log.Info("Stopping the service")
 	h.service.Shutdown()
 	h.service.Reset()
-	close(h.consentRequestChan)
+	h.log.Info("Service stopped")
 
 	return true, nil
 }

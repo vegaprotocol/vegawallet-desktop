@@ -34,8 +34,8 @@ code.vegaprotocol.io/protos v0.51.1-0.20220517145005-fc5e0192af7c h1:UtDLlSEiMHY
 code.vegaprotocol.io/protos v0.51.1-0.20220517145005-fc5e0192af7c/go.mod h1:4BqwDw6jhc/mnwbXq8ZFUtYBFCnk8tBW6zuPsBt8OrQ=
 code.vegaprotocol.io/shared v0.0.0-20220321185018-3b5684b00533 h1:IxTWvyF0i0AgUAS+FTgQKIpbsS6Ki/Y9Ug0GSlgChJw=
 code.vegaprotocol.io/shared v0.0.0-20220321185018-3b5684b00533/go.mod h1:pNHKwqRDkotUN0s6jErl7Eb2EpZa2HAf03lyPMTCUT0=
-code.vegaprotocol.io/vegawallet v0.15.1-0.20220518111047-fcee9508b4fe h1:SvdAiQZCfiSbo1LJK+OWXu76DsJpq0DdOM3OhorNvPk=
-code.vegaprotocol.io/vegawallet v0.15.1-0.20220518111047-fcee9508b4fe/go.mod h1:bUlZdDrYq3XuVLoL07QjFsmH6/9RS/QFuaHukt6qmsY=
+code.vegaprotocol.io/vegawallet v0.15.1-0.20220520123724-f740e5d700c2 h1:bVPD9Tu9mmVRR6/hVBqjOyTgyRYUjqFEZjSdte2WJzc=
+code.vegaprotocol.io/vegawallet v0.15.1-0.20220520123724-f740e5d700c2/go.mod h1:bUlZdDrYq3XuVLoL07QjFsmH6/9RS/QFuaHukt6qmsY=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.0.0 h1:dtDWrepsVPfW9H/4y7dDgFc2MBUSeJhlaDtK13CxFlU=
