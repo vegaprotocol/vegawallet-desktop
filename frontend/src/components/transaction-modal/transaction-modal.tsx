@@ -17,7 +17,7 @@ export function TransactionModal({
 }: TransactionModalProps) {
   return (
     <Dialog open={Boolean(transactions.length)}>
-      <div>
+      <div data-testid='transaction-dialog'>
         {transactions.length > 1 && (
           <h2 style={{ marginTop: 0, fontSize: 18 }}>
             {transactions.length} pending transactions
@@ -57,10 +57,16 @@ export function TransactionModal({
                 <pre>{JSON.stringify(transaction.tx, null, 2)}</pre>
               </CodeBlock>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <Button onClick={() => onRespond(transaction.txId, true)}>
+                <Button
+                  onClick={() => onRespond(transaction.txId, true)}
+                  data-testid='approve-transaction'
+                >
                   Approve
                 </Button>
-                <Button onClick={() => onRespond(transaction.txId, false)}>
+                <Button
+                  onClick={() => onRespond(transaction.txId, false)}
+                  data-testid='reject-transaction'
+                >
                   Reject
                 </Button>
               </div>

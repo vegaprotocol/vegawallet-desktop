@@ -18,8 +18,6 @@ Given('I have an imported network', () => {
   walletPage.clickNetworkDrawer()
   networkDrawer.clickImportBtn()
   networkDrawer.SelectNetwork('fairground')
-  networkDrawer.clickImportBtn()
-  networkDrawer.clickBack()
 })
 
 Given('I have downloaded network config file', () => {
