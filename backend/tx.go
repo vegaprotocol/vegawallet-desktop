@@ -22,11 +22,11 @@ type ConsentRequest struct {
 }
 
 type SentTransaction struct {
-	TxID       string    `json:"txId"`
-	TxHash     string    `json:"txHash"`
-	Tx         string    `json:"tx"`
-	ReceivedAt time.Time `json:"receivedAt"`
-	Error      string    `json:"error"`
+	TxID   string    `json:"txId"`
+	TxHash string    `json:"txHash"`
+	Tx     string    `json:"tx"`
+	SentAt time.Time `json:"sentAt"`
+	Error  string    `json:"error"`
 }
 
 type ConsentToTransactionRequest struct {
@@ -168,10 +168,10 @@ func toSerializableSentTransaction(sentTransaction service.SentTransaction) *Sen
 	}
 
 	serializableSentTransaction := &SentTransaction{
-		TxID:       sentTransaction.TxID,
-		TxHash:     sentTransaction.TxHash,
-		Tx:         marshaledTransaction,
-		ReceivedAt: sentTransaction.ReceivedAt,
+		TxID:   sentTransaction.TxID,
+		TxHash: sentTransaction.TxHash,
+		Tx:     marshaledTransaction,
+		SentAt: sentTransaction.SentAt,
 	}
 
 	if sentTransaction.Error != nil {

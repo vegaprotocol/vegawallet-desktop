@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	code.vegaprotocol.io/shared v0.0.0-20220321185018-3b5684b00533
-	code.vegaprotocol.io/vegawallet v0.15.1-0.20220520123724-f740e5d700c2
+	code.vegaprotocol.io/vegawallet v0.15.1-0.20220523162427-92db0cdefea4
 	github.com/golang/protobuf v1.5.2
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/wailsapp/wails/v2 v2.0.0-beta.34

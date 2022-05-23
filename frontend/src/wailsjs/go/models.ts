@@ -886,7 +886,7 @@ export class SentTransaction {
     txId: string;
     txHash: string;
     tx: string;
-    receivedAt: Time;
+    sentAt: Time;
     error: string;
 
     static createFrom(source: any = {}) {
@@ -898,7 +898,7 @@ export class SentTransaction {
         this.txId = source["txId"];
         this.txHash = source["txHash"];
         this.tx = source["tx"];
-        this.receivedAt = this.convertValues(source["receivedAt"], Time);
+        this.sentAt = this.convertValues(source["sentAt"], Time);
         this.error = source["error"];
     }
 

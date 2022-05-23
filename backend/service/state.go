@@ -19,12 +19,9 @@ type State struct {
 }
 
 func NewState() *State {
-	return &State{
-		ConsentRequests:      NewConsentRequests(),
-		SentTransactions:     NewSentTransactions(),
-		ConsentRequestsChan:  make(chan service.ConsentRequest, 1),
-		SentTransactionsChan: make(chan service.SentTransaction, 1),
-	}
+	s := &State{}
+	s.Reset()
+	return s
 }
 
 func (s *State) Set(url string, cancelFunc context.CancelFunc) {
