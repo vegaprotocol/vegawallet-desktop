@@ -7,8 +7,9 @@ import (
 
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
+	"code.vegaprotocol.io/vegawallet-desktop/backend/proxy"
+	"code.vegaprotocol.io/vegawallet-desktop/backend/service"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
-	"code.vegaprotocol.io/vegawallet/service"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
 	"code.vegaprotocol.io/vegawallet/wallets"
@@ -33,15 +34,9 @@ type Handler struct {
 
 	configLoader *config.Loader
 
-	service   *serviceState
-	console   *serviceState
-	tokenDApp *serviceState
-
-	consentRequestChan  chan service.ConsentRequest
-	sentTransactionChan chan service.SentTransaction
-
-	consentRequests  *ConsentRequests
-	sentTransactions *SentTransactions
+	service   *service.State
+	console   *proxy.State
+	tokenDApp *proxy.State
 }
 
 func NewHandler() (*Handler, error) {
@@ -63,10 +58,8 @@ func NewHandler() (*Handler, error) {
 	}
 
 	return &Handler{
-		log:              log,
-		configLoader:     loader,
-		consentRequests:  NewConsentRequests(),
-		sentTransactions: NewSentTransactions(),
+		log:          log,
+		configLoader: loader,
 	}, nil
 }
 
@@ -77,9 +70,9 @@ func (h *Handler) Startup(ctx context.Context) {
 	h.log.Debug("Entering Startup")
 	defer h.log.Debug("Leaving Startup")
 
-	h.service = &serviceState{}
-	h.console = &serviceState{}
-	h.tokenDApp = &serviceState{}
+	h.service = service.NewState()
+	h.console = proxy.NewState()
+	h.tokenDApp = proxy.NewState()
 }
 
 // DOMReady is called after the front-end dom has been loaded
@@ -92,17 +85,9 @@ func (h *Handler) Shutdown(_ context.Context) {
 	h.log.Debug("Entering Shutdown")
 	defer h.log.Debug("Leaving Shutdown")
 
-	if h.console.IsRunning() {
-		_, _ = h.StopConsole()
-	}
-
-	if h.tokenDApp.IsRunning() {
-		_, _ = h.StopTokenDApp()
-	}
-
-	if h.service.IsRunning() {
-		_, _ = h.StopService()
-	}
+	_, _ = h.StopConsole()
+	_, _ = h.StopTokenDApp()
+	_, _ = h.StopService()
 }
 
 func (h *Handler) IsAppInitialised() (bool, error) {
