@@ -34,7 +34,11 @@ export function TransactionModal({
               : undefined
 
           return (
-            <div key={transaction.txId} style={itemStyles}>
+            <div
+              key={transaction.txId}
+              style={itemStyles}
+              data-testid='transaction'
+            >
               <h2 style={{ margin: 0 }}>{transaction.type}</h2>
               <KeyValueTable
                 style={{ marginBottom: 10 }}
@@ -54,7 +58,9 @@ export function TransactionModal({
                 ]}
               />
               <CodeBlock style={{ fontSize: 12 }}>
-                <pre>{JSON.stringify(transaction.tx, null, 2)}</pre>
+                <pre data-testid='transaction-payload'>
+                  {JSON.stringify(transaction.tx, null, 2)}
+                </pre>
               </CodeBlock>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
                 <Button

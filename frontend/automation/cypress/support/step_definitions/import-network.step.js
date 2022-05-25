@@ -17,7 +17,10 @@ Given('I have an imported network', () => {
   cy.visit('#/wallet')
   walletPage.clickNetworkDrawer()
   networkDrawer.clickImportBtn()
-  networkDrawer.SelectNetwork('fairground')
+  networkDrawer.selectNetwork('fairground')
+  networkDrawer.clickImportBtn()
+  networkDrawer.closeToast()
+  networkDrawer.clickBack()
 })
 
 Given('I have downloaded network config file', () => {
@@ -27,7 +30,7 @@ Given('I have downloaded network config file', () => {
 
 When('I select {string} on the dropdown', networkName => {
   networkDrawer.clickImportBtn()
-  networkDrawer.SelectNetwork(networkName)
+  networkDrawer.selectNetwork(networkName)
 })
 
 When('I import using valid network import url', () => {

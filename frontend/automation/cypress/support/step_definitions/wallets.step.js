@@ -8,7 +8,8 @@ const walletPage = new WalletPage()
 const keyPairPage = new KeypairPage()
 
 Given('I am on the wallets page', () => {
-  cy.visit('#/wallet')
+  cy.visit('#/wallet', { timeout: 3000 })
+  cy.getByTestId('wallets-header').should('be.visible')
 })
 
 Given('I click on existing wallet', () => {

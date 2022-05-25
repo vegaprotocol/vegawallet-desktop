@@ -19,7 +19,7 @@ export default class NetworkDrawer {
   backBtn = 'back'
   closeToastBtn = 'close'
 
-  SelectNetwork(networkName) {
+  selectNetwork(networkName) {
     cy.getByTestId(this.importNetworkSelect).select(networkName, {
       force: true
     })
@@ -31,7 +31,7 @@ export default class NetworkDrawer {
         this.clickManageNetworks()
       } else this.clickImportBtn()
     })
-    this.SelectNetwork('Other')
+    this.selectNetwork('Other')
     cy.getByTestId(this.urlPathField).type(urlPath, { force: true })
     if (networkName != null) {
       cy.getByTestId(this.networkNameField).type(networkName)
