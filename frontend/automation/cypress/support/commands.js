@@ -18,34 +18,36 @@ Cypress.Commands.add('restoreWallet', () => {
 
   cy.window()
     // Init wallet with local vega home
-    .then(w => {
-      win = w
-      return win.go.backend.Handler.InitialiseApp({
-        vegaHome: './frontend/automation/test-wallets'
-      })
-    })
+    .then(win => {
+      const handler = win.go.backend.Handler
 
-    // Import wallet using known recovery phrase setting
-    .then(() => {
-      return win.go.backend.Handler.ImportWallet({
-        wallet: 'test',
-        recoveryPhrase:
-          'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
-        version: 2,
-        passphrase
-      })
-    })
-    // Store env vars for later use in tests and then import a network
-    .then(res => {
-      // Set wallet name and public key for later use
-      Cypress.env('testWalletPassphrase', passphrase)
-      Cypress.env('testWalletName', res.wallet.name)
-      Cypress.env('testWalletPublicKey', res.key.publicKey)
+      // First initialise app with local frontend directory
+      handler
+        .InitialiseApp({
+          vegaHome: './frontend/automation/test-wallets'
+        })
+        // Import wallet using known recovery phrase setting
+        .then(() => {
+          return handler.ImportWallet({
+            wallet: 'test',
+            recoveryPhrase:
+              'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
+            version: 2,
+            passphrase
+          })
+        })
+        // Store env vars and import a network
+        .then(res => {
+          // Store env vars for later use in tests and then import a network
+          Cypress.env('testWalletPassphrase', passphrase)
+          Cypress.env('testWalletName', res.wallet.name)
+          Cypress.env('testWalletPublicKey', res.key.publicKey)
 
-      return win.go.backend.Handler.ImportNetwork({
-        url: Cypress.env('testnetConfigUrl'),
-        name: 'fairground'
-      })
+          return handler.ImportNetwork({
+            url: Cypress.env('testnetConfigUrl'),
+            name: 'fairground'
+          })
+        })
     })
 })
 

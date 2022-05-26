@@ -1,10 +1,5 @@
 import { And, Given, Then } from 'cypress-cucumber-preprocessor/steps'
 
-before(() => {
-  cy.clean()
-  cy.restoreWallet()
-})
-
 const selectors = {
   TRANSACTION_DIALOG: 'transaction-dialog',
   TRANSACTION: 'transaction'
@@ -30,7 +25,7 @@ const voteTransaction = {
 }
 
 Given('I have an existing wallet', () => {
-  cy.visit('#/wallet')
+  cy.restoreWallet()
   cy.getByTestId('wallet-list').should('have.length', 1)
 })
 

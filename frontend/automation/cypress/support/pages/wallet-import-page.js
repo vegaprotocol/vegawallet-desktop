@@ -32,7 +32,6 @@ export default class WalletImportPage {
     cy.getByTestId(this.importPassphrase).type(passphrase)
     cy.getByTestId(this.importConfirmPassphrase).type(passphrase)
     this.clickSubmit()
-    cy.getByTestId('close').first().click()
   }
 
   clickCreateNew() {

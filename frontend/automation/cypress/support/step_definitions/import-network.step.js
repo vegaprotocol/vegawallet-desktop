@@ -5,10 +5,11 @@ import path from 'path'
 
 import NetworkDrawer from '../pages/network-drawer-page'
 import WalletPage from '../pages/wallets-page'
+
 const walletPage = new WalletPage()
 const networkDrawer = new NetworkDrawer()
 
-Given('I am on the import network page', () => {
+Given('I open the network drawer', () => {
   cy.visit('#/wallet')
   walletPage.clickNetworkDrawer()
 })
