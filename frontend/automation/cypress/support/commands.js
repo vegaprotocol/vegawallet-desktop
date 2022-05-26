@@ -18,38 +18,32 @@ Cypress.Commands.add('restoreWallet', () => {
 
   cy.window()
     // Init wallet with local vega home
-    .then(win => {
+    .then(async win => {
       const handler = win.go.backend.Handler
 
       // First initialise app with local frontend directory
-      return (
-        handler
-          .InitialiseApp({
-            vegaHome: './frontend/automation/test-wallets'
-          })
-          // Import wallet using known recovery phrase setting
-          .then(() => {
-            return handler.ImportWallet({
-              wallet: 'test',
-              recoveryPhrase:
-                'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
-              version: 2,
-              passphrase
-            })
-          })
-          // Store env vars and import a network
-          .then(res => {
-            // Store env vars for later use in tests and then import a network
-            Cypress.env('testWalletPassphrase', passphrase)
-            Cypress.env('testWalletName', res.wallet.name)
-            Cypress.env('testWalletPublicKey', res.key.publicKey)
+      await handler.InitialiseApp({
+        vegaHome: './frontend/automation/test-wallets'
+      })
 
-            return handler.ImportNetwork({
-              url: Cypress.env('testnetConfigUrl'),
-              name: 'fairground'
-            })
-          })
-      )
+      // Import wallet using known recovery phrase setting
+      const res = await handler.ImportWallet({
+        wallet: 'test',
+        recoveryPhrase:
+          'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
+        version: 2,
+        passphrase
+      })
+
+      // Store env vars for later use in tests and then import a network
+      Cypress.env('testWalletPassphrase', passphrase)
+      Cypress.env('testWalletName', res.wallet.name)
+      Cypress.env('testWalletPublicKey', res.key.publicKey)
+
+      return handler.ImportNetwork({
+        url: Cypress.env('testnetConfigUrl'),
+        name: 'fairground'
+      })
     })
 })
 
