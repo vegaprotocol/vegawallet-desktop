@@ -1,4 +1,4 @@
-import { And, Before, Given, Then } from 'cypress-cucumber-preprocessor/steps'
+import { And, Given, Then } from 'cypress-cucumber-preprocessor/steps'
 
 const testIds = {
   TRANSACTION_DIALOG: 'transaction-dialog',

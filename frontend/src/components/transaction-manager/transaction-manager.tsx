@@ -1,9 +1,11 @@
 import * as Sentry from '@sentry/react'
 import * as React from 'react'
 
+import { Intent } from '../../config/intent'
 import { events } from '../../lib/events'
 import { Service } from '../../service'
 import type { ConsentRequest } from '../../wailsjs/go/models'
+import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
 import type {
   ParsedTx,
@@ -28,6 +30,12 @@ export function TransactionManager() {
         // Remove the rejected/approved transaction
         setTransactions(curr => curr.filter(tx => tx.txId !== txId))
       } catch (err) {
+        AppToaster.show({
+          message: `Something went wrong ${
+            decision ? 'approving' : 'rejecting'
+          } transaction: ${txId}`,
+          intent: Intent.DANGER
+        })
         Sentry.captureException(err)
       }
     },
@@ -41,6 +49,11 @@ export function TransactionManager() {
         const res = await Service.ListConsentRequests()
         setTransactions(res.requests.map(parseTx))
       } catch (err) {
+        AppToaster.show({
+          message: 'Something went wrong retrieving pending transactions',
+          intent: Intent.DANGER,
+          timeout: 0
+        })
         Sentry.captureException(err)
       }
     }
