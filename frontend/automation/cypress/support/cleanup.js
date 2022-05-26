@@ -6,30 +6,22 @@ after(() => {
   cy.clean()
 
   // Stop any running services
-  cy.window().then(win => {
+  cy.window().then(async win => {
     const handler = win.go.backend.Handler
 
-    return handler
-      .GetServiceState()
-      .then(res => {
-        if (res.running) {
-          return handler.StopService()
-        }
-        return Promise.resolve()
-      })
-      .then(() => handler.GetConsoleState())
-      .then(res => {
-        if (res.running) {
-          return handler.StopConsole()
-        }
-        return Promise.resolve()
-      })
-      .then(() => handler.GetTokenDAppState())
-      .then(res => {
-        if (res.running) {
-          return handler.StopTokenDApp()
-        }
-        return Promise.resolve()
-      })
+    const service = await handler.GetServiceState()
+    if (service.running) {
+      await handler.StopService()
+    }
+
+    const console = await handler.GetConsoleState()
+    if (console.running) {
+      await handler.StopConsole()
+    }
+
+    const token = await handler.GetTokenDAppState()
+    if (token.running) {
+      await handler.StopTokenDApp()
+    }
   })
 })
