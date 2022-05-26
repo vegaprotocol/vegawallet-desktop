@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react'
 import * as React from 'react'
 
-import { NEW_CONSENT_REQUEST } from '../../lib/events'
+import { events } from '../../lib/events'
 import { Service } from '../../service'
 import type { ConsentRequest } from '../../wailsjs/go/models'
 import { TransactionModal } from '../transaction-modal'
@@ -46,9 +46,12 @@ export function TransactionManager() {
     }
 
     // Listen for new incoming transactions
-    window.runtime.EventsOn(NEW_CONSENT_REQUEST, (tx: ConsentRequest) => {
-      setTransactions(curr => [...curr, parseTx(tx)])
-    })
+    window.runtime.EventsOn(
+      events.NEW_CONSENT_REQUEST,
+      (tx: ConsentRequest) => {
+        setTransactions(curr => [...curr, parseTx(tx)])
+      }
+    )
 
     run()
   }, [])
