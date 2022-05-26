@@ -4,6 +4,7 @@ const testIds = {
   TRANSACTION_DIALOG: 'transaction-dialog',
   TRANSACTION: 'transaction',
   TRANSACTION_PAYLOAD: 'transaction-payload',
+  TRANSACTION_TITLE: 'transaction-title',
   REJECT_BTN: 'reject-transaction',
   APPROVE_BTN: 'approve-transaction',
   WALLET_LIST: 'wallet-list'
@@ -95,8 +96,8 @@ Then('both transactions are shown', () => {
   cy.getByTestId(testIds.TRANSACTION_DIALOG).should('exist')
   cy.getByTestId(testIds.TRANSACTION).should('have.length', expectedTxs)
   cy.contains(`${expectedTxs} pending transactions`)
-  cy.contains('Order submission')
-  cy.contains('Vote submission')
+  cy.getByTestId(testIds.TRANSACTION_TITLE).first().contains('Order submission')
+  cy.getByTestId(testIds.TRANSACTION_TITLE).last().contains('Vote submission')
   cy.getByTestId(testIds.REJECT_BTN).first().click()
   cy.getByTestId(testIds.TRANSACTION).should('have.length', 1)
   cy.contains(/pending transactions/i).should('not.exist')

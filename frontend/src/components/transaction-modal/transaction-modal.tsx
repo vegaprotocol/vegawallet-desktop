@@ -53,7 +53,7 @@ export function TransactionModal({
               style={itemStyles}
               data-testid='transaction'
             >
-              <h2 style={{ margin: 0 }}>
+              <h2 style={{ margin: 0 }} data-testid='transaction-title'>
                 {TRANSACTION_TITLES[transaction.type]}
               </h2>
               <KeyValueTable
