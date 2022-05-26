@@ -5,15 +5,15 @@ import { NEW_CONSENT_REQUEST } from '../../lib/events'
 import { Service } from '../../service'
 import type { ConsentRequest } from '../../wailsjs/go/models'
 import { TransactionModal } from '../transaction-modal'
+import type {
+  ParsedTx,
+  Transaction,
+  TransactionPayload
+} from './transaction-types'
 
-export interface ParsedTx {
-  txId: string
-  tx: object
-  type: string
-  receivedAt: Date
-  pubKey: string
-}
-
+/**
+ * Stores an array of parsed transactions which get passed to a modal
+ */
 export function TransactionManager() {
   const [transactions, setTransactions] = React.useState<ParsedTx[]>([])
 
@@ -24,6 +24,8 @@ export function TransactionManager() {
           txId,
           decision
         })
+
+        // Remove the rejected/approved transaction
         setTransactions(curr => curr.filter(tx => tx.txId !== txId))
       } catch (err) {
         Sentry.captureException(err)
@@ -43,6 +45,7 @@ export function TransactionManager() {
       }
     }
 
+    // Listen for new incoming transactions
     window.runtime.EventsOn(NEW_CONSENT_REQUEST, (tx: ConsentRequest) => {
       setTransactions(curr => [...curr, parseTx(tx)])
     })
@@ -69,8 +72,13 @@ export function TransactionManager() {
   )
 }
 
+/**
+ * Parses a raw consent request object into a more usable object where the transaction
+ * payload has been turned from a json string into an object and we have determined
+ * what kind of transaction it is
+ */
 const parseTx = (consentRequest: ConsentRequest): ParsedTx => {
-  let payload
+  let payload: Transaction
 
   try {
     payload = JSON.parse(consentRequest.tx)
@@ -78,11 +86,11 @@ const parseTx = (consentRequest: ConsentRequest): ParsedTx => {
     throw new Error('Could not parse transaction payload')
   }
 
-  const result = {
+  const result: ParsedTx = {
     txId: consentRequest.txId,
     receivedAt: new Date(consentRequest.receivedAt as string),
-    tx: {},
-    type: 'Unknown transaction',
+    tx: {} as TransactionPayload,
+    type: 'unknown',
     pubKey: ''
   }
 
@@ -94,25 +102,27 @@ const parseTx = (consentRequest: ConsentRequest): ParsedTx => {
     result.pubKey = payload.pubKey
 
     if ('orderSubmission' in payload) {
-      result.type = 'Order submission'
+      result.type = 'orderSubmission'
       result.tx = payload.orderSubmission
     } else if ('withdrawSubmission' in payload) {
-      result.type = 'Withdrawal submission'
+      result.type = 'withdrawSubmission'
       result.tx = payload.withdrawSubmission
     } else if ('voteSubmission' in payload) {
-      result.type = 'Vote submission'
+      result.type = 'voteSubmission'
       result.tx = payload.voteSubmission
     } else if ('delegateSubmission' in payload) {
-      result.type = 'Delegate submission'
+      result.type = 'delegateSubmission'
       result.tx = payload.delegateSubmission
     } else if ('undelegateSubmission' in payload) {
-      result.type = 'Undelegate submission'
+      result.type = 'undelegateSubmission'
       result.tx = payload.undelegateSubmission
     } else {
-      result.type = 'Unknown transaction'
+      result.type = 'unknown'
       result.tx = payload
     }
-  }
 
-  return result
+    return result
+  } else {
+    throw new Error('Invalid payload')
+  }
 }

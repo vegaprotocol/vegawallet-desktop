@@ -1,4 +1,5 @@
 require('cypress-downloadfile/lib/downloadFileCommand')
+
 const axios = require('axios')
 
 Cypress.Commands.add('getByTestId', (selector, ...args) => {

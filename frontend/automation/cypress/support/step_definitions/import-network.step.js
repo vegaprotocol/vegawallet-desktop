@@ -37,7 +37,7 @@ When('I select {string} on the dropdown', networkName => {
 When('I import using valid network import url', () => {
   const url = Cypress.env('mainnetConfigUrl')
 
-  networkDrawer.ImportNetworkUsingPath(url)
+  networkDrawer.importNetworkUsingPath(url)
 })
 
 When('I import using valid network import file path', () => {
@@ -46,27 +46,27 @@ When('I import using valid network import file path', () => {
     'network-config/mainnet-config.toml'
   )
 
-  networkDrawer.ImportNetworkUsingPath(filePath, null, true)
+  networkDrawer.importNetworkUsingPath(filePath, null, true)
 })
 
 When('I import using invalid network import file path', () => {
   const invalidFilePath = './network-config/mainnet1'
 
-  networkDrawer.ImportNetworkUsingPath(invalidFilePath)
+  networkDrawer.importNetworkUsingPath(invalidFilePath)
 })
 
 When('I import using unknown network import url', () => {
   const url =
     'https://githubusercontent.com/vegaprotocol/networks/master/mainnet1/fake.toml'
 
-  networkDrawer.ImportNetworkUsingPath(url)
+  networkDrawer.importNetworkUsingPath(url)
 })
 
 When('I import using url and specify network name', () => {
   const url = Cypress.env('mainnetConfigUrl')
   const networkName = 'New Mainnet'
 
-  networkDrawer.ImportNetworkUsingPath(url, networkName)
+  networkDrawer.importNetworkUsingPath(url, networkName)
 })
 
 When('overwrite is clicked', () => {

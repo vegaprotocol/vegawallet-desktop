@@ -4,11 +4,25 @@ import { Button } from '../button'
 import { CodeBlock } from '../code-block'
 import { Dialog } from '../dialog'
 import { KeyValueTable } from '../key-value-table'
-import type { ParsedTx } from '../transaction-manager'
+import type {
+  ParsedTx,
+  TransactionType
+} from '../transaction-manager/transaction-types'
 
 interface TransactionModalProps {
   transactions: ParsedTx[]
   onRespond: (txId: string, decision: boolean) => void
+}
+
+const TRANSACTION_TITLES: {
+  [Type in TransactionType]: string
+} = {
+  unknown: 'Unknown transaction',
+  orderSubmission: 'Order submission',
+  withdrawSubmission: 'Withdraw submission',
+  voteSubmission: 'Vote submission',
+  delegateSubmission: 'Delegate submission',
+  undelegateSubmission: 'Undelegate submission'
 }
 
 export function TransactionModal({
@@ -39,7 +53,9 @@ export function TransactionModal({
               style={itemStyles}
               data-testid='transaction'
             >
-              <h2 style={{ margin: 0 }}>{transaction.type}</h2>
+              <h2 style={{ margin: 0 }}>
+                {TRANSACTION_TITLES[transaction.type]}
+              </h2>
               <KeyValueTable
                 style={{ marginBottom: 10 }}
                 rows={[

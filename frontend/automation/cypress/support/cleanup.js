@@ -10,8 +10,26 @@ after(() => {
     const handler = win.go.backend.Handler
 
     return handler
-      .StopService()
-      .then(() => handler.StopConsole())
-      .then(() => handler.StopTokenDApp())
+      .GetServiceState()
+      .then(res => {
+        if (res.running) {
+          return handler.StopService()
+        }
+        return Promise.resolve()
+      })
+      .then(() => handler.GetConsoleState())
+      .then(res => {
+        if (res.running) {
+          return handler.StopConsole()
+        }
+        return Promise.resolve()
+      })
+      .then(() => handler.GetTokenDAppState())
+      .then(res => {
+        if (res.running) {
+          return handler.StopTokenDApp()
+        }
+        return Promise.resolve()
+      })
   })
 })

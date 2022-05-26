@@ -1,8 +1,12 @@
-import { And, Given, Then } from 'cypress-cucumber-preprocessor/steps'
+import { And, Before, Given, Then } from 'cypress-cucumber-preprocessor/steps'
 
-const selectors = {
+const testIds = {
   TRANSACTION_DIALOG: 'transaction-dialog',
-  TRANSACTION: 'transaction'
+  TRANSACTION: 'transaction',
+  TRANSACTION_PAYLOAD: 'transaction-payload',
+  REJECT_BTN: 'reject-transaction',
+  APPROVE_BTN: 'approve-transaction',
+  WALLET_LIST: 'wallet-list'
 }
 
 const orderTransaction = {
@@ -25,8 +29,9 @@ const voteTransaction = {
 }
 
 Given('I have an existing wallet', () => {
+  cy.clean()
   cy.restoreWallet()
-  cy.getByTestId('wallet-list').should('have.length', 1)
+  cy.getByTestId(testIds.WALLET_LIST).should('have.length', 1)
 })
 
 And('an order transaction is sent', () => {
@@ -44,20 +49,20 @@ And('a vote transaction is sent', () => {
 })
 
 And('I approve the transaction', () => {
-  cy.getByTestId('approve-transaction').click()
+  cy.getByTestId(testIds.APPROVE_BTN).click()
 })
 
 And('I reject the transaction', () => {
-  cy.getByTestId('reject-transaction').click()
+  cy.getByTestId(testIds.REJECT_BTN).click()
 })
 
 Then('the transaction dialog is opened', () => {
-  cy.getByTestId(selectors.TRANSACTION_DIALOG).should('exist')
-  cy.getByTestId(selectors.TRANSACTION_DIALOG).should('be.visible')
+  cy.getByTestId(testIds.TRANSACTION_DIALOG).should('exist')
+  cy.getByTestId(testIds.TRANSACTION_DIALOG).should('be.visible')
 })
 
 Then('the transaction dialog is closed', () => {
-  cy.getByTestId(selectors.TRANSACTION_DIALOG).should('not.exist')
+  cy.getByTestId(testIds.TRANSACTION_DIALOG).should('not.exist')
 })
 
 And('the transaction is approved', () => {
@@ -74,26 +79,26 @@ Then('the transaction dialog displays correctly', () => {
     .should('have.text', Cypress.env('testWalletPublicKey'))
   cy.contains('Signature').next('td').should('not.be.empty')
   cy.contains('Received at').next('td').should('not.be.empty')
-  cy.getByTestId('transaction-payload')
+  cy.getByTestId(testIds.TRANSACTION_PAYLOAD)
     .invoke('text')
     .then(text => JSON.parse(text))
     .should('deep.eq', orderTransaction.orderSubmission)
-  cy.getByTestId('reject-transaction').should('exist')
-  cy.getByTestId('approve-transaction').should('exist')
+  cy.getByTestId(testIds.REJECT_BTN).should('exist')
+  cy.getByTestId(testIds.APPROVE_BTN).should('exist')
 
   // reject at the end so we dont get leftover hanging transactions
-  cy.getByTestId('reject-transaction').click()
+  cy.getByTestId(testIds.REJECT_BTN).click()
 })
 
 Then('both transactions are shown', () => {
   const expectedTxs = 2
-  cy.getByTestId(selectors.TRANSACTION_DIALOG).should('exist')
-  cy.getByTestId(selectors.TRANSACTION).should('have.length', expectedTxs)
+  cy.getByTestId(testIds.TRANSACTION_DIALOG).should('exist')
+  cy.getByTestId(testIds.TRANSACTION).should('have.length', expectedTxs)
   cy.contains(`${expectedTxs} pending transactions`)
   cy.contains('Order submission')
   cy.contains('Vote submission')
-  cy.getByTestId('reject-transaction').first().click()
-  cy.getByTestId(selectors.TRANSACTION).should('have.length', 1)
+  cy.getByTestId(testIds.REJECT_BTN).first().click()
+  cy.getByTestId(testIds.TRANSACTION).should('have.length', 1)
   cy.contains(/pending transactions/i).should('not.exist')
-  cy.getByTestId('reject-transaction').first().click()
+  cy.getByTestId(testIds.REJECT_BTN).first().click()
 })

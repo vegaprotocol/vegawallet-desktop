@@ -25,7 +25,7 @@ export default class NetworkDrawer {
     })
   }
 
-  ImportNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
+  importNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
     cy.get('body').then($body => {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
         this.clickManageNetworks()
