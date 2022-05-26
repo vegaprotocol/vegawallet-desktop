@@ -1,4 +1,3 @@
-
 Feature: Transaction approval
 
   Background:
