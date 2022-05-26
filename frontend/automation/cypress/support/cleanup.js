@@ -9,7 +9,7 @@ after(() => {
   cy.window().then(win => {
     const handler = win.go.backend.Handler
 
-    handler
+    return handler
       .StopService()
       .then(() => handler.StopConsole())
       .then(() => handler.StopTokenDApp())
