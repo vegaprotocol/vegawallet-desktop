@@ -7,11 +7,8 @@ import { Service } from '../../service'
 import type { ConsentRequest } from '../../wailsjs/go/models'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
-import type {
-  ParsedTx,
-  Transaction,
-  TransactionPayload
-} from './transaction-types'
+import type { ParsedTx } from './transaction-types'
+import { TransactionKeys } from './transaction-types'
 
 /**
  * Stores an array of parsed transactions which get passed to a modal
@@ -94,7 +91,7 @@ export function TransactionManager() {
  * what kind of transaction it is
  */
 const parseTx = (consentRequest: ConsentRequest): ParsedTx => {
-  let payload: Transaction
+  let payload: { pubKey: string; propagate: boolean }
 
   try {
     payload = JSON.parse(consentRequest.tx)
@@ -105,8 +102,8 @@ const parseTx = (consentRequest: ConsentRequest): ParsedTx => {
   const result: ParsedTx = {
     txId: consentRequest.txId,
     receivedAt: new Date(consentRequest.receivedAt as string),
-    tx: {} as TransactionPayload,
-    type: 'unknown',
+    tx: {},
+    type: TransactionKeys.UNKNOWN,
     pubKey: ''
   }
 
@@ -117,24 +114,13 @@ const parseTx = (consentRequest: ConsentRequest): ParsedTx => {
   ) {
     result.pubKey = payload.pubKey
 
-    if ('orderSubmission' in payload) {
-      result.type = 'orderSubmission'
-      result.tx = payload.orderSubmission
-    } else if ('withdrawSubmission' in payload) {
-      result.type = 'withdrawSubmission'
-      result.tx = payload.withdrawSubmission
-    } else if ('voteSubmission' in payload) {
-      result.type = 'voteSubmission'
-      result.tx = payload.voteSubmission
-    } else if ('delegateSubmission' in payload) {
-      result.type = 'delegateSubmission'
-      result.tx = payload.delegateSubmission
-    } else if ('undelegateSubmission' in payload) {
-      result.type = 'undelegateSubmission'
-      result.tx = payload.undelegateSubmission
-    } else {
-      result.type = 'unknown'
-      result.tx = payload
+    for (const key in payload) {
+      if (Object.values(TransactionKeys).indexOf(key as TransactionKeys) > -1) {
+        result.type = key as TransactionKeys
+        // @ts-ignore doesnt appear to be a good way to type this without defining
+        // interfaces for every single transaction
+        result.tx = payload[key]
+      }
     }
 
     return result

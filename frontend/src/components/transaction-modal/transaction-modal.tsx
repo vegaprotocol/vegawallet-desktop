@@ -6,7 +6,7 @@ import { Dialog } from '../dialog'
 import { KeyValueTable } from '../key-value-table'
 import type {
   ParsedTx,
-  TransactionType
+  TransactionKeys
 } from '../transaction-manager/transaction-types'
 
 interface TransactionModalProps {
@@ -15,14 +15,29 @@ interface TransactionModalProps {
 }
 
 const TRANSACTION_TITLES: {
-  [Type in TransactionType]: string
+  [Key in TransactionKeys]: string
 } = {
   unknown: 'Unknown transaction',
   orderSubmission: 'Order submission',
-  withdrawSubmission: 'Withdraw submission',
+  orderCancellation: 'Order cancellation',
+  orderAmendment: 'Order amendment',
   voteSubmission: 'Vote submission',
+  withdrawSubmission: 'Withdraw submission',
+  liquidityProvisionSubmission: 'Liquidity provision',
+  liquidityProvisionCancellation: 'Liquidity provision cancellation',
+  liquidityProvisionAmendment: 'Liquidity provision amendment',
+  proposalSubmission: 'Proposal submission',
+  announceNode: 'Announce node',
+  nodeVote: 'Node vote',
+  nodeSignature: 'Node signature',
+  chainEvent: 'Chain event',
+  oracleDataSubmission: 'Oracle data submission',
+  undelegateSubmission: 'Undelegate submission',
   delegateSubmission: 'Delegate submission',
-  undelegateSubmission: 'Undelegate submission'
+  transfer: 'Transfer',
+  cancelTransfer: 'Cancel transfer',
+  keyRotateSubmission: 'Key rotation submission',
+  ethereumKeyRotateSubmission: 'Ethereum key rotation submission'
 }
 
 export function TransactionModal({
