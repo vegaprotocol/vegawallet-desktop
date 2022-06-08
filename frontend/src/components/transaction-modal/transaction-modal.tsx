@@ -68,9 +68,9 @@ export function TransactionModal({
               style={itemStyles}
               data-testid='transaction'
             >
-              <h2 style={{ margin: 0 }} data-testid='transaction-title'>
+              <h3 style={{ margin: 0 }} data-testid='transaction-title'>
                 {TRANSACTION_TITLES[transaction.type]}
-              </h2>
+              </h3>
               <KeyValueTable
                 style={{ marginBottom: 10 }}
                 rows={[
