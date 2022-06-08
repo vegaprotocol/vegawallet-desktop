@@ -73,7 +73,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * Renders all the providers
+ * Renders all the providers, router and passphrase modal
  */
 function App() {
   return (
