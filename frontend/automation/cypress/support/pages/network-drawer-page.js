@@ -136,9 +136,12 @@ export default class NetworkDrawer {
     cy.getByTestId(this.logLevel).should('have.text', 'info')
     cy.getByTestId(this.tokenExpiry).should('have.text', '168h0m0s')
 
-    if (selectedNetwork === "mainnet1") {
-      cy.getByTestId(this.consoleService).should('have.text', "Unavailable")
-      cy.getByTestId(this.consoleUrl).should('have.text', '(Endpoint not configured)')
+    if (selectedNetwork === 'mainnet1') {
+      cy.getByTestId(this.consoleService).should('have.text', 'Unavailable')
+      cy.getByTestId(this.consoleUrl).should(
+        'have.text',
+        '(Endpoint not configured)'
+      )
       cy.log('console tested')
     }
   }

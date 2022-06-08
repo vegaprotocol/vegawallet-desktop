@@ -31,7 +31,9 @@ import type {
 import type { runtime } from '../wailsjs/runtime/runtime'
 import {
   ClearSentTransactionRequest,
-  Config, ConsentToTransactionRequest, ListSentTransactionsResponse,
+  Config,
+  ConsentToTransactionRequest,
+  ListSentTransactionsResponse,
   GetConsentRequestRequest,
   ListConsentRequestsResponse,
   ConsentRequest
@@ -74,9 +76,7 @@ export interface Handler {
   StopTokenDApp(): Promise<boolean>
   SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse>
   DeleteWallet(arg1: DeleteWalletRequest): Promise<void>
-  GetConsentRequest(
-    arg1: GetConsentRequestRequest
-  ): Promise<ConsentRequest>
+  GetConsentRequest(arg1: GetConsentRequestRequest): Promise<ConsentRequest>
   ListConsentRequests(): Promise<ListConsentRequestsResponse>
   ConsentToTransaction(arg1: ConsentToTransactionRequest): Promise<void>
   ListSentTransactions(): Promise<ListSentTransactionsResponse>
