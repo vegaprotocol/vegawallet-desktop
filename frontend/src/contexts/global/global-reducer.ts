@@ -1,5 +1,9 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type { FirstPublicKey, NamedPubKey } from '../../wailsjs/go/models'
+import type {
+  Config,
+  FirstPublicKey,
+  NamedPubKey
+} from '../../wailsjs/go/models'
 import type { GlobalState, KeyPair, Wallet } from './global-context'
 import { AppStatus } from './global-context'
 
@@ -13,7 +17,8 @@ export const initialGlobalState: GlobalState = {
   onboarding: {
     wallets: [],
     networks: []
-  }
+  },
+  config: null
 }
 
 export type GlobalAction =
@@ -24,6 +29,10 @@ export type GlobalAction =
   | {
       type: 'SET_VERSION'
       version: string
+    }
+  | {
+      type: 'SET_CONFIG'
+      config: Config
     }
   | {
       type: 'START_ONBOARDING'
@@ -87,6 +96,12 @@ export function globalReducer(
       return {
         ...state,
         version: action.version
+      }
+    }
+    case 'SET_CONFIG': {
+      return {
+        ...state,
+        config: action.config
       }
     }
     case 'START_ONBOARDING': {

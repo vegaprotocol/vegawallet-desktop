@@ -1,12 +1,18 @@
 import type {
   AnnotateKeyRequest,
   CheckVersionResponse,
+  ClearSentTransactionRequest,
+  Config,
+  ConsentRequest,
+  ConsentToTransactionRequest,
   CreateWalletRequest,
   CreateWalletResponse,
+  DeleteWalletRequest,
   DescribeKeyRequest,
   DescribeKeyResponse,
   GenerateKeyRequest,
   GenerateKeyResponse,
+  GetConsentRequestRequest,
   GetServiceStateResponse,
   GetVersionResponse,
   ImportNetworkFromSourceRequest,
@@ -16,9 +22,11 @@ import type {
   InitialiseAppRequest,
   IsolateKeyRequest,
   IsolateKeyResponse,
+  ListConsentRequestsResponse,
   ListKeysRequest,
   ListKeysResponse,
   ListNetworksResponse,
+  ListSentTransactionsResponse,
   ListWalletsResponse,
   Network,
   SearchForExistingConfigurationResponse,
@@ -28,16 +36,6 @@ import type {
   TaintKeyRequest,
   UntaintKeyRequest
 } from '../wailsjs/go/models'
-import type {
-  ClearSentTransactionRequest,
-  Config,
-  ConsentRequest,
-  ConsentToTransactionRequest,
-  GetConsentRequestRequest,
-  ListConsentRequestsResponse,
-  ListSentTransactionsResponse
-} from '../wailsjs/go/models'
-import type { DeleteWalletRequest } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
 
 export interface Handler {
@@ -68,6 +66,7 @@ export interface Handler {
   StopService(): Promise<boolean>
   TaintKey(arg1: TaintKeyRequest): Promise<void>
   UntaintKey(arg1: UntaintKeyRequest): Promise<void>
+  UpdateAppConfig(arg1: Partial<Config>): Promise<void>
   SearchForExistingConfiguration(): Promise<SearchForExistingConfigurationResponse>
   StartConsole(arg1: StartServiceRequest): Promise<boolean>
   StartTokenDApp(arg1: StartServiceRequest): Promise<boolean>

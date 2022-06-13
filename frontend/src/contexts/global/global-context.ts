@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
-import type { NamedPubKey } from '../../wailsjs/go/models'
+import type { Config, NamedPubKey } from '../../wailsjs/go/models'
 import type { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
@@ -32,6 +32,7 @@ export interface GlobalState {
     wallets: string[]
     networks: string[]
   }
+  config: Config | null
 }
 
 export type GlobalDispatch = React.Dispatch<

@@ -5,6 +5,7 @@ import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import { Service } from '../../service'
 import type {
+  Config,
   GetServiceStateResponse,
   Network,
   StartServiceRequest
@@ -13,9 +14,9 @@ import type { NetworkDispatch, NetworkState } from './network-context'
 import { ProxyName } from './network-context'
 import type { NetworkAction } from './network-reducer'
 
-export function initNetworksAction() {
+export function initNetworksAction(appConfig: Config | null) {
   return async (dispatch: NetworkDispatch) => {
-    // fetch network presets
+    // fetch network presets to provide default options for importing new networks
     try {
       const res = await fetch(DataSources.NETWORKS)
       const json = await res.json()
@@ -29,7 +30,18 @@ export function initNetworksAction() {
       if (networks instanceof Error) throw networks
 
       if (networks.networks.length) {
-        const defaultNetwork = networks.networks[0]
+        let defaultNetwork = networks.networks[0]
+
+        if (appConfig?.defaultNetwork) {
+          defaultNetwork =
+            networks.networks.find(n => n === appConfig.defaultNetwork) ||
+            networks.networks[0]
+        }
+
+        await Service.UpdateAppConfig({
+          defaultNetwork
+        })
+
         const config = await Service.GetNetworkConfig(defaultNetwork)
         dispatch({
           type: 'SET_NETWORKS',
@@ -97,6 +109,11 @@ export function changeNetworkAction(network: string) {
     try {
       await stopProxies()
       dispatch({ type: 'STOP_ALL_PROXIES' })
+
+      // Save selected network to app config
+      await Service.UpdateAppConfig({
+        defaultNetwork: network
+      })
 
       const config = await Service.GetNetworkConfig(network)
 

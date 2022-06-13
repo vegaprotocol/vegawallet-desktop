@@ -13,17 +13,19 @@ import type { GlobalAction } from './global-reducer'
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
     try {
-      const [isInit, version] = await Promise.all([
+      const [isInit, version, config] = await Promise.all([
         Service.IsAppInitialised(),
-        Service.GetVersion()
+        Service.GetVersion(),
+        Service.GetAppConfig()
       ])
 
       dispatch({ type: 'SET_VERSION', version: version.version })
+      dispatch({ type: 'SET_CONFIG', config: config })
 
       if (IS_TEST_MODE) {
         await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
       } else if (!isInit) {
-        const config = await Service.SearchForExistingConfiguration()
+        const existingConfig = await Service.SearchForExistingConfiguration()
 
         Sentry.addBreadcrumb({
           type: 'StartApp',
@@ -33,7 +35,7 @@ export function initAppAction() {
         })
 
         // start default onboarding
-        dispatch({ type: 'START_ONBOARDING', existing: config })
+        dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
         return
       }
 
