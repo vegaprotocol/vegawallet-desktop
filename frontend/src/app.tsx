@@ -41,9 +41,11 @@ function AppLoader({ children }: { children: React.ReactNode }) {
       globalState.status === AppStatus.Initialised ||
       globalState.status === AppStatus.Onboarding
     ) {
-      networkDispatch(initNetworksAction())
+      networkDispatch(initNetworksAction(globalState.config))
       networkDispatch(initProxies())
     }
+    // cant use globalState.config as this will trigger render loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalState.status, networkDispatch])
 
   // Start service on app startup and when network or config changes
