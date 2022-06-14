@@ -16,7 +16,7 @@ export function ButtonGroup({
     <div
       {...props}
       style={{
-        display: 'flex',
+        display: 'grid',
         justifyContent: 'space-between',
         flexDirection: orientation === 'horizontal' ? 'row' : 'column',
         gap: 10,
