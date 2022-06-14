@@ -61,6 +61,11 @@ Cypress.Commands.add('sendTransaction', transaction => {
     })
     const tokenJSON = await tokenRes.json()
 
+    // NOTE: Specifically not returning anything at the end of this promise so that cy.wrap
+    // will complete and cypress will move on to the next task, this allows us to
+    // inspect the dom and trigger actions (IE reject/approve transaction) while the promise
+    // is left hanging
+
     fetch(`${baseUrl}/command/sync`, {
       method: 'post',
       headers: {
