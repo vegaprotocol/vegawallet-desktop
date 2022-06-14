@@ -33,7 +33,7 @@ jobs:
         id: go
 
       - name: Get Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.0.0-beta.32
 
       - name: Get dependencies
         run: go get -v -t -d ./...
@@ -66,7 +66,7 @@ jobs:
         with:
           wait-on: "http://localhost:34115"
           working-directory: frontend/automation
-          wait-on-timeout: 240
+          wait-on-timeout: 120
           record: true
         env:
           # pass the Dashboard record key as an environment variable
