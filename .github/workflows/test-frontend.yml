@@ -52,7 +52,7 @@ jobs:
 
       # Start wails in the first process
       - name: Start backend in background
-        run: wails dev &
+        run: wails dev -noreload &
         env:
           VITE_VEGA_HOME: "./frontend/automation/test-wallets"
           VITE_TESTING: 1
