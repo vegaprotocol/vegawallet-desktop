@@ -7,6 +7,8 @@ import (
 
 	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
+	"code.vegaprotocol.io/vegawallet-desktop/backend/proxy"
+	"code.vegaprotocol.io/vegawallet-desktop/backend/service"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
@@ -32,9 +34,9 @@ type Handler struct {
 
 	configLoader *config.Loader
 
-	service   *serviceState
-	console   *serviceState
-	tokenDApp *serviceState
+	service   *service.State
+	console   *proxy.State
+	tokenDApp *proxy.State
 }
 
 func NewHandler() (*Handler, error) {
@@ -68,9 +70,9 @@ func (h *Handler) Startup(ctx context.Context) {
 	h.log.Debug("Entering Startup")
 	defer h.log.Debug("Leaving Startup")
 
-	h.service = &serviceState{}
-	h.console = &serviceState{}
-	h.tokenDApp = &serviceState{}
+	h.service = service.NewState()
+	h.console = proxy.NewState()
+	h.tokenDApp = proxy.NewState()
 }
 
 // DOMReady is called after the front-end dom has been loaded
@@ -83,22 +85,13 @@ func (h *Handler) Shutdown(_ context.Context) {
 	h.log.Debug("Entering Shutdown")
 	defer h.log.Debug("Leaving Shutdown")
 
-	if h.console.IsRunning() {
-		_, _ = h.StopConsole()
-	}
-
-	if h.tokenDApp.IsRunning() {
-		_, _ = h.StopTokenDApp()
-	}
-
-	if h.service.IsRunning() {
-		_, _ = h.StopService()
-	}
+	_, _ = h.StopConsole()
+	_, _ = h.StopTokenDApp()
+	_, _ = h.StopService()
 }
 
 func (h *Handler) IsAppInitialised() (bool, error) {
 	isConfigInit, err := h.configLoader.IsConfigInitialised()
-
 	if err != nil {
 		return false, fmt.Errorf("couldn't verify application configuration state: %w", err)
 	}

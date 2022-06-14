@@ -29,7 +29,7 @@ Given('I am on the onboarding page', page => {
 
   When('I submit a existing recovery phrase', () => {
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
-    walletImportPage.importWallet('import test', recoveryPhrase, 2, '123')
+    walletImportPage.importWallet('import test', '123', recoveryPhrase)
   })
 
   Then('wallet is successfully created', () => {
@@ -45,7 +45,7 @@ Given('I am on the onboarding page', page => {
   })
 
   Then('import {string} network', networkName => {
-    networkDrawer.SelectNetwork(networkName)
+    networkDrawer.selectNetwork(networkName)
     networkDrawer.clickImportBtn()
   })
 

@@ -21,19 +21,19 @@ export default class NetworkDrawer {
   backBtn = 'back'
   closeToastBtn = 'close'
 
-  SelectNetwork(networkName) {
+  selectNetwork(networkName) {
     cy.getByTestId(this.importNetworkSelect).select(networkName, {
       force: true
     })
   }
 
-  ImportNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
+  importNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
     cy.get('body').then($body => {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
         this.clickManageNetworks()
       } else this.clickImportBtn()
     })
-    this.SelectNetwork('Other')
+    this.selectNetwork('Other')
     cy.getByTestId(this.urlPathField).type(urlPath, { force: true })
     if (networkName != null) {
       cy.getByTestId(this.networkNameField).type(networkName)
@@ -136,9 +136,12 @@ export default class NetworkDrawer {
     cy.getByTestId(this.logLevel).should('have.text', 'info')
     cy.getByTestId(this.tokenExpiry).should('have.text', '168h0m0s')
 
-    if (selectedNetwork === "mainnet1") {
-      cy.getByTestId(this.consoleService).should('have.text', "Unavailable")
-      cy.getByTestId(this.consoleUrl).should('have.text', '(Endpoint not configured)')
+    if (selectedNetwork === 'mainnet1') {
+      cy.getByTestId(this.consoleService).should('have.text', 'Unavailable')
+      cy.getByTestId(this.consoleUrl).should(
+        'have.text',
+        '(Endpoint not configured)'
+      )
       cy.log('console tested')
     }
   }

@@ -52,6 +52,7 @@ export const WalletList = () => {
           style={{
             margin: 0
           }}
+          data-testid='wallets-header'
         >
           Wallets
         </Header>

@@ -4,6 +4,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'
 import { Header } from '../../components/header'
+import { KeyValueTable } from '../../components/key-value-table'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../'
@@ -29,20 +30,16 @@ export function WalletKeyPair() {
         </span>
       </Header>
       <Header style={{ marginTop: 0, fontSize: 18 }}>Details</Header>
-      <table>
-        <tbody>
-          <tr>
-            <th>Name</th>
-            <td data-testid='keypair-name'>{keypair.name}</td>
-          </tr>
-          <tr>
-            <th>Public key</th>
-            <td data-testid='public-key'>
-              <BreakText>{keypair.publicKey}</BreakText>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <KeyValueTable
+        rows={[
+          { key: 'Name', value: keypair.name, dataTestId: 'keypair-name' },
+          {
+            key: 'Public key',
+            value: <BreakText>{keypair.publicKey}</BreakText>,
+            dataTestId: 'public-key'
+          }
+        ]}
+      />
       <div style={{ marginTop: 20 }}>
         <Link to={Paths.Wallet}>
           <Button>Back</Button>

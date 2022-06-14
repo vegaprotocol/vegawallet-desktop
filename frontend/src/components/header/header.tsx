@@ -1,15 +1,16 @@
+import type { HTMLAttributes } from 'react'
 import React from 'react'
 
 import { Colors } from '../../config/colors'
 
-interface HeaderProps {
+interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
   children: React.ReactNode
-  style?: React.CSSProperties
 }
 
-export const Header = ({ children, style }: HeaderProps) => {
+export const Header = ({ children, style, ...rest }: HeaderProps) => {
   return (
     <h1
+      {...rest}
       style={{
         fontSize: 15,
         color: Colors.TEXT_COLOR_DEEMPHASISE,

@@ -55,8 +55,7 @@ export function useImportNetwork() {
                 </p>
               </div>
             ),
-            intent: Intent.SUCCESS,
-            timeout: 0
+            intent: Intent.SUCCESS
           })
         } else {
           const message = 'Error: Could not import network'
