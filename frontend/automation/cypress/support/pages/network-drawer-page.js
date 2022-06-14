@@ -131,7 +131,8 @@ export default class NetworkDrawer {
     cy.getByTestId(this.tokenService).should('not.be.empty')
     cy.getByTestId(this.tokenUrl).should('not.be.empty')
     cy.getByTestId(this.nodeList).each($node => {
-      expect($node).not.to.be.empty
+      // eslint-disable-next-line no-unused-expressions
+      expect($node.text()).not.to.be.empty
     })
     cy.getByTestId(this.logLevel).should('have.text', 'info')
     cy.getByTestId(this.tokenExpiry).should('have.text', '168h0m0s')
