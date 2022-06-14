@@ -76,10 +76,10 @@ And('the transaction is rejected', () => {
 
 Then('the transaction dialog displays correctly', () => {
   cy.contains('Public key')
-    .next('td')
+    .next('dd')
     .should('have.text', Cypress.env('testWalletPublicKey'))
-  cy.contains('Signature').next('td').should('not.be.empty')
-  cy.contains('Received at').next('td').should('not.be.empty')
+  cy.contains('Signature').next('dd').should('not.be.empty')
+  cy.contains('Received at').next('dd').should('not.be.empty')
   cy.getByTestId(testIds.TRANSACTION_PAYLOAD)
     .invoke('text')
     .then(text => JSON.parse(text))
