@@ -1,7 +1,5 @@
 require('cypress-downloadfile/lib/downloadFileCommand')
 
-const axios = require('axios')
-
 Cypress.Commands.add('getByTestId', (selector, ...args) => {
   return cy.get(`[data-testid=${selector}]`, ...args)
 })
@@ -54,26 +52,25 @@ Cypress.Commands.add('sendTransaction', transaction => {
     const wallet = Cypress.env('testWalletName')
     const passphrase = Cypress.env('testWalletPassphrase')
 
-    const tokenRes = await axios({
+    const tokenRes = await fetch(`${baseUrl}/auth/token`, {
       method: 'post',
-      url: `${baseUrl}/auth/token`,
-      data: {
+      body: JSON.stringify({
         wallet,
         passphrase
-      }
+      })
     })
+    const tokenJSON = await tokenRes.json()
 
-    axios({
+    fetch(`${baseUrl}/command/sync`, {
       method: 'post',
-      url: `${baseUrl}/command/sync`,
       headers: {
-        authorization: `Bearer ${tokenRes.data.token}`
+        authorization: `Bearer ${tokenJSON.token}`
       },
-      data: {
+      body: JSON.stringify({
         pubKey,
         propagate: true,
         ...transaction
-      }
+      })
     })
   }
 
