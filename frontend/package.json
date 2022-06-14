@@ -41,7 +41,7 @@
   "scripts": {
     "dev": "npx vite build --mode development --watch",
     "dev:test": "cd .. && VITE_COVERAGE='true' VITE_TESTING=1 VITE_VEGA_HOME=./frontend/automation/test-wallets wails dev",
-    "build": "tsc && npx vite build",
+    "build": "tsc --noEmit && npx vite build",
     "build:test": "VITE_COVERAGE='true' VITE_TESTING=1 VITE_VEGA_HOME=./frontend/automation/test-wallets npx vite build",
     "test": "jest",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
