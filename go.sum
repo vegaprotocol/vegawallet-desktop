@@ -230,6 +230,7 @@ github.com/leaanthony/go-ansi-parser v1.0.1 h1:97v6c5kYppVsbScf4r/VZdXyQ21KQIfeQ
 github.com/leaanthony/go-ansi-parser v1.0.1/go.mod h1:7arTzgVI47srICYhvgUV4CGd063sGEeoSlych5yeSPM=
 github.com/leaanthony/go-common-file-dialog v1.0.3 h1:O0uGjKnWtdEADGrkg+TyAAbZylykMwwx/MNEXn9fp+Y=
 github.com/leaanthony/go-common-file-dialog v1.0.3/go.mod h1:TGhEc9eSJgRsupZ+iH1ZgAOnEo9zp05cRH2j08RPrF0=
+github.com/leaanthony/go-webview2 v1.0.3-0.20220125181555-00f20a61c17d/go.mod h1:iX54IaVk1FnDqMuHJ47VYLPQOcVqQiOe9SJACt9CAbU=
 github.com/leaanthony/go-webview2 v1.0.3-0.20220314105146-f44268990abe h1:8MRHsDSWiVHE5FIwyXKBTtdOGMQEOfmPNF1nGcbx3iY=
 github.com/leaanthony/go-webview2 v1.0.3-0.20220314105146-f44268990abe/go.mod h1:iX54IaVk1FnDqMuHJ47VYLPQOcVqQiOe9SJACt9CAbU=
 github.com/leaanthony/gosod v1.0.3 h1:Fnt+/B6NjQOVuCWOKYRREZnjGyvg+mEhd1nkkA04aTQ=
@@ -317,8 +318,8 @@ github.com/valyala/tcplisten v1.0.0 h1:rBHj/Xf+E1tRGZyWIWwJDiRY0zc1Js+CV5DqwacVS
 github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
 github.com/vegaprotocol/go-slip10 v0.1.0 h1:pP3XF2gSKM6OuaAURobHZlXZ9AzZ5LgeWvXFudL7Mb4=
 github.com/vegaprotocol/go-slip10 v0.1.0/go.mod h1:zTjs9hXxElXfZvPRWWFMtEYSe7udGFP1iUM1ktJ72HI=
-github.com/wailsapp/wails/v2 v2.0.0-beta.34 h1:xGHYAbBHwjcKccoy09c06CjnuCoTZfuz5j+P7qGVCcA=
-github.com/wailsapp/wails/v2 v2.0.0-beta.34/go.mod h1:2bMwhTMjkNeB6X8hIPVgbZaqdgJxP90NSlec7/CZuXc=
+github.com/wailsapp/wails/v2 v2.0.0-beta.32 h1:AGONjh56zAs230wrp3YUBeW3ufyrUQq2lVwLy6nhuFc=
+github.com/wailsapp/wails/v2 v2.0.0-beta.32/go.mod h1:BczaKn29wsLFJYIAYvuuLvUJRwmpYsimhhW8BLNONtI=
 github.com/wzshiming/ctc v1.2.3/go.mod h1:2tVAtIY7SUyraSk0JxvwmONNPFL4ARavPuEsg5+KA28=
 github.com/wzshiming/winseq v0.0.0-20200112104235-db357dc107ae/go.mod h1:VTAq37rkGeV+WOybvZwjXiJOicICdpLCN8ifpISjK20=
 github.com/xanzy/ssh-agent v0.3.0/go.mod h1:3s9xbODqPuuhK9JV1R321M/FlMZSBvE5aY6eAcqrDh0=
