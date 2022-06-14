@@ -1,7 +1,6 @@
 import type {
   AnnotateKeyRequest,
   CheckVersionResponse,
-  InitialiseAppRequest,
   CreateWalletRequest,
   CreateWalletResponse,
   DescribeKeyRequest,
@@ -14,6 +13,7 @@ import type {
   ImportNetworkFromSourceResponse,
   ImportWalletRequest,
   ImportWalletResponse,
+  InitialiseAppRequest,
   IsolateKeyRequest,
   IsolateKeyResponse,
   ListKeysRequest,
@@ -28,17 +28,17 @@ import type {
   TaintKeyRequest,
   UntaintKeyRequest
 } from '../wailsjs/go/models'
-import type { runtime } from '../wailsjs/runtime/runtime'
-import {
+import type {
   ClearSentTransactionRequest,
   Config,
+  ConsentRequest,
   ConsentToTransactionRequest,
-  ListSentTransactionsResponse,
   GetConsentRequestRequest,
   ListConsentRequestsResponse,
-  ConsentRequest
+  ListSentTransactionsResponse
 } from '../wailsjs/go/models'
-import { DeleteWalletRequest } from '../wailsjs/go/models'
+import type { DeleteWalletRequest } from '../wailsjs/go/models'
+import type { runtime } from '../wailsjs/runtime/runtime'
 
 export interface Handler {
   AnnotateKey(arg1: AnnotateKeyRequest): Promise<void>
