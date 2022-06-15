@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react'
+import { captureMessage } from '@sentry/react'
 
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
@@ -16,7 +17,7 @@ export function initAppAction() {
       const config = await Service.GetAppConfig()
       dispatch({ type: 'SET_CONFIG', config: config })
     } catch (err) {
-      console.log('No config found continuing with defaults')
+      captureMessage('No config found continuing with defaults')
     }
 
     try {
