@@ -17,7 +17,7 @@ export function initAppAction() {
       const config = await Service.GetAppConfig()
       dispatch({ type: 'SET_CONFIG', config: config })
     } catch (err) {
-      console.log('No config found continuing with defaults')
+      logger.error(err)
     }
 
     try {
