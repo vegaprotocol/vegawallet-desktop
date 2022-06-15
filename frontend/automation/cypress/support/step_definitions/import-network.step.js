@@ -20,7 +20,6 @@ Given('I have an imported network', () => {
   networkDrawer.clickImportBtn()
   networkDrawer.selectNetwork('fairground')
   networkDrawer.clickImportBtn()
-  networkDrawer.closeToast()
   networkDrawer.clickBack()
 })
 
