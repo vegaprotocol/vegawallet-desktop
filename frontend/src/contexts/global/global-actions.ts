@@ -14,14 +14,19 @@ const logger = createLogger('GlobalActions')
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
     try {
-      const [isInit, version, config] = await Promise.all([
+      const config = await Service.GetAppConfig()
+      dispatch({ type: 'SET_CONFIG', config: config })
+    } catch (err) {
+      console.log('No config found continuing with defaults')
+    }
+
+    try {
+      const [isInit, version] = await Promise.all([
         Service.IsAppInitialised(),
-        Service.GetVersion(),
-        Service.GetAppConfig()
+        Service.GetVersion()
       ])
 
       dispatch({ type: 'SET_VERSION', version: version.version })
-      dispatch({ type: 'SET_CONFIG', config: config })
 
       if (IS_TEST_MODE) {
         await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
