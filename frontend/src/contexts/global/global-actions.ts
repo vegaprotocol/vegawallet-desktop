@@ -19,6 +19,13 @@ const logger = createLogger('GlobalActions')
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
+    Sentry.addBreadcrumb({
+      type: 'StartApp',
+      level: Sentry.Severity.Log,
+      message: 'StartApp',
+      timestamp: Date.now()
+    })
+
     const [isInit, version, presets] = await Promise.all([
       Service.IsAppInitialised(),
       Service.GetVersion(),
@@ -33,6 +40,13 @@ export function initAppAction() {
       dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
       return
     }
+
+    Sentry.addBreadcrumb({
+      type: 'InitApp',
+      level: Sentry.Severity.Log,
+      message: 'InitApp',
+      timestamp: Date.now()
+    })
 
     // should now have an app config
     const [config, wallets, networks] = await Promise.all([
