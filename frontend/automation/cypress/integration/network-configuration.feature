@@ -9,7 +9,6 @@ Feature: Network Configuration page
     Then Current network is now "mainnet1"
 
   Scenario: View network details
-    Given I have more than one imported network
     When I change network to "mainnet1"
     Then network details for "mainnet1" is displayed
 
