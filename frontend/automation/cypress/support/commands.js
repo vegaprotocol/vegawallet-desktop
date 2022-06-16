@@ -11,6 +11,9 @@ Cypress.Commands.add('clean', () => {
 Cypress.Commands.add('restoreWallet', () => {
   const passphrase = '123'
 
+  // Clear any existing wallets
+  cy.clean()
+
   // Visit a page so that the window object is bootstrapped with backend functions
   cy.visit('#/wallet')
 
