@@ -347,14 +347,24 @@ export function updateNetworkConfigAction(
   }
 }
 
-export function addNetworkAction(
-  network: string,
-  config: Network
-): GlobalAction {
-  return {
-    type: 'ADD_NETWORK',
-    network,
-    config
+export function addNetworkAction(network: string, config: Network) {
+  return async (dispatch: GlobalDispatch) => {
+    // If no service running start service for newly added network
+    try {
+      const status = await Service.GetServiceState()
+      if (!status.running) {
+        await Service.StartService({ network })
+        dispatch({ type: 'START_SERVICE', port: config.port })
+      }
+    } catch (err) {
+      Sentry.captureException(err)
+    }
+
+    dispatch({
+      type: 'ADD_NETWORK',
+      network,
+      config
+    })
   }
 }
 
