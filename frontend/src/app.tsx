@@ -20,14 +20,18 @@ import { AppRouter } from './routes'
  */
 function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
-  const { state: globalState, dispatch: globalDispatch } = useGlobal()
+
+  const {
+    state: { status },
+    dispatch
+  } = useGlobal()
 
   // Get wallets, service state and version
   React.useEffect(() => {
-    globalDispatch(initAppAction())
-  }, [globalDispatch])
+    dispatch(initAppAction())
+  }, [dispatch])
 
-  if (globalState.status === AppStatus.Pending) {
+  if (status === AppStatus.Pending) {
     return (
       <Splash>
         <SplashLoader />
@@ -35,7 +39,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (globalState.status === AppStatus.Failed) {
+  if (status === AppStatus.Failed) {
     return (
       <Splash>
         <p>Failed to initialise</p>

@@ -9,6 +9,7 @@ import type {
   GlobalState,
   KeyPair,
   NetworkPreset,
+  ProxyApp,
   Wallet
 } from './global-context'
 import { ProxyName } from './global-context'
@@ -49,6 +50,17 @@ export type GlobalAction =
   | {
       type: 'INIT_APP'
       isInit: boolean
+      wallets: string[]
+      network: string
+      networks: string[]
+      networkConfig: Network | null
+      presetNetworks: NetworkPreset[]
+      startService: boolean
+      console: ProxyApp
+      tokenDapp: ProxyApp
+    }
+  | {
+      type: 'COMPLETE_ONBOARD'
     }
   | {
       type: 'SET_VERSION'
@@ -132,6 +144,8 @@ export type GlobalAction =
   | {
       type: 'ADD_NETWORKS'
       networks: string[]
+      network: string
+      networkConfig: Network
     }
   | {
       type: 'START_SERVICE'
@@ -161,7 +175,30 @@ export function globalReducer(
     case 'INIT_APP': {
       return {
         ...state,
-        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed
+        wallets: action.wallets
+          .map(name => ({
+            name,
+            keypairs: null,
+            auth: false
+          }))
+          .sort(sortWallet),
+        network: action.network,
+        networks: action.networks,
+        networkConfig: action.networkConfig,
+        presets: action.presetNetworks,
+        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
+        serviceRunning: action.startService,
+        serviceUrl: action.networkConfig
+          ? `http://127.0.0.1:${action.networkConfig.port}`
+          : '',
+        console: action.console,
+        tokenDapp: action.tokenDapp
+      }
+    }
+    case 'COMPLETE_ONBOARD': {
+      return {
+        ...state,
+        status: AppStatus.Initialised
       }
     }
     case 'SET_VERSION': {
@@ -353,7 +390,9 @@ export function globalReducer(
       )
       return {
         ...state,
-        networks: [...state.networks, ...newNetworks]
+        networks: [...state.networks, ...newNetworks],
+        network: action.network,
+        networkConfig: action.networkConfig
       }
     }
     case 'START_SERVICE': {
