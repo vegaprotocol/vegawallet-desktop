@@ -34,6 +34,12 @@ export function OnboardHome() {
   const [loading, setLoading] = React.useState<
     'create' | 'import' | 'existing' | null
   >(null)
+  const defaultVegaHome =
+    'Cypress' in window
+      ? // @ts-ignore only injected when running in cypress
+        window.Cypress.env('vegaHome')
+      : ''
+
   const {
     dispatch,
     state: { version, onboarding }
@@ -41,7 +47,7 @@ export function OnboardHome() {
 
   const initialiseWithDefaultHome = async () => {
     try {
-      await Service.InitialiseApp({ vegaHome: '' })
+      await Service.InitialiseApp({ vegaHome: defaultVegaHome })
     } catch (err) {
       logger.error(err)
     }
@@ -51,7 +57,7 @@ export function OnboardHome() {
     try {
       setLoading('existing')
 
-      await Service.InitialiseApp({ vegaHome: '' })
+      await Service.InitialiseApp({ vegaHome: defaultVegaHome })
 
       // Navigate to wallet create onboarding if no wallets are found
       if (onboarding.wallets.length) {
@@ -174,7 +180,15 @@ interface Fields {
 
 export function OnboardSettings() {
   const navigate = useNavigate()
-  const { register, handleSubmit } = useForm<Fields>()
+  const { register, handleSubmit } = useForm<Fields>({
+    defaultValues: {
+      vegaHome:
+        'Cypress' in window
+          ? // @ts-ignore only injected when running in cypress
+            window.Cypress.env('vegaHome')
+          : ''
+    }
+  })
   const [loading, setLoading] = React.useState(false)
 
   const submit = React.useCallback(

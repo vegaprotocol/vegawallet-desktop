@@ -6,7 +6,7 @@ import WalletImportPage from '../pages/wallet-import-page'
 const walletImportPage = new WalletImportPage()
 const networkDrawer = new NetworkDrawer()
 
-Given('I am on the onboarding page', page => {
+Given('I am on the onboarding page', () => {
   cy.visit('#/onboard')
 
   Given('I click create new wallet', () => {
