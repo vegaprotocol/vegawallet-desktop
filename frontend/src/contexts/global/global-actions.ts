@@ -1,7 +1,6 @@
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
-import { DEFAULT_VEGA_HOME, IS_TEST_MODE } from '../../config/environment'
 import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
@@ -20,15 +19,8 @@ const logger = createLogger('GlobalActions')
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
-    const isInit = await Service.IsAppInitialised()
-
-    // Test mode we want to auto initialise with a specific vega home to bypass
-    // having to go through the onboarding flow for each test
-    if (IS_TEST_MODE && !isInit) {
-      await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
-    }
-
-    const [version, presets] = await Promise.all([
+    const [isInit, version, presets] = await Promise.all([
+      Service.IsAppInitialised(),
       Service.GetVersion(),
       fetch(DataSources.NETWORKS).then(res => res.json())
     ])

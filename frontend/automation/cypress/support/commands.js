@@ -8,8 +8,22 @@ Cypress.Commands.add('clean', () => {
   return cy.exec('npm run clean')
 })
 
+Cypress.Commands.add('setVegaHome', () => {
+  const vegaHome = Cypress.env('vegaHome')
+  cy.log(`setting vega home: ${vegaHome}`)
+  cy.visit('/#')
+  cy.window().then(async win => {
+    const handler = win.go.backend.Handler
+    await handler.InitialiseApp({
+      vegaHome
+    })
+  })
+})
+
 Cypress.Commands.add('restoreWallet', () => {
   const passphrase = '123'
+
+  cy.log('restoring wallet')
 
   // Clear any existing wallets
   cy.clean()

@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
-import { DEFAULT_VEGA_HOME } from '../../config/environment'
 import { Intent } from '../../config/intent'
 import { completeOnboardAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -42,7 +41,7 @@ export function OnboardHome() {
 
   const initialiseWithDefaultHome = async () => {
     try {
-      await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
+      await Service.InitialiseApp({ vegaHome: '' })
     } catch (err) {
       logger.error(err)
     }
@@ -52,7 +51,7 @@ export function OnboardHome() {
     try {
       setLoading('existing')
 
-      await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
+      await Service.InitialiseApp({ vegaHome: '' })
 
       // Navigate to wallet create onboarding if no wallets are found
       if (onboarding.wallets.length) {

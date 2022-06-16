@@ -1,5 +1,3 @@
-import '../cleanup'
-
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 import path from 'path'
 
