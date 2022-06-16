@@ -20,14 +20,15 @@ const logger = createLogger('GlobalActions')
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
+    const isInit = await Service.IsAppInitialised()
+
     // Test mode we want to auto initialise with a specific vega home to bypass
     // having to go through the onboarding flow for each test
-    if (IS_TEST_MODE) {
+    if (IS_TEST_MODE && !isInit) {
       await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
     }
 
-    const [isInit, version, presets] = await Promise.all([
-      Service.IsAppInitialised(),
+    const [version, presets] = await Promise.all([
       Service.GetVersion(),
       fetch(DataSources.NETWORKS).then(res => res.json())
     ])
@@ -212,14 +213,9 @@ export function changeNetworkAction(network: string) {
       await stopProxies()
       dispatch({ type: 'STOP_ALL_PROXIES' })
 
-      // Save selected network to app config
-      const logLevel = state.config
-        ? state.config.logLevel.charAt(0).toUpperCase() +
-          state.config.logLevel.slice(1)
-        : 'Info'
       await Service.UpdateAppConfig({
         ...state.config,
-        logLevel,
+        logLevel: '', // TODO: Fix this, what are permitted log levels
         defaultNetwork: network
       })
 
