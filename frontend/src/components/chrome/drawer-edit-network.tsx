@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { updateNetworkConfigAction } from '../../contexts/network/network-actions'
-import { useNetwork } from '../../contexts/network/network-context'
+import { updateNetworkConfigAction } from '../../contexts/global/global-actions'
+import { useGlobal } from '../../contexts/global/global-context'
 import { NetworkConfigContainer } from '../network-config-container'
 import { NetworkConfigForm } from '../network-config-form'
 
@@ -10,7 +10,7 @@ interface DrawerEditNetworkProps {
 }
 
 export function DrawerEditNetwork({ selectedNetwork }: DrawerEditNetworkProps) {
-  const { dispatch: dispatchNetwork } = useNetwork()
+  const { dispatch } = useGlobal()
 
   return (
     <NetworkConfigContainer name={selectedNetwork}>
@@ -18,7 +18,7 @@ export function DrawerEditNetwork({ selectedNetwork }: DrawerEditNetworkProps) {
         <NetworkConfigForm
           config={config}
           onSubmit={updatedConfig => {
-            dispatchNetwork(
+            dispatch(
               updateNetworkConfigAction(
                 selectedNetwork as string,
                 updatedConfig

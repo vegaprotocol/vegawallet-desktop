@@ -2,13 +2,13 @@ import React from 'react'
 
 import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
-import { useNetwork } from '../../contexts/network/network-context'
+import { useGlobal } from '../../contexts/global/global-context'
 import { ExternalLink } from '../external-link'
 
 export function ServiceStatus() {
   const {
     state: { network, serviceRunning, serviceUrl, console, tokenDapp }
-  } = useNetwork()
+  } = useGlobal()
 
   return (
     <>

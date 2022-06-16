@@ -6,7 +6,6 @@ import { Colors } from '../../config/colors'
 import { DEFAULT_VEGA_HOME } from '../../config/environment'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
-import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
@@ -39,7 +38,6 @@ export function OnboardHome() {
     dispatch: globalDispatch,
     state: { version, onboarding }
   } = useGlobal()
-  const { dispatch: networkDispatch } = useNetwork()
 
   const initialiseWithDefaultHome = async () => {
     try {
@@ -57,7 +55,7 @@ export function OnboardHome() {
 
       // Add wallets and networks to state
       globalDispatch({ type: 'ADD_WALLETS', wallets: onboarding.wallets })
-      networkDispatch({
+      globalDispatch({
         type: 'ADD_NETWORKS',
         networks: onboarding.networks
       })

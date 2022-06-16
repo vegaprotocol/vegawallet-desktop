@@ -1,14 +1,14 @@
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
-import type { Config, NamedPubKey } from '../../wailsjs/go/models'
+import type { Config, NamedPubKey, Network } from '../../wailsjs/go/models'
 import type { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
-  Pending,
-  Initialised,
-  Failed,
-  Onboarding
+  Pending = 'Pending',
+  Initialised = 'Initialised',
+  Failed = 'Failed',
+  Onboarding = 'Onboarding'
 }
 
 export interface KeyPair extends NamedPubKey {
@@ -19,6 +19,23 @@ export interface Wallet {
   name: string
   keypairs: KeyPair[] | null
   auth: boolean
+}
+
+export enum ProxyName {
+  Console = 'Console',
+  TokenDApp = 'TokenDApp'
+}
+
+export interface ProxyApp {
+  name: ProxyName
+  running: boolean
+  url: string
+}
+
+export interface NetworkPreset {
+  name: string
+  configFileUrl: string
+  sha: string
 }
 
 export interface GlobalState {
@@ -33,6 +50,15 @@ export interface GlobalState {
     networks: string[]
   }
   config: Config | null
+  // Network
+  network: string | null
+  networks: string[]
+  presets: NetworkPreset[]
+  networkConfig: Network | null
+  serviceRunning: boolean
+  serviceUrl: string
+  console: ProxyApp
+  tokenDapp: ProxyApp
 }
 
 export type GlobalDispatch = React.Dispatch<

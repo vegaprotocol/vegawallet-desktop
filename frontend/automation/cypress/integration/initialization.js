@@ -1,0 +1,17 @@
+describe('app config', () => {
+  it('persists selected network on startup', () => {
+    cy.clean()
+    cy.restoreWallet()
+    cy.getByTestId('wallet-list').should('have.length', 1)
+    cy.getByTestId('service-status')
+      .contains('Wallet Service: fairground on http://127.0.0.1:1789')
+      .should('exist')
+    cy.getByTestId('network-drawer').click()
+    cy.getByTestId('network-select').click()
+    cy.getByTestId('select-mainnet').click()
+    cy.reload()
+    cy.getByTestId('service-status')
+      .contains('Wallet Service: mainnet on http://127.0.0.1:1789')
+      .should('exist')
+  })
+})

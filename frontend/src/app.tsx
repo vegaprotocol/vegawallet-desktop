@@ -11,13 +11,6 @@ import { Colors } from './config/colors'
 import { initAppAction } from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
-import {
-  initNetworksAction,
-  initProxies,
-  startServiceAction
-} from './contexts/network/network-actions'
-import { useNetwork } from './contexts/network/network-context'
-import { NetworkProvider } from './contexts/network/network-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { useIsOnboard } from './hooks/use-is-onboard'
 import { AppRouter } from './routes'
@@ -28,33 +21,11 @@ import { AppRouter } from './routes'
 function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
   const { state: globalState, dispatch: globalDispatch } = useGlobal()
-  const { state: networkState, dispatch: networkDispatch } = useNetwork()
 
   // Get wallets, service state and version
   React.useEffect(() => {
     globalDispatch(initAppAction())
   }, [globalDispatch])
-
-  // Get stored networks and the default network config
-  React.useEffect(() => {
-    if (
-      globalState.status === AppStatus.Initialised ||
-      globalState.status === AppStatus.Onboarding
-    ) {
-      networkDispatch(initNetworksAction(globalState.config))
-      networkDispatch(initProxies())
-    }
-    // cant use globalState.config as this will trigger render loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalState.status, networkDispatch])
-
-  // Start service on app startup and when network or config changes
-  React.useEffect(() => {
-    if (!networkState.network || !networkState.config) return
-    networkDispatch(
-      startServiceAction(networkState.network, networkState.config.port)
-    )
-  }, [networkState.network, networkState.config, networkDispatch])
 
   if (globalState.status === AppStatus.Pending) {
     return (
@@ -82,15 +53,13 @@ function App() {
   return (
     <Router>
       <GlobalProvider>
-        <NetworkProvider>
-          <AppFrame>
-            <AppLoader>
-              <AppRouter />
-              <PassphraseModal />
-              <TransactionManager />
-            </AppLoader>
-          </AppFrame>
-        </NetworkProvider>
+        <AppFrame>
+          <AppLoader>
+            <AppRouter />
+            <PassphraseModal />
+            <TransactionManager />
+          </AppLoader>
+        </AppFrame>
       </GlobalProvider>
     </Router>
   )

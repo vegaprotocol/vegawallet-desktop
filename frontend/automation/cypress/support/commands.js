@@ -43,6 +43,10 @@ Cypress.Commands.add('restoreWallet', () => {
           url: Cypress.env('testnetConfigUrl'),
           name: 'fairground'
         })
+        await handler.ImportNetwork({
+          url: Cypress.env('mainnetConfigUrl'),
+          name: 'mainnet'
+        })
       })
       .then(() => {
         cy.reload()

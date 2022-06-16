@@ -31,7 +31,9 @@ export default class NetworkDrawer {
     cy.get('body').then($body => {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
         this.clickManageNetworks()
-      } else this.clickImportBtn()
+      } else {
+        this.clickImportBtn()
+      }
     })
     this.selectNetwork('Other')
     cy.getByTestId(this.urlPathField).type(urlPath, { force: true })

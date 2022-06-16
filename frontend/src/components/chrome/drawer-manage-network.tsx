@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNetwork } from '../../contexts/network/network-context'
+import { useGlobal } from '../../contexts/global/global-context'
 import { BulletList, BulletListItem } from '../bulle-list'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
@@ -18,7 +18,7 @@ export function DrawerManageNetwork({
 }: DrawerManageNetworkProps) {
   const {
     state: { networks }
-  } = useNetwork()
+  } = useGlobal()
   return (
     <>
       {networks.length ? (
