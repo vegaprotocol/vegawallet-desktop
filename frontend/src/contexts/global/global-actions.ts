@@ -239,7 +239,6 @@ export function changeNetworkAction(network: string) {
 
       await Service.UpdateAppConfig({
         ...state.config,
-        logLevel: '', // TODO: Fix this, what are permitted log levels
         defaultNetwork: network
       })
 
