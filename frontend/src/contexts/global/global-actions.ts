@@ -26,19 +26,32 @@ export function initAppAction() {
       timestamp: Date.now()
     })
 
-    const [isInit, version, presets] = await Promise.all([
-      Service.IsAppInitialised(),
-      Service.GetVersion(),
-      fetch(DataSources.NETWORKS).then(res => res.json())
-    ])
+    let isInit
+    let version
+    let presets
 
-    dispatch({ type: 'SET_VERSION', version: version.version })
-    dispatch({ type: 'SET_PRESETS', presets })
+    try {
+      const result = await Promise.all([
+        Service.IsAppInitialised(),
+        Service.GetVersion(),
+        fetch(DataSources.NETWORKS).then(res => res.json())
+      ])
+      isInit = result[0]
+      version = result[1]
+      presets = result[2]
 
-    if (!isInit) {
-      const existingConfig = await Service.SearchForExistingConfiguration()
-      dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
-      return
+      dispatch({ type: 'SET_VERSION', version: version.version })
+      dispatch({ type: 'SET_PRESETS', presets })
+
+      if (!isInit) {
+        const existingConfig = await Service.SearchForExistingConfiguration()
+        dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
+        return
+      }
+      // else continue with app setup, get wallets/networks
+    } catch (err) {
+      Sentry.captureException(err)
+      dispatch({ type: 'INIT_APP_FAILED' })
     }
 
     Sentry.addBreadcrumb({
@@ -48,58 +61,63 @@ export function initAppAction() {
       timestamp: Date.now()
     })
 
-    // should now have an app config
-    const [config, wallets, networks] = await Promise.all([
-      Service.GetAppConfig(),
-      Service.ListWallets(),
-      Service.ListNetworks()
-    ])
+    try {
+      // should now have an app config
+      const [config, wallets, networks] = await Promise.all([
+        Service.GetAppConfig(),
+        Service.ListWallets(),
+        Service.ListNetworks()
+      ])
 
-    const defaultNetwork = config.defaultNetwork
-      ? networks.networks.find(n => n === config.defaultNetwork) ||
-        networks.networks[0]
-      : networks.networks[0]
+      const defaultNetwork = config.defaultNetwork
+        ? networks.networks.find(n => n === config.defaultNetwork) ||
+          networks.networks[0]
+        : networks.networks[0]
 
-    const defaultNetworkConfig = defaultNetwork
-      ? await Service.GetNetworkConfig(defaultNetwork)
-      : null
+      const defaultNetworkConfig = defaultNetwork
+        ? await Service.GetNetworkConfig(defaultNetwork)
+        : null
 
-    // check service and proxy states
-    const [service, consoleState, tokenDappState] = await Promise.all([
-      Service.GetServiceState(),
-      Service.GetConsoleState(),
-      Service.GetTokenDAppState()
-    ])
+      // check service and proxy states
+      const [service, consoleState, tokenDappState] = await Promise.all([
+        Service.GetServiceState(),
+        Service.GetConsoleState(),
+        Service.GetTokenDAppState()
+      ])
 
-    if (service.running) {
-      await Service.StopService() // unlikely but stop service in case it was accidently left hanging
-    }
-
-    const canStartService = Boolean(defaultNetwork && defaultNetworkConfig)
-    if (canStartService) {
-      await Service.StartService({ network: defaultNetwork })
-    }
-
-    dispatch({
-      type: 'INIT_APP',
-      isInit: true,
-      wallets: wallets.wallets,
-      network: defaultNetwork,
-      networks: networks.networks,
-      networkConfig: defaultNetworkConfig,
-      presetNetworks: presets,
-      startService: canStartService,
-      console: {
-        name: ProxyName.Console,
-        url: consoleState.url,
-        running: consoleState.running
-      },
-      tokenDapp: {
-        name: ProxyName.TokenDApp,
-        url: tokenDappState.url,
-        running: tokenDappState.running
+      if (service.running) {
+        await Service.StopService() // unlikely but stop service in case it was accidently left hanging
       }
-    })
+
+      const canStartService = Boolean(defaultNetwork && defaultNetworkConfig)
+      if (canStartService) {
+        await Service.StartService({ network: defaultNetwork })
+      }
+
+      dispatch({
+        type: 'INIT_APP',
+        isInit: true,
+        wallets: wallets.wallets,
+        network: defaultNetwork,
+        networks: networks.networks,
+        networkConfig: defaultNetworkConfig,
+        presetNetworks: presets,
+        startService: canStartService,
+        console: {
+          name: ProxyName.Console,
+          url: consoleState.url,
+          running: consoleState.running
+        },
+        tokenDapp: {
+          name: ProxyName.TokenDApp,
+          url: tokenDappState.url,
+          running: tokenDappState.running
+        }
+      })
+    } catch (err) {
+      Sentry.captureException(err)
+      dispatch({ type: 'INIT_APP_FAILED' })
+    }
   }
 }
 

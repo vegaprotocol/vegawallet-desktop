@@ -60,6 +60,9 @@ export type GlobalAction =
       tokenDapp: ProxyApp
     }
   | {
+      type: 'INIT_APP_FAILED'
+    }
+  | {
       type: 'COMPLETE_ONBOARD'
     }
   | {
@@ -193,6 +196,12 @@ export function globalReducer(
           : '',
         console: action.console,
         tokenDapp: action.tokenDapp
+      }
+    }
+    case 'INIT_APP_FAILED': {
+      return {
+        ...state,
+        status: AppStatus.Failed
       }
     }
     case 'COMPLETE_ONBOARD': {
