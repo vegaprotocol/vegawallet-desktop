@@ -23,8 +23,6 @@ Cypress.Commands.add('setVegaHome', () => {
 Cypress.Commands.add('restoreWallet', () => {
   const passphrase = '123'
 
-  cy.log('restoring wallet')
-
   // Clear any existing wallets
   cy.clean()
 
