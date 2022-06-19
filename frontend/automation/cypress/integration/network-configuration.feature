@@ -13,6 +13,6 @@ Feature: Network Configuration page
     Then network details for "mainnet1" is displayed
 
   Scenario: Edit network details displayed
-    Given I am on the Network configuration page
+    Given I open the network drawer
     When I navigate to edit network page
     Then I am redirected to edit network page

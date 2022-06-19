@@ -239,6 +239,9 @@ export function changeNetworkAction(network: string) {
 
       await Service.UpdateAppConfig({
         ...state.config,
+        // log levels are wrongly set as lowercase in networks and networks-internal repos
+        // saving with an invalid log level will fail preventing network persisting on change
+        logLevel: state.config?.logLevel.toUpperCase() || 'INFO',
         defaultNetwork: network
       })
 
