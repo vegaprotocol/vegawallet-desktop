@@ -97,6 +97,7 @@ export function initAppAction() {
       dispatch({
         type: 'INIT_APP',
         isInit: true,
+        config: config,
         wallets: wallets.wallets,
         network: defaultNetwork,
         networks: networks.networks,
@@ -239,8 +240,8 @@ export function changeNetworkAction(network: string) {
 
       await Service.UpdateAppConfig({
         ...state.config,
-        // log levels are wrongly set as lowercase in networks and networks-internal repos
-        // saving with an invalid log level will fail preventing network persisting on change
+        // There is a backend bug here where there is a mismatch on logLevel casing.
+        // When setting config uppercase is required but on start up uppercase will fail.
         logLevel: state.config?.logLevel.toUpperCase() || 'INFO',
         defaultNetwork: network
       })

@@ -50,6 +50,7 @@ export type GlobalAction =
   | {
       type: 'INIT_APP'
       isInit: boolean
+      config: Config
       wallets: string[]
       network: string
       networks: string[]
@@ -178,6 +179,7 @@ export function globalReducer(
     case 'INIT_APP': {
       return {
         ...state,
+        config: action.config,
         wallets: action.wallets
           .map(name => ({
             name,
