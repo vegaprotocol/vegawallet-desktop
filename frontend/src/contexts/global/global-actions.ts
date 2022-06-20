@@ -19,12 +19,7 @@ const logger = createLogger('GlobalActions')
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
-    Sentry.addBreadcrumb({
-      type: 'StartApp',
-      level: Sentry.Severity.Log,
-      message: 'StartApp',
-      timestamp: Date.now()
-    })
+    logger.debug('StartApp')
 
     let isInit
     let version
@@ -50,16 +45,11 @@ export function initAppAction() {
       }
       // else continue with app setup, get wallets/networks
     } catch (err) {
-      Sentry.captureException(err)
       dispatch({ type: 'INIT_APP_FAILED' })
+      logger.error(err)
     }
 
-    Sentry.addBreadcrumb({
-      type: 'InitApp',
-      level: Sentry.Severity.Log,
-      message: 'InitApp',
-      timestamp: Date.now()
-    })
+    logger.debug('InitApp')
 
     try {
       // should now have an app config
@@ -116,8 +106,8 @@ export function initAppAction() {
         }
       })
     } catch (err) {
-      Sentry.captureException(err)
       dispatch({ type: 'INIT_APP_FAILED' })
+      logger.error(err)
     }
   }
 }
