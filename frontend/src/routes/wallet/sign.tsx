@@ -10,7 +10,10 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
+import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
+
+const logger = createLogger('Sign')
 
 interface FormFields {
   message: string
@@ -37,6 +40,7 @@ const useSign = (pubKey: string, wallet: string) => {
         })
       } catch (err) {
         AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+        logger.error(err)
       }
     },
     [pubKey, wallet]
