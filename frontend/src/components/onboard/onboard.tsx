@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Outlet, useNavigate } from 'react-router-dom'
@@ -10,6 +9,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
+import { createLogger } from '../../lib/logging'
 import { OnboardPaths, Paths } from '../../routes'
 import { Service } from '../../service'
 import { Button } from '../button'
@@ -23,6 +23,8 @@ import { AppToaster } from '../toaster'
 import { WalletCreateForm } from '../wallet-create-form'
 import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
 import { WalletImportForm } from '../wallet-import-form'
+
+const logger = createLogger('Onbard')
 
 export function Onboard() {
   return <Outlet />
@@ -43,7 +45,7 @@ export function OnboardHome() {
     try {
       await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 
@@ -77,7 +79,7 @@ export function OnboardHome() {
       globalDispatch({ type: 'INIT_APP', isInit: true })
       navigate(Paths.Home)
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 
@@ -170,6 +172,7 @@ export function OnboardSettings() {
 
   const submit = React.useCallback(
     async (values: Fields) => {
+      logger.info('InitAppFromOnboard')
       try {
         setLoading(true)
         await Service.InitialiseApp({
@@ -178,8 +181,8 @@ export function OnboardSettings() {
         AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })
         navigate(Paths.Onboard)
       } catch (err) {
-        Sentry.captureException(err)
         setLoading(false)
+        logger.error(err)
       }
     },
     [navigate]

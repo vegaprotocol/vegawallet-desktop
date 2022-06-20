@@ -1,8 +1,10 @@
-import * as Sentry from '@sentry/react'
 import React from 'react'
 
+import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type { Network } from '../../wailsjs/go/models'
+
+const logger = createLogger('NetworkConfigContainer')
 
 interface NetworkConfigContainerProps {
   children: (config: Network) => React.ReactElement
@@ -39,8 +41,8 @@ export function useNetworkConfig(name: string | null) {
         const res = await Service.GetNetworkConfig(name)
         setConfig(res)
       } catch (err) {
-        Sentry.captureException(err)
         setError(err as Error)
+        logger.error(err)
       } finally {
         setLoading(false)
       }
