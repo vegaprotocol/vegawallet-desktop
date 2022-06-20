@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react'
 import React from 'react'
 
 import { CodeBlock } from '../components/code-block'
@@ -6,12 +5,15 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { addNetworkAction } from '../contexts/network/network-actions'
 import { useNetwork } from '../contexts/network/network-context'
+import { createLogger } from '../lib/logging'
 import { Service } from '../service'
 import type {
   ImportNetworkFromSourceRequest,
   ImportNetworkFromSourceResponse
 } from '../wailsjs/go/models'
 import { FormStatus, useFormState } from './use-form-state'
+
+const logger = createLogger('UseImportNetwork')
 
 interface ImportNetworkArgs {
   name: string
@@ -67,7 +69,6 @@ export function useImportNetwork() {
           })
         }
       } catch (err) {
-        Sentry.captureException(err)
         // @ts-ignore
         setError(err)
         setStatus(FormStatus.Error)
@@ -75,6 +76,7 @@ export function useImportNetwork() {
           message: `${err}`,
           intent: Intent.DANGER
         })
+        logger.error(err)
       }
     },
     [dispatch, setStatus]

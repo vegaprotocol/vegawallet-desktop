@@ -1,8 +1,7 @@
-import * as Sentry from '@sentry/react'
-
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type {
   GetServiceStateResponse,
@@ -13,6 +12,8 @@ import type { NetworkDispatch, NetworkState } from './network-context'
 import { ProxyName } from './network-context'
 import type { NetworkAction } from './network-reducer'
 
+const logger = createLogger('NetworkActions')
+
 export function initNetworksAction() {
   return async (dispatch: NetworkDispatch) => {
     // fetch network presets
@@ -21,7 +22,7 @@ export function initNetworksAction() {
       const json = await res.json()
       dispatch({ type: 'SET_PRESETS', presets: json })
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
 
     try {
@@ -46,7 +47,7 @@ export function initNetworksAction() {
         })
       }
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 }
@@ -80,19 +81,14 @@ export function initProxies() {
         })
       }
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 }
 
 export function changeNetworkAction(network: string) {
   return async (dispatch: NetworkDispatch) => {
-    Sentry.addBreadcrumb({
-      type: 'ChangeNetwork',
-      level: Sentry.Severity.Log,
-      message: 'ChangeNetwork',
-      timestamp: Date.now()
-    })
+    logger.debug('ChangeNetwork')
 
     try {
       await stopProxies()
@@ -106,11 +102,11 @@ export function changeNetworkAction(network: string) {
         config
       })
     } catch (err) {
-      Sentry.captureException(err)
       AppToaster.show({
         message: err as string,
         intent: Intent.DANGER
       })
+      logger.error(err)
     }
   }
 }
@@ -122,12 +118,7 @@ export function updateNetworkConfigAction(
   return async (dispatch: NetworkDispatch, getState: () => NetworkState) => {
     const state = getState()
 
-    Sentry.addBreadcrumb({
-      type: 'UpdateNetworkConfig',
-      level: Sentry.Severity.Log,
-      message: 'UpdateNetworkConfig',
-      timestamp: Date.now()
-    })
+    logger.debug('UpdateNetworkConfig')
 
     try {
       // Stop main REST service if you are editing the active network config
@@ -161,8 +152,8 @@ export function updateNetworkConfigAction(
         network: state.network
       })
     } catch (err) {
-      Sentry.captureException(err)
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+      logger.error(err)
     }
   }
 }
@@ -180,12 +171,7 @@ export function addNetworkAction(
 
 export function startServiceAction(network: string, port: number) {
   return async (dispatch: NetworkDispatch) => {
-    Sentry.addBreadcrumb({
-      type: 'StartService',
-      level: Sentry.Severity.Log,
-      message: 'StartService',
-      timestamp: Date.now()
-    })
+    logger.debug('StartService')
     try {
       const status = await Service.GetServiceState()
 
@@ -199,19 +185,14 @@ export function startServiceAction(network: string, port: number) {
 
       dispatch({ type: 'START_SERVICE', port })
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 }
 
 export function stopServiceAction() {
   return async (dispatch: NetworkDispatch) => {
-    Sentry.addBreadcrumb({
-      type: 'StopService',
-      level: Sentry.Severity.Log,
-      message: 'StopService',
-      timestamp: Date.now()
-    })
+    logger.debug('StopService')
     try {
       const status = await Service.GetServiceState()
       if (status.running) {
@@ -219,7 +200,7 @@ export function stopServiceAction() {
         dispatch({ type: 'STOP_SERVICE' })
       }
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 }
@@ -232,16 +213,7 @@ export function startProxyAction(
   const proxyFns = ProxyFns[proxyAppName]
 
   return async (dispatch: NetworkDispatch) => {
-    Sentry.addBreadcrumb({
-      type: 'StartProxy',
-      level: Sentry.Severity.Log,
-      message: 'StartProxy',
-      data: {
-        app: proxyAppName,
-        network
-      },
-      timestamp: Date.now()
-    })
+    logger.debug('StartProxy:', proxyAppName, network)
     try {
       const status = await proxyFns.GetState()
 
@@ -259,7 +231,7 @@ export function startProxyAction(
         network
       })
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 }
@@ -277,7 +249,7 @@ export function stopProxyAction(proxyAppName: ProxyName) {
 
       dispatch({ type: 'STOP_PROXY', app: proxyAppName })
     } catch (err) {
-      Sentry.captureException(err)
+      logger.error(err)
     }
   }
 }
@@ -315,6 +287,6 @@ async function stopProxies() {
       await Service.StopTokenDApp()
     }
   } catch (err) {
-    Sentry.captureException(err)
+    logger.error(err)
   }
 }

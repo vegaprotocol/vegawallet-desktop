@@ -1,14 +1,16 @@
-import * as Sentry from '@sentry/react'
 import * as React from 'react'
 
 import { Intent } from '../../config/intent'
 import { events } from '../../lib/events'
+import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type { ConsentRequest } from '../../wailsjs/go/models'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
 import type { ParsedTx } from './transaction-types'
 import { TransactionKeys } from './transaction-types'
+
+const logger = createLogger('TransactionManager')
 
 /**
  * Stores an array of parsed transactions which get passed to a modal
@@ -33,7 +35,7 @@ export function TransactionManager() {
           } transaction: ${txId}`,
           intent: Intent.DANGER
         })
-        Sentry.captureException(err)
+        logger.error(err)
       }
     },
     []
@@ -51,7 +53,7 @@ export function TransactionManager() {
           intent: Intent.DANGER,
           timeout: 0
         })
-        Sentry.captureException(err)
+        logger.error(err)
       }
     }
 
