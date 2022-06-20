@@ -240,9 +240,6 @@ export function changeNetworkAction(network: string) {
 
       await Service.UpdateAppConfig({
         ...state.config,
-        // There is a backend bug here where there is a mismatch on logLevel casing.
-        // When setting config uppercase is required but on start up uppercase will fail.
-        logLevel: state.config?.logLevel.toUpperCase() || 'INFO',
         defaultNetwork: network
       })
 
