@@ -4,7 +4,7 @@
   "description": "End-to-end tests for Vegawallet",
   "main": "index.js",
   "scripts": {
-    "cypress:open:local": "env-cmd npm run cypress:open",
+    "cypress:open:local": "CYPRESS_ENV=localhost env-cmd npm run cypress:open",
     "clean": "rm -r ./test-wallets; mkdir ./test-wallets",
     "cypress:open": "env-cmd cypress open",
     "test:local": "CYPRESS_ENV=localhost env-cmd npm run test",
