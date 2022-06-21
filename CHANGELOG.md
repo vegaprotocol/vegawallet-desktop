@@ -11,16 +11,21 @@
 - [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
 
 ### 🛠 Improvements
+- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
 
+
+### 🐛 Fixes
+
+- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
+
+## 0.2.0
+
+### 🛠 Improvements
 - [198](https://github.com/vegaprotocol/vegawallet-desktop/pull/198) - Output runtime logs in files.
 - [162](https://github.com/vegaprotocol/vegawallet-desktop/pull/162) - Reword the message about unset endpoints.
 - [84](https://github.com/vegaprotocol/vegawallet-desktop/pull/84) - Support defining a default network to connect to.
 - [191](https://github.com/vegaprotocol/vegawallet-desktop/pull/191) - Add meaningful colors to service and proxies state indicator.
 - [190](https://github.com/vegaprotocol/vegawallet-desktop/pull/190) - Add transaction review
-
-### 🐛 Fixes
-
-- [](https://github.com/vegaprotocol/vegawallet-desktop/pull/) -
 
 ## 0.1.1
 
