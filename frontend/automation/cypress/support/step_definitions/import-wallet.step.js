@@ -23,17 +23,17 @@ When('I click submit', () => {
 
 When('fill in details for wallet recovery', () => {
   const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
-  walletImportPage.importWallet('import test', recoveryPhrase, 2, '123')
+  walletImportPage.importWallet('import test', '123', recoveryPhrase)
 })
 
 When('fill in details for wallet recovery with different name', () => {
   const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
-  walletImportPage.importWallet('import new test', recoveryPhrase, 2, '123')
+  walletImportPage.importWallet('import new test', '123', recoveryPhrase)
 })
 
 When('fill in details for wallet recovery with version 1', () => {
   const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
-  walletImportPage.importWallet('import old version', recoveryPhrase, 1, '123')
+  walletImportPage.importWallet('import old version', '123', recoveryPhrase, 1)
 })
 
 When('I fill in details with incorrect recovery phrase', () => {
@@ -41,9 +41,8 @@ When('I fill in details with incorrect recovery phrase', () => {
     'brown eternal intact name raw memory squeeze two social road click small gadget vote kitchen best split hungry rail coin season visa category hold'
   walletImportPage.importWallet(
     'incorrect recovery phrase test',
-    recoveryPhrase,
-    2,
-    '123'
+    '123',
+    recoveryPhrase
   )
 })
 

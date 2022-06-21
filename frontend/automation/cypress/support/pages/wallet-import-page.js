@@ -25,7 +25,7 @@ export default class WalletImportPage {
     this.verifyWalletCreated()
   }
 
-  importWallet(walletName, recoveryPhrase, version = 2, passphrase) {
+  importWallet(walletName, passphrase, recoveryPhrase, version = 2) {
     cy.getByTestId(this.importWalletName).type(walletName)
     cy.getByTestId(this.importRecoveryPhrase).type(recoveryPhrase)
     cy.getByTestId(this.importVersion).select(`${version}`)

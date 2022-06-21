@@ -1,7 +1,6 @@
 import type {
   AnnotateKeyRequest,
   CheckVersionResponse,
-  Config,
   CreateWalletRequest,
   CreateWalletResponse,
   DescribeKeyRequest,
@@ -14,6 +13,7 @@ import type {
   ImportNetworkFromSourceResponse,
   ImportWalletRequest,
   ImportWalletResponse,
+  InitialiseAppRequest,
   IsolateKeyRequest,
   IsolateKeyResponse,
   ListKeysRequest,
@@ -28,6 +28,16 @@ import type {
   TaintKeyRequest,
   UntaintKeyRequest
 } from '../wailsjs/go/models'
+import type {
+  ClearSentTransactionRequest,
+  Config,
+  ConsentRequest,
+  ConsentToTransactionRequest,
+  GetConsentRequestRequest,
+  ListConsentRequestsResponse,
+  ListSentTransactionsResponse
+} from '../wailsjs/go/models'
+import type { DeleteWalletRequest } from '../wailsjs/go/models'
 import type { runtime } from '../wailsjs/runtime/runtime'
 
 export interface Handler {
@@ -36,6 +46,7 @@ export interface Handler {
   CreateWallet(arg1: CreateWalletRequest): Promise<CreateWalletResponse>
   DescribeKey(arg1: DescribeKeyRequest): Promise<DescribeKeyResponse>
   GenerateKey(arg1: GenerateKeyRequest): Promise<GenerateKeyResponse>
+  GetAppConfig(): Promise<Config>
   GetNetworkConfig(arg1: string): Promise<Network>
   GetServiceState(): Promise<GetServiceStateResponse>
   GetConsoleState(): Promise<GetServiceStateResponse>
@@ -45,12 +56,13 @@ export interface Handler {
     arg1: ImportNetworkFromSourceRequest
   ): Promise<ImportNetworkFromSourceResponse>
   ImportWallet(arg1: ImportWalletRequest): Promise<ImportWalletResponse>
-  InitialiseApp(arg1: Config): Promise<void>
+  InitialiseApp(arg1: InitialiseAppRequest): Promise<void>
   IsAppInitialised(): Promise<boolean>
   IsolateKey(arg1: IsolateKeyRequest): Promise<IsolateKeyResponse>
   ListKeys(arg1: ListKeysRequest): Promise<ListKeysResponse>
   ListNetworks(): Promise<ListNetworksResponse>
   ListWallets(): Promise<ListWalletsResponse>
+  SaveAppConfig(arg1: Config): Promise<void>
   SaveNetworkConfig(arg1: Network): Promise<boolean>
   StartService(arg1: StartServiceRequest): Promise<boolean>
   StopService(): Promise<boolean>
@@ -63,6 +75,12 @@ export interface Handler {
   StopConsole(): Promise<boolean>
   StopTokenDApp(): Promise<boolean>
   SignMessage(arg1: SignMessageRequest): Promise<SignMessageResponse>
+  DeleteWallet(arg1: DeleteWalletRequest): Promise<void>
+  GetConsentRequest(arg1: GetConsentRequestRequest): Promise<ConsentRequest>
+  ListConsentRequests(): Promise<ListConsentRequestsResponse>
+  ConsentToTransaction(arg1: ConsentToTransactionRequest): Promise<void>
+  ListSentTransactions(): Promise<ListSentTransactionsResponse>
+  ClearSentTransaction(arg1: ClearSentTransactionRequest): Promise<void>
 }
 
 // Add Wails backend handler and runtime to window object

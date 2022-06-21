@@ -17,11 +17,9 @@ Given('I am on the Network configuration page', () => {
 Given('I have more than one imported network', () => {
   cy.visit('#/wallet')
   walletPage.clickNetworkDrawer()
-  networkDrawer.ImportNetworkUsingPath(Cypress.env('mainnetConfigUrl'))
-  networkDrawer.closeToast()
+  networkDrawer.importNetworkUsingPath(Cypress.env('mainnetConfigUrl'))
   networkDrawer.navigateBackToNetworkConfigPage()
-  networkDrawer.ImportNetworkUsingPath(Cypress.env('testnetConfigUrl'))
-  networkDrawer.closeToast()
+  networkDrawer.importNetworkUsingPath(Cypress.env('testnetConfigUrl'))
   networkDrawer.navigateBackToNetworkConfigPage()
 })
 

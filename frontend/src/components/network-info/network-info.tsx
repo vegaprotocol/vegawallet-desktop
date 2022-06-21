@@ -15,6 +15,7 @@ import type {
 } from '../../wailsjs/go/models'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
+import { KeyValueTable } from '../key-value-table'
 import { NodeList } from '../node-list'
 import { AppToaster } from '../toaster'
 
@@ -38,18 +39,17 @@ export function NetworkInfo() {
       <Header>REST Nodes</Header>
       <NodeList items={config.api.rest.hosts} />
       <Header>Application Settings</Header>
-      <table>
-        <tbody>
-          <tr>
-            <th>Log level</th>
-            <td data-testid='log-level'>{config.level}</td>
-          </tr>
-          <tr>
-            <th>Token expiry</th>
-            <td data-testid='token-expiry'>{config.tokenExpiry}</td>
-          </tr>
-        </tbody>
-      </table>
+      <KeyValueTable
+        style={{ fontSize: 16 }}
+        rows={[
+          { key: 'Log level', value: config.level, dataTestId: 'log-level' },
+          {
+            key: 'Token expiry',
+            value: config.tokenExpiry,
+            dataTestId: 'token-expiry'
+          }
+        ]}
+      />
     </>
   )
 }
@@ -64,39 +64,54 @@ function ServicesTable({ config }: ServicesTableProps) {
   } = useNetwork()
 
   return (
-    <table>
-      <tbody data-testid='services'>
-        <tr>
-          <th>Wallet Service URL</th>
-          <td data-testid='service-url'>{`http://${config.host}:${config.port}`}</td>
-        </tr>
-        <tr>
-          <th>
-            Console{' '}
-            <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.console.url || 'Not set'})
-            </span>
-          </th>
-          <td data-testid='service-console'>
+    <KeyValueTable
+      style={{ fontSize: 16 }}
+      rows={[
+        {
+          key: 'Wallet Service URL',
+          value: `http://${config.host}:${config.port}`,
+          dataTestId: 'service-url'
+        },
+        {
+          key: (
+            <>
+              Console{' '}
+              <span
+                data-testid='console-url'
+                style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}
+              >
+                ({config.console.url || 'Endpoint not configured'})
+              </span>
+            </>
+          ),
+          value: (
             <DAppProxyControl proxyApp={console} proxyConfig={config.console} />
-          </td>
-        </tr>
-        <tr>
-          <th>
-            Token dApp{' '}
-            <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-              ({config.tokenDApp.url || 'Not set'})
-            </span>
-          </th>
-          <td data-testid='service-token'>
+          ),
+          dataTestId: 'service-console'
+        },
+        {
+          key: (
+            <>
+              Token dApp{' '}
+              <span
+                data-testid='token-url'
+                style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}
+              >
+                ({config.tokenDApp.url || 'Endpoint not configured'})
+              </span>
+            </>
+          ),
+          value: (
             <DAppProxyControl
               proxyApp={tokenDapp}
               proxyConfig={config.tokenDApp}
             />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          ),
+          dataTestId: 'service-token'
+        }
+      ]}
+      data-testid='services'
+    />
   )
 }
 

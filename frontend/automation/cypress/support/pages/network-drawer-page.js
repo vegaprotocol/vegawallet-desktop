@@ -8,8 +8,10 @@ export default class NetworkDrawer {
   manageNetworkBtn = 'manage-networks'
   restServices = 'services'
   restServiceUrl = 'service-url'
-  consoleUrl = 'service-console'
-  tokenUrl = 'service-token'
+  consoleService = 'service-console'
+  consoleUrl = 'console-url'
+  tokenService = 'service-token'
+  tokenUrl = 'token-url'
   nodeTable = 'node-table'
   nodeList = 'nodes-list'
   logLevel = 'log-level'
@@ -19,19 +21,19 @@ export default class NetworkDrawer {
   backBtn = 'back'
   closeToastBtn = 'close'
 
-  SelectNetwork(networkName) {
+  selectNetwork(networkName) {
     cy.getByTestId(this.importNetworkSelect).select(networkName, {
       force: true
     })
   }
 
-  ImportNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
+  importNetworkUsingPath(urlPath, networkName = null, overwrite = false) {
     cy.get('body').then($body => {
       if ($body.find(`[data-testid=${this.manageNetworkBtn}]`).length) {
         this.clickManageNetworks()
       } else this.clickImportBtn()
     })
-    this.SelectNetwork('Other')
+    this.selectNetwork('Other')
     cy.getByTestId(this.urlPathField).type(urlPath, { force: true })
     if (networkName != null) {
       cy.getByTestId(this.networkNameField).type(networkName)
@@ -124,13 +126,25 @@ export default class NetworkDrawer {
   validateNetworkPage(selectedNetwork) {
     cy.getByTestId(this.networkDropDown).should('have.text', selectedNetwork)
     cy.getByTestId(this.restServiceUrl).should('not.be.empty')
+    cy.getByTestId(this.consoleService).should('not.be.empty')
     cy.getByTestId(this.consoleUrl).should('not.be.empty')
+    cy.getByTestId(this.tokenService).should('not.be.empty')
     cy.getByTestId(this.tokenUrl).should('not.be.empty')
     cy.getByTestId(this.nodeList).each($node => {
-      expect($node).not.to.be.empty
+      // eslint-disable-next-line no-unused-expressions
+      expect($node.text()).not.to.be.empty
     })
     cy.getByTestId(this.logLevel).should('have.text', 'info')
     cy.getByTestId(this.tokenExpiry).should('have.text', '168h0m0s')
+
+    if (selectedNetwork === 'mainnet1') {
+      cy.getByTestId(this.consoleService).should('have.text', 'Unavailable')
+      cy.getByTestId(this.consoleUrl).should(
+        'have.text',
+        '(Endpoint not configured)'
+      )
+      cy.log('console tested')
+    }
   }
 
   expandNetworkDrawer() {

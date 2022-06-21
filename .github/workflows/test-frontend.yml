@@ -33,7 +33,7 @@ jobs:
         id: go
 
       - name: Get Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.0.0-beta.32
 
       - name: Get dependencies
         run: go get -v -t -d ./...
@@ -48,13 +48,15 @@ jobs:
         env:
           VITE_VEGA_HOME: "./frontend/automation/test-wallets"
           VITE_TESTING: 1
+          VITE_COVERAGE: "true"
 
       # Start wails in the first process
       - name: Start backend in background
-        run: wails dev &
+        run: wails dev -noreload &
         env:
           VITE_VEGA_HOME: "./frontend/automation/test-wallets"
           VITE_TESTING: 1
+          VITE_COVERAGE: "true"
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly

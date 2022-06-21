@@ -29,7 +29,7 @@ func (h *Handler) GetNetworkConfig(name string) (*network.Network, error) {
 	defer h.log.Debug("Leaving GetNetworkConfig")
 
 	if len(name) == 0 {
-		return nil, errors.New("name is required")
+		return nil, errors.New("network name is required")
 	}
 
 	c, err := h.loadAppConfig()

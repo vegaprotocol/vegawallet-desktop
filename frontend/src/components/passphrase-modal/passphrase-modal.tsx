@@ -1,6 +1,3 @@
-import './passphrase-modal.css'
-
-import * as Dialog from '@radix-ui/react-dialog'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -9,6 +6,7 @@ import { setPassphraseModalAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
+import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
 
 interface ModalHandler {
@@ -48,39 +46,9 @@ export function PassphraseModal() {
   }
 
   return (
-    <Dialog.Root open={state.passphraseModalOpen}>
-      <Dialog.Portal>
-        <Dialog.Overlay
-          style={{
-            position: 'fixed',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            height: '100%',
-            background: 'rgba(54, 54, 54 ,0.8)',
-            animation: 'fade-in .2s ease',
-            animationFillMode: 'forwards'
-          }}
-        />
-        <Dialog.Content
-          onPointerDownOutside={close}
-          style={{
-            padding: 20,
-            background: 'black',
-            width: 340,
-            position: 'fixed',
-            top: 30,
-            left: 'calc(50% - 170px)',
-            boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
-            animation: 'fade-in .2s ease',
-            animationFillMode: 'forwards'
-          }}
-        >
-          <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+    <Dialog open={state.passphraseModalOpen}>
+      <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
+    </Dialog>
   )
 }
 

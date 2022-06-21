@@ -43,6 +43,7 @@ export class Toaster extends React.Component<any, ToasterState> {
     container.style.position = 'absolute'
     container.style.pointerEvents = 'none'
     container.style.padding = '30px 20px 20px'
+    container.style.zIndex = '10'
     document.body.appendChild(container)
     // @ts-ignore
     const toaster = ReactDOM.render(<Toaster />, container) as Toaster

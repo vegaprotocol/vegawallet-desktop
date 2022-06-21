@@ -25,8 +25,8 @@ Then('wallet service is shown as running', () => {
 })
 
 Then('wallet service is returning {string}', serviceStatus => {
-  const url = Cypress.env('walletServiceUrl')
-  walletPage.CheckEndpoint(url, parseInt(serviceStatus))
+  const serviceBaseUrl = Cypress.env('walletServiceUrl')
+  walletPage.checkEndpoint(`${serviceBaseUrl}/version`, parseInt(serviceStatus))
 })
 
 Then('dApp {string} is shown running', serviceName => {
@@ -35,10 +35,10 @@ Then('dApp {string} is shown running', serviceName => {
 
 Then('dApp service is returning {string}', serviceStatus => {
   const url = Cypress.env('tokenServiceUrl')
-  walletPage.CheckEndpoint(url, parseInt(serviceStatus))
+  walletPage.checkEndpoint(url, parseInt(serviceStatus))
 })
 
 Then('console service is returning {string}', serviceStatus => {
   const url = Cypress.env('consoleServiceUrl')
-  walletPage.CheckEndpoint(url, parseInt(serviceStatus))
+  walletPage.checkEndpoint(url, parseInt(serviceStatus))
 })

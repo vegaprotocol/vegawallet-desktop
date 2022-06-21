@@ -52,13 +52,6 @@ func (h *Handler) StartConsole(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
-	logLevel := cfg.Level.String()
-	log, err := buildLogger(logLevel)
-	if err != nil {
-		return false, err
-	}
-	defer syncLogger(log)
-
 	cs := proxy.NewProxy(
 		cfg.Console.LocalPort,
 		cfg.Console.URL,
@@ -74,14 +67,16 @@ func (h *Handler) StartConsole(req *StartServiceRequest) (bool, error) {
 		}
 	}()
 
-	h.console.url = cs.GetBrowserURL()
-	h.console.shutdownFunc = func() {
-		if err := cs.Stop(); err != nil {
-			h.log.Error(fmt.Sprintf("Couldn't stop the console proxy: %v", err))
-		}
-	}
+	h.console.Set(
+		cs.GetBrowserURL(),
+		func() {
+			if err := cs.Stop(); err != nil {
+				h.log.Error(fmt.Sprintf("Couldn't stop the console proxy: %v", err))
+			}
+		},
+	)
 
-	h.log.Info(fmt.Sprintf("Opening the console at %s", h.console.url))
+	h.log.Info(fmt.Sprintf("Opening the console at %s", h.console.URL()))
 
 	if err = open.Run(cs.GetBrowserURL()); err != nil {
 		h.log.Error(fmt.Sprintf("Unable to open the console in the default browser: %v", err))
@@ -96,7 +91,7 @@ func (h *Handler) GetConsoleState() GetServiceStateResponse {
 	defer h.log.Debug("Leaving GetConsoleState")
 
 	return GetServiceStateResponse{
-		URL:     h.console.url,
+		URL:     h.console.URL(),
 		Running: h.console.IsRunning(),
 	}
 }
@@ -106,13 +101,14 @@ func (h *Handler) StopConsole() (bool, error) {
 	defer h.log.Debug("Leaving StopConsole")
 
 	if !h.console.IsRunning() {
-		h.log.Error("No console proxy running")
+		h.log.Info("No console proxy running")
 		return false, ErrConsoleNotRunning
 	}
 
-	h.log.Info("Shutting down the console proxy")
+	h.log.Info("Stopped the console proxy")
 	h.console.Shutdown()
 	h.console.Reset()
+	h.log.Info("Console proxy stopped")
 
 	return true, nil
 }
@@ -157,13 +153,6 @@ func (h *Handler) StartTokenDApp(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
-	logLevel := cfg.Level.String()
-	log, err := buildLogger(logLevel)
-	if err != nil {
-		return false, err
-	}
-	defer syncLogger(log)
-
 	tokenDApp := proxy.NewProxy(
 		cfg.TokenDApp.LocalPort,
 		cfg.TokenDApp.URL,
@@ -179,14 +168,16 @@ func (h *Handler) StartTokenDApp(req *StartServiceRequest) (bool, error) {
 		}
 	}()
 
-	h.tokenDApp.url = tokenDApp.GetBrowserURL()
-	h.tokenDApp.shutdownFunc = func() {
-		if err := tokenDApp.Stop(); err != nil {
-			h.log.Error(fmt.Sprintf("Couldn't stop the token dApp proxy: %v", err))
-		}
-	}
+	h.tokenDApp.Set(
+		tokenDApp.GetBrowserURL(),
+		func() {
+			if err := tokenDApp.Stop(); err != nil {
+				h.log.Error(fmt.Sprintf("Couldn't stop the token dApp proxy: %v", err))
+			}
+		},
+	)
 
-	h.log.Info(fmt.Sprintf("Opening the token dApp at %s", h.tokenDApp.url))
+	h.log.Info(fmt.Sprintf("Opening the token dApp at %s", h.tokenDApp.URL()))
 
 	if err = open.Run(tokenDApp.GetBrowserURL()); err != nil {
 		h.log.Error(fmt.Sprintf("Unable to open the token dApp in the default browser: %v", err))
@@ -201,7 +192,7 @@ func (h *Handler) GetTokenDAppState() GetServiceStateResponse {
 	defer h.log.Debug("Leaving GetTokenDAppState")
 
 	return GetServiceStateResponse{
-		URL:     h.tokenDApp.url,
+		URL:     h.tokenDApp.URL(),
 		Running: h.tokenDApp.IsRunning(),
 	}
 }
@@ -215,9 +206,10 @@ func (h *Handler) StopTokenDApp() (bool, error) {
 		return false, ErrTokenDAppNotRunning
 	}
 
-	h.log.Info("Shutting down the token dApp proxy")
+	h.log.Info("Stopping the token dApp proxy")
 	h.tokenDApp.Shutdown()
 	h.tokenDApp.Reset()
+	h.log.Info("Token dApp proxy stopped")
 
 	return true, nil
 }
