@@ -30,10 +30,9 @@ const voteTransaction = {
 }
 
 Given('I have an existing wallet', () => {
-  cy.clean()
-  cy.restoreWallet()
-  cy.reload()
-  cy.getByTestId(testIds.WALLET_LIST).should('have.length', 1)
+  cy.restoreWallet().then(() => {
+    cy.getByTestId(testIds.WALLET_LIST).should('have.length', 1)
+  })
 })
 
 When('an order transaction is sent', () => {
