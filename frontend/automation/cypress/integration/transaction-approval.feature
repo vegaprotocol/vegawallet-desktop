@@ -1,10 +1,8 @@
 Feature: Transaction approval
 
-  Background:
+  Scenario: Transaction approved
     Given I have an existing wallet
     And wallet service is shown as running
-
-  Scenario: Transaction approved
     When an order transaction is sent
     Then the transaction dialog is opened
     When I approve the transaction
