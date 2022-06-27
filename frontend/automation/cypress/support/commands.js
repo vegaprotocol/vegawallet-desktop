@@ -10,9 +10,10 @@ Cypress.Commands.add('clean', () => {
 
 Cypress.Commands.add('setVegaHome', () => {
   const vegaHome = Cypress.env('vegaHome')
-  cy.log(`setting vega home: ${vegaHome}`)
+  cy.clean()
   cy.visit('/#')
-  cy.window()
+  return cy
+    .window()
     .then(async win => {
       const handler = win.go.backend.Handler
       await handler.InitialiseApp({
