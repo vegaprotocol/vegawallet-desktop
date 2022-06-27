@@ -12,12 +12,16 @@ Cypress.Commands.add('setVegaHome', () => {
   const vegaHome = Cypress.env('vegaHome')
   cy.log(`setting vega home: ${vegaHome}`)
   cy.visit('/#')
-  cy.window().then(async win => {
-    const handler = win.go.backend.Handler
-    await handler.InitialiseApp({
-      vegaHome
+  cy.window()
+    .then(async win => {
+      const handler = win.go.backend.Handler
+      await handler.InitialiseApp({
+        vegaHome
+      })
     })
-  })
+    .then(() => {
+      cy.reload()
+    })
 })
 
 Cypress.Commands.add('restoreWallet', () => {
