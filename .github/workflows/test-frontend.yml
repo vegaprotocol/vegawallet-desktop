@@ -48,9 +48,6 @@ jobs:
         env:
           VITE_COVERAGE: "true"
 
-      - name: Kill hanging dev server
-        run: "kill $(lsof -t -i:34115)"
-
       # Start wails in the first process
       - name: Start backend in background
         run: wails dev -noreload &
