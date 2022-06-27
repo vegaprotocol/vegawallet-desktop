@@ -13,8 +13,9 @@ Given('I open the network drawer', () => {
 })
 
 Given('I have an imported network', () => {
-  cy.restoreWallet()
-  cy.getByTestId('wallet-list').should('have.length', 1)
+  cy.restoreWallet().then(() => {
+    cy.getByTestId('wallet-list').should('have.length', 1)
+  })
 })
 
 Given('I have downloaded network config file', () => {

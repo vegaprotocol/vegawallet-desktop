@@ -7,6 +7,9 @@ const walletImportPage = new WalletImportPage()
 const networkDrawer = new NetworkDrawer()
 
 Given('I am on the onboarding page', () => {
+  cy.setVegaHome().then(() => {
+    cy.getByTestId('app-chrome').should('have.length', 1)
+  })
   cy.visit('#/onboard')
 
   Given('I click create new wallet', () => {

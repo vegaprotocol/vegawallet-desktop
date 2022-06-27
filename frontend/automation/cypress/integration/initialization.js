@@ -1,7 +1,8 @@
 describe('app config', () => {
   it('persists selected network', () => {
-    cy.restoreWallet()
-    cy.getByTestId('wallet-list').should('have.length', 1)
+    cy.restoreWallet().then(() => {
+      cy.getByTestId('wallet-list').should('have.length', 1)
+    })
     assertNetwork('fairground')
     changeNetwork('mainnet1')
     cy.reload()

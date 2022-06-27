@@ -10,6 +10,7 @@ Cypress.Commands.add('clean', () => {
 
 Cypress.Commands.add('setVegaHome', () => {
   const vegaHome = Cypress.env('vegaHome')
+  cy.log('setVegaHome', vegaHome)
   cy.clean()
   cy.visit('/#')
   return cy
@@ -27,6 +28,9 @@ Cypress.Commands.add('setVegaHome', () => {
 
 Cypress.Commands.add('restoreWallet', () => {
   const passphrase = '123'
+  const vegaHome = Cypress.env('vegaHome')
+
+  cy.log('restoreWallet', vegaHome)
 
   // Clear any existing wallets
   cy.clean()
@@ -43,7 +47,7 @@ Cypress.Commands.add('restoreWallet', () => {
 
         // First initialise app with local frontend directory
         await handler.InitialiseApp({
-          vegaHome: './frontend/automation/test-wallets'
+          vegaHome
         })
         // Import wallet using known recovery phrase setting
         const res = await handler.ImportWallet({
@@ -65,7 +69,7 @@ Cypress.Commands.add('restoreWallet', () => {
         })
         await handler.ImportNetwork({
           url: Cypress.env('mainnetConfigUrl'),
-          name: 'mainnet'
+          name: 'mainnet1'
         })
       })
       .then(() => {
