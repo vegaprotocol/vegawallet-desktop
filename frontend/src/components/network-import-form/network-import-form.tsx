@@ -4,7 +4,7 @@ import { useWatch } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
 import { Intent } from '../../config/intent'
-import { useNetwork } from '../../contexts/network/network-context'
+import { useGlobal } from '../../contexts/global/global-context'
 import { FormStatus } from '../../hooks/use-form-state'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { Validation } from '../../lib/form-validation'
@@ -29,7 +29,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
     React.useState(false)
   const {
     state: { networks, presets }
-  } = useNetwork()
+  } = useGlobal()
   const { status, submit, error } = useImportNetwork()
 
   const {

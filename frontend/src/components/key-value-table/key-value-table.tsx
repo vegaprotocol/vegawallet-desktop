@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react'
+import { Fragment } from 'react'
 
 import { Colors } from '../../config/colors'
 
@@ -17,8 +18,8 @@ export const KeyValueTable = ({ rows, style }: KeyValueTableProps) => {
         ...style
       }}
     >
-      {rows.map(row => (
-        <>
+      {rows.map((row, i) => (
+        <Fragment key={i}>
           <dt style={{ textAlign: 'left', color: Colors.WHITE }}>{row.key}:</dt>
           <dd
             style={{
@@ -29,7 +30,7 @@ export const KeyValueTable = ({ rows, style }: KeyValueTableProps) => {
           >
             {row.value}
           </dd>
-        </>
+        </Fragment>
       ))}
     </dl>
   )

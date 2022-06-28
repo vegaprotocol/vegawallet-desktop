@@ -3,8 +3,8 @@ import React from 'react'
 import { CodeBlock } from '../components/code-block'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import { addNetworkAction } from '../contexts/network/network-actions'
-import { useNetwork } from '../contexts/network/network-context'
+import { addNetworkAction } from '../contexts/global/global-actions'
+import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
 import { Service } from '../service'
 import type {
@@ -23,7 +23,7 @@ interface ImportNetworkArgs {
 }
 
 export function useImportNetwork() {
-  const { dispatch } = useNetwork()
+  const { dispatch } = useGlobal()
   const [status, setStatus] = useFormState()
   const [response, setResponse] =
     React.useState<ImportNetworkFromSourceResponse | null>(null)

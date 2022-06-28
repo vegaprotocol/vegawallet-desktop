@@ -38,7 +38,7 @@ export function DrawerHead({ height, children }: DrawerHeadProps) {
 function DrawerToggle() {
   const {
     state: { drawerOpen },
-    dispatch: globalDispatch
+    dispatch
   } = useGlobal()
   const [hover, setHover] = React.useState(false)
 
@@ -56,7 +56,7 @@ function DrawerToggle() {
         borderRadius: '50%',
         background: hover ? Colors.DARK_GRAY_2 : 'transparent'
       }}
-      onClick={() => globalDispatch(setDrawerAction(!drawerOpen))}
+      onClick={() => dispatch(setDrawerAction(!drawerOpen))}
     >
       <DropdownArrow
         style={{

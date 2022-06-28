@@ -8,8 +8,32 @@ Cypress.Commands.add('clean', () => {
   return cy.exec('npm run clean')
 })
 
+Cypress.Commands.add('setVegaHome', () => {
+  const vegaHome = Cypress.env('vegaHome')
+  cy.log('setVegaHome', vegaHome)
+  cy.clean()
+  cy.visit('/#')
+  return cy
+    .window()
+    .then(async win => {
+      const handler = win.go.backend.Handler
+      await handler.InitialiseApp({
+        vegaHome
+      })
+    })
+    .then(() => {
+      cy.reload()
+    })
+})
+
 Cypress.Commands.add('restoreWallet', () => {
   const passphrase = '123'
+  const vegaHome = Cypress.env('vegaHome')
+
+  cy.log('restoreWallet', vegaHome)
+
+  // Clear any existing wallets
+  cy.clean()
 
   // Visit a page so that the window object is bootstrapped with backend functions
   cy.visit('#/wallet')
@@ -23,7 +47,7 @@ Cypress.Commands.add('restoreWallet', () => {
 
         // First initialise app with local frontend directory
         await handler.InitialiseApp({
-          vegaHome: './frontend/automation/test-wallets'
+          vegaHome
         })
         // Import wallet using known recovery phrase setting
         const res = await handler.ImportWallet({
@@ -42,6 +66,10 @@ Cypress.Commands.add('restoreWallet', () => {
         await handler.ImportNetwork({
           url: Cypress.env('testnetConfigUrl'),
           name: 'fairground'
+        })
+        await handler.ImportNetwork({
+          url: Cypress.env('mainnetConfigUrl'),
+          name: 'mainnet1'
         })
       })
       .then(() => {
