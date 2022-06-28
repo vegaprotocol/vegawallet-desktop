@@ -7,6 +7,7 @@
     "node": "^16.13.2"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@radix-ui/react-checkbox": "^0.1.4",
@@ -26,6 +27,7 @@
     "@types/react-dom": "^16.9.8",
     "babel-jest": "^27.5.1",
     "core-js": "^3.6.4",
+    "graphql-ws": "^5.9.0",
     "loglevel": "^1.8.0",
     "prettier": "^2.3.2",
     "react": "^16.13.1",

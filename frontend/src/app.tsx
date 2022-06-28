@@ -1,4 +1,5 @@
-import React from 'react'
+import { ApolloProvider } from '@apollo/client'
+import React, { useMemo } from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
 import { HashRouter as Router } from 'react-router-dom'
@@ -13,6 +14,7 @@ import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { useIsOnboard } from './hooks/use-is-onboard'
+import { createClient } from './lib/apollo-client'
 import { AppRouter } from './routes'
 
 /**
@@ -54,18 +56,28 @@ function AppLoader({ children }: { children: React.ReactNode }) {
  * Renders all the providers
  */
 function App() {
+  const client = useMemo(() => {
+    return createClient('https://lb.testnet.vega.xyz')
+  }, [])
+
+  if (!client) {
+    return null
+  }
+
   return (
-    <Router>
-      <GlobalProvider>
-        <AppFrame>
-          <AppLoader>
-            <AppRouter />
-            <PassphraseModal />
-            <TransactionManager />
-          </AppLoader>
-        </AppFrame>
-      </GlobalProvider>
-    </Router>
+    <ApolloProvider client={client}>
+      <Router>
+        <GlobalProvider>
+          <AppFrame>
+            <AppLoader>
+              <AppRouter />
+              <PassphraseModal />
+              <TransactionManager />
+            </AppLoader>
+          </AppFrame>
+        </GlobalProvider>
+      </Router>
+    </ApolloProvider>
   )
 }
 
