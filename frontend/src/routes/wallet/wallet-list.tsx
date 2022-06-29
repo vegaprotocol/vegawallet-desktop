@@ -270,7 +270,7 @@ function KeyPairDetail({ keypair, walletName }: KeyPairDetailProps) {
           onClick={() => {
             dispatch(changeWalletAction(walletName))
           }}
-          to={`keypair/${keypair.publicKey}`}
+          to={`${walletName}/keypair/${keypair.publicKey}`}
         >
           {keypair.name}
         </Link>

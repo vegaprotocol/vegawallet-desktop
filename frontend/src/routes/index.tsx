@@ -13,6 +13,7 @@ import { Splash } from '../components/splash'
 import { useIsOnboard } from '../hooks/use-is-onboard'
 import { Home } from './home'
 import { Wallet } from './wallet'
+import { Sign } from './wallet/sign'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
 import { WalletList } from './wallet/wallet-list'
 import { WalletCreate } from './wallet-create'
@@ -83,8 +84,12 @@ export const AppRouter = () => {
           element: <WalletList />
         },
         {
-          path: 'keypair/:pubkey',
+          path: ':wallet/keypair/:pubkey',
           element: <WalletKeyPair />
+        },
+        {
+          path: ':wallet/keypair/:pubkey/sign',
+          element: <Sign />
         }
       ]
     },

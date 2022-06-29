@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Link, useParams } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
@@ -19,11 +20,15 @@ interface FormFields {
   message: string
 }
 
-const useSign = (pubKey: string, wallet: string) => {
+const useSign = (pubKey?: string, wallet?: string) => {
   const [signedData, setSignedData] = useState<string>('')
   const sign = React.useCallback(
     async (values: { message: string }) => {
       try {
+        if (!pubKey || !wallet) {
+          return
+        }
+
         const passphrase = await requestPassphrase()
         const resp = await Service.SignMessage({
           wallet,
@@ -52,63 +57,73 @@ const useSign = (pubKey: string, wallet: string) => {
   }
 }
 
-export const Sign = ({
-  wallet,
-  pubKey
-}: {
-  wallet: string
-  pubKey: string
-}) => {
+export const Sign = () => {
+  const { wallet, pubkey } = useParams<{ wallet: string; pubkey: string }>()
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<FormFields>()
 
-  const { sign, signedData, setSignedData } = useSign(pubKey, wallet)
-  return (
-    <>
-      <Header style={{ marginTop: 32, fontSize: 18 }}>Sign</Header>
+  const { sign, signedData, setSignedData } = useSign(pubkey, wallet)
 
-      {signedData ? (
-        <>
-          <h4>Signed message:</h4>
-          <CopyWithTooltip text={signedData}>
-            <ButtonUnstyled
-              style={{
-                textAlign: 'left',
-                wordBreak: 'break-all',
-                color: Colors.TEXT_COLOR_DEEMPHASISE
-              }}
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: 'min-content 1fr min-content',
+        height: '100%'
+      }}
+    >
+      <div style={{ padding: 20 }}>
+        <Header style={{ marginTop: 0 }}>Sign</Header>
+      </div>
+      <div style={{ padding: 20 }}>
+        {signedData ? (
+          <>
+            <h4>Signed message:</h4>
+            <CopyWithTooltip text={signedData}>
+              <ButtonUnstyled
+                style={{
+                  textAlign: 'left',
+                  wordBreak: 'break-all',
+                  color: Colors.TEXT_COLOR_DEEMPHASISE
+                }}
+              >
+                {signedData}
+              </ButtonUnstyled>
+            </CopyWithTooltip>
+            <Button
+              data-testid='sign-more'
+              style={{ marginTop: 12 }}
+              onClick={() => setSignedData('')}
             >
-              {signedData}
-            </ButtonUnstyled>
-          </CopyWithTooltip>
-          <Button
-            data-testid='sign-more'
-            style={{ marginTop: 12 }}
-            onClick={() => setSignedData('')}
-          >
-            Sign more
-          </Button>
-        </>
-      ) : (
-        <form onSubmit={handleSubmit(sign)}>
-          <FormGroup
-            label='Message'
-            labelFor='message'
-            helperText={errors.message?.message}
-          >
-            <textarea
-              data-testid='message-field'
-              {...register('message', { required: 'Required' })}
-            ></textarea>
-          </FormGroup>
-          <Button data-testid='sign' type='submit'>
-            Sign
-          </Button>
-        </form>
-      )}
-    </>
+              Sign more
+            </Button>
+          </>
+        ) : (
+          <form onSubmit={handleSubmit(sign)}>
+            <FormGroup
+              label='Message'
+              labelFor='message'
+              helperText={errors.message?.message}
+            >
+              <textarea
+                data-testid='message-field'
+                {...register('message', { required: 'Required' })}
+              ></textarea>
+            </FormGroup>
+            <Button data-testid='sign' type='submit'>
+              Sign
+            </Button>
+          </form>
+        )}
+      </div>
+      <div style={{ padding: 20 }}>
+        <Link to={`/wallet/${wallet}/keypair/${pubkey}`}>
+          <Button>Back</Button>
+        </Link>
+      </div>
+    </div>
   )
 }

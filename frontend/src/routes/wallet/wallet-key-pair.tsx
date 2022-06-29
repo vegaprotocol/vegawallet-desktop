@@ -11,7 +11,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
 import { addDecimal } from '../../lib/number'
 import { Paths } from '../'
-import { Sign } from './sign'
 
 export function WalletKeyPair() {
   const navigate = useNavigate()
@@ -26,50 +25,56 @@ export function WalletKeyPair() {
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <Header style={{ marginTop: 0 }}>
-        Keypair name:{' '}
-        <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-          {keypair.name}
-        </span>
-      </Header>
-      <Header style={{ marginTop: 0, fontSize: 18 }}>Details</Header>
-      <KeyValueTable
-        rows={[
-          { key: 'Name', value: keypair.name, dataTestId: 'keypair-name' },
-          {
-            key: 'Public key',
-            value: <BreakText>{keypair.publicKey}</BreakText>,
-            dataTestId: 'public-key'
-          }
-        ]}
-      />
-      <Header>Assets</Header>
-      <AccountsTable publicKey={keypair.publicKey} />
-      {/* <div style={{ marginTop: 20 }}>
-        <Link to={Paths.Wallet}>
-          <Button>Back</Button>
-        </Link>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: 'min-content 1fr min-content',
+        height: '100%'
+      }}
+    >
+      <div style={{ padding: 20 }}>
+        <Header style={{ margin: 0 }}>
+          Keypair name:{' '}
+          <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+            {keypair.name}
+          </span>
+        </Header>
       </div>
-      <Sign wallet={wallet.name} pubKey={keypair.publicKey} /> */}
-
-      {/* <ButtonGroup orientation='vertical'>
-        {[
-          {
-            path: Paths.WalletCreate,
-            text: 'Sign'
-          }
-        ].map(route => {
-          return (
-            <Button
-              key={route.path}
-              onClick={() => navigate(`/${keypair.publicKey}/sign`)}
-            >
-              {route.text}
-            </Button>
-          )
-        })}
-      </ButtonGroup> */}
+      <div style={{ padding: 20 }}>
+        <Header style={{ marginTop: 0 }}>Details</Header>
+        <KeyValueTable
+          rows={[
+            { key: 'Name', value: keypair.name, dataTestId: 'keypair-name' },
+            {
+              key: 'Public key',
+              value: <BreakText>{keypair.publicKey}</BreakText>,
+              dataTestId: 'public-key'
+            }
+          ]}
+        />
+        <Header>Assets</Header>
+        <AccountsTable publicKey={keypair.publicKey} />
+      </div>
+      <div style={{ padding: 20 }}>
+        <ButtonGroup>
+          {[
+            {
+              path: Paths.Wallet,
+              text: 'Back'
+            },
+            {
+              path: `sign`,
+              text: 'Sign'
+            }
+          ].map(route => {
+            return (
+              <Button key={route.path} onClick={() => navigate(route.path)}>
+                {route.text}
+              </Button>
+            )
+          })}
+        </ButtonGroup>
+      </div>
     </div>
   )
 }
