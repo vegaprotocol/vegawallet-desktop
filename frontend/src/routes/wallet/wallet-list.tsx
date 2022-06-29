@@ -13,12 +13,13 @@ import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
 import {
   addKeypairAction,
-  chnageWalletAction,
+  changeWalletAction,
   deactivateWalletAction,
   getKeysAction
 } from '../../contexts/global/global-actions'
-import type { Wallet } from '../../contexts/global/global-context'
+import type { KeyPair, Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
+import { useAccounts } from '../../hooks/use-accounts'
 import { Paths } from '../'
 
 export const WalletList = () => {
@@ -203,53 +204,17 @@ function WalletDetail({ wallet, onLock }: WalletDetailProps) {
   return (
     <div style={{ marginTop: 20 }}>
       {wallet.keypairs?.length ? (
-        <table>
-          <thead>
-            <tr>
-              <th style={{ padding: 0 }}>Keypair name</th>
-              <th style={{ textAlign: 'right', padding: 0 }}>Public key</th>
-            </tr>
-          </thead>
-          <tbody>
-            {wallet.keypairs.map(kp => {
-              return (
-                <tr key={kp.publicKey}>
-                  <td style={{ textAlign: 'left', padding: 0 }}>
-                    <Link
-                      onClick={() => {
-                        dispatch(chnageWalletAction(wallet.name))
-                      }}
-                      to={`keypair/${kp.publicKey}`}
-                    >
-                      {kp.name}
-                    </Link>
-                  </td>
-                  <td style={{ padding: 0 }}>
-                    <CopyWithTooltip text={kp.publicKey}>
-                      <ButtonUnstyled
-                        style={{
-                          color: Colors.TEXT_COLOR_DEEMPHASISE,
-                          fontFamily: Fonts.MONO,
-                          textDecoration: 'none'
-                        }}
-                      >
-                        {kp.publicKeyShort}{' '}
-                        <Copy
-                          style={{
-                            position: 'relative',
-                            top: -2,
-                            width: 12,
-                            height: 12
-                          }}
-                        />
-                      </ButtonUnstyled>
-                    </CopyWithTooltip>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+        <div>
+          {wallet.keypairs.map(kp => {
+            return (
+              <KeyPairDetail
+                keypair={kp}
+                key={kp.publicKey}
+                walletName={wallet.name}
+              />
+            )
+          })}
+        </div>
       ) : null}
       <div
         style={{
@@ -268,6 +233,70 @@ function WalletDetail({ wallet, onLock }: WalletDetailProps) {
           Lock
         </ButtonUnstyled>
       </div>
+    </div>
+  )
+}
+
+interface KeyPairDetailProps {
+  keypair: KeyPair
+  walletName: string
+}
+
+function KeyPairDetail({ keypair, walletName }: KeyPairDetailProps) {
+  const { dispatch } = useGlobal()
+  const { accounts, loading, error } = useAccounts(keypair.publicKey)
+
+  const renderAccountInfo = () => {
+    if (loading) {
+      return 'Loading assets'
+    }
+
+    if (error) {
+      return 'Could not load asset information'
+    }
+
+    const totalAssets = Object.keys(accounts).length
+    if (!totalAssets) {
+      return 'No assets'
+    }
+
+    return `${totalAssets} asset${totalAssets > 1 ? 's' : ''}`
+  }
+
+  return (
+    <div key={keypair.publicKey}>
+      <p>
+        <Link
+          onClick={() => {
+            dispatch(changeWalletAction(walletName))
+          }}
+          to={`keypair/${keypair.publicKey}`}
+        >
+          {keypair.name}
+        </Link>
+      </p>
+      <p>
+        <CopyWithTooltip text={keypair.publicKey}>
+          <ButtonUnstyled
+            style={{
+              color: Colors.TEXT_COLOR_DEEMPHASISE,
+              fontFamily: Fonts.MONO,
+              textDecoration: 'none'
+            }}
+          >
+            {keypair.publicKeyShort}{' '}
+            <Copy
+              style={{
+                position: 'relative',
+                top: -2,
+                width: 12,
+                height: 12
+              }}
+            />
+          </ButtonUnstyled>
+        </CopyWithTooltip>
+      </p>
+      <p>{renderAccountInfo()}</p>
     </div>
   )
 }

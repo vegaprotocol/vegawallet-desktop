@@ -1,16 +1,20 @@
 import React from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'
+import { ButtonGroup } from '../../components/button-group'
 import { Header } from '../../components/header'
 import { KeyValueTable } from '../../components/key-value-table'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
+import { useAccounts } from '../../hooks/use-accounts'
+import { addDecimal } from '../../lib/number'
 import { Paths } from '../'
 import { Sign } from './sign'
 
 export function WalletKeyPair() {
+  const navigate = useNavigate()
   const {
     state: { wallet }
   } = useGlobal()
@@ -40,12 +44,74 @@ export function WalletKeyPair() {
           }
         ]}
       />
-      <div style={{ marginTop: 20 }}>
+      <Header>Assets</Header>
+      <AccountsTable publicKey={keypair.publicKey} />
+      {/* <div style={{ marginTop: 20 }}>
         <Link to={Paths.Wallet}>
           <Button>Back</Button>
         </Link>
       </div>
-      <Sign wallet={wallet.name} pubKey={keypair.publicKey} />
+      <Sign wallet={wallet.name} pubKey={keypair.publicKey} /> */}
+
+      {/* <ButtonGroup orientation='vertical'>
+        {[
+          {
+            path: Paths.WalletCreate,
+            text: 'Sign'
+          }
+        ].map(route => {
+          return (
+            <Button
+              key={route.path}
+              onClick={() => navigate(`/${keypair.publicKey}/sign`)}
+            >
+              {route.text}
+            </Button>
+          )
+        })}
+      </ButtonGroup> */}
     </div>
+  )
+}
+
+interface AccountsTableProps {
+  publicKey: string
+}
+
+function AccountsTable({ publicKey }: AccountsTableProps) {
+  const { accounts, loading, error } = useAccounts(publicKey)
+
+  if (error) {
+    return <p>Could not retrieve account information</p>
+  }
+
+  if (loading) {
+    return <p>Loading accounts</p>
+  }
+
+  const entries = Object.entries(accounts)
+
+  if (!entries.length) {
+    return <p>No accounts</p>
+  }
+
+  return (
+    <>
+      {entries.map(([id, accounts]) => {
+        return (
+          <div key={id}>
+            <h3>{accounts[0].asset.symbol}</h3>
+            <KeyValueTable
+              rows={accounts.map(a => {
+                return {
+                  key: `${a.asset.symbol} ${a.type}`,
+                  value: addDecimal(a.balance, a.asset.decimals)
+                }
+              })}
+            />
+          </div>
+        )
+      })}
+    </>
   )
 }

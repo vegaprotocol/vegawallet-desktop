@@ -202,7 +202,7 @@ export function setDrawerAction(open: boolean): GlobalAction {
   return { type: 'SET_DRAWER', open }
 }
 
-export function chnageWalletAction(wallet: string): GlobalAction {
+export function changeWalletAction(wallet: string): GlobalAction {
   return {
     type: 'CHANGE_WALLET',
     wallet

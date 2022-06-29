@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import React, { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
 import { HashRouter as Router } from 'react-router-dom'
@@ -24,14 +24,25 @@ function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
 
   const {
-    state: { status },
+    state: { status, networkConfig },
     dispatch
   } = useGlobal()
 
   // Get wallets, service state and version
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(initAppAction())
   }, [dispatch])
+
+  const client = useMemo(() => {
+    // TODO: Intelligently select a node, promise race
+    const datanode = networkConfig?.api.graphQl.hosts[0]
+
+    if (!datanode) {
+      return null
+    }
+
+    return createClient(datanode)
+  }, [networkConfig])
 
   if (status === AppStatus.Pending) {
     return (
@@ -49,35 +60,33 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  return <>{children}</>
+  if (!client) {
+    return (
+      <Splash>
+        <p>Could not find a valid data node in network configuration</p>
+      </Splash>
+    )
+  }
+
+  return <ApolloProvider client={client}>{children}</ApolloProvider>
 }
 
 /**
  * Renders all the providers
  */
 function App() {
-  const client = useMemo(() => {
-    return createClient('https://lb.testnet.vega.xyz')
-  }, [])
-
-  if (!client) {
-    return null
-  }
-
   return (
-    <ApolloProvider client={client}>
-      <Router>
-        <GlobalProvider>
-          <AppFrame>
-            <AppLoader>
-              <AppRouter />
-              <PassphraseModal />
-              <TransactionManager />
-            </AppLoader>
-          </AppFrame>
-        </GlobalProvider>
-      </Router>
-    </ApolloProvider>
+    <Router>
+      <GlobalProvider>
+        <AppFrame>
+          <AppLoader>
+            <AppRouter />
+            <PassphraseModal />
+            <TransactionManager />
+          </AppLoader>
+        </AppFrame>
+      </GlobalProvider>
+    </Router>
   )
 }
 
