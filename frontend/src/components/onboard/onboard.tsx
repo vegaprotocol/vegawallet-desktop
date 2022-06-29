@@ -9,7 +9,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
-import { OnboardPaths, Paths } from '../../routes'
+import { Paths } from '../../routes'
 import { Service } from '../../service'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -22,6 +22,7 @@ import { AppToaster } from '../toaster'
 import { WalletCreateForm } from '../wallet-create-form'
 import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
 import { WalletImportForm } from '../wallet-import-form'
+import { OnboardPaths } from './onboard-router'
 
 const logger = createLogger('Onbard')
 

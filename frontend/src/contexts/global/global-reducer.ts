@@ -301,6 +301,10 @@ export function globalReducer(
 
       return {
         ...state,
+        wallet: {
+          ...wallet,
+          auth: true
+        },
         wallets: [
           ...state.wallets.filter(w => w.name !== wallet.name),
           {

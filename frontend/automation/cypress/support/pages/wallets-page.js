@@ -77,7 +77,7 @@ export default class WalletPage {
   }
 
   clickOnTopWallet() {
-    cy.getByTestId(this.walletList).last().click({ force: true })
+    cy.getByTestId(this.walletList).last().find('a').click({ force: true })
   }
 
   verifyErrorToastTxtIsDisplayed(expectedText) {

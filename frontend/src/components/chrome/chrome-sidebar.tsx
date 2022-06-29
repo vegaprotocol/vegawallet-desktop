@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { NavLink, useMatch, useNavigate, useParams } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import {
@@ -43,10 +43,18 @@ export function ChromeSidebar() {
     >
       <div>{wallet?.auth ? <KeyPairList /> : <WalletList />}</div>
       <nav>
-        <NavLink style={navlinkStyles} to='/wallet/create'>
+        <NavLink
+          style={navlinkStyles}
+          data-testid='create-new-wallet'
+          to='/wallet/create'
+        >
           Create new wallet
         </NavLink>
-        <NavLink style={navlinkStyles} to='/wallet/import'>
+        <NavLink
+          style={navlinkStyles}
+          data-testid='import-wallet'
+          to='/wallet/import'
+        >
           Import wallet
         </NavLink>
       </nav>
@@ -136,7 +144,9 @@ function KeyPairList() {
           <SidebarListItem key={kp.publicKey}>
             <div>
               <NavLink
-                to={`/wallet/${wallet.name}/keypair/${kp.publicKey}`}
+                to={`/wallet/${wallet.name.replace(' ', '-')}/keypair/${
+                  kp.publicKey
+                }`}
                 style={({ isActive }) => ({
                   display: 'block',
                   padding: 20,
@@ -179,7 +189,7 @@ function WalletListItem({ wallet, onUnlock }: WalletListItemProps) {
   return (
     <SidebarListItem key={wallet.name}>
       <NavLink
-        to={`/wallet/${wallet.name}`}
+        to={`/wallet/${wallet.name.replace(' ', '-')}`}
         onClick={() => onUnlock(wallet)}
         style={{
           display: 'flex',

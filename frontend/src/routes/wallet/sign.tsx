@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'

@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'

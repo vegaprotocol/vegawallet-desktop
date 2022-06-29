@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'react'
 // See https://wails.io/docs/guides/routing
 import { HashRouter as Router } from 'react-router-dom'
 
+import { OnboardRouter } from './components/onboard/onboard-router'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
@@ -60,6 +61,10 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
+  if (status === AppStatus.Onboarding) {
+    return <OnboardRouter />
+  }
+
   if (!client) {
     return (
       <Splash>
@@ -103,8 +108,10 @@ interface AppFrameProps {
  * drag the app window aroung. Also renders the vega-bg className if onboard mode
  */
 function AppFrame({ children }: AppFrameProps) {
-  const isOnboard = useIsOnboard()
-
+  const {
+    state: { status }
+  } = useGlobal()
+  const isOnboard = status === AppStatus.Onboarding
   return (
     <div
       style={{
