@@ -9,6 +9,7 @@ import (
 )
 
 func buildLogger(level, output string) (*zap.Logger, error) {
+	zapFilePath := toZapLogPath(output)
 	cfg := zap.Config{
 		Level:    zap.NewAtomicLevelAt(zapcore.InfoLevel),
 		Encoding: "json",
@@ -26,8 +27,8 @@ func buildLogger(level, output string) (*zap.Logger, error) {
 			EncodeCaller:   zapcore.ShortCallerEncoder,
 			EncodeName:     zapcore.FullNameEncoder,
 		},
-		OutputPaths:       []string{output},
-		ErrorOutputPaths:  []string{output},
+		OutputPaths:       []string{zapFilePath},
+		ErrorOutputPaths:  []string{zapFilePath},
 		DisableStacktrace: true,
 	}
 
