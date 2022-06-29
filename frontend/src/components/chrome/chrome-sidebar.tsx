@@ -10,6 +10,7 @@ import {
 } from '../../contexts/global/global-actions'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
+import { useAccounts } from '../../hooks/use-accounts'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { Paths } from '../../routes'
 import { Button } from '../button'
@@ -129,24 +130,27 @@ function KeyPairList() {
       <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
         {wallet.keypairs.map(kp => (
           <SidebarListItem key={kp.publicKey}>
-            <NavLink
-              to={`keypair/${kp.publicKey}`}
-              style={{
-                display: 'block',
-                padding: 20,
-                textDecoration: 'none'
-              }}
-            >
-              <span style={{ display: 'block' }}>{kp.name}</span>
-              <span
+            <div>
+              <NavLink
+                to={`keypair/${kp.publicKey}`}
                 style={{
                   display: 'block',
-                  color: Colors.TEXT_COLOR_DEEMPHASISE
+                  padding: 20,
+                  textDecoration: 'none'
                 }}
               >
-                {truncateMiddle(kp.publicKey)}
-              </span>
-            </NavLink>
+                <span style={{ display: 'block' }}>{kp.name}</span>
+                <span
+                  style={{
+                    display: 'block',
+                    color: Colors.TEXT_COLOR_DEEMPHASISE
+                  }}
+                >
+                  {truncateMiddle(kp.publicKey)}
+                </span>
+              </NavLink>
+              <AssetSummary publicKey={kp.publicKey} />
+            </div>
           </SidebarListItem>
         ))}
       </ul>
@@ -272,4 +276,29 @@ function SidebarListItem({ children }: SidebarListItemProps) {
       {children}
     </li>
   )
+}
+
+interface AssetSummaryProps {
+  publicKey: string
+}
+
+function AssetSummary({ publicKey }: AssetSummaryProps) {
+  const { accounts, loading, error } = useAccounts(publicKey)
+  const renderAccountInfo = () => {
+    if (loading) {
+      return 'Loading assets'
+    }
+
+    if (error) {
+      return 'Could not load asset information'
+    }
+
+    const totalAssets = Object.keys(accounts).length
+    if (!totalAssets) {
+      return 'No assets'
+    }
+
+    return `${totalAssets} asset${totalAssets > 1 ? 's' : ''}`
+  }
+  return <div style={{ padding: '0 20px 20px' }}>{renderAccountInfo()}</div>
 }
