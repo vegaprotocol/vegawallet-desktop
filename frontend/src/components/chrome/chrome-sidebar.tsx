@@ -5,8 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { Colors } from '../../config/colors'
 import {
   addKeypairAction,
-  deactivateWalletAction,
-  getKeysAction
+  deactivateWalletAction
 } from '../../contexts/global/global-actions'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -21,9 +20,6 @@ import { Lock } from '../icons/lock'
 import { Unlock } from '../icons/unlock'
 
 export function ChromeSidebar() {
-  const {
-    state: { wallet }
-  } = useGlobal()
   const navlinkStyles = ({ isActive }: { isActive: boolean }) => ({
     display: 'block',
     padding: 20,
@@ -41,7 +37,9 @@ export function ChromeSidebar() {
         overflowY: 'auto'
       }}
     >
-      <div>{wallet?.auth ? <KeyPairList /> : <WalletList />}</div>
+      <div>
+        <KeyPairList />
+      </div>
       <nav>
         <NavLink
           style={navlinkStyles}
@@ -62,48 +60,6 @@ export function ChromeSidebar() {
   )
 }
 
-function WalletList() {
-  const navigate = useNavigate()
-  const {
-    state: { wallets },
-    dispatch
-  } = useGlobal()
-
-  function handleUnlock(wallet: Wallet) {
-    if (!wallet.auth) {
-      dispatch(getKeysAction(wallet.name))
-    } else {
-      navigate(wallet.name)
-    }
-  }
-
-  return (
-    <>
-      <div style={{ padding: 20 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Header style={{ margin: 0 }}>Select wallet</Header>
-          <ButtonUnstyled onClick={() => navigate(-1)}>Back</ButtonUnstyled>
-        </div>
-      </div>
-      <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
-        {wallets.map(wallet => (
-          <WalletListItem
-            key={wallet.name}
-            wallet={wallet}
-            onUnlock={handleUnlock}
-          />
-        ))}
-      </ul>
-    </>
-  )
-}
-
 function KeyPairList() {
   const navigate = useNavigate()
   const {
@@ -114,7 +70,7 @@ function KeyPairList() {
   function handleLock(wallet: Wallet) {
     if (wallet.auth) {
       dispatch(deactivateWalletAction(wallet.name))
-      navigate(Paths.Wallet)
+      navigate('/')
     }
   }
 
@@ -184,28 +140,6 @@ interface WalletListItemProps {
   wallet: Wallet
   onUnlock: (wallet: Wallet) => void
 }
-
-function WalletListItem({ wallet, onUnlock }: WalletListItemProps) {
-  return (
-    <SidebarListItem key={wallet.name}>
-      <NavLink
-        to={`/wallet/${wallet.name.replace(' ', '-')}`}
-        onClick={() => onUnlock(wallet)}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-          padding: 20,
-          textDecoration: 'none'
-        }}
-      >
-        <span>{wallet.name}</span>
-        <KeypairLockStatus wallet={wallet} />
-      </NavLink>
-    </SidebarListItem>
-  )
-}
-
 interface KeypairLockStatusProps {
   wallet: Wallet
 }

@@ -1,7 +1,14 @@
-import { useRoutes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
-import { Chrome } from '../components/chrome'
 import { Home } from './home'
+import {
+  Onboard,
+  OnboardHome,
+  OnboardNetwork,
+  OnboardSettings,
+  OnboardWalletCreate,
+  OnboardWalletImport
+} from './onboard'
 import { Wallet } from './wallet'
 import { Sign } from './wallet/sign'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
@@ -15,52 +22,28 @@ export enum Paths {
   Wallet = '/wallet'
 }
 
-export const AppRouter = () => {
-  const routes = useRoutes([
-    {
-      path: Paths.Wallet,
-      element: <Wallet />,
-      children: [
-        {
-          path: 'create',
-          element: <WalletCreate />
-        },
-        {
-          path: 'import',
-          element: <WalletImport />
-        },
-        {
-          path: ':wallet',
-          element: (
-            <div style={{ padding: 20 }}>
-              <p>Select a key</p>
-            </div>
-          )
-        },
-        {
-          path: ':wallet/keypair/:pubkey',
-          element: <WalletKeyPair />
-        },
-        {
-          path: ':wallet/keypair/:pubkey/sign',
-          element: <Sign />
-        },
-        {
-          index: true,
-          element: (
-            <div style={{ padding: 20 }}>
-              <p>Select a wallet</p>
-            </div>
-          )
-        }
-      ]
-    },
-    {
-      element: <Home />,
-      index: true
-    }
-  ])
+export enum OnboardPaths {
+  Settings = 'settings',
+  WalletCreate = 'wallet-create',
+  WalletImport = 'wallet-import',
+  Network = 'network'
+}
 
-  // Rest of the pages get regular chrome with network
-  return <Chrome>{routes}</Chrome>
+export const AppRouter = () => {
+  return (
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/onboard' element={<Onboard />}>
+        <Route index={true} element={<OnboardHome />} />
+        <Route path='settings' element={<OnboardSettings />} />
+        <Route path='wallet-create' element={<OnboardWalletCreate />} />
+        <Route path='wallet-import' element={<OnboardWalletImport />} />
+        <Route path='network' element={<OnboardNetwork />} />
+      </Route>
+      <Route path='/wallet/:wallet' element={<Wallet />}>
+        <Route index={true} element={<div>Select a key</div>} />
+        <Route path='keypair/:pubkey' element={<WalletKeyPair />} />
+      </Route>
+    </Routes>
+  )
 }

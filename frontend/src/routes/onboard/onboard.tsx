@@ -2,6 +2,18 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Outlet, useNavigate } from 'react-router-dom'
 
+import { Button } from '../../components/button'
+import { ButtonGroup } from '../../components/button-group'
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { FormGroup } from '../../components/form-group'
+import { Header } from '../../components/header'
+import { Vega } from '../../components/icons'
+import { NetworkImportForm } from '../../components/network-import-form'
+import { Splash } from '../../components/splash'
+import { AppToaster } from '../../components/toaster'
+import { WalletCreateForm } from '../../components/wallet-create-form'
+import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
+import { WalletImportForm } from '../../components/wallet-import-form'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { completeOnboardAction } from '../../contexts/global/global-actions'
@@ -9,25 +21,17 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
-import { Paths } from '../../routes'
 import { Service } from '../../service'
-import { Button } from '../button'
-import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
-import { FormGroup } from '../form-group'
-import { Header } from '../header'
-import { Vega } from '../icons'
-import { NetworkImportForm } from '../network-import-form'
-import { AppToaster } from '../toaster'
-import { WalletCreateForm } from '../wallet-create-form'
-import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
-import { WalletImportForm } from '../wallet-import-form'
-import { OnboardPaths } from './onboard-router'
+import { OnboardPaths, Paths } from '..'
 
-const logger = createLogger('Onbard')
+const logger = createLogger('Onboard')
 
 export function Onboard() {
-  return <Outlet />
+  return (
+    <Splash>
+      <Outlet />
+    </Splash>
+  )
 }
 
 export function OnboardHome() {

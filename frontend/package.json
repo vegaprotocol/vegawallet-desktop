@@ -46,7 +46,7 @@
   "scripts": {
     "dev": "npx vite build --mode development --watch",
     "dev:test": "cd .. && VITE_COVERAGE='true' wails dev -noreload",
-    "build": "npx tsc && npx vite build --mode development",
+    "build": "npx vite build --mode development",
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "test": "jest",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",

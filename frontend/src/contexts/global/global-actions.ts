@@ -184,6 +184,11 @@ export function getKeysAction(wallet: string) {
           throw keys
         }
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
+        if (keys.keys.length) {
+          window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
+        } else {
+          window.location.hash = `/wallet/${wallet}`
+        }
       } catch (err) {
         if (err !== 'dismissed') {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })

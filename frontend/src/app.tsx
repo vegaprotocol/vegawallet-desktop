@@ -1,10 +1,8 @@
-import { ApolloProvider } from '@apollo/client'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
-import { HashRouter as Router } from 'react-router-dom'
+import { HashRouter as Router, useMatch } from 'react-router-dom'
 
-import { OnboardRouter } from './components/onboard/onboard-router'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
@@ -14,18 +12,16 @@ import { initAppAction } from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
-import { useIsOnboard } from './hooks/use-is-onboard'
-import { createClient } from './lib/apollo-client'
 import { AppRouter } from './routes'
 
 /**
  * Initialiases the app
  */
 function AppLoader({ children }: { children: React.ReactNode }) {
-  useCheckForUpdate()
+  // useCheckForUpdate()
 
   const {
-    state: { status, networkConfig },
+    state: { status },
     dispatch
   } = useGlobal()
 
@@ -33,17 +29,6 @@ function AppLoader({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     dispatch(initAppAction())
   }, [dispatch])
-
-  const client = useMemo(() => {
-    // TODO: Intelligently select a node, promise race
-    const datanode = networkConfig?.api.graphQl.hosts[0]
-
-    if (!datanode) {
-      return null
-    }
-
-    return createClient(datanode)
-  }, [networkConfig])
 
   if (status === AppStatus.Pending) {
     return (
@@ -61,19 +46,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (status === AppStatus.Onboarding) {
-    return <OnboardRouter />
-  }
-
-  if (!client) {
-    return (
-      <Splash>
-        <p>Could not find a valid data node in network configuration</p>
-      </Splash>
-    )
-  }
-
-  return <ApolloProvider client={client}>{children}</ApolloProvider>
+  return <>{children}</>
 }
 
 /**
@@ -108,10 +81,12 @@ interface AppFrameProps {
  * drag the app window aroung. Also renders the vega-bg className if onboard mode
  */
 function AppFrame({ children }: AppFrameProps) {
+  const isHome = useMatch('/')
   const {
     state: { status }
   } = useGlobal()
   const isOnboard = status === AppStatus.Onboarding
+  const useVegaBg = isHome || isOnboard
   return (
     <div
       style={{
@@ -119,7 +94,7 @@ function AppFrame({ children }: AppFrameProps) {
         paddingTop: APP_FRAME_HEIGHT,
         backgroundSize: 'cover'
       }}
-      className={isOnboard ? 'vega-bg' : undefined}
+      className={useVegaBg ? 'vega-bg' : undefined}
     >
       <div
         style={{
@@ -128,7 +103,7 @@ function AppFrame({ children }: AppFrameProps) {
           left: 0,
           width: '100%',
           height: APP_FRAME_HEIGHT,
-          backgroundColor: isOnboard ? 'transparent' : Colors.BLACK
+          backgroundColor: useVegaBg ? 'transparent' : Colors.BLACK
         }}
         // The app is frameless by default so this element creates a space at the top of the app
         // which you can click and drag to move the app around. The drag function is triggered
