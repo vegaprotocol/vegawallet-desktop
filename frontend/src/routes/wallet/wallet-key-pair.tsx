@@ -28,18 +28,10 @@ export function WalletKeyPair() {
     <div
       style={{
         display: 'grid',
-        gridTemplateRows: 'min-content 1fr min-content',
+        gridTemplateRows: '1fr min-content',
         height: '100%'
       }}
     >
-      <div style={{ padding: 20 }}>
-        <Header style={{ margin: 0 }}>
-          Keypair name:{' '}
-          <span style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-            {keypair.name}
-          </span>
-        </Header>
-      </div>
       <div style={{ padding: 20 }}>
         <Header style={{ marginTop: 0 }}>Details</Header>
         <KeyValueTable

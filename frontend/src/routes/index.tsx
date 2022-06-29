@@ -79,9 +79,8 @@ export const AppRouter = () => {
       element: <Wallet />,
       children: [
         {
-          // default child route, Wallet only renders an Outlet
-          index: true,
-          element: <WalletList />
+          path: ':wallet',
+          element: <div style={{ padding: 20 }}>Wallet</div>
         },
         {
           path: ':wallet/keypair/:pubkey',

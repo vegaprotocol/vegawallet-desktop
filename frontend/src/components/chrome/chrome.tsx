@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Colors } from '../../config/colors'
 import { ChromeDrawer } from './chrome-drawer'
+import { ChromeSidebar } from './chrome-sidebar'
 
 export const DRAWER_HEIGHT = 70
 
@@ -14,6 +15,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       <div
         className='vega-border-image'
         style={{
+          display: 'grid',
+          gridTemplateColumns: '320px 1fr',
           paddingBottom: DRAWER_HEIGHT,
           height: '100%',
           background: Colors.DARK_GRAY_1,
@@ -21,6 +24,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         }}
         data-testid='app-chrome'
       >
+        <ChromeSidebar />
         <main
           style={{
             height: '100%',

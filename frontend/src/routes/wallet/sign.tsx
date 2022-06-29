@@ -76,7 +76,7 @@ export const Sign = () => {
       }}
     >
       <div style={{ padding: 20 }}>
-        <Header style={{ marginTop: 0 }}>Sign</Header>
+        <Header style={{ margin: 0 }}>Sign</Header>
       </div>
       <div style={{ padding: 20 }}>
         {signedData ? (

@@ -165,7 +165,10 @@ export function addKeypairAction(wallet: string) {
   }
 }
 
-export function getKeysAction(wallet: string) {
+export function getKeysAction(
+  wallet: string,
+  callback: (success: boolean) => void
+) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     const state = getState()
     const selectedWallet = state.wallets.find(w => w.name === wallet)
@@ -184,11 +187,13 @@ export function getKeysAction(wallet: string) {
           throw keys
         }
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
+        callback(true)
       } catch (err) {
         if (err !== 'dismissed') {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
           logger.error(err)
         }
+        callback(false)
       }
     }
   }

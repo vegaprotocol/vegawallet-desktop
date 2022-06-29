@@ -266,6 +266,7 @@ export function globalReducer(
 
       return {
         ...state,
+        wallet: newWallet,
         wallets: [
           ...state.wallets.filter(w => w.name !== action.wallet),
           newWallet
@@ -287,6 +288,7 @@ export function globalReducer(
       }
       return {
         ...state,
+        wallet: updatedWallet,
         wallets: [...wallets, updatedWallet].sort(sortWallet)
       }
     }
