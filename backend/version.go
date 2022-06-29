@@ -12,7 +12,7 @@ const (
 	ReleasesAPI        = "https://api.github.com/repos/vegaprotocol/vegawallet-desktop/releases"
 	ReleasesURL        = "https://github.com/vegaprotocol/vegawallet-desktop/releases"
 	defaultVersionHash = "unknown"
-	defaultVersion     = "v0.2.0"
+	defaultVersion     = "v0.2.1"
 	requestTimeout     = 5 * time.Second
 )
 

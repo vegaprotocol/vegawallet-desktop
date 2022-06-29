@@ -3,10 +3,9 @@ import { useForm } from 'react-hook-form'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
-import { DEFAULT_VEGA_HOME } from '../../config/environment'
 import { Intent } from '../../config/intent'
+import { completeOnboardAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
-import { useNetwork } from '../../contexts/network/network-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
@@ -35,15 +34,20 @@ export function OnboardHome() {
   const [loading, setLoading] = React.useState<
     'create' | 'import' | 'existing' | null
   >(null)
+  const defaultVegaHome =
+    'Cypress' in window
+      ? // @ts-ignore only injected when running in cypress
+        window.Cypress.env('vegaHome')
+      : ''
+
   const {
-    dispatch: globalDispatch,
+    dispatch,
     state: { version, onboarding }
   } = useGlobal()
-  const { dispatch: networkDispatch } = useNetwork()
 
   const initialiseWithDefaultHome = async () => {
     try {
-      await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
+      await Service.InitialiseApp({ vegaHome: defaultVegaHome })
     } catch (err) {
       logger.error(err)
     }
@@ -53,31 +57,40 @@ export function OnboardHome() {
     try {
       setLoading('existing')
 
-      await Service.InitialiseApp({ vegaHome: DEFAULT_VEGA_HOME })
-
-      // Add wallets and networks to state
-      globalDispatch({ type: 'ADD_WALLETS', wallets: onboarding.wallets })
-      networkDispatch({
-        type: 'ADD_NETWORKS',
-        networks: onboarding.networks
-      })
+      await Service.InitialiseApp({ vegaHome: defaultVegaHome })
 
       // Navigate to wallet create onboarding if no wallets are found
-      if (!onboarding.wallets.length) {
+      if (onboarding.wallets.length) {
+        // Add wallets and networks to state
+        dispatch({ type: 'ADD_WALLETS', wallets: onboarding.wallets })
+      } else {
         navigate(OnboardPaths.WalletCreate)
         return
       }
 
       // If use doesnt have networks go to the import network section on onboarding
       // otherwise go to home to complete onboarding
-      if (!onboarding.networks.length) {
+      if (onboarding.networks.length) {
+        const config = await Service.GetAppConfig()
+        const defaultNetwork = config.defaultNetwork
+          ? config.defaultNetwork
+          : onboarding.networks[0]
+        const defaultNetworkConfig = await Service.GetNetworkConfig(
+          defaultNetwork
+        )
+        dispatch({
+          type: 'ADD_NETWORKS',
+          networks: onboarding.networks,
+          network: defaultNetwork,
+          networkConfig: defaultNetworkConfig
+        })
+      } else {
         navigate(OnboardPaths.Network)
         return
       }
 
       // Found wallets and networks, go to the main app
-      globalDispatch({ type: 'INIT_APP', isInit: true })
-      navigate(Paths.Home)
+      dispatch(completeOnboardAction(() => navigate(Paths.Home)))
     } catch (err) {
       logger.error(err)
     }
@@ -167,7 +180,15 @@ interface Fields {
 
 export function OnboardSettings() {
   const navigate = useNavigate()
-  const { register, handleSubmit } = useForm<Fields>()
+  const { register, handleSubmit } = useForm<Fields>({
+    defaultValues: {
+      vegaHome:
+        'Cypress' in window
+          ? // @ts-ignore only injected when running in cypress
+            window.Cypress.env('vegaHome')
+          : ''
+    }
+  })
   const [loading, setLoading] = React.useState(false)
 
   const submit = React.useCallback(
@@ -228,8 +249,7 @@ export function OnboardWalletCreate() {
                 if (!onboarding.networks.length) {
                   navigate(OnboardPaths.Network)
                 } else {
-                  dispatch({ type: 'INIT_APP', isInit: true })
-                  navigate(Paths.Home)
+                  dispatch(completeOnboardAction(() => navigate(Paths.Home)))
                 }
               }}
               data-testid='onboard-import-network-button'
@@ -258,8 +278,7 @@ export function OnboardWalletImport() {
       if (!onboarding.networks.length) {
         navigate(OnboardPaths.Network)
       } else {
-        dispatch({ type: 'INIT_APP', isInit: true })
-        navigate(Paths.Home)
+        dispatch(completeOnboardAction(() => navigate(Paths.Home)))
       }
     }
   }, [response, navigate, dispatch, onboarding])
@@ -276,8 +295,7 @@ export function OnboardNetwork() {
   const { dispatch } = useGlobal()
 
   const onComplete = React.useCallback(() => {
-    dispatch({ type: 'INIT_APP', isInit: true })
-    navigate(Paths.Home)
+    dispatch(completeOnboardAction(() => navigate(Paths.Home)))
   }, [dispatch, navigate])
 
   return (

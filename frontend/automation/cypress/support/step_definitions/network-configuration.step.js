@@ -1,5 +1,3 @@
-import '../cleanup'
-
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
 import EditNetworkPage from '../pages/edit-network-page'
@@ -9,7 +7,7 @@ const walletPage = new WalletPage()
 const networkDrawer = new NetworkDrawer()
 const editNetworkPage = new EditNetworkPage()
 
-Given('I am on the Network configuration page', () => {
+Given('I open the network drawer', () => {
   cy.visit('#/wallet')
   walletPage.clickNetworkDrawer()
 })

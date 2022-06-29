@@ -5,9 +5,9 @@ import { Intent } from '../../config/intent'
 import {
   startProxyAction,
   stopProxyAction
-} from '../../contexts/network/network-actions'
-import type { ProxyApp } from '../../contexts/network/network-context'
-import { useNetwork } from '../../contexts/network/network-context'
+} from '../../contexts/global/global-actions'
+import type { ProxyApp } from '../../contexts/global/global-context'
+import { useGlobal } from '../../contexts/global/global-context'
 import type {
   ConsoleConfig,
   Network,
@@ -21,8 +21,8 @@ import { AppToaster } from '../toaster'
 
 export function NetworkInfo() {
   const {
-    state: { config }
-  } = useNetwork()
+    state: { networkConfig: config }
+  } = useGlobal()
 
   if (!config) {
     return null
@@ -61,7 +61,7 @@ interface ServicesTableProps {
 function ServicesTable({ config }: ServicesTableProps) {
   const {
     state: { console, tokenDapp }
-  } = useNetwork()
+  } = useGlobal()
 
   return (
     <KeyValueTable
@@ -123,8 +123,8 @@ interface DAppProxyControlProps {
 function DAppProxyControl({ proxyConfig, proxyApp }: DAppProxyControlProps) {
   const {
     dispatch,
-    state: { config, network }
-  } = useNetwork()
+    state: { networkConfig: config, network }
+  } = useGlobal()
 
   function startProxy() {
     if (!network || !config) {

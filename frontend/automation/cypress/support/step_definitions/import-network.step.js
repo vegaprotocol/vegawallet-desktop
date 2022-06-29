@@ -1,5 +1,3 @@
-import '../cleanup'
-
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 import path from 'path'
 
@@ -15,12 +13,9 @@ Given('I open the network drawer', () => {
 })
 
 Given('I have an imported network', () => {
-  cy.visit('#/wallet')
-  walletPage.clickNetworkDrawer()
-  networkDrawer.clickImportBtn()
-  networkDrawer.selectNetwork('fairground')
-  networkDrawer.clickImportBtn()
-  networkDrawer.clickBack()
+  cy.restoreWallet().then(() => {
+    cy.getByTestId('wallet-list').should('have.length', 1)
+  })
 })
 
 Given('I have downloaded network config file', () => {

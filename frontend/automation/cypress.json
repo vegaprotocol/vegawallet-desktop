@@ -3,6 +3,7 @@
   "projectId": "t5pfg7",
   "defaultCommandTimeout": 20000,
   "env": {
+    "vegaHome": "./frontend/automation/test-wallets",
     "walletServiceUrl": "http://127.0.0.1:1789/api/v1",
     "tokenServiceUrl": "http://127.0.0.1:1848",
     "consoleServiceUrl": "http://127.0.0.1:1847",

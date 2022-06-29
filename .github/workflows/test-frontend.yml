@@ -46,16 +46,12 @@ jobs:
         working-directory: frontend
         run: npm run build
         env:
-          VITE_VEGA_HOME: "./frontend/automation/test-wallets"
-          VITE_TESTING: 1
           VITE_COVERAGE: "true"
 
       # Start wails in the first process
       - name: Start backend in background
         run: wails dev -noreload &
         env:
-          VITE_VEGA_HOME: "./frontend/automation/test-wallets"
-          VITE_TESTING: 1
           VITE_COVERAGE: "true"
 
       # Run cypress in this process

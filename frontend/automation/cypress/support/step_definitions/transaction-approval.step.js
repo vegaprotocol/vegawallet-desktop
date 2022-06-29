@@ -1,4 +1,4 @@
-import { And, Given, Then } from 'cypress-cucumber-preprocessor/steps'
+import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
 const testIds = {
   TRANSACTION_DIALOG: 'transaction-dialog',
@@ -30,30 +30,30 @@ const voteTransaction = {
 }
 
 Given('I have an existing wallet', () => {
-  cy.clean()
-  cy.restoreWallet()
-  cy.getByTestId(testIds.WALLET_LIST).should('have.length', 1)
+  cy.restoreWallet().then(() => {
+    cy.getByTestId(testIds.WALLET_LIST).should('have.length', 1)
+  })
 })
 
-And('an order transaction is sent', () => {
+When('an order transaction is sent', () => {
   cy.intercept('POST', `${Cypress.env('walletServiceUrl')}/command/sync`).as(
     'transaction'
   )
   cy.sendTransaction(orderTransaction)
 })
 
-And('a vote transaction is sent', () => {
+When('a vote transaction is sent', () => {
   cy.intercept('POST', `${Cypress.env('walletServiceUrl')}/command/sync`).as(
     'transaction'
   )
   cy.sendTransaction(voteTransaction)
 })
 
-And('I approve the transaction', () => {
+When('I approve the transaction', () => {
   cy.getByTestId(testIds.APPROVE_BTN).click()
 })
 
-And('I reject the transaction', () => {
+When('I reject the transaction', () => {
   cy.getByTestId(testIds.REJECT_BTN).click()
 })
 
@@ -66,11 +66,11 @@ Then('the transaction dialog is closed', () => {
   cy.getByTestId(testIds.TRANSACTION_DIALOG).should('not.exist')
 })
 
-And('the transaction is approved', () => {
+Then('the transaction is approved', () => {
   cy.wait('@transaction').its('response.statusCode').should('eq', 200)
 })
 
-And('the transaction is rejected', () => {
+Then('the transaction is rejected', () => {
   cy.wait('@transaction').its('response.statusCode').should('eq', 401)
 })
 
