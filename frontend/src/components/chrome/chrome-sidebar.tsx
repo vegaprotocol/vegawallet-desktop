@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { NavLink, Outlet, useNavigate, useRoutes } from 'react-router-dom'
+import { NavLink, useMatch, useNavigate, useParams } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import {
@@ -21,24 +21,37 @@ import { Lock } from '../icons/lock'
 import { Unlock } from '../icons/unlock'
 
 export function ChromeSidebar() {
-  const routes = useRoutes([
-    {
-      path: Paths.Wallet,
-      element: <Outlet />,
-      children: [
-        {
-          element: <WalletList />,
-          index: true
-        },
-        {
-          path: ':wallet/*',
-          element: <KeyPairList />
-        }
-      ]
-    }
-  ])
-
-  return <aside style={{ background: Colors.DARK_GRAY_2 }}>{routes}</aside>
+  const {
+    state: { wallet }
+  } = useGlobal()
+  const navlinkStyles = ({ isActive }: { isActive: boolean }) => ({
+    display: 'block',
+    padding: 20,
+    textDecoration: 'none',
+    borderTop: `1px solid ${Colors.BLACK}`,
+    color: isActive ? Colors.VEGA_YELLOW : Colors.TEXT_COLOR
+  })
+  return (
+    <aside
+      style={{
+        display: 'grid',
+        gridTemplateRows: '1fr min-content',
+        height: '100%',
+        background: Colors.DARK_GRAY_2,
+        overflowY: 'auto'
+      }}
+    >
+      <div>{wallet?.auth ? <KeyPairList /> : <WalletList />}</div>
+      <nav>
+        <NavLink style={navlinkStyles} to='/wallet/create'>
+          Create new wallet
+        </NavLink>
+        <NavLink style={navlinkStyles} to='/wallet/import'>
+          Import wallet
+        </NavLink>
+      </nav>
+    </aside>
+  )
 }
 
 function WalletList() {
@@ -50,13 +63,7 @@ function WalletList() {
 
   function handleUnlock(wallet: Wallet) {
     if (!wallet.auth) {
-      dispatch(
-        getKeysAction(wallet.name, success => {
-          if (success) {
-            navigate(wallet.name)
-          }
-        })
-      )
+      dispatch(getKeysAction(wallet.name))
     } else {
       navigate(wallet.name)
     }
@@ -85,9 +92,6 @@ function WalletList() {
           />
         ))}
       </ul>
-      <div style={{ padding: 20 }}>
-        <AddButtons />
-      </div>
     </>
   )
 }
@@ -132,12 +136,13 @@ function KeyPairList() {
           <SidebarListItem key={kp.publicKey}>
             <div>
               <NavLink
-                to={`keypair/${kp.publicKey}`}
-                style={{
+                to={`/wallet/${wallet.name}/keypair/${kp.publicKey}`}
+                style={({ isActive }) => ({
                   display: 'block',
                   padding: 20,
-                  textDecoration: 'none'
-                }}
+                  textDecoration: 'none',
+                  color: isActive ? Colors.VEGA_YELLOW : Colors.TEXT_COLOR
+                })}
               >
                 <span style={{ display: 'block' }}>{kp.name}</span>
                 <span
@@ -174,7 +179,7 @@ function WalletListItem({ wallet, onUnlock }: WalletListItemProps) {
   return (
     <SidebarListItem key={wallet.name}>
       <NavLink
-        to={wallet.name}
+        to={`/wallet/${wallet.name}`}
         onClick={() => onUnlock(wallet)}
         style={{
           display: 'flex',
@@ -214,38 +219,6 @@ function KeypairLockStatus({ wallet }: KeypairLockStatusProps) {
           Locked <Lock style={iconStyles} />
         </>
       )}
-    </div>
-  )
-}
-
-function AddButtons() {
-  const navigate = useNavigate()
-  return (
-    <div style={{ marginTop: 20 }}>
-      <ButtonGroup orientation='vertical'>
-        {[
-          {
-            path: Paths.WalletCreate,
-            text: 'Create new',
-            testId: 'create-new-wallet'
-          },
-          {
-            path: Paths.WalletImport,
-            text: 'Import by recovery phrase',
-            testId: 'import-wallet'
-          }
-        ].map(route => {
-          return (
-            <Button
-              data-testid={route.testId}
-              key={route.path}
-              onClick={() => navigate(route.path)}
-            >
-              {route.text}
-            </Button>
-          )
-        })}
-      </ButtonGroup>
     </div>
   )
 }

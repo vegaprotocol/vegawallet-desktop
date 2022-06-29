@@ -9,6 +9,7 @@ import { KeyValueTable } from '../../components/key-value-table'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
 import { addDecimal } from '../../lib/number'
+import { truncateMiddle } from '../../lib/truncate-middle'
 import { Paths } from '../'
 
 export function WalletKeyPair() {
@@ -27,10 +28,15 @@ export function WalletKeyPair() {
     <div
       style={{
         display: 'grid',
-        gridTemplateRows: '1fr min-content',
+        gridTemplateRows: 'min-content 1fr min-content',
         height: '100%'
       }}
     >
+      <div style={{ padding: 20 }}>
+        <Header style={{ margin: 0 }}>
+          {wallet.name} : {truncateMiddle(keypair.publicKey)} : {keypair.name}
+        </Header>
+      </div>
       <div style={{ padding: 20 }}>
         <Header style={{ marginTop: 0 }}>Details</Header>
         <KeyValueTable

@@ -23,9 +23,7 @@ import { WalletImport } from './wallet-import'
 export enum Paths {
   Home = '/',
   Onboard = '/onboard',
-  Wallet = '/wallet',
-  WalletCreate = '/wallet-create',
-  WalletImport = '/wallet-import'
+  Wallet = '/wallet'
 }
 
 // Nested paths DONT have '/'
@@ -67,17 +65,17 @@ export const AppRouter = () => {
       ]
     },
     {
-      path: Paths.WalletCreate,
-      element: <WalletCreate />
-    },
-    {
-      path: Paths.WalletImport,
-      element: <WalletImport />
-    },
-    {
       path: Paths.Wallet,
       element: <Wallet />,
       children: [
+        {
+          path: 'create',
+          element: <WalletCreate />
+        },
+        {
+          path: 'import',
+          element: <WalletImport />
+        },
         {
           path: ':wallet',
           element: (
