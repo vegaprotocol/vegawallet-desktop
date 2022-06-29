@@ -68,13 +68,7 @@ export const Sign = () => {
   const { sign, signedData, setSignedData } = useSign(pubkey, wallet)
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateRows: 'min-content 1fr min-content',
-        height: '100%'
-      }}
-    >
+    <div>
       <div style={{ padding: 20 }}>
         <Header style={{ margin: 0 }}>Sign</Header>
       </div>
@@ -118,11 +112,6 @@ export const Sign = () => {
             </Button>
           </form>
         )}
-      </div>
-      <div style={{ padding: 20 }}>
-        <Link to={`/wallet/${wallet}/keypair/${pubkey}`}>
-          <Button>Back</Button>
-        </Link>
       </div>
     </div>
   )

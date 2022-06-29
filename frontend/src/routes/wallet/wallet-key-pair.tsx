@@ -6,7 +6,6 @@ import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { Header } from '../../components/header'
 import { KeyValueTable } from '../../components/key-value-table'
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
 import { addDecimal } from '../../lib/number'
@@ -49,22 +48,7 @@ export function WalletKeyPair() {
       </div>
       <div style={{ padding: 20 }}>
         <ButtonGroup>
-          {[
-            {
-              path: Paths.Wallet,
-              text: 'Back'
-            },
-            {
-              path: `sign`,
-              text: 'Sign'
-            }
-          ].map(route => {
-            return (
-              <Button key={route.path} onClick={() => navigate(route.path)}>
-                {route.text}
-              </Button>
-            )
-          })}
+          <Button onClick={() => navigate('sign')}>Sign</Button>
         </ButtonGroup>
       </div>
     </div>

@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate, useRoutes } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import {
@@ -13,13 +14,36 @@ import { truncateMiddle } from '../../lib/truncate-middle'
 import { Paths } from '../../routes'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
+import { Header } from '../header'
 import { Lock } from '../icons/lock'
 import { Unlock } from '../icons/unlock'
 
 export function ChromeSidebar() {
+  const routes = useRoutes([
+    {
+      path: Paths.Wallet,
+      element: <Outlet />,
+      children: [
+        {
+          element: <WalletList />,
+          index: true
+        },
+        {
+          path: ':wallet/*',
+          element: <KeyPairList />
+        }
+      ]
+    }
+  ])
+
+  return <aside style={{ background: Colors.DARK_GRAY_2 }}>{routes}</aside>
+}
+
+function WalletList() {
   const navigate = useNavigate()
   const {
-    state: { wallets, wallet },
+    state: { wallets },
     dispatch
   } = useGlobal()
 
@@ -28,42 +52,42 @@ export function ChromeSidebar() {
       dispatch(
         getKeysAction(wallet.name, success => {
           if (success) {
-            navigate(`wallet/${wallet.name}`)
+            navigate(wallet.name)
           }
         })
       )
-    }
-  }
-
-  function handleLock(wallet: Wallet) {
-    if (wallet.auth) {
-      dispatch(deactivateWalletAction(wallet.name))
-      navigate(Paths.Wallet)
+    } else {
+      navigate(wallet.name)
     }
   }
 
   return (
-    <aside style={{ background: Colors.DARK_GRAY_2 }}>
-      {wallet?.auth ? (
-        <KeyPairList />
-      ) : (
-        <>
-          <ul>
-            {wallets.map(wallet => (
-              <WalletListItem
-                key={wallet.name}
-                wallet={wallet}
-                onUnlock={handleUnlock}
-                onLock={handleLock}
-              />
-            ))}
-          </ul>
-          <div style={{ padding: 20 }}>
-            <AddButtons />
-          </div>
-        </>
-      )}
-    </aside>
+    <>
+      <div style={{ padding: 20 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <Header style={{ margin: 0 }}>Select wallet</Header>
+          <ButtonUnstyled onClick={() => navigate(-1)}>Back</ButtonUnstyled>
+        </div>
+      </div>
+      <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
+        {wallets.map(wallet => (
+          <WalletListItem
+            key={wallet.name}
+            wallet={wallet}
+            onUnlock={handleUnlock}
+          />
+        ))}
+      </ul>
+      <div style={{ padding: 20 }}>
+        <AddButtons />
+      </div>
+    </>
   )
 }
 
@@ -74,30 +98,56 @@ function KeyPairList() {
     dispatch
   } = useGlobal()
 
+  function handleLock(wallet: Wallet) {
+    if (wallet.auth) {
+      dispatch(deactivateWalletAction(wallet.name))
+      navigate(Paths.Wallet)
+    }
+  }
+
   if (!wallet?.keypairs?.length) {
-    return <p>No keypairs. TODO: Generate one</p>
+    // wallet.tsx will redirect to appropriate place
+    return null
   }
 
   return (
     <>
-      <ul>
+      <div style={{ padding: 20 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <Header style={{ margin: 0 }}>Select key pair</Header>
+          <ButtonUnstyled onClick={() => handleLock(wallet)}>
+            Lock
+          </ButtonUnstyled>
+        </div>
+      </div>
+      <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
         {wallet.keypairs.map(kp => (
-          <li
-            key={kp.publicKey}
-            style={{
-              padding: 20,
-              background: Colors.DARK_GRAY_2,
-              borderBottom: `1px solid ${Colors.BLACK}`,
-              cursor: 'pointer'
-            }}
-            tabIndex={0}
-            onClick={() =>
-              navigate(`/wallet/${wallet.name}/keypair/${kp.publicKey}`)
-            }
-          >
-            <div>{kp.name}</div>
-            <div>{truncateMiddle(kp.publicKey)}</div>
-          </li>
+          <SidebarListItem key={kp.publicKey}>
+            <NavLink
+              to={`keypair/${kp.publicKey}`}
+              style={{
+                display: 'block',
+                padding: 20,
+                textDecoration: 'none'
+              }}
+            >
+              <span style={{ display: 'block' }}>{kp.name}</span>
+              <span
+                style={{
+                  display: 'block',
+                  color: Colors.TEXT_COLOR_DEEMPHASISE
+                }}
+              >
+                {truncateMiddle(kp.publicKey)}
+              </span>
+            </NavLink>
+          </SidebarListItem>
         ))}
       </ul>
       <div style={{ padding: 20 }}>
@@ -114,51 +164,26 @@ function KeyPairList() {
 interface WalletListItemProps {
   wallet: Wallet
   onUnlock: (wallet: Wallet) => void
-  onLock: (wallet: Wallet) => void
 }
 
-function WalletListItem({ wallet, onUnlock, onLock }: WalletListItemProps) {
-  const [hover, setHover] = useState(false)
-
-  const getBgColor = (wallet: Wallet) => {
-    if (wallet.auth) {
-      return Colors.DARK_GRAY_2
-    }
-
-    if (hover) {
-      return Colors.DARK_GRAY_3
-    }
-
-    return 'none'
-  }
-
+function WalletListItem({ wallet, onUnlock }: WalletListItemProps) {
   return (
-    <li
-      data-testid='wallet-list'
-      key={wallet.name}
-      tabIndex={0}
-      onClick={() => onUnlock(wallet)}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        padding: 20,
-        background: getBgColor(wallet),
-        cursor: wallet.auth ? 'default' : 'pointer',
-        borderBottom: `1px solid ${Colors.BLACK}`
-      }}
-    >
-      <div
+    <SidebarListItem key={wallet.name}>
+      <NavLink
+        to={wallet.name}
+        onClick={() => onUnlock(wallet)}
         style={{
-          flex: 1,
           display: 'flex',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
+          width: '100%',
+          padding: 20,
+          textDecoration: 'none'
         }}
       >
         <span>{wallet.name}</span>
         <KeypairLockStatus wallet={wallet} />
-      </div>
-      {/* {wallet.auth && <WalletDetail wallet={wallet} onLock={onLock} />} */}
-    </li>
+      </NavLink>
+    </SidebarListItem>
   )
 }
 
@@ -218,5 +243,33 @@ function AddButtons() {
         })}
       </ButtonGroup>
     </div>
+  )
+}
+
+interface SidebarListItemProps {
+  children: ReactNode
+}
+
+function SidebarListItem({ children }: SidebarListItemProps) {
+  const [hover, setHover] = useState(false)
+  const getBgColor = () => {
+    if (hover) {
+      return Colors.DARK_GRAY_3
+    }
+
+    return 'none'
+  }
+  return (
+    <li
+      data-testid='wallet-list'
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        background: getBgColor(),
+        borderBottom: `1px solid ${Colors.BLACK}`
+      }}
+    >
+      {children}
+    </li>
   )
 }

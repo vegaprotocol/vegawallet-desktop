@@ -80,7 +80,11 @@ export const AppRouter = () => {
       children: [
         {
           path: ':wallet',
-          element: <div style={{ padding: 20 }}>Wallet</div>
+          element: (
+            <div style={{ padding: 20 }}>
+              <p>Select a key</p>
+            </div>
+          )
         },
         {
           path: ':wallet/keypair/:pubkey',
@@ -89,6 +93,14 @@ export const AppRouter = () => {
         {
           path: ':wallet/keypair/:pubkey/sign',
           element: <Sign />
+        },
+        {
+          index: true,
+          element: (
+            <div style={{ padding: 20 }}>
+              <p>Select a wallet</p>
+            </div>
+          )
         }
       ]
     },
