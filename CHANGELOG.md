@@ -1,6 +1,21 @@
 # Changelog
 
-## ## 0.2.1
+## Unreleased 0.3.0
+
+### 🚨 Breaking changes
+- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+
+### 🗑️ Deprecation
+- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+
+### 🛠 Improvements
+- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx - 
+
+### 🐛 Fixes
+- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+
+
+## 0.2.1
 
 ### 🐛 Fixes
 - [252](https://github.com/vegaprotocol/vegawallet-desktop/issues/252) - Do not crash on Windows when creating log files
