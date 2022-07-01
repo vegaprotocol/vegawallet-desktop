@@ -11,7 +11,8 @@ import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { Checkbox } from '../checkbox'
 import { FormGroup } from '../form-group'
-import { Select } from '../select'
+import { Select } from '../forms'
+import { Input } from '../forms/input'
 
 interface FormFields {
   name: string
@@ -124,7 +125,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
             intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
             helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}
           >
-            <input
+            <Input
               id='fileOrUrl'
               type='text'
               data-testid='url-path'
@@ -143,7 +144,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
                 : 'Uses name specified in the config by default'
             }
           >
-            <input
+            <Input
               data-testid='network-name'
               type='text'
               id='name'

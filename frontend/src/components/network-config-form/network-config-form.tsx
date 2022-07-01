@@ -8,7 +8,8 @@ import { Validation } from '../../lib/form-validation'
 import type { Network } from '../../wailsjs/go/models'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
-import { Select } from '../select'
+import { Select } from '../forms'
+import { Input } from '../forms/input'
 
 interface FormFields {
   logLevel: string
@@ -63,7 +64,7 @@ export const NetworkConfigForm = ({
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.host?.message}
       >
-        <input
+        <Input
           data-testid='service-host'
           type='text'
           {...register('host', {
@@ -78,7 +79,7 @@ export const NetworkConfigForm = ({
         intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.port?.message}
       >
-        <input
+        <Input
           data-testid='service-port'
           type='number'
           {...register('port', {
@@ -94,7 +95,7 @@ export const NetworkConfigForm = ({
         intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.consoleUrl?.message}
       >
-        <input
+        <Input
           data-testid='console-url'
           type='text'
           {...register('consoleUrl', {
@@ -108,7 +109,7 @@ export const NetworkConfigForm = ({
         intent={errors.consolePort?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.consolePort?.message}
       >
-        <input
+        <Input
           data-testid='console-port'
           type='number'
           {...register('consolePort', {
@@ -123,7 +124,7 @@ export const NetworkConfigForm = ({
         intent={errors.tokenDAppUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenDAppUrl?.message}
       >
-        <input
+        <Input
           data-testid='token-url'
           type='text'
           {...register('tokenDAppUrl', {
@@ -137,7 +138,7 @@ export const NetworkConfigForm = ({
         intent={errors.tokenDAppPort?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenDAppPort?.message}
       >
-        <input
+        <Input
           data-testid='token-port'
           type='number'
           {...register('tokenDAppPort', {
@@ -175,7 +176,7 @@ export const NetworkConfigForm = ({
         intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.grpcNodeRetries?.message}
       >
-        <input
+        <Input
           data-testid='node-retries'
           type='number'
           {...register('grpcNodeRetries', {
@@ -191,7 +192,7 @@ export const NetworkConfigForm = ({
         intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenExpiry?.message}
       >
-        <input
+        <Input
           data-testid='token-expiry'
           type='text'
           {...register('tokenExpiry', {
@@ -228,7 +229,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
               key={field.id}
               style={{ display: 'flex', gap: 10, marginBottom: 5 }}
             >
-              <input
+              <Input
                 data-testid='node-list'
                 type='text'
                 {...register(`${name}.${i}.value` as any)}

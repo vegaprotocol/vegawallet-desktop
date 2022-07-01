@@ -6,6 +6,7 @@ import { Button } from '../../components/button'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { FormGroup } from '../../components/form-group'
+import { Textarea } from '../../components/forms/textarea'
 import { Header } from '../../components/header'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
@@ -102,10 +103,10 @@ export const Sign = () => {
               labelFor='message'
               helperText={errors.message?.message}
             >
-              <textarea
+              <Textarea
                 data-testid='message-field'
                 {...register('message', { required: 'Required' })}
-              ></textarea>
+              />
             </FormGroup>
             <Button data-testid='sign' type='submit'>
               Sign

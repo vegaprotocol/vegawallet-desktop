@@ -59,7 +59,10 @@ function KeyPairList() {
           }}
         >
           <Header style={{ margin: 0 }}>Select key pair</Header>
-          <ButtonUnstyled onClick={() => handleLock(wallet)}>
+          <ButtonUnstyled
+            onClick={() => handleLock(wallet)}
+            style={{ fontSize: 14 }}
+          >
             Lock
           </ButtonUnstyled>
         </div>

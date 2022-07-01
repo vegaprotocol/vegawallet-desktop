@@ -8,6 +8,7 @@ import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
+import { Input } from '../forms/input'
 
 interface ModalHandler {
   open: Function
@@ -72,7 +73,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         helperText={errors.passphrase?.message}
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
       >
-        <input
+        <Input
           data-testid='input-passphrase'
           type='password'
           autoComplete='off'

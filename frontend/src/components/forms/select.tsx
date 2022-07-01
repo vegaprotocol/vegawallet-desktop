@@ -2,6 +2,7 @@ import type { ForwardedRef, SelectHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 
 import { Colors } from '../../config/colors'
+import { defaultStyles } from './styles'
 
 type SelectProps = SelectHTMLAttributes<HTMLSelectElement>
 
@@ -11,7 +12,15 @@ export const Select = forwardRef(
   ({ style, ...props }: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
     return (
       <div style={{ position: 'relative' }}>
-        <select {...props} ref={ref} style={{ ...style, paddingRight: 20 }} />
+        <select
+          {...props}
+          ref={ref}
+          style={{
+            ...defaultStyles,
+            ...style,
+            paddingRight: 20
+          }}
+        />
         <span
           style={{
             position: 'absolute',

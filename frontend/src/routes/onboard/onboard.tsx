@@ -6,6 +6,7 @@ import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { FormGroup } from '../../components/form-group'
+import { Input } from '../../components/forms/input'
 import { Header } from '../../components/header'
 import { Vega } from '../../components/icons'
 import { NetworkImportForm } from '../../components/network-import-form'
@@ -222,7 +223,7 @@ export function OnboardSettings() {
           labelFor='vegaHome'
           helperText='Leave blank to use default'
         >
-          <input type='text' {...register('vegaHome')} />
+          <Input type='text' {...register('vegaHome')} />
         </FormGroup>
         <ButtonGroup>
           <Button type='submit' loading={loading}>
