@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { useMemo } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
 import { Chrome } from '../../components/chrome'
 import { Splash } from '../../components/splash'
@@ -9,7 +9,7 @@ import { createClient } from '../../lib/apollo-client'
 
 export const Wallet = () => {
   const {
-    state: { networkConfig }
+    state: { wallet, networkConfig }
   } = useGlobal()
 
   const client = useMemo(() => {
@@ -22,6 +22,10 @@ export const Wallet = () => {
 
     return createClient(datanode)
   }, [networkConfig])
+
+  if (!wallet) {
+    return <Navigate to='/' />
+  }
 
   if (!client) {
     return (

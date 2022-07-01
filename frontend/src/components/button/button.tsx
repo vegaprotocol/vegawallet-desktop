@@ -37,7 +37,7 @@ export const Button = React.forwardRef(
       background: hover ? Colors.WHITE : 'transparent',
       color: hover ? Colors.BLACK : Colors.WHITE,
       border: `1px solid ${Colors.WHITE}`,
-      borderRadius: 0,
+      borderRadius: 2,
       cursor: 'pointer',
       fontSize: 16,
       padding: '7px 17px',

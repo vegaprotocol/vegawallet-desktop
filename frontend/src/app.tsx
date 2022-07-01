@@ -81,12 +81,8 @@ interface AppFrameProps {
  * drag the app window aroung. Also renders the vega-bg className if onboard mode
  */
 function AppFrame({ children }: AppFrameProps) {
-  const isHome = useMatch('/')
-  const {
-    state: { status }
-  } = useGlobal()
-  const isOnboard = status === AppStatus.Onboarding
-  const useVegaBg = isHome || isOnboard
+  const walletMatch = useMatch('/wallet/*')
+  const useVegaBg = !Boolean(walletMatch)
   return (
     <div
       style={{

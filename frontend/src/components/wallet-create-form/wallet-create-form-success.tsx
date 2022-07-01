@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Colors } from '../../config/colors'
 import type { CreateWalletResponse } from '../../wailsjs/go/models'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
@@ -21,9 +22,8 @@ export function WalletCreateFormSuccess({
     <>
       <Callout
         title='Warning'
-        className='vega-bg'
-        style={{ background: 'image-set()', backgroundSize: 'cover' }}
         icon={<Warning style={{ width: 15, height: 15 }} />}
+        style={{ color: Colors.BLACK, background: Colors.WHITE }}
       >
         <p data-testid='wallet-warning'>
           Save your recovery phrase now, you will need it to recover your

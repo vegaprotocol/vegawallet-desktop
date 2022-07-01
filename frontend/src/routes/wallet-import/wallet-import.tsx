@@ -2,7 +2,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Header } from '../../components/header'
+import { Splash } from '../../components/splash'
 import { WalletImportForm } from '../../components/wallet-import-form'
+import { Colors } from '../../config/colors'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { Paths } from '../'
 
@@ -17,9 +19,13 @@ export const WalletImport = () => {
   }, [response, navigate])
 
   return (
-    <div style={{ padding: 20 }}>
-      <Header style={{ marginTop: 0 }}>Import wallet</Header>
+    <Splash>
+      <Header
+        style={{ marginTop: 0, color: Colors.WHITE, textAlign: 'center' }}
+      >
+        Import wallet
+      </Header>
       <WalletImportForm submit={submit} cancel={() => navigate(Paths.Wallet)} />
-    </div>
+    </Splash>
   )
 }

@@ -1,6 +1,8 @@
 import type { HTMLAttributes } from 'react'
 import React from 'react'
 
+import { Colors } from '../../config/colors'
+
 interface SplashProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
@@ -21,10 +23,15 @@ export function Splash({ children, style, ...props }: SplashProps) {
         alignItems: 'center',
         padding: 20,
         overflowY: 'auto',
+        color: Colors.WHITE,
         ...style
       }}
     >
-      <div style={{ marginTop: '13%' }}>{children}</div>
+      <div
+        style={{ width: 360, maxWidth: '100%', marginTop: '13%', padding: 20 }}
+      >
+        {children}
+      </div>
     </div>
   )
 }

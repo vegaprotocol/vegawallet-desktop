@@ -11,51 +11,20 @@ import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
 import { truncateMiddle } from '../../lib/truncate-middle'
-import { Paths } from '../../routes'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
-import { Lock } from '../icons/lock'
-import { Unlock } from '../icons/unlock'
 
 export function ChromeSidebar() {
-  const navlinkStyles = ({ isActive }: { isActive: boolean }) => ({
-    display: 'block',
-    padding: 20,
-    textDecoration: 'none',
-    borderTop: `1px solid ${Colors.BLACK}`,
-    color: isActive ? Colors.VEGA_YELLOW : Colors.TEXT_COLOR
-  })
   return (
     <aside
       style={{
-        display: 'grid',
-        gridTemplateRows: '1fr min-content',
-        height: '100%',
         background: Colors.DARK_GRAY_2,
         overflowY: 'auto'
       }}
     >
-      <div>
-        <KeyPairList />
-      </div>
-      <nav>
-        <NavLink
-          style={navlinkStyles}
-          data-testid='create-new-wallet'
-          to='/wallet/create'
-        >
-          Create new wallet
-        </NavLink>
-        <NavLink
-          style={navlinkStyles}
-          data-testid='import-wallet'
-          to='/wallet/import'
-        >
-          Import wallet
-        </NavLink>
-      </nav>
+      <KeyPairList />
     </aside>
   )
 }
@@ -126,44 +95,14 @@ function KeyPairList() {
         ))}
       </ul>
       <div style={{ padding: 20 }}>
-        <ButtonGroup orientation='vertical'>
-          <Button onClick={() => dispatch(addKeypairAction(wallet.name))}>
-            Generate key pair
-          </Button>
-        </ButtonGroup>
+        <Button
+          style={{ width: '100%' }}
+          onClick={() => dispatch(addKeypairAction(wallet.name))}
+        >
+          Generate key pair
+        </Button>
       </div>
     </>
-  )
-}
-
-interface WalletListItemProps {
-  wallet: Wallet
-  onUnlock: (wallet: Wallet) => void
-}
-interface KeypairLockStatusProps {
-  wallet: Wallet
-}
-
-function KeypairLockStatus({ wallet }: KeypairLockStatusProps) {
-  const iconStyles: React.CSSProperties = {
-    position: 'relative',
-    top: -2,
-    width: 12,
-    height: 12
-  }
-
-  return (
-    <div>
-      {wallet.auth ? (
-        <>
-          Unlocked <Unlock style={iconStyles} />
-        </>
-      ) : (
-        <>
-          Locked <Lock style={iconStyles} />
-        </>
-      )}
-    </div>
   )
 }
 

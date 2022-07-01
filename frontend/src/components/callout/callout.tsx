@@ -30,7 +30,7 @@ export function Callout({
     <div style={{ ...defaultStyle, ...style }} {...htmlProps}>
       {icon && <span>{icon}</span>}
       <div className='callout__content'>
-        {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
+        {title && <h4 style={{ marginTop: 0, color: 'inherit' }}>{title}</h4>}
         {React.Children.map(children, (child, i) => {
           return React.cloneElement(child as React.ReactElement, {
             style: {

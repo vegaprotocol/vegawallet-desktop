@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 
+import { Center } from '../components/center'
 import { Home } from './home'
 import {
   Onboard,
@@ -41,9 +42,19 @@ export const AppRouter = () => {
         <Route path='network' element={<OnboardNetwork />} />
       </Route>
       <Route path='/wallet/:wallet' element={<Wallet />}>
-        <Route index={true} element={<div>Select a key</div>} />
+        <Route
+          index={true}
+          element={
+            <Center>
+              <p>Select a key</p>
+            </Center>
+          }
+        />
         <Route path='keypair/:pubkey' element={<WalletKeyPair />} />
+        <Route path='keypair/:pubkey/sign' element={<Sign />} />
       </Route>
+      <Route path='/wallet-create' element={<WalletCreate />} />
+      <Route path='/wallet-import' element={<WalletImport />} />
     </Routes>
   )
 }

@@ -137,7 +137,7 @@ export function OnboardHome() {
   }
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <>
       <Header style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
         <Vega />
       </Header>
@@ -175,7 +175,7 @@ export function OnboardHome() {
         </ButtonUnstyled>
       </p>
       {version && <p>version {version}</p>}
-    </div>
+    </>
   )
 }
 

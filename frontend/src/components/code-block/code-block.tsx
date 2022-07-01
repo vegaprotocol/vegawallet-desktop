@@ -15,7 +15,8 @@ export function CodeBlock({ children, style, ...props }: CodeBlockProps) {
         display: 'block',
         fontFamily: '"Roboto Mono", monospace',
         padding: '10px 30px 10px 15px',
-        background: Colors.DARK_GRAY_2,
+        background: 'transparent',
+        border: `1px solid ${Colors.WHITE}`,
         overflow: 'auto',
         ...style
       }}
