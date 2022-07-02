@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Intent } from '../../config/intent'
@@ -27,6 +27,7 @@ interface FormFields {
 }
 
 export function PassphraseModal() {
+  const [loading, setLoading] = useState(false)
   const { state, dispatch } = useGlobal()
 
   // Register handler.open to open the passphrase modal
@@ -37,18 +38,30 @@ export function PassphraseModal() {
   }, [dispatch])
 
   function onSubmit(passphrase: string) {
+    setLoading(true)
     handler.resolve(passphrase)
-    dispatch(setPassphraseModalAction(false))
+
+    // Show spinner and prevent modal closing before route change which causes
+    // causes some slight jankiness.
+    setTimeout(() => {
+      dispatch(setPassphraseModalAction(false))
+      setLoading(false)
+    }, 600)
   }
 
   function close() {
     handler.close()
     dispatch(setPassphraseModalAction(false))
+    setLoading(false)
   }
 
   return (
     <Dialog open={state.passphraseModalOpen}>
-      <PassphraseModalForm onSubmit={onSubmit} onCancel={close} />
+      <PassphraseModalForm
+        onSubmit={onSubmit}
+        onCancel={close}
+        loading={loading}
+      />
     </Dialog>
   )
 }
@@ -56,9 +69,14 @@ export function PassphraseModal() {
 interface PassphraseModalFormProps {
   onSubmit: (passphrase: string) => void
   onCancel: () => void
+  loading: boolean
 }
 
-function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
+function PassphraseModalForm({
+  onSubmit,
+  onCancel,
+  loading
+}: PassphraseModalFormProps) {
   const {
     register,
     handleSubmit,
@@ -82,7 +100,7 @@ function PassphraseModalForm({ onSubmit, onCancel }: PassphraseModalFormProps) {
         />
       </FormGroup>
       <div style={{ display: 'flex', gap: 10 }}>
-        <Button data-testid='input-submit' type='submit'>
+        <Button data-testid='input-submit' type='submit' loading={loading}>
           Submit
         </Button>
         <Button data-testid='input-cancel' onClick={onCancel}>

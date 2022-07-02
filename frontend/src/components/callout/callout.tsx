@@ -22,8 +22,7 @@ export function Callout({
     display: 'flex',
     gap: 15,
     background: IntentBackgrounds[intent],
-    padding: '15px 20px',
-    marginBottom: 15
+    padding: '15px 20px'
   }
   const childrenLength = React.Children.toArray(children).length
   return (

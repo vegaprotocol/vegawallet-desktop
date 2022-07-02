@@ -12,7 +12,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { Button } from '../button'
-import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 

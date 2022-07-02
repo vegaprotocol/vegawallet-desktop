@@ -28,7 +28,7 @@ export function Splash({ children, style, ...props }: SplashProps) {
       }}
     >
       <div
-        style={{ width: 360, maxWidth: '100%', marginTop: '13%', padding: 20 }}
+        style={{ width: 375, maxWidth: '100%', marginTop: '13%', padding: 20 }}
       >
         {children}
       </div>

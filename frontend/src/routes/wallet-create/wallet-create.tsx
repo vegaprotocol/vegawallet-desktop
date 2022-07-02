@@ -29,10 +29,7 @@ export const WalletCreate = () => {
           }
         />
       ) : (
-        <WalletCreateForm
-          submit={submit}
-          cancel={() => navigate(Paths.Wallet)}
-        />
+        <WalletCreateForm submit={submit} cancel={() => navigate(-1)} />
       )}
     </Splash>
   )
