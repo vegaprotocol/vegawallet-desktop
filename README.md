@@ -124,7 +124,7 @@ Get API reference documentation and learn more about how Vega works.
 
 Read a quick-start guide for tips on using the desktop wallet app.
 
-**[Feedback](https://docs.vega.xyz/docs/mainnet/tools/vega-wallet/desktop-app/latest/getting-started)**
+**[Feedback](https://github.com/vegaprotocol/feedback/discussions/categories/vega-wallets)**
 
 Raise issues and see what others have raised.
 
