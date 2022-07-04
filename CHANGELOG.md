@@ -13,7 +13,7 @@
 
 ### 🐛 Fixes
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
-
+- [257](https://github.com/vegaprotocol/vegawallet-desktop/issues/257) - Update readme with more/improved links
 
 ## 0.2.1
 
