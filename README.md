@@ -1,6 +1,10 @@
-# vegawallet-desktop
+# Vega Wallet desktop app
 
-vegawallet-desktop is a graphical desktop application of Vega Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/) for Windows, MacOS and Linux.
+The Vega Wallet desktop app provides a graphical user interface for Vega Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/) for Windows, MacOS and Linux.
+
+[Latest release](https://github.com/vegaprotocol/vegawallet-desktop/releases): Download the latest release from the releases section.
+
+[Wallet documentation](https://docs.vega.xyz/docs/mainnet/tools/vega-wallet/desktop-app/latest/getting-started): Read the quick-start guide for tips on using the desktop wallet app. 
 
 ## Development
 
@@ -114,13 +118,13 @@ npm run test
 
 **[Documentation](https://docs.vega.xyz/)**
 
-Get API reference documentation, learn more about how Vega works, and explore sample scripts for API trading
+Get API reference documentation and learn more about how Vega works.
 
-**[Wallet documentation](https://docs.vega.xyz/docs/tools/vega-wallet/desktop-app)**
+**[Wallet documentation](https://docs.vega.xyz/docs/mainnet/tools/vega-wallet/desktop-app)**
 
-Learn about how Vega interacts with wallets.
+Read a quick-start guide for tips on using the desktop wallet app.
 
-**[Nolt](https://vega-testnet.nolt.io/)**
+**[Feedback](https://github.com/vegaprotocol/feedback/discussions/categories/vega-wallets)**
 
 Raise issues and see what others have raised.
 
