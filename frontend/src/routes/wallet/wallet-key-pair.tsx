@@ -85,12 +85,14 @@ function AccountsTable({ publicKey }: AccountsTableProps) {
     <>
       {entries.map(([id, accounts]) => {
         return (
-          <div key={id}>
-            <h3>{accounts[0].asset.symbol}</h3>
+          <div key={id} style={{ marginBottom: 20 }}>
+            <Header style={{ fontSize: 14, margin: 0 }}>
+              {accounts[0].asset.symbol}
+            </Header>
             <KeyValueTable
               rows={accounts.map(a => {
                 return {
-                  key: `${a.asset.symbol} ${a.type}`,
+                  key: a.type,
                   value: addDecimal(a.balance, a.asset.decimals)
                 }
               })}

@@ -29,7 +29,7 @@ const logger = createLogger('Onboard')
 
 export function Onboard() {
   return (
-    <Splash>
+    <Splash style={{ textAlign: 'center' }}>
       <Outlet />
     </Splash>
   )
@@ -123,7 +123,7 @@ export function OnboardHome() {
 
     return (
       <>
-        <p>{message}</p>
+        <p style={{ marginBottom: 20 }}>{message}</p>
         <ButtonGroup>
           <Button
             loading={loading === 'existing'}
@@ -322,11 +322,9 @@ export function OnboardPanel({ children, title, back }: OnboardPanelProps) {
   return (
     <div
       style={{
-        width: '90vw',
-        minWidth: 352,
-        maxWidth: 520,
         background: Colors.BLACK,
-        border: `1px solid ${Colors.LIGHT_GRAY_3}`
+        border: `1px solid ${Colors.LIGHT_GRAY_3}`,
+        textAlign: 'left'
       }}
     >
       <div
