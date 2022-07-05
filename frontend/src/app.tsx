@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import type { ErrorInfo, ReactNode } from 'react'
+import { Component, useEffect } from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
 import { HashRouter as Router, useMatch } from 'react-router-dom'
@@ -12,6 +13,7 @@ import { initAppAction } from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
+import { createLogger } from './lib/logging'
 import { AppRouter } from './routes'
 
 /**
@@ -40,7 +42,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
 
   if (status === AppStatus.Failed) {
     return (
-      <Splash>
+      <Splash style={{ textAlign: 'center' }}>
         <p>Failed to initialise</p>
       </Splash>
     )
@@ -54,17 +56,19 @@ function AppLoader({ children }: { children: React.ReactNode }) {
  */
 function App() {
   return (
-    <Router>
-      <GlobalProvider>
-        <AppFrame>
-          <AppLoader>
-            <AppRouter />
-            <PassphraseModal />
-            <TransactionManager />
-          </AppLoader>
-        </AppFrame>
-      </GlobalProvider>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <GlobalProvider>
+          <AppFrame>
+            <AppLoader>
+              <AppRouter />
+              <PassphraseModal />
+              <TransactionManager />
+            </AppLoader>
+          </AppFrame>
+        </GlobalProvider>
+      </Router>
+    </ErrorBoundary>
   )
 }
 
@@ -109,4 +113,39 @@ function AppFrame({ children }: AppFrameProps) {
       {children}
     </div>
   )
+}
+
+const logger = createLogger('Errorboundary')
+
+class ErrorBoundary extends Component<
+  { children: ReactNode },
+  { error: Error | null }
+> {
+  state = {
+    error: null
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    logger.error(error, errorInfo.componentStack)
+  }
+
+  render() {
+    const { error } = this.state
+
+    if (error) {
+      return (
+        <Splash style={{ textAlign: 'center' }}>
+          <p style={{ marginBottom: 20 }}>Something went wrong</p>
+          {/* @ts-ignore */}
+          <p>{error.message}</p>
+        </Splash>
+      )
+    }
+
+    return this.props.children
+  }
 }
