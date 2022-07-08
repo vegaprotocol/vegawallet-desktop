@@ -26,8 +26,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         className='vega-border-image'
         style={{
           position: 'relative',
-          display: 'grid',
-          gridTemplateColumns: isWide ? `${SIDEBAR_WIDTH}px 1fr` : '1fr',
+          display: isWide ? 'grid' : 'block',
+          gridTemplateColumns: `${SIDEBAR_WIDTH}px 1fr`,
           paddingBottom: DRAWER_HEIGHT,
           height: '100%',
           background: Colors.DARK_GRAY_1,
