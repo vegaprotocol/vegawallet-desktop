@@ -1,25 +1,20 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import { BreakText } from '../../components/break-text'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { Header } from '../../components/header'
 import { KeyValueTable } from '../../components/key-value-table'
-import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
+import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { addDecimal } from '../../lib/number'
-import { truncateMiddle } from '../../lib/truncate-middle'
 import { Paths } from '../'
 
 export function WalletKeyPair() {
   const navigate = useNavigate()
-  const {
-    state: { wallet }
-  } = useGlobal()
-  const { pubkey } = useParams<{ pubkey: string }>()
-  const keypair = wallet?.keypairs?.find(kp => kp.publicKey === pubkey)
+  const { keypair } = useCurrentKeypair()
 
-  if (!keypair || !wallet) {
+  if (!keypair) {
     return <Navigate to={Paths.Wallet} />
   }
 
@@ -31,11 +26,6 @@ export function WalletKeyPair() {
         height: '100%'
       }}
     >
-      <div style={{ padding: 20 }}>
-        <Header style={{ margin: 0 }}>
-          {wallet.name} : {truncateMiddle(keypair.publicKey)} : {keypair.name}
-        </Header>
-      </div>
       <div style={{ padding: 20 }}>
         <Header style={{ marginTop: 0 }}>Details</Header>
         <KeyValueTable

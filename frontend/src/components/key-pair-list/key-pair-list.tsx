@@ -15,20 +15,7 @@ import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 
-export function ChromeSidebar() {
-  return (
-    <aside
-      style={{
-        background: Colors.DARK_GRAY_2,
-        overflowY: 'auto'
-      }}
-    >
-      <KeyPairList />
-    </aside>
-  )
-}
-
-function KeyPairList() {
+export function KeyPairList() {
   const navigate = useNavigate()
   const {
     state: { wallet },
