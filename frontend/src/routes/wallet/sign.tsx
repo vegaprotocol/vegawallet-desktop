@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button } from '../../components/button'
+import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { FormGroup } from '../../components/form-group'
@@ -59,6 +60,7 @@ const useSign = (pubKey?: string, wallet?: string) => {
 }
 
 export const Sign = () => {
+  const navigate = useNavigate()
   const { wallet, pubkey } = useParams<{ wallet: string; pubkey: string }>()
   const {
     register,
@@ -108,9 +110,12 @@ export const Sign = () => {
                 {...register('message', { required: 'Required' })}
               />
             </FormGroup>
-            <Button data-testid='sign' type='submit'>
-              Sign
-            </Button>
+            <ButtonGroup>
+              <Button onClick={() => navigate(-1)}>Cancel</Button>
+              <Button data-testid='sign' type='submit'>
+                Sign
+              </Button>
+            </ButtonGroup>
           </form>
         )}
       </div>
