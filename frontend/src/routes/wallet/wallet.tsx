@@ -18,12 +18,13 @@ export const Wallet = () => {
     state: { wallet, networks, networkConfig },
     dispatch
   } = useGlobal()
-  const [client, setClient] = useState<ApolloClient<any> | null>(null)
+  // false for explicit no node found and null for initial state
+  const [client, setClient] = useState<ApolloClient<any> | null | false>(null)
 
   useEffect(() => {
     let mounted = true
 
-    const safeSetClient = (client: ApolloClient<any> | null) => {
+    const safeSetClient = (client: ApolloClient<any> | null | false) => {
       if (mounted) {
         setClient(client)
       }
@@ -34,11 +35,11 @@ export const Wallet = () => {
         const index = await findDatanode(networkConfig?.api.graphQl.hosts)
         const datanode = networkConfig?.api.graphQl.hosts[index]
         if (!datanode) {
-          safeSetClient(null)
+          safeSetClient(false)
         }
         safeSetClient(createClient(datanode))
       } catch (err) {
-        safeSetClient(null)
+        safeSetClient(false)
       }
     })()
 
@@ -51,7 +52,7 @@ export const Wallet = () => {
     return <Navigate to='/' />
   }
 
-  if (!client) {
+  if (client === false) {
     return (
       <Splash style={{ textAlign: 'center' }}>
         <p style={{ marginBottom: 20 }}>
@@ -72,6 +73,11 @@ export const Wallet = () => {
         </Select>
       </Splash>
     )
+  }
+
+  // If null initial data node connect is being attempted
+  if (client === null) {
+    return null
   }
 
   return (

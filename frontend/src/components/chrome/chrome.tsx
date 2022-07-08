@@ -1,33 +1,24 @@
-import * as Dialog from '@radix-ui/react-dialog'
 import React, { useState } from 'react'
-import { animated, config, useTransition } from 'react-spring'
 
 import { Colors } from '../../config/colors'
+import type { KeyPair } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useWindowSize } from '../../hooks/use-window-size'
-import { truncateMiddle } from '../../lib/truncate-middle'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
-import { KeyPairList } from '../key-pair-list'
 import { ChromeDrawer } from './chrome-drawer'
+import { ChromeSidebar, SIDEBAR_WIDTH } from './chrome-sidebar'
 
 export const DRAWER_HEIGHT = 70
-const SIDEBAR_WIDTH = 320
 
 /**
  * Handles app layout for main content, sidebar and footer
  */
 export function Chrome({ children }: { children: React.ReactNode }) {
-  const { wallet, keypair } = useCurrentKeypair()
-  const [open, setOpen] = useState(false)
+  const { keypair } = useCurrentKeypair()
   const { width } = useWindowSize()
+  const [sidebar, setSidebar] = useState(false)
   const isWide = width > 900
-  const transitions = useTransition(open, {
-    from: { opacity: 0, x: -SIDEBAR_WIDTH },
-    enter: { opacity: 1, x: 0 },
-    leave: { opacity: 0, x: -SIDEBAR_WIDTH },
-    config: { ...config.default, duration: 170 }
-  })
 
   return (
     <>
@@ -44,84 +35,65 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         }}
         data-testid='app-chrome'
       >
-        {isWide ? (
-          <aside
-            style={{
-              background: Colors.DARK_GRAY_2,
-              overflowY: 'auto'
-            }}
-          >
-            <KeyPairList />
-          </aside>
-        ) : (
-          <Dialog.Root open={open} onOpenChange={setOpen}>
-            {transitions((styles, item) =>
-              item ? (
-                <>
-                  <Dialog.Overlay forceMount asChild>
-                    <animated.div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        bottom: 0,
-                        left: 0,
-                        height: '100%',
-                        background: 'rgba(54, 54, 54 ,0.8)',
-                        opacity: styles.opacity
-                      }}
-                    />
-                  </Dialog.Overlay>
-                  <Dialog.Content forceMount asChild>
-                    <animated.div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: 320,
-                        height: '100%',
-                        paddingBottom: DRAWER_HEIGHT,
-                        background: Colors.DARK_GRAY_2,
-                        translateX: styles.x
-                      }}
-                    >
-                      <KeyPairList onSelect={() => setOpen(false)} />
-                    </animated.div>
-                  </Dialog.Content>
-                </>
-              ) : null
-            )}
-          </Dialog.Root>
-        )}
+        <ChromeSidebar open={sidebar} setOpen={setSidebar} isWide={isWide} />
         <div
           style={{
             height: '100%',
             overflowY: 'auto'
           }}
         >
-          <div style={{ padding: 20 }}>
-            <Header
-              style={{ display: 'flex', alignItems: 'center', margin: 0 }}
-            >
-              {!isWide && (
-                <ButtonUnstyled
-                  style={{ marginRight: 10 }}
-                  onClick={() => setOpen(x => !x)}
-                >
-                  Wallet
-                </ButtonUnstyled>
-              )}
-              <span>
-                {wallet && wallet.name}
-                {keypair &&
-                  ` : ${truncateMiddle(keypair.publicKey)} : ${keypair.name}`}
-              </span>
-            </Header>
-          </div>
+          <MainHeader
+            keypair={keypair}
+            isWide={isWide}
+            setSidebar={setSidebar}
+          />
           <main>{children}</main>
         </div>
       </div>
       <ChromeDrawer />
     </>
+  )
+}
+
+interface MainHeaderProps {
+  keypair: KeyPair | undefined
+  isWide: boolean
+  setSidebar: (open: boolean) => void
+}
+
+function MainHeader({ keypair, isWide, setSidebar }: MainHeaderProps) {
+  return (
+    <Header
+      style={{ display: 'flex', alignItems: 'start', margin: 0, padding: 20 }}
+    >
+      <span style={{ flex: 1 }}>
+        {!isWide && (
+          <ButtonUnstyled
+            style={{ marginRight: 10 }}
+            onClick={() => setSidebar(true)}
+          >
+            Wallet
+          </ButtonUnstyled>
+        )}
+      </span>
+      <span style={{ flex: 1, textAlign: 'center' }}>
+        {keypair && (
+          <>
+            <div
+              style={{
+                color: Colors.WHITE,
+                fontSize: 20
+              }}
+            >
+              {keypair.name}
+            </div>
+            <div style={{ textTransform: 'initial' }}>
+              {keypair.publicKeyShort}
+            </div>
+          </>
+        )}
+      </span>
+      <span style={{ flex: 1 }} />
+    </Header>
   )
 }

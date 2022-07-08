@@ -1,37 +1,23 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
-import {
-  addKeypairAction,
-  deactivateWalletAction
-} from '../../contexts/global/global-actions'
-import type { Wallet } from '../../contexts/global/global-context'
+import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { Button } from '../button'
-import { ButtonUnstyled } from '../button-unstyled'
-import { Header } from '../header'
 
 interface KeyPairListProps {
   onSelect?: (pubkey: string) => void
 }
 
 export function KeyPairList({ onSelect }: KeyPairListProps) {
-  const navigate = useNavigate()
   const {
     state: { wallet },
     dispatch
   } = useGlobal()
-
-  function handleLock(wallet: Wallet) {
-    if (wallet.auth) {
-      dispatch(deactivateWalletAction(wallet.name))
-      navigate('/')
-    }
-  }
 
   if (!wallet?.keypairs?.length) {
     // wallet.tsx will redirect to appropriate place
@@ -40,23 +26,6 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
 
   return (
     <>
-      <div style={{ padding: 20 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Header style={{ margin: 0 }}>Select key pair</Header>
-          <ButtonUnstyled
-            onClick={() => handleLock(wallet)}
-            style={{ fontSize: 14 }}
-          >
-            Lock
-          </ButtonUnstyled>
-        </div>
-      </div>
       <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
         {wallet.keypairs.map(kp => (
           <SidebarListItem key={kp.publicKey}>
