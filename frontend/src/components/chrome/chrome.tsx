@@ -4,6 +4,7 @@ import { animated, config, useTransition } from 'react-spring'
 
 import { Colors } from '../../config/colors'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
+import { useWindowSize } from '../../hooks/use-window-size'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
@@ -19,7 +20,8 @@ const SIDEBAR_WIDTH = 320
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { wallet, keypair } = useCurrentKeypair()
   const [open, setOpen] = useState(false)
-  const isWide = window.innerWidth > 900
+  const { width } = useWindowSize()
+  const isWide = width > 900
   const transitions = useTransition(open, {
     from: { opacity: 0, x: -SIDEBAR_WIDTH },
     enter: { opacity: 1, x: 0 },
@@ -83,7 +85,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
                         translateX: styles.x
                       }}
                     >
-                      <KeyPairList />
+                      <KeyPairList onSelect={() => setOpen(false)} />
                     </animated.div>
                   </Dialog.Content>
                 </>

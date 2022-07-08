@@ -15,7 +15,11 @@ import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 
-export function KeyPairList() {
+interface KeyPairListProps {
+  onSelect?: (pubkey: string) => void
+}
+
+export function KeyPairList({ onSelect }: KeyPairListProps) {
   const navigate = useNavigate()
   const {
     state: { wallet },
@@ -61,6 +65,11 @@ export function KeyPairList() {
                 to={`/wallet/${wallet.name.replace(' ', '-')}/keypair/${
                   kp.publicKey
                 }`}
+                onClick={() => {
+                  if (typeof onSelect === 'function') {
+                    onSelect(kp.publicKey)
+                  }
+                }}
                 style={({ isActive }) => ({
                   display: 'block',
                   padding: 20,
