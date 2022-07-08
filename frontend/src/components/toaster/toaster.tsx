@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { animated, config, useTransition } from 'react-spring'
 
 import type { Intent } from '../../config/intent'
 import { Toast as ToastComponent } from './toast'
@@ -84,13 +85,47 @@ export class Toaster extends React.Component<any, ToasterState> {
     }
 
     return (
-      <>
-        {this.state.toasts.map(t => (
-          <ToastComponent key={t.id} onDismiss={this.handleDismiss} {...t} />
-        ))}
-      </>
+      <ToasterAnimationHandler
+        toasts={this.state.toasts}
+        handleDismiss={this.handleDismiss}
+      />
     )
   }
 }
 
 export const AppToaster = Toaster.create()
+
+interface ToasterAnimationHandlerProps {
+  toasts: Toast[]
+  handleDismiss: (toast: Toast) => void
+}
+
+function ToasterAnimationHandler({
+  toasts,
+  handleDismiss
+}: ToasterAnimationHandlerProps) {
+  const height = 49
+  const transitions = useTransition(toasts, {
+    from: () => ({ y: -height, opacity: 0 }),
+    enter: (t, i) => ({ opacity: 1, y: i * height }),
+    update: (t, i) => ({ opacity: 1, y: i * height }),
+    leave: (t, i) => ({ y: (i - 1) * height, opacity: 0 }),
+    config: { ...config.default, duration: 170 }
+  })
+
+  return transitions((styles, t) => {
+    return (
+      <animated.div
+        key={t.id}
+        style={{
+          position: 'absolute',
+          overflow: 'hidden',
+          paddingTop: 15,
+          ...styles
+        }}
+      >
+        <ToastComponent key={t.id} onDismiss={handleDismiss} {...t} />
+      </animated.div>
+    )
+  })
+}

@@ -1,6 +1,4 @@
-import './toast.css'
-
-import React from 'react'
+import { useEffect, useRef } from 'react'
 
 import { Colors, IntentBackgrounds } from '../../config/colors'
 import { Intent } from '../../config/intent'
@@ -23,7 +21,7 @@ export function Toast({
   intent = Intent.NONE,
   timeout = 3000
 }: ToastProps) {
-  const timeoutRef = React.useRef<any>()
+  const timeoutRef = useRef<any>()
 
   const startTimeout = () => {
     if (timeout && timeout > 0) {
@@ -45,7 +43,7 @@ export function Toast({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     startTimeout()
     return () => {
       cancelTimeout()
@@ -59,10 +57,7 @@ export function Toast({
         background: Colors.BLACK,
         borderRadius: 2,
         maxWidth: '90vw',
-        margin: '15px 0 0 0',
         overflow: 'hidden',
-        animation: 'drop .3s ease',
-        animationFillMode: 'forwards',
         pointerEvents: 'all' // Re enable pointer events as overlay container disables
       }}
     >
