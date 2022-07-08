@@ -37,16 +37,7 @@ export function useImportWallet() {
           setResponse(resp)
           dispatch(addWalletAction(values.wallet, resp.key))
           AppToaster.show({
-            message: (
-              <div>
-                <p>Wallet imported to:</p>
-                <p>
-                  <CodeBlock style={{ background: 'transparent' }}>
-                    {resp.wallet.filePath}
-                  </CodeBlock>
-                </p>
-              </div>
-            ),
+            message: `Wallet imported to: ${resp.wallet.filePath}`,
             intent: Intent.SUCCESS,
             timeout: 0
           })

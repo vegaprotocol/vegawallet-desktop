@@ -14,7 +14,7 @@ export const WalletImport = () => {
 
   React.useEffect(() => {
     if (response) {
-      navigate(Paths.Wallet)
+      navigate(Paths.Home)
     }
   }, [response, navigate])
 

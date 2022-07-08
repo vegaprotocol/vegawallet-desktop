@@ -236,10 +236,11 @@ export function globalReducer(
       const newWallet: Wallet = {
         name: action.wallet,
         keypairs: [keypairExtended],
-        auth: false
+        auth: true
       }
       return {
         ...state,
+        wallet: newWallet,
         wallets: [...state.wallets, newWallet].sort(sortWallet)
       }
     }
