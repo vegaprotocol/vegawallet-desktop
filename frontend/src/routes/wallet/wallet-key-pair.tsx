@@ -19,13 +19,7 @@ export function WalletKeyPair() {
   }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateRows: 'min-content 1fr min-content',
-        height: '100%'
-      }}
-    >
+    <>
       <div style={{ padding: 20 }}>
         <Header style={{ marginTop: 0 }}>Details</Header>
         <KeyValueTable
@@ -46,7 +40,7 @@ export function WalletKeyPair() {
           <Button onClick={() => navigate('sign')}>Sign</Button>
         </ButtonGroup>
       </div>
-    </div>
+    </>
   )
 }
 

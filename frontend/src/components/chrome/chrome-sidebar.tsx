@@ -9,7 +9,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Cross } from '../icons/cross'
 import { KeyPairList } from '../key-pair-list'
-import { DRAWER_HEIGHT } from './chrome'
 
 export const SIDEBAR_WIDTH = 375
 
@@ -21,16 +20,10 @@ interface ChromeSidebarProps {
 
 export function ChromeSidebar({ isWide, open, setOpen }: ChromeSidebarProps) {
   return isWide ? (
-    <aside
-      style={{
-        background: Colors.DARK_GRAY_2,
-        borderRight: `1px solid ${Colors.BLACK}`,
-        overflowY: 'auto'
-      }}
-    >
+    <>
       <SidebarHeader />
       <KeyPairList />
-    </aside>
+    </>
   ) : (
     <SidebarDialog open={open} setOpen={setOpen} />
   )
@@ -76,7 +69,6 @@ function SidebarDialog({ open, setOpen }: SidebarDialogProps) {
                     left: 0,
                     width: SIDEBAR_WIDTH,
                     height: '100%',
-                    paddingBottom: DRAWER_HEIGHT,
                     background: Colors.DARK_GRAY_2,
                     borderRight: `1px solid ${Colors.BLACK}`,
                     translateX: styles.x

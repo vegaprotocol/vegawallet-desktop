@@ -16,7 +16,7 @@ export const DRAWER_HEIGHT = 70
  */
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { keypair } = useCurrentKeypair()
-  const { width } = useWindowSize()
+  const { width, height } = useWindowSize()
   const [sidebar, setSidebar] = useState(false)
   const isWide = width > 900
 
@@ -26,8 +26,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         className='vega-border-image'
         style={{
           position: 'relative',
-          display: isWide ? 'grid' : 'block',
-          gridTemplateColumns: `${SIDEBAR_WIDTH}px 1fr`,
+          display: 'grid',
+          gridTemplateColumns: isWide ? `${SIDEBAR_WIDTH}px 1fr` : '1fr',
           paddingBottom: DRAWER_HEIGHT,
           height: '100%',
           background: Colors.DARK_GRAY_1,
@@ -35,8 +35,16 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         }}
         data-testid='app-chrome'
       >
-        <ChromeSidebar open={sidebar} setOpen={setSidebar} isWide={isWide} />
-        <div
+        <aside
+          style={{
+            background: Colors.DARK_GRAY_2,
+            borderRight: `1px solid ${Colors.BLACK}`,
+            overflowY: 'auto'
+          }}
+        >
+          <ChromeSidebar open={sidebar} setOpen={setSidebar} isWide={isWide} />
+        </aside>
+        <main
           style={{
             height: '100%',
             overflowY: 'auto'
@@ -47,10 +55,20 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             isWide={isWide}
             setSidebar={setSidebar}
           />
-          <main>{children}</main>
-        </div>
+          {children}
+        </main>
       </div>
-      <ChromeDrawer />
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: DRAWER_HEIGHT
+        }}
+      >
+        <ChromeDrawer height={height} />
+      </div>
     </>
   )
 }
