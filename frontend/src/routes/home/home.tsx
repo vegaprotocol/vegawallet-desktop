@@ -24,7 +24,7 @@ export const Home = () => {
   }
 
   return (
-    <Splash>
+    <Splash data-testid='home-splash'>
       <Header
         style={{
           margin: '0 0 30px 0',
@@ -34,25 +34,34 @@ export const Home = () => {
       >
         <Vega />
       </Header>
-      <ButtonGroup orientation='vertical'>
-        {wallets.map(w => (
-          <Button
-            onClick={() => {
-              dispatch(getKeysAction(w.name))
-            }}
-            key={w.name}
-          >
-            {w.name}
-          </Button>
-        ))}
-      </ButtonGroup>
-      <p style={{ margin: '20px 0', textAlign: 'center' }}>OR</p>
+      {wallets.length > 0 && (
+        <>
+          <ButtonGroup orientation='vertical'>
+            {wallets.map(w => (
+              <Button
+                onClick={() => {
+                  dispatch(getKeysAction(w.name))
+                }}
+                data-testid={`wallet-${w.name.replace(' ', '-')}`}
+                key={w.name}
+              >
+                {w.name}
+              </Button>
+            ))}
+          </ButtonGroup>
+          <p style={{ margin: '20px 0', textAlign: 'center' }}>OR</p>
+        </>
+      )}
       <ButtonGroup orientation='vertical'>
         <Link to='/wallet-create'>
-          <Button style={{ width: '100%' }}>Create wallet</Button>
+          <Button data-testid='create-new-wallet' style={{ width: '100%' }}>
+            Create wallet
+          </Button>
         </Link>
         <Link to='/wallet-import'>
-          <Button style={{ width: '100%' }}>Import wallet</Button>
+          <Button data-testid='import-wallet' style={{ width: '100%' }}>
+            Import wallet
+          </Button>
         </Link>
       </ButtonGroup>
     </Splash>
