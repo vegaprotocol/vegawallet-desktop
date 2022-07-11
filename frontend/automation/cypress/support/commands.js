@@ -54,39 +54,6 @@ Cypress.Commands.add('restoreNetwork', (handler, name) => {
   })
 })
 
-// Cypress.Commands.add('restoreNetworks', () => {
-//   const vegaHome = Cypress.env('vegaHome')
-//   cy.log('restoreNetworks', vegaHome)
-//   cy.clean()
-//   cy.visit('/')
-
-//   return (
-//     cy
-//       .window()
-//       // Init wallet with local vega home
-//       .then(async win => {
-//         const handler = win.go.backend.Handler
-
-//         // First initialise app with local frontend directory
-//         await handler.InitialiseApp({
-//           vegaHome
-//         })
-
-//         await handler.ImportNetwork({
-//           url: Cypress.env('testnetConfigUrl'),
-//           name: 'fairground'
-//         })
-//         await handler.ImportNetwork({
-//           url: Cypress.env('mainnetConfigUrl'),
-//           name: 'mainnet1'
-//         })
-//       })
-//       .then(() => {
-//         cy.reload()
-//       })
-//   )
-// })
-
 Cypress.Commands.add('sendTransaction', transaction => {
   const sendTransaction = async () => {
     const baseUrl = Cypress.env('walletServiceUrl')

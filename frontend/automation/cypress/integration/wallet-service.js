@@ -14,7 +14,7 @@ describe('wallet service', () => {
       })
       .then(() => {
         cy.reload()
-        cy.getByTestId('app-frame').should('exist')
+        cy.getByTestId('home-splash', { timeout: 20000 }).should('exist')
       })
   })
 

@@ -7,7 +7,7 @@ describe('onboarding', () => {
       })
       .then(() => {
         cy.reload()
-        cy.getByTestId('app-frame').should('exist')
+        cy.getByTestId('home-splash', { timeout: 20000 }).should('exist')
       })
     cy.visit('/#/onboard')
   })
@@ -28,6 +28,8 @@ describe('onboarding', () => {
     cy.getByTestId('onboard-import-network-button').click()
     cy.getByTestId('import-network-select').select('fairground')
     cy.getByTestId('import').click()
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100)
     cy.getByTestId('toast').first().contains('Network imported to:')
   })
 
