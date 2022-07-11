@@ -19,7 +19,6 @@ const logger = createLogger('GlobalActions')
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
-    console.time('init')
     logger.debug('StartApp')
 
     let isInit
@@ -76,7 +75,6 @@ export function initAppAction() {
         Service.GetTokenDAppState()
       ])
 
-      console.timeEnd('init')
       dispatch({
         type: 'INIT_APP',
         isInit: true,
