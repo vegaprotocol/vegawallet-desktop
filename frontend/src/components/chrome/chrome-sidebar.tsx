@@ -119,6 +119,7 @@ function SidebarHeader({ close }: SidebarHeaderProps) {
       <ButtonUnstyled
         onClick={() => handleLock(wallet)}
         style={{ fontSize: 14 }}
+        data-testid='log-out'
       >
         Log out
       </ButtonUnstyled>
@@ -128,6 +129,7 @@ function SidebarHeader({ close }: SidebarHeaderProps) {
           fontSize: 20,
           textTransform: 'uppercase'
         }}
+        data-testid='wallet-name'
       >
         {wallet.name}
       </span>

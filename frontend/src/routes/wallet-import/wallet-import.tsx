@@ -25,7 +25,7 @@ export const WalletImport = () => {
       >
         Import wallet
       </Header>
-      <WalletImportForm submit={submit} cancel={() => navigate(Paths.Wallet)} />
+      <WalletImportForm submit={submit} cancel={() => navigate(Paths.Home)} />
     </Splash>
   )
 }

@@ -23,7 +23,7 @@ import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
-import { OnboardPaths, Paths } from '..'
+import { Paths } from '..'
 
 const logger = createLogger('Onboard')
 
@@ -70,7 +70,7 @@ export function OnboardHome() {
         // Add wallets and networks to state
         dispatch({ type: 'ADD_WALLETS', wallets: onboarding.wallets })
       } else {
-        navigate(OnboardPaths.WalletCreate)
+        navigate('/onboard/wallet-create')
         return
       }
 
@@ -91,7 +91,7 @@ export function OnboardHome() {
           networkConfig: defaultNetworkConfig
         })
       } else {
-        navigate(OnboardPaths.Network)
+        navigate('/onboard/network')
         return
       }
 
@@ -150,7 +150,7 @@ export function OnboardHome() {
           onClick={async () => {
             setLoading('create')
             await initialiseWithDefaultHome()
-            navigate(OnboardPaths.WalletCreate)
+            navigate('/onboard/wallet-create')
           }}
         >
           Create new wallet
@@ -161,7 +161,7 @@ export function OnboardHome() {
           onClick={async () => {
             setLoading('import')
             await initialiseWithDefaultHome()
-            navigate(OnboardPaths.WalletImport)
+            navigate('/onboard/wallet-import')
           }}
         >
           Use recovery phrase
@@ -170,7 +170,7 @@ export function OnboardHome() {
       <p>
         <ButtonUnstyled
           data-testid='advanced-options'
-          onClick={() => navigate(OnboardPaths.Settings)}
+          onClick={() => navigate('/onboard/settings')}
         >
           Advanced options
         </ButtonUnstyled>
@@ -253,7 +253,7 @@ export function OnboardWalletCreate() {
             <Button
               onClick={() => {
                 if (!onboarding.networks.length) {
-                  navigate(OnboardPaths.Network)
+                  navigate('/onboard/network')
                 } else {
                   dispatch(completeOnboardAction(() => navigate(Paths.Home)))
                 }
@@ -282,7 +282,7 @@ export function OnboardWalletImport() {
   React.useEffect(() => {
     if (response) {
       if (!onboarding.networks.length) {
-        navigate(OnboardPaths.Network)
+        navigate('/onboard/network')
       } else {
         dispatch(completeOnboardAction(() => navigate(Paths.Home)))
       }
@@ -305,7 +305,7 @@ export function OnboardNetwork() {
   }, [dispatch, navigate])
 
   return (
-    <OnboardPanel title='Import a network' back={OnboardPaths.WalletCreate}>
+    <OnboardPanel title='Import a network' back={'/onboard/wallet-create'}>
       <NetworkImportForm onComplete={onComplete} />
     </OnboardPanel>
   )

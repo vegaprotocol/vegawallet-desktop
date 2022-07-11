@@ -65,6 +65,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
         <Button
           style={{ width: '100%' }}
           onClick={() => dispatch(addKeypairAction(wallet.name))}
+          data-testid='generate-keypair'
         >
           Generate key pair
         </Button>

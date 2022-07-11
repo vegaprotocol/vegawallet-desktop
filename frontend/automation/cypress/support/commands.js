@@ -8,75 +8,84 @@ Cypress.Commands.add('clean', () => {
   return cy.exec('npm run clean')
 })
 
-Cypress.Commands.add('setVegaHome', () => {
-  const vegaHome = Cypress.env('vegaHome')
-  cy.log('setVegaHome', vegaHome)
-  cy.clean()
-  cy.visit('/#')
-  return cy
-    .window()
-    .then(async win => {
-      const handler = win.go.backend.Handler
-      await handler.InitialiseApp({
-        vegaHome
-      })
-    })
-    .then(() => {
-      cy.reload()
-    })
+Cypress.Commands.add('backend', () => {
+  cy.visit('/')
+  return cy.window().then(win => {
+    return win.go.backend.Handler
+  })
 })
 
-Cypress.Commands.add('restoreWallet', () => {
+Cypress.Commands.add('setVegaHome', handler => {
+  return handler.InitialiseApp({
+    vegaHome: Cypress.env('vegaHome')
+  })
+})
+
+Cypress.Commands.add('restoreWallet', handler => {
   const passphrase = '123'
-  const vegaHome = Cypress.env('vegaHome')
-
-  cy.log('restoreWallet', vegaHome)
-
-  // Clear any existing wallets
-  cy.clean()
-
-  // Visit a page so that the window object is bootstrapped with backend functions
-  cy.visit('#/wallet')
-
-  return (
-    cy
-      .window()
-      // Init wallet with local vega home
-      .then(async win => {
-        const handler = win.go.backend.Handler
-
-        // First initialise app with local frontend directory
-        await handler.InitialiseApp({
-          vegaHome
-        })
-        // Import wallet using known recovery phrase setting
-        const res = await handler.ImportWallet({
-          wallet: 'test',
-          recoveryPhrase:
-            'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
-          version: 2,
-          passphrase
-        })
-
-        // Store env vars for later use in tests and then import a network
-        Cypress.env('testWalletPassphrase', passphrase)
-        Cypress.env('testWalletName', res.wallet.name)
-        Cypress.env('testWalletPublicKey', res.key.publicKey)
-
-        await handler.ImportNetwork({
-          url: Cypress.env('testnetConfigUrl'),
-          name: 'fairground'
-        })
-        await handler.ImportNetwork({
-          url: Cypress.env('mainnetConfigUrl'),
-          name: 'mainnet1'
-        })
-      })
-      .then(() => {
-        cy.reload()
-      })
-  )
+  return handler
+    .ImportWallet({
+      wallet: 'test',
+      recoveryPhrase:
+        'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
+      version: 2,
+      passphrase
+    })
+    .then(res => {
+      // Store env vars for later use in tests and then import a network
+      Cypress.env('testWalletPassphrase', passphrase)
+      Cypress.env('testWalletName', res.wallet.name)
+      Cypress.env('testWalletPublicKey', res.key.publicKey)
+    })
 })
+
+Cypress.Commands.add('restoreNetwork', (handler, name) => {
+  if (name !== 'fairground' && name !== 'mainnet1') {
+    throw new Error('Must provide fairground or mainnet1')
+  }
+
+  const url =
+    name === 'mainnet1'
+      ? Cypress.env('mainnetConfigUrl')
+      : Cypress.env('testnetConfigUrl')
+  return handler.ImportNetwork({
+    url,
+    name
+  })
+})
+
+// Cypress.Commands.add('restoreNetworks', () => {
+//   const vegaHome = Cypress.env('vegaHome')
+//   cy.log('restoreNetworks', vegaHome)
+//   cy.clean()
+//   cy.visit('/')
+
+//   return (
+//     cy
+//       .window()
+//       // Init wallet with local vega home
+//       .then(async win => {
+//         const handler = win.go.backend.Handler
+
+//         // First initialise app with local frontend directory
+//         await handler.InitialiseApp({
+//           vegaHome
+//         })
+
+//         await handler.ImportNetwork({
+//           url: Cypress.env('testnetConfigUrl'),
+//           name: 'fairground'
+//         })
+//         await handler.ImportNetwork({
+//           url: Cypress.env('mainnetConfigUrl'),
+//           name: 'mainnet1'
+//         })
+//       })
+//       .then(() => {
+//         cy.reload()
+//       })
+//   )
+// })
 
 Cypress.Commands.add('sendTransaction', transaction => {
   const sendTransaction = async () => {

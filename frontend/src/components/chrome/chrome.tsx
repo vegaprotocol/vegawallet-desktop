@@ -33,7 +33,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           background: Colors.DARK_GRAY_1,
           borderTop: '3px solid'
         }}
-        data-testid='app-chrome'
       >
         <aside
           style={{

@@ -37,7 +37,9 @@ export function WalletKeyPair() {
       </div>
       <div style={{ padding: 20 }}>
         <ButtonGroup>
-          <Button onClick={() => navigate('sign')}>Sign</Button>
+          <Button onClick={() => navigate('sign')} data-testid='sign-page'>
+            Sign
+          </Button>
         </ButtonGroup>
       </div>
     </>

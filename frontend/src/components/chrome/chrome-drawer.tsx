@@ -28,7 +28,9 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
       style={{
         translateY: styles.y,
         background: Colors.BLACK,
-        borderTop: '3px solid'
+        borderTop: '3px solid',
+        height: height - APP_FRAME_HEIGHT,
+        overflowY: state.drawerOpen ? 'auto' : 'hidden'
       }}
     >
       <DrawerContent />

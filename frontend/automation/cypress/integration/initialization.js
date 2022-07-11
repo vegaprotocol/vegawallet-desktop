@@ -1,14 +1,34 @@
+const { unlockWallet } = require('../support/helpers')
+
 describe('app config', () => {
+  before(() => {
+    cy.clean()
+    cy.backend()
+      .then(handler => {
+        cy.setVegaHome(handler)
+        cy.restoreNetwork(handler, 'mainnet1')
+        cy.restoreNetwork(handler, 'fairground') // restore second network for switching
+        cy.restoreWallet(handler)
+      })
+      .then(() => {
+        cy.reload()
+        cy.getByTestId('app-frame').should('exist')
+      })
+  })
+
   it('persists selected network', () => {
-    cy.restoreWallet().then(() => {
-      cy.getByTestId('wallet-list').should('have.length', 1)
-    })
+    const passphrase = Cypress.env('testWalletPassphrase')
+    const walletName = Cypress.env('testWalletName')
+
+    unlockWallet(`wallet-${walletName}`, passphrase)
     assertNetwork('fairground')
     changeNetwork('mainnet1')
     cy.reload()
+    unlockWallet(`wallet-${walletName}`, passphrase)
     assertNetwork('mainnet1')
     changeNetwork('fairground')
     cy.reload()
+    unlockWallet(`wallet-${walletName}`, passphrase)
     assertNetwork('fairground')
 
     function changeNetwork(network) {

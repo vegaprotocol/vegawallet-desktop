@@ -25,6 +25,7 @@ export function WalletCreateFormSuccess({
           title='Warning'
           icon={<Warning style={{ width: 15, height: 15 }} />}
           style={{ color: Colors.BLACK, background: Colors.WHITE }}
+          data-testid='recovery-phrase-warning'
         >
           <p data-testid='wallet-warning'>
             Save your recovery phrase now, you will need it to recover your
@@ -45,7 +46,9 @@ export function WalletCreateFormSuccess({
           style={{ position: 'relative' }}
           data-testid='wallet-recovery-phrase'
         >
-          <CodeBlock>{response.wallet.recoveryPhrase}</CodeBlock>
+          <CodeBlock data-testid='recovery-phrase'>
+            {response.wallet.recoveryPhrase}
+          </CodeBlock>
           <span style={{ position: 'absolute', top: 7, right: 10 }}>
             <CopyWithTooltip text={response.wallet.recoveryPhrase}>
               <ButtonUnstyled>

@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import { Center } from '../components/center'
 import { Home } from './home'
+import { NetworkImport } from './network-import'
 import {
   Onboard,
   OnboardHome,
@@ -21,13 +22,6 @@ export enum Paths {
   Home = '/',
   Onboard = '/onboard',
   Wallet = '/wallet'
-}
-
-export enum OnboardPaths {
-  Settings = 'settings',
-  WalletCreate = 'wallet-create',
-  WalletImport = 'wallet-import',
-  Network = 'network'
 }
 
 export const AppRouter = () => {
@@ -55,6 +49,7 @@ export const AppRouter = () => {
       </Route>
       <Route path='/wallet-create' element={<WalletCreate />} />
       <Route path='/wallet-import' element={<WalletImport />} />
+      <Route path='/network-import' element={<NetworkImport />} />
     </Routes>
   )
 }

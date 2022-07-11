@@ -60,6 +60,7 @@ export function Toast({
         overflow: 'hidden',
         pointerEvents: 'all' // Re enable pointer events as overlay container disables
       }}
+      data-testid='toast'
     >
       <div
         style={{

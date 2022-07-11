@@ -25,6 +25,7 @@ export const WalletCreate = () => {
           response={response}
           callToAction={
             <Button
+              data-testid='create-wallet-success-cta'
               onClick={() => {
                 const url = `/wallet/${response.wallet.name}/keypair/${response.key.publicKey}`
                 navigate(url)

@@ -84,7 +84,10 @@ function PassphraseModalForm({
   } = useForm<FormFields>()
 
   return (
-    <form onSubmit={handleSubmit(values => onSubmit(values.passphrase))}>
+    <form
+      onSubmit={handleSubmit(values => onSubmit(values.passphrase))}
+      data-testid='passphrase-form'
+    >
       <FormGroup
         label='Passphrase'
         labelFor='passphrase'

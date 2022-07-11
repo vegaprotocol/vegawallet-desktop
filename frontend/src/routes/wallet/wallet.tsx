@@ -1,8 +1,9 @@
 import type { ApolloClient } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Link, Navigate, Outlet } from 'react-router-dom'
 
+import { Button } from '../../components/button'
 import { Chrome } from '../../components/chrome'
 import { Select } from '../../components/forms'
 import { Splash } from '../../components/splash'
@@ -55,22 +56,33 @@ export const Wallet = () => {
   if (client === false) {
     return (
       <Splash style={{ textAlign: 'center' }}>
-        <p style={{ marginBottom: 20 }}>
-          Could not find a valid data node in network configuration. Please try
-          a different network.
-        </p>
-        <Select
-          onChange={e => {
-            dispatch(changeNetworkAction(e.target.value))
-            dispatch(setDrawerAction(false))
-          }}
-        >
-          {networks.map(network => (
-            <option key={network} value={network}>
-              {network}
-            </option>
-          ))}
-        </Select>
+        {networkConfig ? (
+          <>
+            <p style={{ marginBottom: 20 }}>
+              Could not find a valid data node in network configuration. Please
+              try a different network.
+            </p>
+            <Select
+              onChange={e => {
+                dispatch(changeNetworkAction(e.target.value))
+                dispatch(setDrawerAction(false))
+              }}
+            >
+              {networks.map(network => (
+                <option key={network} value={network}>
+                  {network}
+                </option>
+              ))}
+            </Select>
+          </>
+        ) : (
+          <>
+            <p style={{ marginBottom: 20 }}>No networks found</p>
+            <Link to='/network-import'>
+              <Button>Import network</Button>
+            </Link>
+          </>
+        )}
       </Splash>
     )
   }

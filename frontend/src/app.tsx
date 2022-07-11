@@ -94,6 +94,7 @@ function AppFrame({ children }: AppFrameProps) {
         paddingTop: APP_FRAME_HEIGHT,
         backgroundSize: 'cover'
       }}
+      data-testid='app-frame'
       className={useVegaBg ? 'vega-bg' : undefined}
     >
       <div

@@ -47,16 +47,7 @@ export function useImportNetwork() {
           setResponse(res)
 
           AppToaster.show({
-            message: (
-              <div>
-                <p>Network imported to:</p>
-                <p>
-                  <CodeBlock style={{ background: 'transparent' }}>
-                    {res.filePath}
-                  </CodeBlock>
-                </p>
-              </div>
-            ),
+            message: `Network imported to: ${res.filePath}`,
             intent: Intent.SUCCESS
           })
         } else {

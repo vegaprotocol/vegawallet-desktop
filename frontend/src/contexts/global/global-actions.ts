@@ -172,6 +172,7 @@ export function getKeysAction(wallet: string) {
 
     if (selectedWallet?.keypairs) {
       dispatch({ type: 'ACTIVATE_WALLET', wallet })
+      window.location.hash = `/wallet/${wallet}/keypair/${selectedWallet.keypairs[0].publicKey}`
       logger.debug('ChangeWallet')
     } else {
       try {
