@@ -9,7 +9,10 @@ import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
 import { TransactionManager } from './components/transaction-manager'
 import { Colors } from './config/colors'
-import { initAppAction } from './contexts/global/global-actions'
+import {
+  initAppAction,
+  startServiceAction
+} from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
@@ -23,7 +26,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
   // useCheckForUpdate()
 
   const {
-    state: { status },
+    state: { status, network, networkConfig },
     dispatch
   } = useGlobal()
 
@@ -31,6 +34,12 @@ function AppLoader({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     dispatch(initAppAction())
   }, [dispatch])
+
+  useEffect(() => {
+    if (network && networkConfig) {
+      dispatch(startServiceAction())
+    }
+  }, [network, networkConfig, dispatch])
 
   if (status === AppStatus.Pending) {
     return (

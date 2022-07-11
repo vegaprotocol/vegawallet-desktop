@@ -19,6 +19,7 @@ const logger = createLogger('GlobalActions')
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
+    console.time('init')
     logger.debug('StartApp')
 
     let isInit
@@ -75,15 +76,7 @@ export function initAppAction() {
         Service.GetTokenDAppState()
       ])
 
-      if (service.running) {
-        await Service.StopService() // unlikely but stop service in case it was accidently left hanging
-      }
-
-      const canStartService = Boolean(defaultNetwork && defaultNetworkConfig)
-      if (canStartService) {
-        await Service.StartService({ network: defaultNetwork })
-      }
-
+      console.timeEnd('init')
       dispatch({
         type: 'INIT_APP',
         isInit: true,
@@ -93,7 +86,7 @@ export function initAppAction() {
         networks: networks.networks,
         networkConfig: defaultNetworkConfig,
         presetNetworks: presets,
-        startService: canStartService,
+        serviceRunning: service.running,
         console: {
           name: ProxyName.Console,
           url: consoleState.url,
@@ -325,6 +318,22 @@ export function addNetworkAction(network: string, config: Network) {
       network,
       config
     })
+  }
+}
+
+export function startServiceAction() {
+  return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+    const state = getState()
+    logger.debug('StartService')
+    try {
+      const status = await Service.GetServiceState()
+      if (!status.running && state.network && state.networkConfig) {
+        await Service.StartService({ network: state.network })
+        dispatch({ type: 'START_SERVICE', port: state.networkConfig.port })
+      }
+    } catch (err) {
+      logger.error(err)
+    }
   }
 }
 

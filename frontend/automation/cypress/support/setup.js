@@ -1,7 +1,4 @@
 before(() => {
-  // cy.setVegaHome().then(() => {
-  //   cy.getByTestId('app-frame').should('have.length', 1)
-  // })
   cy.intercept(
     'GET',
     'https://raw.githubusercontent.com/vegaprotocol/networks/master/networks.json',

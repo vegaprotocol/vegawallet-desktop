@@ -56,7 +56,7 @@ export type GlobalAction =
       networks: string[]
       networkConfig: Network | null
       presetNetworks: NetworkPreset[]
-      startService: boolean
+      serviceRunning: boolean
       console: ProxyApp
       tokenDapp: ProxyApp
     }
@@ -192,7 +192,7 @@ export function globalReducer(
         networkConfig: action.networkConfig,
         presets: action.presetNetworks,
         status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
-        serviceRunning: action.startService,
+        serviceRunning: action.serviceRunning,
         serviceUrl: action.networkConfig
           ? `http://127.0.0.1:${action.networkConfig.port}`
           : '',
