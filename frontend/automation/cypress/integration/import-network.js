@@ -103,7 +103,7 @@ describe('import network', () => {
 
   // Getting RSA keys already exist error on startup
   // for only this test
-  xit('import successfully via file path', () => {
+  it('import successfully via file path', () => {
     const url = Cypress.env('mainnetConfigUrl')
     const walletName = Cypress.env('testWalletName')
     const passphrase = Cypress.env('testWalletPassphrase')
