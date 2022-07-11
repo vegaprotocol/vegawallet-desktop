@@ -38,7 +38,7 @@ describe('transaction approval', () => {
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler, 'mainnet1')
+        cy.restoreNetwork(handler, 'fairground')
         cy.restoreWallet(handler)
       })
       .then(() => {

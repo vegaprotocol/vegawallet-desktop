@@ -93,6 +93,7 @@ Cypress.Commands.add('sendTransaction', transaction => {
     const pubKey = Cypress.env('testWalletPublicKey')
     const wallet = Cypress.env('testWalletName')
     const passphrase = Cypress.env('testWalletPassphrase')
+    console.log(pubKey)
 
     const tokenRes = await fetch(`${baseUrl}/auth/token`, {
       method: 'post',
