@@ -2,6 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
 import { animated, config, useTransition } from 'react-spring'
 
+import { APP_FRAME_HEIGHT } from '../../app'
 import { Colors } from '../../config/colors'
 import { deactivateWalletAction } from '../../contexts/global/global-actions'
 import type { Wallet } from '../../contexts/global/global-context'
@@ -9,32 +10,40 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Cross } from '../icons/cross'
 import { KeyPairList } from '../key-pair-list'
+import { DRAWER_HEIGHT } from './chrome'
 
 export const SIDEBAR_WIDTH = 375
 
 interface ChromeSidebarProps {
   open: boolean
-  setOpen: (open: boolean) => void
   isWide: boolean
+  height: number
+  setOpen: (open: boolean) => void
 }
 
-export function ChromeSidebar({ isWide, open, setOpen }: ChromeSidebarProps) {
+export function ChromeSidebar({
+  isWide,
+  open,
+  height,
+  setOpen
+}: ChromeSidebarProps) {
   return isWide ? (
     <>
       <SidebarHeader />
       <KeyPairList />
     </>
   ) : (
-    <SidebarDialog open={open} setOpen={setOpen} />
+    <SidebarDialog open={open} height={height} setOpen={setOpen} />
   )
 }
 
 interface SidebarDialogProps {
   open: boolean
+  height: number
   setOpen: (open: boolean) => void
 }
 
-function SidebarDialog({ open, setOpen }: SidebarDialogProps) {
+function SidebarDialog({ open, height, setOpen }: SidebarDialogProps) {
   const transitions = useTransition(open, {
     from: { opacity: 0, x: -SIDEBAR_WIDTH },
     enter: { opacity: 1, x: 0 },
@@ -55,7 +64,6 @@ function SidebarDialog({ open, setOpen }: SidebarDialogProps) {
                     right: 0,
                     bottom: 0,
                     left: 0,
-                    height: '100%',
                     background: 'rgba(54, 54, 54 ,0.8)',
                     opacity: styles.opacity
                   }}
@@ -68,10 +76,11 @@ function SidebarDialog({ open, setOpen }: SidebarDialogProps) {
                     top: 0,
                     left: 0,
                     width: SIDEBAR_WIDTH,
-                    height: '100%',
+                    height: height - DRAWER_HEIGHT - APP_FRAME_HEIGHT,
                     background: Colors.DARK_GRAY_2,
                     borderRight: `1px solid ${Colors.BLACK}`,
-                    translateX: styles.x
+                    translateX: styles.x,
+                    overflowY: 'auto'
                   }}
                 >
                   <SidebarHeader close={() => setOpen(false)} />

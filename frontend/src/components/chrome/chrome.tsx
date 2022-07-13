@@ -41,7 +41,12 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             overflowY: 'auto'
           }}
         >
-          <ChromeSidebar open={sidebar} setOpen={setSidebar} isWide={isWide} />
+          <ChromeSidebar
+            open={sidebar}
+            setOpen={setSidebar}
+            isWide={isWide}
+            height={height}
+          />
         </aside>
         <main
           style={{

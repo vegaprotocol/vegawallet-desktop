@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { CodeBlock } from '../components/code-block'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { addNetworkAction } from '../contexts/global/global-actions'
