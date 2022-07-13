@@ -1,3 +1,5 @@
+const { hasOperationName } = require('../support/graphql')
+
 describe('create wallet', () => {
   const walletName = 'test'
   const passphrase = '123'
@@ -125,6 +127,24 @@ describe('wallet', () => {
 describe.only('wallet - assets', () => {
   let walletName = ''
   let passphrase = ''
+  const accounts = [
+    {
+      __typename: 'Account',
+      type: 'General',
+      balance: '100',
+      market: {
+        __typename: 'Market',
+        id: 'market-id',
+        name: 'Test Market'
+      },
+      asset: {
+        __typename: 'Asset',
+        id: 'asset-id',
+        symbol: 'SYM',
+        decimals: 0
+      }
+    }
+  ]
 
   before(() => {
     cy.clean()
@@ -137,39 +157,21 @@ describe.only('wallet - assets', () => {
     }).as('nodeTest')
 
     cy.intercept('POST', url, req => {
-      if (req.body.operationName === 'Accounts') {
+      if (hasOperationName(req, 'Accounts')) {
         req.alias = 'Accounts'
         req.reply({
-          statusCode: 200,
           body: {
             data: {
               party: {
                 __typename: 'Party',
-                id: 'foo',
-                accounts: [
-                  {
-                    __typename: 'Account',
-                    type: 'General',
-                    balance: '100',
-                    market: {
-                      __typename: 'Market',
-                      id: 'market-id',
-                      name: 'Test Market'
-                    },
-                    asset: {
-                      __typename: 'Asset',
-                      id: 'asset-id',
-                      symbol: 'SYM',
-                      decimals: 0
-                    }
-                  }
-                ]
+                id: Cypress.env('testWalletPublicKey'),
+                accounts
               }
             }
           }
         })
       }
-    }).as('GQL')
+    })
 
     cy.backend()
       .then(handler => {
@@ -192,8 +194,23 @@ describe.only('wallet - assets', () => {
   it('view wallet assets', () => {
     unlockWallet(walletName, passphrase)
     cy.getByTestId('generate-keypair').should('exist')
-    cy.wait('@GQL')
-    cy.getByTestId('asset-summary').contains('1 asset')
+    cy.wait('@Accounts')
+    cy.getByTestId('asset-summary').contains(`${accounts.length} asset`)
+    cy.getByTestId('assets-table')
+      .find('dt')
+      .should('have.length', accounts.length)
+    cy.getByTestId('assets-table')
+      .find('dd')
+      .should('have.length', accounts.length)
+
+    accounts.forEach((a, i) => {
+      cy.getByTestId('assets-table')
+        .find('dt')
+        .eq(i)
+        .should('contain.text', a.type)
+        .next('dd')
+        .should('contain.text', a.balance)
+    })
   })
 })
 

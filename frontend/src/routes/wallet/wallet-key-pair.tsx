@@ -76,6 +76,7 @@ function AccountsTable({ publicKey }: AccountsTableProps) {
               {accounts[0].asset.symbol}
             </Header>
             <KeyValueTable
+              data-testid='assets-table'
               rows={accounts.map(a => {
                 return {
                   key: a.type,
