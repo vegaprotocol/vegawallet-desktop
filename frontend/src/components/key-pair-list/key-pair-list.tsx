@@ -124,5 +124,9 @@ function AssetSummary({ publicKey }: AssetSummaryProps) {
 
     return `${totalAssets} asset${totalAssets > 1 ? 's' : ''}`
   }
-  return <div style={{ padding: '0 20px 20px' }}>{renderAccountInfo()}</div>
+  return (
+    <div style={{ padding: '0 20px 20px' }} data-testid='asset-summary'>
+      {renderAccountInfo()}
+    </div>
+  )
 }

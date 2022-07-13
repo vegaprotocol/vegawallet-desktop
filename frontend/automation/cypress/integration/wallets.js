@@ -122,10 +122,86 @@ describe('wallet', () => {
   })
 })
 
+describe.only('wallet - assets', () => {
+  let walletName = ''
+  let passphrase = ''
+
+  before(() => {
+    cy.clean()
+
+    const url = 'https://mock.vega.xyz/query'
+    cy.intercept('GET', url, req => {
+      req.reply({
+        statusCode: 200
+      })
+    }).as('nodeTest')
+
+    cy.intercept('POST', url, req => {
+      if (req.body.operationName === 'Accounts') {
+        req.alias = 'Accounts'
+        req.reply({
+          statusCode: 200,
+          body: {
+            data: {
+              party: {
+                __typename: 'Party',
+                id: 'foo',
+                accounts: [
+                  {
+                    __typename: 'Account',
+                    type: 'General',
+                    balance: '100',
+                    market: {
+                      __typename: 'Market',
+                      id: 'market-id',
+                      name: 'Test Market'
+                    },
+                    asset: {
+                      __typename: 'Asset',
+                      id: 'asset-id',
+                      symbol: 'SYM',
+                      decimals: 0
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        })
+      }
+    }).as('GQL')
+
+    cy.backend()
+      .then(handler => {
+        cy.setVegaHome(handler)
+        cy.exec('npm run createcustomconfig')
+        cy.restoreNetwork(handler, 'custom')
+        cy.restoreWallet(handler)
+      })
+      .then(() => {
+        cy.reload()
+        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+      })
+  })
+
+  beforeEach(() => {
+    passphrase = Cypress.env('testWalletPassphrase')
+    walletName = Cypress.env('testWalletName')
+  })
+
+  it('view wallet assets', () => {
+    unlockWallet(walletName, passphrase)
+    cy.getByTestId('generate-keypair').should('exist')
+    cy.wait('@GQL')
+    cy.getByTestId('asset-summary').contains('1 asset')
+  })
+})
+
 function unlockWallet(walletName, passphrase) {
   cy.visit('/')
   cy.getByTestId(`wallet-${walletName}`).click()
   authenticate(passphrase)
+  cy.getByTestId('passphrase-form').should('not.exist')
 }
 
 function signMessage(message) {

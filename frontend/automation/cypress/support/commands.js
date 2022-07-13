@@ -1,3 +1,5 @@
+const path = require('path')
+
 require('cypress-downloadfile/lib/downloadFileCommand')
 
 Cypress.Commands.add('getByTestId', (selector, ...args) => {
@@ -40,14 +42,26 @@ Cypress.Commands.add('restoreWallet', handler => {
 })
 
 Cypress.Commands.add('restoreNetwork', (handler, name) => {
-  if (name !== 'fairground' && name !== 'mainnet1') {
+  if (!['mainnet1', 'fairground', 'custom'].includes(name)) {
     throw new Error('Must provide fairground or mainnet1')
+  }
+
+  if (name === 'custom') {
+    const location = path.join(
+      Cypress.config('projectRoot'),
+      'network-config/custom.toml'
+    )
+    return handler.ImportNetwork({
+      filePath: location,
+      name
+    })
   }
 
   const url =
     name === 'mainnet1'
       ? Cypress.env('mainnetConfigUrl')
       : Cypress.env('testnetConfigUrl')
+
   return handler.ImportNetwork({
     url,
     name
