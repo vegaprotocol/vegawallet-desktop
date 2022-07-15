@@ -73,7 +73,7 @@ function AccountsTable({ publicKey }: AccountsTableProps) {
         return (
           <div key={id} style={{ marginBottom: 20 }}>
             <Header style={{ fontSize: 14, margin: 0 }}>
-              {accounts[0].asset.symbol}
+              {accounts[0].asset.name}
             </Header>
             <KeyValueTable
               data-testid='assets-table'

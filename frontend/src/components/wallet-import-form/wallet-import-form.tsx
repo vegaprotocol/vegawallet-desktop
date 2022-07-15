@@ -60,7 +60,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         <Textarea
           data-testid='recovery-phrase'
           {...register('recoveryPhrase', { required: Validation.REQUIRED })}
-          style={{ minHeight: 75 }}
+          style={{ minHeight: 100 }}
         />
       </FormGroup>
       <FormGroup

@@ -5,7 +5,7 @@ export interface Account {
   type: string
   balance: string
   market: { id: string; name: string }
-  asset: { id: string; symbol: string; decimals: number }
+  asset: { id: string; name: string; symbol: string; decimals: number }
 }
 
 const ACCOUNTS_FRAGMENT = gql`
@@ -18,6 +18,7 @@ const ACCOUNTS_FRAGMENT = gql`
     }
     asset {
       id
+      name
       symbol
       decimals
     }
