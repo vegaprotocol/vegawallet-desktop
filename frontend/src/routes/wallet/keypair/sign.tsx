@@ -1,20 +1,21 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-import { Button } from '../../components/button'
-import { ButtonGroup } from '../../components/button-group'
-import { ButtonUnstyled } from '../../components/button-unstyled'
-import { CopyWithTooltip } from '../../components/copy-with-tooltip'
-import { FormGroup } from '../../components/form-group'
-import { Textarea } from '../../components/forms/textarea'
-import { Header } from '../../components/header'
-import { requestPassphrase } from '../../components/passphrase-modal'
-import { AppToaster } from '../../components/toaster'
-import { Colors } from '../../config/colors'
-import { Intent } from '../../config/intent'
-import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
+import { Button } from '../../../components/button'
+import { ButtonGroup } from '../../../components/button-group'
+import { ButtonUnstyled } from '../../../components/button-unstyled'
+import { CopyWithTooltip } from '../../../components/copy-with-tooltip'
+import { FormGroup } from '../../../components/form-group'
+import { Textarea } from '../../../components/forms/textarea'
+import { Header } from '../../../components/header'
+import { requestPassphrase } from '../../../components/passphrase-modal'
+import { AppToaster } from '../../../components/toaster'
+import { Colors } from '../../../config/colors'
+import { Intent } from '../../../config/intent'
+import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
+import { createLogger } from '../../../lib/logging'
+import { Service } from '../../../service'
 
 const logger = createLogger('Sign')
 
@@ -61,14 +62,17 @@ const useSign = (pubKey?: string, wallet?: string) => {
 
 export const Sign = () => {
   const navigate = useNavigate()
-  const { wallet, pubkey } = useParams<{ wallet: string; pubkey: string }>()
+  const { keypair, wallet } = useCurrentKeypair()
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<FormFields>()
 
-  const { sign, signedData, setSignedData } = useSign(pubkey, wallet)
+  const { sign, signedData, setSignedData } = useSign(
+    keypair?.publicKey,
+    wallet?.name
+  )
 
   return (
     <div>

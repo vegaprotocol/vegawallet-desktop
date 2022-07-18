@@ -41,15 +41,16 @@ export interface NetworkPreset {
 export interface GlobalState {
   status: AppStatus
   version: string
-  wallet: Wallet | null
-  wallets: Wallet[]
-  passphraseModalOpen: boolean
-  drawerOpen: boolean
+  config: Config | null
   onboarding: {
     wallets: string[]
     networks: string[]
   }
-  config: Config | null
+
+  // Wallet
+  wallet: Wallet | null
+  wallets: Wallet[]
+
   // Network
   network: string | null
   networks: string[]
@@ -59,6 +60,11 @@ export interface GlobalState {
   serviceUrl: string
   console: ProxyApp
   tokenDapp: ProxyApp
+
+  // UI
+  sidebarOpen: boolean
+  passphraseModalOpen: boolean
+  drawerOpen: boolean
 }
 
 export type GlobalDispatch = React.Dispatch<
