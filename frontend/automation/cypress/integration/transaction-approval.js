@@ -42,7 +42,7 @@ describe('transaction approval', () => {
         cy.restoreWallet(handler)
       })
       .then(() => {
-        cy.reload()
+        cy.visit('/')
         cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
       })
   })
