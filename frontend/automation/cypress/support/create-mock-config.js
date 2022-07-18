@@ -29,5 +29,4 @@ if (!dirExists) {
   fs.mkdirSync(DIR)
 }
 const result = path.join(DIR, '/custom.toml')
-console.log(result)
 fs.writeFileSync(result, CONFIG)

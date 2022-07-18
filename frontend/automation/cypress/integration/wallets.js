@@ -124,7 +124,7 @@ describe('wallet', () => {
   })
 })
 
-describe.only('wallet - assets', () => {
+describe('wallet - assets', () => {
   let walletName = ''
   let passphrase = ''
   const accounts = [

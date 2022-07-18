@@ -42,8 +42,9 @@ Cypress.Commands.add('restoreWallet', handler => {
 })
 
 Cypress.Commands.add('restoreNetwork', (handler, name) => {
-  if (!['mainnet1', 'fairground', 'custom'].includes(name)) {
-    throw new Error('Must provide fairground or mainnet1')
+  const allowedNetworks = ['mainnet1', 'fairground', 'custom']
+  if (!allowedNetworks.includes(name)) {
+    throw new Error(`Must provide one of: ${allowedNetworks.join(', ')}`)
   }
 
   if (name === 'custom') {
@@ -74,7 +75,6 @@ Cypress.Commands.add('sendTransaction', transaction => {
     const pubKey = Cypress.env('testWalletPublicKey')
     const wallet = Cypress.env('testWalletName')
     const passphrase = Cypress.env('testWalletPassphrase')
-    console.log(pubKey)
 
     const tokenRes = await fetch(`${baseUrl}/auth/token`, {
       method: 'post',

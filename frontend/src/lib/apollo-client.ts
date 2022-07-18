@@ -11,6 +11,10 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { createClient as createWSClient } from 'graphql-ws'
 
+import { createLogger } from './logging'
+
+const logger = createLogger('ApolloClient')
+
 export function createClient(base?: string) {
   if (!base) {
     throw new Error('Base must be passed into createClient!')
@@ -80,8 +84,12 @@ export function createClient(base?: string) {
   )
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    console.log(graphQLErrors)
-    console.log(networkError)
+    if (graphQLErrors?.length) {
+      logger.error(graphQLErrors.map(e => e.message).join(', '))
+    }
+    if (networkError) {
+      logger.error(networkError.message)
+    }
   })
 
   return new ApolloClient({

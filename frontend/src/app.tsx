@@ -23,7 +23,7 @@ import { AppRouter } from './routes'
  * Initialiases the app
  */
 function AppLoader({ children }: { children: React.ReactNode }) {
-  // useCheckForUpdate()
+  useCheckForUpdate()
 
   const {
     state: { status, network, networkConfig },
