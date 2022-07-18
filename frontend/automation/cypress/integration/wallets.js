@@ -107,6 +107,7 @@ describe('wallet', () => {
     cy.contains('Message signed successfully')
     cy.getByTestId('sign-more').click()
     signMessage('Sign message successfully')
+    authenticate(passphrase)
     cy.contains('Message signed successfully')
 
     function signMessage(message) {
