@@ -305,7 +305,7 @@ export function OnboardNetwork() {
   }, [dispatch, navigate])
 
   return (
-    <OnboardPanel title='Import a network' back={'/onboard/wallet-create'}>
+    <OnboardPanel title='Import a network' back='/onboard/wallet-create'>
       <NetworkImportForm onComplete={onComplete} />
     </OnboardPanel>
   )

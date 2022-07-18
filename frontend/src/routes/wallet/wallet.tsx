@@ -31,7 +31,7 @@ export const Wallet = () => {
       }
     }
 
-    ;(async () => {
+    const findNodeAndCreateClient = async () => {
       try {
         const index = await findDatanode(networkConfig?.api.graphQl.hosts)
         const datanode = networkConfig?.api.graphQl.hosts[index]
@@ -42,7 +42,9 @@ export const Wallet = () => {
       } catch (err) {
         safeSetClient(false)
       }
-    })()
+    }
+
+    findNodeAndCreateClient()
 
     return () => {
       mounted = false
