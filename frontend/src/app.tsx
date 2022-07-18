@@ -4,6 +4,7 @@ import { Component, useEffect } from 'react'
 // See https://wails.io/docs/guides/routing
 import { HashRouter as Router, useMatch } from 'react-router-dom'
 
+import { Button } from './components/button'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
@@ -125,7 +126,7 @@ function AppFrame({ children }: AppFrameProps) {
   )
 }
 
-const logger = createLogger('Errorboundary')
+const logger = createLogger('ErrorBoundary')
 
 class ErrorBoundary extends Component<
   { children: ReactNode },
@@ -149,9 +150,11 @@ class ErrorBoundary extends Component<
     if (error) {
       return (
         <Splash style={{ textAlign: 'center' }}>
-          <p style={{ marginBottom: 20 }}>Something went wrong</p>
           {/* @ts-ignore */}
-          <p>{error.message}</p>
+          <p style={{ marginBottom: 10 }}>
+            Something went wrong: {error.message}
+          </p>
+          <Button onClick={() => window.runtime.WindowReload()}>Reload</Button>
         </Splash>
       )
     }
