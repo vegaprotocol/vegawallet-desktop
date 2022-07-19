@@ -53,13 +53,19 @@ export function WalletHeader({ wallet, keypair }: WalletHeaderProps) {
         {wallet && (
           <DropdownMenu
             trigger={
-              <ButtonUnstyled style={{ marginRight: 10 }}>Menu</ButtonUnstyled>
+              <ButtonUnstyled
+                data-testid='wallet-actions'
+                style={{ marginRight: 10 }}
+              >
+                Menu
+              </ButtonUnstyled>
             }
             content={
               <div>
                 {['sign', 'taint', 'metadata'].map(page => (
                   <DropdownItem key={page}>
                     <Link
+                      data-testid={`wallet-action-${page}`}
                       style={{
                         display: 'block',
                         width: '100%',
