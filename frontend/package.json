@@ -7,6 +7,7 @@
     "node": "^16.13.2"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@radix-ui/react-checkbox": "^0.1.4",
@@ -25,7 +26,10 @@
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.8",
     "babel-jest": "^27.5.1",
+    "bignumber.js": "^9.0.2",
     "core-js": "^3.6.4",
+    "graphql-ws": "^5.9.0",
+    "lodash": "^4.17.21",
     "loglevel": "^1.8.0",
     "prettier": "^2.3.2",
     "react": "^16.13.1",
@@ -34,6 +38,7 @@
     "react-hook-form": "^7.12.2",
     "react-hook-thunk-reducer": "^0.2.4",
     "react-router-dom": "^6.2.1",
+    "react-spring": "^9.4.5",
     "stylelint": "^14.0.0",
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.3.5",
@@ -42,11 +47,12 @@
   "scripts": {
     "dev": "npx vite build --mode development --watch",
     "dev:test": "cd .. && VITE_COVERAGE='true' wails dev -noreload",
-    "build": "npx tsc && npx vite build --mode development",
+    "build": "npx vite build --mode development",
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "test": "jest",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
-    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\""
+    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\"",
+    "generate": "npx apollo client:codegen --config=apollo.config.js --target=typescript --globalTypesFile=src/__generated__/globalTypes.ts"
   },
   "eslintConfig": {
     "extends": [
@@ -70,8 +76,10 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@cypress/instrument-cra": "^1.4.0",
+    "@types/lodash": "^4.14.182",
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@vitejs/plugin-react": "^1.2.0",
+    "apollo": "^2.34.0",
     "eslint": "^8.9.0",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-jest": "^26.0.0",

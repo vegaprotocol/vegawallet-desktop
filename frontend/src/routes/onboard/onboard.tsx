@@ -2,6 +2,19 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Outlet, useNavigate } from 'react-router-dom'
 
+import { Button } from '../../components/button'
+import { ButtonGroup } from '../../components/button-group'
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { FormGroup } from '../../components/form-group'
+import { Input } from '../../components/forms/input'
+import { Header } from '../../components/header'
+import { Vega } from '../../components/icons'
+import { NetworkImportForm } from '../../components/network-import-form'
+import { Splash } from '../../components/splash'
+import { AppToaster } from '../../components/toaster'
+import { WalletCreateForm } from '../../components/wallet-create-form'
+import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
+import { WalletImportForm } from '../../components/wallet-import-form'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { completeOnboardAction } from '../../contexts/global/global-actions'
@@ -9,24 +22,17 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
-import { OnboardPaths, Paths } from '../../routes'
 import { Service } from '../../service'
-import { Button } from '../button'
-import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
-import { FormGroup } from '../form-group'
-import { Header } from '../header'
-import { Vega } from '../icons'
-import { NetworkImportForm } from '../network-import-form'
-import { AppToaster } from '../toaster'
-import { WalletCreateForm } from '../wallet-create-form'
-import { WalletCreateFormSuccess } from '../wallet-create-form/wallet-create-form-success'
-import { WalletImportForm } from '../wallet-import-form'
+import { Paths } from '..'
 
-const logger = createLogger('Onbard')
+const logger = createLogger('Onboard')
 
 export function Onboard() {
-  return <Outlet />
+  return (
+    <Splash style={{ textAlign: 'center' }}>
+      <Outlet />
+    </Splash>
+  )
 }
 
 export function OnboardHome() {
@@ -64,7 +70,7 @@ export function OnboardHome() {
         // Add wallets and networks to state
         dispatch({ type: 'ADD_WALLETS', wallets: onboarding.wallets })
       } else {
-        navigate(OnboardPaths.WalletCreate)
+        navigate('/onboard/wallet-create')
         return
       }
 
@@ -85,7 +91,7 @@ export function OnboardHome() {
           networkConfig: defaultNetworkConfig
         })
       } else {
-        navigate(OnboardPaths.Network)
+        navigate('/onboard/network')
         return
       }
 
@@ -117,7 +123,7 @@ export function OnboardHome() {
 
     return (
       <>
-        <p>{message}</p>
+        <p style={{ marginBottom: 20 }}>{message}</p>
         <ButtonGroup>
           <Button
             loading={loading === 'existing'}
@@ -132,7 +138,7 @@ export function OnboardHome() {
   }
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <>
       <Header style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
         <Vega />
       </Header>
@@ -144,7 +150,7 @@ export function OnboardHome() {
           onClick={async () => {
             setLoading('create')
             await initialiseWithDefaultHome()
-            navigate(OnboardPaths.WalletCreate)
+            navigate('/onboard/wallet-create')
           }}
         >
           Create new wallet
@@ -155,7 +161,7 @@ export function OnboardHome() {
           onClick={async () => {
             setLoading('import')
             await initialiseWithDefaultHome()
-            navigate(OnboardPaths.WalletImport)
+            navigate('/onboard/wallet-import')
           }}
         >
           Use recovery phrase
@@ -164,13 +170,13 @@ export function OnboardHome() {
       <p>
         <ButtonUnstyled
           data-testid='advanced-options'
-          onClick={() => navigate(OnboardPaths.Settings)}
+          onClick={() => navigate('/onboard/settings')}
         >
           Advanced options
         </ButtonUnstyled>
       </p>
       {version && <p>version {version}</p>}
-    </div>
+    </>
   )
 }
 
@@ -217,7 +223,7 @@ export function OnboardSettings() {
           labelFor='vegaHome'
           helperText='Leave blank to use default'
         >
-          <input type='text' {...register('vegaHome')} />
+          <Input type='text' {...register('vegaHome')} />
         </FormGroup>
         <ButtonGroup>
           <Button type='submit' loading={loading}>
@@ -247,7 +253,7 @@ export function OnboardWalletCreate() {
             <Button
               onClick={() => {
                 if (!onboarding.networks.length) {
-                  navigate(OnboardPaths.Network)
+                  navigate('/onboard/network')
                 } else {
                   dispatch(completeOnboardAction(() => navigate(Paths.Home)))
                 }
@@ -276,7 +282,7 @@ export function OnboardWalletImport() {
   React.useEffect(() => {
     if (response) {
       if (!onboarding.networks.length) {
-        navigate(OnboardPaths.Network)
+        navigate('/onboard/network')
       } else {
         dispatch(completeOnboardAction(() => navigate(Paths.Home)))
       }
@@ -299,7 +305,7 @@ export function OnboardNetwork() {
   }, [dispatch, navigate])
 
   return (
-    <OnboardPanel title='Import a network' back={OnboardPaths.WalletCreate}>
+    <OnboardPanel title='Import a network' back='/onboard/wallet-create'>
       <NetworkImportForm onComplete={onComplete} />
     </OnboardPanel>
   )
@@ -316,11 +322,9 @@ export function OnboardPanel({ children, title, back }: OnboardPanelProps) {
   return (
     <div
       style={{
-        width: '90vw',
-        minWidth: 352,
-        maxWidth: 520,
         background: Colors.BLACK,
-        border: `1px solid ${Colors.LIGHT_GRAY_3}`
+        border: `1px solid ${Colors.LIGHT_GRAY_3}`,
+        textAlign: 'left'
       }}
     >
       <div

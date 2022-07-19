@@ -45,9 +45,7 @@ export function FormGroup({
               fontSize: 14,
               color:
                 // if no intent is provided, use deemphasises text to help visual hierarchy
-                intent === 'none'
-                  ? 'var(--text-color-deemphasise)'
-                  : IntentColors[intent]
+                intent === 'none' ? 'inherit' : IntentColors[intent]
             }}
           >
             {helperText}

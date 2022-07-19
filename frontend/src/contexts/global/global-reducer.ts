@@ -56,7 +56,7 @@ export type GlobalAction =
       networks: string[]
       networkConfig: Network | null
       presetNetworks: NetworkPreset[]
-      startService: boolean
+      serviceRunning: boolean
       console: ProxyApp
       tokenDapp: ProxyApp
     }
@@ -192,7 +192,7 @@ export function globalReducer(
         networkConfig: action.networkConfig,
         presets: action.presetNetworks,
         status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
-        serviceRunning: action.startService,
+        serviceRunning: action.serviceRunning,
         serviceUrl: action.networkConfig
           ? `http://127.0.0.1:${action.networkConfig.port}`
           : '',
@@ -236,10 +236,11 @@ export function globalReducer(
       const newWallet: Wallet = {
         name: action.wallet,
         keypairs: [keypairExtended],
-        auth: false
+        auth: true
       }
       return {
         ...state,
+        wallet: newWallet,
         wallets: [...state.wallets, newWallet].sort(sortWallet)
       }
     }
@@ -266,6 +267,7 @@ export function globalReducer(
 
       return {
         ...state,
+        wallet: newWallet,
         wallets: [
           ...state.wallets.filter(w => w.name !== action.wallet),
           newWallet
@@ -287,6 +289,7 @@ export function globalReducer(
       }
       return {
         ...state,
+        wallet: updatedWallet,
         wallets: [...wallets, updatedWallet].sort(sortWallet)
       }
     }
@@ -299,6 +302,10 @@ export function globalReducer(
 
       return {
         ...state,
+        wallet: {
+          ...wallet,
+          auth: true
+        },
         wallets: [
           ...state.wallets.filter(w => w.name !== wallet.name),
           {
@@ -317,6 +324,7 @@ export function globalReducer(
 
       return {
         ...state,
+        wallet: null,
         wallets: [
           ...state.wallets.filter(w => w.name !== wallet.name),
           {

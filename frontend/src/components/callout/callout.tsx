@@ -22,15 +22,14 @@ export function Callout({
     display: 'flex',
     gap: 15,
     background: IntentBackgrounds[intent],
-    padding: '15px 20px',
-    marginBottom: 15
+    padding: '15px 20px'
   }
   const childrenLength = React.Children.toArray(children).length
   return (
     <div style={{ ...defaultStyle, ...style }} {...htmlProps}>
       {icon && <span>{icon}</span>}
       <div className='callout__content'>
-        {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
+        {title && <h4 style={{ marginTop: 0, color: 'inherit' }}>{title}</h4>}
         {React.Children.map(children, (child, i) => {
           return React.cloneElement(child as React.ReactElement, {
             style: {

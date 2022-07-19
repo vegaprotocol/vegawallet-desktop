@@ -6,7 +6,9 @@ import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
-import { Select } from '../select'
+import { Select } from '../forms'
+import { Input } from '../forms/input'
+import { Textarea } from '../forms/textarea'
 
 interface FormFields {
   wallet: string
@@ -42,7 +44,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         labelFor='wallet'
         helperText={errors.wallet?.message}
       >
-        <input
+        <Input
           data-testid='wallet-name'
           type='text'
           {...register('wallet', { required: Validation.REQUIRED })}
@@ -55,10 +57,10 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         helperText={errors.recoveryPhrase?.message}
         intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
       >
-        <textarea
+        <Textarea
           data-testid='recovery-phrase'
           {...register('recoveryPhrase', { required: Validation.REQUIRED })}
-          style={{ minHeight: 75 }}
+          style={{ minHeight: 100 }}
         />
       </FormGroup>
       <FormGroup
@@ -82,7 +84,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.passphrase?.message}
       >
-        <input
+        <Input
           data-testid='passphrase'
           type='password'
           {...register('passphrase', { required: Validation.REQUIRED })}
@@ -95,7 +97,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         intent={errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.confirmPassphrase?.message}
       >
-        <input
+        <Input
           data-testid='confirm-passphrase'
           type='password'
           {...register('confirmPassphrase', {

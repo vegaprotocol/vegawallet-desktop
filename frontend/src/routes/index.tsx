@@ -1,6 +1,8 @@
-import { useRoutes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
-import { Chrome } from '../components/chrome'
+import { Center } from '../components/center'
+import { Home } from './home'
+import { NetworkImport } from './network-import'
 import {
   Onboard,
   OnboardHome,
@@ -8,13 +10,10 @@ import {
   OnboardSettings,
   OnboardWalletCreate,
   OnboardWalletImport
-} from '../components/onboard'
-import { Splash } from '../components/splash'
-import { useIsOnboard } from '../hooks/use-is-onboard'
-import { Home } from './home'
+} from './onboard'
 import { Wallet } from './wallet'
+import { Sign } from './wallet/sign'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
-import { WalletList } from './wallet/wallet-list'
 import { WalletCreate } from './wallet-create'
 import { WalletImport } from './wallet-import'
 
@@ -22,83 +21,35 @@ import { WalletImport } from './wallet-import'
 export enum Paths {
   Home = '/',
   Onboard = '/onboard',
-  Wallet = '/wallet',
-  WalletCreate = '/wallet-create',
-  WalletImport = '/wallet-import'
-}
-
-// Nested paths DONT have '/'
-export enum OnboardPaths {
-  Settings = '/onboard/settings',
-  WalletCreate = '/onboard/wallet-create',
-  WalletImport = '/onboard/wallet-import',
-  Network = '/onboard/network'
+  Wallet = '/wallet'
 }
 
 export const AppRouter = () => {
-  const isOnboard = useIsOnboard()
-
-  const routes = useRoutes([
-    {
-      path: Paths.Onboard,
-      element: <Onboard />,
-      children: [
-        {
-          index: true,
-          element: <OnboardHome />
-        },
-        {
-          path: OnboardPaths.Settings,
-          element: <OnboardSettings />
-        },
-        {
-          path: OnboardPaths.WalletCreate,
-          element: <OnboardWalletCreate />
-        },
-        {
-          path: OnboardPaths.WalletImport,
-          element: <OnboardWalletImport />
-        },
-        {
-          path: OnboardPaths.Network,
-          element: <OnboardNetwork />
-        }
-      ]
-    },
-    {
-      path: Paths.WalletCreate,
-      element: <WalletCreate />
-    },
-    {
-      path: Paths.WalletImport,
-      element: <WalletImport />
-    },
-    {
-      path: Paths.Wallet,
-      element: <Wallet />,
-      children: [
-        {
-          // default child route, Wallet only renders an Outlet
-          index: true,
-          element: <WalletList />
-        },
-        {
-          path: 'keypair/:pubkey',
-          element: <WalletKeyPair />
-        }
-      ]
-    },
-    {
-      element: <Home />,
-      index: true
-    }
-  ])
-
-  // Wrap onboard pages with splash page
-  if (isOnboard) {
-    return <Splash>{routes}</Splash>
-  }
-
-  // Rest of the pages get regular chrome with network
-  return <Chrome>{routes}</Chrome>
+  return (
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/onboard' element={<Onboard />}>
+        <Route index={true} element={<OnboardHome />} />
+        <Route path='settings' element={<OnboardSettings />} />
+        <Route path='wallet-create' element={<OnboardWalletCreate />} />
+        <Route path='wallet-import' element={<OnboardWalletImport />} />
+        <Route path='network' element={<OnboardNetwork />} />
+      </Route>
+      <Route path='/wallet/:wallet' element={<Wallet />}>
+        <Route
+          index={true}
+          element={
+            <Center>
+              <p>Select a key</p>
+            </Center>
+          }
+        />
+        <Route path='keypair/:pubkey' element={<WalletKeyPair />} />
+        <Route path='keypair/:pubkey/sign' element={<Sign />} />
+      </Route>
+      <Route path='/wallet-create' element={<WalletCreate />} />
+      <Route path='/wallet-import' element={<WalletImport />} />
+      <Route path='/network-import' element={<NetworkImport />} />
+    </Routes>
+  )
 }

@@ -1,3 +1,5 @@
+const path = require('path')
+
 require('cypress-downloadfile/lib/downloadFileCommand')
 
 Cypress.Commands.add('getByTestId', (selector, ...args) => {
@@ -8,74 +10,63 @@ Cypress.Commands.add('clean', () => {
   return cy.exec('npm run clean')
 })
 
-Cypress.Commands.add('setVegaHome', () => {
-  const vegaHome = Cypress.env('vegaHome')
-  cy.log('setVegaHome', vegaHome)
-  cy.clean()
-  cy.visit('/#')
-  return cy
-    .window()
-    .then(async win => {
-      const handler = win.go.backend.Handler
-      await handler.InitialiseApp({
-        vegaHome
-      })
+Cypress.Commands.add('backend', () => {
+  cy.visit('/')
+  return cy.window().then(win => {
+    return win.go.backend.Handler
+  })
+})
+
+Cypress.Commands.add('setVegaHome', handler => {
+  return handler.InitialiseApp({
+    vegaHome: Cypress.env('vegaHome')
+  })
+})
+
+Cypress.Commands.add('restoreWallet', handler => {
+  const passphrase = '123'
+  return handler
+    .ImportWallet({
+      wallet: 'test',
+      recoveryPhrase:
+        'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
+      version: 2,
+      passphrase
     })
-    .then(() => {
-      cy.reload()
+    .then(res => {
+      // Store env vars for later use in tests and then import a network
+      Cypress.env('testWalletPassphrase', passphrase)
+      Cypress.env('testWalletName', res.wallet.name)
+      Cypress.env('testWalletPublicKey', res.key.publicKey)
     })
 })
 
-Cypress.Commands.add('restoreWallet', () => {
-  const passphrase = '123'
-  const vegaHome = Cypress.env('vegaHome')
+Cypress.Commands.add('restoreNetwork', (handler, name) => {
+  const allowedNetworks = ['mainnet1', 'fairground', 'custom']
+  if (!allowedNetworks.includes(name)) {
+    throw new Error(`Must provide one of: ${allowedNetworks.join(', ')}`)
+  }
 
-  cy.log('restoreWallet', vegaHome)
+  if (name === 'custom') {
+    const location = path.join(
+      Cypress.config('projectRoot'),
+      'network-config/custom.toml'
+    )
+    return handler.ImportNetwork({
+      filePath: location,
+      name
+    })
+  }
 
-  // Clear any existing wallets
-  cy.clean()
+  const url =
+    name === 'mainnet1'
+      ? Cypress.env('mainnetConfigUrl')
+      : Cypress.env('testnetConfigUrl')
 
-  // Visit a page so that the window object is bootstrapped with backend functions
-  cy.visit('#/wallet')
-
-  return (
-    cy
-      .window()
-      // Init wallet with local vega home
-      .then(async win => {
-        const handler = win.go.backend.Handler
-
-        // First initialise app with local frontend directory
-        await handler.InitialiseApp({
-          vegaHome
-        })
-        // Import wallet using known recovery phrase setting
-        const res = await handler.ImportWallet({
-          wallet: 'test',
-          recoveryPhrase:
-            'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
-          version: 2,
-          passphrase
-        })
-
-        // Store env vars for later use in tests and then import a network
-        Cypress.env('testWalletPassphrase', passphrase)
-        Cypress.env('testWalletName', res.wallet.name)
-        Cypress.env('testWalletPublicKey', res.key.publicKey)
-
-        await handler.ImportNetwork({
-          url: Cypress.env('testnetConfigUrl'),
-          name: 'fairground'
-        })
-        await handler.ImportNetwork({
-          url: Cypress.env('mainnetConfigUrl'),
-          name: 'mainnet1'
-        })
-      })
-      .then(() => {
-        cy.reload()
-      })
-  )
+  return handler.ImportNetwork({
+    url,
+    name
+  })
 })
 
 Cypress.Commands.add('sendTransaction', transaction => {

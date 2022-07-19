@@ -1,18 +1,23 @@
-import React from 'react'
+import type { ErrorInfo, ReactNode } from 'react'
+import { Component, useEffect } from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
-import { HashRouter as Router } from 'react-router-dom'
+import { HashRouter as Router, useMatch } from 'react-router-dom'
 
+import { Button } from './components/button'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
 import { TransactionManager } from './components/transaction-manager'
 import { Colors } from './config/colors'
-import { initAppAction } from './contexts/global/global-actions'
+import {
+  initAppAction,
+  startServiceAction
+} from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
-import { useIsOnboard } from './hooks/use-is-onboard'
+import { createLogger } from './lib/logging'
 import { AppRouter } from './routes'
 
 /**
@@ -22,14 +27,20 @@ function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
 
   const {
-    state: { status },
+    state: { status, network, networkConfig },
     dispatch
   } = useGlobal()
 
   // Get wallets, service state and version
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(initAppAction())
   }, [dispatch])
+
+  useEffect(() => {
+    if (network && networkConfig) {
+      dispatch(startServiceAction())
+    }
+  }, [network, networkConfig, dispatch])
 
   if (status === AppStatus.Pending) {
     return (
@@ -41,7 +52,7 @@ function AppLoader({ children }: { children: React.ReactNode }) {
 
   if (status === AppStatus.Failed) {
     return (
-      <Splash>
+      <Splash style={{ textAlign: 'center' }}>
         <p>Failed to initialise</p>
       </Splash>
     )
@@ -55,17 +66,19 @@ function AppLoader({ children }: { children: React.ReactNode }) {
  */
 function App() {
   return (
-    <Router>
-      <GlobalProvider>
-        <AppFrame>
-          <AppLoader>
-            <AppRouter />
-            <PassphraseModal />
-            <TransactionManager />
-          </AppLoader>
-        </AppFrame>
-      </GlobalProvider>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <GlobalProvider>
+          <AppFrame>
+            <AppLoader>
+              <AppRouter />
+              <PassphraseModal />
+              <TransactionManager />
+            </AppLoader>
+          </AppFrame>
+        </GlobalProvider>
+      </Router>
+    </ErrorBoundary>
   )
 }
 
@@ -82,8 +95,8 @@ interface AppFrameProps {
  * drag the app window aroung. Also renders the vega-bg className if onboard mode
  */
 function AppFrame({ children }: AppFrameProps) {
-  const isOnboard = useIsOnboard()
-
+  const walletMatch = useMatch('/wallet/*')
+  const useVegaBg = !Boolean(walletMatch)
   return (
     <div
       style={{
@@ -91,7 +104,8 @@ function AppFrame({ children }: AppFrameProps) {
         paddingTop: APP_FRAME_HEIGHT,
         backgroundSize: 'cover'
       }}
-      className={isOnboard ? 'vega-bg' : undefined}
+      data-testid='app-frame'
+      className={useVegaBg ? 'vega-bg' : undefined}
     >
       <div
         style={{
@@ -100,7 +114,7 @@ function AppFrame({ children }: AppFrameProps) {
           left: 0,
           width: '100%',
           height: APP_FRAME_HEIGHT,
-          backgroundColor: isOnboard ? 'transparent' : Colors.BLACK
+          backgroundColor: useVegaBg ? 'transparent' : Colors.BLACK
         }}
         // The app is frameless by default so this element creates a space at the top of the app
         // which you can click and drag to move the app around. The drag function is triggered
@@ -110,4 +124,41 @@ function AppFrame({ children }: AppFrameProps) {
       {children}
     </div>
   )
+}
+
+const logger = createLogger('ErrorBoundary')
+
+class ErrorBoundary extends Component<
+  { children: ReactNode },
+  { error: Error | null }
+> {
+  state = {
+    error: null
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    logger.error(error, errorInfo.componentStack)
+  }
+
+  render() {
+    const { error } = this.state
+
+    if (error) {
+      return (
+        <Splash style={{ textAlign: 'center' }}>
+          {/* @ts-ignore */}
+          <p style={{ marginBottom: 10 }}>
+            Something went wrong: {error.message}
+          </p>
+          <Button onClick={() => window.runtime.WindowReload()}>Reload</Button>
+        </Splash>
+      )
+    }
+
+    return this.props.children
+  }
 }

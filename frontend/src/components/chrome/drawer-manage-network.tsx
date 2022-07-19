@@ -24,7 +24,7 @@ export function DrawerManageNetwork({
       {networks.length ? (
         <>
           <Header style={{ marginTop: 0 }}>Networks</Header>
-          <BulletList>
+          <BulletList style={{ marginBottom: 30 }}>
             {networks.map(n => (
               <BulletListItem key={n}>
                 <div

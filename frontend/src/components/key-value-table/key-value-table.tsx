@@ -3,11 +3,15 @@ import { Fragment } from 'react'
 
 import { Colors } from '../../config/colors'
 
-interface KeyValueTableProps extends HTMLAttributes<HTMLTableElement> {
+interface KeyValueTableProps extends HTMLAttributes<HTMLDListElement> {
   rows: Array<{ key: ReactNode; value: ReactNode; dataTestId?: string }>
 }
 
-export const KeyValueTable = ({ rows, style }: KeyValueTableProps) => {
+export const KeyValueTable = ({
+  rows,
+  style,
+  ...props
+}: KeyValueTableProps) => {
   return (
     <dl
       style={{
@@ -17,6 +21,7 @@ export const KeyValueTable = ({ rows, style }: KeyValueTableProps) => {
         fontSize: 14,
         ...style
       }}
+      {...props}
     >
       {rows.map((row, i) => (
         <Fragment key={i}>

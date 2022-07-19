@@ -75,15 +75,6 @@ export function initAppAction() {
         Service.GetTokenDAppState()
       ])
 
-      if (service.running) {
-        await Service.StopService() // unlikely but stop service in case it was accidently left hanging
-      }
-
-      const canStartService = Boolean(defaultNetwork && defaultNetworkConfig)
-      if (canStartService) {
-        await Service.StartService({ network: defaultNetwork })
-      }
-
       dispatch({
         type: 'INIT_APP',
         isInit: true,
@@ -93,7 +84,7 @@ export function initAppAction() {
         networks: networks.networks,
         networkConfig: defaultNetworkConfig,
         presetNetworks: presets,
-        startService: canStartService,
+        serviceRunning: service.running,
         console: {
           name: ProxyName.Console,
           url: consoleState.url,
@@ -172,6 +163,7 @@ export function getKeysAction(wallet: string) {
 
     if (selectedWallet?.keypairs) {
       dispatch({ type: 'ACTIVATE_WALLET', wallet })
+      window.location.hash = `/wallet/${wallet}/keypair/${selectedWallet.keypairs[0].publicKey}`
       logger.debug('ChangeWallet')
     } else {
       try {
@@ -180,10 +172,18 @@ export function getKeysAction(wallet: string) {
           wallet,
           passphrase
         })
+
         if (keys instanceof Error) {
           throw keys
         }
+
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
+
+        if (keys.keys.length) {
+          window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
+        } else {
+          window.location.hash = `/wallet/${wallet}`
+        }
       } catch (err) {
         if (err !== 'dismissed') {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
@@ -202,7 +202,7 @@ export function setDrawerAction(open: boolean): GlobalAction {
   return { type: 'SET_DRAWER', open }
 }
 
-export function chnageWalletAction(wallet: string): GlobalAction {
+export function changeWalletAction(wallet: string): GlobalAction {
   return {
     type: 'CHANGE_WALLET',
     wallet
@@ -316,6 +316,22 @@ export function addNetworkAction(network: string, config: Network) {
       network,
       config
     })
+  }
+}
+
+export function startServiceAction() {
+  return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+    const state = getState()
+    logger.debug('StartService')
+    try {
+      const status = await Service.GetServiceState()
+      if (!status.running && state.network && state.networkConfig) {
+        await Service.StartService({ network: state.network })
+        dispatch({ type: 'START_SERVICE', port: state.networkConfig.port })
+      }
+    } catch (err) {
+      logger.error(err)
+    }
   }
 }
 

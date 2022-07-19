@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import { setDrawerAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -19,25 +19,23 @@ export function DrawerContent() {
   const { dispatch } = useGlobal()
 
   // The current view of the drawer
-  const [view, setView] = React.useState<DrawerViews>('network')
+  const [view, setView] = useState<DrawerViews>('network')
 
   // The network you are currently editing when in the edit view
-  const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(
-    null
-  )
+  const [selectedNetwork, setSelectedNetwork] = useState<string | null>(null)
 
   // Close modal on escape key
-  React.useEffect(() => {
-    function handleKeydown(e: React.KeyboardEvent<HTMLDivElement>) {
+  useEffect(() => {
+    function handleKeydown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
         dispatch(setDrawerAction(false))
       }
     }
 
-    window.addEventListener('keydown', handleKeydown as any)
+    window.addEventListener('keydown', handleKeydown)
 
     return () => {
-      window.removeEventListener('keydown', handleKeydown as any)
+      window.removeEventListener('keydown', handleKeydown)
     }
   }, [dispatch])
 

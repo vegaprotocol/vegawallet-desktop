@@ -31,6 +31,9 @@ export function useCheckForUpdate() {
       }
     }
 
-    run()
+    // Dont show the update toast when running cypress to avoid colli
+    if (!('Cypress' in window)) {
+      run()
+    }
   }, [])
 }

@@ -6,6 +6,7 @@ import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
+import { Input } from '../forms/input'
 
 interface FormFields {
   wallet: string
@@ -36,7 +37,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         intent={errors.wallet?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.wallet?.message}
       >
-        <input
+        <Input
           data-testid='create-wallet-form-name'
           type='text'
           autoFocus={true}
@@ -50,7 +51,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.passphrase?.message}
       >
-        <input
+        <Input
           data-testid='create-wallet-form-passphrase'
           type='password'
           {...register('passphrase', { required: Validation.REQUIRED })}
@@ -62,7 +63,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         intent={errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.confirmPassphrase?.message}
       >
-        <input
+        <Input
           data-testid='create-wallet-form-passphrase-confirm'
           type='password'
           {...register('confirmPassphrase', {
