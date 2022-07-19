@@ -14,7 +14,7 @@ import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
+import * as Service from '../../wailsjs/go/backend/Handler'
 
 const logger = createLogger('Sign')
 
@@ -39,6 +39,9 @@ const useSign = (pubKey?: string, wallet?: string) => {
           message: btoa(values.message),
           passphrase
         })
+        if (resp instanceof Error) {
+          throw new Error('SignMessage failed')
+        }
         // @ts-ignore
         setSignedData(resp.hexSignature)
         AppToaster.show({

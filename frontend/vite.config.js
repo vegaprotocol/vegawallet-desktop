@@ -5,15 +5,13 @@ import istanbul from 'vite-plugin-istanbul'
 
 const truthy = ['1', 'true']
 
-export default defineConfig(args => {
+export default defineConfig(() => {
   return {
-    build: {
-      minify: args.mode !== 'development',
-      sourcemap: true
-    },
     plugins: [
       react(),
-      eslint(),
+      eslint({
+        exclude: ['src/wailsjs/runtime/runtime.js']
+      }),
       istanbul({
         include: 'src/*',
         exclude: ['node_modules', 'automation/', 'src/wailsjs'],

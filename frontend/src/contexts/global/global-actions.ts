@@ -3,14 +3,13 @@ import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
+import * as Service from '../../wailsjs/go/backend/Handler'
 import type {
-  FirstPublicKey,
-  GetServiceStateResponse,
-  Network,
-  StartServiceRequest
+  backend as BackendModel,
+  network as NetworkModel
 } from '../../wailsjs/go/models'
-import { GenerateKeyRequest } from '../../wailsjs/go/models'
+import { config as ConfigModel } from '../../wailsjs/go/models'
+import { wallet as WalletModel } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { ProxyName } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -39,9 +38,18 @@ export function initAppAction() {
       dispatch({ type: 'SET_PRESETS', presets })
 
       if (!isInit) {
-        const existingConfig = await Service.SearchForExistingConfiguration()
-        dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
-        return
+        try {
+          const existingConfig = await Service.SearchForExistingConfiguration()
+          if (existingConfig instanceof Error) {
+            throw new Error('existing config failed')
+          }
+          dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
+          return
+        } catch (err) {
+          console.log(err)
+          // no op
+          return
+        }
       }
       // else continue with app setup, get wallets/networks
     } catch (err) {
@@ -59,6 +67,16 @@ export function initAppAction() {
         Service.ListNetworks()
       ])
 
+      if (config instanceof Error) {
+        throw new Error('config failed')
+      }
+      if (networks instanceof Error) {
+        throw new Error('networks failed')
+      }
+      if (wallets instanceof Error) {
+        throw new Error('wallets failed')
+      }
+
       const defaultNetwork = config.defaultNetwork
         ? networks.networks.find(n => n === config.defaultNetwork) ||
           networks.networks[0]
@@ -67,6 +85,10 @@ export function initAppAction() {
       const defaultNetworkConfig = defaultNetwork
         ? await Service.GetNetworkConfig(defaultNetwork)
         : null
+
+      if (defaultNetworkConfig instanceof Error) {
+        throw new Error('GetNetworkConfig failed')
+      }
 
       // check service and proxy states
       const [service, consoleState, tokenDappState] = await Promise.all([
@@ -124,7 +146,7 @@ export function completeOnboardAction(onComplete: () => void) {
 
 export function addWalletAction(
   wallet: string,
-  key: FirstPublicKey
+  key: WalletModel.FirstPublicKey
 ): GlobalAction {
   return { type: 'ADD_WALLET', wallet, key }
 }
@@ -135,12 +157,16 @@ export function addKeypairAction(wallet: string) {
     try {
       const passphrase = await requestPassphrase()
       const res = await Service.GenerateKey(
-        new GenerateKeyRequest({
+        new WalletModel.GenerateKeyRequest({
           wallet,
           passphrase,
           metadata: []
         })
       )
+
+      if (res instanceof Error) {
+        throw new Error('GenerateKey failed')
+      }
 
       dispatch({
         type: 'ADD_KEYPAIR',
@@ -228,12 +254,17 @@ export function changeNetworkAction(network: string) {
       await stopProxies()
       dispatch({ type: 'STOP_ALL_PROXIES' })
 
-      await Service.UpdateAppConfig({
+      const configChange = new ConfigModel.Config({
         ...state.config,
         defaultNetwork: network
       })
+      console.log(configChange)
+      await Service.UpdateAppConfig(configChange)
 
       const config = await Service.GetNetworkConfig(network)
+      if (config instanceof Error) {
+        throw new Error('GetNetworkConfig failed')
+      }
 
       dispatch({
         type: 'CHANGE_NETWORK',
@@ -252,7 +283,7 @@ export function changeNetworkAction(network: string) {
 
 export function updateNetworkConfigAction(
   editingNetwork: string,
-  networkConfig: Network
+  networkConfig: NetworkModel.Network
 ) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     const state = getState()
@@ -298,7 +329,10 @@ export function updateNetworkConfigAction(
   }
 }
 
-export function addNetworkAction(network: string, config: Network) {
+export function addNetworkAction(
+  network: string,
+  config: NetworkModel.Network
+) {
   return async (dispatch: GlobalDispatch) => {
     // If no service running start service for newly added network
     try {
@@ -401,8 +435,8 @@ export function stopProxyAction(proxyAppName: ProxyName) {
 
 const ProxyFns: {
   [A in ProxyName]: {
-    GetState: () => Promise<GetServiceStateResponse>
-    Start: (req: StartServiceRequest) => Promise<boolean | Error>
+    GetState: () => Promise<BackendModel.GetServiceStateResponse>
+    Start: (req: BackendModel.StartServiceRequest) => Promise<boolean | Error>
     Stop: () => Promise<boolean | Error>
   }
 } = {

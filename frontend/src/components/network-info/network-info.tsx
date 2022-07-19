@@ -8,11 +8,7 @@ import {
 } from '../../contexts/global/global-actions'
 import type { ProxyApp } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
-import type {
-  ConsoleConfig,
-  Network,
-  TokenDAppConfig
-} from '../../wailsjs/go/models'
+import type { network as NetworkModel } from '../../wailsjs/go/models'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Header } from '../header'
 import { KeyValueTable } from '../key-value-table'
@@ -55,7 +51,7 @@ export function NetworkInfo() {
 }
 
 interface ServicesTableProps {
-  config: Network
+  config: NetworkModel.Network
 }
 
 function ServicesTable({ config }: ServicesTableProps) {
@@ -116,7 +112,7 @@ function ServicesTable({ config }: ServicesTableProps) {
 }
 
 interface DAppProxyControlProps {
-  proxyConfig: ConsoleConfig | TokenDAppConfig
+  proxyConfig: NetworkModel.ConsoleConfig | NetworkModel.TokenDAppConfig
   proxyApp: ProxyApp
 }
 
