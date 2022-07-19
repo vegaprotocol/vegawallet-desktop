@@ -59,7 +59,17 @@ export function WalletHeader({ wallet, keypair }: WalletHeaderProps) {
               <div>
                 {['sign', 'taint', 'metadata'].map(page => (
                   <DropdownItem key={page}>
-                    <Link style={{ textTransform: 'capitalize' }} to={page}>
+                    <Link
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        padding: '10px 15px',
+                        lineHeight: 1,
+                        textAlign: 'left',
+                        textTransform: 'capitalize'
+                      }}
+                      to={page}
+                    >
                       {page}
                     </Link>
                   </DropdownItem>

@@ -48,8 +48,14 @@ export const AppRouter = () => {
         <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
           <Route index={true} element={<KeyPairHome />} />
           <Route path='sign' element={<Sign />} />
-          <Route path='taint' element={<div>Taint</div>} />
-          <Route path='metadata' element={<div>Metadata</div>} />
+          <Route
+            path='taint'
+            element={<div style={{ padding: 20 }}>Taint</div>}
+          />
+          <Route
+            path='metadata'
+            element={<div style={{ padding: 20 }}>Metadata</div>}
+          />
         </Route>
       </Route>
       <Route path='/wallet-create' element={<WalletCreate />} />

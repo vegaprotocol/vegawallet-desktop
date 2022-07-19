@@ -1,8 +1,8 @@
-import { Navigate, Outlet, useNavigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { Paths } from '../'
-import { WalletHeader } from './header'
+import { WalletHeader } from './wallet-header'
 
 export function WalletKeyPair() {
   const { wallet, keypair } = useCurrentKeypair()
