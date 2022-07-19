@@ -50,11 +50,19 @@ export const AppRouter = () => {
           <Route path='sign' element={<Sign />} />
           <Route
             path='taint'
-            element={<div style={{ padding: 20 }}>Taint</div>}
+            element={
+              <div data-testid='keypair-taint' style={{ padding: 20 }}>
+                Taint
+              </div>
+            }
           />
           <Route
             path='metadata'
-            element={<div style={{ padding: 20 }}>Metadata</div>}
+            element={
+              <div data-testid='keypair-metadata' style={{ padding: 20 }}>
+                Metadata
+              </div>
+            }
           />
         </Route>
       </Route>

@@ -104,6 +104,18 @@ describe('wallet', () => {
     cy.getByTestId('keypair-name').should('not.exist')
     cy.getByTestId('home-splash').should('exist')
   })
+
+  it('can navigate between child pages', () => {
+    cy.visit('/')
+    unlockWallet(walletName, passphrase)
+    cy.getByTestId('wallet-actions').click()
+    cy.getByTestId('wallet-action-sign').click()
+    cy.getByTestId('keypair-sign').should('be.visible')
+    cy.getByTestId('wallet-action-taint').click()
+    cy.getByTestId('keypair-taint').should('be.visible')
+    cy.getByTestId('wallet-action-metadata').click()
+    cy.getByTestId('keypair-metadata').should('be.visible')
+  })
 })
 
 describe('wallet - assets', () => {
