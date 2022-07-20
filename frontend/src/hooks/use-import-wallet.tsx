@@ -34,7 +34,14 @@ export function useImportWallet() {
         })
         if (resp) {
           setResponse(resp)
-          dispatch(addWalletAction(values.wallet, resp.key))
+
+          const keypair = await Service.DescribeKey({
+            wallet: values.wallet,
+            passphrase: values.passphrase,
+            pubKey: resp.key.publicKey,
+          })
+
+          dispatch(addWalletAction(values.wallet, keypair))
           AppToaster.show({
             message: `Wallet imported to: ${resp.wallet.filePath}`,
             intent: Intent.SUCCESS,

@@ -1,8 +1,7 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
 import type {
   Config,
-  FirstPublicKey,
-  NamedPubKey,
+  DescribeKeyResponse,
   Network
 } from '../../wailsjs/go/models'
 import type {
@@ -14,6 +13,13 @@ import type {
 } from './global-context'
 import { ProxyName } from './global-context'
 import { AppStatus } from './global-context'
+
+function indexBy<T> (key: keyof T) {
+  return (obj: Record<string, T>, value: T) => ({
+    ...obj,
+    [value[key] as unknown as string]: value,
+  })
+}
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
@@ -85,7 +91,7 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
-      key: FirstPublicKey
+      key: DescribeKeyResponse
     }
   | {
       type: 'ADD_WALLETS'
@@ -94,12 +100,17 @@ export type GlobalAction =
   | {
       type: 'SET_KEYPAIRS'
       wallet: string
-      keypairs: NamedPubKey[]
+      keypairs: DescribeKeyResponse[]
+    }
+  | {
+      type: 'UPDATE_KEYPAIR'
+      wallet: string
+      keypair: DescribeKeyResponse
     }
   | {
       type: 'ADD_KEYPAIR'
       wallet: string
-      keypair: FirstPublicKey
+      keypair: DescribeKeyResponse
     }
   | {
       type: 'CHANGE_WALLET'
@@ -240,7 +251,9 @@ export function globalReducer(
       const keypairExtended: KeyPair = extendKeypair(action.key)
       const newWallet: Wallet = {
         name: action.wallet,
-        keypairs: [keypairExtended],
+        keypairs: {
+          [keypairExtended.publicKey]: keypairExtended,
+        },
         auth: true
       }
       return {
@@ -266,7 +279,7 @@ export function globalReducer(
       const newWallet: Wallet = {
         ...currWallet,
         name: action.wallet,
-        keypairs: keypairsExtended,
+        keypairs: keypairsExtended.reduce(indexBy('publicKey'), {}),
         auth: true
       }
 
@@ -279,7 +292,8 @@ export function globalReducer(
         ].sort(sortWallet)
       }
     }
-    case 'ADD_KEYPAIR': {
+    case 'ADD_KEYPAIR':
+    case 'UPDATE_KEYPAIR': {
       const wallets = state.wallets.filter(w => w.name !== action.wallet)
       const currWallet = state.wallets.find(w => w.name === action.wallet)
 
@@ -290,8 +304,12 @@ export function globalReducer(
       const newKeypair = extendKeypair(action.keypair)
       const updatedWallet: Wallet = {
         ...currWallet,
-        keypairs: [...(currWallet?.keypairs || []), newKeypair]
+        keypairs: {
+          ...currWallet.keypairs,
+          [newKeypair.publicKey]: newKeypair,
+        },
       }
+
       return {
         ...state,
         wallet: updatedWallet,
