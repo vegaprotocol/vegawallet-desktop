@@ -13,7 +13,7 @@ export function KeyPairHome() {
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 20 }} data-testid='keypair-home'>
       <Header style={{ marginTop: 0 }}>Details</Header>
       <KeyValueTable
         rows={[
