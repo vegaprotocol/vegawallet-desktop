@@ -14,10 +14,7 @@ import {
 import { Wallet } from './wallet'
 import { KeyPairHome } from './wallet/keypair/home'
 import { Sign } from './wallet/keypair/sign'
-<<<<<<< HEAD
 import { Taint } from './wallet/keypair/taint';
-=======
->>>>>>> develop
 import { WalletKeyPair } from './wallet/wallet-key-pair'
 import { WalletCreate } from './wallet-create'
 import { WalletImport } from './wallet-import'
@@ -54,18 +51,7 @@ export const AppRouter = () => {
           <Route path='sign' element={<Sign />} />
           <Route
             path='taint'
-<<<<<<< HEAD
             element={<Taint />}
-          />
-          <Route
-            path='metadata'
-            element={<div style={{ padding: 20 }}>Metadata</div>}
-=======
-            element={
-              <div data-testid='keypair-taint' style={{ padding: 20 }}>
-                Taint
-              </div>
-            }
           />
           <Route
             path='metadata'
@@ -74,7 +60,6 @@ export const AppRouter = () => {
                 Metadata
               </div>
             }
->>>>>>> develop
           />
         </Route>
       </Route>
