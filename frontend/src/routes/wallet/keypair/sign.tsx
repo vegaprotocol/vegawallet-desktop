@@ -75,7 +75,7 @@ export const Sign = () => {
   )
 
   return (
-    <div>
+    <div data-testid='keypair-sign'>
       <div style={{ padding: 20 }}>
         <Header style={{ margin: 0 }}>Sign</Header>
       </div>

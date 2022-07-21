@@ -7,6 +7,6 @@ export function useCurrentKeypair() {
   const {
     state: { wallet }
   } = useGlobal()
-  const keypair = pubkey && wallet?.keypairs?.[pubkey]
+  const keypair = pubkey ? wallet?.keypairs?.[pubkey] : undefined
   return { keypair, wallet }
 }

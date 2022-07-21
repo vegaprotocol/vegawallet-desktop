@@ -208,7 +208,7 @@ export function getKeysAction(wallet: string) {
   }
 }
 
-export function updateKeyPairAction(wallet: string, keypair: DescribeKeyResponse) {
+export function updateKeyPairAction(wallet: string, keypair: DescribeKeyResponse): GlobalAction {
   return { type: 'UPDATE_KEYPAIR', wallet, keypair };
 }
 

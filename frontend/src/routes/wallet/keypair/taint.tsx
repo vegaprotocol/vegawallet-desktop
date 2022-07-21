@@ -103,7 +103,7 @@ export const Taint = () => {
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div data-testid='keypair-taint' style={{ padding: 20 }}>
       <Header style={{ marginTop: 0 }}>Taint key</Header>
       {keypair.isTainted && (
         <div style={{ marginBottom: 20 }}>

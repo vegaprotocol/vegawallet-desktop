@@ -1,4 +1,5 @@
 const { hasOperationName } = require('../support/graphql')
+const { authenticate, unlockWallet } = require('../support/helpers')
 
 describe('create wallet', () => {
   const walletName = 'test'
@@ -61,6 +62,7 @@ describe('wallet', () => {
   })
 
   it('view wallet keypairs', () => {
+    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('passphrase-form').should('not.exist')
     cy.getByTestId('generate-keypair').should('exist')
@@ -68,12 +70,14 @@ describe('wallet', () => {
   })
 
   it('wrong passphrase', () => {
+    cy.visit('/')
     unlockWallet(walletName, 'invalid')
     cy.contains('Error').should('have.text', 'Error: wrong passphrase')
     cy.getByTestId('log-out').should('not.exist')
   })
 
   it('generate new key pair', () => {
+    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-list').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
@@ -82,6 +86,7 @@ describe('wallet', () => {
   })
 
   it('key pair page', () => {
+    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('keypair-name').should('contain', 'key')
     cy.getByTestId('public-key')
@@ -92,6 +97,7 @@ describe('wallet', () => {
   })
 
   it('wallets can be locked', () => {
+    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('keypair-name').should('contain', 'key')
     cy.getByTestId('log-out').click()
@@ -99,29 +105,16 @@ describe('wallet', () => {
     cy.getByTestId('home-splash').should('exist')
   })
 
-  it('message signing success', () => {
+  it('can navigate between child pages', () => {
+    cy.visit('/')
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('sign-page').click()
-    signMessage('Sign message successfully')
-    authenticate(passphrase)
-    cy.contains('Message signed successfully')
-    cy.getByTestId('sign-more').click()
-    signMessage('Sign message successfully')
-    authenticate(passphrase)
-    cy.contains('Message signed successfully')
-
-    function signMessage(message) {
-      cy.getByTestId('message-field').clear().type(message)
-      cy.getByTestId('sign').click()
-    }
-  })
-
-  it('message signing failure', () => {
-    unlockWallet(walletName, passphrase)
-    cy.getByTestId('sign-page').click()
-    signMessage('Sign message failure')
-    authenticate('invalid')
-    cy.contains('Error').should('have.text', 'Error: wrong passphrase')
+    cy.getByTestId('wallet-actions').click()
+    cy.getByTestId('wallet-action-sign').click()
+    cy.getByTestId('keypair-sign').should('be.visible')
+    cy.getByTestId('wallet-action-taint').click()
+    cy.getByTestId('keypair-taint').should('be.visible')
+    cy.getByTestId('wallet-action-metadata').click()
+    cy.getByTestId('keypair-metadata').should('be.visible')
   })
 })
 
@@ -214,21 +207,3 @@ describe('wallet - assets', () => {
     })
   })
 })
-
-function unlockWallet(walletName, passphrase) {
-  cy.visit('/')
-  cy.getByTestId(`wallet-${walletName}`).click()
-  authenticate(passphrase)
-  cy.getByTestId('passphrase-form').should('not.exist')
-}
-
-function signMessage(message) {
-  cy.getByTestId('message-field').type(message)
-  cy.getByTestId('sign').click()
-}
-
-function authenticate(passphrase) {
-  cy.getByTestId('passphrase-form').should('be.visible')
-  cy.getByTestId('input-passphrase').type(passphrase)
-  cy.getByTestId('input-submit').click()
-}
