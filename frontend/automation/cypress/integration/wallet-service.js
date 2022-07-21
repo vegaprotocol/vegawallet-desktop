@@ -25,7 +25,7 @@ describe('wallet service', () => {
 
   it('starts service automatically', () => {
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('service-status').should(
       'contain.text',
       'Wallet Service: fairground'
@@ -35,7 +35,7 @@ describe('wallet service', () => {
   it('starts service with Token DApp', () => {
     const url = Cypress.env('tokenServiceUrl')
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     expandNetworkDrawer()
     cy.getByTestId('service-token').contains('Start').click()
     cy.getByTestId('dapp-status').should('contain.text', 'TokenDApp')
@@ -48,7 +48,7 @@ describe('wallet service', () => {
   it('starts service with Console', () => {
     const url = Cypress.env('consoleServiceUrl')
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     expandNetworkDrawer()
     cy.getByTestId('service-console').find('button').click()
     cy.getByTestId('dapp-status').should('contain.text', 'Console')

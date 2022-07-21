@@ -132,12 +132,19 @@ export const Taint = () => {
             dataTestId: 'public-key'
           }
       ]}/>
-      {keypair.isTainted && (
-        <Button disabled={loading} onClick={() => untaint()}>Untaint this key</Button>
-      )}
-      {!keypair.isTainted && (
-        <Button disabled={loading} onClick={() => taint()}>Taint this key</Button>
-      )}
+      <Button
+        data-testid="taint-action"
+        disabled={loading}
+        onClick={() => {
+          if (keypair.isTainted) {
+            untaint()
+          } else {
+            taint()
+          }
+        }}
+      >
+        {keypair.isTainted ? 'Untaint this key' : 'Taint this key'}
+      </Button>
     </div>
   )
 }

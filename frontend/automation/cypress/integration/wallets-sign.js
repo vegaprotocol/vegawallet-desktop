@@ -1,6 +1,6 @@
 const { unlockWallet, authenticate } = require('../support/helpers')
 
-describe('wallets sign', () => {
+describe('wallet sign key', () => {
   let walletName
   let passphrase
 

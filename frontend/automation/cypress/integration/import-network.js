@@ -21,7 +21,7 @@ describe('import network', () => {
     const passphrase = Cypress.env('testWalletPassphrase')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
 
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
@@ -36,7 +36,7 @@ describe('import network', () => {
     const passphrase = Cypress.env('testWalletPassphrase')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('import-network-select').select('Other')
@@ -52,7 +52,7 @@ describe('import network', () => {
     const passphrase = Cypress.env('testWalletPassphrase')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('import-network-select').select('Other')
@@ -69,7 +69,7 @@ describe('import network', () => {
     const passphrase = Cypress.env('testWalletPassphrase')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('import-network-select').select('Other')
@@ -91,7 +91,7 @@ describe('import network', () => {
     const passphrase = Cypress.env('testWalletPassphrase')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('import-network-select').select('Other')
@@ -110,7 +110,7 @@ describe('import network', () => {
     cy.downloadFile(url, 'network-config', 'mainnet-config.toml')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('import-network-select').select('Other')
@@ -133,7 +133,7 @@ describe('import network', () => {
     const passphrase = Cypress.env('testWalletPassphrase')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('import-network-select').select('Other')
