@@ -53,7 +53,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                   {kp.name}
                   {kp.isTainted ? (
                     <span style={{
-                      color: 'var(--vega-red)',
+                      color: Colors.VEGA_RED,
                       textTransform: 'uppercase',
                       fontSize: '0.8rem',
                       marginLeft: '1rem',
