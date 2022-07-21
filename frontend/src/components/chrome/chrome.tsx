@@ -1,11 +1,6 @@
-import React, { useState } from 'react'
-
 import { Colors } from '../../config/colors'
-import type { KeyPair } from '../../contexts/global/global-context'
-import { useCurrentKeypair } from '../../hooks/use-current-keypair'
+import { useGlobal } from '../../contexts/global/global-context'
 import { useWindowSize } from '../../hooks/use-window-size'
-import { ButtonUnstyled } from '../button-unstyled'
-import { Header } from '../header'
 import { ChromeDrawer } from './chrome-drawer'
 import { ChromeSidebar, SIDEBAR_WIDTH } from './chrome-sidebar'
 
@@ -15,9 +10,8 @@ export const DRAWER_HEIGHT = 70
  * Handles app layout for main content, sidebar and footer
  */
 export function Chrome({ children }: { children: React.ReactNode }) {
-  const { keypair } = useCurrentKeypair()
   const { width, height } = useWindowSize()
-  const [sidebar, setSidebar] = useState(false)
+  const { state, dispatch } = useGlobal()
   const isWide = width > 900
 
   return (
@@ -42,8 +36,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           }}
         >
           <ChromeSidebar
-            open={sidebar}
-            setOpen={setSidebar}
+            open={state.sidebarOpen}
+            setOpen={open => dispatch({ type: 'SET_SIDEBAR', open })}
             isWide={isWide}
             height={height}
           />
@@ -54,11 +48,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             overflowY: 'auto'
           }}
         >
-          <MainHeader
-            keypair={keypair}
-            isWide={isWide}
-            setSidebar={setSidebar}
-          />
           {children}
         </main>
       </div>
@@ -74,48 +63,5 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         <ChromeDrawer height={height} />
       </div>
     </>
-  )
-}
-
-interface MainHeaderProps {
-  keypair: KeyPair | undefined
-  isWide: boolean
-  setSidebar: (open: boolean) => void
-}
-
-function MainHeader({ keypair, isWide, setSidebar }: MainHeaderProps) {
-  return (
-    <Header
-      style={{ display: 'flex', alignItems: 'start', margin: 0, padding: 20 }}
-    >
-      <span style={{ flex: 1 }}>
-        {!isWide && (
-          <ButtonUnstyled
-            style={{ marginRight: 10 }}
-            onClick={() => setSidebar(true)}
-          >
-            Wallet
-          </ButtonUnstyled>
-        )}
-      </span>
-      <span style={{ flex: 1, textAlign: 'center' }}>
-        {keypair && (
-          <>
-            <div
-              style={{
-                color: Colors.WHITE,
-                fontSize: 20
-              }}
-            >
-              {keypair.name}
-            </div>
-            <div style={{ textTransform: 'initial' }}>
-              {keypair.publicKeyShort}
-            </div>
-          </>
-        )}
-      </span>
-      <span style={{ flex: 1 }} />
-    </Header>
   )
 }

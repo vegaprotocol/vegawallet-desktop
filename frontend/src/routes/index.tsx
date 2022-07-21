@@ -12,7 +12,8 @@ import {
   OnboardWalletImport
 } from './onboard'
 import { Wallet } from './wallet'
-import { Sign } from './wallet/sign'
+import { KeyPairHome } from './wallet/keypair/home'
+import { Sign } from './wallet/keypair/sign'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
 import { WalletCreate } from './wallet-create'
 import { WalletImport } from './wallet-import'
@@ -44,8 +45,26 @@ export const AppRouter = () => {
             </Center>
           }
         />
-        <Route path='keypair/:pubkey' element={<WalletKeyPair />} />
-        <Route path='keypair/:pubkey/sign' element={<Sign />} />
+        <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
+          <Route index={true} element={<KeyPairHome />} />
+          <Route path='sign' element={<Sign />} />
+          <Route
+            path='taint'
+            element={
+              <div data-testid='keypair-taint' style={{ padding: 20 }}>
+                Taint
+              </div>
+            }
+          />
+          <Route
+            path='metadata'
+            element={
+              <div data-testid='keypair-metadata' style={{ padding: 20 }}>
+                Metadata
+              </div>
+            }
+          />
+        </Route>
       </Route>
       <Route path='/wallet-create' element={<WalletCreate />} />
       <Route path='/wallet-import' element={<WalletImport />} />
