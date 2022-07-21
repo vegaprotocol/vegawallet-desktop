@@ -69,6 +69,14 @@ const useTaint = (dispatch: GlobalDispatch, pubKey?: string, wallet?: string) =>
           passphrase
         });
 
+        const keypair = await Service.DescribeKey({
+          wallet,
+          pubKey,
+          passphrase
+        });
+
+        dispatch(updateKeyPairAction(wallet, keypair));
+
         setLoading(false);
         AppToaster.show({
           message: `This key has been untainted`,
