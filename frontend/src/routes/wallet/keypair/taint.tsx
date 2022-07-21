@@ -1,14 +1,16 @@
-import { useState, useCallback } from 'react'
-import { Intent } from '../../../config/intent'
-import { Header } from '../../../components/header'
-import { Button } from '../../../components/button'
-import { AppToaster } from '../../../components/toaster'
+import { useCallback,useState } from 'react'
+
 import { BreakText } from '../../../components/break-text'
+import { Button } from '../../../components/button'
+import { Header } from '../../../components/header'
 import { KeyValueTable } from '../../../components/key-value-table'
-import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { requestPassphrase } from '../../../components/passphrase-modal'
+import { AppToaster } from '../../../components/toaster'
+import { Intent } from '../../../config/intent'
 import { updateKeyPairAction } from '../../../contexts/global/global-actions'
-import { useGlobal, GlobalDispatch } from '../../../contexts/global/global-context'
+import type { GlobalDispatch } from '../../../contexts/global/global-context';
+import { useGlobal } from '../../../contexts/global/global-context'
+import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { createLogger } from '../../../lib/logging'
 import { Service } from '../../../service'
 
@@ -51,7 +53,7 @@ const useTaint = (dispatch: GlobalDispatch, pubKey?: string, wallet?: string) =>
         logger.error(err)
       }
     },
-    [pubKey, wallet]
+    [dispatch, pubKey, wallet]
   )
 
   const untaint = useCallback(
@@ -88,7 +90,7 @@ const useTaint = (dispatch: GlobalDispatch, pubKey?: string, wallet?: string) =>
         logger.error(err)
       }
     },
-    [pubKey, wallet]
+    [dispatch, pubKey, wallet]
   )
   return {
     loading,
@@ -98,8 +100,8 @@ const useTaint = (dispatch: GlobalDispatch, pubKey?: string, wallet?: string) =>
 }
 
 export const Taint = () => {
-  const { dispatch } = useGlobal();
-  const { keypair, wallet } = useCurrentKeypair();
+  const { dispatch } = useGlobal()
+  const { keypair, wallet } = useCurrentKeypair()
   const { loading, taint, untaint } = useTaint(
     dispatch,
     keypair?.publicKey,
