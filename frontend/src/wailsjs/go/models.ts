@@ -836,7 +836,6 @@ export class NamedPubKey {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
-        console.log('\n\n', source, '\n\n')
         this.name = source["name"];
         this.publicKey = source["publicKey"];
     }
