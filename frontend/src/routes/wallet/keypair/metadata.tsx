@@ -111,6 +111,7 @@ export const Metadata = () => {
   }, [update])
 
   const handleDragEnd = useCallback((result: DropResult) => {
+    console.log('DROP EVENT!!!', result.source.index, result.destination)
     move(result.source.index, result.destination?.index ?? result.source.index)
   }, [move])
 
@@ -134,11 +135,14 @@ export const Metadata = () => {
                 >
                   <div style={rowStyles}>
                     <span />
-                    <span style={{
-                      ...cellStyles,
-                      padding: '0 0.5rem',
-                      backgroundColor: Colors.DARK_GRAY_2,
-                    }}>
+                    <span
+                      data-testid="metadata-key-0"
+                      style={{
+                        ...cellStyles,
+                        padding: '0 0.5rem',
+                        backgroundColor: Colors.DARK_GRAY_2,
+                      }}
+                    >
                       name
                     </span>
                     <FormGroup
@@ -147,6 +151,7 @@ export const Metadata = () => {
                     >
                       <Input
                         placeholder="value"
+                        data-testid="metadata-value-0"
                         aria-invalid={!!errors.meta?.[0]?.value ? 'true' : 'false'}
                         {...register(`meta.0.value`, { required: Validation.REQUIRED })}
                       />
@@ -162,7 +167,7 @@ export const Metadata = () => {
                           {...provided.dragHandleProps}
                         >
                           <div style={rowStyles}>
-                            <div style={cellStyles}>
+                            <div data-testid="metadata-row-indicator" style={cellStyles}>
                               <Kebab />
                             </div>
                             <FormGroup
@@ -171,6 +176,7 @@ export const Metadata = () => {
                             >
                               <Input
                                 placeholder="key"
+                                data-testid="metadata-key"
                                 aria-invalid={!!errors.meta?.[index + 1]?.key ? 'true' : 'false'}
                                 {...register(`meta.${index + 1}.key`, { required: Validation.REQUIRED, validate: notName })}
                               />
@@ -181,11 +187,13 @@ export const Metadata = () => {
                             >
                               <Input
                                 placeholder="value"
+                                data-testid="metadata-value"
                                 aria-invalid={!!errors.meta?.[index + 1]?.value ? 'true' : 'false'}
                                 {...register(`meta.${index + 1}.value`, { required: Validation.REQUIRED })}
                               />
                             </FormGroup>
                             <button
+                              data-testid="metadata-remove"
                               style={{ ...cellStyles, ...underlined }}
                               onClick={() => remove(index + 1)}
                             >
@@ -203,10 +211,16 @@ export const Metadata = () => {
           </Droppable>
         </DragDropContext>
         <div style={{ margin: '1.5rem 0' }}>
-          <button style={underlined} onClick={() => append({ key: '', value: '' })}>Add metadata</button>
+          <button
+            data-testid="metadata-add"
+            style={underlined} onClick={() => append({ key: '', value: '' })}
+          >
+            Add metadata
+          </button>
         </div>
         <div>
           <Button
+            data-testid="metadata-submit"
             disabled={loading}
             style={{ width: '100%' }}
             type="submit"

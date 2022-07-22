@@ -26,7 +26,7 @@ const testIds = {
   TRANSACTION_TITLE: 'transaction-title',
   REJECT_BTN: 'reject-transaction',
   APPROVE_BTN: 'approve-transaction',
-  WALLET_LIST: 'wallet-list'
+  WALLET_ITEM: 'wallet-item'
 }
 
 describe('transaction approval', () => {

@@ -50,7 +50,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                 })}
               >
                 <span style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
-                  {kp.name}
+                  <span data-testid='wallet-item-name'>{kp.name}</span>
                   {kp.isTainted ? (
                     <span style={{
                       color: Colors.VEGA_RED,
@@ -104,7 +104,7 @@ function SidebarListItem({ children }: SidebarListItemProps) {
   }
   return (
     <li
-      data-testid='wallet-list'
+      data-testid='wallet-item'
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

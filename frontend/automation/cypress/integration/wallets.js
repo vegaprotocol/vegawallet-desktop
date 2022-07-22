@@ -79,10 +79,10 @@ describe('wallet', () => {
   it('generate new key pair', () => {
     cy.visit('/')
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('wallet-list').should('have.length', 1)
+    cy.getByTestId('wallet-item').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
     authenticate(passphrase)
-    cy.getByTestId('wallet-list').should('have.length', 2)
+    cy.getByTestId('wallet-item').should('have.length', 2)
   })
 
   it('key pair page', () => {
