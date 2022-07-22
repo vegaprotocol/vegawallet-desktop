@@ -14,7 +14,7 @@ import {
 import { Wallet } from './wallet'
 import { KeyPairHome } from './wallet/keypair/home'
 import { Sign } from './wallet/keypair/sign'
-import { Taint } from './wallet/keypair/taint';
+import { Taint } from './wallet/keypair/taint'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
 import { WalletCreate } from './wallet-create'
 import { WalletImport } from './wallet-import'
@@ -49,10 +49,7 @@ export const AppRouter = () => {
         <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
           <Route index={true} element={<KeyPairHome />} />
           <Route path='sign' element={<Sign />} />
-          <Route
-            path='taint'
-            element={<Taint />}
-          />
+          <Route path='taint' element={<Taint />} />
           <Route
             path='metadata'
             element={

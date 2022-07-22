@@ -8,7 +8,7 @@ import type {
   GetServiceStateResponse,
   Network,
   StartServiceRequest,
-  DescribeKeyResponse,
+  DescribeKeyResponse
 } from '../../wailsjs/go/models'
 import { GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
@@ -145,13 +145,13 @@ export function addKeypairAction(wallet: string) {
       const keypair = await Service.DescribeKey({
         wallet,
         passphrase,
-        pubKey: res.publicKey,
+        pubKey: res.publicKey
       })
 
       dispatch({
         type: 'ADD_KEYPAIR',
         wallet,
-        keypair,
+        keypair
       })
     } catch (err) {
       if (err !== 'dismissed') {
@@ -185,12 +185,14 @@ export function getKeysAction(wallet: string) {
         }
 
         const keysWithMeta = await Promise.all(
-          keys.keys.map(key => Service.DescribeKey({
-            wallet,
-            passphrase,
-            pubKey: key.publicKey,
-          }))
-        );
+          keys.keys.map(key =>
+            Service.DescribeKey({
+              wallet,
+              passphrase,
+              pubKey: key.publicKey
+            })
+          )
+        )
 
         dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keysWithMeta || [] })
 
@@ -209,8 +211,11 @@ export function getKeysAction(wallet: string) {
   }
 }
 
-export function updateKeyPairAction(wallet: string, keypair: DescribeKeyResponse): GlobalAction {
-  return { type: 'UPDATE_KEYPAIR', wallet, keypair };
+export function updateKeyPairAction(
+  wallet: string,
+  keypair: DescribeKeyResponse
+): GlobalAction {
+  return { type: 'UPDATE_KEYPAIR', wallet, keypair }
 }
 
 export function setPassphraseModalAction(open: boolean): GlobalAction {
