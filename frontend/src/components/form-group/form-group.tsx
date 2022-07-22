@@ -35,7 +35,7 @@ export function FormGroup({
         style={{
           position: 'relative',
           marginTop: 5,
-          paddingBottom: 21,
+          paddingBottom: 21
         }}
       >
         {children}

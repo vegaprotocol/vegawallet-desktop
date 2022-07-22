@@ -8,7 +8,7 @@ import type {
   DescribeKeyResponse,
   GetServiceStateResponse,
   Network,
-  StartServiceRequest,
+  StartServiceRequest
 } from '../../wailsjs/go/models'
 import { GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'

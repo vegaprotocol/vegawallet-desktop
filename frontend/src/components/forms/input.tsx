@@ -7,9 +7,15 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>
 
 export const Input = forwardRef(
   ({ style, ...props }: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
-    return <input {...props} ref={ref} style={{
-      ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
-      ...style,
-    }} />
+    return (
+      <input
+        {...props}
+        ref={ref}
+        style={{
+          ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
+          ...style
+        }}
+      />
+    )
   }
 )

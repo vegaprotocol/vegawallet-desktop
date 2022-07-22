@@ -1,4 +1,4 @@
-import { useCallback,useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { BreakText } from '../../../components/break-text'
 import { Button } from '../../../components/button'
@@ -47,16 +47,16 @@ const useTaint = (
 
       dispatch(updateKeyPairAction(wallet, keypair))
 
-        setLoading(false);
-        AppToaster.show({
-          message: `This key has been tainted`,
-          intent: Intent.SUCCESS
-        })
-      } catch (err) {
-        setLoading(false);
-        AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-        logger.error(err)
-      }
+      setLoading(false)
+      AppToaster.show({
+        message: `This key has been tainted`,
+        intent: Intent.SUCCESS
+      })
+    } catch (err) {
+      setLoading(false)
+      AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+      logger.error(err)
+    }
   }, [dispatch, pubKey, wallet])
 
   const untaint = useCallback(async () => {

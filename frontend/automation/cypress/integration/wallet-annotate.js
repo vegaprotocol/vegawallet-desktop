@@ -34,27 +34,31 @@ describe('wallet annotate metadata', () => {
     addPair('second', 'value-2')
     addPair('third', 'value-3')
 
-    cy.get('[data-rbd-droppable-id="meta"]').first().then(([$droparea]) => {
-      cy.get('[data-rbd-draggable-context-id="1"]').last().then(([$el, ...rest]) => {
-          dragByY({
-            element: $el,
-            droparea: $droparea,
-            offsetY: -85,
+    cy.get('[data-rbd-droppable-id="meta"]')
+      .first()
+      .then(([$droparea]) => {
+        cy.get('[data-rbd-draggable-context-id="1"]')
+          .last()
+          .then(([$el, ...rest]) => {
+            dragByY({
+              element: $el,
+              droparea: $droparea,
+              offsetY: -85
+            })
+
+            // cy.getByTestId('metadata-key-1').contains('second')
+            // cy.getByTestId('metadata-value-1').contains('value-2')
+            // cy.getByTestId('metadata-key-2').contains('first')
+            // cy.getByTestId('metadata-value-2').contains('value-1')
+            // cy.getByTestId('metadata-key-3').contains('third')
+            // cy.getByTestId('metadata-value-3').contains('value-3')
+
+            // updateMetadata()
+            // authenticate(passphrase)
+
+            // cy.getByTestId('toast').contains('Successfully updated metadata')
           })
-
-        // cy.getByTestId('metadata-key-1').contains('second')
-        // cy.getByTestId('metadata-value-1').contains('value-2')
-        // cy.getByTestId('metadata-key-2').contains('first')
-        // cy.getByTestId('metadata-value-2').contains('value-1')
-        // cy.getByTestId('metadata-key-3').contains('third')
-        // cy.getByTestId('metadata-value-3').contains('value-3')
-
-        // updateMetadata()
-        // authenticate(passphrase)
-
-        // cy.getByTestId('toast').contains('Successfully updated metadata')
       })
-    })
   })
 })
 
@@ -70,7 +74,7 @@ function addPair(key, value) {
   cy.getByTestId('metadata-value').last().type(value)
 }
 
-function dragByY ({ element, droparea, offsetY }) {
+function dragByY({ element, droparea, offsetY }) {
   console.log(droparea)
   const dropCoords = droparea.getBoundingClientRect()
   const elementCoords = element.getBoundingClientRect()
@@ -80,7 +84,7 @@ function dragByY ({ element, droparea, offsetY }) {
     .trigger('mousedown', {
       clientX: elementCoords.x,
       clientY: elementCoords.y,
-      force: true,
+      force: true
     })
     .trigger('mousemove', {
       clientX: elementCoords.left + 10,
@@ -90,15 +94,15 @@ function dragByY ({ element, droparea, offsetY }) {
 
   cy.get('body')
     .trigger('mousemove', {
-        clientX: dropCoords.x,
-        clientY: dropCoords.y + offsetY,
-        force: true
+      clientX: dropCoords.x,
+      clientY: dropCoords.y + offsetY,
+      force: true
     })
     .trigger('mouseup', {
       clientX: dropCoords.x,
       clientY: dropCoords.y + offsetY,
       force: true
-    });
+    })
 }
 
 function updateMetadata() {

@@ -13,7 +13,7 @@ import {
 } from './onboard'
 import { Wallet } from './wallet'
 import { KeyPairHome } from './wallet/keypair/home'
-import { Metadata } from './wallet/keypair/metadata';
+import { Metadata } from './wallet/keypair/metadata'
 import { Sign } from './wallet/keypair/sign'
 import { Taint } from './wallet/keypair/taint'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
