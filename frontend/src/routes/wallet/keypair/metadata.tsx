@@ -127,7 +127,6 @@ export const Metadata = () => {
 
   const handleDragEnd = useCallback(
     (result: DropResult) => {
-      console.log('DROP EVENT!!!', result.source.index, result.destination)
       move(
         result.source.index,
         result.destination?.index ?? result.source.index

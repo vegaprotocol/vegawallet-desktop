@@ -75,10 +75,8 @@ function addPair(key, value) {
 }
 
 function dragByY({ element, droparea, offsetY }) {
-  console.log(droparea)
   const dropCoords = droparea.getBoundingClientRect()
   const elementCoords = element.getBoundingClientRect()
-  console.log(elementCoords.y + offsetY)
 
   cy.wrap(element)
     .trigger('mousedown', {
