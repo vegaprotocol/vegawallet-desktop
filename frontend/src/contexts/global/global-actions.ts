@@ -5,10 +5,10 @@ import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type {
-  FirstPublicKey,
   GetServiceStateResponse,
   Network,
-  StartServiceRequest
+  StartServiceRequest,
+  DescribeKeyResponse
 } from '../../wailsjs/go/models'
 import { GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
@@ -124,7 +124,7 @@ export function completeOnboardAction(onComplete: () => void) {
 
 export function addWalletAction(
   wallet: string,
-  key: FirstPublicKey
+  key: DescribeKeyResponse
 ): GlobalAction {
   return { type: 'ADD_WALLET', wallet, key }
 }
@@ -142,10 +142,16 @@ export function addKeypairAction(wallet: string) {
         })
       )
 
+      const keypair = await Service.DescribeKey({
+        wallet,
+        passphrase,
+        pubKey: res.publicKey
+      })
+
       dispatch({
         type: 'ADD_KEYPAIR',
         wallet,
-        keypair: res
+        keypair
       })
     } catch (err) {
       if (err !== 'dismissed') {
@@ -163,7 +169,8 @@ export function getKeysAction(wallet: string) {
 
     if (selectedWallet?.keypairs) {
       dispatch({ type: 'ACTIVATE_WALLET', wallet })
-      window.location.hash = `/wallet/${wallet}/keypair/${selectedWallet.keypairs[0].publicKey}`
+      const publicKey = Object.keys(selectedWallet.keypairs)[0]
+      window.location.hash = `/wallet/${wallet}/keypair/${publicKey}`
       logger.debug('ChangeWallet')
     } else {
       try {
@@ -177,7 +184,17 @@ export function getKeysAction(wallet: string) {
           throw keys
         }
 
-        dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
+        const keysWithMeta = await Promise.all(
+          keys.keys.map(key =>
+            Service.DescribeKey({
+              wallet,
+              passphrase,
+              pubKey: key.publicKey
+            })
+          )
+        )
+
+        dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keysWithMeta || [] })
 
         if (keys.keys.length) {
           window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
@@ -192,6 +209,13 @@ export function getKeysAction(wallet: string) {
       }
     }
   }
+}
+
+export function updateKeyPairAction(
+  wallet: string,
+  keypair: DescribeKeyResponse
+): GlobalAction {
+  return { type: 'UPDATE_KEYPAIR', wallet, keypair }
 }
 
 export function setPassphraseModalAction(open: boolean): GlobalAction {

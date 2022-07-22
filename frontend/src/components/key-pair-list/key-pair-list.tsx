@@ -19,7 +19,9 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
     dispatch
   } = useGlobal()
 
-  if (!wallet?.keypairs?.length) {
+  const keypairs = Object.values(wallet?.keypairs || {})
+
+  if (!keypairs.length) {
     // wallet.tsx will redirect to appropriate place
     return null
   }
@@ -27,11 +29,11 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
   return (
     <>
       <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
-        {wallet.keypairs.map(kp => (
+        {keypairs.map(kp => (
           <SidebarListItem key={kp.publicKey}>
             <div>
               <NavLink
-                to={`/wallet/${wallet.name.replace(' ', '-')}/keypair/${
+                to={`/wallet/${kp.name.replace(' ', '-')}/keypair/${
                   kp.publicKey
                 }`}
                 onClick={() => {
@@ -46,7 +48,29 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                   color: isActive ? Colors.VEGA_YELLOW : Colors.TEXT_COLOR
                 })}
               >
-                <span style={{ display: 'block' }}>{kp.name}</span>
+                <span
+                  style={{
+                    display: 'flex',
+                    width: '100%',
+                    alignItems: 'center'
+                  }}
+                >
+                  {kp.name}
+                  {kp.isTainted ? (
+                    <span
+                      style={{
+                        color: Colors.VEGA_RED,
+                        textTransform: 'uppercase',
+                        fontSize: '0.8rem',
+                        marginLeft: '1rem'
+                      }}
+                    >
+                      Tainted
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                </span>
                 <span
                   style={{
                     display: 'block',
@@ -64,7 +88,9 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
       <div style={{ padding: 20 }}>
         <Button
           style={{ width: '100%' }}
-          onClick={() => dispatch(addKeypairAction(wallet.name))}
+          onClick={() =>
+            wallet?.name && dispatch(addKeypairAction(wallet?.name))
+          }
           data-testid='generate-keypair'
         >
           Generate key pair

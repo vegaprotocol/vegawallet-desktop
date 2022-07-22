@@ -1,21 +1,15 @@
 import type { KeyPair, Wallet } from '../contexts/global/global-context'
-import type { FirstPublicKey, NamedPubKey } from '../wailsjs/go/models'
+import type { DescribeKeyResponse } from '../wailsjs/go/models'
 import { truncateMiddle } from './truncate-middle'
 
-export function extendKeypair(kp: FirstPublicKey | NamedPubKey): KeyPair {
+export function extendKeypair(kp: DescribeKeyResponse): KeyPair {
   const publicKeyShort = truncateMiddle(kp.publicKey)
-
-  if ('meta' in kp) {
-    const nameMeta = kp.meta?.find(m => m.key === 'name')
-    return {
-      ...kp,
-      name: nameMeta ? nameMeta.value : 'No name',
-      publicKeyShort
-    }
-  }
-
+  const nameMeta = kp.meta.find(m => m.key === 'name')
   return {
-    ...kp,
+    isTainted: kp.isTainted,
+    publicKey: kp.publicKey,
+    meta: kp.meta,
+    name: nameMeta ? nameMeta.value : 'No name',
     publicKeyShort
   }
 }

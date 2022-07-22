@@ -21,7 +21,7 @@ describe('network configuration', () => {
     const walletName = Cypress.env('testWalletName')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('network-select').click()
     cy.getByTestId('select-fairground').click()
@@ -42,7 +42,7 @@ describe('network configuration', () => {
     const walletName = Cypress.env('testWalletName')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('network-select').should('have.text', 'mainnet1')
     cy.getByTestId('service-url').should('not.be.empty')
@@ -63,7 +63,7 @@ describe('network configuration', () => {
     const walletName = Cypress.env('testWalletName')
 
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('edit').first().click()

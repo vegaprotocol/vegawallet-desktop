@@ -51,7 +51,7 @@ describe('transaction approval', () => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
     cy.visit('/')
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
   })
 
   it('handles approval', () => {

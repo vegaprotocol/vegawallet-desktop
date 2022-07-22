@@ -20,15 +20,15 @@ describe('app config', () => {
     const passphrase = Cypress.env('testWalletPassphrase')
     const walletName = Cypress.env('testWalletName')
 
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     assertNetwork('fairground')
     changeNetwork('mainnet1')
     cy.reload()
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     assertNetwork('mainnet1')
     changeNetwork('fairground')
     cy.reload()
-    unlockWallet(`wallet-${walletName}`, passphrase)
+    unlockWallet(walletName, passphrase)
     assertNetwork('fairground')
 
     function changeNetwork(network) {

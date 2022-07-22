@@ -26,11 +26,17 @@ export function useCreateWallet() {
         })
         if (resp) {
           setResponse(resp)
+          const keypair = await Service.DescribeKey({
+            wallet: values.wallet,
+            passphrase: values.passphrase,
+            pubKey: resp.key.publicKey
+          })
+
           AppToaster.show({
             message: 'Wallet created!',
             intent: Intent.SUCCESS
           })
-          dispatch(addWalletAction(values.wallet, resp.key))
+          dispatch(addWalletAction(values.wallet, keypair))
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
         }

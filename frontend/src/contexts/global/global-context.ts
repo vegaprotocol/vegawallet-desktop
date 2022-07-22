@@ -1,7 +1,11 @@
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
-import type { Config, NamedPubKey, Network } from '../../wailsjs/go/models'
+import type {
+  Config,
+  DescribeKeyResponse,
+  Network
+} from '../../wailsjs/go/models'
 import type { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
@@ -11,13 +15,15 @@ export enum AppStatus {
   Onboarding = 'Onboarding'
 }
 
-export interface KeyPair extends NamedPubKey {
+export interface KeyPair
+  extends Pick<DescribeKeyResponse, 'publicKey' | 'meta' | 'isTainted'> {
+  name: string
   publicKeyShort: string
 }
 
 export interface Wallet {
   name: string
-  keypairs: KeyPair[] | null
+  keypairs: null | Record<string, KeyPair>
   auth: boolean
 }
 
