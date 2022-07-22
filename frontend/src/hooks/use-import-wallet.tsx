@@ -38,7 +38,7 @@ export function useImportWallet() {
           const keypair = await Service.DescribeKey({
             wallet: values.wallet,
             passphrase: values.passphrase,
-            pubKey: resp.key.publicKey,
+            pubKey: resp.key.publicKey
           })
 
           dispatch(addWalletAction(values.wallet, keypair))

@@ -14,7 +14,6 @@ interface KeyPairListProps {
 }
 
 export function KeyPairList({ onSelect }: KeyPairListProps) {
-
   const {
     state: { wallet },
     dispatch
@@ -49,18 +48,28 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                   color: isActive ? Colors.VEGA_YELLOW : Colors.TEXT_COLOR
                 })}
               >
-                <span style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
+                <span
+                  style={{
+                    display: 'flex',
+                    width: '100%',
+                    alignItems: 'center'
+                  }}
+                >
                   <span data-testid='wallet-item-name'>{kp.name}</span>
                   {kp.isTainted ? (
-                    <span style={{
-                      color: Colors.VEGA_RED,
-                      textTransform: 'uppercase',
-                      fontSize: '0.8rem',
-                      marginLeft: '1rem',
-                    }}>
+                    <span
+                      style={{
+                        color: Colors.VEGA_RED,
+                        textTransform: 'uppercase',
+                        fontSize: '0.8rem',
+                        marginLeft: '1rem'
+                      }}
+                    >
                       Tainted
                     </span>
-                  ) : ''}
+                  ) : (
+                    ''
+                  )}
                 </span>
                 <span
                   style={{
@@ -79,7 +88,9 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
       <div style={{ padding: 20 }}>
         <Button
           style={{ width: '100%' }}
-          onClick={() => wallet?.name && dispatch(addKeypairAction(wallet?.name))}
+          onClick={() =>
+            wallet?.name && dispatch(addKeypairAction(wallet?.name))
+          }
           data-testid='generate-keypair'
         >
           Generate key pair

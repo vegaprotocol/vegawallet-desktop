@@ -14,10 +14,10 @@ import type {
 import { ProxyName } from './global-context'
 import { AppStatus } from './global-context'
 
-function indexBy<T> (key: keyof T) {
+function indexBy<T>(key: keyof T) {
   return (obj: Record<string, T>, value: T) => ({
     ...obj,
-    [value[key] as unknown as string]: value,
+    [value[key] as unknown as string]: value
   })
 }
 
@@ -252,7 +252,7 @@ export function globalReducer(
       const newWallet: Wallet = {
         name: action.wallet,
         keypairs: {
-          [keypairExtended.publicKey]: keypairExtended,
+          [keypairExtended.publicKey]: keypairExtended
         },
         auth: true
       }
@@ -306,8 +306,8 @@ export function globalReducer(
         ...currWallet,
         keypairs: {
           ...currWallet.keypairs,
-          [newKeypair.publicKey]: newKeypair,
-        },
+          [newKeypair.publicKey]: newKeypair
+        }
       }
 
       return {
