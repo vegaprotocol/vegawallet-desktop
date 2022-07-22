@@ -2,7 +2,7 @@ import type { ForwardedRef, SelectHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 
 import { Colors } from '../../config/colors'
-import { defaultStyles } from './styles'
+import { getDefaultStyles } from './styles'
 
 type SelectProps = SelectHTMLAttributes<HTMLSelectElement>
 
@@ -16,7 +16,7 @@ export const Select = forwardRef(
           {...props}
           ref={ref}
           style={{
-            ...defaultStyles,
+            ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
             ...style,
             paddingRight: 20
           }}
