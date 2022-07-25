@@ -3,14 +3,15 @@ import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
+import * as Service from '../../wailsjs/go/backend/Handler'
 import type {
-  DescribeKeyResponse,
-  GetServiceStateResponse,
-  Network,
-  StartServiceRequest
+  backend as BackendModel,
+  network as NetworkModel
 } from '../../wailsjs/go/models'
-import { Config, GenerateKeyRequest } from '../../wailsjs/go/models'
+import {
+  config as ConfigModel,
+  wallet as WalletModel
+} from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { ProxyName } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -40,6 +41,9 @@ export function initAppAction() {
 
       if (!isInit) {
         const existingConfig = await Service.SearchForExistingConfiguration()
+        if (existingConfig instanceof Error) {
+          throw new Error('SearchForExistingConfiguration failed')
+        }
         dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
         return
       }
@@ -58,6 +62,14 @@ export function initAppAction() {
         Service.ListWallets(),
         Service.ListNetworks()
       ])
+
+      if (
+        config instanceof Error ||
+        wallets instanceof Error ||
+        networks instanceof Error
+      ) {
+        throw new Error('failed to initialize')
+      }
 
       const defaultNetwork = config.defaultNetwork
         ? networks.networks.find(n => n === config.defaultNetwork) ||
@@ -124,7 +136,7 @@ export function completeOnboardAction(onComplete: () => void) {
 
 export function addWalletAction(
   wallet: string,
-  key: DescribeKeyResponse
+  key: WalletModel.DescribeKeyResponse
 ): GlobalAction {
   return { type: 'ADD_WALLET', wallet, key }
 }
@@ -135,12 +147,16 @@ export function addKeypairAction(wallet: string) {
     try {
       const passphrase = await requestPassphrase()
       const res = await Service.GenerateKey(
-        new GenerateKeyRequest({
+        new WalletModel.GenerateKeyRequest({
           wallet,
           passphrase,
           metadata: []
         })
       )
+
+      if (res instanceof Error) {
+        throw new Error('GenerateKey failed')
+      }
 
       const keypair = await Service.DescribeKey({
         wallet,
@@ -213,7 +229,7 @@ export function getKeysAction(wallet: string) {
 
 export function updateKeyPairAction(
   wallet: string,
-  keypair: DescribeKeyResponse
+  keypair: WalletModel.DescribeKeyResponse
 ): GlobalAction {
   return { type: 'UPDATE_KEYPAIR', wallet, keypair }
 }
@@ -253,7 +269,7 @@ export function changeNetworkAction(network: string) {
       dispatch({ type: 'STOP_ALL_PROXIES' })
 
       await Service.UpdateAppConfig(
-        new Config({
+        new ConfigModel.Config({
           ...state.config,
           defaultNetwork: network
         })
@@ -278,7 +294,7 @@ export function changeNetworkAction(network: string) {
 
 export function updateNetworkConfigAction(
   editingNetwork: string,
-  networkConfig: Network
+  networkConfig: NetworkModel.Network
 ) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     const state = getState()
@@ -324,7 +340,10 @@ export function updateNetworkConfigAction(
   }
 }
 
-export function addNetworkAction(network: string, config: Network) {
+export function addNetworkAction(
+  network: string,
+  config: NetworkModel.Network
+) {
   return async (dispatch: GlobalDispatch) => {
     // If no service running start service for newly added network
     try {
@@ -427,8 +446,8 @@ export function stopProxyAction(proxyAppName: ProxyName) {
 
 const ProxyFns: {
   [A in ProxyName]: {
-    GetState: () => Promise<GetServiceStateResponse>
-    Start: (req: StartServiceRequest) => Promise<boolean | Error>
+    GetState: () => Promise<BackendModel.GetServiceStateResponse>
+    Start: (req: BackendModel.StartServiceRequest) => Promise<boolean | Error>
     Stop: () => Promise<boolean | Error>
   }
 } = {

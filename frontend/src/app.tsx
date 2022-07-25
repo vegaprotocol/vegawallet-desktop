@@ -19,6 +19,7 @@ import { GlobalProvider } from './contexts/global/global-provider'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { createLogger } from './lib/logging'
 import { AppRouter } from './routes'
+import { WindowReload } from './wailsjs/runtime/runtime'
 
 /**
  * Initialiases the app
@@ -150,11 +151,11 @@ class ErrorBoundary extends Component<
     if (error) {
       return (
         <Splash style={{ textAlign: 'center' }}>
-          {/* @ts-ignore */}
           <p style={{ marginBottom: 10 }}>
+            {/* @ts-ignore */}
             Something went wrong: {error.message}
           </p>
-          <Button onClick={() => window.runtime.WindowReload()}>Reload</Button>
+          <Button onClick={() => WindowReload()}>Reload</Button>
         </Splash>
       )
     }

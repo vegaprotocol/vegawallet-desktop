@@ -46,7 +46,7 @@
     "web-vitals": "^2.0.0"
   },
   "scripts": {
-    "dev": "npx vite build --mode development --watch",
+    "dev": "npx vite",
     "dev:test": "cd .. && VITE_COVERAGE='true' wails dev -noreload",
     "build": "npx vite build --mode development",
     "build:test": "VITE_COVERAGE='true' npx vite build",
