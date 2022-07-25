@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import { addKeypairAction } from '../../contexts/global/global-actions'
@@ -15,6 +15,7 @@ interface KeyPairListProps {
 }
 
 export function KeyPairList({ onSelect }: KeyPairListProps) {
+  const location = useLocation()
   const {
     state: { wallet },
     dispatch
@@ -106,6 +107,15 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
           <Button style={{ width: '100%' }}>Delete wallet</Button>
         </Link>
       </ButtonGroup>
+      <div style={{ textAlign: 'center' }}>
+        <Link
+          to='settings'
+          state={{ background: location }}
+          style={{ textDecoration: 'underline' }}
+        >
+          App settings
+        </Link>
+      </div>
     </>
   )
 }

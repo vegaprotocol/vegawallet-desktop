@@ -1,4 +1,4 @@
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
@@ -14,6 +14,7 @@ import { Paths } from '../'
  * Redirects to import if no wallets are loaded, or to wallet home
  */
 export const Home = () => {
+  const location = useLocation()
   const {
     state: { status, wallets },
     dispatch
@@ -24,7 +25,7 @@ export const Home = () => {
   }
 
   return (
-    <Splash data-testid='home-splash'>
+    <Splash data-testid='home-splash' style={{ textAlign: 'center' }}>
       <Header
         style={{
           margin: '0 0 30px 0',
@@ -52,7 +53,7 @@ export const Home = () => {
           <p style={{ margin: '20px 0', textAlign: 'center' }}>OR</p>
         </>
       )}
-      <ButtonGroup orientation='vertical'>
+      <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
         <Link to='/wallet-create'>
           <Button data-testid='create-new-wallet' style={{ width: '100%' }}>
             Create wallet
@@ -64,6 +65,15 @@ export const Home = () => {
           </Button>
         </Link>
       </ButtonGroup>
+      <p>
+        <Link
+          to='settings'
+          state={{ background: location }}
+          style={{ textDecoration: 'underline' }}
+        >
+          App settings
+        </Link>
+      </p>
     </Splash>
   )
 }

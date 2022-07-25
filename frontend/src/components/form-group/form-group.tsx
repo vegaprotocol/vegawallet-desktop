@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IntentColors } from '../../config/colors'
+import { Colors, IntentColors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 
 interface FormGroupProps {
@@ -45,12 +45,11 @@ export function FormGroup({
             style={{
               marginTop: 5,
               fontSize: 14,
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
               color:
                 // if no intent is provided, use deemphasises text to help visual hierarchy
-                intent === 'none' ? 'inherit' : IntentColors[intent]
+                intent === 'none'
+                  ? Colors.TEXT_COLOR_DEEMPHASISE
+                  : IntentColors[intent]
             }}
           >
             {helperText}
