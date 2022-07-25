@@ -10,7 +10,7 @@ import type {
   StartServiceRequest,
   DescribeKeyResponse
 } from '../../wailsjs/go/models'
-import { GenerateKeyRequest } from '../../wailsjs/go/models'
+import { Config, GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { ProxyName } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -252,10 +252,12 @@ export function changeNetworkAction(network: string) {
       await stopProxies()
       dispatch({ type: 'STOP_ALL_PROXIES' })
 
-      await Service.UpdateAppConfig({
-        ...state.config,
-        defaultNetwork: network
-      })
+      await Service.UpdateAppConfig(
+        new Config({
+          ...state.config,
+          defaultNetwork: network
+        })
+      )
 
       const config = await Service.GetNetworkConfig(network)
 
