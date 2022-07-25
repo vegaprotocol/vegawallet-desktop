@@ -1,6 +1,6 @@
 import { animated, config, useSpring } from 'react-spring'
 
-import { APP_FRAME_HEIGHT } from '../../app'
+import { APP_FRAME_HEIGHT } from '../../app-loader'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { DRAWER_HEIGHT } from '.'
