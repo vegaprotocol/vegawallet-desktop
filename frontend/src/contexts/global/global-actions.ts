@@ -259,9 +259,7 @@ export function deactivateWalletAction(wallet: string): GlobalAction {
 // Network actions
 
 export function changeNetworkAction(network: string) {
-  return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-    const state = getState()
-
+  return async (dispatch: GlobalDispatch) => {
     logger.debug('ChangeNetwork')
 
     try {
@@ -270,7 +268,6 @@ export function changeNetworkAction(network: string) {
 
       await Service.UpdateAppConfig(
         new ConfigModel.Config({
-          ...state.config,
           defaultNetwork: network
         })
       )

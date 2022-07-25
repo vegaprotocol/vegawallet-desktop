@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import { addKeypairAction } from '../../contexts/global/global-actions'
@@ -14,6 +14,7 @@ interface KeyPairListProps {
 }
 
 export function KeyPairList({ onSelect }: KeyPairListProps) {
+  const location = useLocation()
   const {
     state: { wallet },
     dispatch
@@ -87,7 +88,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
       </ul>
       <div style={{ padding: 20 }}>
         <Button
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginBottom: 10 }}
           onClick={() =>
             wallet?.name && dispatch(addKeypairAction(wallet?.name))
           }
@@ -95,6 +96,15 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
         >
           Generate key pair
         </Button>
+        <div style={{ textAlign: 'center' }}>
+          <Link
+            to='settings'
+            state={{ background: location }}
+            style={{ textDecoration: 'underline' }}
+          >
+            App settings
+          </Link>
+        </div>
       </div>
     </>
   )
