@@ -2,7 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
 import { animated, config, useTransition } from 'react-spring'
 
-import { APP_FRAME_HEIGHT } from '../../app'
+import { APP_FRAME_HEIGHT } from '../../app-loader'
 import { Colors } from '../../config/colors'
 import { deactivateWalletAction } from '../../contexts/global/global-actions'
 import type { Wallet } from '../../contexts/global/global-context'
