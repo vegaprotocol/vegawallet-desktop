@@ -8,11 +8,9 @@ import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
 import { Intent } from '../../../config/intent'
 import { updateKeyPairAction } from '../../../contexts/global/global-actions'
+import type { GlobalDispatch } from '../../../contexts/global/global-context'
+import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
-import {
-  useGlobal,
-  GlobalDispatch
-} from '../../../contexts/global/global-context'
 import { createLogger } from '../../../lib/logging'
 import { Service } from '../../../service'
 
@@ -118,7 +116,9 @@ export const Taint = () => {
       <Header style={{ marginTop: 0 }}>Taint key</Header>
       {keypair.isTainted && (
         <div style={{ marginBottom: 20 }}>
-          <p>This key has been marked as tainted.</p>
+          <p style={{ marginBottom: 10 }}>
+            This key has been marked as tainted.
+          </p>
           <p>
             You may have tained a key pair by mistake but if you tained a key
             for secuirty reasons, you should not untaint it.
@@ -127,7 +127,7 @@ export const Taint = () => {
       )}
       {!keypair.isTainted && (
         <div style={{ marginBottom: 20 }}>
-          <p>
+          <p style={{ marginBottom: 10 }}>
             Tainting a key pair marks it as unsafe to use and ensures it will
             not be used to sign transactions while it is tainted. You can choose
             to un-taint a key whenever you want.

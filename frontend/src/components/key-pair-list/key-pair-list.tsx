@@ -33,7 +33,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
           <SidebarListItem key={kp.publicKey}>
             <div>
               <NavLink
-                to={`/wallet/${kp.name.replace(' ', '-')}/keypair/${
+                to={`/wallet/${wallet?.name.replace(' ', '-')}/keypair/${
                   kp.publicKey
                 }`}
                 onClick={() => {

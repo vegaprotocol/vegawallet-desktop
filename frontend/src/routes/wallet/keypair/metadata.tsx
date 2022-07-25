@@ -1,26 +1,25 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback, useState } from 'react'
 import type { DropResult } from 'react-beautiful-dnd'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useFieldArray, useForm } from 'react-hook-form'
 
 import { Button } from '../../../components/button'
-import { Input } from '../../../components/forms/input'
 import { FormGroup } from '../../../components/form-group'
+import { Input } from '../../../components/forms/input'
 import { Header } from '../../../components/header'
-import { Kebab } from '../../../components/icons/kebab'
-import { AppToaster } from '../../../components/toaster'
-import { Intent } from '../../../config/intent'
-import { Validation } from '../../../lib/form-validation'
 import { requestPassphrase } from '../../../components/passphrase-modal'
-import { useGlobal } from '../../../contexts/global/global-context'
-import { updateKeyPairAction } from '../../../contexts/global/global-actions'
-import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
-import { createLogger } from '../../../lib/logging'
+import { AppToaster } from '../../../components/toaster'
 import { Colors } from '../../../config/colors'
-import { Service } from '../../../service'
-import { AnnotateKeyRequest } from '../../../wailsjs/go/models'
+import { Intent } from '../../../config/intent'
+import { updateKeyPairAction } from '../../../contexts/global/global-actions'
 import type { GlobalDispatch } from '../../../contexts/global/global-context'
+import { useGlobal } from '../../../contexts/global/global-context'
+import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
+import { Validation } from '../../../lib/form-validation'
+import { createLogger } from '../../../lib/logging'
+import { Service } from '../../../service'
 import type { Meta } from '../../../wailsjs/go/models'
+import { AnnotateKeyRequest } from '../../../wailsjs/go/models'
 
 const notName = (value: string) =>
   value === 'name' ? 'Name is already in use' : true
@@ -52,42 +51,45 @@ const useMetaUpdate = (
 ) => {
   const [loading, setLoading] = useState(false)
 
-  const update = useCallback(async (metadata: Meta[]) => {
-    setLoading(true)
-    try {
-      if (!pubKey || !wallet) {
-        return
-      }
+  const update = useCallback(
+    async (metadata: Meta[]) => {
+      setLoading(true)
+      try {
+        if (!pubKey || !wallet) {
+          return
+        }
 
-      const passphrase = await requestPassphrase()
-      await Service.AnnotateKey(
-        new AnnotateKeyRequest({
+        const passphrase = await requestPassphrase()
+        await Service.AnnotateKey(
+          new AnnotateKeyRequest({
+            wallet,
+            pubKey,
+            metadata,
+            passphrase
+          })
+        )
+
+        const keypair = await Service.DescribeKey({
           wallet,
-          pubKey,
-          metadata,
-          passphrase
+          passphrase,
+          pubKey
         })
-      )
 
-      const keypair = await Service.DescribeKey({
-        wallet,
-        passphrase,
-        pubKey
-      })
+        dispatch(updateKeyPairAction(wallet, keypair))
 
-      dispatch(updateKeyPairAction(wallet, keypair))
-
-      AppToaster.show({
-        message: `Successfully updated metadata`,
-        intent: Intent.SUCCESS
-      })
-      setLoading(false)
-    } catch (err) {
-      setLoading(false)
-      AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-      logger.error(err)
-    }
-  }, [])
+        AppToaster.show({
+          message: `Successfully updated metadata`,
+          intent: Intent.SUCCESS
+        })
+        setLoading(false)
+      } catch (err) {
+        setLoading(false)
+        AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+        logger.error(err)
+      }
+    },
+    [dispatch, pubKey, wallet]
+  )
 
   return {
     loading,
@@ -192,76 +194,92 @@ export const Metadata = () => {
                         draggableId={field.id}
                         index={index + 1}
                       >
-                        {provided => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <div style={rowStyles}>
-                              <div
-                                data-testid='metadata-row-indicator'
-                                style={cellStyles}
-                              >
-                                <Kebab />
+                        {provided => {
+                          const draggerBarStyle = {
+                            width: 20,
+                            height: 1,
+                            background: Colors.WHITE,
+                            margin: '3px 0'
+                          }
+                          return (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <div style={rowStyles}>
+                                <div
+                                  data-testid='metadata-row-indicator'
+                                  style={{
+                                    ...cellStyles,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                  }}
+                                >
+                                  <span style={draggerBarStyle}></span>
+                                  <span style={draggerBarStyle}></span>
+                                  <span style={draggerBarStyle}></span>
+                                </div>
+                                <FormGroup
+                                  helperText={
+                                    errors.meta?.[index + 1]?.key?.message
+                                  }
+                                  intent={
+                                    errors.meta?.[index + 1]?.key
+                                      ? Intent.DANGER
+                                      : Intent.NONE
+                                  }
+                                >
+                                  <Input
+                                    placeholder='key'
+                                    data-testid='metadata-key'
+                                    aria-invalid={
+                                      !!errors.meta?.[index + 1]?.key
+                                        ? 'true'
+                                        : 'false'
+                                    }
+                                    {...register(`meta.${index + 1}.key`, {
+                                      required: Validation.REQUIRED,
+                                      validate: notName
+                                    })}
+                                  />
+                                </FormGroup>
+                                <FormGroup
+                                  helperText={
+                                    errors.meta?.[index + 1]?.value?.message
+                                  }
+                                  intent={
+                                    errors.meta?.[index + 1]?.value
+                                      ? Intent.DANGER
+                                      : Intent.NONE
+                                  }
+                                >
+                                  <Input
+                                    placeholder='value'
+                                    data-testid='metadata-value'
+                                    aria-invalid={
+                                      !!errors.meta?.[index + 1]?.value
+                                        ? 'true'
+                                        : 'false'
+                                    }
+                                    {...register(`meta.${index + 1}.value`, {
+                                      required: Validation.REQUIRED
+                                    })}
+                                  />
+                                </FormGroup>
+                                <button
+                                  data-testid='metadata-remove'
+                                  style={{ ...cellStyles, ...underlined }}
+                                  onClick={() => remove(index + 1)}
+                                >
+                                  Remove
+                                </button>
                               </div>
-                              <FormGroup
-                                helperText={
-                                  errors.meta?.[index + 1]?.key?.message
-                                }
-                                intent={
-                                  errors.meta?.[index + 1]?.key
-                                    ? Intent.DANGER
-                                    : Intent.NONE
-                                }
-                              >
-                                <Input
-                                  placeholder='key'
-                                  data-testid='metadata-key'
-                                  aria-invalid={
-                                    !!errors.meta?.[index + 1]?.key
-                                      ? 'true'
-                                      : 'false'
-                                  }
-                                  {...register(`meta.${index + 1}.key`, {
-                                    required: Validation.REQUIRED,
-                                    validate: notName
-                                  })}
-                                />
-                              </FormGroup>
-                              <FormGroup
-                                helperText={
-                                  errors.meta?.[index + 1]?.value?.message
-                                }
-                                intent={
-                                  errors.meta?.[index + 1]?.value
-                                    ? Intent.DANGER
-                                    : Intent.NONE
-                                }
-                              >
-                                <Input
-                                  placeholder='value'
-                                  data-testid='metadata-value'
-                                  aria-invalid={
-                                    !!errors.meta?.[index + 1]?.value
-                                      ? 'true'
-                                      : 'false'
-                                  }
-                                  {...register(`meta.${index + 1}.value`, {
-                                    required: Validation.REQUIRED
-                                  })}
-                                />
-                              </FormGroup>
-                              <button
-                                data-testid='metadata-remove'
-                                style={{ ...cellStyles, ...underlined }}
-                                onClick={() => remove(index + 1)}
-                              >
-                                Remove
-                              </button>
                             </div>
-                          </div>
-                        )}
+                          )
+                        }}
                       </Draggable>
                     ))}
                 </div>
