@@ -31,7 +31,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
       <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
         {keypairs.map(kp => (
           <SidebarListItem key={kp.publicKey}>
-            <div>
+            <div data-testid={`keypair-${kp.publicKey}`}>
               <NavLink
                 to={`/wallet/${wallet?.name.replace(' ', '-')}/keypair/${
                   kp.publicKey

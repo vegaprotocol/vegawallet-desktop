@@ -6,10 +6,11 @@ describe('wallet annotate metadata', () => {
 
   before(() => {
     cy.clean()
+    cy.mockGQL()
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler, 'mainnet1')
+        cy.restoreNetwork(handler, 'custom')
         cy.restoreWallet(handler)
       })
       .then(() => {
@@ -33,32 +34,35 @@ describe('wallet annotate metadata', () => {
     addPair('first', 'value-1')
     addPair('second', 'value-2')
     addPair('third', 'value-3')
+    updateMetadata()
+    authenticate(passphrase)
+    assertSuccessfulUpdate()
+    cy.reload()
+    unlockWallet(walletName, passphrase)
+    goToMetadataPage()
+    cy.getByTestId('metadata-key-0').should('exist')
+    const key = 'metadata-key'
+    const value = 'metadata-value'
 
-    cy.get('[data-rbd-droppable-id="meta"]')
-      .first()
-      .then(([$droparea]) => {
-        cy.get('[data-rbd-draggable-context-id="1"]')
-          .last()
-          .then(([$el, ...rest]) => {
-            dragByY({
-              element: $el,
-              droparea: $droparea,
-              offsetY: -85
-            })
+    cy.getByTestId(key).should('have.length', 3)
+    cy.getByTestId(key).eq(0).should('have.value', 'first')
+    cy.getByTestId(key).eq(1).should('have.value', 'second')
+    cy.getByTestId(key).eq(2).should('have.value', 'third')
 
-            // cy.getByTestId('metadata-key-1').contains('second')
-            // cy.getByTestId('metadata-value-1').contains('value-2')
-            // cy.getByTestId('metadata-key-2').contains('first')
-            // cy.getByTestId('metadata-value-2').contains('value-1')
-            // cy.getByTestId('metadata-key-3').contains('third')
-            // cy.getByTestId('metadata-value-3').contains('value-3')
+    cy.getByTestId(value).should('have.length', 3)
+    cy.getByTestId(value).eq(0).should('have.value', 'value-1')
+    cy.getByTestId(value).eq(1).should('have.value', 'value-2')
+    cy.getByTestId(value).eq(2).should('have.value', 'value-3')
 
-            // updateMetadata()
-            // authenticate(passphrase)
-
-            // cy.getByTestId('toast').contains('Successfully updated metadata')
-          })
-      })
+    cy.getByTestId('metadata-remove').eq(1).click()
+    assertMetadataRemoved()
+    updateMetadata()
+    authenticate(passphrase)
+    assertSuccessfulUpdate()
+    cy.reload()
+    unlockWallet(walletName, passphrase)
+    goToMetadataPage()
+    assertMetadataRemoved()
   })
 })
 
@@ -74,35 +78,18 @@ function addPair(key, value) {
   cy.getByTestId('metadata-value').last().type(value)
 }
 
-function dragByY({ element, droparea, offsetY }) {
-  const dropCoords = droparea.getBoundingClientRect()
-  const elementCoords = element.getBoundingClientRect()
-
-  cy.wrap(element)
-    .trigger('mousedown', {
-      clientX: elementCoords.x,
-      clientY: elementCoords.y,
-      force: true
-    })
-    .trigger('mousemove', {
-      clientX: elementCoords.left + 10,
-      clientY: elementCoords.y + offsetY,
-      force: true
-    })
-
-  cy.get('body')
-    .trigger('mousemove', {
-      clientX: dropCoords.x,
-      clientY: dropCoords.y + offsetY,
-      force: true
-    })
-    .trigger('mouseup', {
-      clientX: dropCoords.x,
-      clientY: dropCoords.y + offsetY,
-      force: true
-    })
-}
-
 function updateMetadata() {
   cy.getByTestId('metadata-submit').click()
+}
+
+function assertMetadataRemoved() {
+  const key = 'metadata-key'
+  const value = 'metadata-value'
+  cy.getByTestId(value).should('have.length', 2)
+  cy.getByTestId(key).eq(1).should('have.value', 'third')
+  cy.getByTestId(value).eq(1).should('have.value', 'value-3')
+}
+
+function assertSuccessfulUpdate() {
+  cy.getByTestId('toast').contains('Successfully updated metadata')
 }

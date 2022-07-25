@@ -1,4 +1,6 @@
 const path = require('path')
+const { hasOperationName } = require('./graphql')
+const { generateAccounts } = require('./helpers')
 
 require('cypress-downloadfile/lib/downloadFileCommand')
 
@@ -104,4 +106,30 @@ Cypress.Commands.add('sendTransaction', transaction => {
   }
 
   cy.wrap(sendTransaction())
+})
+
+Cypress.Commands.add('mockGQL', () => {
+  const url = 'https://mock.vega.xyz/query'
+  cy.intercept('GET', url, req => {
+    req.reply({
+      statusCode: 200
+    })
+  }).as('nodeTest')
+
+  cy.intercept('POST', url, req => {
+    if (hasOperationName(req, 'Accounts')) {
+      req.alias = 'Accounts'
+      req.reply({
+        body: {
+          data: {
+            party: {
+              __typename: 'Party',
+              id: Cypress.env('testWalletPublicKey'),
+              accounts: generateAccounts()
+            }
+          }
+        }
+      })
+    }
+  })
 })
