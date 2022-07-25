@@ -15,7 +15,7 @@ import { Colors } from '../../../config/colors'
 import { Intent } from '../../../config/intent'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { createLogger } from '../../../lib/logging'
-import { Service } from '../../../service'
+import * as Service from '../../../wailsjs/go/backend/Handler'
 
 const logger = createLogger('Sign')
 

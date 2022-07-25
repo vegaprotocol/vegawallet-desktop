@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { Colors } from '../../config/colors'
-import type { CreateWalletResponse } from '../../wailsjs/go/models'
+import type { wallet as WalletModel } from '../../wailsjs/go/models'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
@@ -10,7 +10,7 @@ import { Copy } from '../icons/copy'
 import { Warning } from '../icons/warning'
 
 interface WalletCreateFormSuccessProps {
-  response: CreateWalletResponse
+  response: WalletModel.CreateWalletResponse
   callToAction?: React.ReactNode
 }
 

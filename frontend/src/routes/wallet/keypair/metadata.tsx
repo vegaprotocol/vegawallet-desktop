@@ -17,9 +17,8 @@ import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { Validation } from '../../../lib/form-validation'
 import { createLogger } from '../../../lib/logging'
-import { Service } from '../../../service'
-import type { Meta } from '../../../wailsjs/go/models'
-import { AnnotateKeyRequest } from '../../../wailsjs/go/models'
+import * as Service from '../../../wailsjs/go/backend/Handler'
+import { wallet as WalletModel } from '../../../wailsjs/go/models'
 
 const notName = (value: string) =>
   value === 'name' ? 'Name is already in use' : true
@@ -52,7 +51,7 @@ const useMetaUpdate = (
   const [loading, setLoading] = useState(false)
 
   const update = useCallback(
-    async (metadata: Meta[]) => {
+    async (metadata: WalletModel.Meta[]) => {
       setLoading(true)
       try {
         if (!pubKey || !wallet) {
@@ -61,7 +60,7 @@ const useMetaUpdate = (
 
         const passphrase = await requestPassphrase()
         await Service.AnnotateKey(
-          new AnnotateKeyRequest({
+          new WalletModel.AnnotateKeyRequest({
             wallet,
             pubKey,
             metadata,
@@ -74,6 +73,10 @@ const useMetaUpdate = (
           passphrase,
           pubKey
         })
+
+        if (keypair instanceof Error) {
+          throw new Error('DescribeKey failed')
+        }
 
         dispatch(updateKeyPairAction(wallet, keypair))
 
@@ -121,7 +124,7 @@ export const Metadata = () => {
   })
 
   const onSubmit = useCallback(
-    (result: { meta: Meta[] }) => {
+    (result: { meta: WalletModel.Meta[] }) => {
       update(result.meta)
     },
     [update]
@@ -187,7 +190,7 @@ export const Metadata = () => {
                     <span style={{ visibility: 'hidden' }}>Remove</span>
                   </div>
                   {fields
-                    .filter(kv => kv.key !== 'name')
+                    .filter(kv => kv.id !== 'name')
                     .map((field, index) => (
                       <Draggable
                         key={field.id}

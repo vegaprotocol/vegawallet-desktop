@@ -1,8 +1,8 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
 import type {
-  Config,
-  DescribeKeyResponse,
-  Network
+  config as ConfigModel,
+  network as NetworkModel,
+  wallet as WalletModel
 } from '../../wailsjs/go/models'
 import type {
   GlobalState,
@@ -57,11 +57,11 @@ export type GlobalAction =
   | {
       type: 'INIT_APP'
       isInit: boolean
-      config: Config
+      config: ConfigModel.Config
       wallets: string[]
       network: string
       networks: string[]
-      networkConfig: Network | null
+      networkConfig: NetworkModel.Network | null
       presetNetworks: NetworkPreset[]
       serviceRunning: boolean
       console: ProxyApp
@@ -79,7 +79,7 @@ export type GlobalAction =
     }
   | {
       type: 'SET_CONFIG'
-      config: Config
+      config: ConfigModel.Config
     }
   | {
       type: 'START_ONBOARDING'
@@ -91,7 +91,7 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
-      key: DescribeKeyResponse
+      key: WalletModel.DescribeKeyResponse
     }
   | {
       type: 'ADD_WALLETS'
@@ -100,17 +100,17 @@ export type GlobalAction =
   | {
       type: 'SET_KEYPAIRS'
       wallet: string
-      keypairs: DescribeKeyResponse[]
+      keypairs: WalletModel.DescribeKeyResponse[]
     }
   | {
       type: 'UPDATE_KEYPAIR'
       wallet: string
-      keypair: DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResponse
     }
   | {
       type: 'ADD_KEYPAIR'
       wallet: string
-      keypair: DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResponse
     }
   | {
       type: 'CHANGE_WALLET'
@@ -141,7 +141,7 @@ export type GlobalAction =
       type: 'SET_NETWORKS'
       network: string | null
       networks: string[]
-      config: Network | null
+      config: NetworkModel.Network | null
     }
   | {
       type: 'SET_PRESETS'
@@ -150,22 +150,22 @@ export type GlobalAction =
   | {
       type: 'CHANGE_NETWORK'
       network: string
-      config: Network
+      config: NetworkModel.Network
     }
   | {
       type: 'UPDATE_NETWORK_CONFIG'
-      config: Network
+      config: NetworkModel.Network
     }
   | {
       type: 'ADD_NETWORK'
       network: string
-      config: Network
+      config: NetworkModel.Network
     }
   | {
       type: 'ADD_NETWORKS'
       networks: string[]
       network: string
-      networkConfig: Network
+      networkConfig: NetworkModel.Network
     }
   | {
       type: 'START_SERVICE'

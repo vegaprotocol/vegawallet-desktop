@@ -22,7 +22,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
+import * as Service from '../../wailsjs/go/backend/Handler'
 import { Paths } from '..'
 
 const logger = createLogger('Onboard')
@@ -78,6 +78,9 @@ export function OnboardHome() {
       // otherwise go to home to complete onboarding
       if (onboarding.networks.length) {
         const config = await Service.GetAppConfig()
+        if (config instanceof Error) {
+          throw new Error('GetAppConfig failed')
+        }
         const defaultNetwork = config.defaultNetwork
           ? config.defaultNetwork
           : onboarding.networks[0]
