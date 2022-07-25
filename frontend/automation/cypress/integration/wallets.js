@@ -1,5 +1,8 @@
-const { hasOperationName } = require('../support/graphql')
-const { authenticate, unlockWallet } = require('../support/helpers')
+const {
+  authenticate,
+  unlockWallet,
+  generateAccounts
+} = require('../support/helpers')
 
 describe('create wallet', () => {
   const walletName = 'test'
@@ -79,10 +82,10 @@ describe('wallet', () => {
   it('generate new key pair', () => {
     cy.visit('/')
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('wallet-list').should('have.length', 1)
+    cy.getByTestId('wallet-item').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
     authenticate(passphrase)
-    cy.getByTestId('wallet-list').should('have.length', 2)
+    cy.getByTestId('wallet-item').should('have.length', 2)
   })
 
   it('key pair page', () => {
@@ -121,52 +124,10 @@ describe('wallet', () => {
 describe('wallet - assets', () => {
   let walletName = ''
   let passphrase = ''
-  const accounts = [
-    {
-      __typename: 'Account',
-      type: 'General',
-      balance: '100',
-      market: {
-        __typename: 'Market',
-        id: 'market-id',
-        name: 'Test Market'
-      },
-      asset: {
-        __typename: 'Asset',
-        id: 'asset-id',
-        symbol: 'SYM',
-        decimals: 0
-      }
-    }
-  ]
 
   before(() => {
     cy.clean()
-
-    const url = 'https://mock.vega.xyz/query'
-    cy.intercept('GET', url, req => {
-      req.reply({
-        statusCode: 200
-      })
-    }).as('nodeTest')
-
-    cy.intercept('POST', url, req => {
-      if (hasOperationName(req, 'Accounts')) {
-        req.alias = 'Accounts'
-        req.reply({
-          body: {
-            data: {
-              party: {
-                __typename: 'Party',
-                id: Cypress.env('testWalletPublicKey'),
-                accounts
-              }
-            }
-          }
-        })
-      }
-    })
-
+    cy.mockGQL()
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
@@ -186,6 +147,7 @@ describe('wallet - assets', () => {
   })
 
   it('view wallet assets', () => {
+    const accounts = generateAccounts()
     unlockWallet(walletName, passphrase)
     cy.getByTestId('generate-keypair').should('exist')
     cy.wait('@Accounts')

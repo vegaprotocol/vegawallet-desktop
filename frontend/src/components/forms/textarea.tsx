@@ -1,7 +1,7 @@
 import type { ForwardedRef, TextareaHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 
-import { defaultStyles } from './styles'
+import { getDefaultStyles } from './styles'
 
 type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>
 
@@ -15,7 +15,7 @@ export const Textarea = forwardRef(
         {...props}
         ref={ref}
         style={{
-          ...defaultStyles,
+          ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
           minHeight: 200,
           resize: 'vertical',
           ...style

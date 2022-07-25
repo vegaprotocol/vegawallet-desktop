@@ -11,3 +11,24 @@ export function authenticate(passphrase) {
   cy.getByTestId('input-passphrase').type(passphrase)
   cy.getByTestId('input-submit').click()
 }
+
+export function generateAccounts() {
+  const accounts = [
+    {
+      __typename: 'Account',
+      type: 'General',
+      balance: '100',
+      market: {
+        __typename: 'Market',
+        id: 'market-id',
+        name: 'Test Market'
+      },
+      asset: {
+        __typename: 'Asset',
+        id: 'asset-id',
+        symbol: 'SYM',
+        decimals: 0
+      }
+    }
+  ]
+}

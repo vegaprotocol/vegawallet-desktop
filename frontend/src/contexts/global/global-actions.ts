@@ -5,10 +5,10 @@ import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type {
+  DescribeKeyResponse,
   GetServiceStateResponse,
   Network,
-  StartServiceRequest,
-  DescribeKeyResponse
+  StartServiceRequest
 } from '../../wailsjs/go/models'
 import { GenerateKeyRequest } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'

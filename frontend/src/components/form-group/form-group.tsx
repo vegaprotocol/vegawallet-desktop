@@ -26,14 +26,16 @@ export function FormGroup({
       style={{
         display: 'flex',
         flexDirection: 'column',
-        margin: '0 0 20px 0',
+        margin: '0 0 8px 0',
         ...style
       }}
     >
       <label htmlFor={labelFor}>{label}</label>
       <div
         style={{
-          marginTop: 5
+          position: 'relative',
+          marginTop: 5,
+          paddingBottom: 21
         }}
       >
         {children}
@@ -43,6 +45,9 @@ export function FormGroup({
             style={{
               marginTop: 5,
               fontSize: 14,
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
               color:
                 // if no intent is provided, use deemphasises text to help visual hierarchy
                 intent === 'none' ? 'inherit' : IntentColors[intent]

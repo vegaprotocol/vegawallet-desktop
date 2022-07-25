@@ -31,9 +31,9 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
       <ul style={{ borderTop: `1px solid ${Colors.BLACK}` }}>
         {keypairs.map(kp => (
           <SidebarListItem key={kp.publicKey}>
-            <div>
+            <div data-testid={`keypair-${kp.publicKey}`}>
               <NavLink
-                to={`/wallet/${kp.name.replace(' ', '-')}/keypair/${
+                to={`/wallet/${wallet?.name.replace(' ', '-')}/keypair/${
                   kp.publicKey
                 }`}
                 onClick={() => {
@@ -55,7 +55,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                     alignItems: 'center'
                   }}
                 >
-                  {kp.name}
+                  <span data-testid='wallet-item-name'>{kp.name}</span>
                   {kp.isTainted ? (
                     <span
                       style={{
@@ -115,7 +115,7 @@ function SidebarListItem({ children }: SidebarListItemProps) {
   }
   return (
     <li
-      data-testid='wallet-list'
+      data-testid='wallet-item'
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

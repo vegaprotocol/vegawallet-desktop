@@ -29,12 +29,20 @@ describe('wallet taint key', () => {
     taintKey()
     authenticate(passphrase)
     cy.getByTestId('toast').contains('This key has been tainted')
+    cy.getByTestId(`keypair-${Cypress.env('testWalletPublicKey')}`).should(
+      'contain',
+      'Tainted'
+    )
   })
 
   it('message untaint success', () => {
     taintKey()
     authenticate(passphrase)
     cy.getByTestId('toast').contains('This key has been untainted')
+    cy.getByTestId(`keypair-${Cypress.env('testWalletPublicKey')}`).should(
+      'not.contain',
+      'Tainted'
+    )
   })
 })
 

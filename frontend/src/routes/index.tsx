@@ -13,6 +13,7 @@ import {
 } from './onboard'
 import { Wallet } from './wallet'
 import { KeyPairHome } from './wallet/keypair/home'
+import { Metadata } from './wallet/keypair/metadata'
 import { Sign } from './wallet/keypair/sign'
 import { Taint } from './wallet/keypair/taint'
 import { WalletKeyPair } from './wallet/wallet-key-pair'
@@ -50,14 +51,7 @@ export const AppRouter = () => {
           <Route index={true} element={<KeyPairHome />} />
           <Route path='sign' element={<Sign />} />
           <Route path='taint' element={<Taint />} />
-          <Route
-            path='metadata'
-            element={
-              <div data-testid='keypair-metadata' style={{ padding: 20 }}>
-                Metadata
-              </div>
-            }
-          />
+          <Route path='metadata' element={<Metadata />} />
         </Route>
       </Route>
       <Route path='/wallet-create' element={<WalletCreate />} />
