@@ -115,7 +115,7 @@ const SettingsForm = ({
       <FormGroup
         label='Log level'
         labelFor='logLevel'
-        helperText='Logs can be found at ~/.vega/logs'
+        helperText='Logs can be found at in your Vega home directory'
       >
         <Select {...register('logLevel')}>
           {Object.entries(LogLevels).map(([key, value]) => (
