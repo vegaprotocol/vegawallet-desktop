@@ -1,9 +1,6 @@
 export const LogLevels = {
-  DEBUG: 'debug',
   INFO: 'info',
+  DEBUG: 'debug',
   WARN: 'warn',
-  ERROR: 'error',
-  DPANIC: 'dpanic',
-  PANIC: 'panic',
-  FATAL: 'fatal'
+  ERROR: 'error'
 }
