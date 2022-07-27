@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -45,7 +44,6 @@ const useDeleteWallet = () => {
           intent: Intent.DANGER
         })
         setStatus(FormStatus.Error)
-        Sentry.captureException(err)
         logger.error(err)
       }
     },
