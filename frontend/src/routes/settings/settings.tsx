@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -13,6 +12,7 @@ import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { useGlobal } from '../../contexts/global/global-context'
+import { FormStatus, useFormState } from '../../hooks/use-form-state'
 import { createLogger } from '../../lib/logging'
 import * as Service from '../../wailsjs/go/backend/Handler'
 import { config as ConfigModel } from '../../wailsjs/go/models'
@@ -20,13 +20,11 @@ import { config as ConfigModel } from '../../wailsjs/go/models'
 const logger = createLogger('Settings')
 
 const useUpdateConfig = () => {
-  const [status, setStatus] = useState<
-    'default' | 'pending' | 'success' | 'error'
-  >('default')
+  const [status, setStatus] = useFormState()
   const submit = async (fields: FormFields) => {
     try {
       logger.debug('UpdateAppConfig')
-      setStatus('pending')
+      setStatus(FormStatus.Pending)
       await Service.UpdateAppConfig(
         new ConfigModel.Config({
           vegaHome: fields.vegaHome,
@@ -42,9 +40,9 @@ const useUpdateConfig = () => {
       const message = 'Failed to update config'
       AppToaster.show({ message, intent: Intent.DANGER })
       logger.error(err)
-      setStatus('error')
+      setStatus(FormStatus.Error)
     } finally {
-      setStatus('default')
+      setStatus(FormStatus.Default)
     }
   }
 
@@ -64,7 +62,7 @@ export function Settings() {
   const navigate = useNavigate()
 
   const { submit, status } = useUpdateConfig()
-  const isPending = status === 'pending'
+  const isPending = status === FormStatus.Pending
 
   if (!config) {
     return null
