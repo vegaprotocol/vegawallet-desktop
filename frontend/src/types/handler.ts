@@ -66,7 +66,7 @@ export interface Handler {
   StopService(): Promise<boolean>
   TaintKey(arg1: TaintKeyRequest): Promise<void>
   UntaintKey(arg1: UntaintKeyRequest): Promise<void>
-  UpdateAppConfig(arg1: Partial<Config>): Promise<void>
+  UpdateAppConfig(arg1: Config): Promise<void>
   SearchForExistingConfiguration(): Promise<SearchForExistingConfigurationResponse>
   StartConsole(arg1: StartServiceRequest): Promise<boolean>
   StartTokenDApp(arg1: StartServiceRequest): Promise<boolean>

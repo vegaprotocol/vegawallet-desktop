@@ -47,7 +47,7 @@ export interface NetworkPreset {
 export interface GlobalState {
   status: AppStatus
   version: string
-  config: Config | null
+  config: Config
   onboarding: {
     wallets: string[]
     networks: string[]

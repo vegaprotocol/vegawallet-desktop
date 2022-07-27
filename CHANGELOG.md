@@ -28,6 +28,7 @@
 - [84](https://github.com/vegaprotocol/vegawallet-desktop/pull/84) - Support defining a default network to connect to.
 - [191](https://github.com/vegaprotocol/vegawallet-desktop/pull/191) - Add meaningful colors to service and proxies state indicator.
 - [190](https://github.com/vegaprotocol/vegawallet-desktop/pull/190) - Add transaction review
+- [249](https://github.com/vegaprotocol/vegawallet-desktop/pull/249) - Remove partial from `Config` since it is not
 
 ## 0.1.1
 
