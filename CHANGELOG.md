@@ -14,6 +14,7 @@
 ### 🐛 Fixes
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 - [257](https://github.com/vegaprotocol/vegawallet-desktop/issues/257) - Update readme with more/improved links
+- [264](https://github.com/vegaprotocol/vegawallet-desktop/issues/264) - Let the transaction review window grow with the main window
 
 ## 0.2.1
 

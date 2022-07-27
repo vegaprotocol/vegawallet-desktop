@@ -3,11 +3,11 @@ import { BreakText } from '../break-text'
 import { Button } from '../button'
 import { CodeBlock } from '../code-block'
 import { Dialog } from '../dialog'
-import { KeyValueTable } from '../key-value-table'
 import type {
   ParsedTx,
   TransactionKeys
 } from '../transaction-manager/transaction-types'
+import { Colors } from "../../config/colors";
 
 interface TransactionModalProps {
   transactions: ParsedTx[]
@@ -71,23 +71,18 @@ export function TransactionModal({
               <h3 style={{ margin: 0 }} data-testid='transaction-title'>
                 {TRANSACTION_TITLES[transaction.type]}
               </h3>
-              <KeyValueTable
-                style={{ marginBottom: 10 }}
-                rows={[
-                  {
-                    key: 'Public key',
-                    value: <BreakText>{transaction.pubKey}</BreakText>
-                  },
-                  {
-                    key: 'Signature',
-                    value: <BreakText>{transaction.txId}</BreakText>
-                  },
-                  {
-                    key: 'Received at',
-                    value: formatDate(transaction.receivedAt)
-                  }
-                ]}
-              />
+              <div style={{ color: Colors.WHITE, fontSize: 14 }}>Public key:</div>
+              <div style={{ color: Colors.TEXT_COLOR_DEEMPHASISE, fontSize: 14 }}>
+                <BreakText>{transaction.pubKey}</BreakText>
+              </div>
+              <div style={{ color: Colors.WHITE, fontSize: 14 }}>Signature:</div>
+              <div style={{ color: Colors.TEXT_COLOR_DEEMPHASISE, fontSize: 14 }}>
+                <BreakText>{transaction.txId}</BreakText>
+              </div>
+              <div style={{ color: Colors.WHITE, fontSize: 14 }}>Received at:</div>
+              <div style={{ color: Colors.TEXT_COLOR_DEEMPHASISE, fontSize: 14 }}>
+                <BreakText>{formatDate(transaction.receivedAt)}</BreakText>
+              </div>
               <CodeBlock style={{ fontSize: 12 }}>
                 <pre data-testid='transaction-payload'>
                   {JSON.stringify(transaction.tx, null, 2)}

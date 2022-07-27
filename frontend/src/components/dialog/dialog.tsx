@@ -40,10 +40,10 @@ export function Dialog({ open, children }: DialogProps) {
                     style={{
                       padding: 20,
                       background: 'black',
-                      width: 340,
+                      width: '80%',
                       position: 'fixed',
                       top: 30,
-                      left: 'calc(50% - 170px)',
+                      left: '10%',
                       boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
                       overflowY: 'auto',
                       maxHeight: 'calc(100vh - 60px)',
