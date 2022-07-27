@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 export enum FormStatus {
   Default = 'Default',
@@ -8,5 +8,5 @@ export enum FormStatus {
 }
 
 export function useFormState(initialStatus = FormStatus.Default) {
-  return React.useState(initialStatus)
+  return useState(initialStatus)
 }

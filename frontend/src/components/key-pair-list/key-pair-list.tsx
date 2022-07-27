@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import { addKeypairAction } from '../../contexts/global/global-actions'
@@ -8,6 +8,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useAccounts } from '../../hooks/use-accounts'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
 
 interface KeyPairListProps {
   onSelect?: (pubkey: string) => void
@@ -85,9 +86,8 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
           </SidebarListItem>
         ))}
       </ul>
-      <div style={{ padding: 20 }}>
+      <ButtonGroup orientation='vertical' style={{ padding: 20 }}>
         <Button
-          style={{ width: '100%' }}
           onClick={() =>
             wallet?.name && dispatch(addKeypairAction(wallet?.name))
           }
@@ -95,7 +95,10 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
         >
           Generate key pair
         </Button>
-      </div>
+        <Link to='delete'>
+          <Button style={{ width: '100%' }}>Delete wallet</Button>
+        </Link>
+      </ButtonGroup>
     </>
   )
 }

@@ -50,7 +50,7 @@ export function WalletHeader({ wallet, keypair }: WalletHeaderProps) {
         )}
       </span>
       <span style={{ flex: 1, textAlign: 'right' }}>
-        {wallet && (
+        {keypair && (
           <DropdownMenu
             trigger={
               <ButtonUnstyled
