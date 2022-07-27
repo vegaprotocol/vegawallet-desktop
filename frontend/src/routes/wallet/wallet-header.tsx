@@ -4,16 +4,15 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { DropdownItem, DropdownMenu } from '../../components/dropdown-menu'
 import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
-import type { KeyPair, Wallet } from '../../contexts/global/global-context'
+import type { KeyPair } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useWindowSize } from '../../hooks/use-window-size'
 
 interface WalletHeaderProps {
-  wallet: Wallet | null
   keypair: KeyPair | undefined
 }
 
-export function WalletHeader({ wallet, keypair }: WalletHeaderProps) {
+export function WalletHeader({ keypair }: WalletHeaderProps) {
   const { dispatch } = useGlobal()
   const { width } = useWindowSize()
   const isWide = width > 900

@@ -6,7 +6,9 @@ import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
+import { Header } from '../../components/header'
 import { AppToaster } from '../../components/toaster'
+import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
@@ -67,25 +69,40 @@ export const Delete = () => {
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <p style={{ marginBottom: 15 }}>
-        Are you sure you want to delete this wallet?
-      </p>
-      <p style={{ marginBottom: 15 }}>
-        Doing so will permanently delete this wallet and you will only be able
-        to recover assets if you have a back up phrase.
-      </p>
-      <p style={{ marginBottom: 15 }}>
-        You may want to create a copy of your recovery phrase before you
-        continue.
-      </p>
-      <DeleteForm
-        walletName={wallet.name}
-        status={status}
-        onSubmit={() => submit(wallet.name)}
-        onCancel={() => navigate(-1)}
-      />
-    </div>
+    <>
+      <Header style={{ padding: 20, margin: 0, textAlign: 'center' }}>
+        <>
+          <div
+            style={{
+              color: Colors.WHITE,
+              fontSize: 20
+            }}
+          >
+            Delete
+          </div>
+          <div style={{ textTransform: 'initial' }}>{wallet.name}</div>
+        </>
+      </Header>
+      <div style={{ padding: 20 }}>
+        <p style={{ marginBottom: 15 }}>
+          Are you sure you want to delete this wallet?
+        </p>
+        <p style={{ marginBottom: 15 }}>
+          Doing so will permanently delete this wallet and you will only be able
+          to recover assets if you have a back up phrase.
+        </p>
+        <p style={{ marginBottom: 15 }}>
+          You may want to create a copy of your recovery phrase before you
+          continue.
+        </p>
+        <DeleteForm
+          walletName={wallet.name}
+          status={status}
+          onSubmit={() => submit(wallet.name)}
+          onCancel={() => navigate(-1)}
+        />
+      </div>
+    </>
   )
 }
 

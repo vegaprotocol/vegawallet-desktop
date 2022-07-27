@@ -2,6 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { Paths } from '../'
+import { WalletHeader } from './wallet-header'
 
 export function WalletKeyPair() {
   const { keypair } = useCurrentKeypair()
@@ -10,5 +11,10 @@ export function WalletKeyPair() {
     return <Navigate to={Paths.Wallet} />
   }
 
-  return <Outlet />
+  return (
+    <>
+      <WalletHeader keypair={keypair} />
+      <Outlet />
+    </>
+  )
 }
