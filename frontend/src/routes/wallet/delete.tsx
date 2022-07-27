@@ -132,7 +132,7 @@ const DeleteForm = ({
   const isPending = status === FormStatus.Pending
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} data-testid='delete-wallet-form'>
       <FormGroup
         label={`Type: "${confirmText}" to permanently delete this wallet`}
         labelFor='confirmText'

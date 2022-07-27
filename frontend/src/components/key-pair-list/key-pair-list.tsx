@@ -98,6 +98,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
         <Link
           to='delete'
           onClick={() => dispatch({ type: 'SET_SIDEBAR', open: false })}
+          data-testid='delete-wallet'
         >
           <Button style={{ width: '100%' }}>Delete wallet</Button>
         </Link>
