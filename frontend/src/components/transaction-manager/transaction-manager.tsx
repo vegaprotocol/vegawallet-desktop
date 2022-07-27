@@ -9,6 +9,7 @@ import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
 import type { ParsedTx } from './transaction-types'
 import { TransactionKeys } from './transaction-types'
+import { SentTransaction } from "../../wailsjs/go/models";
 
 const logger = createLogger('TransactionManager')
 
@@ -64,6 +65,15 @@ export function TransactionManager() {
         setTransactions(curr => [...curr, parseTx(tx)])
       }
     )
+
+    window.runtime.EventsOn(
+      events.TRANSACTION_SENT,
+      (tx: SentTransaction) => {
+        // TODO: Implement me
+        console.log(tx)
+      }
+    )
+
 
     run()
   }, [])
