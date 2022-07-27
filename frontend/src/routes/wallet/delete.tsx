@@ -17,6 +17,7 @@ import { createLogger } from '../../lib/logging'
 import * as Service from '../../wailsjs/go/backend/Handler'
 import { backend as BackendModel } from '../../wailsjs/go/models'
 import { Paths } from '..'
+import { WalletHeader } from './wallet-header'
 
 const logger = createLogger('Delete')
 
@@ -70,19 +71,22 @@ export const Delete = () => {
 
   return (
     <>
-      <Header style={{ padding: 20, margin: 0, textAlign: 'center' }}>
-        <>
-          <div
-            style={{
-              color: Colors.WHITE,
-              fontSize: 20
-            }}
-          >
-            Delete
+      <WalletHeader
+        center={
+          <div>
+            <div
+              style={{
+                color: Colors.WHITE,
+                fontSize: 20
+              }}
+            >
+              Delete
+            </div>
+            <div style={{ textTransform: 'initial' }}>{wallet.name}</div>
           </div>
-          <div style={{ textTransform: 'initial' }}>{wallet.name}</div>
-        </>
-      </Header>
+        }
+        right={null}
+      />
       <div style={{ padding: 20 }}>
         <p style={{ marginBottom: 15 }}>
           Are you sure you want to delete this wallet?

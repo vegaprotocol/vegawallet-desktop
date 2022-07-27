@@ -95,7 +95,10 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
         >
           Generate key pair
         </Button>
-        <Link to='delete'>
+        <Link
+          to='delete'
+          onClick={() => dispatch({ type: 'SET_SIDEBAR', open: false })}
+        >
           <Button style={{ width: '100%' }}>Delete wallet</Button>
         </Link>
       </ButtonGroup>
