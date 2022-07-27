@@ -31,19 +31,20 @@ const useUpdateConfig = () => {
         new ConfigModel.Config({
           vegaHome: fields.vegaHome,
           logLevel: fields.logLevel
-          // TODO: Fix me. Backend is broken here
-          // telemetry: {
-          //   enabled: fields.telemetry === 'yes' ? true : false
-          // }
+          // TODO: Saving telemetry seems to be broken
+          // telemetry: new ConfigModel.TelemetryConfig({
+          //   enabled: fields.telemetry === 'yes' ? true : false,
+          //   consentAsked: false
+          // })
         })
       )
-      AppToaster.show({ message: 'Config updated', intent: Intent.SUCCESS })
-      setStatus('success')
     } catch (err) {
       const message = 'Failed to update config'
       AppToaster.show({ message, intent: Intent.DANGER })
       logger.error(err)
       setStatus('error')
+    } finally {
+      setStatus('default')
     }
   }
 
@@ -139,9 +140,9 @@ const SettingsForm = ({
           control={control as any}
         />
       </FormGroup>
-      <ButtonGroup>
+      <ButtonGroup orientation='vertical'>
         <Button type='submit' disabled={isPending} loading={isPending}>
-          Update
+          Update and restart
         </Button>
         <Button onClick={onCancel}>Cancel</Button>
       </ButtonGroup>
