@@ -40,6 +40,7 @@ describe('wallet annotate metadata', () => {
     submitForm()
     cy.getByTestId('toast').contains('Wallet deleted')
     cy.getByTestId('home-splash').should('be.visible')
+    cy.getByTestId(`wallet-${walletName}`).should('not.exist')
   })
 
   function submitForm() {
