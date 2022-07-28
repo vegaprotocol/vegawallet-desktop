@@ -5,7 +5,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
-import type { network as NetworkModel } from '../../wailsjs/go/models'
+import { network as NetworkModel } from '../../wailsjs/go/models'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
 import { Select } from '../forms'
@@ -263,8 +263,7 @@ function fieldsToConfig(
   config: NetworkModel.Network,
   values: FormFields
 ): NetworkModel.Network {
-  // @ts-ignore ignore missing convertValues
-  return {
+  return new NetworkModel.Network({
     name: config.name,
     level: values.logLevel,
     tokenExpiry: values.tokenExpiry,
@@ -286,7 +285,7 @@ function fieldsToConfig(
       graphQl: config.api.graphQl,
       rest: config.api.rest
     }
-  }
+  })
 }
 
 function configToFields(config: NetworkModel.Network): FormFields {
@@ -300,11 +299,11 @@ function configToFields(config: NetworkModel.Network): FormFields {
     consolePort: config.console.localPort,
     tokenDAppUrl: config.tokenDApp.url,
     tokenDAppPort: config.tokenDApp.localPort,
-    // @ts-ignore
+    // @ts-ignore any resulting from generated types
     grpcHosts: config.api.grpc.hosts.map(x => ({ value: x })),
-    // @ts-ignore
+    // @ts-ignore any resulting from generated types
     graphqlHosts: config.api.graphQl.hosts.map(x => ({ value: x })),
-    // @ts-ignore
+    // @ts-ignore any resulting from generated types
     restHosts: config.api.rest.hosts.map(x => ({ value: x }))
   }
 }
