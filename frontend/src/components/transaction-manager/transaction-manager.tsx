@@ -4,7 +4,7 @@ import { Intent } from '../../config/intent'
 import { events } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
-import type { ConsentRequest, Time } from '../../wailsjs/go/models'
+import type { ConsentRequest } from '../../wailsjs/go/models'
 import type { SentTransaction } from '../../wailsjs/go/models'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
@@ -22,12 +22,10 @@ export function TransactionManager() {
   const handleResponse = useCallback(
     async (txId: string, decision: boolean) => {
       try {
-        const res = await Service.ConsentToTransaction({
+        await Service.ConsentToTransaction({
           txId,
           decision
         })
-
-        console.log(res)
 
         if (decision) {
           // Set to pending if approved
