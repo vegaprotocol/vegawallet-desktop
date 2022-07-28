@@ -23,9 +23,13 @@ export enum TransactionKeys {
 }
 
 export interface ParsedTx {
-  txId: string
-  tx: object
+  txId: string // signature
+  tx: object // payload
+  txHash: string | null
   type: TransactionKeys
   receivedAt: Date
   pubKey: string
+  pending: boolean
+  sentAt: Date | null
+  error: string | null
 }

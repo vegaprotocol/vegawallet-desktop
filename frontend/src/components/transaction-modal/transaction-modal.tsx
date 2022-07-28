@@ -12,6 +12,7 @@ import type {
 interface TransactionModalProps {
   transactions: ParsedTx[]
   onRespond: (txId: string, decision: boolean) => void
+  onDismiss: (txId: string) => void
 }
 
 const TRANSACTION_TITLES: {
@@ -42,13 +43,14 @@ const TRANSACTION_TITLES: {
 
 export function TransactionModal({
   transactions,
-  onRespond
+  onRespond,
+  onDismiss
 }: TransactionModalProps) {
   return (
     <Dialog open={Boolean(transactions.length)} size='lg'>
       <div data-testid='transaction-dialog'>
         {transactions.length > 1 && (
-          <h2 style={{ marginTop: 0, fontSize: 18 }}>
+          <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: 20 }}>
             {transactions.length} pending transactions
           </h2>
         )}
@@ -68,50 +70,121 @@ export function TransactionModal({
               style={itemStyles}
               data-testid='transaction'
             >
-              <h3 style={{ margin: 0 }} data-testid='transaction-title'>
-                {TRANSACTION_TITLES[transaction.type]}
-              </h3>
-
-              <KeyValueTable
-                style={{ marginBottom: 10 }}
-                rows={[
-                  {
-                    key: 'Public key',
-                    value: <BreakText>{transaction.pubKey}</BreakText>
-                  },
-                  {
-                    key: 'Signature',
-                    value: <BreakText>{transaction.txId}</BreakText>
-                  },
-                  {
-                    key: 'Received at',
-                    value: formatDate(transaction.receivedAt)
-                  }
-                ]}
+              <TransactionContent
+                transaction={transaction}
+                onRespond={onRespond}
+                onDismiss={onDismiss}
               />
-              <CodeBlock style={{ fontSize: 12 }}>
-                <pre data-testid='transaction-payload'>
-                  {JSON.stringify(transaction.tx, null, 2)}
-                </pre>
-              </CodeBlock>
-              <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <Button
-                  onClick={() => onRespond(transaction.txId, true)}
-                  data-testid='approve-transaction'
-                >
-                  Approve
-                </Button>
-                <Button
-                  onClick={() => onRespond(transaction.txId, false)}
-                  data-testid='reject-transaction'
-                >
-                  Reject
-                </Button>
-              </div>
             </div>
           )
         })}
       </div>
     </Dialog>
   )
+}
+
+interface TransactionContentProps {
+  transaction: ParsedTx
+  onRespond: (id: string, decision: boolean) => void
+  onDismiss: (id: string) => void
+}
+
+const TransactionContent = ({
+  transaction,
+  onRespond,
+  onDismiss
+}: TransactionContentProps) => {
+  if (transaction.pending) {
+    return <div>Sending...</div>
+  }
+
+  if (transaction.error) {
+    return (
+      <>
+        <h3 style={headingStyles} data-testid='transaction-title'>
+          {TRANSACTION_TITLES[transaction.type]} failed
+        </h3>
+        <div>{transaction.error}</div>
+      </>
+    )
+  }
+
+  if (transaction.sentAt) {
+    return (
+      <>
+        <h3 style={headingStyles} data-testid='transaction-title'>
+          {TRANSACTION_TITLES[transaction.type]} sent
+        </h3>
+        <KeyValueTable
+          style={{ marginBottom: 10 }}
+          rows={[
+            {
+              key: 'Tx hash',
+              value: <BreakText>{transaction.txHash}</BreakText>
+            },
+            {
+              key: 'Sent at',
+              value: formatDate(transaction.sentAt)
+            }
+          ]}
+        />
+        <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+          <Button
+            onClick={() => onDismiss(transaction.txId)}
+            data-testid='approve-transaction'
+          >
+            Dismiss
+          </Button>
+        </div>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <h3 style={headingStyles} data-testid='transaction-title'>
+        {TRANSACTION_TITLES[transaction.type]} received
+      </h3>
+      <KeyValueTable
+        style={{ marginBottom: 10 }}
+        rows={[
+          {
+            key: 'Public key',
+            value: <BreakText>{transaction.pubKey}</BreakText>
+          },
+          {
+            key: 'Signature',
+            value: <BreakText>{transaction.txId}</BreakText>
+          },
+          {
+            key: 'Received at',
+            value: formatDate(transaction.receivedAt)
+          }
+        ]}
+      />
+      <CodeBlock style={{ fontSize: 12 }}>
+        <pre data-testid='transaction-payload'>
+          {JSON.stringify(transaction.tx, null, 2)}
+        </pre>
+      </CodeBlock>
+      <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+        <Button
+          onClick={() => onRespond(transaction.txId, true)}
+          data-testid='approve-transaction'
+        >
+          Approve
+        </Button>
+        <Button
+          onClick={() => onRespond(transaction.txId, false)}
+          data-testid='reject-transaction'
+        >
+          Reject
+        </Button>
+      </div>
+    </>
+  )
+}
+
+const headingStyles = {
+  margin: '0 0 10px 0'
 }
