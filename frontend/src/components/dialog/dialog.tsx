@@ -5,9 +5,10 @@ import { animated, config, useTransition } from 'react-spring'
 interface DialogProps {
   open: boolean
   children: React.ReactElement
+  size?: 'sm' | 'lg'
 }
 
-export function Dialog({ open, children }: DialogProps) {
+export function Dialog({ open, children, size = 'sm' }: DialogProps) {
   const transitions = useTransition(open, {
     from: { opacity: 0, y: -10 },
     enter: { opacity: 1, y: 0 },
@@ -40,10 +41,10 @@ export function Dialog({ open, children }: DialogProps) {
                     style={{
                       padding: 20,
                       background: 'black',
-                      width: '80%',
+                      width: size === 'lg' ? '80%' : 340,
                       position: 'fixed',
                       top: 30,
-                      left: '10%',
+                      left: size === 'lg' ? '10%' : 'calc(50% - 170px)',
                       boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
                       overflowY: 'auto',
                       maxHeight: 'calc(100vh - 60px)',
