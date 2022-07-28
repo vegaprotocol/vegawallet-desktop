@@ -88,9 +88,12 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
       </ul>
       <ButtonGroup orientation='vertical' style={{ padding: 20 }}>
         <Button
-          onClick={() =>
-            wallet?.name && dispatch(addKeypairAction(wallet?.name))
-          }
+          onClick={() => {
+            if (wallet?.name) {
+              dispatch(addKeypairAction(wallet?.name))
+            }
+            dispatch({ type: 'SET_SIDEBAR', open: false })
+          }}
           data-testid='generate-keypair'
         >
           Generate key pair
