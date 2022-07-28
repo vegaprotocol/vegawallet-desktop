@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:34115/",
+  "baseUrl": "http://127.0.0.1:34115/",
   "projectId": "t5pfg7",
   "defaultCommandTimeout": 20000,
   "env": {
