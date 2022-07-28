@@ -18,6 +18,7 @@
 ## 0.2.1
 
 ### 🐛 Fixes
+- [274](https://github.com/vegaprotocol/vegawallet-desktop/issues/274) - Ensure transaction doesn't get serialized when nil in sent transaction event
 - [252](https://github.com/vegaprotocol/vegawallet-desktop/issues/252) - Do not crash on Windows when creating log files
 
 ## 0.2.0

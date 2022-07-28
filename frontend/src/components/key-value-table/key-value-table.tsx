@@ -16,7 +16,7 @@ export const KeyValueTable = ({
     <dl
       style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: 'min-content 1fr',
         gridGap: 10,
         fontSize: 14,
         ...style
@@ -25,7 +25,9 @@ export const KeyValueTable = ({
     >
       {rows.map((row, i) => (
         <Fragment key={i}>
-          <dt style={{ textAlign: 'left', color: Colors.WHITE }}>{row.key}:</dt>
+          <dt style={{ textAlign: 'left', color: Colors.WHITE, minWidth: 100 }}>
+            {row.key}:
+          </dt>
           <dd
             style={{
               textAlign: 'right',
