@@ -28,7 +28,10 @@ describe('wallet taint key', () => {
     goToTaintPage()
     taintKey()
     authenticate(passphrase)
-    cy.getByTestId('toast').contains('This key has been tainted')
+    cy.getByTestId('toast')
+      .contains('This key has been tainted')
+      .getByTestId('close')
+      .click()
     cy.getByTestId(`keypair-${Cypress.env('testWalletPublicKey')}`).should(
       'contain',
       'Tainted'

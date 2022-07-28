@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Intent } from '../../config/intent'
@@ -31,7 +31,7 @@ export function PassphraseModal() {
   const { state, dispatch } = useGlobal()
 
   // Register handler.open to open the passphrase modal
-  React.useEffect(() => {
+  useEffect(() => {
     handler.open = () => {
       dispatch(setPassphraseModalAction(true))
     }
@@ -43,10 +43,8 @@ export function PassphraseModal() {
 
     // Show spinner and prevent modal closing before route change which causes
     // causes some slight jankiness.
-    setTimeout(() => {
-      dispatch(setPassphraseModalAction(false))
-      setLoading(false)
-    }, 600)
+    dispatch(setPassphraseModalAction(false))
+    setLoading(false)
   }
 
   function close() {

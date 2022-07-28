@@ -5,7 +5,7 @@ import { Intent } from '../config/intent'
 import { addWalletAction } from '../contexts/global/global-actions'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
-import * as Service from '../wailsjs/go/backend/Handler'
+import { Service } from '../service'
 import type { wallet as WalletModel } from '../wailsjs/go/models'
 
 const logger = createLogger('UseImportWallet')
@@ -32,10 +32,6 @@ export function useImportWallet() {
           version: Number(values.version)
         })
 
-        if (resp instanceof Error) {
-          throw new Error('ImportWallet failed')
-        }
-
         if (resp) {
           setResponse(resp)
 
@@ -44,10 +40,6 @@ export function useImportWallet() {
             passphrase: values.passphrase,
             pubKey: resp.key.publicKey
           })
-
-          if (keypair instanceof Error) {
-            throw new Error('DescribeKey failed')
-          }
 
           dispatch(addWalletAction(values.wallet, keypair))
           AppToaster.show({

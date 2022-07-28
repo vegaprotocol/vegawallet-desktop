@@ -31,4 +31,5 @@ export function generateAccounts() {
       }
     }
   ]
+  return accounts
 }

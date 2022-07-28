@@ -80,7 +80,8 @@ function SidebarDialog({ open, height, setOpen }: SidebarDialogProps) {
                     background: Colors.DARK_GRAY_2,
                     borderRight: `1px solid ${Colors.BLACK}`,
                     translateX: styles.x,
-                    overflowY: 'auto'
+                    overflowY: 'auto',
+                    zIndex: 1
                   }}
                 >
                   <SidebarHeader close={() => setOpen(false)} />
@@ -130,7 +131,7 @@ function SidebarHeader({ close }: SidebarHeaderProps) {
         style={{ fontSize: 14 }}
         data-testid='log-out'
       >
-        Log out
+        Wallets
       </ButtonUnstyled>
       <span
         style={{

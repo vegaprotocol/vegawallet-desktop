@@ -17,7 +17,7 @@ import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { Validation } from '../../../lib/form-validation'
 import { createLogger } from '../../../lib/logging'
-import * as Service from '../../../wailsjs/go/backend/Handler'
+import { Service } from '../../../service'
 import { wallet as WalletModel } from '../../../wailsjs/go/models'
 
 const notName = (value: string) =>
@@ -74,10 +74,6 @@ const useMetaUpdate = (
           pubKey
         })
 
-        if (keypair instanceof Error) {
-          throw new Error('DescribeKey failed')
-        }
-
         dispatch(updateKeyPairAction(wallet, keypair))
 
         AppToaster.show({
@@ -113,7 +109,7 @@ export const Metadata = () => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<{ meta: Array<{ key: string; value: string }> }>({
     defaultValues: {
       meta: keypair?.meta || []
     }
@@ -190,7 +186,7 @@ export const Metadata = () => {
                     <span style={{ visibility: 'hidden' }}>Remove</span>
                   </div>
                   {fields
-                    .filter(kv => kv.id !== 'name')
+                    .filter(kv => kv.key !== 'name')
                     .map((field, index) => (
                       <Draggable
                         key={field.id}

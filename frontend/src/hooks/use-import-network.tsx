@@ -5,7 +5,7 @@ import { Intent } from '../config/intent'
 import { addNetworkAction } from '../contexts/global/global-actions'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
-import * as Service from '../wailsjs/go/backend/Handler'
+import { Service } from '../service'
 import type { network as NetworkModel } from '../wailsjs/go/models'
 import { FormStatus, useFormState } from './use-form-state'
 
@@ -33,16 +33,8 @@ export function useImportNetwork() {
         const args = createImportNetworkArgs(values)
         const res = await Service.ImportNetwork(args)
 
-        if (res instanceof Error) {
-          throw new Error('ImportNetwork failed')
-        }
-
         if (res) {
           const config = await Service.GetNetworkConfig(res.name)
-
-          if (config instanceof Error) {
-            throw new Error('GetNetworkConfig failed')
-          }
 
           // Update the config
           dispatch(addNetworkAction(res.name, config))

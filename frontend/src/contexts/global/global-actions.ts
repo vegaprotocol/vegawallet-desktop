@@ -3,7 +3,7 @@ import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
-import * as Service from '../../wailsjs/go/backend/Handler'
+import { Service } from '../../service'
 import type {
   backend as BackendModel,
   network as NetworkModel
@@ -41,9 +41,6 @@ export function initAppAction() {
 
       if (!isInit) {
         const existingConfig = await Service.SearchForExistingConfiguration()
-        if (existingConfig instanceof Error) {
-          throw new Error('SearchForExistingConfiguration failed')
-        }
         dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
         return
       }
@@ -62,14 +59,6 @@ export function initAppAction() {
         Service.ListWallets(),
         Service.ListNetworks()
       ])
-
-      if (
-        config instanceof Error ||
-        wallets instanceof Error ||
-        networks instanceof Error
-      ) {
-        throw new Error('failed to initialize')
-      }
 
       const defaultNetwork = config.defaultNetwork
         ? networks.networks.find(n => n === config.defaultNetwork) ||
@@ -154,10 +143,6 @@ export function addKeypairAction(wallet: string) {
         })
       )
 
-      if (res instanceof Error) {
-        throw new Error('GenerateKey failed')
-      }
-
       const keypair = await Service.DescribeKey({
         wallet,
         passphrase,
@@ -195,10 +180,6 @@ export function getKeysAction(wallet: string) {
           wallet,
           passphrase
         })
-
-        if (keys instanceof Error) {
-          throw keys
-        }
 
         const keysWithMeta = await Promise.all(
           keys.keys.map(key =>

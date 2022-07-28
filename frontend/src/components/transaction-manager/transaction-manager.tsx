@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Intent } from '../../config/intent'
 import { events } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
-import * as Service from '../../wailsjs/go/backend/Handler'
+import { Service } from '../../service'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
 import { EventsOn } from '../../wailsjs/runtime'
 import { AppToaster } from '../toaster'
@@ -70,9 +70,6 @@ export function TransactionManager() {
     const run = async () => {
       try {
         const res = await Service.ListConsentRequests()
-        if (res instanceof Error) {
-          throw new Error('ListConsentRequests failed')
-        }
         setTransactions(res.requests.map(parseTx))
       } catch (err) {
         AppToaster.show({

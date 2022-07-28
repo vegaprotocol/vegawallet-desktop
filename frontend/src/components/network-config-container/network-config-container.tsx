@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { createLogger } from '../../lib/logging'
-import * as Service from '../../wailsjs/go/backend/Handler'
+import { Service } from '../../service'
 import type { network as NetworkModel } from '../../wailsjs/go/models'
 
 const logger = createLogger('NetworkConfigContainer')
@@ -39,9 +39,6 @@ export function useNetworkConfig(name: string | null) {
       setLoading(true)
       try {
         const res = await Service.GetNetworkConfig(name)
-        if (res instanceof Error) {
-          throw new Error('GetNetworkConfig failed')
-        }
         setConfig(res)
       } catch (err) {
         setError(err as Error)

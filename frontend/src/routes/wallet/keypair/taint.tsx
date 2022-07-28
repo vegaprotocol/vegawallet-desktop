@@ -12,7 +12,7 @@ import type { GlobalDispatch } from '../../../contexts/global/global-context'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { createLogger } from '../../../lib/logging'
-import * as Service from '../../../wailsjs/go/backend/Handler'
+import { Service } from '../../../service'
 
 const logger = createLogger('Taint')
 
@@ -42,10 +42,6 @@ const useTaint = (
         pubKey,
         passphrase
       })
-
-      if (keypair instanceof Error) {
-        throw new Error('DescribeKey failed')
-      }
 
       dispatch(updateKeyPairAction(wallet, keypair))
 
@@ -80,10 +76,6 @@ const useTaint = (
         pubKey,
         passphrase
       })
-
-      if (keypair instanceof Error) {
-        throw new Error('DescribeKey failed')
-      }
 
       dispatch(updateKeyPairAction(wallet, keypair))
 
