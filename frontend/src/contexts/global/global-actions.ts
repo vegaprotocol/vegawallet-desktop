@@ -8,10 +8,7 @@ import type {
   backend as BackendModel,
   network as NetworkModel
 } from '../../wailsjs/go/models'
-import {
-  config as ConfigModel,
-  wallet as WalletModel
-} from '../../wailsjs/go/models'
+import { wallet as WalletModel } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { ProxyName } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -249,13 +246,15 @@ export function changeNetworkAction(network: string) {
       await stopProxies()
       dispatch({ type: 'STOP_ALL_PROXIES' })
 
-      await Service.UpdateAppConfig(
-        new ConfigModel.Config({
-          ...state.config,
-          defaultNetwork: network
-        })
-      )
+      console.log('update app')
+      // @ts-ignore Using ConfigModel.Config constructor results in an error
+      // passing a plain object works
+      await Service.UpdateAppConfig({
+        ...state.config,
+        defaultNetwork: network
+      })
 
+      console.log('get network')
       const config = await Service.GetNetworkConfig(network)
 
       dispatch({
