@@ -47,7 +47,7 @@ export function TransactionModal({
   onDismiss
 }: TransactionModalProps) {
   return (
-    <Dialog open={Boolean(transactions.length)}>
+    <Dialog open={Boolean(transactions.length)} size='lg'>
       <div data-testid='transaction-dialog'>
         {transactions.length > 1 && (
           <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: 20 }}>
