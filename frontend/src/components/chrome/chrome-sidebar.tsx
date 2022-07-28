@@ -131,7 +131,7 @@ function SidebarHeader({ close }: SidebarHeaderProps) {
         style={{ fontSize: 14 }}
         data-testid='log-out'
       >
-        Wallets
+        Log out
       </ButtonUnstyled>
       <span
         style={{
