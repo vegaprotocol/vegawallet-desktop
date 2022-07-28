@@ -5,11 +5,11 @@ import { events } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type { ConsentRequest } from '../../wailsjs/go/models'
+import type { SentTransaction } from '../../wailsjs/go/models'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
 import type { ParsedTx } from './transaction-types'
 import { TransactionKeys } from './transaction-types'
-import { SentTransaction } from "../../wailsjs/go/models";
 
 const logger = createLogger('TransactionManager')
 
@@ -66,14 +66,10 @@ export function TransactionManager() {
       }
     )
 
-    window.runtime.EventsOn(
-      events.TRANSACTION_SENT,
-      (tx: SentTransaction) => {
-        // TODO: Implement me
-        console.log(tx)
-      }
-    )
-
+    window.runtime.EventsOn(events.TRANSACTION_SENT, (tx: SentTransaction) => {
+      // TODO: Implement me
+      console.log(tx)
+    })
 
     run()
   }, [])
