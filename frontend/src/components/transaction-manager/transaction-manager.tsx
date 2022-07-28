@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Intent } from '../../config/intent'
 import { events } from '../../lib/events'
@@ -17,9 +17,9 @@ const logger = createLogger('TransactionManager')
  * Stores an array of parsed transactions which get passed to a modal
  */
 export function TransactionManager() {
-  const [transactions, setTransactions] = React.useState<ParsedTx[]>([])
+  const [transactions, setTransactions] = useState<ParsedTx[]>([])
 
-  const handleResponse = React.useCallback(
+  const handleResponse = useCallback(
     async (txId: string, decision: boolean) => {
       try {
         await Service.ConsentToTransaction({
@@ -43,7 +43,7 @@ export function TransactionManager() {
   )
 
   // Get any already pending tx on startup
-  React.useEffect(() => {
+  useEffect(() => {
     const run = async () => {
       try {
         const res = await Service.ListConsentRequests()
@@ -74,7 +74,7 @@ export function TransactionManager() {
     run()
   }, [])
 
-  const orderedTransactions = React.useMemo(() => {
+  const orderedTransactions = useMemo(() => {
     if (!transactions.length) {
       return []
     }
