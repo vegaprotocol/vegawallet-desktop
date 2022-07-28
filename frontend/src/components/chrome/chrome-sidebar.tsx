@@ -2,7 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
 import { animated, config, useTransition } from 'react-spring'
 
-import { APP_FRAME_HEIGHT } from '../../app'
+import { APP_FRAME_HEIGHT } from '../../app-loader'
 import { Colors } from '../../config/colors'
 import { deactivateWalletAction } from '../../contexts/global/global-actions'
 import type { Wallet } from '../../contexts/global/global-context'
@@ -80,7 +80,8 @@ function SidebarDialog({ open, height, setOpen }: SidebarDialogProps) {
                     background: Colors.DARK_GRAY_2,
                     borderRight: `1px solid ${Colors.BLACK}`,
                     translateX: styles.x,
-                    overflowY: 'auto'
+                    overflowY: 'auto',
+                    zIndex: 1
                   }}
                 >
                   <SidebarHeader close={() => setOpen(false)} />

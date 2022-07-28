@@ -3,15 +3,19 @@
 ## Unreleased 0.3.0
 
 ### 🚨 Breaking changes
+
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
 ### 🗑️ Deprecation
+
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
 ### 🛠 Improvements
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx - 
+
+- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx -
 
 ### 🐛 Fixes
+
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 - [257](https://github.com/vegaprotocol/vegawallet-desktop/issues/257) - Update readme with more/improved links
 - [264](https://github.com/vegaprotocol/vegawallet-desktop/issues/264) - Let the transaction review window grow with the main window
@@ -19,12 +23,15 @@
 ## 0.2.1
 
 ### 🐛 Fixes
+
 - [274](https://github.com/vegaprotocol/vegawallet-desktop/issues/274) - Ensure transaction doesn't get serialized when nil in sent transaction event
 - [252](https://github.com/vegaprotocol/vegawallet-desktop/issues/252) - Do not crash on Windows when creating log files
+- [272](https://github.com/vegaprotocol/vegawallet-desktop/pull/272) - Update to latest version of Wails (v2.0.0-beta.40) to take advantage of new dev workflow features
 
 ## 0.2.0
 
 ### 🛠 Improvements
+
 - [198](https://github.com/vegaprotocol/vegawallet-desktop/pull/198) - Output runtime logs in files.
 - [162](https://github.com/vegaprotocol/vegawallet-desktop/pull/162) - Reword the message about unset endpoints.
 - [84](https://github.com/vegaprotocol/vegawallet-desktop/pull/84) - Support defining a default network to connect to.

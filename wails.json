@@ -3,6 +3,8 @@
   "assetdir": "./frontend/dist",
   "frontend:build": "npm run build",
   "frontend:install": "npm install",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "http://localhost:3000",
   "wailsjsdir": "./frontend/src",
   "version": "0.1.1",
   "outputfilename": "Vegawallet",
@@ -10,6 +12,5 @@
     "name": "Gobalsky Labs Ltd."
   },
   "debounceMS": 100,
-  "devserverurl": "http://localhost:34115",
   "appargs": ""
 }

@@ -4,8 +4,8 @@ import { Intent } from '../../config/intent'
 import { events } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
-import type { ConsentRequest } from '../../wailsjs/go/models'
-import type { SentTransaction } from '../../wailsjs/go/models'
+import type { backend as BackendModel } from '../../wailsjs/go/models'
+import { EventsOn } from '../../wailsjs/runtime'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
 import type { ParsedTx } from './transaction-types'
@@ -82,16 +82,13 @@ export function TransactionManager() {
     }
 
     // Listen for new incoming transactions
-    window.runtime.EventsOn(
-      events.NEW_CONSENT_REQUEST,
-      (tx: ConsentRequest) => {
-        setTransactions(curr => [...curr, parseTx(tx)])
-      }
-    )
+    EventsOn(events.NEW_CONSENT_REQUEST, (tx: BackendModel.ConsentRequest) => {
+      setTransactions(curr => [...curr, parseTx(tx)])
+    })
 
     window.runtime.EventsOn(
       events.TRANSACTION_SENT,
-      (incoming: SentTransaction) => {
+      (incoming: BackendModel.SentTransaction) => {
         setTransactions(curr => {
           return curr.map(t => {
             if (t.txId === incoming.txId) {
@@ -147,7 +144,7 @@ export function TransactionManager() {
  * payload has been turned from a json string into an object and we have determined
  * what kind of transaction it is
  */
-const parseTx = (consentRequest: ConsentRequest): ParsedTx => {
+const parseTx = (consentRequest: BackendModel.ConsentRequest): ParsedTx => {
   let payload: { pubKey: string; propagate: boolean }
 
   try {

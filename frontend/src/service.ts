@@ -1,4 +1,4 @@
-import type { Handler } from './types/handler'
+import * as UnwrappedService from './wailsjs/go/backend/Handler'
 
 /**
  * Wrap function to return consistent type and throw consistent error
@@ -37,11 +37,11 @@ const wrapFn = function <S, T>(
   }
 }
 
-export const Service = Object.entries(window.go.backend.Handler).reduce(
+export const Service = Object.entries(UnwrappedService).reduce(
   (prev, [key, value]) => {
     // @ts-ignore
     prev[key] = wrapFn(value)
     return prev
   },
   {}
-) as unknown as Handler
+) as unknown as typeof UnwrappedService

@@ -5,7 +5,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
-import type { Network } from '../../wailsjs/go/models'
+import { network as NetworkModel } from '../../wailsjs/go/models'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
 import { Select } from '../forms'
@@ -27,8 +27,8 @@ interface FormFields {
 }
 
 export interface NetworkConfigFormProps {
-  config: Network
-  onSubmit: (config: Network) => void
+  config: NetworkModel.Network
+  onSubmit: (config: NetworkModel.Network) => void
 }
 
 export const NetworkConfigForm = ({
@@ -259,8 +259,11 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
   )
 }
 
-function fieldsToConfig(config: Network, values: FormFields): Network {
-  return {
+function fieldsToConfig(
+  config: NetworkModel.Network,
+  values: FormFields
+): NetworkModel.Network {
+  return new NetworkModel.Network({
     name: config.name,
     level: values.logLevel,
     tokenExpiry: values.tokenExpiry,
@@ -274,7 +277,6 @@ function fieldsToConfig(config: Network, values: FormFields): Network {
       url: values.tokenDAppUrl,
       localPort: Number(values.tokenDAppPort)
     },
-    // @ts-ignore ignore missing convertValues
     api: {
       grpc: {
         hosts: values.grpcHosts.map(x => x.value),
@@ -283,10 +285,10 @@ function fieldsToConfig(config: Network, values: FormFields): Network {
       graphQl: config.api.graphQl,
       rest: config.api.rest
     }
-  }
+  })
 }
 
-function configToFields(config: Network): FormFields {
+function configToFields(config: NetworkModel.Network): FormFields {
   return {
     logLevel: config.level as string,
     tokenExpiry: config.tokenExpiry as string,
@@ -297,8 +299,11 @@ function configToFields(config: Network): FormFields {
     consolePort: config.console.localPort,
     tokenDAppUrl: config.tokenDApp.url,
     tokenDAppPort: config.tokenDApp.localPort,
+    // @ts-ignore any resulting from generated types
     grpcHosts: config.api.grpc.hosts.map(x => ({ value: x })),
+    // @ts-ignore any resulting from generated types
     graphqlHosts: config.api.graphQl.hosts.map(x => ({ value: x })),
+    // @ts-ignore any resulting from generated types
     restHosts: config.api.rest.hosts.map(x => ({ value: x }))
   }
 }

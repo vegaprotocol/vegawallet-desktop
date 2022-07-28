@@ -5,12 +5,10 @@ import { Intent } from '../../config/intent'
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type {
-  DescribeKeyResponse,
-  GetServiceStateResponse,
-  Network,
-  StartServiceRequest
+  backend as BackendModel,
+  network as NetworkModel
 } from '../../wailsjs/go/models'
-import { Config, GenerateKeyRequest } from '../../wailsjs/go/models'
+import { wallet as WalletModel } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { ProxyName } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -124,7 +122,7 @@ export function completeOnboardAction(onComplete: () => void) {
 
 export function addWalletAction(
   wallet: string,
-  key: DescribeKeyResponse
+  key: WalletModel.DescribeKeyResponse
 ): GlobalAction {
   return { type: 'ADD_WALLET', wallet, key }
 }
@@ -135,7 +133,7 @@ export function addKeypairAction(wallet: string) {
     try {
       const passphrase = await requestPassphrase()
       const res = await Service.GenerateKey(
-        new GenerateKeyRequest({
+        new WalletModel.GenerateKeyRequest({
           wallet,
           passphrase,
           metadata: []
@@ -180,10 +178,6 @@ export function getKeysAction(wallet: string) {
           passphrase
         })
 
-        if (keys instanceof Error) {
-          throw keys
-        }
-
         const keysWithMeta = await Promise.all(
           keys.keys.map(key =>
             Service.DescribeKey({
@@ -213,7 +207,7 @@ export function getKeysAction(wallet: string) {
 
 export function updateKeyPairAction(
   wallet: string,
-  keypair: DescribeKeyResponse
+  keypair: WalletModel.DescribeKeyResponse
 ): GlobalAction {
   return { type: 'UPDATE_KEYPAIR', wallet, keypair }
 }
@@ -252,13 +246,15 @@ export function changeNetworkAction(network: string) {
       await stopProxies()
       dispatch({ type: 'STOP_ALL_PROXIES' })
 
-      await Service.UpdateAppConfig(
-        new Config({
-          ...state.config,
-          defaultNetwork: network
-        })
-      )
+      console.log('update app')
+      // @ts-ignore Using ConfigModel.Config constructor results in an error
+      // passing a plain object works
+      await Service.UpdateAppConfig({
+        ...state.config,
+        defaultNetwork: network
+      })
 
+      console.log('get network')
       const config = await Service.GetNetworkConfig(network)
 
       dispatch({
@@ -278,7 +274,7 @@ export function changeNetworkAction(network: string) {
 
 export function updateNetworkConfigAction(
   editingNetwork: string,
-  networkConfig: Network
+  networkConfig: NetworkModel.Network
 ) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     const state = getState()
@@ -324,7 +320,10 @@ export function updateNetworkConfigAction(
   }
 }
 
-export function addNetworkAction(network: string, config: Network) {
+export function addNetworkAction(
+  network: string,
+  config: NetworkModel.Network
+) {
   return async (dispatch: GlobalDispatch) => {
     // If no service running start service for newly added network
     try {
@@ -427,8 +426,8 @@ export function stopProxyAction(proxyAppName: ProxyName) {
 
 const ProxyFns: {
   [A in ProxyName]: {
-    GetState: () => Promise<GetServiceStateResponse>
-    Start: (req: StartServiceRequest) => Promise<boolean | Error>
+    GetState: () => Promise<BackendModel.GetServiceStateResponse>
+    Start: (req: BackendModel.StartServiceRequest) => Promise<boolean | Error>
     Stop: () => Promise<boolean | Error>
   }
 } = {

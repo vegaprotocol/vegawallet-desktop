@@ -2,9 +2,9 @@ import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
 import type {
-  Config,
-  DescribeKeyResponse,
-  Network
+  config as ConfigModel,
+  network as NetworkModel,
+  wallet as WalletModel
 } from '../../wailsjs/go/models'
 import type { GlobalAction } from './global-reducer'
 
@@ -16,7 +16,10 @@ export enum AppStatus {
 }
 
 export interface KeyPair
-  extends Pick<DescribeKeyResponse, 'publicKey' | 'meta' | 'isTainted'> {
+  extends Pick<
+    WalletModel.DescribeKeyResponse,
+    'publicKey' | 'meta' | 'isTainted'
+  > {
   name: string
   publicKeyShort: string
 }
@@ -47,7 +50,7 @@ export interface NetworkPreset {
 export interface GlobalState {
   status: AppStatus
   version: string
-  config: Config
+  config: ConfigModel.Config | null
   onboarding: {
     wallets: string[]
     networks: string[]
@@ -61,7 +64,7 @@ export interface GlobalState {
   network: string | null
   networks: string[]
   presets: NetworkPreset[]
-  networkConfig: Network | null
+  networkConfig: NetworkModel.Network | null
   serviceRunning: boolean
   serviceUrl: string
   console: ProxyApp

@@ -16,5 +16,5 @@
     "jsx": "react-jsx"
   },
   "include": ["src", "setupTests.ts"],
-  "exclude": ["src/wailsjs", "automation"]
+  "exclude": ["node_modules", "src/wailsjs", "automation"]
 }

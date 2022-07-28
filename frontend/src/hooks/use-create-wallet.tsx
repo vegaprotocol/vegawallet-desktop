@@ -6,15 +6,14 @@ import { addWalletAction } from '../contexts/global/global-actions'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
 import { Service } from '../service'
-import type { CreateWalletResponse } from '../wailsjs/go/models'
+import type { wallet as WalletModel } from '../wailsjs/go/models'
 
 const logger = createLogger('UseCreateWallet')
 
 export function useCreateWallet() {
   const { dispatch } = useGlobal()
-  const [response, setResponse] = React.useState<CreateWalletResponse | null>(
-    null
-  )
+  const [response, setResponse] =
+    React.useState<WalletModel.CreateWalletResponse | null>(null)
 
   const submit = React.useCallback(
     async (values: { wallet: string; passphrase: string }) => {
@@ -24,8 +23,10 @@ export function useCreateWallet() {
           wallet: values.wallet,
           passphrase: values.passphrase
         })
+
         if (resp) {
           setResponse(resp)
+
           const keypair = await Service.DescribeKey({
             wallet: values.wallet,
             passphrase: values.passphrase,

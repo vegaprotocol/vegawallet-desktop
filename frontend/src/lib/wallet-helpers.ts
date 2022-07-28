@@ -1,8 +1,8 @@
 import type { KeyPair, Wallet } from '../contexts/global/global-context'
-import type { DescribeKeyResponse } from '../wailsjs/go/models'
+import type { wallet as WalletModel } from '../wailsjs/go/models'
 import { truncateMiddle } from './truncate-middle'
 
-export function extendKeypair(kp: DescribeKeyResponse): KeyPair {
+export function extendKeypair(kp: WalletModel.DescribeKeyResponse): KeyPair {
   const publicKeyShort = truncateMiddle(kp.publicKey)
   const nameMeta = kp.meta.find(m => m.key === 'name')
   return {

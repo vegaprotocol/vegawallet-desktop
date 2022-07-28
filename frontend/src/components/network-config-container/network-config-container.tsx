@@ -2,12 +2,12 @@ import React from 'react'
 
 import { createLogger } from '../../lib/logging'
 import { Service } from '../../service'
-import type { Network } from '../../wailsjs/go/models'
+import type { network as NetworkModel } from '../../wailsjs/go/models'
 
 const logger = createLogger('NetworkConfigContainer')
 
 interface NetworkConfigContainerProps {
-  children: (config: Network) => React.ReactElement
+  children: (config: NetworkModel.Network) => React.ReactElement
   name: string | null
 }
 
@@ -29,7 +29,7 @@ export function NetworkConfigContainer({
 }
 
 export function useNetworkConfig(name: string | null) {
-  const [config, setConfig] = React.useState<Network | null>(null)
+  const [config, setConfig] = React.useState<NetworkModel.Network | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
   const [loading, setLoading] = React.useState(true)
 
