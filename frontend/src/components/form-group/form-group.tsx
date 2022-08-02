@@ -41,7 +41,7 @@ export function FormGroup({
         {children}
         {helperText && (
           <div
-            data-testid={helperText}
+            data-testid='helper-text'
             style={{
               marginTop: 5,
               fontSize: 14,

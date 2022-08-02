@@ -12,13 +12,15 @@ import {
   setDrawerAction
 } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
+import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { createClient } from '../../lib/apollo-client'
 
 export const Wallet = () => {
   const {
-    state: { wallet, networks, networkConfig },
+    state: { networks, networkConfig },
     dispatch
   } = useGlobal()
+  const { wallet } = useCurrentKeypair()
   // false for explicit no node found and null for initial state
   const [client, setClient] = useState<ApolloClient<any> | null | false>(null)
 

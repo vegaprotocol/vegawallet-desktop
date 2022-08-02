@@ -131,7 +131,7 @@ const TransactionContent = ({
         <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
           <Button
             onClick={() => onDismiss(transaction.txId)}
-            data-testid='approve-transaction'
+            data-testid='dismiss-transaction'
           >
             Dismiss
           </Button>

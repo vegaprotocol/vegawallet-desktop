@@ -138,6 +138,7 @@ export const Taint = () => {
         </div>
       )}
       <KeyValueTable
+        style={{ marginBottom: 20 }}
         rows={[
           {
             key: 'Public key',

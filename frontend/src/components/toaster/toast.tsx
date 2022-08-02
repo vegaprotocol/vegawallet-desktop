@@ -19,7 +19,7 @@ export function Toast({
   message,
   onDismiss,
   intent = Intent.NONE,
-  timeout = 3000
+  timeout = 2000
 }: ToastProps) {
   const timeoutRef = useRef<any>()
 

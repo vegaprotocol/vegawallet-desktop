@@ -26,6 +26,7 @@ const testIds = {
   TRANSACTION_TITLE: 'transaction-title',
   REJECT_BTN: 'reject-transaction',
   APPROVE_BTN: 'approve-transaction',
+  DISMISS_BTN: 'dismiss-transaction',
   WALLET_ITEM: 'wallet-item'
 }
 
@@ -62,10 +63,11 @@ describe('transaction approval', () => {
     cy.getByTestId(testIds.TRANSACTION_DIALOG).should('exist')
     cy.getByTestId(testIds.TRANSACTION_DIALOG).should('be.visible')
     cy.getByTestId(testIds.APPROVE_BTN).click()
-    // TODO: Figure out why tx is requrest is not returning 200, also amend as now we show a
+    // TODO: Figure out why tx is request is not returning 200, also amend as now we show a
     // success state in the dialog rather than it just closing
-    // cy.getByTestId(testIds.TRANSACTION_DIALOG).should('not.exist')
-    // cy.wait('@transaction').its('response.statusCode').should('eq', 200)
+    cy.wait('@transaction').its('response.statusCode').should('eq', 200)
+    cy.getByTestId(testIds.DISMISS_BTN).click()
+    cy.getByTestId(testIds.TRANSACTION_DIALOG).should('not.exist')
   })
 
   it('handles rejection', () => {

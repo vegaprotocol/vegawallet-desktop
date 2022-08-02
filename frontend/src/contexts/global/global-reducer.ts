@@ -98,6 +98,10 @@ export type GlobalAction =
       wallets: string[]
     }
   | {
+      type: 'REMOVE_WALLET'
+      wallet: string
+    }
+  | {
       type: 'SET_KEYPAIRS'
       wallet: string
       keypairs: WalletModel.DescribeKeyResponse[]
@@ -271,6 +275,15 @@ export function globalReducer(
       return {
         ...state,
         wallets: [...state.wallets, ...newWallets].sort(sortWallet)
+      }
+    }
+    case 'REMOVE_WALLET': {
+      return {
+        ...state,
+        wallet: null,
+        wallets: state.wallets
+          .filter(w => w.name !== action.wallet)
+          .sort(sortWallet)
       }
     }
     case 'SET_KEYPAIRS': {
