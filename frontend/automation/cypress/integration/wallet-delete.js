@@ -1,6 +1,6 @@
-const { unlockWallet, authenticate } = require('../support/helpers')
+const { unlockWallet } = require('../support/helpers')
 
-describe('wallet annotate metadata', () => {
+describe('wallet delete', () => {
   let walletName
   let passphrase
   const form = 'delete-wallet-form'
