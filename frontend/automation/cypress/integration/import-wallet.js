@@ -62,7 +62,7 @@ describe('import wallet', () => {
     cy.visit('/')
     cy.getByTestId('import-wallet').click()
     cy.getByTestId('submit').click()
-    cy.getByTestId('Required').should('have.length', 4)
+    cy.getByTestId('helper-text').should('have.length', 4)
   })
 
   it('incorrect recovery phrase', () => {

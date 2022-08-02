@@ -6,13 +6,13 @@ import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
-import { Header } from '../../components/header'
 import { AppToaster } from '../../components/toaster'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { FormStatus, useFormState } from '../../hooks/use-form-state'
+import { Validation } from '../../lib/form-validation'
 import { createLogger } from '../../lib/logging'
 import * as Service from '../../wailsjs/go/backend/Handler'
 import { backend as BackendModel } from '../../wailsjs/go/models'
@@ -142,7 +142,7 @@ const DeleteForm = ({
         <Input
           id='confirmText'
           {...register('confirmText', {
-            required: 'Required',
+            required: Validation.REQUIRED,
             validate: {
               confirmText: value => {
                 if (value === confirmText) {
