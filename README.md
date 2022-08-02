@@ -106,10 +106,24 @@ go test ./...
 
 #### Frontend
 
-Go to the `frontend` directory, and launch the test runner in the interactive watch mode:
+Go to the `frontend` directory, and start the dev server in test mode.
 
 ```sh
-npm run test
+npm run dev:test
+```
+
+Then go to the `frontend/automation` directory and run Cypress in interactive mode or headless modes:
+
+Interactive:
+
+```sh
+npx cypress open
+```
+
+Headless:
+
+```sh
+npx cypress run
 ```
 
 ## Support
