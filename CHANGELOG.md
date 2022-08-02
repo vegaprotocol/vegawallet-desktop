@@ -13,6 +13,7 @@
 ### 🛠 Improvements
 
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx -
+- [206](https://github.com/vegaprotocol/vegawallet-desktop/issues/206) - Delete wallet functionality
 
 ### 🐛 Fixes
 
