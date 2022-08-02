@@ -88,14 +88,14 @@ export const Delete = () => {
         right={null}
       />
       <div style={{ padding: 20 }}>
-        <p style={{ marginBottom: 15 }}>
+        <h2 style={{ fontSize: 20, marginBottom: 15 }}>
           Are you sure you want to delete this wallet?
-        </p>
+        </h2>
         <p style={{ marginBottom: 15 }}>
           Doing so will permanently delete this wallet and you will only be able
           to recover assets if you have a back up phrase.
         </p>
-        <p style={{ marginBottom: 15 }}>
+        <p style={{ marginBottom: 30 }}>
           You may want to create a copy of your recovery phrase before you
           continue.
         </p>
