@@ -69,13 +69,10 @@ func (l *Loader) GetConfig() (Config, error) {
 		config.LogLevel = zap.InfoLevel.String()
 	}
 
-	if config.Telemetry == nil {
-		// We will opt in first. We will remove this once the on-boarding
-		// workflow is rework to ask for user explicit consent.
-		config.Telemetry = &TelemetryConfig{
-			ConsentAsked: false,
-			Enabled:      true,
-		}
+	// We will opt in first. We will remove this once the on-boarding
+	// workflow is rework to ask for user explicit consent.
+	if !config.Telemetry.ConsentAsked {
+		config.Telemetry.Enabled = true
 	}
 
 	return config, nil
