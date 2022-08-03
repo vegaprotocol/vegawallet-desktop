@@ -217,6 +217,8 @@ github.com/wailsapp/mimetype v1.4.1 h1:pQN9ycO7uo4vsUUuPeHEYoUkLVkaRntMnHJxVwYhw
 github.com/wailsapp/mimetype v1.4.1/go.mod h1:9aV5k31bBOv5z6u+QP8TltzvNGJPmNJD4XlAL3U+j3o=
 github.com/wailsapp/wails/v2 v2.0.0-beta.40 h1:140MEcS1RGYElGQOUErGw+bRR3bS8fQRhYsQSJE9QGU=
 github.com/wailsapp/wails/v2 v2.0.0-beta.40/go.mod h1:wVNv+CErhc8JpVfbNCv9gkMrVGWT0yoe/TULJ3KUxxc=
+github.com/wailsapp/wails/v2 v2.0.0-beta.42 h1:AZVbG63YyFpN5SX/RGZYG58lb63H/TEtA7EHYINCn90=
+github.com/wailsapp/wails/v2 v2.0.0-beta.42/go.mod h1:wVNv+CErhc8JpVfbNCv9gkMrVGWT0yoe/TULJ3KUxxc=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
