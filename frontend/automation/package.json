@@ -25,9 +25,7 @@
     "@ethersproject/providers": "5.5.0",
     "@ethersproject/wallet": "5.4.0",
     "axios": "^0.21.0",
-    "clipboardy": "2.3.0",
-    "cypress": "^9.5.0",
-    "cypress-cucumber-preprocessor": "^4.0.0",
+    "cypress": "^10.4.0",
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "lodash": "^4.17.21"
