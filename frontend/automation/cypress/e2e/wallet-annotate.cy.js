@@ -11,6 +11,7 @@ describe('wallet annotate metadata', () => {
       .then(handler => {
         cy.setVegaHome(handler)
         cy.restoreNetwork(handler, 'custom')
+        cy.exec('npm run createcustomconfig')
         cy.restoreWallet(handler)
       })
       .then(() => {
