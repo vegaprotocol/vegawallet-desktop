@@ -6,7 +6,6 @@ module.exports = defineConfig({
 
   e2e: {
     setupNodeEvents(on, config) {
-      require('@cypress/code-coverage/task')(on, config)
       on('before:browser:launch', (browser, launchOptions) => {
         if (browser.family === 'chromium') {
           launchOptions.args.push('--disable-dev-shm-usage')
@@ -15,7 +14,8 @@ module.exports = defineConfig({
       })
 
       on('task', { downloadFile }) // download file plugin
-      return config
+
+      return require('@cypress/code-coverage/task')(on, config)
     },
     baseUrl: 'http://localhost:34115/',
     fileServerFolder: '.',
