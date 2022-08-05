@@ -11,12 +11,11 @@ describe('import network', () => {
         cy.restoreWallet(handler)
       })
       .then(() => {
-        cy.visit('/')
-        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
-
         const walletName = Cypress.env('testWalletName')
         const passphrase = Cypress.env('testWalletPassphrase')
 
+        cy.visit('/')
+        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
         unlockWallet(walletName, passphrase)
         cy.getByTestId('network-drawer').click()
         cy.getByTestId('manage-networks').click()

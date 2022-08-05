@@ -55,6 +55,6 @@ function goToTaintPage() {
   cy.get('html').click() // close dropdown
 }
 
-function taintKey(message) {
+function taintKey() {
   cy.getByTestId('taint-action').click()
 }
