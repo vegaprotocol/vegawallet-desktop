@@ -6,10 +6,14 @@ import { getDefaultStyles } from './styles'
 type InputProps = InputHTMLAttributes<HTMLInputElement>
 
 export const Input = forwardRef(
-  ({ style, ...props }: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
+  (
+    { style, type = 'text', ...props }: InputProps,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
     return (
       <input
         {...props}
+        type={type}
         ref={ref}
         style={{
           ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),

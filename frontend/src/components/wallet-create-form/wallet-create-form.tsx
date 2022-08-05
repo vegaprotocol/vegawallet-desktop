@@ -34,7 +34,6 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
       <FormGroup
         label='Name'
         labelFor='wallet'
-        intent={errors.wallet?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.wallet?.message}
       >
         <Input
@@ -48,7 +47,6 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
       <FormGroup
         label='Passphrase'
         labelFor='passphrase'
-        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.passphrase?.message}
       >
         <Input
@@ -60,7 +58,6 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
       <FormGroup
         label='Confirm passphrase'
         labelFor='confirmPassphrase'
-        intent={errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.confirmPassphrase?.message}
       >
         <Input

@@ -12,6 +12,7 @@ import {
   OnboardWalletImport
 } from './onboard'
 import { Wallet } from './wallet'
+import { Delete } from './wallet/delete'
 import { KeyPairHome } from './wallet/keypair/home'
 import { Metadata } from './wallet/keypair/metadata'
 import { Sign } from './wallet/keypair/sign'
@@ -47,6 +48,7 @@ export const AppRouter = () => {
             </Center>
           }
         />
+        <Route path='delete' element={<Delete />} />
         <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
           <Route index={true} element={<KeyPairHome />} />
           <Route path='sign' element={<Sign />} />

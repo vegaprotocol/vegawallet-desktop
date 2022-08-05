@@ -1,7 +1,6 @@
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 
-import { Intent } from '../../config/intent'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -55,7 +54,6 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         label='Recovery phrase'
         labelFor='recoveryPhrase'
         helperText={errors.recoveryPhrase?.message}
-        intent={errors.recoveryPhrase?.message ? Intent.DANGER : Intent.NONE}
       >
         <Textarea
           data-testid='recovery-phrase'
@@ -66,7 +64,6 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
       <FormGroup
         label='Version'
         labelFor='version'
-        intent={errors.version?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.version?.message}
       >
         <Select
@@ -81,7 +78,6 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
       <FormGroup
         label='Choose passphrase'
         labelFor='passphrase'
-        intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.passphrase?.message}
       >
         <Input
@@ -94,7 +90,6 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         data-testid='confirm-passphrase'
         label='Confirm passphrase'
         labelFor='confirmPassphrase'
-        intent={errors.confirmPassphrase?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.confirmPassphrase?.message}
       >
         <Input

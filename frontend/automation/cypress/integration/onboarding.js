@@ -51,7 +51,7 @@ describe('onboarding', () => {
   it('import wallet validation', () => {
     cy.getByTestId('import-wallet').click()
     cy.getByTestId('submit').click()
-    cy.getByTestId('Required').should('have.length', 4)
+    cy.getByTestId('helper-text').should('have.length', 4)
   })
 
   it('import wallet with invalid recovery phrase', () => {
