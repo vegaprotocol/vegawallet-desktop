@@ -19,7 +19,6 @@
   "author": "",
   "license": "Private",
   "dependencies": {
-    "@cypress/code-coverage": "^3.9.10",
     "@ethersproject/abstract-signer": "5.4.1",
     "@ethersproject/experimental": "5.4.0",
     "@ethersproject/providers": "5.5.0",
@@ -34,6 +33,7 @@
     "nonGlobalStepDefinitions": false
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.10.0",
     "cypress-downloadfile": "^1.2.1",
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
