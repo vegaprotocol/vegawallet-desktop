@@ -14,6 +14,7 @@
 
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx -
 - [206](https://github.com/vegaprotocol/vegawallet-desktop/issues/206) - Delete wallet functionality
+- [282](https://github.com/vegaprotocol/vegawallet-desktop/pull/283) - Upgrade to Cypress 10 and test improvements 
 
 ### 🐛 Fixes
 

@@ -57,7 +57,7 @@ function AccountsTable({ publicKey }: AccountsTableProps) {
       {entries.map(([id, accounts]) => {
         return (
           <div key={id} style={{ marginBottom: 20 }}>
-            <Header style={{ fontSize: 14, margin: 0 }}>
+            <Header data-testid='asset-name' style={{ fontSize: 14, margin: 0 }}>
               {accounts[0].asset.name}
             </Header>
             <KeyValueTable

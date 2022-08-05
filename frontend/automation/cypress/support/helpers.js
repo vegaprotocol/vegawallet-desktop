@@ -17,7 +17,7 @@ export function generateAccounts() {
     {
       __typename: 'Account',
       type: 'General',
-      balance: '100',
+      balance: '10000000',
       market: {
         __typename: 'Market',
         id: 'market-id',
@@ -26,8 +26,26 @@ export function generateAccounts() {
       asset: {
         __typename: 'Asset',
         id: 'asset-id',
-        symbol: 'SYM',
-        decimals: 0
+        name: 'tBTC TEST',
+        symbol: 'tBTC',
+        decimals: 5
+      }
+    },
+    {
+      __typename: 'Account',
+      type: 'General',
+      balance: '112672538',
+      market: {
+        __typename: 'Market',
+        id: 'market-id',
+        name: 'Test Market'
+      },
+      asset: {
+        __typename: 'Asset',
+        id: 'asset-id1',
+        name: 'tDAI TEST',
+        symbol: 'tDAI',
+        decimals: 5
       }
     }
   ]
