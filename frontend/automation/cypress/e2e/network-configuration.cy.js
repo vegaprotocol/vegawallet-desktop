@@ -11,18 +11,17 @@ describe('network configuration', () => {
         cy.restoreWallet(handler)
       })
       .then(() => {
+        const passphrase = Cypress.env('testWalletPassphrase')
+        const walletName = Cypress.env('testWalletName')
+
         cy.visit('/')
         cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+        unlockWallet(walletName, passphrase)
+        cy.getByTestId('network-drawer').click()
       })
   })
 
   it('change network', () => {
-    const passphrase = Cypress.env('testWalletPassphrase')
-    const walletName = Cypress.env('testWalletName')
-
-    cy.visit('/')
-    unlockWallet(walletName, passphrase)
-    cy.getByTestId('network-drawer').click()
     cy.getByTestId('network-select').click()
     cy.getByTestId('select-fairground').click()
     cy.getByTestId('service-status').should(
@@ -38,12 +37,6 @@ describe('network configuration', () => {
   })
 
   it('view network details', () => {
-    const passphrase = Cypress.env('testWalletPassphrase')
-    const walletName = Cypress.env('testWalletName')
-
-    cy.visit('/')
-    unlockWallet(walletName, passphrase)
-    cy.getByTestId('network-drawer').click()
     cy.getByTestId('network-select').should('have.text', 'mainnet1')
     cy.getByTestId('service-url').should('not.be.empty')
     cy.getByTestId('service-console').should('not.be.empty')
@@ -59,12 +52,6 @@ describe('network configuration', () => {
   })
 
   it('edit network details displayed', () => {
-    const passphrase = Cypress.env('testWalletPassphrase')
-    const walletName = Cypress.env('testWalletName')
-
-    cy.visit('/')
-    unlockWallet(walletName, passphrase)
-    cy.getByTestId('network-drawer').click()
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('edit').first().click()
     cy.getByTestId('service-host').invoke('val').should('not.be.empty')

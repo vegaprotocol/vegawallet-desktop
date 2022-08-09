@@ -147,6 +147,7 @@ describe('wallet - assets', () => {
   })
 
   it('view wallet assets', () => {
+    const mockedbalances = ['100.00000', '1126.72538']
     const accounts = generateAccounts()
     unlockWallet(walletName, passphrase)
     cy.getByTestId('generate-keypair').should('exist')
@@ -160,12 +161,13 @@ describe('wallet - assets', () => {
       .should('have.length', accounts.length)
 
     accounts.forEach((a, i) => {
+      cy.getByTestId('asset-name').eq(i).should('contain.text', a.asset.name)
       cy.getByTestId('assets-table')
         .find('dt')
         .eq(i)
         .should('contain.text', a.type)
         .next('dd')
-        .should('contain.text', a.balance)
+        .should('contain.text', mockedbalances[i])
     })
   })
 })

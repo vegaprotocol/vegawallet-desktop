@@ -23,6 +23,7 @@ describe('onboarding', () => {
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
     cy.getByTestId('submit').click()
     cy.getByTestId('toast').contains('Wallet created!')
+    cy.getByTestId('toast').should('not.exist')
 
     // Import network
     cy.getByTestId('onboard-import-network-button').click()
