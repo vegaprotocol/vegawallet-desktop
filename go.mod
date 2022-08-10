@@ -52,3 +52,5 @@ require (
 	google.golang.org/grpc v1.45.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
+
+replace github.com/wailsapp/wails/v2 v2.0.0-beta.42 => github.com/vegaprotocol/wails/v2 v2.0.0-20220810111840-a830d1018112
