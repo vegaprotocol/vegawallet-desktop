@@ -2,9 +2,15 @@ import {
   addBreadcrumb,
   captureException,
   captureMessage,
-  Severity
+  Severity,
+  init,
 } from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 import log from 'loglevel'
+import once from 'lodash/once'
+
+import packageJson from '../../package.json'
+import { SENTRY_DSN } from '../config/environment'
 
 const factory = log.methodFactory
 
@@ -39,3 +45,14 @@ log.methodFactory = (methodName, logLevel, loggerName) => {
 log.setLevel(log.getLevel())
 
 export const createLogger = (loggerName: string) => log.getLogger(loggerName)
+
+export const initLogger = once(() => {
+  if (SENTRY_DSN) {
+    init({
+      dsn: SENTRY_DSN,
+      integrations: [new BrowserTracing()],
+      release: packageJson.version,
+      tracesSampleRate: 1.0
+    })
+  }
+})

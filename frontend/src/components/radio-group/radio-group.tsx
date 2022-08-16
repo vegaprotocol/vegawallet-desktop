@@ -8,9 +8,23 @@ interface RadioGroupProps {
   name: string
   options: Array<{ value: string; label: string }>
   control: Control
+  orientation?: 'vertical' | 'horizontal'
 }
 
-export function RadioGroup({ name, control, options }: RadioGroupProps) {
+export function RadioGroup({
+  name,
+  control,
+  options,
+  orientation = 'vertical'
+}: RadioGroupProps) {
+  const rootStyle =
+    orientation === 'horizontal'
+      ? {
+          display: 'grid',
+          gridTemplateColumns: Array(options.length).fill('1fr').join(' ')
+        }
+      : {}
+
   return (
     <Controller
       name={name}
@@ -21,7 +35,8 @@ export function RadioGroup({ name, control, options }: RadioGroupProps) {
             value={field.value}
             onValueChange={field.onChange}
             name={field.name}
-            orientation='vertical'
+            orientation={orientation}
+            style={rootStyle}
           >
             {options.map(o => (
               <div key={o.value} style={wrapper}>
