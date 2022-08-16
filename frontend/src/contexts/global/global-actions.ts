@@ -8,7 +8,10 @@ import type {
   backend as BackendModel,
   network as NetworkModel
 } from '../../wailsjs/go/models'
-import { wallet as WalletModel, config as ConfigModel } from '../../wailsjs/go/models'
+import {
+  config as ConfigModel,
+  wallet as WalletModel
+} from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { ProxyName } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -94,21 +97,24 @@ export function initAppAction() {
   }
 }
 
-export function updateTelemetry(telemetry: { enabled: boolean, consentAsked: boolean }) {
+export function updateTelemetry(telemetry: {
+  enabled: boolean
+  consentAsked: boolean
+}) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     if (telemetry.enabled) {
       initLogger()
     }
-    
+
     logger.debug('UpdateTelemetry')
     try {
-      const { config } = getState();
+      const { config } = getState()
       if (config) {
-        const newConfig = new ConfigModel.Config({ ...config, telemetry });
-        await Service.UpdateAppConfig(newConfig);
+        const newConfig = new ConfigModel.Config({ ...config, telemetry })
+        await Service.UpdateAppConfig(newConfig)
         dispatch({
           type: 'SET_CONFIG',
-          config: newConfig,
+          config: newConfig
         })
       }
     } catch (err) {

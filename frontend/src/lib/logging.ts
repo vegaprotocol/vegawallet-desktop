@@ -2,12 +2,12 @@ import {
   addBreadcrumb,
   captureException,
   captureMessage,
-  Severity,
   init,
+  Severity
 } from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
-import log from 'loglevel'
 import once from 'lodash/once'
+import log from 'loglevel'
 
 import packageJson from '../../package.json'
 import { SENTRY_DSN } from '../config/environment'
