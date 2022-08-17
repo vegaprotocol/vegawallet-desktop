@@ -1,6 +1,9 @@
 const { unlockWallet } = require('../support/helpers')
 
 describe('settings', () => {
+  const homeSettingsBtn = 'home-settings'
+  const settingsForm = 'settings-form'
+  const cancelSettingsBtn = 'cancel-settings'
   let passphrase
   let walletName
 
@@ -22,15 +25,15 @@ describe('settings', () => {
   })
 
   it('dialog opens and can be closed', () => {
-    cy.getByTestId('home-settings').click()
-    cy.getByTestId('settings-form').should('be.visible')
-    cy.getByTestId('cancel-settings').click()
-    cy.getByTestId('settings-form').should('not.exist')
+    cy.getByTestId(homeSettingsBtn).click()
+    cy.getByTestId(settingsForm).should('be.visible')
+    cy.getByTestId(cancelSettingsBtn).click()
+    cy.getByTestId(settingsForm).should('not.exist')
   })
 
   it('saves and reloads', () => {
-    cy.getByTestId('home-settings').click()
-    cy.getByTestId('settings-form').should('be.visible')
+    cy.getByTestId(homeSettingsBtn).click()
+    cy.getByTestId(settingsForm).should('be.visible')
 
     // assert and change log level
     cy.getByTestId('log-level').should('have.value', 'info').select('debug')
@@ -44,17 +47,17 @@ describe('settings', () => {
     cy.getByTestId('update-settings').click()
 
     // page should reload and settings form should now not show
-    cy.getByTestId('settings-form').should('not.exist')
+    cy.getByTestId(settingsForm).should('not.exist')
 
-    cy.getByTestId('home-settings').click()
+    cy.getByTestId(homeSettingsBtn).click()
     cy.getByTestId('log-level').should('have.value', 'debug')
     cy.get(radioGroupSelector).find('input[value="no"]').should('be.checked')
-    cy.getByTestId('cancel-settings').click()
+    cy.getByTestId(cancelSettingsBtn).click()
   })
 
   it('can be accessed from the wallet sidebar', () => {
     unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-app-settings').click()
-    cy.getByTestId('settings-form').should('be.visible')
+    cy.getByTestId(settingsForm).should('be.visible')
   })
 })
