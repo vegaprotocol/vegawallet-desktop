@@ -109,7 +109,7 @@ const SettingsForm = ({
     }
   })
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} data-testid='settings-form'>
       <FormGroup
         label='Wallet directory'
         labelFor='vegaHome'
@@ -122,7 +122,7 @@ const SettingsForm = ({
         labelFor='logLevel'
         helperText='Logs can be found at in your Vega home directory'
       >
-        <Select {...register('logLevel')}>
+        <Select {...register('logLevel')} data-testid='log-level'>
           {Object.entries(LogLevels).map(([key, value]) => (
             <option value={value} key={key}>
               {key}
@@ -145,10 +145,17 @@ const SettingsForm = ({
         />
       </FormGroup>
       <ButtonGroup orientation='vertical'>
-        <Button type='submit' disabled={isPending} loading={isPending}>
+        <Button
+          type='submit'
+          disabled={isPending}
+          loading={isPending}
+          data-testid='update-settings'
+        >
           Update and restart
         </Button>
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button onClick={onCancel} data-testid='cancel-settings'>
+          Cancel
+        </Button>
       </ButtonGroup>
     </form>
   )

@@ -68,6 +68,7 @@ export const Home = () => {
         <button
           style={{ textDecoration: 'underline' }}
           onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
+          data-testid='home-settings'
         >
           App settings
         </button>

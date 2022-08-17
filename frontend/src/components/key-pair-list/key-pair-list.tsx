@@ -110,6 +110,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
         <button
           onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
           style={{ textDecoration: 'underline' }}
+          data-testid='wallet-app-settings'
         >
           App settings
         </button>
