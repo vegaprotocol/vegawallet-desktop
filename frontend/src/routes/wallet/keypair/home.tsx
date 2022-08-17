@@ -35,6 +35,13 @@ interface AccountsTableProps {
   publicKey: string
 }
 
+const dummy = {
+  type: 'account type',
+  balance: '100',
+  market: { id: '1', name: 'market name' },
+  asset: { id: '1', name: 'my ass(et)', symbol: '%', decimals: 0 }
+}
+
 function AccountsTable({ publicKey }: AccountsTableProps) {
   const { accounts, loading, error } = useAccounts(publicKey)
 
@@ -46,7 +53,11 @@ function AccountsTable({ publicKey }: AccountsTableProps) {
     return <p>Loading accounts</p>
   }
 
-  const entries = Object.entries(accounts)
+  // const entries = Object.entries(accounts)
+
+  const entries = Object.entries({
+    '1': [dummy]
+  })
 
   if (!entries.length) {
     return <p>No accounts</p>

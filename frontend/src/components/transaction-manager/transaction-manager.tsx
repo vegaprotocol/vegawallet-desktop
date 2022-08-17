@@ -17,7 +17,19 @@ const logger = createLogger('TransactionManager')
  * Stores an array of parsed transactions which get passed to a modal
  */
 export function TransactionManager() {
-  const [transactions, setTransactions] = useState<ParsedTx[]>([])
+  const [transactions, setTransactions] = useState<ParsedTx[]>([
+    {
+      txId: '1',
+      tx: {},
+      txHash: null,
+      type: TransactionKeys.ORDER_SUBMISSION,
+      receivedAt: new Date(),
+      pubKey: '0x0',
+      pending: true,
+      sentAt: null,
+      error: null
+    }
+  ])
 
   const handleResponse = useCallback(
     async (txId: string, decision: boolean) => {
