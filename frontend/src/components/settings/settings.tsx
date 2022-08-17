@@ -71,7 +71,10 @@ export function Settings() {
   }
 
   return (
-    <Dialog open={settingsModalOpen}>
+    <Dialog
+      open={settingsModalOpen}
+      onChange={open => dispatch({ type: 'SET_SETTINGS_MODAL', open })}
+    >
       <div>
         <SettingsForm
           config={config}
