@@ -1,4 +1,4 @@
-import { Link, Navigate, useLocation } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
@@ -14,7 +14,6 @@ import { Paths } from '../'
  * Redirects to import if no wallets are loaded, or to wallet home
  */
 export const Home = () => {
-  const location = useLocation()
   const {
     state: { status, wallets },
     dispatch
@@ -66,13 +65,12 @@ export const Home = () => {
         </Link>
       </ButtonGroup>
       <p>
-        <Link
-          to='settings'
-          state={{ background: location }}
+        <button
           style={{ textDecoration: 'underline' }}
+          onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
         >
           App settings
-        </Link>
+        </button>
       </p>
     </Splash>
   )

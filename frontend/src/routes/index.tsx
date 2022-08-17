@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { Outlet, Route, Routes } from 'react-router-dom'
 
 import { Center } from '../components/center'
 import { Home } from './home'
@@ -11,7 +11,6 @@ import {
   OnboardWalletCreate,
   OnboardWalletImport
 } from './onboard'
-import { Settings } from './settings'
 import { Wallet } from './wallet'
 import { Delete } from './wallet/delete'
 import { KeyPairHome } from './wallet/keypair/home'
@@ -30,12 +29,9 @@ export enum Paths {
 }
 
 export const AppRouter = () => {
-  const location = useLocation()
-  // @ts-ignore types dont appear to be set up to take state from link
-  const background = location.state && location.state.background
   return (
     <>
-      <Routes location={background || location}>
+      <Routes>
         <Route path='/' element={<Outlet />}>
           <Route index={true} element={<Home />} />
           <Route path='onboard' element={<Onboard />}>
@@ -57,7 +53,6 @@ export const AppRouter = () => {
                 </Center>
               }
             />
-            <Route path='settings' element={<Settings />} />
             <Route path='delete' element={<Delete />} />
             <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
               <Route index={true} element={<KeyPairHome />} />
@@ -68,12 +63,6 @@ export const AppRouter = () => {
           </Route>
         </Route>
       </Routes>
-      {background && (
-        <Routes>
-          <Route path='settings' element={<Settings />} />
-          <Route path='wallet/:wallet/settings' element={<Settings />} />
-        </Routes>
-      )}
     </>
   )
 }

@@ -1,14 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 
-import { Button } from '../../components/button'
-import { ButtonGroup } from '../../components/button-group'
-import { Dialog } from '../../components/dialog'
-import { FormGroup } from '../../components/form-group'
-import { Select } from '../../components/forms'
-import { Input } from '../../components/forms/input'
-import { RadioGroup } from '../../components/radio-group'
-import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -16,6 +7,15 @@ import { FormStatus, useFormState } from '../../hooks/use-form-state'
 import { createLogger } from '../../lib/logging'
 import * as Service from '../../wailsjs/go/backend/Handler'
 import { config as ConfigModel } from '../../wailsjs/go/models'
+import { WindowReload } from '../../wailsjs/runtime/runtime'
+import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
+import { Dialog } from '../dialog'
+import { FormGroup } from '../form-group'
+import { Select } from '../forms'
+import { Input } from '../forms/input'
+import { RadioGroup } from '../radio-group'
+import { AppToaster } from '../toaster'
 
 const logger = createLogger('Settings')
 
@@ -28,14 +28,15 @@ const useUpdateConfig = () => {
       await Service.UpdateAppConfig(
         new ConfigModel.Config({
           vegaHome: fields.vegaHome,
-          logLevel: fields.logLevel
-          // TODO: Saving telemetry seems to be broken
-          // telemetry: new ConfigModel.TelemetryConfig({
-          //   enabled: fields.telemetry === 'yes' ? true : false,
-          //   consentAsked: false
-          // })
+          logLevel: fields.logLevel,
+          defaultNetwork: fields.defaultNetwork,
+          telemetry: new ConfigModel.TelemetryConfig({
+            enabled: fields.telemetry === 'yes' ? true : false,
+            consentAsked: true
+          })
         })
       )
+      WindowReload()
     } catch (err) {
       const message = 'Failed to update config'
       AppToaster.show({ message, intent: Intent.DANGER })
@@ -52,14 +53,15 @@ const useUpdateConfig = () => {
 interface FormFields {
   vegaHome: string
   logLevel: string
-  telemetry: 'yes' | 'no'
+  defaultNetwork: string
+  telemetry: 'yes' | 'no' // radio group requires string value
 }
 
 export function Settings() {
   const {
-    state: { config }
+    state: { settingsModalOpen, config },
+    dispatch
   } = useGlobal()
-  const navigate = useNavigate()
 
   const { submit, status } = useUpdateConfig()
   const isPending = status === FormStatus.Pending
@@ -69,12 +71,12 @@ export function Settings() {
   }
 
   return (
-    <Dialog open={true}>
+    <Dialog open={settingsModalOpen}>
       <div>
         <SettingsForm
           config={config}
           onSubmit={submit}
-          onCancel={() => navigate(-1)}
+          onCancel={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: false })}
           isPending={isPending}
         />
       </div>
@@ -99,6 +101,7 @@ const SettingsForm = ({
     defaultValues: {
       vegaHome: config?.vegaHome,
       logLevel: config?.logLevel,
+      defaultNetwork: config?.defaultNetwork,
       telemetry: config?.telemetry.enabled ? 'yes' : 'no'
     }
   })

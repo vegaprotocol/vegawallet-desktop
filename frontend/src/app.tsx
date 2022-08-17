@@ -5,6 +5,7 @@ import { HashRouter as Router } from 'react-router-dom'
 
 import { AppFrame, AppLoader } from './app-loader'
 import { PassphraseModal } from './components/passphrase-modal'
+import { Settings } from './components/settings/settings'
 import { TransactionManager } from './components/transaction-manager'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { AppRouter } from './routes'
@@ -22,6 +23,7 @@ function App() {
               <AppRouter />
               <PassphraseModal />
               <TransactionManager />
+              <Settings />
             </AppLoader>
           </AppFrame>
         </GlobalProvider>
