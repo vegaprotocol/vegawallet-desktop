@@ -33,7 +33,7 @@ jobs:
         id: go
 
       - name: Get Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.0.0-beta.42
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.0.0-beta.43
 
       - name: Get dependencies
         run: go get -v -t -d ./...
