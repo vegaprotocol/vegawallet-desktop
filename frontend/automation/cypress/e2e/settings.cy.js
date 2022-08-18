@@ -8,9 +8,6 @@ describe('settings', () => {
   let walletName
 
   before(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-
     cy.clean()
     cy.backend()
       .then(handler => {
@@ -22,6 +19,11 @@ describe('settings', () => {
         cy.visit('/')
         cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
       })
+  })
+
+  beforeEach(() => {
+    passphrase = Cypress.env('testWalletPassphrase')
+    walletName = Cypress.env('testWalletName')
   })
 
   it('dialog opens and can be closed', () => {
