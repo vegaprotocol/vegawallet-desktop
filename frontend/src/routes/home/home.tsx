@@ -36,23 +36,15 @@ const TelemetryDialog = () => {
   return (
     <Dialog open={config?.telemetry.consentAsked === false}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h4
-          style={{
-            fontSize: '1.25rem',
-            fontWeight: 'bold',
-            marginBottom: '1em'
-          }}
-        >
-          Report bugs and crashes
-        </h4>
+        <Header style={{ marginTop: 0 }}>Report bugs and crashes</Header>
         <p style={{ marginBottom: '1em' }}>
           Selecting yes will help developers improve the software
         </p>
         <div style={{ marginBottom: '1em' }}>
           <RadioGroup
             name='consent'
-            control={control}
-            orientation='horizontal'
+            // TODO: Figure out how best to type the control prop
+            control={control as any}
             options={[
               { label: 'No', value: 'no' },
               { label: 'Yes', value: 'yes' }

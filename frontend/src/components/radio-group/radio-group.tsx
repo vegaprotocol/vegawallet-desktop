@@ -7,6 +7,7 @@ import { Colors } from '../../config/colors'
 interface RadioGroupProps {
   name: string
   options: Array<{ value: string; label: string }>
+  // TODO: Figure out how best to type the control prop, it should be form generic
   control: Control
   orientation?: 'vertical' | 'horizontal'
 }

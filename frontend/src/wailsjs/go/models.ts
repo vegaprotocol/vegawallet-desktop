@@ -1,60 +1,65 @@
-export namespace config {
-	
-	export class TelemetryConfig {
-	    consentAsked: boolean;
-	    enabled: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new TelemetryConfig(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.consentAsked = source["consentAsked"];
-	        this.enabled = source["enabled"];
-	    }
-	}
-	export class Config {
-	    logLevel: string;
-	    vegaHome: string;
-	    defaultNetwork: string;
-	    telemetry: TelemetryConfig;
-	
-	    static createFrom(source: any = {}) {
-	        return new Config(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.logLevel = source["logLevel"];
-	        this.vegaHome = source["vegaHome"];
-	        this.defaultNetwork = source["defaultNetwork"];
-	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-
-}
-
 export namespace network {
 	
+	export class ConsoleConfig {
+	    url: string;
+	    localPort: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ConsoleConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.localPort = source["localPort"];
+	    }
+	}
+	export class ImportNetworkFromSourceRequest {
+	    filePath: string;
+	    url: string;
+	    name: string;
+	    force: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new ImportNetworkFromSourceRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.filePath = source["filePath"];
+	        this.url = source["url"];
+	        this.name = source["name"];
+	        this.force = source["force"];
+	    }
+	}
+	export class ImportNetworkFromSourceResponse {
+	    name: string;
+	    filePath: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ImportNetworkFromSourceResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.filePath = source["filePath"];
+	    }
+	}
+	export class TokenDAppConfig {
+	    url: string;
+	    localPort: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new TokenDAppConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.localPort = source["localPort"];
+	    }
+	}
 	export class GraphQLConfig {
 	    hosts: string[];
 	
@@ -128,20 +133,8 @@ export namespace network {
 		}
 	}
 	
-	export class TokenDAppConfig {
-	    url: string;
-	    localPort: number;
 	
-	    static createFrom(source: any = {}) {
-	        return new TokenDAppConfig(source);
-	    }
 	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.localPort = source["localPort"];
-	    }
-	}
 	export class ListNetworksResponse {
 	    networks: string[];
 	
@@ -152,20 +145,6 @@ export namespace network {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.networks = source["networks"];
-	    }
-	}
-	export class ConsoleConfig {
-	    url: string;
-	    localPort: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new ConsoleConfig(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.localPort = source["localPort"];
 	    }
 	}
 	export class Network {
@@ -214,93 +193,39 @@ export namespace network {
 		    return a;
 		}
 	}
-	
-	
-	export class ImportNetworkFromSourceRequest {
-	    filePath: string;
-	    url: string;
-	    name: string;
-	    force: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new ImportNetworkFromSourceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.filePath = source["filePath"];
-	        this.url = source["url"];
-	        this.name = source["name"];
-	        this.force = source["force"];
-	    }
-	}
-	export class ImportNetworkFromSourceResponse {
-	    name: string;
-	    filePath: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ImportNetworkFromSourceResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.filePath = source["filePath"];
-	    }
-	}
 
 }
 
 export namespace wallet {
 	
-	export class SignMessageRequest {
+	export class TaintKeyRequest {
 	    wallet: string;
 	    pubKey: string;
-	    message: number[];
 	    passphrase: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new SignMessageRequest(source);
+	        return new TaintKeyRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.wallet = source["wallet"];
 	        this.pubKey = source["pubKey"];
-	        this.message = source["message"];
 	        this.passphrase = source["passphrase"];
 	    }
 	}
-	export class CreatedWallet {
-	    name: string;
-	    version: number;
-	    filePath: string;
-	    recoveryPhrase: string;
+	export class CreateWalletRequest {
+	    wallet: string;
+	    passphrase: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new CreatedWallet(source);
+	        return new CreateWalletRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.version = source["version"];
-	        this.filePath = source["filePath"];
-	        this.recoveryPhrase = source["recoveryPhrase"];
-	    }
-	}
-	export class Meta {
-	    key: string;
-	    value: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Meta(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.key = source["key"];
-	        this.value = source["value"];
+	        this.wallet = source["wallet"];
+	        this.passphrase = source["passphrase"];
 	    }
 	}
 	export class Algorithm {
@@ -317,13 +242,27 @@ export namespace wallet {
 	        this.version = source["version"];
 	    }
 	}
-	export class FirstPublicKey {
+	export class Meta {
+	    key: string;
+	    value: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Meta(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.key = source["key"];
+	        this.value = source["value"];
+	    }
+	}
+	export class GenerateKeyResponse {
 	    publicKey: string;
 	    algorithm: Algorithm;
 	    meta: Meta[];
 	
 	    static createFrom(source: any = {}) {
-	        return new FirstPublicKey(source);
+	        return new GenerateKeyResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -351,21 +290,22 @@ export namespace wallet {
 		    return a;
 		}
 	}
-	
-	export class ImportedWallet {
-	    name: string;
+	export class ImportWalletRequest {
+	    wallet: string;
+	    recoveryPhrase: string;
 	    version: number;
-	    filePath: string;
+	    passphrase: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ImportedWallet(source);
+	        return new ImportWalletRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
+	        this.wallet = source["wallet"];
+	        this.recoveryPhrase = source["recoveryPhrase"];
 	        this.version = source["version"];
-	        this.filePath = source["filePath"];
+	        this.passphrase = source["passphrase"];
 	    }
 	}
 	export class IsolateKeyResponse {
@@ -380,20 +320,6 @@ export namespace wallet {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.wallet = source["wallet"];
 	        this.filePath = source["filePath"];
-	    }
-	}
-	export class ListKeysRequest {
-	    wallet: string;
-	    passphrase: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ListKeysRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallet = source["wallet"];
-	        this.passphrase = source["passphrase"];
 	    }
 	}
 	export class NamedPubKey {
@@ -454,22 +380,6 @@ export namespace wallet {
 	        this.bytesSignature = source["bytesSignature"];
 	    }
 	}
-	export class TaintKeyRequest {
-	    wallet: string;
-	    pubKey: string;
-	    passphrase: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new TaintKeyRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallet = source["wallet"];
-	        this.pubKey = source["pubKey"];
-	        this.passphrase = source["passphrase"];
-	    }
-	}
 	export class UntaintKeyRequest {
 	    wallet: string;
 	    pubKey: string;
@@ -484,6 +394,134 @@ export namespace wallet {
 	        this.wallet = source["wallet"];
 	        this.pubKey = source["pubKey"];
 	        this.passphrase = source["passphrase"];
+	    }
+	}
+	export class CreatedWallet {
+	    name: string;
+	    version: number;
+	    filePath: string;
+	    recoveryPhrase: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CreatedWallet(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.version = source["version"];
+	        this.filePath = source["filePath"];
+	        this.recoveryPhrase = source["recoveryPhrase"];
+	    }
+	}
+	export class DescribeKeyRequest {
+	    wallet: string;
+	    passphrase: string;
+	    pubKey: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new DescribeKeyRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.wallet = source["wallet"];
+	        this.passphrase = source["passphrase"];
+	        this.pubKey = source["pubKey"];
+	    }
+	}
+	export class FirstPublicKey {
+	    publicKey: string;
+	    algorithm: Algorithm;
+	    meta: Meta[];
+	
+	    static createFrom(source: any = {}) {
+	        return new FirstPublicKey(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.publicKey = source["publicKey"];
+	        this.algorithm = this.convertValues(source["algorithm"], Algorithm);
+	        this.meta = this.convertValues(source["meta"], Meta);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ImportedWallet {
+	    name: string;
+	    version: number;
+	    filePath: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ImportedWallet(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.version = source["version"];
+	        this.filePath = source["filePath"];
+	    }
+	}
+	export class ImportWalletResponse {
+	    wallet: ImportedWallet;
+	    key: FirstPublicKey;
+	
+	    static createFrom(source: any = {}) {
+	        return new ImportWalletResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.wallet = this.convertValues(source["wallet"], ImportedWallet);
+	        this.key = this.convertValues(source["key"], FirstPublicKey);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ListWalletsResponse {
+	    wallets: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ListWalletsResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.wallets = source["wallets"];
 	    }
 	}
 	export class AnnotateKeyRequest {
@@ -522,64 +560,6 @@ export namespace wallet {
 		    return a;
 		}
 	}
-	export class CreateWalletResponse {
-	    wallet: CreatedWallet;
-	    key: FirstPublicKey;
-	
-	    static createFrom(source: any = {}) {
-	        return new CreateWalletResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallet = this.convertValues(source["wallet"], CreatedWallet);
-	        this.key = this.convertValues(source["key"], FirstPublicKey);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class ListWalletsResponse {
-	    wallets: string[];
-	
-	    static createFrom(source: any = {}) {
-	        return new ListWalletsResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallets = source["wallets"];
-	    }
-	}
-	export class CreateWalletRequest {
-	    wallet: string;
-	    passphrase: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CreateWalletRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallet = source["wallet"];
-	        this.passphrase = source["passphrase"];
-	    }
-	}
 	export class DescribeKeyResponse {
 	    publicKey: string;
 	    algorithm: Algorithm;
@@ -616,20 +596,20 @@ export namespace wallet {
 		    return a;
 		}
 	}
-	export class GenerateKeyResponse {
-	    publicKey: string;
-	    algorithm: Algorithm;
-	    meta: Meta[];
+	export class GenerateKeyRequest {
+	    wallet: string;
+	    metadata: Meta[];
+	    passphrase: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GenerateKeyResponse(source);
+	        return new GenerateKeyRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.publicKey = source["publicKey"];
-	        this.algorithm = this.convertValues(source["algorithm"], Algorithm);
-	        this.meta = this.convertValues(source["meta"], Meta);
+	        this.wallet = source["wallet"];
+	        this.metadata = this.convertValues(source["metadata"], Meta);
+	        this.passphrase = source["passphrase"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -666,85 +646,31 @@ export namespace wallet {
 	        this.passphrase = source["passphrase"];
 	    }
 	}
-	export class DescribeKeyRequest {
+	export class ListKeysRequest {
 	    wallet: string;
 	    passphrase: string;
-	    pubKey: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new DescribeKeyRequest(source);
+	        return new ListKeysRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.wallet = source["wallet"];
 	        this.passphrase = source["passphrase"];
-	        this.pubKey = source["pubKey"];
 	    }
 	}
-	export class GenerateKeyRequest {
-	    wallet: string;
-	    metadata: Meta[];
-	    passphrase: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GenerateKeyRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallet = source["wallet"];
-	        this.metadata = this.convertValues(source["metadata"], Meta);
-	        this.passphrase = source["passphrase"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class ImportWalletRequest {
-	    wallet: string;
-	    recoveryPhrase: string;
-	    version: number;
-	    passphrase: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ImportWalletRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallet = source["wallet"];
-	        this.recoveryPhrase = source["recoveryPhrase"];
-	        this.version = source["version"];
-	        this.passphrase = source["passphrase"];
-	    }
-	}
-	export class ImportWalletResponse {
-	    wallet: ImportedWallet;
+	export class CreateWalletResponse {
+	    wallet: CreatedWallet;
 	    key: FirstPublicKey;
 	
 	    static createFrom(source: any = {}) {
-	        return new ImportWalletResponse(source);
+	        return new CreateWalletResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallet = this.convertValues(source["wallet"], ImportedWallet);
+	        this.wallet = this.convertValues(source["wallet"], CreatedWallet);
 	        this.key = this.convertValues(source["key"], FirstPublicKey);
 	    }
 	
@@ -766,21 +692,41 @@ export namespace wallet {
 		    return a;
 		}
 	}
+	
+	
+	export class SignMessageRequest {
+	    wallet: string;
+	    pubKey: string;
+	    message: number[];
+	    passphrase: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new SignMessageRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.wallet = source["wallet"];
+	        this.pubKey = source["pubKey"];
+	        this.message = source["message"];
+	        this.passphrase = source["passphrase"];
+	    }
+	}
 
 }
 
 export namespace backend {
 	
-	export class ClearSentTransactionRequest {
-	    txId: string;
+	export class StartServiceRequest {
+	    network: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
+	        return new StartServiceRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
+	        this.network = source["network"];
 	    }
 	}
 	export class ConsentToTransactionRequest {
@@ -843,88 +789,6 @@ export namespace backend {
 		    }
 		    return a;
 		}
-	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class ListConsentRequestsResponse {
-	    requests: ConsentRequest[];
-	
-	    static createFrom(source: any = {}) {
-	        return new ListConsentRequestsResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.requests = this.convertValues(source["requests"], ConsentRequest);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
-	}
-	export class CheckVersionResponse {
-	    version: string;
-	    releaseUrl: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CheckVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.releaseUrl = source["releaseUrl"];
-	    }
-	}
-	export class GetConsentRequestRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetConsentRequestRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
 	}
 	export class GetVersionResponse {
 	    version: string;
@@ -1034,6 +898,143 @@ export namespace backend {
 	        this.wallets = source["wallets"];
 	        this.networks = source["networks"];
 	    }
+	}
+	export class CheckVersionResponse {
+	    version: string;
+	    releaseUrl: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CheckVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.releaseUrl = source["releaseUrl"];
+	    }
+	}
+	export class ClearSentTransactionRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ClearSentTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
+	}
+	export class GetConsentRequestRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetConsentRequestRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
+	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
+	export class ListConsentRequestsResponse {
+	    requests: ConsentRequest[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ListConsentRequestsResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.requests = this.convertValues(source["requests"], ConsentRequest);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace config {
+	
+	export class TelemetryConfig {
+	    consentAsked: boolean;
+	    enabled: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new TelemetryConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.consentAsked = source["consentAsked"];
+	        this.enabled = source["enabled"];
+	    }
+	}
+	export class Config {
+	    logLevel: string;
+	    vegaHome: string;
+	    defaultNetwork: string;
+	    telemetry: TelemetryConfig;
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.logLevel = source["logLevel"];
+	        this.vegaHome = source["vegaHome"];
+	        this.defaultNetwork = source["defaultNetwork"];
+	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 
 }

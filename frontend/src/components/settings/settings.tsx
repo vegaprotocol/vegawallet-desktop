@@ -141,6 +141,7 @@ const SettingsForm = ({
             { label: 'Yes', value: 'yes' },
             { label: 'No', value: 'no' }
           ]}
+          // TODO: Figure out how best to type the control prop
           control={control as any}
         />
       </FormGroup>
