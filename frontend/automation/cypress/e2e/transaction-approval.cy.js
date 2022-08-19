@@ -36,21 +36,17 @@ describe('transaction approval', () => {
 
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.backend().then(handler => {
+      cy.setVegaHome(handler)
+      cy.restoreNetwork(handler)
+      cy.restoreWallet(handler)
+    })
   })
 
   beforeEach(() => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
-    cy.visit('/')
+    cy.waitForHome()
     unlockWallet(walletName, passphrase)
   })
 

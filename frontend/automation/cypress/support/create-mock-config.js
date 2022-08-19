@@ -8,7 +8,15 @@ Host = "127.0.0.1"
 
 [API]
   [API.GRPC]
-    Hosts = []
+    Hosts = [
+      "n06.testnet.vega.xyz:3007",
+      "n07.testnet.vega.xyz:3007",
+      "n08.testnet.vega.xyz:3007",
+      "n09.testnet.vega.xyz:3007",
+      "n10.testnet.vega.xyz:3007",
+      "n11.testnet.vega.xyz:3007",
+      "n12.testnet.vega.xyz:3007"
+    ]
     Retries = 5
   [API.REST]
     Hosts = []
