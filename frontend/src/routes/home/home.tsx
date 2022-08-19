@@ -24,7 +24,7 @@ export const Home = () => {
   }
 
   return (
-    <Splash data-testid='home-splash'>
+    <Splash data-testid='home-splash' style={{ textAlign: 'center' }}>
       <Header
         style={{
           margin: '0 0 30px 0',
@@ -52,7 +52,7 @@ export const Home = () => {
           <p style={{ margin: '20px 0', textAlign: 'center' }}>OR</p>
         </>
       )}
-      <ButtonGroup orientation='vertical'>
+      <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
         <Link to='/wallet-create'>
           <Button data-testid='create-new-wallet' style={{ width: '100%' }}>
             Create wallet
@@ -64,6 +64,15 @@ export const Home = () => {
           </Button>
         </Link>
       </ButtonGroup>
+      <p>
+        <button
+          style={{ textDecoration: 'underline' }}
+          onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
+          data-testid='home-settings'
+        >
+          App settings
+        </button>
+      </p>
     </Splash>
   )
 }

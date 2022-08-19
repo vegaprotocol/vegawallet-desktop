@@ -237,22 +237,18 @@ export function deactivateWalletAction(wallet: string): GlobalAction {
 // Network actions
 
 export function changeNetworkAction(network: string) {
-  return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-    const state = getState()
-
+  return async (dispatch: GlobalDispatch) => {
     logger.debug('ChangeNetwork')
 
     try {
       await stopProxies()
       dispatch({ type: 'STOP_ALL_PROXIES' })
 
-      console.log('update app')
-      // @ts-ignore Using ConfigModel.Config constructor results in an error
-      // passing a plain object works
-      await Service.UpdateAppConfig({
-        ...state.config,
-        defaultNetwork: network
-      })
+      await Service.UpdateAppConfig(
+        new ConfigModel.Config({
+          defaultNetwork: network
+        })
+      )
 
       console.log('get network')
       const config = await Service.GetNetworkConfig(network)

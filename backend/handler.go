@@ -112,7 +112,7 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 		VegaHome: req.VegaHome,
 		// We will opt in first. We will remove this once the on-boarding
 		// workflow is rework to ask for user explicit consent.
-		Telemetry: &config.TelemetryConfig{
+		Telemetry: config.TelemetryConfig{
 			ConsentAsked: false,
 			Enabled:      true,
 		},

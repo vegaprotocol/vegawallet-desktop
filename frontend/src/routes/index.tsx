@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Outlet, Route, Routes } from 'react-router-dom'
 
 import { Center } from '../components/center'
 import { Home } from './home'
@@ -31,34 +31,36 @@ export enum Paths {
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/onboard' element={<Onboard />}>
-        <Route index={true} element={<OnboardHome />} />
-        <Route path='settings' element={<OnboardSettings />} />
-        <Route path='wallet-create' element={<OnboardWalletCreate />} />
-        <Route path='wallet-import' element={<OnboardWalletImport />} />
-        <Route path='network' element={<OnboardNetwork />} />
-      </Route>
-      <Route path='/wallet/:wallet' element={<Wallet />}>
-        <Route
-          index={true}
-          element={
-            <Center>
-              <p>Select a key</p>
-            </Center>
-          }
-        />
-        <Route path='delete' element={<Delete />} />
-        <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
-          <Route index={true} element={<KeyPairHome />} />
-          <Route path='sign' element={<Sign />} />
-          <Route path='taint' element={<Taint />} />
-          <Route path='metadata' element={<Metadata />} />
+      <Route path='/' element={<Outlet />}>
+        <Route index={true} element={<Home />} />
+        <Route path='onboard' element={<Onboard />}>
+          <Route index={true} element={<OnboardHome />} />
+          <Route path='settings' element={<OnboardSettings />} />
+          <Route path='wallet-create' element={<OnboardWalletCreate />} />
+          <Route path='wallet-import' element={<OnboardWalletImport />} />
+          <Route path='network' element={<OnboardNetwork />} />
+        </Route>
+        <Route path='wallet-create' element={<WalletCreate />} />
+        <Route path='wallet-import' element={<WalletImport />} />
+        <Route path='network-import' element={<NetworkImport />} />
+        <Route path='wallet/:wallet' element={<Wallet />}>
+          <Route
+            index={true}
+            element={
+              <Center>
+                <p>Select a key</p>
+              </Center>
+            }
+          />
+          <Route path='delete' element={<Delete />} />
+          <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
+            <Route index={true} element={<KeyPairHome />} />
+            <Route path='sign' element={<Sign />} />
+            <Route path='taint' element={<Taint />} />
+            <Route path='metadata' element={<Metadata />} />
+          </Route>
         </Route>
       </Route>
-      <Route path='/wallet-create' element={<WalletCreate />} />
-      <Route path='/wallet-import' element={<WalletImport />} />
-      <Route path='/network-import' element={<NetworkImport />} />
     </Routes>
   )
 }

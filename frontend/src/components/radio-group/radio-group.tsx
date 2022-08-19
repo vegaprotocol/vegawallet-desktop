@@ -1,13 +1,13 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
-import React from 'react'
+import type { Control } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 import { Colors } from '../../config/colors'
 
 interface RadioGroupProps {
   name: string
-  control: any
   options: Array<{ value: string; label: string }>
+  control: Control
 }
 
 export function RadioGroup({ name, control, options }: RadioGroupProps) {
