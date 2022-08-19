@@ -39,12 +39,11 @@ describe('transaction approval', () => {
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler, 'fairground')
+        cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
       .then(() => {
-        cy.visit('/')
-        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+        cy.waitForHome()
       })
   })
 

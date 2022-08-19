@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const CONFIG = `Name = "custom"
-Level = "info"
+const CONFIG = `Name = "test"
+Level = "debug"
 TokenExpiry = "168h0m0s"
 Port = 1789
 Host = "127.0.0.1"
@@ -28,5 +28,5 @@ const dirExists = fs.existsSync(DIR)
 if (!dirExists) {
   fs.mkdirSync(DIR)
 }
-const result = path.join(DIR, '/custom.toml')
+const result = path.join(DIR, '/test.toml')
 fs.writeFileSync(result, CONFIG)

@@ -7,15 +7,14 @@ describe('import network', () => {
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler, 'fairground')
+        cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
       .then(() => {
         const walletName = Cypress.env('testWalletName')
         const passphrase = Cypress.env('testWalletPassphrase')
 
-        cy.visit('/')
-        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+        cy.waitForHome()
         unlockWallet(walletName, passphrase)
         cy.getByTestId('network-drawer').click()
         cy.getByTestId('manage-networks').click()
@@ -50,10 +49,8 @@ describe('import network', () => {
   })
 
   it('overwrite network that already exists', () => {
-    const url = Cypress.env('testnetConfigUrl')
-
     cy.getByTestId('import-network-select').select('Other')
-    cy.getByTestId('url-path').type(url)
+    cy.getByTestId('url-path').type(Cypress.env('testNetworkPath'))
     cy.getByTestId('import').click()
     cy.getByTestId('toast')
       .contains("Error: couldn't import network:")

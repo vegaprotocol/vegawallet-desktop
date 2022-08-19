@@ -12,12 +12,11 @@ describe('settings', () => {
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler, 'mainnet1')
+        cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
       .then(() => {
-        cy.visit('/')
-        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+        cy.waitForHome()
       })
   })
 
@@ -42,8 +41,8 @@ describe('settings', () => {
 
     // change telemetry
     const radioGroupSelector = '[role="radiogroup"]'
-    cy.get(radioGroupSelector).find('input[value="yes"]').should('be.checked')
-    cy.get(radioGroupSelector).find('button[value="no"]').click()
+    cy.get(radioGroupSelector).find('input[value="no"]').should('be.checked')
+    cy.get(radioGroupSelector).find('button[value="yes"]').click()
 
     // submit
     cy.getByTestId('update-settings').click()
@@ -53,7 +52,7 @@ describe('settings', () => {
 
     cy.getByTestId(homeSettingsBtn).click()
     cy.getByTestId('log-level').should('have.value', 'debug')
-    cy.get(radioGroupSelector).find('input[value="no"]').should('be.checked')
+    cy.get(radioGroupSelector).find('input[value="yes"]').should('be.checked')
     cy.getByTestId(cancelSettingsBtn).click()
   })
 

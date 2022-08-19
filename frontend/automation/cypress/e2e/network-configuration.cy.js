@@ -1,43 +1,55 @@
 const { unlockWallet } = require('../support/helpers')
 
 describe('network configuration', () => {
+  let walletName
+  let passphrase
+
   before(() => {
     cy.clean()
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler, 'mainnet1')
-        cy.restoreNetwork(handler, 'fairground')
+        cy.restoreNetwork(handler)
+        cy.restoreNetwork(handler, 'test2')
         cy.restoreWallet(handler)
       })
-      .then(() => {
-        const passphrase = Cypress.env('testWalletPassphrase')
-        const walletName = Cypress.env('testWalletName')
-
-        cy.visit('/')
-        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
-        unlockWallet(walletName, passphrase)
-        cy.getByTestId('network-drawer').click()
-      })
+      .then(() => {})
   })
 
-  it('change network', () => {
+  beforeEach(() => {
+    passphrase = Cypress.env('testWalletPassphrase')
+    walletName = Cypress.env('testWalletName')
+    cy.visit('/')
+    cy.waitForHome()
+    unlockWallet(walletName, passphrase)
+    cy.getByTestId('network-drawer').click()
+  })
+
+  it('change network and persists after reload', () => {
     cy.getByTestId('network-select').click()
-    cy.getByTestId('select-fairground').click()
+    cy.getByTestId('select-test2').click()
     cy.getByTestId('service-status').should(
       'contain.text',
-      'Wallet Service: fairground'
+      'Wallet Service: test2'
     )
+
+    cy.reload()
+    unlockWallet(walletName, passphrase)
+
+    cy.getByTestId('service-status')
+      .contains('Wallet Service: test2 on http://127.0.0.1:1789')
+      .should('exist')
+
     cy.getByTestId('network-select').click()
-    cy.getByTestId('select-mainnet1').click()
+    cy.getByTestId('select-test').click()
     cy.getByTestId('service-status').should(
       'contain.text',
-      'Wallet Service: mainnet1'
+      'Wallet Service: test'
     )
   })
 
   it('view network details', () => {
-    cy.getByTestId('network-select').should('have.text', 'mainnet1')
+    cy.getByTestId('network-select').should('have.text', 'test')
     cy.getByTestId('service-url').should('not.be.empty')
     cy.getByTestId('service-console').should('not.be.empty')
     cy.getByTestId('console-url').should('not.be.empty')
@@ -47,7 +59,7 @@ describe('network configuration', () => {
       // eslint-disable-next-line no-unused-expressions
       expect($node.text()).not.to.be.empty
     })
-    cy.getByTestId('log-level').should('have.text', 'info')
+    cy.getByTestId('log-level').should('have.text', 'debug')
     cy.getByTestId('token-expiry').should('have.text', '168h0m0s')
   })
 

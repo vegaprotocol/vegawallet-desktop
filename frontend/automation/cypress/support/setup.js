@@ -1,4 +1,10 @@
 before(() => {
+  cy.exec('npm run createcustomconfig')
+})
+
+beforeEach(() => {
+  cy.mockGQL()
+  cy.log('intercept networks.json')
   cy.intercept(
     'GET',
     'https://raw.githubusercontent.com/vegaprotocol/networks/master/networks.json',
@@ -18,5 +24,5 @@ before(() => {
         }
       ]
     }
-  )
+  ).as('presets')
 })

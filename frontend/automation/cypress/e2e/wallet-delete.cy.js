@@ -7,16 +7,14 @@ describe('wallet delete', () => {
 
   before(() => {
     cy.clean()
-    cy.mockGQL()
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler, 'custom')
+        cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
       .then(() => {
-        cy.visit('/')
-        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+        cy.waitForHome()
       })
   })
 
