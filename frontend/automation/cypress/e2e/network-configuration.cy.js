@@ -51,10 +51,6 @@ describe('network configuration', () => {
   it('view network details', () => {
     cy.getByTestId('network-select').should('have.text', 'test')
     cy.getByTestId('service-url').should('not.be.empty')
-    cy.getByTestId('service-console').should('not.be.empty')
-    cy.getByTestId('console-url').should('not.be.empty')
-    cy.getByTestId('service-token').should('not.be.empty')
-    cy.getByTestId('token-url').should('not.be.empty')
     cy.getByTestId('nodes-list').each($node => {
       // eslint-disable-next-line no-unused-expressions
       expect($node.text()).not.to.be.empty
@@ -68,7 +64,6 @@ describe('network configuration', () => {
     cy.getByTestId('edit').first().click()
     cy.getByTestId('service-host').invoke('val').should('not.be.empty')
     cy.getByTestId('service-port').invoke('val').should('not.be.empty')
-    cy.getByTestId('token-url').invoke('val').should('not.be.empty')
     cy.getByTestId('node-list').invoke('val').should('not.be.empty')
     cy.getByTestId('log-level').invoke('val').should('not.be.empty')
     cy.getByTestId('node-retries').invoke('val').should('not.be.empty')
