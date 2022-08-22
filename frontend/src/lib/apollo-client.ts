@@ -15,13 +15,12 @@ import { createLogger } from './logging'
 
 const logger = createLogger('ApolloClient')
 
-export function createClient(base?: string) {
-  if (!base) {
-    throw new Error('Base must be passed into createClient!')
+export function createClient(url?: string) {
+  if (!url) {
+    throw new Error('url must be passed into createClient!')
   }
-  const gqlPath = 'query'
-  const urlHTTP = new URL(gqlPath, base)
-  const urlWS = new URL(gqlPath, base)
+  const urlHTTP = new URL(url)
+  const urlWS = new URL(url)
   // Replace http with ws, preserving if its a secure connection eg. https => wss
   urlWS.protocol = urlWS.protocol.replace('http', 'ws')
 

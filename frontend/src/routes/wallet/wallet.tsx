@@ -17,7 +17,7 @@ import { createClient } from '../../lib/apollo-client'
 
 export const Wallet = () => {
   const {
-    state: { networks, networkConfig },
+    state: { network, networks, networkConfig },
     dispatch
   } = useGlobal()
   const { wallet } = useCurrentKeypair()
@@ -71,6 +71,7 @@ export const Wallet = () => {
                 dispatch(changeNetworkAction(e.target.value))
                 dispatch(setDrawerAction(false))
               }}
+              value={network ? network : ''}
             >
               {networks.map(network => (
                 <option key={network} value={network}>
@@ -134,8 +135,21 @@ const findDatanode = (nodes: string[] | undefined): Promise<number> => {
 }
 
 const requestToNode = async (n: string, i: number) => {
-  const resp = await fetch(n)
-  if (!resp.ok) {
+  const resp = await fetch(n, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      query: `{
+        statistics {
+          chainId
+        }
+      }`
+    })
+  })
+  const data = await resp.json()
+  if (!resp.ok || !data?.data?.statistics) {
     throw new Error(`Failed to connect to node: ${n}`)
   }
   return i
