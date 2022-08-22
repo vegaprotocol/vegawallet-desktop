@@ -39,7 +39,7 @@ export const initialGlobalState: GlobalState = {
   presets: [],
   networkConfig: null,
   serviceRunning: false,
-  serviceUrl: '',
+  serviceUrl: ''
 }
 
 export type GlobalAction =

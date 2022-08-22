@@ -72,7 +72,7 @@ export function initAppAction() {
         networks: networks.networks,
         networkConfig: defaultNetworkConfig,
         presetNetworks: presets,
-        serviceRunning: service.running,
+        serviceRunning: service.running
       })
     } catch (err) {
       dispatch({ type: 'INIT_APP_FAILED' })
