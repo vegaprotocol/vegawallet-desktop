@@ -25,7 +25,7 @@ export const KeyValueTable = ({
     >
       {rows.map((row, i) => (
         <Fragment key={i}>
-          <dt style={{ textAlign: 'left', color: Colors.WHITE, minWidth: 100 }}>
+          <dt style={{ textAlign: 'left', color: Colors.WHITE, minWidth: 145 }}>
             {row.key}:
           </dt>
           <dd

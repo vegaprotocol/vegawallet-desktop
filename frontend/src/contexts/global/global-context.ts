@@ -30,17 +30,6 @@ export interface Wallet {
   auth: boolean
 }
 
-export enum ProxyName {
-  Console = 'Console',
-  TokenDApp = 'TokenDApp'
-}
-
-export interface ProxyApp {
-  name: ProxyName
-  running: boolean
-  url: string
-}
-
 export interface NetworkPreset {
   name: string
   configFileUrl: string
@@ -67,8 +56,6 @@ export interface GlobalState {
   networkConfig: NetworkModel.Network | null
   serviceRunning: boolean
   serviceUrl: string
-  console: ProxyApp
-  tokenDapp: ProxyApp
 
   // UI
   sidebarOpen: boolean

@@ -27,8 +27,6 @@ module.exports = defineConfig({
   env: {
     vegaHome: './frontend/automation/test-wallets',
     walletServiceUrl: 'http://127.0.0.1:1789/api/v1',
-    tokenServiceUrl: 'http://127.0.0.1:1848',
-    consoleServiceUrl: 'http://127.0.0.1:1847',
     mainnetConfigUrl:
       'https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml',
     testnetConfigUrl:
