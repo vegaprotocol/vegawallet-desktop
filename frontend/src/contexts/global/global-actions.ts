@@ -4,10 +4,7 @@ import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import { createLogger, initLogger } from '../../lib/logging'
 import { Service } from '../../service'
-import type {
-  backend as BackendModel,
-  network as NetworkModel
-} from '../../wailsjs/go/models'
+import type { network as NetworkModel } from '../../wailsjs/go/models'
 import {
   config as ConfigModel,
   wallet as WalletModel
@@ -256,7 +253,6 @@ export function changeNetworkAction(network: string) {
         })
       )
 
-      console.log('get network')
       const config = await Service.GetNetworkConfig(network)
 
       dispatch({

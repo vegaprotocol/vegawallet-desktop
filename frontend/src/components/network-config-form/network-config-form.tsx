@@ -17,10 +17,6 @@ interface FormFields {
   port: number
   host: string
   grpcNodeRetries: number
-  consoleUrl: string
-  consolePort: number
-  tokenDAppUrl: string
-  tokenDAppPort: number
   grpcHosts: Array<{ value: string }>
   graphqlHosts: Array<{ value: string }>
   restHosts: Array<{ value: string }>
@@ -84,64 +80,6 @@ export const NetworkConfigForm = ({
           type='number'
           {...register('port', {
             required: Validation.REQUIRED,
-            min: Validation.NUMBER_MIN_PORT,
-            max: Validation.NUMBER_MAX_PORT
-          })}
-        />
-      </FormGroup>
-      <FormGroup
-        label='Console URL'
-        labelFor='consoleUrl'
-        intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.consoleUrl?.message}
-      >
-        <Input
-          data-testid='console-url'
-          type='text'
-          {...register('consoleUrl', {
-            pattern: Validation.URL
-          })}
-        />
-      </FormGroup>
-      <FormGroup
-        label='Console port'
-        labelFor='consolePort'
-        intent={errors.consolePort?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.consolePort?.message}
-      >
-        <Input
-          data-testid='console-port'
-          type='number'
-          {...register('consolePort', {
-            min: Validation.NUMBER_MIN_PORT,
-            max: Validation.NUMBER_MAX_PORT
-          })}
-        />
-      </FormGroup>
-      <FormGroup
-        label='Token DApp URL'
-        labelFor='tokenDAppUrl'
-        intent={errors.tokenDAppUrl?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenDAppUrl?.message}
-      >
-        <Input
-          data-testid='token-url'
-          type='text'
-          {...register('tokenDAppUrl', {
-            pattern: Validation.URL
-          })}
-        />
-      </FormGroup>
-      <FormGroup
-        label='Token DApp port'
-        labelFor='tokenDAppPort'
-        intent={errors.tokenDAppPort?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenDAppPort?.message}
-      >
-        <Input
-          data-testid='token-port'
-          type='number'
-          {...register('tokenDAppPort', {
             min: Validation.NUMBER_MIN_PORT,
             max: Validation.NUMBER_MAX_PORT
           })}
@@ -269,14 +207,6 @@ function fieldsToConfig(
     tokenExpiry: values.tokenExpiry,
     port: Number(values.port),
     host: values.host,
-    console: {
-      url: values.consoleUrl,
-      localPort: Number(values.consolePort)
-    },
-    tokenDApp: {
-      url: values.tokenDAppUrl,
-      localPort: Number(values.tokenDAppPort)
-    },
     api: {
       grpc: {
         hosts: values.grpcHosts.map(x => x.value),
@@ -295,10 +225,6 @@ function configToFields(config: NetworkModel.Network): FormFields {
     port: config.port,
     host: config.host,
     grpcNodeRetries: config.api.grpc.retries,
-    consoleUrl: config.console.url,
-    consolePort: config.console.localPort,
-    tokenDAppUrl: config.tokenDApp.url,
-    tokenDAppPort: config.tokenDApp.localPort,
     // @ts-ignore any resulting from generated types
     grpcHosts: config.api.grpc.hosts.map(x => ({ value: x })),
     // @ts-ignore any resulting from generated types

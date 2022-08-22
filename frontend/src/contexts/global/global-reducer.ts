@@ -194,9 +194,7 @@ export function globalReducer(
         serviceRunning: action.serviceRunning,
         serviceUrl: action.networkConfig
           ? `http://127.0.0.1:${action.networkConfig.port}`
-          : '',
-        console: action.console,
-        tokenDapp: action.tokenDapp
+          : ''
       }
     }
     case 'INIT_APP_FAILED': {
