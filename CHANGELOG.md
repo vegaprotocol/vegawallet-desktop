@@ -13,8 +13,11 @@
 ### 🛠 Improvements
 
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx -
+- [203](https://github.com/vegaprotocol/vegawallet-desktop/issues/203) - Adds dialog to get consent to telemetry
 - [206](https://github.com/vegaprotocol/vegawallet-desktop/issues/206) - Delete wallet functionality
-- [282](https://github.com/vegaprotocol/vegawallet-desktop/pull/283) - Upgrade to Cypress 10 and test improvements 
+- [209](https://github.com/vegaprotocol/vegawallet-desktop/issues/209) - Adds dialog to control app settings
+- [282](https://github.com/vegaprotocol/vegawallet-desktop/pull/283) - Upgrade to Cypress 10 and test improvements
+- [261](https://github.com/vegaprotocol/vegawallet-desktop/issues/261) - Removes UI to start and stop proxy apps
 
 ### 🐛 Fixes
 
