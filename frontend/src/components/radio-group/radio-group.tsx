@@ -1,16 +1,31 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
-import React from 'react'
+import type { Control } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 import { Colors } from '../../config/colors'
 
 interface RadioGroupProps {
   name: string
-  control: any
   options: Array<{ value: string; label: string }>
+  // TODO: Figure out how best to type the control prop, it should be form generic
+  control: Control
+  orientation?: 'vertical' | 'horizontal'
 }
 
-export function RadioGroup({ name, control, options }: RadioGroupProps) {
+export function RadioGroup({
+  name,
+  control,
+  options,
+  orientation = 'vertical'
+}: RadioGroupProps) {
+  const rootStyle =
+    orientation === 'horizontal'
+      ? {
+          display: 'grid',
+          gridTemplateColumns: Array(options.length).fill('1fr').join(' ')
+        }
+      : {}
+
   return (
     <Controller
       name={name}
@@ -21,7 +36,8 @@ export function RadioGroup({ name, control, options }: RadioGroupProps) {
             value={field.value}
             onValueChange={field.onChange}
             name={field.name}
-            orientation='vertical'
+            orientation={orientation}
+            style={rootStyle}
           >
             {options.map(o => (
               <div key={o.value} style={wrapper}>

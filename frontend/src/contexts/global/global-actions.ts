@@ -2,13 +2,16 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
-import { createLogger } from '../../lib/logging'
+import { createLogger, initLogger } from '../../lib/logging'
 import { Service } from '../../service'
 import type {
   backend as BackendModel,
   network as NetworkModel
 } from '../../wailsjs/go/models'
-import { wallet as WalletModel } from '../../wailsjs/go/models'
+import {
+  config as ConfigModel,
+  wallet as WalletModel
+} from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
@@ -16,21 +19,20 @@ const logger = createLogger('GlobalActions')
 
 export function initAppAction() {
   return async (dispatch: GlobalDispatch) => {
-    logger.debug('StartApp')
-
-    let isInit
-    let version
-    let presets
-
     try {
-      const result = await Promise.all([
+      const config = await Service.GetAppConfig()
+
+      if (config.telemetry.enabled) {
+        initLogger()
+      }
+
+      logger.debug('StartApp')
+
+      const [isInit, version, presets] = await Promise.all([
         Service.IsAppInitialised(),
         Service.GetVersion(),
         fetch(DataSources.NETWORKS).then(res => res.json())
       ])
-      isInit = result[0]
-      version = result[1]
-      presets = result[2]
 
       dispatch({ type: 'SET_VERSION', version: version.version })
       dispatch({ type: 'SET_PRESETS', presets })
@@ -40,18 +42,12 @@ export function initAppAction() {
         dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
         return
       }
+
       // else continue with app setup, get wallets/networks
-    } catch (err) {
-      dispatch({ type: 'INIT_APP_FAILED' })
-      logger.error(err)
-    }
+      logger.debug('InitApp')
 
-    logger.debug('InitApp')
-
-    try {
       // should now have an app config
-      const [config, wallets, networks] = await Promise.all([
-        Service.GetAppConfig(),
+      const [wallets, networks] = await Promise.all([
         Service.ListWallets(),
         Service.ListNetworks()
       ])
@@ -80,6 +76,33 @@ export function initAppAction() {
       })
     } catch (err) {
       dispatch({ type: 'INIT_APP_FAILED' })
+      logger.error(err)
+    }
+  }
+}
+
+export function updateTelemetry(telemetry: {
+  enabled: boolean
+  consentAsked: boolean
+}) {
+  return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+    if (telemetry.enabled) {
+      initLogger()
+    }
+
+    logger.debug('UpdateTelemetry')
+    try {
+      const { config } = getState()
+      if (config) {
+        const newConfig = new ConfigModel.Config({ ...config, telemetry })
+        await Service.UpdateAppConfig(newConfig)
+        dispatch({
+          type: 'SET_CONFIG',
+          config: newConfig
+        })
+      }
+    } catch (err) {
+      AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
   }
@@ -222,18 +245,16 @@ export function deactivateWalletAction(wallet: string): GlobalAction {
 
 export function changeNetworkAction(network: string) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-    const state = getState()
-
     logger.debug('ChangeNetwork')
 
     try {
-      console.log('update app')
-      // @ts-ignore Using ConfigModel.Config constructor results in an error
-      // passing a plain object works
-      await Service.UpdateAppConfig({
-        ...state.config,
-        defaultNetwork: network
-      })
+      const state = getState()
+      await Service.UpdateAppConfig(
+        new ConfigModel.Config({
+          ...state.config,
+          defaultNetwork: network
+        })
+      )
 
       console.log('get network')
       const config = await Service.GetNetworkConfig(network)

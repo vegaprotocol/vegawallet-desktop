@@ -6,9 +6,10 @@ interface DialogProps {
   open: boolean
   children: React.ReactElement
   size?: 'sm' | 'lg'
+  onChange?: (open: boolean) => void
 }
 
-export function Dialog({ open, children, size = 'sm' }: DialogProps) {
+export function Dialog({ open, children, onChange, size = 'sm' }: DialogProps) {
   const transitions = useTransition(open, {
     from: { opacity: 0, y: -10 },
     enter: { opacity: 1, y: 0 },
@@ -16,7 +17,7 @@ export function Dialog({ open, children, size = 'sm' }: DialogProps) {
     config: { ...config.default, duration: 170 }
   })
   return (
-    <DialogPrimitives.Root open={open}>
+    <DialogPrimitives.Root open={open} onOpenChange={onChange}>
       <DialogPrimitives.Portal forceMount={true}>
         {transitions(
           (styles, item) =>

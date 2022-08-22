@@ -1,14 +1,22 @@
 const fs = require('fs')
 const path = require('path')
-const CONFIG = `Name = "custom"
-Level = "info"
+const CONFIG = `Name = "test"
+Level = "debug"
 TokenExpiry = "168h0m0s"
 Port = 1789
 Host = "127.0.0.1"
 
 [API]
   [API.GRPC]
-    Hosts = []
+    Hosts = [
+      "n06.testnet.vega.xyz:3007",
+      "n07.testnet.vega.xyz:3007",
+      "n08.testnet.vega.xyz:3007",
+      "n09.testnet.vega.xyz:3007",
+      "n10.testnet.vega.xyz:3007",
+      "n11.testnet.vega.xyz:3007",
+      "n12.testnet.vega.xyz:3007"
+    ]
     Retries = 5
   [API.REST]
     Hosts = []
@@ -28,5 +36,5 @@ const dirExists = fs.existsSync(DIR)
 if (!dirExists) {
   fs.mkdirSync(DIR)
 }
-const result = path.join(DIR, '/custom.toml')
+const result = path.join(DIR, '/test.toml')
 fs.writeFileSync(result, CONFIG)

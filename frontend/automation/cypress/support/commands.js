@@ -43,30 +43,14 @@ Cypress.Commands.add('restoreWallet', handler => {
     })
 })
 
-Cypress.Commands.add('restoreNetwork', (handler, name) => {
-  const allowedNetworks = ['mainnet1', 'fairground', 'custom']
-  if (!allowedNetworks.includes(name)) {
-    throw new Error(`Must provide one of: ${allowedNetworks.join(', ')}`)
-  }
-
-  if (name === 'custom') {
-    const location = path.join(
-      Cypress.config('projectRoot'),
-      'network-config/custom.toml'
-    )
-    return handler.ImportNetwork({
-      filePath: location,
-      name
-    })
-  }
-
-  const url =
-    name === 'mainnet1'
-      ? Cypress.env('mainnetConfigUrl')
-      : Cypress.env('testnetConfigUrl')
-
+Cypress.Commands.add('restoreNetwork', (handler, name = 'test') => {
+  const location = path.join(
+    Cypress.config('projectRoot'),
+    'network-config/test.toml'
+  )
+  Cypress.env('testNetworkPath', location)
   return handler.ImportNetwork({
-    url,
+    filePath: location,
     name
   })
 })
@@ -108,14 +92,36 @@ Cypress.Commands.add('sendTransaction', transaction => {
   cy.wrap(sendTransaction())
 })
 
-Cypress.Commands.add('mockGQL', () => {
+Cypress.Commands.add('mockRequests', () => {
+  cy.log('mocking presets')
+  cy.intercept(
+    'GET',
+    'https://raw.githubusercontent.com/vegaprotocol/networks/master/networks.json',
+    {
+      body: [
+        {
+          name: 'fairground',
+          configFileUrl:
+            'https://raw.githubusercontent.com/vegaprotocol/networks/master/fairground/fairground.toml',
+          sha: '5a0f0091cf4943f55a01d11f02f10b70c42c3e57'
+        },
+        {
+          name: 'mainnet1',
+          configFileUrl:
+            'https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml',
+          sha: '0dfd8d1539ae28a460d5ef2d28067156192b944c'
+        }
+      ]
+    }
+  ).as('presets')
   const url = 'https://mock.vega.xyz/query'
+  cy.log('mocking gql GET ' + url)
   cy.intercept('GET', url, req => {
     req.reply({
       statusCode: 200
     })
   }).as('nodeTest')
-
+  cy.log('mocking gql POST ' + url)
   cy.intercept('POST', url, req => {
     if (hasOperationName(req, 'Accounts')) {
       req.alias = 'Accounts'
@@ -130,6 +136,17 @@ Cypress.Commands.add('mockGQL', () => {
           }
         }
       })
+    }
+  }).as('GQL')
+})
+
+Cypress.Commands.add('waitForHome', () => {
+  cy.visit('/')
+  cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+  cy.get('body').then(body => {
+    if (body.find('[data-testid="telemetry-optin-form"]').length > 0) {
+      cy.get('button[role="radio"][value="no"]').click()
+      cy.getByTestId('telemetry-optin-continue').click()
     }
   })
 })

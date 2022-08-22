@@ -215,8 +215,8 @@ github.com/vegaprotocol/go-slip10 v0.1.0 h1:pP3XF2gSKM6OuaAURobHZlXZ9AzZ5LgeWvXF
 github.com/vegaprotocol/go-slip10 v0.1.0/go.mod h1:zTjs9hXxElXfZvPRWWFMtEYSe7udGFP1iUM1ktJ72HI=
 github.com/wailsapp/mimetype v1.4.1 h1:pQN9ycO7uo4vsUUuPeHEYoUkLVkaRntMnHJxVwYhwHs=
 github.com/wailsapp/mimetype v1.4.1/go.mod h1:9aV5k31bBOv5z6u+QP8TltzvNGJPmNJD4XlAL3U+j3o=
-github.com/wailsapp/wails/v2 v2.0.0-beta.40 h1:140MEcS1RGYElGQOUErGw+bRR3bS8fQRhYsQSJE9QGU=
-github.com/wailsapp/wails/v2 v2.0.0-beta.40/go.mod h1:wVNv+CErhc8JpVfbNCv9gkMrVGWT0yoe/TULJ3KUxxc=
+github.com/wailsapp/wails/v2 v2.0.0-beta.43.0.20220811110223-57e4964a1278 h1:k3ql9hgc+86n0ELsxhBy2/r1RAPJJcydUowaxmqh8zs=
+github.com/wailsapp/wails/v2 v2.0.0-beta.43.0.20220811110223-57e4964a1278/go.mod h1:GplgLNVum9fEKu7Y4nq289pxHs7Htbp/UG7uhPr5zD0=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

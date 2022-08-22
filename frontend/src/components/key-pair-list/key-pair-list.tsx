@@ -106,6 +106,15 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
           <Button style={{ width: '100%' }}>Delete wallet</Button>
         </Link>
       </ButtonGroup>
+      <div style={{ textAlign: 'center' }}>
+        <button
+          onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
+          style={{ textDecoration: 'underline' }}
+          data-testid='wallet-app-settings'
+        >
+          App settings
+        </button>
+      </div>
     </>
   )
 }

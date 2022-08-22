@@ -1,10 +1,10 @@
 package config
 
 type Config struct {
-	LogLevel       string           `json:"logLevel"`
-	VegaHome       string           `json:"vegaHome"`
-	DefaultNetwork string           `json:"defaultNetwork"`
-	Telemetry      *TelemetryConfig `json:"telemetry"`
+	LogLevel       string          `json:"logLevel"`
+	VegaHome       string          `json:"vegaHome"`
+	DefaultNetwork string          `json:"defaultNetwork"`
+	Telemetry      TelemetryConfig `json:"telemetry"`
 }
 
 // TelemetryConfig is used to configure the telemetry collection on the client.

@@ -27,6 +27,7 @@ export const initialGlobalState: GlobalState = {
   passphraseModalOpen: false,
   drawerOpen: false,
   sidebarOpen: false,
+  settingsModal: false,
   onboarding: {
     wallets: [],
     networks: []
@@ -124,6 +125,10 @@ export type GlobalAction =
     }
   | {
       type: 'SET_SIDEBAR'
+      open: boolean
+    }
+  | {
+      type: 'SET_SETTINGS_MODAL'
       open: boolean
     }
   // Network
@@ -373,6 +378,12 @@ export function globalReducer(
       return {
         ...state,
         sidebarOpen: action.open
+      }
+    }
+    case 'SET_SETTINGS_MODAL': {
+      return {
+        ...state,
+        settingsModalOpen: action.open
       }
     }
     // network

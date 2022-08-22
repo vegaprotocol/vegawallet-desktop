@@ -61,6 +61,7 @@ export interface GlobalState {
   sidebarOpen: boolean
   passphraseModalOpen: boolean
   drawerOpen: boolean
+  settingsModalOpen: boolean
 }
 
 export type GlobalDispatch = React.Dispatch<

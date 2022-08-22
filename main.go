@@ -30,17 +30,17 @@ func main() {
 
 	// Create application with options
 	if err := wails.Run(&options.App{
-		Title:      "Vegawallet",
-		Width:      760,
-		Height:     760,
-		MinWidth:   460,
-		MinHeight:  460,
-		RGBA:       &options.RGBA{R: 0, G: 0, B: 0, A: 255},
-		Assets:     assets,
-		LogLevel:   logger.INFO,
-		OnStartup:  handler.Startup,
-		OnDomReady: handler.DOMReady,
-		OnShutdown: handler.Shutdown,
+		Title:            "Vegawallet",
+		Width:            760,
+		Height:           760,
+		MinWidth:         460,
+		MinHeight:        460,
+		BackgroundColour: options.NewRGBA(0, 0, 0, 255),
+		Assets:           assets,
+		LogLevel:         logger.INFO,
+		OnStartup:        handler.Startup,
+		OnDomReady:       handler.DOMReady,
+		OnShutdown:       handler.Shutdown,
 		Bind: []interface{}{
 			handler,
 		},

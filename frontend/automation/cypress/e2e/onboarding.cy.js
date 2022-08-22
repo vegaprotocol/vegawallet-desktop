@@ -6,8 +6,7 @@ describe('onboarding', () => {
         cy.setVegaHome(handler)
       })
       .then(() => {
-        cy.visit('/')
-        cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+        cy.waitForHome()
       })
     cy.visit('/#/onboard')
   })
