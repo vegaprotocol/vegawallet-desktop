@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useGlobal } from '../../contexts/global/global-context'
 import { Header } from '../header'
 import { KeyValueTable } from '../key-value-table'
@@ -16,7 +14,6 @@ export function NetworkInfo() {
 
   return (
     <>
-      <Header>Wallet Service / DApps</Header>
       <Header>gRPC Nodes</Header>
       <NodeList items={config.api.grpc.hosts} />
       <Header>GraphQL Nodes</Header>
@@ -27,6 +24,11 @@ export function NetworkInfo() {
       <KeyValueTable
         style={{ fontSize: 16 }}
         rows={[
+          {
+            key: 'Wallet Service URL',
+            value: `http://${config.host}:${config.port}`,
+            dataTestId: 'service-url'
+          },
           { key: 'Log level', value: config.level, dataTestId: 'log-level' },
           {
             key: 'Token expiry',

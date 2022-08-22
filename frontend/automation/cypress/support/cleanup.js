@@ -7,15 +7,5 @@ after(() => {
     if (service.running) {
       await handler.StopService()
     }
-
-    const console = await handler.GetConsoleState()
-    if (console.running) {
-      await handler.StopConsole()
-    }
-
-    const token = await handler.GetTokenDAppState()
-    if (token.running) {
-      await handler.StopTokenDApp()
-    }
   })
 })
