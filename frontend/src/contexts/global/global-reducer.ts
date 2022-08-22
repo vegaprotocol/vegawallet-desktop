@@ -8,10 +8,8 @@ import type {
   GlobalState,
   KeyPair,
   NetworkPreset,
-  ProxyApp,
   Wallet
 } from './global-context'
-import { ProxyName } from './global-context'
 import { AppStatus } from './global-context'
 
 function indexBy<T>(key: keyof T) {
@@ -41,16 +39,6 @@ export const initialGlobalState: GlobalState = {
   networkConfig: null,
   serviceRunning: false,
   serviceUrl: '',
-  console: {
-    name: ProxyName.Console,
-    running: false,
-    url: ''
-  },
-  tokenDapp: {
-    name: ProxyName.TokenDApp,
-    running: false,
-    url: ''
-  }
 }
 
 export type GlobalAction =
@@ -64,8 +52,6 @@ export type GlobalAction =
       networkConfig: NetworkModel.Network | null
       presetNetworks: NetworkPreset[]
       serviceRunning: boolean
-      console: ProxyApp
-      tokenDapp: ProxyApp
     }
   | {
       type: 'INIT_APP_FAILED'
@@ -177,18 +163,6 @@ export type GlobalAction =
     }
   | {
       type: 'STOP_SERVICE'
-    }
-  | {
-      type: 'START_PROXY'
-      app: ProxyName
-      url: string
-    }
-  | {
-      type: 'STOP_PROXY'
-      app: ProxyName
-    }
-  | {
-      type: 'STOP_ALL_PROXIES'
     }
 
 export function globalReducer(
@@ -468,67 +442,6 @@ export function globalReducer(
         ...state,
         serviceRunning: false,
         serviceUrl: ''
-      }
-    }
-    case 'START_PROXY': {
-      if (action.app === ProxyName.Console) {
-        return {
-          ...state,
-          console: {
-            ...state.console,
-            running: true,
-            url: action.url
-          }
-        }
-      } else if (action.app === ProxyName.TokenDApp) {
-        return {
-          ...state,
-          tokenDapp: {
-            ...state.tokenDapp,
-            running: true,
-            url: action.url
-          }
-        }
-      } else {
-        throw new Error(`Invalid ProxyApp: ${action.app}`)
-      }
-    }
-    case 'STOP_PROXY': {
-      if (action.app === ProxyName.Console) {
-        return {
-          ...state,
-          console: {
-            ...state.console,
-            running: false,
-            url: ''
-          }
-        }
-      } else if (action.app === ProxyName.TokenDApp) {
-        return {
-          ...state,
-          tokenDapp: {
-            ...state.tokenDapp,
-            running: false,
-            url: ''
-          }
-        }
-      } else {
-        throw new Error(`Invalid ProxyApp: ${action.app}`)
-      }
-    }
-    case 'STOP_ALL_PROXIES': {
-      return {
-        ...state,
-        console: {
-          ...state.console,
-          running: false,
-          url: ''
-        },
-        tokenDapp: {
-          ...state.tokenDapp,
-          running: false,
-          url: ''
-        }
       }
     }
     default: {

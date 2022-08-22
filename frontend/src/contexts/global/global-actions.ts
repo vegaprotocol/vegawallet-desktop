@@ -10,7 +10,6 @@ import type {
 } from '../../wailsjs/go/models'
 import { wallet as WalletModel } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
-import { ProxyName } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
 const logger = createLogger('GlobalActions')
@@ -66,12 +65,7 @@ export function initAppAction() {
         ? await Service.GetNetworkConfig(defaultNetwork)
         : null
 
-      // check service and proxy states
-      const [service, consoleState, tokenDappState] = await Promise.all([
-        Service.GetServiceState(),
-        Service.GetConsoleState(),
-        Service.GetTokenDAppState()
-      ])
+      const service = await Service.GetServiceState()
 
       dispatch({
         type: 'INIT_APP',
@@ -83,16 +77,6 @@ export function initAppAction() {
         networkConfig: defaultNetworkConfig,
         presetNetworks: presets,
         serviceRunning: service.running,
-        console: {
-          name: ProxyName.Console,
-          url: consoleState.url,
-          running: consoleState.running
-        },
-        tokenDapp: {
-          name: ProxyName.TokenDApp,
-          url: tokenDappState.url,
-          running: tokenDappState.running
-        }
       })
     } catch (err) {
       dispatch({ type: 'INIT_APP_FAILED' })
@@ -243,9 +227,6 @@ export function changeNetworkAction(network: string) {
     logger.debug('ChangeNetwork')
 
     try {
-      await stopProxies()
-      dispatch({ type: 'STOP_ALL_PROXIES' })
-
       console.log('update app')
       // @ts-ignore Using ConfigModel.Config constructor results in an error
       // passing a plain object works
@@ -289,9 +270,6 @@ export function updateNetworkConfigAction(
           await Service.StopService()
         }
       }
-
-      await stopProxies()
-      dispatch({ type: 'STOP_ALL_PROXIES' })
 
       const isSuccessful = await Service.SaveNetworkConfig(networkConfig)
 
@@ -372,91 +350,5 @@ export function stopServiceAction() {
     } catch (err) {
       logger.error(err)
     }
-  }
-}
-
-export function startProxyAction(
-  network: string,
-  proxyAppName: ProxyName,
-  url: string
-) {
-  const proxyFns = ProxyFns[proxyAppName]
-
-  return async (dispatch: GlobalDispatch) => {
-    logger.debug('StartProxy:', proxyAppName, network)
-    try {
-      const status = await proxyFns.GetState()
-
-      if (status.running) {
-        await proxyFns.Stop()
-      }
-
-      dispatch({
-        type: 'START_PROXY',
-        app: proxyAppName,
-        url
-      })
-
-      await proxyFns.Start({
-        network
-      })
-    } catch (err) {
-      logger.error(err)
-    }
-  }
-}
-
-export function stopProxyAction(proxyAppName: ProxyName) {
-  const proxyFns = ProxyFns[proxyAppName]
-
-  return async (dispatch: GlobalDispatch) => {
-    try {
-      const status = await proxyFns.GetState()
-
-      if (status.running) {
-        await proxyFns.Stop()
-      }
-
-      dispatch({ type: 'STOP_PROXY', app: proxyAppName })
-    } catch (err) {
-      logger.error(err)
-    }
-  }
-}
-
-const ProxyFns: {
-  [A in ProxyName]: {
-    GetState: () => Promise<BackendModel.GetServiceStateResponse>
-    Start: (req: BackendModel.StartServiceRequest) => Promise<boolean | Error>
-    Stop: () => Promise<boolean | Error>
-  }
-} = {
-  [ProxyName.Console]: {
-    GetState: Service.GetConsoleState,
-    Start: Service.StartConsole,
-    Stop: Service.StopConsole
-  },
-  [ProxyName.TokenDApp]: {
-    GetState: Service.GetTokenDAppState,
-    Start: Service.StartTokenDApp,
-    Stop: Service.StopTokenDApp
-  }
-}
-
-async function stopProxies() {
-  try {
-    // Stop Console
-    const consoleStatus = await Service.GetConsoleState()
-    if (consoleStatus.running) {
-      await Service.StopConsole()
-    }
-
-    // Stop TokenDapp
-    const tokenDappStatus = await Service.GetTokenDAppState()
-    if (tokenDappStatus.running) {
-      await Service.StopTokenDApp()
-    }
-  } catch (err) {
-    logger.error(err)
   }
 }
