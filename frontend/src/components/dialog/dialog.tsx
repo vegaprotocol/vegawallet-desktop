@@ -35,6 +35,7 @@ export function Dialog({ open, children, onChange, size = 'sm' }: DialogProps) {
                       background: 'rgba(54, 54, 54 ,0.8)',
                       opacity: styles.opacity
                     }}
+                    data-wails-drag
                   />
                 </DialogPrimitives.Overlay>
                 <DialogPrimitives.Content forceMount={true} asChild={true}>
