@@ -5,24 +5,20 @@ import (
 	"errors"
 	"fmt"
 
-	"code.vegaprotocol.io/shared/paths"
+	"code.vegaprotocol.io/vega/paths"
+	netstore "code.vegaprotocol.io/vega/wallet/network/store/v1"
+	svcstore "code.vegaprotocol.io/vega/wallet/service/store/v1"
+	wstore "code.vegaprotocol.io/vega/wallet/wallet/store/v1"
+	"code.vegaprotocol.io/vega/wallet/wallets"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/proxy"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/service"
-	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
-	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
-	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
-	"code.vegaprotocol.io/vegawallet/wallets"
 	"go.uber.org/zap"
 )
 
 var (
-	ErrServiceAlreadyRunning   = errors.New("the service is already running")
-	ErrServiceNotRunning       = errors.New("the service is not running")
-	ErrConsoleAlreadyRunning   = errors.New("the console proxy is already running")
-	ErrConsoleNotRunning       = errors.New("the console proxy is not running")
-	ErrTokenDAppAlreadyRunning = errors.New("the token dApp proxy is already running")
-	ErrTokenDAppNotRunning     = errors.New("the token dApp proxy is not running")
+	ErrServiceAlreadyRunning = errors.New("the service is already running")
+	ErrServiceNotRunning     = errors.New("the service is not running")
 )
 
 type Handler struct {
@@ -85,8 +81,6 @@ func (h *Handler) Shutdown(_ context.Context) {
 	h.log.Debug("Entering Shutdown")
 	defer h.log.Debug("Leaving Shutdown")
 
-	_, _ = h.StopConsole()
-	_, _ = h.StopTokenDApp()
 	_, _ = h.StopService()
 }
 

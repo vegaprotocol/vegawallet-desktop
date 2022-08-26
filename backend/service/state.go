@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"code.vegaprotocol.io/vegawallet/service"
+	"code.vegaprotocol.io/vega/wallet/service"
 )
 
 type State struct {

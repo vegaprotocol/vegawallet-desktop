@@ -42,20 +42,12 @@ export function GetConsentRequest(arg1) {
   return window['go']['backend']['Handler']['GetConsentRequest'](arg1);
 }
 
-export function GetConsoleState() {
-  return window['go']['backend']['Handler']['GetConsoleState']();
-}
-
 export function GetNetworkConfig(arg1) {
   return window['go']['backend']['Handler']['GetNetworkConfig'](arg1);
 }
 
 export function GetServiceState() {
   return window['go']['backend']['Handler']['GetServiceState']();
-}
-
-export function GetTokenDAppState() {
-  return window['go']['backend']['Handler']['GetTokenDAppState']();
 }
 
 export function GetVersion() {
@@ -114,28 +106,12 @@ export function SignMessage(arg1) {
   return window['go']['backend']['Handler']['SignMessage'](arg1);
 }
 
-export function StartConsole(arg1) {
-  return window['go']['backend']['Handler']['StartConsole'](arg1);
-}
-
 export function StartService(arg1) {
   return window['go']['backend']['Handler']['StartService'](arg1);
 }
 
-export function StartTokenDApp(arg1) {
-  return window['go']['backend']['Handler']['StartTokenDApp'](arg1);
-}
-
-export function StopConsole() {
-  return window['go']['backend']['Handler']['StopConsole']();
-}
-
 export function StopService() {
   return window['go']['backend']['Handler']['StopService']();
-}
-
-export function StopTokenDApp() {
-  return window['go']['backend']['Handler']['StopTokenDApp']();
 }
 
 export function TaintKey(arg1) {

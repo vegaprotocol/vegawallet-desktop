@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"code.vegaprotocol.io/vegawallet/service"
+	"code.vegaprotocol.io/vega/wallet/service"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"

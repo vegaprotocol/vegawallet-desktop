@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"code.vegaprotocol.io/vegawallet/wallet"
+	"code.vegaprotocol.io/vega/wallet/wallet"
 )
 
 func (h *Handler) GenerateKey(req *wallet.GenerateKeyRequest) (*wallet.GenerateKeyResponse, error) {
