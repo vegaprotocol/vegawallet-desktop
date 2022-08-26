@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"code.vegaprotocol.io/vegawallet/network"
+	"code.vegaprotocol.io/vega/wallet/network"
 )
 
 func (h *Handler) ImportNetwork(req *network.ImportNetworkFromSourceRequest) (*network.ImportNetworkFromSourceResponse, error) {

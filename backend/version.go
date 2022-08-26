@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	vgversion "code.vegaprotocol.io/shared/libs/version"
+	vgversion "code.vegaprotocol.io/vega/libs/version"
 )
 
 const (

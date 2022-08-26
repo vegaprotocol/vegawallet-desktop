@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"code.vegaprotocol.io/shared/paths"
-	"code.vegaprotocol.io/vegawallet/network"
-	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
-	"code.vegaprotocol.io/vegawallet/node"
-	"code.vegaprotocol.io/vegawallet/service"
-	"code.vegaprotocol.io/vegawallet/wallets"
+	"code.vegaprotocol.io/vega/libs/jsonrpc"
+	"code.vegaprotocol.io/vega/paths"
+	"code.vegaprotocol.io/vega/wallet/network"
+	netstore "code.vegaprotocol.io/vega/wallet/network/store/v1"
+	"code.vegaprotocol.io/vega/wallet/node"
+	"code.vegaprotocol.io/vega/wallet/service"
+	"code.vegaprotocol.io/vega/wallet/wallets"
 )
 
 type StartServiceRequest struct {
@@ -115,7 +116,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 
 	policy := service.NewExplicitConsentPolicy(ctx, h.service.ConsentRequestsChan, h.service.SentTransactionsChan)
-	srv, err := service.NewService(log.Named("service"), cfg, handler, auth, forwarder, policy)
+	srv, err := service.NewService(log.Named("service"), cfg, jsonrpc.New(log.Named("json-rpc")), handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
 		loggingCancelFn()

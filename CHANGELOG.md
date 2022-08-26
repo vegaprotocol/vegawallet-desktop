@@ -11,7 +11,6 @@
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
 ### 🛠 Improvements
-
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx -
 - [203](https://github.com/vegaprotocol/vegawallet-desktop/issues/203) - Adds dialog to get consent to telemetry
 - [206](https://github.com/vegaprotocol/vegawallet-desktop/issues/206) - Delete wallet functionality
