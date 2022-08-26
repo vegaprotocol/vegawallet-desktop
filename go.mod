@@ -7,7 +7,7 @@ require (
 	code.vegaprotocol.io/vegawallet v0.16.1
 	github.com/golang/protobuf v1.5.2
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
-	github.com/wailsapp/wails/v2 v2.0.0-beta.43
+	github.com/wailsapp/wails/v2 v2.0.0-beta.44.2
 	go.uber.org/zap v1.21.0
 )
 
@@ -52,5 +52,3 @@ require (
 	google.golang.org/grpc v1.45.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
-
-replace github.com/wailsapp/wails/v2 => github.com/wailsapp/wails/v2 v2.0.0-beta.43.0.20220811110223-57e4964a1278
