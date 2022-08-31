@@ -25,13 +25,9 @@ export function GetAppConfig():Promise<config.Config>;
 
 export function GetConsentRequest(arg1:backend.GetConsentRequestRequest):Promise<backend.ConsentRequest>;
 
-export function GetConsoleState():Promise<backend.GetServiceStateResponse>;
-
 export function GetNetworkConfig(arg1:string):Promise<network.Network>;
 
 export function GetServiceState():Promise<backend.GetServiceStateResponse>;
-
-export function GetTokenDAppState():Promise<backend.GetServiceStateResponse>;
 
 export function GetVersion():Promise<backend.GetVersionResponse>;
 
@@ -61,17 +57,9 @@ export function SearchForExistingConfiguration():Promise<backend.SearchForExisti
 
 export function SignMessage(arg1:wallet.SignMessageRequest):Promise<wallet.SignMessageResponse>;
 
-export function StartConsole(arg1:backend.StartServiceRequest):Promise<boolean>;
-
 export function StartService(arg1:backend.StartServiceRequest):Promise<boolean>;
 
-export function StartTokenDApp(arg1:backend.StartServiceRequest):Promise<boolean>;
-
-export function StopConsole():Promise<boolean>;
-
 export function StopService():Promise<boolean>;
-
-export function StopTokenDApp():Promise<boolean>;
 
 export function TaintKey(arg1:wallet.TaintKeyRequest):Promise<Error>;
 

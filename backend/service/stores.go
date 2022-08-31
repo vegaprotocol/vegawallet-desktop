@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"code.vegaprotocol.io/vegawallet/service"
+	"code.vegaprotocol.io/vega/wallet/service"
 )
 
 type ConsentRequests struct {

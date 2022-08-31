@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"code.vegaprotocol.io/vegawallet/wallet"
+	"code.vegaprotocol.io/vega/wallet/wallet"
 )
 
 func CheckCreateWalletRequest(req *wallet.CreateWalletRequest) error {
@@ -132,5 +132,5 @@ func (h *Handler) DeleteWallet(req *DeleteWalletRequest) error {
 		return err
 	}
 
-	return wStore.DeleteWallet(req.Wallet)
+	return wStore.DeleteWallet(h.ctx, req.Wallet)
 }

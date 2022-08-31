@@ -3,9 +3,9 @@ package backend
 import (
 	"fmt"
 
+	"code.vegaprotocol.io/vega/wallet/network"
+	"code.vegaprotocol.io/vega/wallet/wallet"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
-	"code.vegaprotocol.io/vegawallet/network"
-	"code.vegaprotocol.io/vegawallet/wallet"
 )
 
 type SearchForExistingConfigurationResponse struct {

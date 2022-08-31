@@ -3,7 +3,7 @@ package backend
 import (
 	"errors"
 
-	"code.vegaprotocol.io/vegawallet/wallet"
+	"code.vegaprotocol.io/vega/wallet/wallet"
 )
 
 func CheckSignMessageRequest(req *wallet.SignMessageRequest) error {
