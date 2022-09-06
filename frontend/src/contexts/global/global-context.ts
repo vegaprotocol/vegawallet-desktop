@@ -1,14 +1,14 @@
+import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
-import log from 'loglevel'
 
 import type {
   config as ConfigModel,
   network as NetworkModel,
   wallet as WalletModel
 } from '../../wailsjs/go/models'
-import type { GlobalAction } from './global-reducer'
 import type { GlobalActions } from './global-actions'
+import type { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
   Pending = 'Pending',

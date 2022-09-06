@@ -1,11 +1,11 @@
+import type log from 'loglevel'
 import React from 'react'
 import useThunkReducer from 'react-hook-thunk-reducer'
-import log from 'loglevel'
 
-import { Service } from '../../service'
+import type { Service } from '../../service'
+import { createActions } from './global-actions'
 import { GlobalContext } from './global-context'
 import { globalReducer, initialGlobalState } from './global-reducer'
-import { createActions } from './global-actions'
 
 interface GlobalProviderProps {
   service: typeof Service

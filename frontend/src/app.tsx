@@ -8,9 +8,9 @@ import { PassphraseModal } from './components/passphrase-modal'
 import { Settings } from './components/settings'
 import { TransactionManager } from './components/transaction-manager'
 import { GlobalProvider } from './contexts/global/global-provider'
+import { createLogger, initLogger } from './lib/logging'
 import { AppRouter } from './routes'
 import { Service } from './service'
-import { createLogger, initLogger } from './lib/logging'
 
 const logger = createLogger('GlobalActions')
 

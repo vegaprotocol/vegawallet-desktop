@@ -1,10 +1,11 @@
-import log from 'loglevel'
+import type log from 'loglevel'
+
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import type { Service } from '../../service'
 import type { network as NetworkModel } from '../../wailsjs/go/models'
-import { Service } from '../../service'
 import {
   config as ConfigModel,
   wallet as WalletModel
