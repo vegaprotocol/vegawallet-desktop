@@ -42,13 +42,13 @@ export function PassphraseModal() {
 
     // Show spinner and prevent modal closing before route change which causes
     // causes some slight jankiness.
-    dispatch(setPassphraseModalAction(false))
+    dispatch(actions.setPassphraseModalAction(false))
     setLoading(false)
   }
 
   function close() {
     handler.close()
-    dispatch(setPassphraseModalAction(false))
+    dispatch(actions.setPassphraseModalAction(false))
     setLoading(false)
   }
 

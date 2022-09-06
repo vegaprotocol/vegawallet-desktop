@@ -239,6 +239,7 @@ export function OnboardSettings() {
 export function OnboardWalletCreate() {
   const {
     state: { onboarding },
+    actions,
     dispatch
   } = useGlobal()
   const navigate = useNavigate()
@@ -255,7 +256,7 @@ export function OnboardWalletCreate() {
                 if (!onboarding.networks.length) {
                   navigate('/onboard/network')
                 } else {
-                  dispatch(completeOnboardAction(() => navigate(Paths.Home)))
+                  dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
                 }
               }}
               data-testid='onboard-import-network-button'
@@ -274,6 +275,7 @@ export function OnboardWalletCreate() {
 export function OnboardWalletImport() {
   const {
     state: { onboarding },
+    actions,
     dispatch
   } = useGlobal()
   const navigate = useNavigate()
@@ -284,7 +286,7 @@ export function OnboardWalletImport() {
       if (!onboarding.networks.length) {
         navigate('/onboard/network')
       } else {
-        dispatch(completeOnboardAction(() => navigate(Paths.Home)))
+        dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
       }
     }
   }, [response, navigate, dispatch, onboarding])
@@ -298,10 +300,10 @@ export function OnboardWalletImport() {
 
 export function OnboardNetwork() {
   const navigate = useNavigate()
-  const { dispatch } = useGlobal()
+  const { actions, dispatch } = useGlobal()
 
   const onComplete = React.useCallback(() => {
-    dispatch(completeOnboardAction(() => navigate(Paths.Home)))
+    dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
   }, [dispatch, navigate])
 
   return (
