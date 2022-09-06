@@ -256,7 +256,9 @@ export function OnboardWalletCreate() {
                 if (!onboarding.networks.length) {
                   navigate('/onboard/network')
                 } else {
-                  dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
+                  dispatch(
+                    actions.completeOnboardAction(() => navigate(Paths.Home))
+                  )
                 }
               }}
               data-testid='onboard-import-network-button'

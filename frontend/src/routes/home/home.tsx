@@ -26,7 +26,10 @@ const TelemetryDialog = () => {
 
   const onSubmit = (data: { consent: string }) => {
     dispatch(
-      actions.updateTelemetry({ consentAsked: true, enabled: data.consent === 'yes' })
+      actions.updateTelemetry({
+        consentAsked: true,
+        enabled: data.consent === 'yes'
+      })
     )
   }
 

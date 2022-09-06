@@ -71,9 +71,9 @@ export type GlobalDispatch = React.Dispatch<
 >
 
 type GlobalContextShape = {
-  state: GlobalState;
-  logger: log.Logger;
-  actions: GlobalActions;
+  state: GlobalState
+  logger: log.Logger
+  actions: GlobalActions
   dispatch: GlobalDispatch
 }
 

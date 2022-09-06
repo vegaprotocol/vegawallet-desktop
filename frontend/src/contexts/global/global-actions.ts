@@ -4,7 +4,7 @@ import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { network as NetworkModel } from '../../wailsjs/go/models'
-import { Service } from '../../service';
+import { Service } from '../../service'
 import {
   config as ConfigModel,
   wallet as WalletModel
@@ -12,7 +12,11 @@ import {
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
-export function createActions (service: typeof Service, logger: log.Logger, enableTelemetry: () => void) {
+export function createActions(
+  service: typeof Service,
+  logger: log.Logger,
+  enableTelemetry: () => void
+) {
   return {
     initAppAction() {
       return async (dispatch: GlobalDispatch) => {
@@ -35,7 +39,8 @@ export function createActions (service: typeof Service, logger: log.Logger, enab
           dispatch({ type: 'SET_PRESETS', presets })
 
           if (!isInit) {
-            const existingConfig = await service.SearchForExistingConfiguration()
+            const existingConfig =
+              await service.SearchForExistingConfiguration()
             dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
             return
           }
@@ -58,7 +63,6 @@ export function createActions (service: typeof Service, logger: log.Logger, enab
             ? await service.GetNetworkConfig(defaultNetwork)
             : null
 
-
           const serviceState = await service.GetServiceState()
 
           dispatch({
@@ -79,10 +83,7 @@ export function createActions (service: typeof Service, logger: log.Logger, enab
       }
     },
 
-    updateTelemetry(telemetry: {
-      enabled: boolean
-      consentAsked: boolean
-    }) {
+    updateTelemetry(telemetry: { enabled: boolean; consentAsked: boolean }) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         if (telemetry.enabled) {
           enableTelemetry()
@@ -193,7 +194,11 @@ export function createActions (service: typeof Service, logger: log.Logger, enab
               )
             )
 
-            dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keysWithMeta || [] })
+            dispatch({
+              type: 'SET_KEYPAIRS',
+              wallet,
+              keypairs: keysWithMeta || []
+            })
 
             if (keys.keys.length) {
               window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
@@ -298,7 +303,10 @@ export function createActions (service: typeof Service, logger: log.Logger, enab
             })
             dispatch({ type: 'UPDATE_NETWORK_CONFIG', config: networkConfig })
           } else {
-            AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
+            AppToaster.show({
+              message: 'Error: Unknown',
+              intent: Intent.DANGER
+            })
           }
 
           if (!state.network) {
@@ -316,10 +324,7 @@ export function createActions (service: typeof Service, logger: log.Logger, enab
       }
     },
 
-    addNetworkAction(
-      network: string,
-      config: NetworkModel.Network
-    ) {
+    addNetworkAction(network: string, config: NetworkModel.Network) {
       return async (dispatch: GlobalDispatch) => {
         // If no service running start service for newly added network
         try {
@@ -369,8 +374,8 @@ export function createActions (service: typeof Service, logger: log.Logger, enab
           logger.error(err)
         }
       }
-    },
+    }
   }
 }
 
-export type GlobalActions = ReturnType<typeof createActions>;
+export type GlobalActions = ReturnType<typeof createActions>
