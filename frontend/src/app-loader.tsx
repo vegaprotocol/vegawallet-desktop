@@ -6,10 +6,6 @@ import { Button } from './components/button'
 import { Splash } from './components/splash'
 import { SplashLoader } from './components/splash-loader'
 import { Colors } from './config/colors'
-import {
-  initAppAction,
-  startServiceAction
-} from './contexts/global/global-actions'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { createLogger } from './lib/logging'
@@ -23,17 +19,18 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
 
   const {
     state: { status, network, networkConfig },
+    actions,
     dispatch
   } = useGlobal()
 
   // Get wallets, service state and version
   useEffect(() => {
-    dispatch(initAppAction())
+    dispatch(actions.initAppAction())
   }, [dispatch])
 
   useEffect(() => {
     if (network && networkConfig) {
-      dispatch(startServiceAction())
+      dispatch(actions.startServiceAction())
     }
   }, [network, networkConfig, dispatch])
 

@@ -7,8 +7,8 @@ import { KeyValueTable } from '../../../components/key-value-table'
 import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
 import { Intent } from '../../../config/intent'
-import { updateKeyPairAction } from '../../../contexts/global/global-actions'
 import type { GlobalDispatch } from '../../../contexts/global/global-context'
+import type { GlobalActions } from '../../../contexts/global/global-actions'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { createLogger } from '../../../lib/logging'
@@ -18,6 +18,7 @@ const logger = createLogger('Taint')
 
 const useTaint = (
   dispatch: GlobalDispatch,
+  actions: GlobalActions,
   pubKey?: string,
   wallet?: string
 ) => {
@@ -43,7 +44,7 @@ const useTaint = (
         passphrase
       })
 
-      dispatch(updateKeyPairAction(wallet, keypair))
+      dispatch(actions.updateKeyPairAction(wallet, keypair))
 
       setLoading(false)
       AppToaster.show({
@@ -77,7 +78,7 @@ const useTaint = (
         passphrase
       })
 
-      dispatch(updateKeyPairAction(wallet, keypair))
+      dispatch(actions.updateKeyPairAction(wallet, keypair))
 
       setLoading(false)
       AppToaster.show({
@@ -99,10 +100,11 @@ const useTaint = (
 }
 
 export const Taint = () => {
-  const { dispatch } = useGlobal()
+  const { actions, dispatch } = useGlobal()
   const { keypair, wallet } = useCurrentKeypair()
   const { loading, taint, untaint } = useTaint(
     dispatch,
+    actions,
     keypair?.publicKey,
     wallet?.name
   )

@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
+import log from 'loglevel'
 
 import type {
   config as ConfigModel,
@@ -7,6 +8,7 @@ import type {
   wallet as WalletModel
 } from '../../wailsjs/go/models'
 import type { GlobalAction } from './global-reducer'
+import type { GlobalActions } from './global-actions'
 
 export enum AppStatus {
   Pending = 'Pending',
@@ -68,7 +70,12 @@ export type GlobalDispatch = React.Dispatch<
   GlobalAction | Thunk<GlobalState, GlobalAction>
 >
 
-type GlobalContextShape = { state: GlobalState; dispatch: GlobalDispatch }
+type GlobalContextShape = {
+  state: GlobalState;
+  logger: log.Logger;
+  actions: GlobalActions;
+  dispatch: GlobalDispatch
+}
 
 export const GlobalContext = React.createContext<
   GlobalContextShape | undefined

@@ -17,7 +17,6 @@ import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wal
 import { WalletImportForm } from '../../components/wallet-import-form'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
-import { completeOnboardAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
@@ -48,6 +47,7 @@ export function OnboardHome() {
 
   const {
     dispatch,
+    actions,
     state: { version, onboarding }
   } = useGlobal()
 
@@ -96,7 +96,7 @@ export function OnboardHome() {
       }
 
       // Found wallets and networks, go to the main app
-      dispatch(completeOnboardAction(() => navigate(Paths.Home)))
+      dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
     } catch (err) {
       logger.error(err)
     }

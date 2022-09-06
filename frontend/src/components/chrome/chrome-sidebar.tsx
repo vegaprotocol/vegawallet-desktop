@@ -4,7 +4,6 @@ import { animated, config, useTransition } from 'react-spring'
 
 import { APP_FRAME_HEIGHT } from '../../app-loader'
 import { Colors } from '../../config/colors'
-import { deactivateWalletAction } from '../../contexts/global/global-actions'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -103,12 +102,13 @@ function SidebarHeader({ close }: SidebarHeaderProps) {
   const navigate = useNavigate()
   const {
     state: { wallet },
+    actions,
     dispatch
   } = useGlobal()
 
   function handleLock(wallet: Wallet) {
     if (wallet.auth) {
-      dispatch(deactivateWalletAction(wallet.name))
+      dispatch(actions.deactivateWalletAction(wallet.name))
       navigate('/')
     }
   }

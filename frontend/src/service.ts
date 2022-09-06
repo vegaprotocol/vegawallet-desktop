@@ -44,4 +44,4 @@ export const Service = Object.entries(UnwrappedService).reduce(
     return prev
   },
   {}
-) as unknown as typeof UnwrappedService
+) as unknown as typeof UnwrappedService;

@@ -7,10 +7,6 @@ import { Button } from '../../components/button'
 import { Chrome } from '../../components/chrome'
 import { Select } from '../../components/forms'
 import { Splash } from '../../components/splash'
-import {
-  changeNetworkAction,
-  setDrawerAction
-} from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { createClient } from '../../lib/apollo-client'
@@ -18,6 +14,7 @@ import { createClient } from '../../lib/apollo-client'
 export const Wallet = () => {
   const {
     state: { networks, networkConfig },
+    actions,
     dispatch
   } = useGlobal()
   const { wallet } = useCurrentKeypair()
@@ -68,8 +65,8 @@ export const Wallet = () => {
             </p>
             <Select
               onChange={e => {
-                dispatch(changeNetworkAction(e.target.value))
-                dispatch(setDrawerAction(false))
+                dispatch(actions.changeNetworkAction(e.target.value))
+                dispatch(actions.setDrawerAction(false))
               }}
             >
               {networks.map(network => (

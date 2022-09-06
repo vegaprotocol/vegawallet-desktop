@@ -9,16 +9,13 @@ import { Vega } from '../../components/icons'
 import { RadioGroup } from '../../components/radio-group'
 import { Splash } from '../../components/splash'
 import { Colors } from '../../config/colors'
-import {
-  getKeysAction,
-  updateTelemetry
-} from '../../contexts/global/global-actions'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../'
 
 const TelemetryDialog = () => {
   const {
     state: { config },
+    actions,
     dispatch
   } = useGlobal()
   const { control, handleSubmit } = useForm({
@@ -29,7 +26,7 @@ const TelemetryDialog = () => {
 
   const onSubmit = (data: { consent: string }) => {
     dispatch(
-      updateTelemetry({ consentAsked: true, enabled: data.consent === 'yes' })
+      actions.updateTelemetry({ consentAsked: true, enabled: data.consent === 'yes' })
     )
   }
 
@@ -68,6 +65,7 @@ const TelemetryDialog = () => {
 export const Home = () => {
   const {
     state: { status, wallets },
+    actions,
     dispatch
   } = useGlobal()
 
@@ -92,7 +90,7 @@ export const Home = () => {
             {wallets.map(w => (
               <Button
                 onClick={() => {
-                  dispatch(getKeysAction(w.name))
+                  dispatch(actions.getKeysAction(w.name))
                 }}
                 data-testid={`wallet-${w.name.replace(' ', '-')}`}
                 key={w.name}

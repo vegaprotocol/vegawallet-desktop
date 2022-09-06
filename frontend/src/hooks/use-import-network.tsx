@@ -2,7 +2,6 @@ import React from 'react'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import { addNetworkAction } from '../contexts/global/global-actions'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
 import { Service } from '../service'
@@ -19,7 +18,7 @@ interface ImportNetworkArgs {
 }
 
 export function useImportNetwork() {
-  const { dispatch } = useGlobal()
+  const { actions, dispatch } = useGlobal()
   const [status, setStatus] = useFormState()
   const [response, setResponse] =
     React.useState<NetworkModel.ImportNetworkFromSourceResponse | null>(null)
@@ -37,7 +36,7 @@ export function useImportNetwork() {
           const config = await Service.GetNetworkConfig(res.name)
 
           // Update the config
-          dispatch(addNetworkAction(res.name, config))
+          dispatch(actions.addNetworkAction(res.name, config))
 
           setStatus(FormStatus.Success)
           setResponse(res)
