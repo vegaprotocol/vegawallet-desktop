@@ -38,6 +38,9 @@ jobs:
       - name: Get Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
+      - name: Build Frontend
+        run: cd frontend && npm run build
+
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
