@@ -9,6 +9,7 @@ describe('import wallet', () => {
       })
       .then(() => {
         cy.waitForHome()
+        cy.getByTestId('telemetry-optin-continue').click()
       })
   })
 
