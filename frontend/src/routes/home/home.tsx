@@ -37,7 +37,7 @@ const TelemetryDialog = () => {
     <Dialog open={config?.telemetry.consentAsked === false}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        data-testid='telemetry-optin-form'
+        data-testid='telemetry-option-form'
       >
         <Header style={{ marginTop: 0 }}>Report bugs and crashes</Header>
         <p style={{ marginBottom: '1em' }}>
@@ -54,7 +54,7 @@ const TelemetryDialog = () => {
             ]}
           />
         </div>
-        <Button type='submit' data-testid='telemetry-optin-continue'>
+        <Button type='submit' data-testid='telemetry-option-continue'>
           Continue
         </Button>
       </form>
