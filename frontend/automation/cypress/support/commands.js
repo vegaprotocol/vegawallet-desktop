@@ -145,7 +145,7 @@ Cypress.Commands.add('waitForHome', () => {
   cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
   cy.get('body').then(body => {
     cy.wait(500)
-    if (body.find('[data-testid="telemetry-optin-form"]').length > 0) {
+    if (body.find('[data-testid="telemetry-option-form"]').length > 0) {
       cy.get('button[role="radio"][value="no"]').click()
       cy.getByTestId('telemetry-option-continue').click()
     }
