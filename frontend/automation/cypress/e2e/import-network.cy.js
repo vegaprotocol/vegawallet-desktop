@@ -15,7 +15,6 @@ describe('import network', () => {
         const passphrase = Cypress.env('testWalletPassphrase')
 
         cy.waitForHome()
-        cy.getByTestId('telemetry-optin-continue').click()
         unlockWallet(walletName, passphrase)
         cy.getByTestId('network-drawer').click()
         cy.getByTestId('manage-networks').click()
