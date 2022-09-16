@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useGlobal } from '../../contexts/global/global-context'
 import { Intent } from '../../config/intent'
+import { useGlobal } from '../../contexts/global/global-context'
 import { events } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
@@ -57,7 +57,7 @@ export function TransactionManager() {
         logger.error(err)
       }
     },
-    []
+    [service]
   )
 
   const handleDismiss = useCallback((txId: string) => {

@@ -49,7 +49,7 @@ const useDeleteWallet = () => {
         logger.error(err)
       }
     },
-    [dispatch, navigate, setStatus]
+    [dispatch, navigate, service, setStatus]
   )
 
   return { status, submit }
