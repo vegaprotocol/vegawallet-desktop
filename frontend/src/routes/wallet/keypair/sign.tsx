@@ -52,7 +52,7 @@ const useSign = (pubKey?: string, wallet?: string) => {
         logger.error(err)
       }
     },
-    [pubKey, wallet]
+    [service, pubKey, wallet]
   )
   return {
     signedData,

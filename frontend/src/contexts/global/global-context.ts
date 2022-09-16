@@ -2,12 +2,12 @@ import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
+import type { Service } from '../../service'
 import type {
   config as ConfigModel,
   network as NetworkModel,
   wallet as WalletModel,
 } from '../../wailsjs/go/models'
-import type { Service } from '../../service'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
 

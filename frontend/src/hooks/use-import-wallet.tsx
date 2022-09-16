@@ -55,7 +55,7 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [dispatch, actions]
+    [dispatch, service, actions]
   )
 
   return {
