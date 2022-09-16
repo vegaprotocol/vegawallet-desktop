@@ -17,7 +17,6 @@ import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { Validation } from '../../../lib/form-validation'
 import { createLogger } from '../../../lib/logging'
-import { Service } from '../../../service'
 import { wallet as WalletModel } from '../../../wailsjs/go/models'
 
 const notName = (value: string) =>
@@ -49,6 +48,7 @@ const useMetaUpdate = (
   pubKey?: string,
   wallet?: string
 ) => {
+  const { service } = useGlobal()
   const [loading, setLoading] = useState(false)
 
   const update = useCallback(
@@ -60,7 +60,7 @@ const useMetaUpdate = (
         }
 
         const passphrase = await requestPassphrase()
-        await Service.AnnotateKey(
+        await service.AnnotateKey(
           new WalletModel.AnnotateKeyRequest({
             wallet,
             pubKey,
@@ -69,7 +69,7 @@ const useMetaUpdate = (
           })
         )
 
-        const keypair = await Service.DescribeKey({
+        const keypair = await service.DescribeKey({
           wallet,
           passphrase,
           pubKey

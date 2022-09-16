@@ -13,9 +13,9 @@ import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
 import { Colors } from '../../../config/colors'
 import { Intent } from '../../../config/intent'
+import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { createLogger } from '../../../lib/logging'
-import { Service } from '../../../service'
 
 const logger = createLogger('Sign')
 
@@ -24,6 +24,7 @@ interface FormFields {
 }
 
 const useSign = (pubKey?: string, wallet?: string) => {
+  const { service } = useGlobal()
   const [signedData, setSignedData] = useState<string>('')
   const sign = React.useCallback(
     async (values: { message: string }) => {
@@ -33,7 +34,7 @@ const useSign = (pubKey?: string, wallet?: string) => {
         }
 
         const passphrase = await requestPassphrase()
-        const resp = await Service.SignMessage({
+        const resp = await service.SignMessage({
           wallet,
           pubKey,
           // @ts-ignore

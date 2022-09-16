@@ -12,7 +12,6 @@ import type { GlobalDispatch } from '../../../contexts/global/global-context'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { createLogger } from '../../../lib/logging'
-import { Service } from '../../../service'
 
 const logger = createLogger('Taint')
 
@@ -22,6 +21,7 @@ const useTaint = (
   pubKey?: string,
   wallet?: string
 ) => {
+  const { service } = useGlobal()
   const [loading, setLoading] = useState(false)
 
   const taint = useCallback(async () => {
@@ -32,13 +32,13 @@ const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await Service.TaintKey({
+      await service.TaintKey({
         wallet,
         pubKey,
         passphrase
       })
 
-      const keypair = await Service.DescribeKey({
+      const keypair = await service.DescribeKey({
         wallet,
         pubKey,
         passphrase
@@ -66,13 +66,13 @@ const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await Service.UntaintKey({
+      await service.UntaintKey({
         wallet,
         pubKey,
         passphrase
       })
 
-      const keypair = await Service.DescribeKey({
+      const keypair = await service.DescribeKey({
         wallet,
         pubKey,
         passphrase
