@@ -2,7 +2,7 @@ import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
 import type {
   config as ConfigModel,
   network as NetworkModel,
-  wallet as WalletModel
+  wallet as WalletModel,
 } from '../../wailsjs/go/models'
 import type {
   GlobalState,

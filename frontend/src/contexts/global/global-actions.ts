@@ -8,7 +8,7 @@ import type { Service } from '../../service'
 import type { network as NetworkModel } from '../../wailsjs/go/models'
 import {
   config as ConfigModel,
-  wallet as WalletModel
+  wallet as WalletModel,
 } from '../../wailsjs/go/models'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'

@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { BreakText } from '../../../components/break-text'
 import { Header } from '../../../components/header'
 import { KeyValueTable } from '../../../components/key-value-table'
+import { useTransactions } from '../../../hooks/use-transactions'
 import { useAccounts } from '../../../hooks/use-accounts'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { addDecimal } from '../../../lib/number'
@@ -25,8 +27,26 @@ export function KeyPairHome() {
           }
         ]}
       />
-      <Header>Assets</Header>
-      <AccountsTable publicKey={keypair.publicKey} />
+      <Header>Transactions</Header>
+      <TransactionsHistory />
+    </div>
+  )
+}
+
+const TransactionsHistory = () => {
+  const { transactions, isLoading, submit } = useTransactions()
+
+  useEffect(() => {
+    submit()
+  }, [])
+
+  return (
+    <div>
+      {isLoading && "Loading transactions"}
+      {!isLoading && transactions?.length === 0 && "No transactions found"}
+      {transactions?.map((transaction) => (
+        <div>{transaction.txHash}</div>
+      ))}
     </div>
   )
 }
