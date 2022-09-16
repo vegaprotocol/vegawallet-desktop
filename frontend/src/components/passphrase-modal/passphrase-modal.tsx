@@ -34,7 +34,7 @@ export function PassphraseModal() {
     handler.open = () => {
       dispatch(actions.setPassphraseModalAction(true))
     }
-  }, [dispatch])
+  }, [dispatch, actions])
 
   function onSubmit(passphrase: string) {
     setLoading(true)

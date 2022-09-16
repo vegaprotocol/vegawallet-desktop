@@ -45,7 +45,7 @@ export function useCreateWallet() {
         logger.error(err)
       }
     },
-    [dispatch]
+    [dispatch, actions]
   )
 
   return {

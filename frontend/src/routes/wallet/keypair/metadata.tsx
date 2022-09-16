@@ -88,7 +88,7 @@ const useMetaUpdate = (
         logger.error(err)
       }
     },
-    [dispatch, pubKey, wallet]
+    [dispatch, actions, pubKey, wallet]
   )
 
   return {

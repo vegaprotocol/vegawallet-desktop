@@ -26,13 +26,13 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
   // Get wallets, service state and version
   useEffect(() => {
     dispatch(actions.initAppAction())
-  }, [dispatch])
+  }, [dispatch, actions])
 
   useEffect(() => {
     if (network && networkConfig) {
       dispatch(actions.startServiceAction())
     }
-  }, [network, networkConfig, dispatch])
+  }, [network, networkConfig, dispatch, actions])
 
   if (status === AppStatus.Pending) {
     return (

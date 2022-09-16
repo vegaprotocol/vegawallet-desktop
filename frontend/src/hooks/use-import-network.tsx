@@ -65,7 +65,7 @@ export function useImportNetwork() {
         logger.error(err)
       }
     },
-    [dispatch, setStatus]
+    [dispatch, setStatus, actions]
   )
 
   return {

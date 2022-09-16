@@ -291,7 +291,7 @@ export function OnboardWalletImport() {
         dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
       }
     }
-  }, [response, navigate, dispatch, onboarding])
+  }, [response, navigate, dispatch, onboarding, actions])
 
   return (
     <OnboardPanel title='Import a wallet' back={Paths.Onboard}>
@@ -306,7 +306,7 @@ export function OnboardNetwork() {
 
   const onComplete = React.useCallback(() => {
     dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
-  }, [dispatch, navigate])
+  }, [dispatch, navigate, actions])
 
   return (
     <OnboardPanel title='Import a network' back='/onboard/wallet-create'>
