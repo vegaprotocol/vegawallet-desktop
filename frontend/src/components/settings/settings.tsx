@@ -20,12 +20,13 @@ import { AppToaster } from '../toaster'
 const logger = createLogger('Settings')
 
 const useUpdateConfig = () => {
+  const { service } = useGlobal()
   const [status, setStatus] = useFormState()
   const submit = async (fields: FormFields) => {
     try {
       logger.debug('UpdateAppConfig')
       setStatus(FormStatus.Pending)
-      await Service.UpdateAppConfig(
+      await service.UpdateAppConfig(
         new ConfigModel.Config({
           vegaHome: fields.vegaHome,
           logLevel: fields.logLevel,

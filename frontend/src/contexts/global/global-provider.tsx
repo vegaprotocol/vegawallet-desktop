@@ -24,7 +24,7 @@ export function GlobalProvider({
   const actions = createActions(service, logger, enableTelemetry)
 
   return (
-    <GlobalContext.Provider value={{ state, actions, logger, dispatch }}>
+    <GlobalContext.Provider value={{ state, actions, service, logger, dispatch }}>
       {children}
     </GlobalContext.Provider>
   )

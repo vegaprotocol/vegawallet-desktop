@@ -4,7 +4,6 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
-import { Service } from '../service'
 import type { network as NetworkModel } from '../wailsjs/go/models'
 import { FormStatus, useFormState } from './use-form-state'
 
@@ -18,7 +17,7 @@ interface ImportNetworkArgs {
 }
 
 export function useImportNetwork() {
-  const { actions, dispatch } = useGlobal()
+  const { actions, service, dispatch } = useGlobal()
   const [status, setStatus] = useFormState()
   const [response, setResponse] =
     React.useState<NetworkModel.ImportNetworkFromSourceResponse | null>(null)
@@ -30,10 +29,10 @@ export function useImportNetwork() {
         setStatus(FormStatus.Pending)
 
         const args = createImportNetworkArgs(values)
-        const res = await Service.ImportNetwork(args)
+        const res = await service.ImportNetwork(args)
 
         if (res) {
-          const config = await Service.GetNetworkConfig(res.name)
+          const config = await service.GetNetworkConfig(res.name)
 
           // Update the config
           dispatch(actions.addNetworkAction(res.name, config))
@@ -65,7 +64,7 @@ export function useImportNetwork() {
         logger.error(err)
       }
     },
-    [dispatch, setStatus]
+    [dispatch, setStatus, service, actions]
   )
 
   return {

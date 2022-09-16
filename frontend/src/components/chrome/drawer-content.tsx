@@ -36,7 +36,7 @@ export function DrawerContent() {
     return () => {
       window.removeEventListener('keydown', handleKeydown)
     }
-  }, [dispatch])
+  }, [dispatch, actions])
 
   switch (view) {
     case 'network': {

@@ -117,6 +117,10 @@ jobs:
         working-directory: frontend
         run: npm install
 
+      - name: Check lint
+        working-directory: frontend
+        run: npm run lint
+
       - name: Check formatting
         working-directory: frontend
         run: npm run check_format
