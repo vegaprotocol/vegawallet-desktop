@@ -48,12 +48,13 @@
   "scripts": {
     "dev": "npx vite",
     "dev:test": "cd .. && VITE_COVERAGE='true' wails dev -noreload",
-    "build": "npx vite build",
+    "build": "npm run generate:wallet-client && npx vite build",
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "test": "jest",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
     "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\"",
-    "generate": "npx apollo client:codegen --config=apollo.config.js --target=typescript --globalTypesFile=src/__generated__/globalTypes.ts"
+    "generate:wallet-client": "open-rpc-generator generate -t client -l typescript -n json-rpc-client -d https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json -o ./src/__temp-jsonrpc",
+    "gen": "open-rpc-generator generate -c wallet-codegen.json"
   },
   "eslintConfig": {
     "extends": [

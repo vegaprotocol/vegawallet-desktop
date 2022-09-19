@@ -1,0 +1,13 @@
+{
+  "openrpcDocument": "https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json",
+  "outDir": "./src/wallet-client",
+  "components": [
+      {
+          "type": "custom",
+          "name": "wallet-client",
+          "language": "typescript",
+          "customComponent": "./json-rpc/client.js",
+          "customType": "client"
+      }
+  ]
+}
