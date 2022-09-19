@@ -65,7 +65,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 	if !exists {
 		h.log.Error(fmt.Sprintf("Network %s does not exist", req.Network))
-		return false, network.NewNetworkDoesNotExistError(req.Network)
+		return false, network.NewDoesNotExistError(req.Network)
 	}
 
 	cfg, err := netStore.GetNetwork(req.Network)

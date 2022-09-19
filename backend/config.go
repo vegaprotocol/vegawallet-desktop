@@ -3,8 +3,7 @@ package backend
 import (
 	"fmt"
 
-	"code.vegaprotocol.io/vega/wallet/network"
-	"code.vegaprotocol.io/vega/wallet/wallet"
+	"code.vegaprotocol.io/vega/wallet/api"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 )
 
@@ -34,12 +33,12 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 		return nil, err
 	}
 
-	listWallets, _ := wallet.ListWallets(wStore)
-	listNetworks, _ := network.ListNetworks(netStore)
+	listWallets, _ := api.NewAdminListWallets(wStore).Handle(h.ctx, nil)
+	listNetworks, _ := api.NewAdminListNetworks(netStore).Handle(h.ctx, nil)
 
 	return &SearchForExistingConfigurationResponse{
-		Wallets:  listWallets.Wallets,
-		Networks: listNetworks.Networks,
+		Wallets:  listWallets.(api.AdminListWalletsResult).Wallets,
+		Networks: listNetworks.(api.AdminListNetworksResult).Networks,
 	}, nil
 }
 
