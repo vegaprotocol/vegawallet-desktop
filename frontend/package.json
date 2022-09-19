@@ -7,7 +7,6 @@
     "node": "^16.13.2"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.9",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@radix-ui/react-checkbox": "^0.1.4",
@@ -28,7 +27,6 @@
     "babel-jest": "^27.5.1",
     "bignumber.js": "^9.0.2",
     "core-js": "^3.6.4",
-    "graphql-ws": "^5.9.0",
     "lodash": "^4.17.21",
     "loglevel": "^1.8.0",
     "prettier": "^2.3.2",
@@ -52,8 +50,7 @@
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "test": "jest",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
-    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\"",
-    "generate": "npx apollo client:codegen --config=apollo.config.js --target=typescript --globalTypesFile=src/__generated__/globalTypes.ts"
+    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\""
   },
   "eslintConfig": {
     "extends": [
@@ -81,7 +78,6 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@vitejs/plugin-react": "^1.2.0",
-    "apollo": "^2.34.0",
     "eslint": "^8.9.0",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-jest": "^26.0.0",

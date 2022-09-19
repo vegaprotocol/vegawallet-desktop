@@ -5,7 +5,6 @@ import { Link, NavLink } from 'react-router-dom'
 import { Colors } from '../../config/colors'
 import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
-import { useAccounts } from '../../hooks/use-accounts'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -81,7 +80,6 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                   {truncateMiddle(kp.publicKey)}
                 </span>
               </NavLink>
-              <AssetSummary publicKey={kp.publicKey} />
             </div>
           </SidebarListItem>
         ))}
@@ -144,34 +142,5 @@ function SidebarListItem({ children }: SidebarListItemProps) {
     >
       {children}
     </li>
-  )
-}
-
-interface AssetSummaryProps {
-  publicKey: string
-}
-
-function AssetSummary({ publicKey }: AssetSummaryProps) {
-  const { accounts, loading, error } = useAccounts(publicKey)
-  const renderAccountInfo = () => {
-    if (loading) {
-      return 'Loading assets'
-    }
-
-    if (error) {
-      return 'Could not load asset information'
-    }
-
-    const totalAssets = Object.keys(accounts).length
-    if (!totalAssets) {
-      return 'No assets'
-    }
-
-    return `${totalAssets} asset${totalAssets > 1 ? 's' : ''}`
-  }
-  return (
-    <div style={{ padding: '0 20px 20px' }} data-testid='asset-summary'>
-      {renderAccountInfo()}
-    </div>
   )
 }
