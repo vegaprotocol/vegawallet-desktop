@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { setDrawerAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DRAWER_HEIGHT } from '.'
@@ -16,7 +15,7 @@ export type DrawerViews = 'network' | 'manage' | 'edit'
  * Renders different drawer content based on 'view' state
  */
 export function DrawerContent() {
-  const { dispatch } = useGlobal()
+  const { actions, dispatch } = useGlobal()
 
   // The current view of the drawer
   const [view, setView] = useState<DrawerViews>('network')
@@ -28,7 +27,7 @@ export function DrawerContent() {
   useEffect(() => {
     function handleKeydown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
-        dispatch(setDrawerAction(false))
+        dispatch(actions.setDrawerAction(false))
       }
     }
 
@@ -37,7 +36,7 @@ export function DrawerContent() {
     return () => {
       window.removeEventListener('keydown', handleKeydown)
     }
-  }, [dispatch])
+  }, [dispatch, actions])
 
   switch (view) {
     case 'network': {

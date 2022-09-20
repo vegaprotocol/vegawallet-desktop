@@ -14,7 +14,6 @@ import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { FormStatus, useFormState } from '../../hooks/use-form-state'
 import { Validation } from '../../lib/form-validation'
 import { createLogger } from '../../lib/logging'
-import * as Service from '../../wailsjs/go/backend/Handler'
 import { backend as BackendModel } from '../../wailsjs/go/models'
 import { Paths } from '..'
 import { WalletHeader } from './wallet-header'
@@ -23,14 +22,14 @@ const logger = createLogger('Delete')
 
 const useDeleteWallet = () => {
   const navigate = useNavigate()
-  const { dispatch } = useGlobal()
+  const { dispatch, service } = useGlobal()
   const [status, setStatus] = useFormState()
   const submit = useCallback(
     async (walletName: string) => {
       try {
         setStatus(FormStatus.Pending)
         logger.debug(`DeleteWallet: ${walletName}`)
-        const res = await Service.DeleteWallet(
+        const res = await service.DeleteWallet(
           new BackendModel.DeleteWalletRequest({ wallet: walletName })
         )
         if (res instanceof Error) {
@@ -50,7 +49,7 @@ const useDeleteWallet = () => {
         logger.error(err)
       }
     },
-    [dispatch, navigate, setStatus]
+    [dispatch, navigate, service, setStatus]
   )
 
   return { status, submit }

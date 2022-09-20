@@ -1,11 +1,14 @@
+import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
+import type { Service } from '../../service'
 import type {
   config as ConfigModel,
   network as NetworkModel,
   wallet as WalletModel
 } from '../../wailsjs/go/models'
+import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
 
 export enum AppStatus {
@@ -68,7 +71,13 @@ export type GlobalDispatch = React.Dispatch<
   GlobalAction | Thunk<GlobalState, GlobalAction>
 >
 
-type GlobalContextShape = { state: GlobalState; dispatch: GlobalDispatch }
+type GlobalContextShape = {
+  state: GlobalState
+  logger: log.Logger
+  actions: GlobalActions
+  dispatch: GlobalDispatch
+  service: typeof Service
+}
 
 export const GlobalContext = React.createContext<
   GlobalContextShape | undefined

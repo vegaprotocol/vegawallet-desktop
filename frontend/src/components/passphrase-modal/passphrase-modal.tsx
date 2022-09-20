@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Intent } from '../../config/intent'
-import { setPassphraseModalAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
@@ -28,14 +27,14 @@ interface FormFields {
 
 export function PassphraseModal() {
   const [loading, setLoading] = useState(false)
-  const { state, dispatch } = useGlobal()
+  const { state, actions, dispatch } = useGlobal()
 
   // Register handler.open to open the passphrase modal
   useEffect(() => {
     handler.open = () => {
-      dispatch(setPassphraseModalAction(true))
+      dispatch(actions.setPassphraseModalAction(true))
     }
-  }, [dispatch])
+  }, [dispatch, actions])
 
   function onSubmit(passphrase: string) {
     setLoading(true)
@@ -43,13 +42,13 @@ export function PassphraseModal() {
 
     // Show spinner and prevent modal closing before route change which causes
     // causes some slight jankiness.
-    dispatch(setPassphraseModalAction(false))
+    dispatch(actions.setPassphraseModalAction(false))
     setLoading(false)
   }
 
   function close() {
     handler.close()
-    dispatch(setPassphraseModalAction(false))
+    dispatch(actions.setPassphraseModalAction(false))
     setLoading(false)
   }
 

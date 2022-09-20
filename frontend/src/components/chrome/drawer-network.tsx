@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { changeNetworkAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -17,6 +16,7 @@ interface DrawerNetworkProps {
 export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   const {
     state: { network, networks },
+    actions,
     dispatch
   } = useGlobal()
   return (
@@ -62,7 +62,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
                         textAlign: 'left'
                       }}
                       onClick={() => {
-                        dispatch(changeNetworkAction(network))
+                        dispatch(actions.changeNetworkAction(network))
                       }}
                     >
                       {network}

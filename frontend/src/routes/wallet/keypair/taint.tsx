@@ -7,20 +7,21 @@ import { KeyValueTable } from '../../../components/key-value-table'
 import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
 import { Intent } from '../../../config/intent'
-import { updateKeyPairAction } from '../../../contexts/global/global-actions'
+import type { GlobalActions } from '../../../contexts/global/global-actions'
 import type { GlobalDispatch } from '../../../contexts/global/global-context'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { createLogger } from '../../../lib/logging'
-import { Service } from '../../../service'
 
 const logger = createLogger('Taint')
 
 const useTaint = (
   dispatch: GlobalDispatch,
+  actions: GlobalActions,
   pubKey?: string,
   wallet?: string
 ) => {
+  const { service } = useGlobal()
   const [loading, setLoading] = useState(false)
 
   const taint = useCallback(async () => {
@@ -31,19 +32,19 @@ const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await Service.TaintKey({
+      await service.TaintKey({
         wallet,
         pubKey,
         passphrase
       })
 
-      const keypair = await Service.DescribeKey({
+      const keypair = await service.DescribeKey({
         wallet,
         pubKey,
         passphrase
       })
 
-      dispatch(updateKeyPairAction(wallet, keypair))
+      dispatch(actions.updateKeyPairAction(wallet, keypair))
 
       setLoading(false)
       AppToaster.show({
@@ -55,7 +56,7 @@ const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, pubKey, wallet])
+  }, [dispatch, service, actions, pubKey, wallet])
 
   const untaint = useCallback(async () => {
     setLoading(true)
@@ -65,19 +66,19 @@ const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await Service.UntaintKey({
+      await service.UntaintKey({
         wallet,
         pubKey,
         passphrase
       })
 
-      const keypair = await Service.DescribeKey({
+      const keypair = await service.DescribeKey({
         wallet,
         pubKey,
         passphrase
       })
 
-      dispatch(updateKeyPairAction(wallet, keypair))
+      dispatch(actions.updateKeyPairAction(wallet, keypair))
 
       setLoading(false)
       AppToaster.show({
@@ -89,7 +90,7 @@ const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, pubKey, wallet])
+  }, [dispatch, service, actions, pubKey, wallet])
 
   return {
     loading,
@@ -99,10 +100,11 @@ const useTaint = (
 }
 
 export const Taint = () => {
-  const { dispatch } = useGlobal()
+  const { actions, dispatch } = useGlobal()
   const { keypair, wallet } = useCurrentKeypair()
   const { loading, taint, untaint } = useTaint(
     dispatch,
+    actions,
     keypair?.publicKey,
     wallet?.name
   )

@@ -50,7 +50,8 @@
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "test": "jest",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
-    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\""
+    "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\"",
+    "lint": "eslint ./src"
   },
   "eslintConfig": {
     "extends": [

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Colors } from '../../config/colors'
-import { setDrawerAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownArrow } from '../icons/dropdown-arrow'
@@ -38,6 +37,7 @@ export function DrawerHead({ height, children }: DrawerHeadProps) {
 function DrawerToggle() {
   const {
     state: { drawerOpen },
+    actions,
     dispatch
   } = useGlobal()
   const [hover, setHover] = React.useState(false)
@@ -56,7 +56,7 @@ function DrawerToggle() {
         borderRadius: '50%',
         background: hover ? Colors.DARK_GRAY_2 : 'transparent'
       }}
-      onClick={() => dispatch(setDrawerAction(!drawerOpen))}
+      onClick={() => dispatch(actions.setDrawerAction(!drawerOpen))}
     >
       <DropdownArrow
         style={{

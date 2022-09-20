@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
-import { addKeypairAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { Button } from '../button'
@@ -16,6 +15,7 @@ interface KeyPairListProps {
 export function KeyPairList({ onSelect }: KeyPairListProps) {
   const {
     state: { wallet },
+    actions,
     dispatch
   } = useGlobal()
 
@@ -88,7 +88,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
         <Button
           onClick={() => {
             if (wallet?.name) {
-              dispatch(addKeypairAction(wallet?.name))
+              dispatch(actions.addKeypairAction(wallet?.name))
             }
             dispatch({ type: 'SET_SIDEBAR', open: false })
           }}

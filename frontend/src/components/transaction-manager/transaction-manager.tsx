@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Intent } from '../../config/intent'
+import { useGlobal } from '../../contexts/global/global-context'
 import { events } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
 import { EventsOn } from '../../wailsjs/runtime'
 import { AppToaster } from '../toaster'
@@ -17,12 +17,13 @@ const logger = createLogger('TransactionManager')
  * Stores an array of parsed transactions which get passed to a modal
  */
 export function TransactionManager() {
+  const { service } = useGlobal()
   const [transactions, setTransactions] = useState<ParsedTx[]>([])
 
   const handleResponse = useCallback(
     async (txId: string, decision: boolean) => {
       try {
-        await Service.ConsentToTransaction({
+        await service.ConsentToTransaction({
           txId,
           decision
         })
@@ -56,7 +57,7 @@ export function TransactionManager() {
         logger.error(err)
       }
     },
-    []
+    [service]
   )
 
   const handleDismiss = useCallback((txId: string) => {
@@ -69,7 +70,7 @@ export function TransactionManager() {
   useEffect(() => {
     const run = async () => {
       try {
-        const res = await Service.ListConsentRequests()
+        const res = await service.ListConsentRequests()
         setTransactions(res.requests.map(parseTx))
       } catch (err) {
         AppToaster.show({
@@ -107,7 +108,7 @@ export function TransactionManager() {
     )
 
     run()
-  }, [])
+  }, [service])
 
   const orderedTransactions = useMemo(() => {
     if (!transactions.length) {

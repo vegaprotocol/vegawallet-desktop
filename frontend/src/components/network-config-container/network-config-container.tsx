@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { useGlobal } from '../../contexts/global/global-context'
 import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
 import type { network as NetworkModel } from '../../wailsjs/go/models'
 
 const logger = createLogger('NetworkConfigContainer')
@@ -29,6 +29,7 @@ export function NetworkConfigContainer({
 }
 
 export function useNetworkConfig(name: string | null) {
+  const { service } = useGlobal()
   const [config, setConfig] = React.useState<NetworkModel.Network | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
   const [loading, setLoading] = React.useState(true)
@@ -38,7 +39,7 @@ export function useNetworkConfig(name: string | null) {
       if (!name) return
       setLoading(true)
       try {
-        const res = await Service.GetNetworkConfig(name)
+        const res = await service.GetNetworkConfig(name)
         setConfig(res)
       } catch (err) {
         setError(err as Error)
@@ -49,7 +50,7 @@ export function useNetworkConfig(name: string | null) {
     }
 
     run()
-  }, [name])
+  }, [name, service])
 
   return { config, error, loading }
 }
