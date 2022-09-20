@@ -2,8 +2,8 @@ import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
 import type {
   config as ConfigModel,
   network as NetworkModel,
-  wallet as WalletModel
 } from '../../wailsjs/go/models'
+import { WalletModel } from '../../wallet-client';
 import type {
   GlobalState,
   KeyPair,
@@ -233,7 +233,7 @@ export function globalReducer(
       const newWallet: Wallet = {
         name: action.wallet,
         keypairs: {
-          [keypairExtended.publicKey]: keypairExtended
+          ...(keypairExtended.publicKey && { [keypairExtended.publicKey ?? '']: keypairExtended }),
         },
         auth: true
       }
@@ -296,7 +296,7 @@ export function globalReducer(
         ...currWallet,
         keypairs: {
           ...currWallet.keypairs,
-          [newKeypair.publicKey]: newKeypair
+          ...(newKeypair.publicKey && { [newKeypair.publicKey ?? '']: newKeypair }),
         }
       }
 

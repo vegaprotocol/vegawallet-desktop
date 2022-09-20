@@ -2,13 +2,13 @@ import type log from 'loglevel'
 import React from 'react'
 import useThunkReducer from 'react-hook-thunk-reducer'
 
-import type { Service } from '../../service'
+import type { ServiceType } from '../../service'
 import { createActions } from './global-actions'
 import { GlobalContext } from './global-context'
 import { globalReducer, initialGlobalState } from './global-reducer'
 
 interface GlobalProviderProps {
-  service: typeof Service
+  service: ServiceType
   logger: log.Logger
   enableTelemetry: () => void
   children: React.ReactElement
