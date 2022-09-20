@@ -1,3 +1,58 @@
+export namespace config {
+	
+	export class TelemetryConfig {
+	    consentAsked: boolean;
+	    enabled: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new TelemetryConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.consentAsked = source["consentAsked"];
+	        this.enabled = source["enabled"];
+	    }
+	}
+	export class Config {
+	    logLevel: string;
+	    vegaHome: string;
+	    defaultNetwork: string;
+	    telemetry: TelemetryConfig;
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.logLevel = source["logLevel"];
+	        this.vegaHome = source["vegaHome"];
+	        this.defaultNetwork = source["defaultNetwork"];
+	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace jsonrpc {
 	
 	export class Request {
@@ -75,20 +130,6 @@ export namespace jsonrpc {
 
 export namespace backend {
 	
-	export class CheckVersionResponse {
-	    version: string;
-	    releaseUrl: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CheckVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.releaseUrl = source["releaseUrl"];
-	    }
-	}
 	export class ClearSentTransactionRequest {
 	    txId: string;
 	
@@ -127,20 +168,6 @@ export namespace backend {
 	        this.txId = source["txId"];
 	    }
 	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
-	    }
-	}
 	export class ConsentRequest {
 	    txId: string;
 	    tx: string;
@@ -156,36 +183,6 @@ export namespace backend {
 	        this.txId = source["txId"];
 	        this.tx = source["tx"];
 	        this.receivedAt = this.convertValues(source["receivedAt"], null);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class ListConsentRequestsResponse {
-	    requests: ConsentRequest[];
-	
-	    static createFrom(source: any = {}) {
-	        return new ListConsentRequestsResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.requests = this.convertValues(source["requests"], ConsentRequest);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -275,33 +272,6 @@ export namespace backend {
 		    return a;
 		}
 	}
-	
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
-	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
 	    networks: string[];
@@ -328,41 +298,70 @@ export namespace backend {
 	        this.network = source["network"];
 	    }
 	}
-
-}
-
-export namespace config {
-	
-	export class TelemetryConfig {
-	    consentAsked: boolean;
-	    enabled: boolean;
+	export class CheckVersionResponse {
+	    version: string;
+	    releaseUrl: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new TelemetryConfig(source);
+	        return new CheckVersionResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.consentAsked = source["consentAsked"];
-	        this.enabled = source["enabled"];
+	        this.version = source["version"];
+	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	export class Config {
-	    logLevel: string;
-	    vegaHome: string;
-	    defaultNetwork: string;
-	    telemetry: TelemetryConfig;
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new Config(source);
+	        return new GetServiceStateResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.logLevel = source["logLevel"];
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	    }
+	}
+	export class InitialiseAppRequest {
+	    vegaHome: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InitialiseAppRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.vegaHome = source["vegaHome"];
-	        this.defaultNetwork = source["defaultNetwork"];
-	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
+	    }
+	}
+	export class ListConsentRequestsResponse {
+	    requests: ConsentRequest[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ListConsentRequestsResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.requests = this.convertValues(source["requests"], ConsentRequest);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
