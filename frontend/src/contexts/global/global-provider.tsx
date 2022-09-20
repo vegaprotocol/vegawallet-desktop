@@ -21,7 +21,10 @@ export function GlobalProvider({
   children
 }: GlobalProviderProps) {
   const [state, dispatch] = useThunkReducer(globalReducer, initialGlobalState)
-  const actions = createActions(service, logger, enableTelemetry)
+  const actions = React.useMemo(
+    () => createActions(service, logger, enableTelemetry),
+    [service, logger, enableTelemetry]
+  )
 
   return (
     <GlobalContext.Provider
