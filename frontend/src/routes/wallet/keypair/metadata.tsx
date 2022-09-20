@@ -11,13 +11,12 @@ import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
 import { Colors } from '../../../config/colors'
 import { Intent } from '../../../config/intent'
-import { updateKeyPairAction } from '../../../contexts/global/global-actions'
+import type { GlobalActions } from '../../../contexts/global/global-actions'
 import type { GlobalDispatch } from '../../../contexts/global/global-context'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { Validation } from '../../../lib/form-validation'
 import { createLogger } from '../../../lib/logging'
-import { Service } from '../../../service'
 import { wallet as WalletModel } from '../../../wailsjs/go/models'
 
 const notName = (value: string) =>
@@ -45,9 +44,11 @@ const logger = createLogger('Metadata')
 
 const useMetaUpdate = (
   dispatch: GlobalDispatch,
+  actions: GlobalActions,
   pubKey?: string,
   wallet?: string
 ) => {
+  const { service } = useGlobal()
   const [loading, setLoading] = useState(false)
 
   const update = useCallback(
@@ -59,7 +60,7 @@ const useMetaUpdate = (
         }
 
         const passphrase = await requestPassphrase()
-        await Service.AnnotateKey(
+        await service.AnnotateKey(
           new WalletModel.AnnotateKeyRequest({
             wallet,
             pubKey,
@@ -68,13 +69,13 @@ const useMetaUpdate = (
           })
         )
 
-        const keypair = await Service.DescribeKey({
+        const keypair = await service.DescribeKey({
           wallet,
           passphrase,
           pubKey
         })
 
-        dispatch(updateKeyPairAction(wallet, keypair))
+        dispatch(actions.updateKeyPairAction(wallet, keypair))
 
         AppToaster.show({
           message: `Successfully updated metadata`,
@@ -87,7 +88,7 @@ const useMetaUpdate = (
         logger.error(err)
       }
     },
-    [dispatch, pubKey, wallet]
+    [dispatch, actions, pubKey, service, wallet]
   )
 
   return {
@@ -97,10 +98,11 @@ const useMetaUpdate = (
 }
 
 export const Metadata = () => {
-  const { dispatch } = useGlobal()
+  const { actions, dispatch } = useGlobal()
   const { keypair, wallet } = useCurrentKeypair()
   const { loading, update } = useMetaUpdate(
     dispatch,
+    actions,
     keypair?.publicKey,
     wallet?.name
   )

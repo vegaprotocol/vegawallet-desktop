@@ -27,7 +27,7 @@ export const initialGlobalState: GlobalState = {
   passphraseModalOpen: false,
   drawerOpen: false,
   sidebarOpen: false,
-  settingsModal: false,
+  settingsModalOpen: false,
   onboarding: {
     wallets: [],
     networks: []

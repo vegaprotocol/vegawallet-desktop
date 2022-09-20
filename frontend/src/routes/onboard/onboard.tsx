@@ -17,12 +17,10 @@ import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wal
 import { WalletImportForm } from '../../components/wallet-import-form'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
-import { completeOnboardAction } from '../../contexts/global/global-actions'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { useImportWallet } from '../../hooks/use-import-wallet'
 import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
 import { Paths } from '..'
 
 const logger = createLogger('Onboard')
@@ -48,12 +46,14 @@ export function OnboardHome() {
 
   const {
     dispatch,
+    actions,
+    service,
     state: { version, onboarding }
   } = useGlobal()
 
   const initialiseWithDefaultHome = async () => {
     try {
-      await Service.InitialiseApp({ vegaHome: defaultVegaHome })
+      await service.InitialiseApp({ vegaHome: defaultVegaHome })
     } catch (err) {
       logger.error(err)
     }
@@ -63,7 +63,7 @@ export function OnboardHome() {
     try {
       setLoading('existing')
 
-      await Service.InitialiseApp({ vegaHome: defaultVegaHome })
+      await service.InitialiseApp({ vegaHome: defaultVegaHome })
 
       // Navigate to wallet create onboarding if no wallets are found
       if (onboarding.wallets.length) {
@@ -77,11 +77,11 @@ export function OnboardHome() {
       // If use doesnt have networks go to the import network section on onboarding
       // otherwise go to home to complete onboarding
       if (onboarding.networks.length) {
-        const config = await Service.GetAppConfig()
+        const config = await service.GetAppConfig()
         const defaultNetwork = config.defaultNetwork
           ? config.defaultNetwork
           : onboarding.networks[0]
-        const defaultNetworkConfig = await Service.GetNetworkConfig(
+        const defaultNetworkConfig = await service.GetNetworkConfig(
           defaultNetwork
         )
         dispatch({
@@ -96,7 +96,7 @@ export function OnboardHome() {
       }
 
       // Found wallets and networks, go to the main app
-      dispatch(completeOnboardAction(() => navigate(Paths.Home)))
+      dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
     } catch (err) {
       logger.error(err)
     }
@@ -186,6 +186,7 @@ interface Fields {
 
 export function OnboardSettings() {
   const navigate = useNavigate()
+  const { service } = useGlobal()
   const { register, handleSubmit } = useForm<Fields>({
     defaultValues: {
       vegaHome:
@@ -202,7 +203,7 @@ export function OnboardSettings() {
       logger.info('InitAppFromOnboard')
       try {
         setLoading(true)
-        await Service.InitialiseApp({
+        await service.InitialiseApp({
           vegaHome: values.vegaHome
         })
         AppToaster.show({ message: 'App initialised', intent: Intent.SUCCESS })
@@ -212,7 +213,7 @@ export function OnboardSettings() {
         logger.error(err)
       }
     },
-    [navigate]
+    [navigate, service]
   )
 
   return (
@@ -239,6 +240,7 @@ export function OnboardSettings() {
 export function OnboardWalletCreate() {
   const {
     state: { onboarding },
+    actions,
     dispatch
   } = useGlobal()
   const navigate = useNavigate()
@@ -255,7 +257,9 @@ export function OnboardWalletCreate() {
                 if (!onboarding.networks.length) {
                   navigate('/onboard/network')
                 } else {
-                  dispatch(completeOnboardAction(() => navigate(Paths.Home)))
+                  dispatch(
+                    actions.completeOnboardAction(() => navigate(Paths.Home))
+                  )
                 }
               }}
               data-testid='onboard-import-network-button'
@@ -274,6 +278,7 @@ export function OnboardWalletCreate() {
 export function OnboardWalletImport() {
   const {
     state: { onboarding },
+    actions,
     dispatch
   } = useGlobal()
   const navigate = useNavigate()
@@ -284,10 +289,10 @@ export function OnboardWalletImport() {
       if (!onboarding.networks.length) {
         navigate('/onboard/network')
       } else {
-        dispatch(completeOnboardAction(() => navigate(Paths.Home)))
+        dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
       }
     }
-  }, [response, navigate, dispatch, onboarding])
+  }, [response, navigate, dispatch, onboarding, actions])
 
   return (
     <OnboardPanel title='Import a wallet' back={Paths.Onboard}>
@@ -298,11 +303,11 @@ export function OnboardWalletImport() {
 
 export function OnboardNetwork() {
   const navigate = useNavigate()
-  const { dispatch } = useGlobal()
+  const { actions, dispatch } = useGlobal()
 
   const onComplete = React.useCallback(() => {
-    dispatch(completeOnboardAction(() => navigate(Paths.Home)))
-  }, [dispatch, navigate])
+    dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
+  }, [dispatch, navigate, actions])
 
   return (
     <OnboardPanel title='Import a network' back='/onboard/wallet-create'>
