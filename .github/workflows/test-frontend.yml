@@ -62,7 +62,7 @@ jobs:
         with:
           wait-on: "http://localhost:34115"
           working-directory: frontend/automation
-          wait-on-timeout: 120
+          wait-on-timeout: 220
           record: true
         env:
           # pass the Dashboard record key as an environment variable
