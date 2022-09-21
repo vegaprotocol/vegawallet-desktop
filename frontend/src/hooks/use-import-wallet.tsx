@@ -4,7 +4,7 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
-import type { wallet as WalletModel } from '../wailsjs/go/models'
+import type { WalletModel } from '../wallet-client'
 
 const logger = createLogger('UseImportWallet')
 
@@ -23,21 +23,21 @@ export function useImportWallet() {
     }) => {
       logger.debug('ImportWallet')
       try {
-        const resp = await service.ImportWallet({
-          wallet: values.wallet,
-          passphrase: values.passphrase,
-          recoveryPhrase: values.recoveryPhrase,
-          version: Number(values.version)
-        })
+        const resp = await service.WalletApi.ImportWallet(
+          values.wallet,
+          values.passphrase,
+          values.recoveryPhrase,
+          Number(values.version),
+        )
 
         if (resp) {
           setResponse(resp)
 
-          const keypair = await service.DescribeKey({
-            wallet: values.wallet,
-            passphrase: values.passphrase,
-            pubKey: resp.key.publicKey
-          })
+          const keypair = await service.WalletApi.DescribeKey(
+            values.wallet,
+            values.passphrase,
+            resp.key.publicKey
+          )
 
           dispatch(actions.addWalletAction(values.wallet, keypair))
           AppToaster.show({
