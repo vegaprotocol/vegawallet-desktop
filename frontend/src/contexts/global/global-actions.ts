@@ -5,12 +5,9 @@ import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { ServiceType } from '../../service'
-import type {
-  network as NetworkModel} from '../../wailsjs/go/models';
-import {
-  config as ConfigModel
-} from '../../wailsjs/go/models'
-import type { WalletModel } from '../../wallet-client';
+import type { network as NetworkModel } from '../../wailsjs/go/models'
+import { config as ConfigModel } from '../../wailsjs/go/models'
+import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
@@ -53,12 +50,11 @@ export function createActions(
           // should now have an app config
           const [wallets, networks] = await Promise.all([
             service.WalletApi.ListWallets(),
-            service.WalletApi.ListNetworks(),
+            service.WalletApi.ListNetworks()
           ])
 
           const defaultNetwork = config.defaultNetwork
-            ? networks.find(n => n === config.defaultNetwork) ||
-              networks[0]
+            ? networks.find(n => n === config.defaultNetwork) || networks[0]
             : networks[0]
 
           const defaultNetworkConfig = defaultNetwork
@@ -140,12 +136,16 @@ export function createActions(
         logger.debug('AddKeyPair')
         try {
           const passphrase = await requestPassphrase()
-          const res = await service.WalletApi.GenerateKey(wallet, passphrase, {});
+          const res = await service.WalletApi.GenerateKey(
+            wallet,
+            passphrase,
+            {}
+          )
 
           const keypair = await service.WalletApi.DescribeKey(
             wallet,
             passphrase,
-            res.publicKey ?? '',
+            res.publicKey ?? ''
           )
 
           dispatch({
@@ -175,14 +175,14 @@ export function createActions(
         } else {
           try {
             const passphrase = await requestPassphrase()
-            const keys = await service.WalletApi.ListKeys(wallet, passphrase);
+            const keys = await service.WalletApi.ListKeys(wallet, passphrase)
 
             const keysWithMeta = await Promise.all(
               (keys.keys || []).map(key =>
                 service.WalletApi.DescribeKey(
                   wallet,
                   passphrase,
-                  key.public_key ?? '',
+                  key.public_key ?? ''
                 )
               )
             )

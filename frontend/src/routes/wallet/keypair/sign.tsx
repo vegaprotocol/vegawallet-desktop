@@ -39,7 +39,7 @@ const useSign = (pubKey?: string, wallet?: string) => {
           passphrase,
           pubKey,
           // @ts-ignore
-          btoa(values.message),
+          btoa(values.message)
         )
         // @ts-ignore
         setSignedData(resp.hexSignature)

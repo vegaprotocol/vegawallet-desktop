@@ -1,8 +1,11 @@
 import * as UnwrappedService from './wailsjs/go/backend/Handler'
-import { WalletClient } from './wallet-client';
+import { WalletClient } from './wallet-client'
 
-export type ServiceType = Omit<typeof UnwrappedService, 'SubmitWalletAPIRequest'> & {
-  WalletApi: WalletClient,
+export type ServiceType = Omit<
+  typeof UnwrappedService,
+  'SubmitWalletAPIRequest'
+> & {
+  WalletApi: WalletClient
 }
 
 /**
@@ -51,6 +54,6 @@ export const Service = Object.entries(UnwrappedService).reduce(
     return prev
   },
   {
-    WalletApi: new WalletClient(),
+    WalletApi: new WalletClient()
   } as unknown as ServiceType
-);
+)

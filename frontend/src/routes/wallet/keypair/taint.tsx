@@ -32,16 +32,12 @@ const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await service.WalletApi.TaintKey(
-        wallet,
-        passphrase,
-        pubKey,
-      )
+      await service.WalletApi.TaintKey(wallet, passphrase, pubKey)
 
       const keypair = await service.WalletApi.DescribeKey(
         wallet,
         passphrase,
-        pubKey,
+        pubKey
       )
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -66,16 +62,12 @@ const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await service.WalletApi.UntaintKey(
-        wallet,
-        passphrase,
-        pubKey,
-      )
+      await service.WalletApi.UntaintKey(wallet, passphrase, pubKey)
 
       const keypair = await service.WalletApi.DescribeKey(
         wallet,
         passphrase,
-        pubKey,
+        pubKey
       )
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))

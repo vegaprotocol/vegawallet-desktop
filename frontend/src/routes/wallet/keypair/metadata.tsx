@@ -19,8 +19,8 @@ import { Validation } from '../../../lib/form-validation'
 import { createLogger } from '../../../lib/logging'
 
 type Meta = {
-  key: string;
-  value: string;
+  key: string
+  value: string
 }
 
 const notName = (value: string) =>
@@ -68,13 +68,13 @@ const useMetaUpdate = (
           wallet,
           passphrase,
           pubKey,
-          metadata,
+          metadata
         )
 
         const keypair = await service.WalletApi.DescribeKey(
           wallet,
           passphrase,
-          pubKey,
+          pubKey
         )
 
         dispatch(actions.updateKeyPairAction(wallet, keypair))

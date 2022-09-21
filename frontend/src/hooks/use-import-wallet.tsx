@@ -27,7 +27,7 @@ export function useImportWallet() {
           values.wallet,
           values.passphrase,
           values.recoveryPhrase,
-          Number(values.version),
+          Number(values.version)
         )
 
         if (resp) {
