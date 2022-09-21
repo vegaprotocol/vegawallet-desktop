@@ -4,7 +4,7 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
-import type { Service } from '../../service'
+import type { ServiceType } from '../../service'
 import {
   config as ConfigModel,
   network as NetworkModel,
@@ -14,7 +14,7 @@ import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
 export function createActions(
-  service: typeof Service,
+  service: ServiceType,
   logger: log.Logger,
   enableTelemetry: () => void
 ) {

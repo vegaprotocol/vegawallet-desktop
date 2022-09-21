@@ -2,7 +2,7 @@ import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
-import type { Service } from '../../service'
+import type { ServiceType } from '../../service'
 import type {
   config as ConfigModel,
   network as NetworkModel,
@@ -76,7 +76,7 @@ type GlobalContextShape = {
   logger: log.Logger
   actions: GlobalActions
   dispatch: GlobalDispatch
-  service: typeof Service
+  service: ServiceType
 }
 
 export const GlobalContext = React.createContext<
