@@ -3,7 +3,7 @@ import type {
   config as ConfigModel,
   network as NetworkModel,
 } from '../../wailsjs/go/models'
-import { WalletModel } from '../../wallet-client';
+import type { WalletModel } from '../../wallet-client';
 import type {
   GlobalState,
   KeyPair,

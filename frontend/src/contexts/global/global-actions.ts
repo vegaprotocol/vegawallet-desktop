@@ -5,11 +5,12 @@ import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { ServiceType } from '../../service'
+import type {
+  network as NetworkModel} from '../../wailsjs/go/models';
 import {
-  config as ConfigModel,
-  network as NetworkModel,
+  config as ConfigModel
 } from '../../wailsjs/go/models'
-import { WalletModel } from '../../wallet-client';
+import type { WalletModel } from '../../wallet-client';
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 

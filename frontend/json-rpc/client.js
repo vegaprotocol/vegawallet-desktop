@@ -23,7 +23,7 @@ export namespace WalletModel {
 
 export class WalletClient {
   private request(method: string, params?: any[]) {
-    const validationErrors = this.validator.validate(methodName, params);
+    const validationErrors = validator.validate(methodName, params);
     if ( validationErrors instanceof MethodNotFoundError || validationErrors.length > 0) {
       return Promise.reject(validationErrors);
     }

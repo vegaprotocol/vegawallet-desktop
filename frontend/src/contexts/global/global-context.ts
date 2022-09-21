@@ -7,7 +7,7 @@ import type {
   config as ConfigModel,
   network as NetworkModel,
 } from '../../wailsjs/go/models'
-import { WalletModel } from '../../wallet-client'
+import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
 
