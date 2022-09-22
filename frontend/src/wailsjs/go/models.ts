@@ -1,58 +1,3 @@
-export namespace config {
-	
-	export class TelemetryConfig {
-	    consentAsked: boolean;
-	    enabled: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new TelemetryConfig(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.consentAsked = source["consentAsked"];
-	        this.enabled = source["enabled"];
-	    }
-	}
-	export class Config {
-	    logLevel: string;
-	    vegaHome: string;
-	    defaultNetwork: string;
-	    telemetry: TelemetryConfig;
-	
-	    static createFrom(source: any = {}) {
-	        return new Config(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.logLevel = source["logLevel"];
-	        this.vegaHome = source["vegaHome"];
-	        this.defaultNetwork = source["defaultNetwork"];
-	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-
-}
-
 export namespace jsonrpc {
 	
 	export class Request {
@@ -130,30 +75,28 @@ export namespace jsonrpc {
 
 export namespace backend {
 	
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
+	export class StartServiceRequest {
+	    network: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
+	        return new StartServiceRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
+	        this.network = source["network"];
 	    }
 	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
+	export class GetConsentRequestRequest {
+	    txId: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
+	        return new GetConsentRequestRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
+	        this.txId = source["txId"];
 	    }
 	}
 	export class ConsentRequest {
@@ -191,35 +134,31 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class ListConsentRequestsResponse {
-	    requests: ConsentRequest[];
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ListConsentRequestsResponse(source);
+	        return new GetVersionResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.requests = this.convertValues(source["requests"], ConsentRequest);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	    }
+	}
+	export class InitialiseAppRequest {
+	    vegaHome: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InitialiseAppRequest(source);
 	    }
 	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.vegaHome = source["vegaHome"];
+	    }
 	}
 	export class SentTransaction {
 	    txId: string;
@@ -304,18 +243,6 @@ export namespace backend {
 	        this.networks = source["networks"];
 	    }
 	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
-	}
 	export class CheckVersionResponse {
 	    version: string;
 	    releaseUrl: string;
@@ -330,33 +257,6 @@ export namespace backend {
 	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class GetConsentRequestRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetConsentRequestRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
-	}
-	
 	export class ClearSentTransactionRequest {
 	    txId: string;
 	
@@ -382,6 +282,105 @@ export namespace backend {
 	        this.txId = source["txId"];
 	        this.decision = source["decision"];
 	    }
+	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
+	export class ListConsentRequestsResponse {
+	    requests: ConsentRequest[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ListConsentRequestsResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.requests = this.convertValues(source["requests"], ConsentRequest);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace config {
+	
+	export class TelemetryConfig {
+	    consentAsked: boolean;
+	    enabled: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new TelemetryConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.consentAsked = source["consentAsked"];
+	        this.enabled = source["enabled"];
+	    }
+	}
+	export class Config {
+	    logLevel: string;
+	    vegaHome: string;
+	    defaultNetwork: string;
+	    telemetry: TelemetryConfig;
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.logLevel = source["logLevel"];
+	        this.vegaHome = source["vegaHome"];
+	        this.defaultNetwork = source["defaultNetwork"];
+	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 
 }
