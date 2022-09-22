@@ -4,8 +4,8 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
+import type { WalletModel } from '../wallet-client'
 import { FormStatus, useFormState } from './use-form-state'
-import { WalletModel } from '../wallet-client'
 
 const logger = createLogger('UseImportNetwork')
 

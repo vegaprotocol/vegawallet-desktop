@@ -1,8 +1,8 @@
 import React from 'react'
 
-import type { WalletModel } from '../../wallet-client'
 import { useGlobal } from '../../contexts/global/global-context'
 import { createLogger } from '../../lib/logging'
+import type { WalletModel } from '../../wallet-client'
 
 const logger = createLogger('NetworkConfigContainer')
 
