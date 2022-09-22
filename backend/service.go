@@ -74,7 +74,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
-	logLevel := cfg.Level.String()
+	logLevel := cfg.LogLevel.String()
 	log, err := buildLogger(logLevel, h.configLoader.LogFilePathForSvc())
 	if err != nil {
 		return false, err
