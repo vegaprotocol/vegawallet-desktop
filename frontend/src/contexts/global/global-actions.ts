@@ -5,7 +5,6 @@ import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { ServiceType } from '../../service'
-import type { network as NetworkModel } from '../../wailsjs/go/models'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
@@ -58,7 +57,7 @@ export function createActions(
             : networks[0]
 
           const defaultNetworkConfig = defaultNetwork
-            ? await service.GetNetworkConfig(defaultNetwork)
+            ? await service.WalletApi.DescribeNetwork(defaultNetwork)
             : null
 
           const serviceState = await service.GetServiceState()
@@ -112,7 +111,7 @@ export function createActions(
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port })
+            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port ?? 80 })
           }
         } catch (err) {
           logger.error(err)
@@ -252,7 +251,7 @@ export function createActions(
             })
           )
 
-          const config = await service.GetNetworkConfig(network)
+          const config = await service.WalletApi.DescribeNetwork(network)
 
           dispatch({
             type: 'CHANGE_NETWORK',
@@ -271,7 +270,7 @@ export function createActions(
 
     updateNetworkConfigAction(
       editingNetwork: string,
-      networkConfig: NetworkModel.Network
+      networkConfig: WalletModel.DescribeNetworkResponse
     ) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const state = getState()
@@ -287,7 +286,7 @@ export function createActions(
             }
           }
 
-          const isSuccessful = await service.SaveNetworkConfig(networkConfig)
+          const isSuccessful = await service.WalletApi.UpdateNetwork(networkConfig)
 
           if (isSuccessful) {
             AppToaster.show({
@@ -309,7 +308,7 @@ export function createActions(
           await service.StartService({
             network: state.network
           })
-          dispatch({ type: 'START_SERVICE', port: networkConfig.port })
+          dispatch({ type: 'START_SERVICE', port: networkConfig.port ?? 80 })
         } catch (err) {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
           logger.error(err)
@@ -317,14 +316,14 @@ export function createActions(
       }
     },
 
-    addNetworkAction(network: string, config: NetworkModel.Network) {
+    addNetworkAction(network: string, config: WalletModel.DescribeNetworkResponse) {
       return async (dispatch: GlobalDispatch) => {
         // If no service running start service for newly added network
         try {
           const status = await service.GetServiceState()
           if (!status.running) {
             await service.StartService({ network })
-            dispatch({ type: 'START_SERVICE', port: config.port })
+            dispatch({ type: 'START_SERVICE', port: config.port ?? 80 })
           }
         } catch (err) {
           logger.error(err)
@@ -346,7 +345,7 @@ export function createActions(
           const status = await service.GetServiceState()
           if (!status.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port })
+            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port ?? 80 })
           }
         } catch (err) {
           logger.error(err)

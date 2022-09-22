@@ -4,8 +4,8 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
-import type { network as NetworkModel } from '../wailsjs/go/models'
 import { FormStatus, useFormState } from './use-form-state'
+import { WalletModel } from '../wallet-client'
 
 const logger = createLogger('UseImportNetwork')
 
@@ -20,7 +20,7 @@ export function useImportNetwork() {
   const { actions, service, dispatch } = useGlobal()
   const [status, setStatus] = useFormState()
   const [response, setResponse] =
-    React.useState<NetworkModel.ImportNetworkFromSourceResponse | null>(null)
+    React.useState<WalletModel.DescribeNetworkResponse | null>(null)
   const [error, setError] = React.useState<string | null>(null)
 
   const submit = React.useCallback(
@@ -28,11 +28,16 @@ export function useImportNetwork() {
       try {
         setStatus(FormStatus.Pending)
 
-        const args = createImportNetworkArgs(values)
-        const res = await service.ImportNetwork(args)
+        const { name, url, filePath, force } = createImportNetworkArgs(values)
+        const res = await service.WalletApi.ImportNetwork(
+          name,
+          filePath,
+          url,
+          force,
+        )
 
-        if (res) {
-          const config = await service.GetNetworkConfig(res.name)
+        if (res && res.name) {
+          const config = await service.WalletApi.DescribeNetwork(res.name)
 
           // Update the config
           dispatch(actions.addNetworkAction(res.name, config))
@@ -77,7 +82,7 @@ export function useImportNetwork() {
 
 function createImportNetworkArgs(
   values: ImportNetworkArgs
-): NetworkModel.ImportNetworkFromSourceRequest {
+) {
   // Other option is selected so figure out whether the fileOrUrl input is a url or not
   // and use the relevent object property
   if (values.network === 'other') {
