@@ -111,7 +111,10 @@ export function createActions(
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port ?? 80 })
+            dispatch({
+              type: 'START_SERVICE',
+              port: state.networkConfig.port ?? 80
+            })
           }
         } catch (err) {
           logger.error(err)
@@ -286,7 +289,9 @@ export function createActions(
             }
           }
 
-          const isSuccessful = await service.WalletApi.UpdateNetwork(networkConfig)
+          const isSuccessful = await service.WalletApi.UpdateNetwork(
+            networkConfig
+          )
 
           if (isSuccessful) {
             AppToaster.show({
@@ -316,7 +321,10 @@ export function createActions(
       }
     },
 
-    addNetworkAction(network: string, config: WalletModel.DescribeNetworkResponse) {
+    addNetworkAction(
+      network: string,
+      config: WalletModel.DescribeNetworkResponse
+    ) {
       return async (dispatch: GlobalDispatch) => {
         // If no service running start service for newly added network
         try {
@@ -345,7 +353,10 @@ export function createActions(
           const status = await service.GetServiceState()
           if (!status.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port ?? 80 })
+            dispatch({
+              type: 'START_SERVICE',
+              port: state.networkConfig.port ?? 80
+            })
           }
         } catch (err) {
           logger.error(err)

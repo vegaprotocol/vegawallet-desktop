@@ -33,7 +33,7 @@ export function useImportNetwork() {
           name,
           filePath,
           url,
-          force,
+          force
         )
 
         if (res && res.name) {
@@ -80,9 +80,7 @@ export function useImportNetwork() {
   }
 }
 
-function createImportNetworkArgs(
-  values: ImportNetworkArgs
-) {
+function createImportNetworkArgs(values: ImportNetworkArgs) {
   // Other option is selected so figure out whether the fileOrUrl input is a url or not
   // and use the relevent object property
   if (values.network === 'other') {
