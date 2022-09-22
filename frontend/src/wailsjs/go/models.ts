@@ -75,6 +75,18 @@ export namespace jsonrpc {
 
 export namespace backend {
 	
+	export class StartServiceRequest {
+	    network: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new StartServiceRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
+	    }
+	}
 	export class CheckVersionResponse {
 	    version: string;
 	    releaseUrl: string;
@@ -89,30 +101,32 @@ export namespace backend {
 	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	export class ClearSentTransactionRequest {
+	export class ConsentToTransactionRequest {
 	    txId: string;
+	    decision: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
+	        return new ConsentToTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
+	        this.decision = source["decision"];
 	    }
 	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
+	        return new GetVersionResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
 	    }
 	}
 	export class InitialiseAppRequest {
@@ -206,18 +220,16 @@ export namespace backend {
 	        this.networks = source["networks"];
 	    }
 	}
-	export class ConsentToTransactionRequest {
+	export class ClearSentTransactionRequest {
 	    txId: string;
-	    decision: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new ConsentToTransactionRequest(source);
+	        return new ClearSentTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
-	        this.decision = source["decision"];
 	    }
 	}
 	export class GetConsentRequestRequest {
@@ -233,18 +245,18 @@ export namespace backend {
 	    }
 	}
 	
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
+	        return new GetServiceStateResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
+	        this.url = source["url"];
+	        this.running = source["running"];
 	    }
 	}
 	export class SentTransaction {
@@ -315,18 +327,6 @@ export namespace backend {
 		    }
 		    return a;
 		}
-	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
 	}
 
 }
