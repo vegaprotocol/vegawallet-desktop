@@ -218,7 +218,9 @@ function fieldsToConfig(
   }
 }
 
-function configToFields(config: WalletModel.DescribeNetworkResponse): FormFields {
+function configToFields(
+  config: WalletModel.DescribeNetworkResponse
+): FormFields {
   return {
     logLevel: config.level ? config.level.toString() : '',
     tokenExpiry: config.tokenExpiry as string,

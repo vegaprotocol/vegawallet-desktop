@@ -30,7 +30,8 @@ export function NetworkConfigContainer({
 
 export function useNetworkConfig(name: string | null) {
   const { service } = useGlobal()
-  const [config, setConfig] = React.useState<WalletModel.DescribeNetworkResponse | null>(null)
+  const [config, setConfig] =
+    React.useState<WalletModel.DescribeNetworkResponse | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
   const [loading, setLoading] = React.useState(true)
 
