@@ -2,6 +2,8 @@ import { BreakText } from '../../../components/break-text'
 import { Header } from '../../../components/header'
 import { KeyValueTable } from '../../../components/key-value-table'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
+import { TransactionHistory } from '../../../components/transaction-history'
+import { TransactionQueue } from '../../../components/transaction-queue'
 
 export function KeyPairHome() {
   const { keypair } = useCurrentKeypair()
@@ -23,6 +25,10 @@ export function KeyPairHome() {
           }
         ]}
       />
+      <Header>Queued transactions</Header>
+      <TransactionQueue />
+      <Header>History</Header>
+      <TransactionHistory />
     </div>
   )
 }

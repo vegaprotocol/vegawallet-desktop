@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
-import { events } from '../../lib/events'
+import { EVENTS } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
 import { EventsOn } from '../../wailsjs/runtime'
@@ -83,12 +83,12 @@ export function TransactionManager() {
     }
 
     // Listen for new incoming transactions
-    EventsOn(events.NEW_CONSENT_REQUEST, (tx: BackendModel.ConsentRequest) => {
+    EventsOn(EVENTS.NEW_CONSENT_REQUEST, (tx: BackendModel.ConsentRequest) => {
       setTransactions(curr => [...curr, parseTx(tx)])
     })
 
-    window.runtime.EventsOn(
-      events.TRANSACTION_SENT,
+    EventsOn(
+      EVENTS.TRANSACTION_SENT,
       (incoming: BackendModel.SentTransaction) => {
         setTransactions(curr => {
           return curr.map(t => {
