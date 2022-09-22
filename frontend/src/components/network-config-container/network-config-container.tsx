@@ -1,13 +1,13 @@
 import React from 'react'
 
+import type { WalletModel } from '../../wallet-client'
 import { useGlobal } from '../../contexts/global/global-context'
 import { createLogger } from '../../lib/logging'
-import type { network as NetworkModel } from '../../wailsjs/go/models'
 
 const logger = createLogger('NetworkConfigContainer')
 
 interface NetworkConfigContainerProps {
-  children: (config: NetworkModel.Network) => React.ReactElement
+  children: (config: WalletModel.DescribeNetworkResponse) => React.ReactElement
   name: string | null
 }
 
@@ -30,7 +30,7 @@ export function NetworkConfigContainer({
 
 export function useNetworkConfig(name: string | null) {
   const { service } = useGlobal()
-  const [config, setConfig] = React.useState<NetworkModel.Network | null>(null)
+  const [config, setConfig] = React.useState<WalletModel.DescribeNetworkResponse | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
   const [loading, setLoading] = React.useState(true)
 
@@ -39,7 +39,7 @@ export function useNetworkConfig(name: string | null) {
       if (!name) return
       setLoading(true)
       try {
-        const res = await service.GetNetworkConfig(name)
+        const res = await service.WalletApi.DescribeNetwork(name)
         setConfig(res)
       } catch (err) {
         setError(err as Error)

@@ -2,10 +2,10 @@ import React from 'react'
 import type { Control, UseFormRegister } from 'react-hook-form'
 import { useFieldArray, useForm } from 'react-hook-form'
 
+import type { WalletModel } from '../../wallet-client'
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
-import { network as NetworkModel } from '../../wailsjs/go/models'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
 import { Select } from '../forms'
@@ -23,8 +23,8 @@ interface FormFields {
 }
 
 export interface NetworkConfigFormProps {
-  config: NetworkModel.Network
-  onSubmit: (config: NetworkModel.Network) => void
+  config: WalletModel.DescribeNetworkResponse
+  onSubmit: (config: WalletModel.DescribeNetworkResponse) => void
 }
 
 export const NetworkConfigForm = ({
@@ -198,12 +198,12 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
 }
 
 function fieldsToConfig(
-  config: NetworkModel.Network,
+  config: WalletModel.DescribeNetworkResponse,
   values: FormFields
-): NetworkModel.Network {
-  return new NetworkModel.Network({
+): WalletModel.DescribeNetworkResponse {
+  return {
     name: config.name,
-    level: values.logLevel,
+    level: parseInt(values.logLevel),
     tokenExpiry: values.tokenExpiry,
     port: Number(values.port),
     host: values.host,
@@ -212,19 +212,19 @@ function fieldsToConfig(
         hosts: values.grpcHosts.map(x => x.value),
         retries: Number(values.grpcNodeRetries)
       },
-      graphQl: config.api.graphQl,
-      rest: config.api.rest
+      graphQl: config.api?.graphQl,
+      rest: config.api?.rest
     }
-  })
+  }
 }
 
-function configToFields(config: NetworkModel.Network): FormFields {
+function configToFields(config: WalletModel.DescribeNetworkResponse): FormFields {
   return {
-    logLevel: config.level as string,
+    logLevel: config.level ? config.level.toString() : '',
     tokenExpiry: config.tokenExpiry as string,
-    port: config.port,
-    host: config.host,
-    grpcNodeRetries: config.api.grpc.retries,
+    port: config.port ?? 80,
+    host: config.host ?? 'localhost',
+    grpcNodeRetries: config.api?.grpc.retries,
     // @ts-ignore any resulting from generated types
     grpcHosts: config.api.grpc.hosts.map(x => ({ value: x })),
     // @ts-ignore any resulting from generated types

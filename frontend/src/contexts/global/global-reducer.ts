@@ -1,8 +1,5 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type {
-  config as ConfigModel,
-  network as NetworkModel
-} from '../../wailsjs/go/models'
+import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
   GlobalState,
@@ -50,7 +47,7 @@ export type GlobalAction =
       wallets: string[]
       network: string
       networks: string[]
-      networkConfig: NetworkModel.Network | null
+      networkConfig: WalletModel.DescribeNetworkResponse | null
       presetNetworks: NetworkPreset[]
       serviceRunning: boolean
     }
@@ -136,7 +133,7 @@ export type GlobalAction =
       type: 'SET_NETWORKS'
       network: string | null
       networks: string[]
-      config: NetworkModel.Network | null
+      config: WalletModel.DescribeNetworkResponse | null
     }
   | {
       type: 'SET_PRESETS'
@@ -145,22 +142,22 @@ export type GlobalAction =
   | {
       type: 'CHANGE_NETWORK'
       network: string
-      config: NetworkModel.Network
+      config: WalletModel.DescribeNetworkResponse
     }
   | {
       type: 'UPDATE_NETWORK_CONFIG'
-      config: NetworkModel.Network
+      config: WalletModel.DescribeNetworkResponse
     }
   | {
       type: 'ADD_NETWORK'
       network: string
-      config: NetworkModel.Network
+      config: WalletModel.DescribeNetworkResponse
     }
   | {
       type: 'ADD_NETWORKS'
       networks: string[]
       network: string
-      networkConfig: NetworkModel.Network
+      networkConfig: WalletModel.DescribeNetworkResponse
     }
   | {
       type: 'START_SERVICE'
