@@ -3,7 +3,7 @@ module code.vegaprotocol.io/vegawallet-desktop
 go 1.18
 
 require (
-	code.vegaprotocol.io/vega v0.55.1-0.20220922094242-8a2bc04453ca
+	code.vegaprotocol.io/vega v0.55.1-0.20220926133020-71a9c42e772a
 	github.com/golang/protobuf v1.5.2
 	github.com/wailsapp/wails/v2 v2.0.0-beta.44.2
 	go.uber.org/zap v1.21.0
@@ -13,7 +13,6 @@ require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
-	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1 // indirect
