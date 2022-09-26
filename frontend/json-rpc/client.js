@@ -12,7 +12,9 @@ import * as UnwrappedService from '../wailsjs/go/backend/Handler'
 
 <%= methodTypings.toString('typescript') %>
 
-const validator = new MethodCallValidator(WalletAPI.openrpcDocument);
+export const openrpcDocument: OpenRPC = <%= JSON.stringify(openrpcDocument) %>;
+
+const validator = new MethodCallValidator(openrpcDocument);
 
 export namespace WalletModel {
   <% openrpcDocument.methods.forEach((method) => { %>
@@ -46,8 +48,6 @@ export class WalletClient {
   }
   <% }); %>
 }
-
-export const openrpcDocument: OpenRPC = <%= JSON.stringify(openrpcDocument) %>;
 `)
 
 const hooks = {

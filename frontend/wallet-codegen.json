@@ -1,5 +1,5 @@
 {
-  "openrpcDocument": "https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json",
+  "openrpcDocument": "./json-rpc/openrpc.json",
   "outDir": "./src/wallet-client",
   "components": [
     {
