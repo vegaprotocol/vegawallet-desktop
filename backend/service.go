@@ -116,7 +116,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 
 	policy := service.NewExplicitConsentPolicy(ctx, h.service.ConsentRequestsChan, h.service.SentTransactionsChan)
-	srv, err := service.NewService(log.Named("service"), cfg, jsonrpc.New(log.Named("json-rpc")), handler, auth, forwarder, policy)
+	srv, err := service.NewService(log.Named("service"), cfg, jsonrpc.New(log.Named("json-rpc"), false), handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
 		loggingCancelFn()
