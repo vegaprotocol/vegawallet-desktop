@@ -3,11 +3,11 @@ import React from 'react'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
-import { createLogger } from '../lib/logging'
+// import { createLogger } from '../lib/logging'
 import type { WalletModel } from '../wallet-client'
 import { FormStatus, useFormState } from './use-form-state'
 
-const logger = createLogger('UseImportNetwork')
+// const logger = createLogger('UseImportNetwork')
 
 interface ImportNetworkArgs {
   name: string
@@ -52,18 +52,18 @@ export function useImportNetwork() {
             intent: Intent.SUCCESS
           })
         } else {
-          throw new Error('Error: Couldn\'t import network')
+          throw new Error("Error: Couldn't import network")
         }
       } catch (err: unknown) {
-          const message = 'Error: Couldn\'t import network'
-          setError(message)
-          setStatus(FormStatus.Error)
-          AppToaster.show({
-            message,
-            intent: Intent.DANGER
-          })
-        }
-      },
+        const message = "Error: Couldn't import network"
+        setError(message)
+        setStatus(FormStatus.Error)
+        AppToaster.show({
+          message,
+          intent: Intent.DANGER
+        })
+      }
+    },
     [dispatch, setStatus, service, actions]
   )
 
