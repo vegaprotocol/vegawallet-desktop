@@ -49,9 +49,14 @@ Cypress.Commands.add('restoreNetwork', (handler, name = 'test') => {
     'network-config/test.toml'
   )
   Cypress.env('testNetworkPath', location)
-  return handler.SubmitWalletAPIRequest('admin.import_network', {
-    filePath: location,
-    name
+  return handler.SubmitWalletAPIRequest({
+    id: '0',
+    jsonrpc: '2.0',
+    method: 'admin.import_network',
+    params: {
+      filePath: location,
+      name
+    },
   })
 })
 
