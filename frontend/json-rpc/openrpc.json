@@ -472,16 +472,12 @@
             "receivedAt": {
               "type": "string",
               "description": "The date when the API received the request to send the transaction.\n\nThe time is a quoted string in RFC 3339 format, with sub-second precision added if present.",
-              "examples": [
-                "2021-02-18T21:54:42.123Z"
-              ]
+              "examples": ["2021-02-18T21:54:42.123Z"]
             },
             "sentAt": {
               "type": "string",
               "description": "The date when the transaction has been sent to the network.\n\nThe time is a quoted string in RFC 3339 format, with sub-second precision added if present.",
-              "examples": [
-                "2021-02-18T21:54:42.123Z"
-              ]
+              "examples": ["2021-02-18T21:54:42.123Z"]
             },
             "transactionHash": {
               "type": "string",
@@ -568,9 +564,7 @@
             "chainID": {
               "type": "string",
               "description": "The chain identifier",
-              "examples": [
-                "test-chain-Thz9c6"
-              ]
+              "examples": ["test-chain-Thz9c6"]
             }
           }
         }
@@ -949,10 +943,7 @@
           "result": {
             "name": "Success",
             "value": {
-              "wallets": [
-                "wallet-1",
-                "wallet-2"
-              ]
+              "wallets": ["wallet-1", "wallet-2"]
             }
           }
         }
@@ -992,11 +983,7 @@
           "result": {
             "name": "Success",
             "value": {
-              "networks": [
-                "mainnet",
-                "fairground",
-                "local-network"
-              ]
+              "networks": ["mainnet", "fairground", "local-network"]
             }
           }
         }
@@ -1069,20 +1056,14 @@
               "host": "localhost",
               "api": {
                 "grpcConfig": {
-                  "hosts": [
-                    "localhost:3028"
-                  ],
+                  "hosts": ["localhost:3028"],
                   "retries": 5
                 },
                 "graphQLConfig": {
-                  "hosts": [
-                    "localhost:3028"
-                  ]
+                  "hosts": ["localhost:3028"]
                 },
                 "restConfig": {
-                  "hosts": [
-                    "localhost:3029"
-                  ]
+                  "hosts": ["localhost:3029"]
                 }
               }
             }
@@ -1181,20 +1162,14 @@
               "name": "api",
               "value": {
                 "grpcConfig": {
-                  "hosts": [
-                    "localhost:3028"
-                  ],
+                  "hosts": ["localhost:3028"],
                   "retries": 5
                 },
                 "graphQLConfig": {
-                  "hosts": [
-                    "localhost:3028"
-                  ]
+                  "hosts": ["localhost:3028"]
                 },
                 "restConfig": {
-                  "hosts": [
-                    "localhost:3029"
-                  ]
+                  "hosts": ["localhost:3029"]
                 }
               }
             }
@@ -2712,16 +2687,12 @@
             "receivedAt": {
               "type": "string",
               "description": "The date when the API received the request to send the transaction.\n\nThe time is a quoted string in RFC 3339 format, with sub-second precision added if present.",
-              "examples": [
-                "2021-02-18T21:54:42.123Z"
-              ]
+              "examples": ["2021-02-18T21:54:42.123Z"]
             },
             "sentAt": {
               "type": "string",
               "description": "The date when the transaction has been sent to the network.\n\nThe time is a quoted string in RFC 3339 format, with sub-second precision added if present.",
-              "examples": [
-                "2021-02-18T21:54:42.123Z"
-              ]
+              "examples": ["2021-02-18T21:54:42.123Z"]
             },
             "transactionHash": {
               "type": "string",
@@ -2836,10 +2807,7 @@
       "access_mode": {
         "type": "string",
         "description": "The different access modes a permission can have.",
-        "enum": [
-          "read",
-          "none"
-        ]
+        "enum": ["read", "none"]
       },
       "permissions_summary": {
         "type": "object",
@@ -2938,11 +2906,7 @@
       "sending_mode": {
         "type": "string",
         "description": "The chosen mode to send the transaction:\n- `TYPE_SYNC` returns the result of running the transaction.\n- `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.\n- `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.",
-        "enum": [
-          "TYPE_SYNC",
-          "TYPE_ASYNC",
-          "TYPE_COMMIT"
-        ]
+        "enum": ["TYPE_SYNC", "TYPE_ASYNC", "TYPE_COMMIT"]
       }
     },
     "errors": {
