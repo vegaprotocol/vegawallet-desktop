@@ -45,7 +45,10 @@ describe('wallet sign key', () => {
     authenticate('invalid')
     cy.getByTestId('toast')
       .contains('Error')
-      .should('have.text', 'Error: wrong passphrase')
+      .should(
+        'have.text',
+        'Error: could not retrieve the wallet: wrong passphrase'
+      )
   })
 })
 
