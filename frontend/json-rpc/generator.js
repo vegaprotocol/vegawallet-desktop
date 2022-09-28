@@ -1,4 +1,5 @@
 const path = require('path')
+const log = require('loglevel')
 const { copy, remove, readFile, writeFile } = require('fs-extra')
 const { template, camelCase, toUpper } = require('lodash')
 const { compile } = require('json-schema-to-typescript')
@@ -9,6 +10,9 @@ const COMPILE_OPTS = {
   additionalProperties: false,
   bannerComment: ''
 }
+
+log.setLevel('trace')
+const logger = log.getLogger('JSON-RPC-Generator')
 
 const pascalCase = str => camelCase(str).replace(/^(.)/, toUpper)
 
@@ -157,8 +161,10 @@ const getRemoteFile = async filePath => {
 
 const getJsonFileContent = async filePath => {
   if (isUrl(filePath)) {
+    logger.info(`Fetching remote openrpc specs...`)
     return getRemoteFile(filePath)
   } else {
+    logger.info(`Reading specs file content...`)
     return require(path.join(process.cwd(), filePath))
   }
 }
@@ -221,6 +227,7 @@ const createClient = () => {
       })
 
       await writeFile(path.join(process.cwd(), outFile), content)
+      logger.info(`Generated client to ${path.join(process.cwd(), outFile)}`)
     })
 
   program.parse(process.argv)

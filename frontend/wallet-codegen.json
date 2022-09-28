@@ -1,4 +1,5 @@
 {
+  "_document @ TODO - enable when schema got fixed": "https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json",
   "document": "./json-rpc/openrpc.json",
   "outFile": "./src/wallet-client/index.ts",
   "template": "./json-rpc/template.underscore"
