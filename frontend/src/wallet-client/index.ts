@@ -10,6 +10,15 @@ export const openrpcDocument: OpenRPC = {"openrpc":"1.2.6","info":{"version":"1.
 
 // const validator = new MethodCallValidator(openrpcDocument);
 
+export class JSONRPCError extends Error {
+  public data: string
+
+  constructor(rpcErr: JSONRPCModel.ErrorDetails) {
+    super(rpcErr.message)
+    this.data = rpcErr.data
+  }
+}
+
 export namespace WalletModel {
   /**
  * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
@@ -694,8 +703,9 @@ export class WalletClient {
       console.log(method, params, res)
 
       if (res.error) {
-        throw new Error(res.error.message + ': ' + res.error.data.toString())
+        throw new JSONRPCError(res.error)
       }
+
       const { id, ...rest } = res.result
       return rest;
     });

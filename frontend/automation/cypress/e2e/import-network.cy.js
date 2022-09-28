@@ -44,7 +44,7 @@ describe('import network', () => {
     cy.getByTestId('url-path').type(url)
     cy.getByTestId('import').click()
     cy.getByTestId('toast').contains(
-      "Error: couldn't fetch network configuration"
+      "Error: couldn't import network configuration"
     )
   })
 
@@ -53,8 +53,7 @@ describe('import network', () => {
     cy.getByTestId('url-path').type(Cypress.env('testNetworkPath'))
     cy.getByTestId('import').click()
     cy.getByTestId('toast')
-      .contains("Error: couldn't import network:")
-      .contains('already exists')
+      .contains("Error: couldn't import network configuration")
     // overwrite message shown, check overwrite and re submit
     cy.getByTestId('toast').should('not.exist')
     cy.get('button[role="checkbox"]').click()
@@ -98,7 +97,7 @@ describe('import network', () => {
     cy.getByTestId('url-path').type(invalidFilePath)
     cy.getByTestId('import').click()
     cy.getByTestId('toast').contains(
-      "Error: couldn't read network configuration"
+      "Error: couldn't import network configuration"
     )
   })
 })
