@@ -706,7 +706,7 @@ export class WalletClient {
         throw new JSONRPCError(res.error)
       }
 
-      const { id, ...rest } = res.result
+      const { id, ...rest } = (res.result || {})
       return rest;
     });
   }
