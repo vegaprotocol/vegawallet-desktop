@@ -64,7 +64,10 @@ Cypress.Commands.add('restoreNetwork', (handler, name = 'test') => {
         name
       }
     })
-    .then(res => res.result)
+    .then(res => {
+      console.log('IMPORT NETWORK SUCCESS:', res)
+      return res.result
+    })
 })
 
 Cypress.Commands.add('sendTransaction', transaction => {
