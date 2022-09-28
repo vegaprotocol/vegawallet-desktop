@@ -694,7 +694,7 @@ export class WalletClient {
       console.log(method, params, res)
 
       if (res.error) {
-        throw new Error(res.error.message)
+        throw new Error(res.error.message + ': ' + res.error.data.toString())
       }
       const { id, ...rest } = res.result
       return rest;

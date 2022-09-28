@@ -25,10 +25,10 @@ export function useImportNetwork() {
 
   const submit = React.useCallback(
     async (values: ImportNetworkArgs) => {
-      try {
-        setStatus(FormStatus.Pending)
+      setStatus(FormStatus.Pending)
+      const { name, url, filePath, force } = createImportNetworkArgs(values)
 
-        const { name, url, filePath, force } = createImportNetworkArgs(values)
+      try {
         const res = await service.WalletApi.ImportNetwork({
           name,
           filePath,
@@ -52,7 +52,10 @@ export function useImportNetwork() {
             intent: Intent.SUCCESS
           })
         } else {
-          const message = 'Error: Could not import network'
+          throw new Error('Error: Couldn\'t import network')
+        }
+      } catch (err: unknown) {
+          const message = 'Error: Couldn\'t import network'
           setError(message)
           setStatus(FormStatus.Error)
           AppToaster.show({
@@ -60,17 +63,7 @@ export function useImportNetwork() {
             intent: Intent.DANGER
           })
         }
-      } catch (err) {
-        // @ts-ignore
-        setError(err)
-        setStatus(FormStatus.Error)
-        AppToaster.show({
-          message: `${err}`,
-          intent: Intent.DANGER
-        })
-        logger.error(err)
-      }
-    },
+      },
     [dispatch, setStatus, service, actions]
   )
 
