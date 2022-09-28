@@ -1,13 +1,5 @@
 {
-  "openrpcDocument": "./json-rpc/openrpc.json",
-  "outDir": "./src/wallet-client",
-  "components": [
-    {
-      "type": "custom",
-      "name": "wallet-client",
-      "language": "typescript",
-      "customComponent": "./json-rpc/client.js",
-      "customType": "client"
-    }
-  ]
+  "document": "./json-rpc/openrpc.json",
+  "outFile": "./src/wallet-client/index.ts",
+  "template": "./json-rpc/template.underscore"
 }

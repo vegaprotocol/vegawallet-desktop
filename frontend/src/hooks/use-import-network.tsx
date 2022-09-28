@@ -20,7 +20,7 @@ export function useImportNetwork() {
   const { actions, service, dispatch } = useGlobal()
   const [status, setStatus] = useFormState()
   const [response, setResponse] =
-    React.useState<WalletModel.DescribeNetworkResponse | null>(null)
+    React.useState<WalletModel.DescribeNetworkResult | null>(null)
   const [error, setError] = React.useState<string | null>(null)
 
   const submit = React.useCallback(
@@ -29,15 +29,15 @@ export function useImportNetwork() {
         setStatus(FormStatus.Pending)
 
         const { name, url, filePath, force } = createImportNetworkArgs(values)
-        const res = await service.WalletApi.ImportNetwork(
+        const res = await service.WalletApi.ImportNetwork({
           name,
           filePath,
           url,
           force
-        )
+        })
 
         if (res && res.name) {
-          const config = await service.WalletApi.DescribeNetwork(res.name)
+          const config = await service.WalletApi.DescribeNetwork({ network: res.name })
 
           // Update the config
           dispatch(actions.addNetworkAction(res.name, config))

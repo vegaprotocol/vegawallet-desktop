@@ -11,7 +11,7 @@ const logger = createLogger('UseImportWallet')
 export function useImportWallet() {
   const { actions, service, dispatch } = useGlobal()
   const [response, setResponse] =
-    React.useState<WalletModel.ImportWalletResponse | null>(null)
+    React.useState<WalletModel.ImportWalletResult | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
 
   const submit = React.useCallback(
@@ -23,21 +23,21 @@ export function useImportWallet() {
     }) => {
       logger.debug('ImportWallet')
       try {
-        const resp = await service.WalletApi.ImportWallet(
-          values.wallet,
-          values.passphrase,
-          values.recoveryPhrase,
-          Number(values.version)
-        )
+        const resp = await service.WalletApi.ImportWallet({
+          wallet: values.wallet,
+          passphrase: values.passphrase,
+          recoveryPhrase: values.recoveryPhrase,
+          version: Number(values.version)
+        })
 
         if (resp) {
           setResponse(resp)
 
-          const keypair = await service.WalletApi.DescribeKey(
-            values.wallet,
-            values.passphrase,
-            resp.key.publicKey
-          )
+          const keypair = await service.WalletApi.DescribeKey({
+            wallet: values.wallet,
+            passphrase: values.passphrase,
+            publicKey: resp.key.publicKey,
+          })
 
           dispatch(actions.addWalletAction(values.wallet, keypair))
           AppToaster.show({

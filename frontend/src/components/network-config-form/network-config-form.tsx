@@ -23,8 +23,8 @@ interface FormFields {
 }
 
 export interface NetworkConfigFormProps {
-  config: WalletModel.DescribeNetworkResponse
-  onSubmit: (config: WalletModel.DescribeNetworkResponse) => void
+  config: WalletModel.DescribeNetworkResult
+  onSubmit: (config: WalletModel.DescribeNetworkResult) => void
 }
 
 export const NetworkConfigForm = ({
@@ -198,40 +198,40 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
 }
 
 function fieldsToConfig(
-  config: WalletModel.DescribeNetworkResponse,
+  config: WalletModel.DescribeNetworkResult,
   values: FormFields
-): WalletModel.DescribeNetworkResponse {
+): WalletModel.DescribeNetworkResult {
   return {
     name: config.name,
-    level: parseInt(values.logLevel),
+    logLevel: values.logLevel,
     tokenExpiry: values.tokenExpiry,
     port: Number(values.port),
     host: values.host,
     api: {
-      grpc: {
+      grpcConfig: {
         hosts: values.grpcHosts.map(x => x.value),
         retries: Number(values.grpcNodeRetries)
       },
-      graphQl: config.api?.graphQl,
-      rest: config.api?.rest
+      graphQLConfig: config.api?.graphQLConfig,
+      restConfig: config.api?.restConfig
     }
   }
 }
 
 function configToFields(
-  config: WalletModel.DescribeNetworkResponse
+  config: WalletModel.DescribeNetworkResult
 ): FormFields {
   return {
-    logLevel: config.level ? config.level.toString() : '',
+    logLevel: config.logLevel ? config.logLevel.toString() : '',
     tokenExpiry: config.tokenExpiry as string,
     port: config.port ?? 80,
     host: config.host ?? 'localhost',
-    grpcNodeRetries: config.api?.grpc.retries,
+    grpcNodeRetries: config.api?.grpcConfig?.retries || 0,
     // @ts-ignore any resulting from generated types
-    grpcHosts: config.api.grpc.hosts.map(x => ({ value: x })),
+    grpcHosts: config.api.grpcConfig.hosts.map(x => ({ value: x })),
     // @ts-ignore any resulting from generated types
-    graphqlHosts: config.api.graphQl.hosts.map(x => ({ value: x })),
+    graphqlHosts: config.api.graphQlConfig.hosts.map(x => ({ value: x })),
     // @ts-ignore any resulting from generated types
-    restHosts: config.api.rest.hosts.map(x => ({ value: x }))
+    restHosts: config.api.restConfig.hosts.map(x => ({ value: x }))
   }
 }

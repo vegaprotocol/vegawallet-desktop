@@ -28,7 +28,7 @@ const useDeleteWallet = () => {
       try {
         setStatus(FormStatus.Pending)
         logger.debug(`DeleteWallet: ${walletName}`)
-        const res = await service.WalletApi.RemoveWallet(walletName)
+        const res = await service.WalletApi.RemoveWallet({ wallet: walletName })
         if (res instanceof Error) {
           throw res
         } else {

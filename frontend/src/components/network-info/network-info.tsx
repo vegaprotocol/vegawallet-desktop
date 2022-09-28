@@ -15,11 +15,11 @@ export function NetworkInfo() {
   return (
     <>
       <Header>gRPC Nodes</Header>
-      <NodeList items={config.api.grpc.hosts} />
+      <NodeList items={config.api.grpcConfig.hosts} />
       <Header>GraphQL Nodes</Header>
-      <NodeList items={config.api.graphQl.hosts} />
+      <NodeList items={config.api.graphQLConfig.hosts} />
       <Header>REST Nodes</Header>
-      <NodeList items={config.api.rest.hosts} />
+      <NodeList items={config.api.restConfig.hosts} />
       <Header>Application Settings</Header>
       <KeyValueTable
         style={{ fontSize: 16 }}

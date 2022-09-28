@@ -53,11 +53,11 @@ export function createActions(
           ])
 
           const defaultNetwork = config.defaultNetwork
-            ? networks.find(n => n === config.defaultNetwork) || networks[0]
+            ? networks.networks.find((n: string) => n === config.defaultNetwork) || networks[0]
             : networks[0]
 
           const defaultNetworkConfig = defaultNetwork
-            ? await service.WalletApi.DescribeNetwork(defaultNetwork)
+            ? await service.WalletApi.DescribeNetwork({ network: defaultNetwork })
             : null
 
           const serviceState = await service.GetServiceState()
@@ -66,9 +66,9 @@ export function createActions(
             type: 'INIT_APP',
             isInit: true,
             config: config,
-            wallets: wallets,
+            wallets: wallets.wallets,
             network: defaultNetwork,
-            networks: networks,
+            networks: networks.networks,
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
             serviceRunning: serviceState.running
@@ -111,6 +111,7 @@ export function createActions(
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
+
             dispatch({
               type: 'START_SERVICE',
               port: state.networkConfig.port ?? 80
@@ -128,7 +129,7 @@ export function createActions(
 
     addWalletAction(
       wallet: string,
-      key: WalletModel.DescribeKeyResponse
+      key: WalletModel.DescribeKeyResult
     ): GlobalAction {
       return { type: 'ADD_WALLET', wallet, key }
     },
@@ -138,17 +139,17 @@ export function createActions(
         logger.debug('AddKeyPair')
         try {
           const passphrase = await requestPassphrase()
-          const res = await service.WalletApi.GenerateKey(
+          const res = await service.WalletApi.GenerateKey({
             wallet,
             passphrase,
-            {}
-          )
+            metadata: {},
+          })
 
-          const keypair = await service.WalletApi.DescribeKey(
+          const keypair = await service.WalletApi.DescribeKey({
             wallet,
             passphrase,
-            res.publicKey ?? ''
-          )
+            publicKey: res.publicKey ?? '',
+          })
 
           dispatch({
             type: 'ADD_KEYPAIR',
@@ -177,15 +178,15 @@ export function createActions(
         } else {
           try {
             const passphrase = await requestPassphrase()
-            const keys = await service.WalletApi.ListKeys(wallet, passphrase)
+            const keys = await service.WalletApi.ListKeys({ wallet, passphrase })
 
             const keysWithMeta = await Promise.all(
-              (keys.keys || []).map(key =>
-                service.WalletApi.DescribeKey(
+              keys.keys.map((key: WalletModel.NamedPublicKey) =>
+                service.WalletApi.DescribeKey({
                   wallet,
                   passphrase,
-                  key.public_key ?? ''
-                )
+                  publicKey: key.publicKey ?? ''
+                })
               )
             )
 
@@ -212,7 +213,7 @@ export function createActions(
 
     updateKeyPairAction(
       wallet: string,
-      keypair: WalletModel.DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResult
     ): GlobalAction {
       return { type: 'UPDATE_KEYPAIR', wallet, keypair }
     },
@@ -254,7 +255,7 @@ export function createActions(
             })
           )
 
-          const config = await service.WalletApi.DescribeNetwork(network)
+          const config = await service.WalletApi.DescribeNetwork({ network })
 
           dispatch({
             type: 'CHANGE_NETWORK',
@@ -273,7 +274,7 @@ export function createActions(
 
     updateNetworkConfigAction(
       editingNetwork: string,
-      networkConfig: WalletModel.DescribeNetworkResponse
+      networkConfig: WalletModel.DescribeNetworkResult
     ) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const state = getState()
@@ -289,9 +290,7 @@ export function createActions(
             }
           }
 
-          const isSuccessful = await service.WalletApi.UpdateNetwork(
-            networkConfig
-          )
+          const isSuccessful = await service.WalletApi.UpdateNetwork(networkConfig)
 
           if (isSuccessful) {
             AppToaster.show({
@@ -323,7 +322,7 @@ export function createActions(
 
     addNetworkAction(
       network: string,
-      config: WalletModel.DescribeNetworkResponse
+      config: WalletModel.DescribeNetworkResult
     ) {
       return async (dispatch: GlobalDispatch) => {
         // If no service running start service for newly added network
