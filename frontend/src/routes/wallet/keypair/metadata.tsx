@@ -67,7 +67,7 @@ const useMetaUpdate = (
         await service.WalletApi.AnnotateKey({
           wallet,
           passphrase,
-          pubKey,
+          publicKey: pubKey,
           metadata
         })
 
