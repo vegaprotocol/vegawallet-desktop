@@ -33,7 +33,7 @@ export function useImportNetwork() {
           name,
           filePath,
           url,
-          force
+          overwrite: force
         })
 
         if (res && res.name) {

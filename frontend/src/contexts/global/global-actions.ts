@@ -301,6 +301,8 @@ export function createActions(
             networkConfig
           )
 
+          console.log(isSuccessful)
+
           if (isSuccessful) {
             AppToaster.show({
               message: 'Configuration saved',
