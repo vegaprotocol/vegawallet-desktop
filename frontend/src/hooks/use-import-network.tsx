@@ -37,7 +37,9 @@ export function useImportNetwork() {
         })
 
         if (res && res.name) {
-          const config = await service.WalletApi.DescribeNetwork({ network: res.name })
+          const config = await service.WalletApi.DescribeNetwork({
+            network: res.name
+          })
 
           // Update the config
           dispatch(actions.addNetworkAction(res.name, config))

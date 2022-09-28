@@ -39,7 +39,7 @@ const useSign = (pubKey?: string, wallet?: string) => {
           passphrase,
           publicKey: pubKey,
           // @ts-ignore
-          encodedMessage: btoa(values.message),
+          encodedMessage: btoa(values.message)
         })
         // @ts-ignore
         setSignedData(resp.hexSignature)

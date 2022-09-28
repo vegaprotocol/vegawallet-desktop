@@ -32,7 +32,11 @@ const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await service.WalletApi.TaintKey({ wallet, passphrase, publicKey: publicKey })
+      await service.WalletApi.TaintKey({
+        wallet,
+        passphrase,
+        publicKey: publicKey
+      })
 
       const keypair = await service.WalletApi.DescribeKey({
         wallet,

@@ -19,7 +19,7 @@ export function useCreateWallet() {
         logger.debug('CreateWallet')
         const resp = await service.WalletApi.CreateWallet({
           wallet: values.wallet,
-          passphrase: values.passphrase,
+          passphrase: values.passphrase
         })
 
         if (resp) {
@@ -28,7 +28,7 @@ export function useCreateWallet() {
           const keypair = await service.WalletApi.DescribeKey({
             wallet: values.wallet,
             passphrase: values.passphrase,
-            publicKey: resp.key.publicKey,
+            publicKey: resp.key.publicKey
           })
 
           AppToaster.show({
