@@ -11,11 +11,11 @@ export const openrpcDocument: OpenRPC = <%= JSON.stringify(openrpcDocument) %>;
 // const validator = new MethodCallValidator(openrpcDocument);
 
 export class JSONRPCError extends Error {
-  public data: string
+  public code: number
 
   constructor(rpcErr: JSONRPCModel.ErrorDetails) {
-    super(rpcErr.message)
-    this.data = rpcErr.data
+    super(rpcErr.data || rpcErr.message)
+    this.code = rpcErr.code
   }
 }
 
