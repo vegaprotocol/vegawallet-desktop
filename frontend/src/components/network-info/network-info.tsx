@@ -15,11 +15,11 @@ export function NetworkInfo() {
   return (
     <>
       <Header>gRPC Nodes</Header>
-      <NodeList items={config.api.grpcConfig.hosts} />
+      <NodeList items={config.api?.grpcConfig?.hosts ?? []} />
       <Header>GraphQL Nodes</Header>
-      <NodeList items={config.api.graphQLConfig.hosts} />
+      <NodeList items={config.api?.graphQLConfig?.hosts ?? []} />
       <Header>REST Nodes</Header>
-      <NodeList items={config.api.restConfig.hosts} />
+      <NodeList items={config.api?.restConfig?.hosts ?? []} />
       <Header>Application Settings</Header>
       <KeyValueTable
         style={{ fontSize: 16 }}
@@ -29,7 +29,7 @@ export function NetworkInfo() {
             value: `http://${config.host}:${config.port}`,
             dataTestId: 'service-url'
           },
-          { key: 'Log level', value: config.level, dataTestId: 'log-level' },
+          { key: 'Log level', value: config.logLevel, dataTestId: 'log-level' },
           {
             key: 'Token expiry',
             value: config.tokenExpiry,
