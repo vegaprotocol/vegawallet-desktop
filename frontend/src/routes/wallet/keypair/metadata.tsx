@@ -64,18 +64,18 @@ const useMetaUpdate = (
         }
 
         const passphrase = await requestPassphrase()
-        await service.WalletApi.AnnotateKey(
+        await service.WalletApi.AnnotateKey({
           wallet,
           passphrase,
           pubKey,
           metadata
-        )
+        })
 
-        const keypair = await service.WalletApi.DescribeKey(
+        const keypair = await service.WalletApi.DescribeKey({
           wallet,
           passphrase,
-          pubKey
-        )
+          publicKey: pubKey,
+        })
 
         dispatch(actions.updateKeyPairAction(wallet, keypair))
 

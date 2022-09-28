@@ -18,7 +18,7 @@ const logger = createLogger('Taint')
 const useTaint = (
   dispatch: GlobalDispatch,
   actions: GlobalActions,
-  pubKey?: string,
+  publicKey?: string,
   wallet?: string
 ) => {
   const { service } = useGlobal()
@@ -27,18 +27,18 @@ const useTaint = (
   const taint = useCallback(async () => {
     setLoading(true)
     try {
-      if (!pubKey || !wallet) {
+      if (!publicKey || !wallet) {
         return
       }
 
       const passphrase = await requestPassphrase()
-      await service.WalletApi.TaintKey(wallet, passphrase, pubKey)
+      await service.WalletApi.TaintKey({ wallet, passphrase, publicKey: publicKey })
 
-      const keypair = await service.WalletApi.DescribeKey(
+      const keypair = await service.WalletApi.DescribeKey({
         wallet,
         passphrase,
-        pubKey
-      )
+        publicKey
+      })
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))
 
@@ -52,23 +52,23 @@ const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, service, actions, pubKey, wallet])
+  }, [dispatch, service, actions, publicKey, wallet])
 
   const untaint = useCallback(async () => {
     setLoading(true)
     try {
-      if (!pubKey || !wallet) {
+      if (!publicKey || !wallet) {
         return
       }
 
       const passphrase = await requestPassphrase()
-      await service.WalletApi.UntaintKey(wallet, passphrase, pubKey)
+      await service.WalletApi.UntaintKey({ wallet, passphrase, publicKey })
 
-      const keypair = await service.WalletApi.DescribeKey(
+      const keypair = await service.WalletApi.DescribeKey({
         wallet,
         passphrase,
-        pubKey
-      )
+        publicKey
+      })
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))
 
@@ -82,7 +82,7 @@ const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, service, actions, pubKey, wallet])
+  }, [dispatch, service, actions, publicKey, wallet])
 
   return {
     loading,

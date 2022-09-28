@@ -7,7 +7,7 @@ import type { WalletModel } from '../../wallet-client'
 const logger = createLogger('NetworkConfigContainer')
 
 interface NetworkConfigContainerProps {
-  children: (config: WalletModel.DescribeNetworkResponse) => React.ReactElement
+  children: (config: WalletModel.DescribeNetworkResult) => React.ReactElement
   name: string | null
 }
 
@@ -31,7 +31,7 @@ export function NetworkConfigContainer({
 export function useNetworkConfig(name: string | null) {
   const { service } = useGlobal()
   const [config, setConfig] =
-    React.useState<WalletModel.DescribeNetworkResponse | null>(null)
+    React.useState<WalletModel.DescribeNetworkResult | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
   const [loading, setLoading] = React.useState(true)
 
@@ -40,7 +40,7 @@ export function useNetworkConfig(name: string | null) {
       if (!name) return
       setLoading(true)
       try {
-        const res = await service.WalletApi.DescribeNetwork(name)
+        const res = await service.WalletApi.DescribeNetwork({ network: name })
         setConfig(res)
       } catch (err) {
         setError(err as Error)

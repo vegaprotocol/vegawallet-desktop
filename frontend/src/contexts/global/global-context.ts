@@ -17,7 +17,7 @@ export enum AppStatus {
 
 export interface KeyPair
   extends Pick<
-    WalletModel.DescribeKeyResponse,
+    WalletModel.DescribeKeyResult,
     'publicKey' | 'meta' | 'isTainted'
   > {
   name: string
@@ -53,7 +53,7 @@ export interface GlobalState {
   network: string | null
   networks: string[]
   presets: NetworkPreset[]
-  networkConfig: WalletModel.DescribeNetworkResponse | null
+  networkConfig: WalletModel.DescribeNetworkResult | null
   serviceRunning: boolean
   serviceUrl: string
 

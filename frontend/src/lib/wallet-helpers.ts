@@ -1,15 +1,15 @@
 import type { KeyPair, Wallet } from '../contexts/global/global-context'
-import type { wallet as WalletModel } from '../wailsjs/go/models'
+import type { WalletModel } from '../wallet-client'
 import { truncateMiddle } from './truncate-middle'
 
-export function extendKeypair(kp: WalletModel.DescribeKeyResponse): KeyPair {
-  const publicKeyShort = truncateMiddle(kp.publicKey)
-  const nameMeta = kp.meta.find(m => m.key === 'name')
+export function extendKeypair(kp: WalletModel.DescribeKeyResult): KeyPair {
+  const publicKeyShort = truncateMiddle(kp.publicKey ?? '')
+  const nameMeta = kp.metadata?.find(m => m.key === 'name')
   return {
     isTainted: kp.isTainted,
     publicKey: kp.publicKey,
-    meta: kp.meta,
-    name: nameMeta ? nameMeta.value : 'No name',
+    meta: kp.metadata,
+    name: nameMeta?.value || 'No name',
     publicKeyShort
   }
 }

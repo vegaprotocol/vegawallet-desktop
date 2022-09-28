@@ -47,7 +47,7 @@ export type GlobalAction =
       wallets: string[]
       network: string
       networks: string[]
-      networkConfig: WalletModel.DescribeNetworkResponse | null
+      networkConfig: WalletModel.DescribeNetworkResult | null
       presetNetworks: NetworkPreset[]
       serviceRunning: boolean
     }
@@ -75,7 +75,7 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
-      key: WalletModel.DescribeKeyResponse
+      key: WalletModel.DescribeKeyResult
     }
   | {
       type: 'ADD_WALLETS'
@@ -88,17 +88,17 @@ export type GlobalAction =
   | {
       type: 'SET_KEYPAIRS'
       wallet: string
-      keypairs: WalletModel.DescribeKeyResponse[]
+      keypairs: WalletModel.DescribeKeyResult[]
     }
   | {
       type: 'UPDATE_KEYPAIR'
       wallet: string
-      keypair: WalletModel.DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResult
     }
   | {
       type: 'ADD_KEYPAIR'
       wallet: string
-      keypair: WalletModel.DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResult
     }
   | {
       type: 'CHANGE_WALLET'
@@ -133,7 +133,7 @@ export type GlobalAction =
       type: 'SET_NETWORKS'
       network: string | null
       networks: string[]
-      config: WalletModel.DescribeNetworkResponse | null
+      config: WalletModel.DescribeNetworkResult | null
     }
   | {
       type: 'SET_PRESETS'
@@ -142,22 +142,22 @@ export type GlobalAction =
   | {
       type: 'CHANGE_NETWORK'
       network: string
-      config: WalletModel.DescribeNetworkResponse
+      config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'UPDATE_NETWORK_CONFIG'
-      config: WalletModel.DescribeNetworkResponse
+      config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'ADD_NETWORK'
       network: string
-      config: WalletModel.DescribeNetworkResponse
+      config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'ADD_NETWORKS'
       networks: string[]
       network: string
-      networkConfig: WalletModel.DescribeNetworkResponse
+      networkConfig: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'START_SERVICE'
