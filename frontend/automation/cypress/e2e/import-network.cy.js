@@ -52,8 +52,9 @@ describe('import network', () => {
     cy.getByTestId('import-network-select').select('Other')
     cy.getByTestId('url-path').type(Cypress.env('testNetworkPath'))
     cy.getByTestId('import').click()
-    cy.getByTestId('toast')
-      .contains("Error: couldn't import network configuration")
+    cy.getByTestId('toast').contains(
+      "Error: couldn't import network configuration"
+    )
     // overwrite message shown, check overwrite and re submit
     cy.getByTestId('toast').should('not.exist')
     cy.get('button[role="checkbox"]').click()
