@@ -4,7 +4,7 @@ import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
 // import { createLogger } from '../lib/logging'
-import type { WalletModel } from '../wallet-client'
+import { WalletModel, JSONRPCError } from '../wallet-client'
 import { FormStatus, useFormState } from './use-form-state'
 
 // const logger = createLogger('UseImportNetwork')
@@ -52,11 +52,11 @@ export function useImportNetwork() {
             intent: Intent.SUCCESS
           })
         } else {
-          throw new Error("Error: Couldn't import network")
+          throw new Error("Error: couldn't import network configuration")
         }
       } catch (err: unknown) {
-        const message = "Error: Couldn't import network"
-        setError(message)
+        const message = "Error: couldn't import network configuration"
+        setError(message + (err instanceof JSONRPCError ? ` // ${err.data}` : ''))
         setStatus(FormStatus.Error)
         AppToaster.show({
           message,

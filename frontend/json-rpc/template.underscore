@@ -10,6 +10,15 @@ export const openrpcDocument: OpenRPC = <%= JSON.stringify(openrpcDocument) %>;
 
 // const validator = new MethodCallValidator(openrpcDocument);
 
+export class JSONRPCError extends Error {
+  public data: string
+
+  constructor(rpcErr: JSONRPCModel.ErrorDetails) {
+    super(rpcErr.message)
+    this.data = rpcErr.data
+  }
+}
+
 export namespace WalletModel {
   <%= types %>
 }
@@ -25,7 +34,7 @@ export class WalletClient {
       console.log(method, params, res)
 
       if (res.error) {
-        throw new Error(res.error.message + ' - ' + res.error.data.toString())
+        throw new JSONRPCError(res.error)
       }
 
       const { id, ...rest } = res.result
