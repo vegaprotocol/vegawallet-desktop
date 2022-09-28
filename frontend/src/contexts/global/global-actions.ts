@@ -53,11 +53,15 @@ export function createActions(
           ])
 
           const defaultNetwork = config.defaultNetwork
-            ? networks.networks.find((n: string) => n === config.defaultNetwork) || networks[0]
+            ? networks.networks.find(
+                (n: string) => n === config.defaultNetwork
+              ) || networks[0]
             : networks[0]
 
           const defaultNetworkConfig = defaultNetwork
-            ? await service.WalletApi.DescribeNetwork({ network: defaultNetwork })
+            ? await service.WalletApi.DescribeNetwork({
+                network: defaultNetwork
+              })
             : null
 
           const serviceState = await service.GetServiceState()
@@ -142,13 +146,13 @@ export function createActions(
           const res = await service.WalletApi.GenerateKey({
             wallet,
             passphrase,
-            metadata: {},
+            metadata: {}
           })
 
           const keypair = await service.WalletApi.DescribeKey({
             wallet,
             passphrase,
-            publicKey: res.publicKey ?? '',
+            publicKey: res.publicKey ?? ''
           })
 
           dispatch({
@@ -178,7 +182,10 @@ export function createActions(
         } else {
           try {
             const passphrase = await requestPassphrase()
-            const keys = await service.WalletApi.ListKeys({ wallet, passphrase })
+            const keys = await service.WalletApi.ListKeys({
+              wallet,
+              passphrase
+            })
 
             const keysWithMeta = await Promise.all(
               keys.keys.map((key: WalletModel.NamedPublicKey) =>
@@ -290,7 +297,9 @@ export function createActions(
             }
           }
 
-          const isSuccessful = await service.WalletApi.UpdateNetwork(networkConfig)
+          const isSuccessful = await service.WalletApi.UpdateNetwork(
+            networkConfig
+          )
 
           if (isSuccessful) {
             AppToaster.show({

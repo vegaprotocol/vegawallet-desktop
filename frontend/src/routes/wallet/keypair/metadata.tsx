@@ -74,7 +74,7 @@ const useMetaUpdate = (
         const keypair = await service.WalletApi.DescribeKey({
           wallet,
           passphrase,
-          publicKey: pubKey,
+          publicKey: pubKey
         })
 
         dispatch(actions.updateKeyPairAction(wallet, keypair))
