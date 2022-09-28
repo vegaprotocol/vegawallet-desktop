@@ -58,7 +58,7 @@ export function useImportNetwork() {
       } catch (err: unknown) {
         const message = "Error: couldn't import network configuration"
         setError(
-          message + (err instanceof JSONRPCError ? ` // ${err.data}` : '')
+          message + (err instanceof JSONRPCError ? ` - ${err.message}` : '')
         )
         setStatus(FormStatus.Error)
         AppToaster.show({
