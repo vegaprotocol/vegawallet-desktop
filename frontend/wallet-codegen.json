@@ -1,6 +1,5 @@
 {
-  "document_": "https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json",
-  "document": "./json-rpc/openrpc.json",
+  "document": "https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json",
   "outFile": "./src/wallet-client/index.ts",
   "template": "./json-rpc/template.underscore"
 }

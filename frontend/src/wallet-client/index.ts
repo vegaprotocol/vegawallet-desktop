@@ -693,7 +693,7 @@ export interface SendTransactionParams {
 }
 
 export class WalletClient {
-  private request<T>(method: string, params?: any[]) {
+  private request<T>(method: string, params?: any[] | any) {
     return UnwrappedService.SubmitWalletAPIRequest({
       jsonrpc: '2.0',
       id: nanoid(),
