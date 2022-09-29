@@ -715,8 +715,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientConnectWallet = (params: ClientConnectWalletParams) => {
-    return this.request<ClientConnectWalletResult>('client.connect_wallet', params);
+  public ClientConnectWallet = (params: WalletModel.ClientConnectWalletParams) => {
+    return this.request<WalletModel.ClientConnectWalletResult>('client.connect_wallet', params);
   }
   
   /**
@@ -724,8 +724,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientDisconnectWallet = (params: ClientDisconnectWalletParams) => {
-    return this.request<ClientDisconnectWalletResult>('client.disconnect_wallet', params);
+  public ClientDisconnectWallet = (params: WalletModel.ClientDisconnectWalletParams) => {
+    return this.request<WalletModel.ClientDisconnectWalletResult>('client.disconnect_wallet', params);
   }
   
   /**
@@ -733,8 +733,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientGetPermissions = (params: ClientGetPermissionsParams) => {
-    return this.request<ClientGetPermissionsResult>('client.get_permissions', params);
+  public ClientGetPermissions = (params: WalletModel.ClientGetPermissionsParams) => {
+    return this.request<WalletModel.ClientGetPermissionsResult>('client.get_permissions', params);
   }
   
   /**
@@ -742,8 +742,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientRequestPermissions = (params: ClientRequestPermissionsParams) => {
-    return this.request<ClientRequestPermissionsResult>('client.request_permissions', params);
+  public ClientRequestPermissions = (params: WalletModel.ClientRequestPermissionsParams) => {
+    return this.request<WalletModel.ClientRequestPermissionsResult>('client.request_permissions', params);
   }
   
   /**
@@ -751,8 +751,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientListKeys = (params: ClientListKeysParams) => {
-    return this.request<ClientListKeysResult>('client.list_keys', params);
+  public ClientListKeys = (params: WalletModel.ClientListKeysParams) => {
+    return this.request<WalletModel.ClientListKeysResult>('client.list_keys', params);
   }
   
   /**
@@ -760,8 +760,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientSignTransaction = (params: ClientSignTransactionParams) => {
-    return this.request<ClientSignTransactionResult>('client.sign_transaction', params);
+  public ClientSignTransaction = (params: WalletModel.ClientSignTransactionParams) => {
+    return this.request<WalletModel.ClientSignTransactionResult>('client.sign_transaction', params);
   }
   
   /**
@@ -769,8 +769,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientSendTransaction = (params: ClientSendTransactionParams) => {
-    return this.request<ClientSendTransactionResult>('client.send_transaction', params);
+  public ClientSendTransaction = (params: WalletModel.ClientSendTransactionParams) => {
+    return this.request<WalletModel.ClientSendTransactionResult>('client.send_transaction', params);
   }
   
   /**
@@ -778,8 +778,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientGetChainId = (params: ClientGetChainIdParams) => {
-    return this.request<ClientGetChainIdResult>('client.get_chain_id', params);
+  public ClientGetChainId = (params: WalletModel.ClientGetChainIdParams) => {
+    return this.request<WalletModel.ClientGetChainIdResult>('client.get_chain_id', params);
   }
   
   /**
@@ -787,8 +787,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public CreateWallet = (params: CreateWalletParams) => {
-    return this.request<CreateWalletResult>('admin.create_wallet', params);
+  public CreateWallet = (params: WalletModel.CreateWalletParams) => {
+    return this.request<WalletModel.CreateWalletResult>('admin.create_wallet', params);
   }
   
   /**
@@ -796,8 +796,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ImportWallet = (params: ImportWalletParams) => {
-    return this.request<ImportWalletResult>('admin.import_wallet', params);
+  public ImportWallet = (params: WalletModel.ImportWalletParams) => {
+    return this.request<WalletModel.ImportWalletResult>('admin.import_wallet', params);
   }
   
   /**
@@ -805,8 +805,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribeWallet = (params: DescribeWalletParams) => {
-    return this.request<DescribeWalletResult>('admin.describe_wallet', params);
+  public DescribeWallet = (params: WalletModel.DescribeWalletParams) => {
+    return this.request<WalletModel.DescribeWalletResult>('admin.describe_wallet', params);
   }
   
   /**
@@ -814,8 +814,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListWallets = (...params: ListWalletsParams) => {
-    return this.request<ListWalletsResult>('admin.list_wallets', params);
+  public ListWallets = (...params: WalletModel.ListWalletsParams) => {
+    return this.request<WalletModel.ListWalletsResult>('admin.list_wallets', params);
   }
   
   /**
@@ -823,8 +823,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListNetworks = (...params: ListNetworksParams) => {
-    return this.request<ListNetworksResult>('admin.list_networks', params);
+  public ListNetworks = (...params: WalletModel.ListNetworksParams) => {
+    return this.request<WalletModel.ListNetworksResult>('admin.list_networks', params);
   }
   
   /**
@@ -832,8 +832,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribeNetwork = (params: DescribeNetworkParams) => {
-    return this.request<DescribeNetworkResult>('admin.describe_network', params);
+  public DescribeNetwork = (params: WalletModel.DescribeNetworkParams) => {
+    return this.request<WalletModel.DescribeNetworkResult>('admin.describe_network', params);
   }
   
   /**
@@ -841,8 +841,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public UpdateNetwork = (params: UpdateNetworkParams) => {
-    return this.request<UpdateNetworkResult>('admin.update_network', params);
+  public UpdateNetwork = (params: WalletModel.UpdateNetworkParams) => {
+    return this.request<WalletModel.UpdateNetworkResult>('admin.update_network', params);
   }
   
   /**
@@ -850,8 +850,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public RemoveNetwork = (params: RemoveNetworkParams) => {
-    return this.request<RemoveNetworkResult>('admin.remove_network', params);
+  public RemoveNetwork = (params: WalletModel.RemoveNetworkParams) => {
+    return this.request<WalletModel.RemoveNetworkResult>('admin.remove_network', params);
   }
   
   /**
@@ -859,8 +859,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ImportNetwork = (params: ImportNetworkParams) => {
-    return this.request<ImportNetworkResult>('admin.import_network', params);
+  public ImportNetwork = (params: WalletModel.ImportNetworkParams) => {
+    return this.request<WalletModel.ImportNetworkResult>('admin.import_network', params);
   }
   
   /**
@@ -868,8 +868,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public RemoveWallet = (params: RemoveWalletParams) => {
-    return this.request<RemoveWalletResult>('admin.remove_wallet', params);
+  public RemoveWallet = (params: WalletModel.RemoveWalletParams) => {
+    return this.request<WalletModel.RemoveWalletResult>('admin.remove_wallet', params);
   }
   
   /**
@@ -877,8 +877,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public GenerateKey = (params: GenerateKeyParams) => {
-    return this.request<GenerateKeyResult>('admin.generate_key', params);
+  public GenerateKey = (params: WalletModel.GenerateKeyParams) => {
+    return this.request<WalletModel.GenerateKeyResult>('admin.generate_key', params);
   }
   
   /**
@@ -886,8 +886,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribeKey = (params: DescribeKeyParams) => {
-    return this.request<DescribeKeyResult>('admin.describe_key', params);
+  public DescribeKey = (params: WalletModel.DescribeKeyParams) => {
+    return this.request<WalletModel.DescribeKeyResult>('admin.describe_key', params);
   }
   
   /**
@@ -895,8 +895,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListKeys = (params: ListKeysParams) => {
-    return this.request<ListKeysResult>('admin.list_keys', params);
+  public ListKeys = (params: WalletModel.ListKeysParams) => {
+    return this.request<WalletModel.ListKeysResult>('admin.list_keys', params);
   }
   
   /**
@@ -904,8 +904,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public AnnotateKey = (params: AnnotateKeyParams) => {
-    return this.request<AnnotateKeyResult>('admin.annotate_key', params);
+  public AnnotateKey = (params: WalletModel.AnnotateKeyParams) => {
+    return this.request<WalletModel.AnnotateKeyResult>('admin.annotate_key', params);
   }
   
   /**
@@ -913,8 +913,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public IsolateKey = (params: IsolateKeyParams) => {
-    return this.request<IsolateKeyResult>('admin.isolate_key', params);
+  public IsolateKey = (params: WalletModel.IsolateKeyParams) => {
+    return this.request<WalletModel.IsolateKeyResult>('admin.isolate_key', params);
   }
   
   /**
@@ -922,8 +922,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public RotateKey = (params: RotateKeyParams) => {
-    return this.request<RotateKeyResult>('admin.rotate_key', params);
+  public RotateKey = (params: WalletModel.RotateKeyParams) => {
+    return this.request<WalletModel.RotateKeyResult>('admin.rotate_key', params);
   }
   
   /**
@@ -931,8 +931,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public TaintKey = (params: TaintKeyParams) => {
-    return this.request<TaintKeyResult>('admin.taint_key', params);
+  public TaintKey = (params: WalletModel.TaintKeyParams) => {
+    return this.request<WalletModel.TaintKeyResult>('admin.taint_key', params);
   }
   
   /**
@@ -940,8 +940,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public UntaintKey = (params: UntaintKeyParams) => {
-    return this.request<UntaintKeyResult>('admin.untaint_key', params);
+  public UntaintKey = (params: WalletModel.UntaintKeyParams) => {
+    return this.request<WalletModel.UntaintKeyResult>('admin.untaint_key', params);
   }
   
   /**
@@ -949,8 +949,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribePermissions = (params: DescribePermissionsParams) => {
-    return this.request<DescribePermissionsResult>('admin.describe_permissions', params);
+  public DescribePermissions = (params: WalletModel.DescribePermissionsParams) => {
+    return this.request<WalletModel.DescribePermissionsResult>('admin.describe_permissions', params);
   }
   
   /**
@@ -958,8 +958,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListPermissions = (params: ListPermissionsParams) => {
-    return this.request<ListPermissionsResult>('admin.list_permissions', params);
+  public ListPermissions = (params: WalletModel.ListPermissionsParams) => {
+    return this.request<WalletModel.ListPermissionsResult>('admin.list_permissions', params);
   }
   
   /**
@@ -967,8 +967,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public UpdatePermissions = (params: UpdatePermissionsParams) => {
-    return this.request<UpdatePermissionsResult>('admin.update_permissions', params);
+  public UpdatePermissions = (params: WalletModel.UpdatePermissionsParams) => {
+    return this.request<WalletModel.UpdatePermissionsResult>('admin.update_permissions', params);
   }
   
   /**
@@ -976,8 +976,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public RevokePermissions = (params: RevokePermissionsParams) => {
-    return this.request<RevokePermissionsResult>('admin.revoke_permissions', params);
+  public RevokePermissions = (params: WalletModel.RevokePermissionsParams) => {
+    return this.request<WalletModel.RevokePermissionsResult>('admin.revoke_permissions', params);
   }
   
   /**
@@ -985,8 +985,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public PurgePermissions = (params: PurgePermissionsParams) => {
-    return this.request<PurgePermissionsResult>('admin.purge_permissions', params);
+  public PurgePermissions = (params: WalletModel.PurgePermissionsParams) => {
+    return this.request<WalletModel.PurgePermissionsResult>('admin.purge_permissions', params);
   }
   
   /**
@@ -994,8 +994,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public SignTransaction = (params: SignTransactionParams) => {
-    return this.request<SignTransactionResult>('admin.sign_transaction', params);
+  public SignTransaction = (params: WalletModel.SignTransactionParams) => {
+    return this.request<WalletModel.SignTransactionResult>('admin.sign_transaction', params);
   }
   
   /**
@@ -1003,8 +1003,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public SignMessage = (params: SignMessageParams) => {
-    return this.request<SignMessageResult>('admin.sign_message', params);
+  public SignMessage = (params: WalletModel.SignMessageParams) => {
+    return this.request<WalletModel.SignMessageResult>('admin.sign_message', params);
   }
   
   /**
@@ -1012,8 +1012,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public VerifyMessage = (params: VerifyMessageParams) => {
-    return this.request<VerifyMessageResult>('admin.verify_message', params);
+  public VerifyMessage = (params: WalletModel.VerifyMessageParams) => {
+    return this.request<WalletModel.VerifyMessageResult>('admin.verify_message', params);
   }
   
   /**
@@ -1021,8 +1021,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public SendTransaction = (params: SendTransactionParams) => {
-    return this.request<SendTransactionResult>('admin.send_transaction', params);
+  public SendTransaction = (params: WalletModel.SendTransactionParams) => {
+    return this.request<WalletModel.SendTransactionResult>('admin.send_transaction', params);
   }
   
 }

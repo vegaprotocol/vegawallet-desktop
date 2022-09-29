@@ -46,8 +46,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public <%= getMethodName(method) %> = (<%= getMethodParams(method) %>: <%= getMethodParamsType(method) %>) => {
-    return this.request<<%= getMethodResultType(method) %>>('<%= method.name %>', params);
+  public <%= getMethodName(method) %> = (<%= getMethodParams(method) %>: WalletModel.<%= getMethodParamsType(method) %>) => {
+    return this.request<WalletModel.<%= getMethodResultType(method) %>>('<%= method.name %>', params);
   }
   <% }); %>
 }
