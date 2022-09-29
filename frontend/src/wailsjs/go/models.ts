@@ -1,81 +1,31 @@
 export namespace backend {
 	
-	export class SearchForExistingConfigurationResponse {
-	    wallets: string[];
-	    networks: string[];
-	
-	    static createFrom(source: any = {}) {
-	        return new SearchForExistingConfigurationResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallets = source["wallets"];
-	        this.networks = source["networks"];
-	    }
-	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
-	}
-	export class GetVersionResponse {
+	export class CheckVersionResponse {
 	    version: string;
-	    gitHash: string;
+	    releaseUrl: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
+	        return new CheckVersionResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
+	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
+	        return new GetServiceStateResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
-	}
-	export class ConsentToTransactionRequest {
-	    txId: string;
-	    decision: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new ConsentToTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	        this.decision = source["decision"];
-	    }
-	}
-	export class GetConsentRequestRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetConsentRequestRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
+	        this.url = source["url"];
+	        this.running = source["running"];
 	    }
 	}
 	export class ConsentRequest {
@@ -113,20 +63,6 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
 	export class ListConsentRequestsResponse {
 	    requests: ConsentRequest[];
 	
@@ -156,6 +92,71 @@ export namespace backend {
 		    }
 		    return a;
 		}
+	}
+	export class ClearSentTransactionRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ClearSentTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
+	}
+	export class ConsentToTransactionRequest {
+	    txId: string;
+	    decision: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new ConsentToTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	        this.decision = source["decision"];
+	    }
+	}
+	export class GetConsentRequestRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetConsentRequestRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
+	}
+	
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	    }
+	}
+	export class InitialiseAppRequest {
+	    vegaHome: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InitialiseAppRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.vegaHome = source["vegaHome"];
+	    }
 	}
 	export class SentTransaction {
 	    txId: string;
@@ -226,30 +227,30 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class CheckVersionResponse {
-	    version: string;
-	    releaseUrl: string;
+	export class SearchForExistingConfigurationResponse {
+	    wallets: string[];
+	    networks: string[];
 	
 	    static createFrom(source: any = {}) {
-	        return new CheckVersionResponse(source);
+	        return new SearchForExistingConfigurationResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.releaseUrl = source["releaseUrl"];
+	        this.wallets = source["wallets"];
+	        this.networks = source["networks"];
 	    }
 	}
-	export class ClearSentTransactionRequest {
-	    txId: string;
+	export class StartServiceRequest {
+	    network: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
+	        return new StartServiceRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
+	        this.network = source["network"];
 	    }
 	}
 
