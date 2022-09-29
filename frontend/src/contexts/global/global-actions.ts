@@ -114,8 +114,7 @@ export function createActions(
         try {
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
-            const a = await service.StartService({ network: state.network })
-            console.log('SERVICE START RES: ', a)
+            await service.StartService({ network: state.network })
 
             dispatch({
               type: 'START_SERVICE',
@@ -302,8 +301,6 @@ export function createActions(
             networkConfig
           )
 
-          console.log(isSuccessful)
-
           if (isSuccessful) {
             AppToaster.show({
               message: 'Configuration saved',
@@ -321,11 +318,10 @@ export function createActions(
             throw new Error('No network selected')
           }
 
-          const a = await service.StartService({
+          await service.StartService({
             network: state.network
           })
 
-          console.log('START SERVICE RES: ', a)
           dispatch({ type: 'START_SERVICE', port: networkConfig.port ?? 80 })
         } catch (err) {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })

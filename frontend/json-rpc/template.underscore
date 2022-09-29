@@ -31,11 +31,6 @@ export class WalletClient {
       method,
       params,
     }).then((res: JSONRPCModel.Response) => {
-      console.log('\n')
-      console.log(method)
-      console.log(JSON.stringify(params))
-      console.log(JSON.stringify(res))
-
       if (res.error) {
         throw new JSONRPCError(res.error)
       }

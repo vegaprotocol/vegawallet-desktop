@@ -700,11 +700,6 @@ export class WalletClient {
       method,
       params,
     }).then((res: JSONRPCModel.Response) => {
-      console.log('\n')
-      console.log(method)
-      console.log(JSON.stringify(params))
-      console.log(JSON.stringify(res))
-
       if (res.error) {
         throw new JSONRPCError(res.error)
       }
@@ -714,7 +709,7 @@ export class WalletClient {
     });
   }
 
-  
+
   /**
    * Initiates a connection between a wallet and a third-party application.
    */
@@ -723,7 +718,7 @@ export class WalletClient {
   public ClientConnectWallet = (params: ClientConnectWalletParams): Promise<ClientConnectWalletResult> => {
     return this.request('client.connect_wallet', params);
   }
-  
+
   /**
    * Ends the connection between the third-party application and the wallet.
    */
@@ -732,7 +727,7 @@ export class WalletClient {
   public ClientDisconnectWallet = (params: ClientDisconnectWalletParams): Promise<ClientDisconnectWalletResult> => {
     return this.request('client.disconnect_wallet', params);
   }
-  
+
   /**
    * Returns the permissions set on the wallet for the third-party application.
    */
@@ -741,7 +736,7 @@ export class WalletClient {
   public ClientGetPermissions = (params: ClientGetPermissionsParams): Promise<ClientGetPermissionsResult> => {
     return this.request('client.get_permissions', params);
   }
-  
+
   /**
    * Requests permissions update for the third-party application.
    */
@@ -750,7 +745,7 @@ export class WalletClient {
   public ClientRequestPermissions = (params: ClientRequestPermissionsParams): Promise<ClientRequestPermissionsResult> => {
     return this.request('client.request_permissions', params);
   }
-  
+
   /**
    * Returns the keys the user has allowed the third-party application to have access to.
    */
@@ -759,7 +754,7 @@ export class WalletClient {
   public ClientListKeys = (params: ClientListKeysParams): Promise<ClientListKeysResult> => {
     return this.request('client.list_keys', params);
   }
-  
+
   /**
    * Sign a transaction without sending it.
    */
@@ -768,7 +763,7 @@ export class WalletClient {
   public ClientSignTransaction = (params: ClientSignTransactionParams): Promise<ClientSignTransactionResult> => {
     return this.request('client.sign_transaction', params);
   }
-  
+
   /**
    * Send a transaction to the network.
    */
@@ -777,7 +772,7 @@ export class WalletClient {
   public ClientSendTransaction = (params: ClientSendTransactionParams): Promise<ClientSendTransactionResult> => {
     return this.request('client.send_transaction', params);
   }
-  
+
   /**
    * Returns the chain ID of the network in use.
    */
@@ -786,7 +781,7 @@ export class WalletClient {
   public ClientGetChainId = (params: ClientGetChainIdParams): Promise<ClientGetChainIdResult> => {
     return this.request('client.get_chain_id', params);
   }
-  
+
   /**
    * Creates a wallet with its first key-pair.
    */
@@ -795,7 +790,7 @@ export class WalletClient {
   public CreateWallet = (params: CreateWalletParams): Promise<CreateWalletResult> => {
     return this.request('admin.create_wallet', params);
   }
-  
+
   /**
    * Import a wallet with its first key-pair with a recovery phrase and a version.
    */
@@ -804,7 +799,7 @@ export class WalletClient {
   public ImportWallet = (params: ImportWalletParams): Promise<ImportWalletResult> => {
     return this.request('admin.import_wallet', params);
   }
-  
+
   /**
    * Returns the wallet base information.
    */
@@ -813,7 +808,7 @@ export class WalletClient {
   public DescribeWallet = (params: DescribeWalletParams): Promise<DescribeWalletResult> => {
     return this.request('admin.describe_wallet', params);
   }
-  
+
   /**
    * Returns the list of the wallets present on the computer.
    */
@@ -822,7 +817,7 @@ export class WalletClient {
   public ListWallets = (...params: ListWalletsParams): Promise<ListWalletsResult> => {
     return this.request('admin.list_wallets', params);
   }
-  
+
   /**
    * Returns the list of all registered networks.
    */
@@ -831,7 +826,7 @@ export class WalletClient {
   public ListNetworks = (...params: ListNetworksParams): Promise<ListNetworksResult> => {
     return this.request('admin.list_networks', params);
   }
-  
+
   /**
    * Returns the network information.
    */
@@ -840,7 +835,7 @@ export class WalletClient {
   public DescribeNetwork = (params: DescribeNetworkParams): Promise<DescribeNetworkResult> => {
     return this.request('admin.describe_network', params);
   }
-  
+
   /**
    * Update an existing network.
    */
@@ -849,7 +844,7 @@ export class WalletClient {
   public UpdateNetwork = (params: UpdateNetworkParams): Promise<UpdateNetworkResult> => {
     return this.request('admin.update_network', params);
   }
-  
+
   /**
    * Removes a network from the computer.
    */
@@ -858,7 +853,7 @@ export class WalletClient {
   public RemoveNetwork = (params: RemoveNetworkParams): Promise<RemoveNetworkResult> => {
     return this.request('admin.remove_network', params);
   }
-  
+
   /**
    * Import a network configuration from a file or an URL.
    */
@@ -867,7 +862,7 @@ export class WalletClient {
   public ImportNetwork = (params: ImportNetworkParams): Promise<ImportNetworkResult> => {
     return this.request('admin.import_network', params);
   }
-  
+
   /**
    * Removes a wallet from the computer.
    */
@@ -876,7 +871,7 @@ export class WalletClient {
   public RemoveWallet = (params: RemoveWalletParams): Promise<RemoveWalletResult> => {
     return this.request('admin.remove_wallet', params);
   }
-  
+
   /**
    * Generates a key on the specified wallet.
    */
@@ -885,7 +880,7 @@ export class WalletClient {
   public GenerateKey = (params: GenerateKeyParams): Promise<GenerateKeyResult> => {
     return this.request('admin.generate_key', params);
   }
-  
+
   /**
    * Returns key's information.
    */
@@ -894,7 +889,7 @@ export class WalletClient {
   public DescribeKey = (params: DescribeKeyParams): Promise<DescribeKeyResult> => {
     return this.request('admin.describe_key', params);
   }
-  
+
   /**
    * Returns all generated key of the specified wallet.
    */
@@ -903,7 +898,7 @@ export class WalletClient {
   public ListKeys = (params: ListKeysParams): Promise<ListKeysResult> => {
     return this.request('admin.list_keys', params);
   }
-  
+
   /**
    * Attaches metadata to a key.
    */
@@ -912,7 +907,7 @@ export class WalletClient {
   public AnnotateKey = (params: AnnotateKeyParams): Promise<AnnotateKeyResult> => {
     return this.request('admin.annotate_key', params);
   }
-  
+
   /**
    * Isolate a key to a specific wallet.
    */
@@ -921,7 +916,7 @@ export class WalletClient {
   public IsolateKey = (params: IsolateKeyParams): Promise<IsolateKeyResult> => {
     return this.request('admin.isolate_key', params);
   }
-  
+
   /**
    * Builds a transaction to rotate key on the network.
    */
@@ -930,7 +925,7 @@ export class WalletClient {
   public RotateKey = (params: RotateKeyParams): Promise<RotateKeyResult> => {
     return this.request('admin.rotate_key', params);
   }
-  
+
   /**
    * Marks the specified public key as tainted.
    */
@@ -939,7 +934,7 @@ export class WalletClient {
   public TaintKey = (params: TaintKeyParams): Promise<TaintKeyResult> => {
     return this.request('admin.taint_key', params);
   }
-  
+
   /**
    * Remove the taint from the specified public key.
    */
@@ -948,7 +943,7 @@ export class WalletClient {
   public UntaintKey = (params: UntaintKeyParams): Promise<UntaintKeyResult> => {
     return this.request('admin.untaint_key', params);
   }
-  
+
   /**
    * Returns the permissions set for the specified wallet and hostname.
    */
@@ -957,7 +952,7 @@ export class WalletClient {
   public DescribePermissions = (params: DescribePermissionsParams): Promise<DescribePermissionsResult> => {
     return this.request('admin.describe_permissions', params);
   }
-  
+
   /**
    * Returns the permissions summary for all set hostnames.
    */
@@ -966,7 +961,7 @@ export class WalletClient {
   public ListPermissions = (params: ListPermissionsParams): Promise<ListPermissionsResult> => {
     return this.request('admin.list_permissions', params);
   }
-  
+
   /**
    * Updates the permissions for the specified wallet and hostname.
    */
@@ -975,7 +970,7 @@ export class WalletClient {
   public UpdatePermissions = (params: UpdatePermissionsParams): Promise<UpdatePermissionsResult> => {
     return this.request('admin.update_permissions', params);
   }
-  
+
   /**
    * Revokes the permissions set in the specified hostname.
    */
@@ -984,7 +979,7 @@ export class WalletClient {
   public RevokePermissions = (params: RevokePermissionsParams): Promise<RevokePermissionsResult> => {
     return this.request('admin.revoke_permissions', params);
   }
-  
+
   /**
    * Purges all the permissions set for all hostname.
    */
@@ -993,7 +988,7 @@ export class WalletClient {
   public PurgePermissions = (params: PurgePermissionsParams): Promise<PurgePermissionsResult> => {
     return this.request('admin.purge_permissions', params);
   }
-  
+
   /**
    * Sign a command using the specified wallet and public key.
    */
@@ -1002,7 +997,7 @@ export class WalletClient {
   public SignTransaction = (params: SignTransactionParams): Promise<SignTransactionResult> => {
     return this.request('admin.sign_transaction', params);
   }
-  
+
   /**
    * Sign any arbitrary message
    */
@@ -1011,7 +1006,7 @@ export class WalletClient {
   public SignMessage = (params: SignMessageParams): Promise<SignMessageResult> => {
     return this.request('admin.sign_message', params);
   }
-  
+
   /**
    * Verify any arbitrary signature
    */
@@ -1020,7 +1015,7 @@ export class WalletClient {
   public VerifyMessage = (params: VerifyMessageParams): Promise<VerifyMessageResult> => {
     return this.request('admin.verify_message', params);
   }
-  
+
   /**
    * Send a signed transaction to a network
    */
@@ -1029,5 +1024,5 @@ export class WalletClient {
   public SendTransaction = (params: SendTransactionParams): Promise<SendTransactionResult> => {
     return this.request('admin.send_transaction', params);
   }
-  
+
 }
