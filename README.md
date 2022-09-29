@@ -29,6 +29,12 @@ To check if you have the correct dependencies installed, use the following comma
 wails doctor
 ```
 
+##### For Linux
+
+Be sure to follow the installation guide from Wails. There are specific dependencies that needs to be installed.
+
+For more details, see [https://wails.app/gettingstarted/linux/#gcc-gtk-webkit](https://wails.app/gettingstarted/linux/#gcc-gtk-webkit)
+
 #### Frontend
 
 Make sure to have at least **Node v16.13.2** installed.
