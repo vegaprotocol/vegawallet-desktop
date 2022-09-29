@@ -73,7 +73,7 @@ describe('wallet', () => {
   it('wrong passphrase', () => {
     cy.visit('/')
     unlockWallet(walletName, 'invalid')
-    cy.contains('Error').should('have.text', 'Error: wrong passphrase')
+    cy.contains('Error').should('have.text', 'Error: could not retrieve the wallet: wrong passphrase')
     cy.getByTestId('log-out').should('not.exist')
   })
 
@@ -89,7 +89,7 @@ describe('wallet', () => {
   it('key pair page', () => {
     cy.visit('/')
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('keypair-name').should('contain', 'key')
+    cy.getByTestId('keypair-name').should('contain', 'Key 1')
     cy.getByTestId('public-key')
       .invoke('text')
       .then(text => {
@@ -100,7 +100,7 @@ describe('wallet', () => {
   it('wallets can be locked', () => {
     cy.visit('/')
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('keypair-name').should('contain', 'key')
+    cy.getByTestId('keypair-name').should('contain', 'Key 1')
     cy.getByTestId('log-out').click()
     cy.getByTestId('keypair-name').should('not.exist')
     cy.getByTestId('home-splash').should('exist')

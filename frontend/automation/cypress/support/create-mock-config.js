@@ -22,14 +22,6 @@ Host = "127.0.0.1"
     Hosts = []
   [API.GraphQL]
     Hosts = ["https://mock.vega.xyz/query"]
-
-[TokenDApp]
-  URL = "token.fairground.wtf"
-  LocalPort = 1848
-
-[Console]
-  URL = "console.fairground.wtf"
-  LocalPort = 1847
 `
 const DIR = './network-config'
 const dirExists = fs.existsSync(DIR)
