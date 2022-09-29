@@ -24,7 +24,7 @@ export namespace WalletModel {
 }
 
 export class WalletClient {
-  private request(method: string, params?: any[]) {
+  private request<T>(method: string, params?: any[]) {
     return UnwrappedService.SubmitWalletAPIRequest({
       jsonrpc: '2.0',
       id: nanoid(),
@@ -36,7 +36,7 @@ export class WalletClient {
       }
 
       const { id, ...rest } = (res.result || {})
-      return rest;
+      return rest as T;
     });
   }
 
@@ -46,8 +46,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public <%= getMethodName(method) %> = (<%= getMethodParams(method) %>: <%= getMethodParamsType(method) %>): <%= getMethodResultType(method) %> => {
-    return this.request('<%= method.name %>', params);
+  public <%= getMethodName(method) %> = (<%= getMethodParams(method) %>: <%= getMethodParamsType(method) %>) => {
+    return this.request<<%= getMethodResultType(method) %>>('<%= method.name %>', params);
   }
   <% }); %>
 }

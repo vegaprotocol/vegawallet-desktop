@@ -25,7 +25,7 @@ const getMethodParamsType = method => {
 }
 
 const getMethodResultType = method => {
-  return `Promise<${getMethodName(method)}Result>`
+  return `${getMethodName(method)}Result`
 }
 
 const getMethodParams = method => {

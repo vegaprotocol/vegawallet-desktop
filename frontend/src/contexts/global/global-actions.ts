@@ -47,16 +47,19 @@ export function createActions(
           logger.debug('InitApp')
 
           // should now have an app config
-          const [wallets, networks] = await Promise.all([
+          const [wallets, networks]: [
+            WalletModel.ListWalletsResult,
+            WalletModel.ListNetworksResult
+          ] = await Promise.all([
             service.WalletApi.ListWallets(),
             service.WalletApi.ListNetworks()
           ])
 
           const defaultNetwork = config.defaultNetwork
-            ? networks.networks.find(
+            ? networks.networks?.find(
                 (n: string) => n === config.defaultNetwork
-              ) || networks.networks[0]
-            : networks.networks[0]
+              ) || networks.networks?.[0]
+            : networks.networks?.[0]
 
           const defaultNetworkConfig = defaultNetwork
             ? await service.WalletApi.DescribeNetwork({
@@ -70,9 +73,9 @@ export function createActions(
             type: 'INIT_APP',
             isInit: true,
             config: config,
-            wallets: wallets.wallets,
-            network: defaultNetwork,
-            networks: networks.networks,
+            wallets: wallets.wallets ?? [],
+            network: defaultNetwork ?? '',
+            networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
             serviceRunning: serviceState.running

@@ -693,7 +693,7 @@ export interface SendTransactionParams {
 }
 
 export class WalletClient {
-  private request(method: string, params?: any[]) {
+  private request<T>(method: string, params?: any[]) {
     return UnwrappedService.SubmitWalletAPIRequest({
       jsonrpc: '2.0',
       id: nanoid(),
@@ -705,324 +705,324 @@ export class WalletClient {
       }
 
       const { id, ...rest } = (res.result || {})
-      return rest;
+      return rest as T;
     });
   }
 
-
+  
   /**
    * Initiates a connection between a wallet and a third-party application.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientConnectWallet = (params: ClientConnectWalletParams): Promise<ClientConnectWalletResult> => {
-    return this.request('client.connect_wallet', params);
+  public ClientConnectWallet = (params: ClientConnectWalletParams) => {
+    return this.request<ClientConnectWalletResult>('client.connect_wallet', params);
   }
-
+  
   /**
    * Ends the connection between the third-party application and the wallet.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientDisconnectWallet = (params: ClientDisconnectWalletParams): Promise<ClientDisconnectWalletResult> => {
-    return this.request('client.disconnect_wallet', params);
+  public ClientDisconnectWallet = (params: ClientDisconnectWalletParams) => {
+    return this.request<ClientDisconnectWalletResult>('client.disconnect_wallet', params);
   }
-
+  
   /**
    * Returns the permissions set on the wallet for the third-party application.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientGetPermissions = (params: ClientGetPermissionsParams): Promise<ClientGetPermissionsResult> => {
-    return this.request('client.get_permissions', params);
+  public ClientGetPermissions = (params: ClientGetPermissionsParams) => {
+    return this.request<ClientGetPermissionsResult>('client.get_permissions', params);
   }
-
+  
   /**
    * Requests permissions update for the third-party application.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientRequestPermissions = (params: ClientRequestPermissionsParams): Promise<ClientRequestPermissionsResult> => {
-    return this.request('client.request_permissions', params);
+  public ClientRequestPermissions = (params: ClientRequestPermissionsParams) => {
+    return this.request<ClientRequestPermissionsResult>('client.request_permissions', params);
   }
-
+  
   /**
    * Returns the keys the user has allowed the third-party application to have access to.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientListKeys = (params: ClientListKeysParams): Promise<ClientListKeysResult> => {
-    return this.request('client.list_keys', params);
+  public ClientListKeys = (params: ClientListKeysParams) => {
+    return this.request<ClientListKeysResult>('client.list_keys', params);
   }
-
+  
   /**
    * Sign a transaction without sending it.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientSignTransaction = (params: ClientSignTransactionParams): Promise<ClientSignTransactionResult> => {
-    return this.request('client.sign_transaction', params);
+  public ClientSignTransaction = (params: ClientSignTransactionParams) => {
+    return this.request<ClientSignTransactionResult>('client.sign_transaction', params);
   }
-
+  
   /**
    * Send a transaction to the network.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientSendTransaction = (params: ClientSendTransactionParams): Promise<ClientSendTransactionResult> => {
-    return this.request('client.send_transaction', params);
+  public ClientSendTransaction = (params: ClientSendTransactionParams) => {
+    return this.request<ClientSendTransactionResult>('client.send_transaction', params);
   }
-
+  
   /**
    * Returns the chain ID of the network in use.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientGetChainId = (params: ClientGetChainIdParams): Promise<ClientGetChainIdResult> => {
-    return this.request('client.get_chain_id', params);
+  public ClientGetChainId = (params: ClientGetChainIdParams) => {
+    return this.request<ClientGetChainIdResult>('client.get_chain_id', params);
   }
-
+  
   /**
    * Creates a wallet with its first key-pair.
    */
 
   // tslint:disable-next-line:max-line-length
-  public CreateWallet = (params: CreateWalletParams): Promise<CreateWalletResult> => {
-    return this.request('admin.create_wallet', params);
+  public CreateWallet = (params: CreateWalletParams) => {
+    return this.request<CreateWalletResult>('admin.create_wallet', params);
   }
-
+  
   /**
    * Import a wallet with its first key-pair with a recovery phrase and a version.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ImportWallet = (params: ImportWalletParams): Promise<ImportWalletResult> => {
-    return this.request('admin.import_wallet', params);
+  public ImportWallet = (params: ImportWalletParams) => {
+    return this.request<ImportWalletResult>('admin.import_wallet', params);
   }
-
+  
   /**
    * Returns the wallet base information.
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribeWallet = (params: DescribeWalletParams): Promise<DescribeWalletResult> => {
-    return this.request('admin.describe_wallet', params);
+  public DescribeWallet = (params: DescribeWalletParams) => {
+    return this.request<DescribeWalletResult>('admin.describe_wallet', params);
   }
-
+  
   /**
    * Returns the list of the wallets present on the computer.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListWallets = (...params: ListWalletsParams): Promise<ListWalletsResult> => {
-    return this.request('admin.list_wallets', params);
+  public ListWallets = (...params: ListWalletsParams) => {
+    return this.request<ListWalletsResult>('admin.list_wallets', params);
   }
-
+  
   /**
    * Returns the list of all registered networks.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListNetworks = (...params: ListNetworksParams): Promise<ListNetworksResult> => {
-    return this.request('admin.list_networks', params);
+  public ListNetworks = (...params: ListNetworksParams) => {
+    return this.request<ListNetworksResult>('admin.list_networks', params);
   }
-
+  
   /**
    * Returns the network information.
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribeNetwork = (params: DescribeNetworkParams): Promise<DescribeNetworkResult> => {
-    return this.request('admin.describe_network', params);
+  public DescribeNetwork = (params: DescribeNetworkParams) => {
+    return this.request<DescribeNetworkResult>('admin.describe_network', params);
   }
-
+  
   /**
    * Update an existing network.
    */
 
   // tslint:disable-next-line:max-line-length
-  public UpdateNetwork = (params: UpdateNetworkParams): Promise<UpdateNetworkResult> => {
-    return this.request('admin.update_network', params);
+  public UpdateNetwork = (params: UpdateNetworkParams) => {
+    return this.request<UpdateNetworkResult>('admin.update_network', params);
   }
-
+  
   /**
    * Removes a network from the computer.
    */
 
   // tslint:disable-next-line:max-line-length
-  public RemoveNetwork = (params: RemoveNetworkParams): Promise<RemoveNetworkResult> => {
-    return this.request('admin.remove_network', params);
+  public RemoveNetwork = (params: RemoveNetworkParams) => {
+    return this.request<RemoveNetworkResult>('admin.remove_network', params);
   }
-
+  
   /**
    * Import a network configuration from a file or an URL.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ImportNetwork = (params: ImportNetworkParams): Promise<ImportNetworkResult> => {
-    return this.request('admin.import_network', params);
+  public ImportNetwork = (params: ImportNetworkParams) => {
+    return this.request<ImportNetworkResult>('admin.import_network', params);
   }
-
+  
   /**
    * Removes a wallet from the computer.
    */
 
   // tslint:disable-next-line:max-line-length
-  public RemoveWallet = (params: RemoveWalletParams): Promise<RemoveWalletResult> => {
-    return this.request('admin.remove_wallet', params);
+  public RemoveWallet = (params: RemoveWalletParams) => {
+    return this.request<RemoveWalletResult>('admin.remove_wallet', params);
   }
-
+  
   /**
    * Generates a key on the specified wallet.
    */
 
   // tslint:disable-next-line:max-line-length
-  public GenerateKey = (params: GenerateKeyParams): Promise<GenerateKeyResult> => {
-    return this.request('admin.generate_key', params);
+  public GenerateKey = (params: GenerateKeyParams) => {
+    return this.request<GenerateKeyResult>('admin.generate_key', params);
   }
-
+  
   /**
    * Returns key's information.
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribeKey = (params: DescribeKeyParams): Promise<DescribeKeyResult> => {
-    return this.request('admin.describe_key', params);
+  public DescribeKey = (params: DescribeKeyParams) => {
+    return this.request<DescribeKeyResult>('admin.describe_key', params);
   }
-
+  
   /**
    * Returns all generated key of the specified wallet.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListKeys = (params: ListKeysParams): Promise<ListKeysResult> => {
-    return this.request('admin.list_keys', params);
+  public ListKeys = (params: ListKeysParams) => {
+    return this.request<ListKeysResult>('admin.list_keys', params);
   }
-
+  
   /**
    * Attaches metadata to a key.
    */
 
   // tslint:disable-next-line:max-line-length
-  public AnnotateKey = (params: AnnotateKeyParams): Promise<AnnotateKeyResult> => {
-    return this.request('admin.annotate_key', params);
+  public AnnotateKey = (params: AnnotateKeyParams) => {
+    return this.request<AnnotateKeyResult>('admin.annotate_key', params);
   }
-
+  
   /**
    * Isolate a key to a specific wallet.
    */
 
   // tslint:disable-next-line:max-line-length
-  public IsolateKey = (params: IsolateKeyParams): Promise<IsolateKeyResult> => {
-    return this.request('admin.isolate_key', params);
+  public IsolateKey = (params: IsolateKeyParams) => {
+    return this.request<IsolateKeyResult>('admin.isolate_key', params);
   }
-
+  
   /**
    * Builds a transaction to rotate key on the network.
    */
 
   // tslint:disable-next-line:max-line-length
-  public RotateKey = (params: RotateKeyParams): Promise<RotateKeyResult> => {
-    return this.request('admin.rotate_key', params);
+  public RotateKey = (params: RotateKeyParams) => {
+    return this.request<RotateKeyResult>('admin.rotate_key', params);
   }
-
+  
   /**
    * Marks the specified public key as tainted.
    */
 
   // tslint:disable-next-line:max-line-length
-  public TaintKey = (params: TaintKeyParams): Promise<TaintKeyResult> => {
-    return this.request('admin.taint_key', params);
+  public TaintKey = (params: TaintKeyParams) => {
+    return this.request<TaintKeyResult>('admin.taint_key', params);
   }
-
+  
   /**
    * Remove the taint from the specified public key.
    */
 
   // tslint:disable-next-line:max-line-length
-  public UntaintKey = (params: UntaintKeyParams): Promise<UntaintKeyResult> => {
-    return this.request('admin.untaint_key', params);
+  public UntaintKey = (params: UntaintKeyParams) => {
+    return this.request<UntaintKeyResult>('admin.untaint_key', params);
   }
-
+  
   /**
    * Returns the permissions set for the specified wallet and hostname.
    */
 
   // tslint:disable-next-line:max-line-length
-  public DescribePermissions = (params: DescribePermissionsParams): Promise<DescribePermissionsResult> => {
-    return this.request('admin.describe_permissions', params);
+  public DescribePermissions = (params: DescribePermissionsParams) => {
+    return this.request<DescribePermissionsResult>('admin.describe_permissions', params);
   }
-
+  
   /**
    * Returns the permissions summary for all set hostnames.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListPermissions = (params: ListPermissionsParams): Promise<ListPermissionsResult> => {
-    return this.request('admin.list_permissions', params);
+  public ListPermissions = (params: ListPermissionsParams) => {
+    return this.request<ListPermissionsResult>('admin.list_permissions', params);
   }
-
+  
   /**
    * Updates the permissions for the specified wallet and hostname.
    */
 
   // tslint:disable-next-line:max-line-length
-  public UpdatePermissions = (params: UpdatePermissionsParams): Promise<UpdatePermissionsResult> => {
-    return this.request('admin.update_permissions', params);
+  public UpdatePermissions = (params: UpdatePermissionsParams) => {
+    return this.request<UpdatePermissionsResult>('admin.update_permissions', params);
   }
-
+  
   /**
    * Revokes the permissions set in the specified hostname.
    */
 
   // tslint:disable-next-line:max-line-length
-  public RevokePermissions = (params: RevokePermissionsParams): Promise<RevokePermissionsResult> => {
-    return this.request('admin.revoke_permissions', params);
+  public RevokePermissions = (params: RevokePermissionsParams) => {
+    return this.request<RevokePermissionsResult>('admin.revoke_permissions', params);
   }
-
+  
   /**
    * Purges all the permissions set for all hostname.
    */
 
   // tslint:disable-next-line:max-line-length
-  public PurgePermissions = (params: PurgePermissionsParams): Promise<PurgePermissionsResult> => {
-    return this.request('admin.purge_permissions', params);
+  public PurgePermissions = (params: PurgePermissionsParams) => {
+    return this.request<PurgePermissionsResult>('admin.purge_permissions', params);
   }
-
+  
   /**
    * Sign a command using the specified wallet and public key.
    */
 
   // tslint:disable-next-line:max-line-length
-  public SignTransaction = (params: SignTransactionParams): Promise<SignTransactionResult> => {
-    return this.request('admin.sign_transaction', params);
+  public SignTransaction = (params: SignTransactionParams) => {
+    return this.request<SignTransactionResult>('admin.sign_transaction', params);
   }
-
+  
   /**
    * Sign any arbitrary message
    */
 
   // tslint:disable-next-line:max-line-length
-  public SignMessage = (params: SignMessageParams): Promise<SignMessageResult> => {
-    return this.request('admin.sign_message', params);
+  public SignMessage = (params: SignMessageParams) => {
+    return this.request<SignMessageResult>('admin.sign_message', params);
   }
-
+  
   /**
    * Verify any arbitrary signature
    */
 
   // tslint:disable-next-line:max-line-length
-  public VerifyMessage = (params: VerifyMessageParams): Promise<VerifyMessageResult> => {
-    return this.request('admin.verify_message', params);
+  public VerifyMessage = (params: VerifyMessageParams) => {
+    return this.request<VerifyMessageResult>('admin.verify_message', params);
   }
-
+  
   /**
    * Send a signed transaction to a network
    */
 
   // tslint:disable-next-line:max-line-length
-  public SendTransaction = (params: SendTransactionParams): Promise<SendTransactionResult> => {
-    return this.request('admin.send_transaction', params);
+  public SendTransaction = (params: SendTransactionParams) => {
+    return this.request<SendTransactionResult>('admin.send_transaction', params);
   }
-
+  
 }
