@@ -2,7 +2,6 @@ import { createLogger } from '../../lib/logging'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useSubscription } from '../../hooks/use-subscription'
 import { EVENTS, createEventSubscription } from '../../lib/events'
-import { TransactionHistoryItem } from './transaction-history-item'
 
 const logger = createLogger('TransactionHistory')
 
@@ -22,10 +21,9 @@ export const TransactionHistory = () => {
       {!isLoading && data?.length === 0 && (
         <div>No transactions in history.</div>
       )}
-      {!isLoading &&
-        data?.map(item => (
-          <TransactionHistoryItem key={item.tx} transaction={item} />
-        ))}
+      {!isLoading && data?.length && (
+        <div>{data.length} transactions in history.</div>
+      )}
     </>
   )
 }

@@ -43,6 +43,7 @@ export function useSubscription<T>({
 
   return {
     isLoading,
+    refetch: getData,
     data
   }
 }
