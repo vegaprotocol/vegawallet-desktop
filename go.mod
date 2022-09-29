@@ -5,7 +5,7 @@ go 1.18
 require (
 	code.vegaprotocol.io/vega v0.57.1-0.20220929085654-27c29d6d3228
 	github.com/golang/protobuf v1.5.2
-	github.com/wailsapp/wails/v2 v2.0.0-beta.44.2
+	github.com/wailsapp/wails/v2 v2.0.0
 	go.uber.org/zap v1.21.0
 )
 

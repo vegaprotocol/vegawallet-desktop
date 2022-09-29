@@ -17,6 +17,7 @@
 - [209](https://github.com/vegaprotocol/vegawallet-desktop/issues/209) - Adds dialog to control app settings
 - [282](https://github.com/vegaprotocol/vegawallet-desktop/pull/283) - Upgrade to Cypress 10 and test improvements
 - [261](https://github.com/vegaprotocol/vegawallet-desktop/issues/261) - Removes UI to start and stop proxy apps
+- [332](https://github.com/vegaprotocol/vegawallet-desktop/issues/332) - Migrate to wails 2.0.0 (stable)
 
 ### 🐛 Fixes
 
