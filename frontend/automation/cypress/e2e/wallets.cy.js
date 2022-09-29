@@ -73,7 +73,10 @@ describe('wallet', () => {
   it('wrong passphrase', () => {
     cy.visit('/')
     unlockWallet(walletName, 'invalid')
-    cy.contains('Error').should('have.text', 'Error: could not retrieve the wallet: wrong passphrase')
+    cy.contains('Error').should(
+      'have.text',
+      'Error: could not retrieve the wallet: wrong passphrase'
+    )
     cy.getByTestId('log-out').should('not.exist')
   })
 

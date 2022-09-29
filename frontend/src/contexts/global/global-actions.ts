@@ -147,7 +147,7 @@ export function createActions(
           const res = await service.WalletApi.GenerateKey({
             wallet,
             passphrase,
-            metadata: [],
+            metadata: []
           })
 
           const keypair = await service.WalletApi.DescribeKey({

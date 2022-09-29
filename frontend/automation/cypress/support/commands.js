@@ -37,7 +37,7 @@ Cypress.Commands.add('restoreWallet', handler => {
         recoveryPhrase:
           'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
         version: 2,
-        passphrase,
+        passphrase
       }
     })
     .then(res => {
@@ -101,11 +101,13 @@ Cypress.Commands.add('sendTransaction', transaction => {
     })
   }
 
-  cy.wrap(sendTransaction()).then(() => {
-    // console.log('errrrrrrror')
-  }).catch(err => {
-    console.log('errrrrrrror')
-  })
+  cy.wrap(sendTransaction())
+    .then(() => {
+      // console.log('errrrrrrror')
+    })
+    .catch(err => {
+      console.log('errrrrrrror')
+    })
 })
 
 Cypress.Commands.add('mockRequests', () => {
