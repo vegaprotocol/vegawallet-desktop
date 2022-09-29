@@ -24,3 +24,8 @@ cypress/screenshots
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Cypress
+.nyc_output
+test-wallets
+network-config

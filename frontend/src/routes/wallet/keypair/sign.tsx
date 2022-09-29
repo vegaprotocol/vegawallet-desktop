@@ -42,7 +42,7 @@ const useSign = (pubKey?: string, wallet?: string) => {
           encodedMessage: btoa(values.message)
         })
         // @ts-ignore
-        setSignedData(resp.base64Signature)
+        setSignedData(resp.encodedMessage)
         AppToaster.show({
           message: `Message signed successfully`,
           intent: Intent.SUCCESS

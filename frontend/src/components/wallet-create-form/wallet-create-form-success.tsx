@@ -47,10 +47,10 @@ export function WalletCreateFormSuccess({
           data-testid='wallet-recovery-phrase'
         >
           <CodeBlock data-testid='recovery-phrase'>
-            {response?.wallet?.recoverPhrase}
+            {response?.wallet?.recoveryPhrase}
           </CodeBlock>
           <span style={{ position: 'absolute', top: 7, right: 10 }}>
-            <CopyWithTooltip text={response?.wallet?.recoverPhrase ?? ''}>
+            <CopyWithTooltip text={response?.wallet?.recoveryPhrase ?? ''}>
               <ButtonUnstyled>
                 <Copy style={{ width: 13, height: 13 }} />
               </ButtonUnstyled>

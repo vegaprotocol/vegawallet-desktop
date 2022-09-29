@@ -114,7 +114,8 @@ export function createActions(
         try {
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
-            await service.StartService({ network: state.network })
+            const a = await service.StartService({ network: state.network })
+            console.log('SERVICE START RES: ', a)
 
             dispatch({
               type: 'START_SERVICE',
@@ -146,7 +147,7 @@ export function createActions(
           const res = await service.WalletApi.GenerateKey({
             wallet,
             passphrase,
-            metadata: {}
+            metadata: [],
           })
 
           const keypair = await service.WalletApi.DescribeKey({
@@ -320,9 +321,11 @@ export function createActions(
             throw new Error('No network selected')
           }
 
-          await service.StartService({
+          const a = await service.StartService({
             network: state.network
           })
+
+          console.log('START SERVICE RES: ', a)
           dispatch({ type: 'START_SERVICE', port: networkConfig.port ?? 80 })
         } catch (err) {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
