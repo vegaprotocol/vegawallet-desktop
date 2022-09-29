@@ -103,12 +103,6 @@ Cypress.Commands.add('sendTransaction', transaction => {
   }
 
   cy.wrap(sendTransaction())
-    .then(() => {
-      // console.log('errrrrrrror')
-    })
-    .catch(err => {
-      console.log('errrrrrrror')
-    })
 })
 
 Cypress.Commands.add('mockRequests', () => {
