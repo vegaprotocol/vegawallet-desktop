@@ -4,17 +4,14 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
-import type { Service } from '../../service'
-import type { network as NetworkModel } from '../../wailsjs/go/models'
-import {
-  config as ConfigModel,
-  wallet as WalletModel
-} from '../../wailsjs/go/models'
+import type { ServiceType } from '../../service'
+import { config as ConfigModel } from '../../wailsjs/go/models'
+import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
 export function createActions(
-  service: typeof Service,
+  service: ServiceType,
   logger: log.Logger,
   enableTelemetry: () => void
 ) {
@@ -50,18 +47,24 @@ export function createActions(
           logger.debug('InitApp')
 
           // should now have an app config
-          const [wallets, networks] = await Promise.all([
-            service.ListWallets(),
-            service.ListNetworks()
+          const [wallets, networks]: [
+            WalletModel.ListWalletsResult,
+            WalletModel.ListNetworksResult
+          ] = await Promise.all([
+            service.WalletApi.ListWallets(),
+            service.WalletApi.ListNetworks()
           ])
 
           const defaultNetwork = config.defaultNetwork
-            ? networks.networks.find(n => n === config.defaultNetwork) ||
-              networks.networks[0]
-            : networks.networks[0]
+            ? networks.networks?.find(
+                (n: string) => n === config.defaultNetwork
+              ) || networks.networks?.[0]
+            : networks.networks?.[0]
 
           const defaultNetworkConfig = defaultNetwork
-            ? await service.GetNetworkConfig(defaultNetwork)
+            ? await service.WalletApi.DescribeNetwork({
+                network: defaultNetwork
+              })
             : null
 
           const serviceState = await service.GetServiceState()
@@ -70,9 +73,9 @@ export function createActions(
             type: 'INIT_APP',
             isInit: true,
             config: config,
-            wallets: wallets.wallets,
-            network: defaultNetwork,
-            networks: networks.networks,
+            wallets: wallets.wallets ?? [],
+            network: defaultNetwork ?? '',
+            networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
             serviceRunning: serviceState.running
@@ -115,7 +118,11 @@ export function createActions(
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port })
+
+            dispatch({
+              type: 'START_SERVICE',
+              port: state.networkConfig.port ?? 80
+            })
           }
         } catch (err) {
           logger.error(err)
@@ -129,7 +136,7 @@ export function createActions(
 
     addWalletAction(
       wallet: string,
-      key: WalletModel.DescribeKeyResponse
+      key: WalletModel.DescribeKeyResult
     ): GlobalAction {
       return { type: 'ADD_WALLET', wallet, key }
     },
@@ -139,18 +146,16 @@ export function createActions(
         logger.debug('AddKeyPair')
         try {
           const passphrase = await requestPassphrase()
-          const res = await service.GenerateKey(
-            new WalletModel.GenerateKeyRequest({
-              wallet,
-              passphrase,
-              metadata: []
-            })
-          )
-
-          const keypair = await service.DescribeKey({
+          const res = await service.WalletApi.GenerateKey({
             wallet,
             passphrase,
-            pubKey: res.publicKey
+            metadata: []
+          })
+
+          const keypair = await service.WalletApi.DescribeKey({
+            wallet,
+            passphrase,
+            publicKey: res.publicKey ?? ''
           })
 
           dispatch({
@@ -180,17 +185,17 @@ export function createActions(
         } else {
           try {
             const passphrase = await requestPassphrase()
-            const keys = await service.ListKeys({
+            const keys = await service.WalletApi.ListKeys({
               wallet,
               passphrase
             })
 
             const keysWithMeta = await Promise.all(
-              keys.keys.map(key =>
-                service.DescribeKey({
+              keys.keys.map((key: WalletModel.NamedPublicKey) =>
+                service.WalletApi.DescribeKey({
                   wallet,
                   passphrase,
-                  pubKey: key.publicKey
+                  publicKey: key.publicKey ?? ''
                 })
               )
             )
@@ -201,7 +206,7 @@ export function createActions(
               keypairs: keysWithMeta || []
             })
 
-            if (keys.keys.length) {
+            if (keys.keys?.length) {
               window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
             } else {
               window.location.hash = `/wallet/${wallet}`
@@ -218,7 +223,7 @@ export function createActions(
 
     updateKeyPairAction(
       wallet: string,
-      keypair: WalletModel.DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResult
     ): GlobalAction {
       return { type: 'UPDATE_KEYPAIR', wallet, keypair }
     },
@@ -260,7 +265,7 @@ export function createActions(
             })
           )
 
-          const config = await service.GetNetworkConfig(network)
+          const config = await service.WalletApi.DescribeNetwork({ network })
 
           dispatch({
             type: 'CHANGE_NETWORK',
@@ -279,7 +284,7 @@ export function createActions(
 
     updateNetworkConfigAction(
       editingNetwork: string,
-      networkConfig: NetworkModel.Network
+      networkConfig: WalletModel.DescribeNetworkResult
     ) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const state = getState()
@@ -295,7 +300,9 @@ export function createActions(
             }
           }
 
-          const isSuccessful = await service.SaveNetworkConfig(networkConfig)
+          const isSuccessful = await service.WalletApi.UpdateNetwork(
+            networkConfig
+          )
 
           if (isSuccessful) {
             AppToaster.show({
@@ -317,7 +324,8 @@ export function createActions(
           await service.StartService({
             network: state.network
           })
-          dispatch({ type: 'START_SERVICE', port: networkConfig.port })
+
+          dispatch({ type: 'START_SERVICE', port: networkConfig.port ?? 80 })
         } catch (err) {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
           logger.error(err)
@@ -325,14 +333,17 @@ export function createActions(
       }
     },
 
-    addNetworkAction(network: string, config: NetworkModel.Network) {
+    addNetworkAction(
+      network: string,
+      config: WalletModel.DescribeNetworkResult
+    ) {
       return async (dispatch: GlobalDispatch) => {
         // If no service running start service for newly added network
         try {
           const status = await service.GetServiceState()
           if (!status.running) {
             await service.StartService({ network })
-            dispatch({ type: 'START_SERVICE', port: config.port })
+            dispatch({ type: 'START_SERVICE', port: config.port ?? 80 })
           }
         } catch (err) {
           logger.error(err)
@@ -354,7 +365,10 @@ export function createActions(
           const status = await service.GetServiceState()
           if (!status.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-            dispatch({ type: 'START_SERVICE', port: state.networkConfig.port })
+            dispatch({
+              type: 'START_SERVICE',
+              port: state.networkConfig.port ?? 80
+            })
           }
         } catch (err) {
           logger.error(err)

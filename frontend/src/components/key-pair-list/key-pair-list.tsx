@@ -38,7 +38,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                 }`}
                 onClick={() => {
                   if (typeof onSelect === 'function') {
-                    onSelect(kp.publicKey)
+                    kp.publicKey && onSelect(kp.publicKey)
                   }
                 }}
                 style={({ isActive }) => ({
@@ -77,7 +77,7 @@ export function KeyPairList({ onSelect }: KeyPairListProps) {
                     color: Colors.TEXT_COLOR_DEEMPHASISE
                   }}
                 >
-                  {truncateMiddle(kp.publicKey)}
+                  {kp.publicKey && truncateMiddle(kp.publicKey)}
                 </span>
               </NavLink>
             </div>

@@ -68,7 +68,7 @@ describe('onboarding', () => {
 
     cy.getByTestId('toast').should(
       'have.text',
-      "Error: couldn't import the wallet: recovery phrase is not valid"
+      'Error: could not import the wallet: the recovery phrase is not valid'
     )
   })
 })

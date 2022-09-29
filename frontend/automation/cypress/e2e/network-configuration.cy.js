@@ -55,7 +55,7 @@ describe('network configuration', () => {
       // eslint-disable-next-line no-unused-expressions
       expect($node.text()).not.to.be.empty
     })
-    cy.getByTestId('log-level').should('have.text', 'debug')
+    cy.getByTestId('log-level').should('have.text', 'info')
     cy.getByTestId('token-expiry').should('have.text', '168h0m0s')
   })
 

@@ -28,18 +28,23 @@ Cypress.Commands.add('setVegaHome', handler => {
 Cypress.Commands.add('restoreWallet', handler => {
   const passphrase = '123'
   return handler
-    .ImportWallet({
-      wallet: 'test',
-      recoveryPhrase:
-        'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
-      version: 2,
-      passphrase
+    .SubmitWalletAPIRequest({
+      id: '0',
+      jsonrpc: '2.0',
+      method: 'admin.import_wallet',
+      params: {
+        wallet: 'test',
+        recoveryPhrase:
+          'behave unveil treat stone forward priority shoulder output woman dinner wide oval once fire move perfect together sail hero local try cinnamon clip hawk',
+        version: 2,
+        passphrase
+      }
     })
     .then(res => {
       // Store env vars for later use in tests and then import a network
       Cypress.env('testWalletPassphrase', passphrase)
-      Cypress.env('testWalletName', res.wallet.name)
-      Cypress.env('testWalletPublicKey', res.key.publicKey)
+      Cypress.env('testWalletName', res.result.wallet.name)
+      Cypress.env('testWalletPublicKey', res.result.key.publicKey)
     })
 })
 
@@ -49,10 +54,18 @@ Cypress.Commands.add('restoreNetwork', (handler, name = 'test') => {
     'network-config/test.toml'
   )
   Cypress.env('testNetworkPath', location)
-  return handler.ImportNetwork({
-    filePath: location,
-    name
-  })
+
+  return handler
+    .SubmitWalletAPIRequest({
+      id: '0',
+      jsonrpc: '2.0',
+      method: 'admin.import_network',
+      params: {
+        filePath: location,
+        name
+      }
+    })
+    .then(res => res.result)
 })
 
 Cypress.Commands.add('sendTransaction', transaction => {
