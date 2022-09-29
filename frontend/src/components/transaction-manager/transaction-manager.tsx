@@ -68,28 +68,15 @@ export function TransactionManager() {
 
   // Get any already pending tx on startup
   useEffect(() => {
-    const run = async () => {
-      try {
-        const res = await service.ListConsentRequests()
-        setTransactions(res.requests.map(parseTx))
-      } catch (err) {
-        AppToaster.show({
-          message: 'Something went wrong retrieving pending transactions',
-          intent: Intent.DANGER,
-          timeout: 0
-        })
-        logger.error(err)
-      }
-    }
-
     // Listen for new incoming transactions
     EventsOn(events.NEW_CONSENT_REQUEST, (tx: BackendModel.ConsentRequest) => {
       setTransactions(curr => [...curr, parseTx(tx)])
     })
 
-    window.runtime.EventsOn(
+    EventsOn(
       events.TRANSACTION_SENT,
       (incoming: BackendModel.SentTransaction) => {
+        console.log('INCOMING!!!!', incoming)
         setTransactions(curr => {
           return curr.map(t => {
             if (t.txId === incoming.txId) {
@@ -106,8 +93,6 @@ export function TransactionManager() {
         })
       }
     )
-
-    run()
   }, [service])
 
   const orderedTransactions = useMemo(() => {
