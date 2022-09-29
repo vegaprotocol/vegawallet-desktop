@@ -1,4 +1,4 @@
-import { EventsOn, EventsOff } from '../wailsjs/runtime'
+import { EventsOff, EventsOn } from '../wailsjs/runtime'
 
 export const enum EVENTS {
   NEW_CONSENT_REQUEST = 'new_consent_request',

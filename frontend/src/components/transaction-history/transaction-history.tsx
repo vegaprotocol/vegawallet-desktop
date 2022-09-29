@@ -1,7 +1,7 @@
-import { createLogger } from '../../lib/logging'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useSubscription } from '../../hooks/use-subscription'
-import { EVENTS, createEventSubscription } from '../../lib/events'
+import { createEventSubscription, EVENTS } from '../../lib/events'
+import { createLogger } from '../../lib/logging'
 
 const logger = createLogger('TransactionHistory')
 

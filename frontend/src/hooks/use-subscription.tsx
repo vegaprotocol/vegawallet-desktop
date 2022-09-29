@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
@@ -18,7 +18,7 @@ export function useSubscription<T>({
   const [isLoading, setLoading] = useState(false)
   const [data, setData] = useState<T[] | null>(null)
 
-  const submit = React.useCallback(async () => {
+  const submit = useCallback(async () => {
     logger.debug('GetData')
     setLoading(true)
     try {
@@ -30,7 +30,7 @@ export function useSubscription<T>({
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [])
+  }, [logger, getData])
 
   useEffect(() => {
     submit()
@@ -39,7 +39,7 @@ export function useSubscription<T>({
       setData(data => [...(data || []), newData])
     })
     return () => unsubscribe()
-  }, [])
+  }, [submit, logger, subscribe])
 
   return {
     isLoading,

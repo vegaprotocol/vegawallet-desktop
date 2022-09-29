@@ -4,12 +4,12 @@ import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { EVENTS } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
+import type { ParsedTx } from '../../lib/transactions'
+import { parseTx } from '../../lib/transactions'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
 import { EventsOff, EventsOn } from '../../wailsjs/runtime'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
-import type { ParsedTx } from '../../lib/transactions'
-import { parseTx } from '../../lib/transactions'
 
 const logger = createLogger('TransactionManager')
 

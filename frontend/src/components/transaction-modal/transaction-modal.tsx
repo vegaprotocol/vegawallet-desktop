@@ -1,5 +1,5 @@
-import { Dialog } from '../dialog'
 import type { ParsedTx } from '../../lib/transactions'
+import { Dialog } from '../dialog'
 import { TransactionItem } from '../transaction-item'
 
 interface TransactionModalProps {
@@ -9,7 +9,7 @@ interface TransactionModalProps {
 
 export function TransactionModal({
   transactions,
-  onRespond,
+  onRespond
 }: TransactionModalProps) {
   return (
     <Dialog open={Boolean(transactions.length)} size='lg'>

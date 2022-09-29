@@ -1,4 +1,4 @@
-import { backend as BackendModel } from '../wailsjs/go/models'
+import type { backend as BackendModel } from '../wailsjs/go/models'
 
 export enum TransactionKeys {
   UNKNOWN = 'unknown',
@@ -36,13 +36,14 @@ export interface ParsedTx {
   error: string | null
 }
 
-
 /**
  * Parses a raw consent request object into a more usable object where the transaction
  * payload has been turned from a json string into an object and we have determined
  * what kind of transaction it is
  */
-export const parseTx = (consentRequest: BackendModel.ConsentRequest): ParsedTx => {
+export const parseTx = (
+  consentRequest: BackendModel.ConsentRequest
+): ParsedTx => {
   let payload: { pubKey: string; propagate: boolean }
 
   try {

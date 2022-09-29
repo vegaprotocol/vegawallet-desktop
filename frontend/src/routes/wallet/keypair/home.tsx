@@ -1,9 +1,9 @@
 import { BreakText } from '../../../components/break-text'
 import { Header } from '../../../components/header'
 import { KeyValueTable } from '../../../components/key-value-table'
-import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { TransactionHistory } from '../../../components/transaction-history'
 import { TransactionQueue } from '../../../components/transaction-queue'
+import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 
 export function KeyPairHome() {
   const { keypair } = useCurrentKeypair()

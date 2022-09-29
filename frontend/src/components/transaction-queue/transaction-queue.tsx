@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
-import { createLogger } from '../../lib/logging'
+
 import { useGlobal } from '../../contexts/global/global-context'
 import { useSubscription } from '../../hooks/use-subscription'
-import { EVENTS, createEventSubscription } from '../../lib/events'
-import { TransactionItem } from '../transaction-item'
+import { createEventSubscription, EVENTS } from '../../lib/events'
+import { createLogger } from '../../lib/logging'
 import { parseTx } from '../../lib/transactions'
+import { TransactionItem } from '../transaction-item'
 
 const logger = createLogger('TransactionQueue')
 
@@ -19,13 +20,16 @@ export const TransactionQueue = () => {
     subscribe: createEventSubscription(EVENTS.NEW_CONSENT_REQUEST)
   })
 
-  const handleResponse = useCallback(async (txId: string, decision: boolean) => {
-    await service.ConsentToTransaction({
-      txId,
-      decision
-    })
-    refetch()
-  }, [service, refetch])
+  const handleResponse = useCallback(
+    async (txId: string, decision: boolean) => {
+      await service.ConsentToTransaction({
+        txId,
+        decision
+      })
+      refetch()
+    },
+    [service, refetch]
+  )
 
   return (
     <>

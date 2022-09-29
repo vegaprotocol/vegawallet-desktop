@@ -1,9 +1,9 @@
 import { formatDate } from '../../lib/date'
+import type { ParsedTx, TransactionKeys } from '../../lib/transactions'
 import { BreakText } from '../break-text'
 import { Button } from '../button'
 import { CodeBlock } from '../code-block'
 import { KeyValueTable } from '../key-value-table'
-import { ParsedTx, TransactionKeys } from '../../lib/transactions'
 
 const TRANSACTION_TITLES: {
   [Key in TransactionKeys]: string
@@ -42,7 +42,7 @@ interface TransactionItemProps {
 
 export const TransactionItem = ({
   transaction,
-  onRespond,
+  onRespond
 }: TransactionItemProps) => {
   if (transaction.pending) {
     return <div>Sending...</div>
