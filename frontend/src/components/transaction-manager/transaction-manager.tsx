@@ -5,7 +5,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { events } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
-import { EventsOn } from '../../wailsjs/runtime'
+import { EventsOff, EventsOn } from '../../wailsjs/runtime'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
 import type { ParsedTx } from './transaction-types'
@@ -76,7 +76,6 @@ export function TransactionManager() {
     EventsOn(
       events.TRANSACTION_SENT,
       (incoming: BackendModel.SentTransaction) => {
-        console.log('INCOMING!!!!', incoming)
         setTransactions(curr => {
           return curr.map(t => {
             if (t.txId === incoming.txId) {
@@ -93,6 +92,11 @@ export function TransactionManager() {
         })
       }
     )
+
+    return () => {
+      EventsOff(events.NEW_CONSENT_REQUEST)
+      EventsOff(events.TRANSACTION_SENT)
+    }
   }, [service])
 
   const orderedTransactions = useMemo(() => {
