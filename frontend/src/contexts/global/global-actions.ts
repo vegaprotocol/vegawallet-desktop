@@ -55,8 +55,8 @@ export function createActions(
           const defaultNetwork = config.defaultNetwork
             ? networks.networks.find(
                 (n: string) => n === config.defaultNetwork
-              ) || networks[0]
-            : networks[0]
+              ) || networks.networks[0]
+            : networks.networks[0]
 
           const defaultNetworkConfig = defaultNetwork
             ? await service.WalletApi.DescribeNetwork({
