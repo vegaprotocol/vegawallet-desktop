@@ -5,6 +5,7 @@ import (
 )
 
 var (
+	ErrContextCanceled        = errors.New("context canceled")
 	ErrConsentRequestNotFound = errors.New("consent request not found")
 	ErrServiceAlreadyRunning  = errors.New("the service is already running")
 	ErrServiceNotRunning      = errors.New("the service is not running")
