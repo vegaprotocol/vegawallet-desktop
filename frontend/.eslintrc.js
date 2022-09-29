@@ -1,6 +1,7 @@
 module.exports = {
   plugins: ['simple-import-sort'],
   extends: ['react-app', 'react-app/jest'],
+  ignorePatterns: ['./src/wallet-client/**'],
   rules: {
     'prefer-const': 'warn',
     'no-console': 'off',

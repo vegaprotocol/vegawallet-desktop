@@ -65,7 +65,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 	if !exists {
 		h.log.Error(fmt.Sprintf("Network %s does not exist", req.Network))
-		return false, network.NewNetworkDoesNotExistError(req.Network)
+		return false, network.NewDoesNotExistError(req.Network)
 	}
 
 	cfg, err := netStore.GetNetwork(req.Network)
@@ -74,7 +74,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
 	}
 
-	logLevel := cfg.Level.String()
+	logLevel := cfg.LogLevel.String()
 	log, err := buildLogger(logLevel, h.configLoader.LogFilePathForSvc())
 	if err != nil {
 		return false, err
@@ -116,7 +116,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 	}
 
 	policy := service.NewExplicitConsentPolicy(ctx, h.service.ConsentRequestsChan, h.service.SentTransactionsChan)
-	srv, err := service.NewService(log.Named("service"), cfg, jsonrpc.New(log.Named("json-rpc")), handler, auth, forwarder, policy)
+	srv, err := service.NewService(log.Named("service"), cfg, jsonrpc.New(log.Named("json-rpc"), false), handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
 		loggingCancelFn()

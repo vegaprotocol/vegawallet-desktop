@@ -17,7 +17,11 @@ import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { Validation } from '../../../lib/form-validation'
 import { createLogger } from '../../../lib/logging'
-import { wallet as WalletModel } from '../../../wailsjs/go/models'
+
+type Meta = {
+  key: string
+  value: string
+}
 
 const notName = (value: string) =>
   value === 'name' ? 'Name is already in use' : true
@@ -52,7 +56,7 @@ const useMetaUpdate = (
   const [loading, setLoading] = useState(false)
 
   const update = useCallback(
-    async (metadata: WalletModel.Meta[]) => {
+    async (metadata: Meta[]) => {
       setLoading(true)
       try {
         if (!pubKey || !wallet) {
@@ -60,19 +64,17 @@ const useMetaUpdate = (
         }
 
         const passphrase = await requestPassphrase()
-        await service.AnnotateKey(
-          new WalletModel.AnnotateKeyRequest({
-            wallet,
-            pubKey,
-            metadata,
-            passphrase
-          })
-        )
-
-        const keypair = await service.DescribeKey({
+        await service.WalletApi.AnnotateKey({
           wallet,
           passphrase,
-          pubKey
+          publicKey: pubKey,
+          metadata
+        })
+
+        const keypair = await service.WalletApi.DescribeKey({
+          wallet,
+          passphrase,
+          publicKey: pubKey
         })
 
         dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -122,7 +124,7 @@ export const Metadata = () => {
   })
 
   const onSubmit = useCallback(
-    (result: { meta: WalletModel.Meta[] }) => {
+    (result: { meta: Meta[] }) => {
       update(result.meta)
     },
     [update]

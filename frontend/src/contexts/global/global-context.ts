@@ -2,12 +2,9 @@ import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
-import type { Service } from '../../service'
-import type {
-  config as ConfigModel,
-  network as NetworkModel,
-  wallet as WalletModel
-} from '../../wailsjs/go/models'
+import type { ServiceType } from '../../service'
+import type { config as ConfigModel } from '../../wailsjs/go/models'
+import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
 
@@ -20,7 +17,7 @@ export enum AppStatus {
 
 export interface KeyPair
   extends Pick<
-    WalletModel.DescribeKeyResponse,
+    WalletModel.DescribeKeyResult,
     'publicKey' | 'meta' | 'isTainted'
   > {
   name: string
@@ -56,7 +53,7 @@ export interface GlobalState {
   network: string | null
   networks: string[]
   presets: NetworkPreset[]
-  networkConfig: NetworkModel.Network | null
+  networkConfig: WalletModel.DescribeNetworkResult | null
   serviceRunning: boolean
   serviceUrl: string
 
@@ -76,7 +73,7 @@ type GlobalContextShape = {
   logger: log.Logger
   actions: GlobalActions
   dispatch: GlobalDispatch
-  service: typeof Service
+  service: ServiceType
 }
 
 export const GlobalContext = React.createContext<

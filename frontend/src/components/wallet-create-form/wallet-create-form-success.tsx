@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { Colors } from '../../config/colors'
-import type { wallet as WalletModel } from '../../wailsjs/go/models'
+import type { WalletModel } from '../../wallet-client'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
@@ -10,7 +10,7 @@ import { Copy } from '../icons/copy'
 import { Warning } from '../icons/warning'
 
 interface WalletCreateFormSuccessProps {
-  response: WalletModel.CreateWalletResponse
+  response: WalletModel.CreateWalletResult
   callToAction?: React.ReactNode
 }
 
@@ -37,7 +37,7 @@ export function WalletCreateFormSuccess({
       <SuccessSection>
         <p data-testid='wallet-version'>Wallet version</p>
         <p>
-          <CodeBlock>{response.wallet.version}</CodeBlock>
+          <CodeBlock>{response?.wallet?.version}</CodeBlock>
         </p>
       </SuccessSection>
       <SuccessSection>
@@ -47,10 +47,10 @@ export function WalletCreateFormSuccess({
           data-testid='wallet-recovery-phrase'
         >
           <CodeBlock data-testid='recovery-phrase'>
-            {response.wallet.recoveryPhrase}
+            {response?.wallet?.recoveryPhrase}
           </CodeBlock>
           <span style={{ position: 'absolute', top: 7, right: 10 }}>
-            <CopyWithTooltip text={response.wallet.recoveryPhrase}>
+            <CopyWithTooltip text={response?.wallet?.recoveryPhrase ?? ''}>
               <ButtonUnstyled>
                 <Copy style={{ width: 13, height: 13 }} />
               </ButtonUnstyled>

@@ -5,7 +5,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { EVENTS } from '../../lib/events'
 import { createLogger } from '../../lib/logging'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
-import { EventsOn } from '../../wailsjs/runtime'
+import { EventsOff, EventsOn } from '../../wailsjs/runtime'
 import { AppToaster } from '../toaster'
 import { TransactionModal } from '../transaction-modal'
 import type { ParsedTx } from './transaction-types'
@@ -68,20 +68,6 @@ export function TransactionManager() {
 
   // Get any already pending tx on startup
   useEffect(() => {
-    const run = async () => {
-      try {
-        const res = await service.ListConsentRequests()
-        setTransactions(res.requests.map(parseTx))
-      } catch (err) {
-        AppToaster.show({
-          message: 'Something went wrong retrieving pending transactions',
-          intent: Intent.DANGER,
-          timeout: 0
-        })
-        logger.error(err)
-      }
-    }
-
     // Listen for new incoming transactions
     EventsOn(EVENTS.NEW_CONSENT_REQUEST, (tx: BackendModel.ConsentRequest) => {
       setTransactions(curr => [...curr, parseTx(tx)])
@@ -107,7 +93,10 @@ export function TransactionManager() {
       }
     )
 
-    run()
+    return () => {
+      EventsOff(EVENTS.NEW_CONSENT_REQUEST)
+      EventsOff(EVENTS.TRANSACTION_SENT)
+    }
   }, [service])
 
   const orderedTransactions = useMemo(() => {

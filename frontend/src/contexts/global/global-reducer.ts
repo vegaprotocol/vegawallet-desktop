@@ -1,9 +1,6 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type {
-  config as ConfigModel,
-  network as NetworkModel,
-  wallet as WalletModel
-} from '../../wailsjs/go/models'
+import type { config as ConfigModel } from '../../wailsjs/go/models'
+import type { WalletModel } from '../../wallet-client'
 import type {
   GlobalState,
   KeyPair,
@@ -50,7 +47,7 @@ export type GlobalAction =
       wallets: string[]
       network: string
       networks: string[]
-      networkConfig: NetworkModel.Network | null
+      networkConfig: WalletModel.DescribeNetworkResult | null
       presetNetworks: NetworkPreset[]
       serviceRunning: boolean
     }
@@ -78,7 +75,7 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
-      key: WalletModel.DescribeKeyResponse
+      key: WalletModel.DescribeKeyResult
     }
   | {
       type: 'ADD_WALLETS'
@@ -91,17 +88,17 @@ export type GlobalAction =
   | {
       type: 'SET_KEYPAIRS'
       wallet: string
-      keypairs: WalletModel.DescribeKeyResponse[]
+      keypairs: WalletModel.DescribeKeyResult[]
     }
   | {
       type: 'UPDATE_KEYPAIR'
       wallet: string
-      keypair: WalletModel.DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResult
     }
   | {
       type: 'ADD_KEYPAIR'
       wallet: string
-      keypair: WalletModel.DescribeKeyResponse
+      keypair: WalletModel.DescribeKeyResult
     }
   | {
       type: 'CHANGE_WALLET'
@@ -136,7 +133,7 @@ export type GlobalAction =
       type: 'SET_NETWORKS'
       network: string | null
       networks: string[]
-      config: NetworkModel.Network | null
+      config: WalletModel.DescribeNetworkResult | null
     }
   | {
       type: 'SET_PRESETS'
@@ -145,22 +142,22 @@ export type GlobalAction =
   | {
       type: 'CHANGE_NETWORK'
       network: string
-      config: NetworkModel.Network
+      config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'UPDATE_NETWORK_CONFIG'
-      config: NetworkModel.Network
+      config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'ADD_NETWORK'
       network: string
-      config: NetworkModel.Network
+      config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'ADD_NETWORKS'
       networks: string[]
       network: string
-      networkConfig: NetworkModel.Network
+      networkConfig: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'START_SERVICE'
@@ -233,7 +230,9 @@ export function globalReducer(
       const newWallet: Wallet = {
         name: action.wallet,
         keypairs: {
-          [keypairExtended.publicKey]: keypairExtended
+          ...(keypairExtended.publicKey && {
+            [keypairExtended.publicKey ?? '']: keypairExtended
+          })
         },
         auth: true
       }
@@ -296,7 +295,9 @@ export function globalReducer(
         ...currWallet,
         keypairs: {
           ...currWallet.keypairs,
-          [newKeypair.publicKey]: newKeypair
+          ...(newKeypair.publicKey && {
+            [newKeypair.publicKey ?? '']: newKeypair
+          })
         }
       }
 

@@ -34,15 +34,15 @@ const useSign = (pubKey?: string, wallet?: string) => {
         }
 
         const passphrase = await requestPassphrase()
-        const resp = await service.SignMessage({
+        const resp = await service.WalletApi.SignMessage({
           wallet,
+          passphrase,
           pubKey,
           // @ts-ignore
-          message: btoa(values.message),
-          passphrase
+          encodedMessage: btoa(values.message)
         })
         // @ts-ignore
-        setSignedData(resp.hexSignature)
+        setSignedData(resp.encodedSignature)
         AppToaster.show({
           message: `Message signed successfully`,
           intent: Intent.SUCCESS

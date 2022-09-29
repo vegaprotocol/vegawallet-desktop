@@ -29,6 +29,7 @@
     "core-js": "^3.6.4",
     "lodash": "^4.17.21",
     "loglevel": "^1.8.0",
+    "nanoid": "^4.0.0",
     "prettier": "^2.3.2",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.1.0",
@@ -46,12 +47,14 @@
   "scripts": {
     "dev": "npx vite",
     "dev:test": "cd .. && VITE_COVERAGE='true' wails dev -noreload",
-    "build": "npx vite build",
+    "build": "npm run generate:wallet-client && npx vite build",
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "test": "jest",
     "check_format": "npx prettier --check . && npx stylelint \"**/*.css\"",
     "format": "npx prettier --write . && npx stylelint --fix \"**/*.css\"",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "generate:wallet-client": "node ./json-rpc/generator.js generate -c ./wallet-codegen.json",
+    "postinstall": "npm run generate:wallet-client"
   },
   "eslintConfig": {
     "extends": [
@@ -75,16 +78,20 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@cypress/instrument-cra": "^1.4.0",
+    "@open-rpc/generator": "^1.22.2",
     "@types/lodash": "^4.14.182",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@vitejs/plugin-react": "^1.2.0",
+    "commander": "^9.4.0",
     "eslint": "^8.9.0",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-jest": "^26.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-testing-library": "^5.0.2",
     "jest": "^27.5.1",
+    "json-schema-to-typescript": "^11.0.2",
+    "node-fetch": "^2.6.7",
     "ts-node": "^10.5.0",
     "vite": "^2.8.2",
     "vite-plugin-eslint": "^1.3.0",
