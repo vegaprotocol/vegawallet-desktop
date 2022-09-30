@@ -18,6 +18,8 @@ export function useSubscription<T>({
   const [isLoading, setLoading] = useState(false)
   const [data, setData] = useState<T[] | null>(null)
 
+  const refetch = useCallback(() => getData(), [])
+
   const submit = useCallback(async () => {
     logger.debug('GetData')
     setLoading(true)
@@ -30,7 +32,7 @@ export function useSubscription<T>({
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [logger, getData])
+  }, [])
 
   useEffect(() => {
     submit()
@@ -39,11 +41,11 @@ export function useSubscription<T>({
       setData(data => [...(data || []), newData])
     })
     return () => unsubscribe()
-  }, [submit, logger, subscribe])
+  }, [])
 
   return {
     isLoading,
-    refetch: getData,
+    refetch,
     data
   }
 }
