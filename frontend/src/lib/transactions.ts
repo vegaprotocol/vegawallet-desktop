@@ -24,7 +24,7 @@ export enum TransactionKeys {
   ETHEREUM_KEY_ROTATE_SUBMISSION = 'ethereumKeyRotateSubmission'
 }
 
-export interface ParsedTx {
+export interface Transaction {
   txId: string // signature
   tx: object // payload
   txHash: string | null
@@ -43,7 +43,7 @@ export interface ParsedTx {
  */
 export const parseTx = (
   consentRequest: BackendModel.ConsentRequest
-): ParsedTx => {
+): Transaction => {
   let payload: { pubKey: string; propagate: boolean }
 
   try {
@@ -52,7 +52,7 @@ export const parseTx = (
     throw new Error('Could not parse transaction payload')
   }
 
-  const result: ParsedTx = {
+  const result: Transaction = {
     txId: consentRequest.txId,
     receivedAt: new Date(consentRequest.receivedAt as string),
     tx: {},

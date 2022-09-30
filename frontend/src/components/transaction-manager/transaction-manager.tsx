@@ -1,113 +1,90 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
-import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { EVENTS } from '../../lib/events'
-import { createLogger } from '../../lib/logging'
-import type { ParsedTx } from '../../lib/transactions'
 import { parseTx } from '../../lib/transactions'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
 import { EventsOff, EventsOn } from '../../wailsjs/runtime'
-import { AppToaster } from '../toaster'
+import type { Interaction } from '../../wallet-client/interactions'
 import { TransactionModal } from '../transaction-modal'
-
-const logger = createLogger('TransactionManager')
 
 /**
  * Stores an array of parsed transactions which get passed to a modal
  */
 export function TransactionManager() {
-  const { service } = useGlobal()
-  const [transactions, setTransactions] = useState<ParsedTx[]>([])
+  const { service, state, actions, dispatch } = useGlobal()
 
-  const handleResponse = useCallback(
-    async (txId: string, decision: boolean) => {
-      try {
-        await service.ConsentToTransaction({
-          txId,
-          decision
-        })
+  useEffect(() => {
+    const load = async () => {
+      const [queue, history] = await Promise.all([
+        service.ListConsentRequests(),
+        service.ListSentTransactions()
+      ])
+      dispatch({
+        type: 'SET_TRANSACTION_QUEUE',
+        payload: queue.requests.map(parseTx)
+      })
+      dispatch({
+        type: 'SET_TRANSACTION_HISTORY',
+        payload: history.transactions
+      })
+    }
 
-        if (decision) {
-          // Set to pending if approved
-          setTransactions(curr => {
-            return curr.map(t => {
-              if (t.txId === txId) {
-                return {
-                  ...t,
-                  pending: true
-                }
-              }
-              return t
-            })
-          })
-        } else {
-          // If rejected remove it
-          setTransactions(curr => {
-            return curr.filter(t => t.txId !== txId)
-          })
-        }
-      } catch (err) {
-        AppToaster.show({
-          message: `Something went wrong ${
-            decision ? 'approving' : 'rejecting'
-          } transaction: ${txId}`,
-          intent: Intent.DANGER
-        })
-        logger.error(err)
-      }
-    },
-    [service]
-  )
+    load()
+  }, [service, dispatch])
 
   // Get any already pending tx on startup
   useEffect(() => {
     // Listen for new incoming transactions
+    EventsOn(EVENTS.NEW_INTERACTION_EVENT, (interaction: Interaction) => {
+      // Add conversion logic here.
+      console.log(interaction)
+    })
+
+    // Listen for new incoming transactions
     EventsOn(EVENTS.NEW_CONSENT_REQUEST, (tx: BackendModel.ConsentRequest) => {
-      setTransactions(curr => [...curr, parseTx(tx)])
+      dispatch({
+        type: 'SET_TRANSACTION_QUEUE',
+        payload: [...state.transactionQueue, parseTx(tx)]
+      })
     })
 
     EventsOn(
       EVENTS.TRANSACTION_SENT,
-      (incoming: BackendModel.SentTransaction) => {
-        setTransactions(curr => {
-          return curr.map(t => {
-            if (t.txId === incoming.txId) {
-              return {
-                ...t,
-                pending: false,
-                txHash: incoming.txHash,
-                error: incoming.error,
-                sentAt: new Date(incoming.sentAt as string)
-              }
-            }
-            return t
-          })
+      async (incoming: BackendModel.SentTransaction) => {
+        dispatch({
+          type: 'SET_TRANSACTION_HISTORY',
+          payload: [...state.transactionHistory, incoming]
         })
       }
     )
 
     return () => {
-      EventsOff(EVENTS.NEW_CONSENT_REQUEST)
-      EventsOff(EVENTS.TRANSACTION_SENT)
+      EventsOff(
+        EVENTS.NEW_CONSENT_REQUEST,
+        EVENTS.TRANSACTION_SENT,
+        EVENTS.NEW_INTERACTION_EVENT
+      )
     }
-  }, [service])
+  }, [service, dispatch, state.transactionHistory, state.transactionQueue])
 
   const orderedTransactions = useMemo(() => {
-    if (!transactions.length) {
+    if (!state.transactionQueue.length) {
       return []
     }
 
     // Oldest at index 0
-    return transactions.sort((a, b) => {
+    return state.transactionQueue.sort((a, b) => {
       return a.receivedAt.getTime() - b.receivedAt.getTime()
     })
-  }, [transactions])
+  }, [state.transactionQueue])
 
   return (
     <TransactionModal
       transactions={orderedTransactions}
-      onRespond={handleResponse}
+      onRespond={(txId, decision) =>
+        dispatch(actions.decideOnTransaction(txId, decision))
+      }
     />
   )
 }

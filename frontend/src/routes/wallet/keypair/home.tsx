@@ -2,7 +2,6 @@ import { BreakText } from '../../../components/break-text'
 import { Header } from '../../../components/header'
 import { KeyValueTable } from '../../../components/key-value-table'
 import { TransactionHistory } from '../../../components/transaction-history'
-import { TransactionQueue } from '../../../components/transaction-queue'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 
 export function KeyPairHome() {
@@ -25,8 +24,6 @@ export function KeyPairHome() {
           }
         ]}
       />
-      <Header>Queued transactions</Header>
-      <TransactionQueue />
       <Header>History</Header>
       <TransactionHistory />
     </div>

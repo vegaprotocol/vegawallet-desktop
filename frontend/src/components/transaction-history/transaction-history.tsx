@@ -1,28 +1,73 @@
+import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
-import { useSubscription } from '../../hooks/use-subscription'
-import { createEventSubscription, EVENTS } from '../../lib/events'
-import { createLogger } from '../../lib/logging'
+import { formatDate } from '../../lib/date'
+import type { backend as BackendModel } from '../../wailsjs/go/models'
 
-const logger = createLogger('TransactionHistory')
+const statusStyles = {
+  display: 'inline-block',
+  padding: '0.25rem 0.5rem',
+  margin: '0.5rem 0.5rem 0.5rem 0',
+  borderRadius: 2
+}
+
+const TransactionStatus = ({ isSuccess }: { isSuccess: boolean }) => {
+  if (isSuccess) {
+    return (
+      <span
+        style={{
+          ...statusStyles,
+          backgroundColor: Colors.INTENT_SUCCESS
+        }}
+      >
+        Confirmed
+      </span>
+    )
+  }
+  return (
+    <span
+      style={{
+        ...statusStyles,
+        backgroundColor: Colors.INTENT_DANGER
+      }}
+    >
+      Failed
+    </span>
+  )
+}
+
+// @TODO: style and intergate when more data is available
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const TransactionItem = ({
+  transaction
+}: {
+  transaction: BackendModel.SentTransaction
+}) => {
+  ;<div
+    key={transaction.txId}
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }}
+  >
+    <div>
+      <TransactionStatus isSuccess={!transaction.error} />
+      <span>transaction id: {transaction.txId}</span>
+    </div>
+    <div>{formatDate(new Date(transaction.sentAt))}</div>
+  </div>
+}
 
 export const TransactionHistory = () => {
-  const { service } = useGlobal()
-  const { data, isLoading } = useSubscription({
-    logger,
-    getData: async () => {
-      const { transactions } = await service.ListSentTransactions()
-      return transactions
-    },
-    subscribe: createEventSubscription(EVENTS.TRANSACTION_SENT)
-  })
+  const { state } = useGlobal()
 
   return (
     <>
-      {!isLoading && data?.length === 0 && (
+      {state.transactionHistory?.length === 0 && (
         <div>No transactions in history.</div>
       )}
-      {!isLoading && data?.length && (
-        <div>{data.length} transactions in history.</div>
+      {state.transactionHistory?.length > 0 && (
+        <div>{state.transactionHistory.length} transactions in history.</div>
       )}
     </>
   )

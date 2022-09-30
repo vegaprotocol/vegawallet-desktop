@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"code.vegaprotocol.io/vega/wallet/api"
+	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	"code.vegaprotocol.io/vega/wallet/service"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -11,9 +13,16 @@ import (
 )
 
 const (
+	NewInteractionEvent    = "new_interaction"
 	NewConsentRequestEvent = "new_consent_request"
 	TransactionSentEvent   = "transaction_sent"
 )
+
+type Interaction struct {
+	TraceID string      `json:"traceId"`
+	Type    string      `json:"type"`
+	Content interface{} `json:"content"`
+}
 
 type ConsentRequest struct {
 	TxID       string    `json:"txId"`
@@ -48,6 +57,37 @@ type ListConsentRequestsResponse struct {
 
 type ListSentTransactionsResponse struct {
 	Transactions []*SentTransaction `json:"transactions"`
+}
+
+func (h *Handler) RespondToInteraction(interaction Interaction) error {
+	h.log.Debug("Entering RespondToInteraction")
+	defer h.log.Debug("Leaving RespondToInteraction")
+
+	if h.ctx.Err() != nil {
+		return ErrContextCanceled
+	}
+
+	switch interaction.Type {
+	case "DECISION":
+		h.service.ResponseChan <- interactor.Interaction{
+			TraceID: interaction.TraceID,
+			Content: interaction.Content.(interactor.Decision),
+		}
+	case "ENTERED_PASSPHRASE":
+		h.service.ResponseChan <- interactor.Interaction{
+			TraceID: interaction.TraceID,
+			Content: interaction.Content.(interactor.EnteredPassphrase),
+		}
+	case "SELECTED_WALLET":
+		h.service.ResponseChan <- interactor.Interaction{
+			TraceID: interaction.TraceID,
+			Content: interaction.Content.(api.SelectedWallet),
+		}
+	default:
+		h.log.Error(fmt.Sprintf("unsupported interaction type %q", interaction.Type))
+	}
+
+	return nil
 }
 
 func (h *Handler) ConsentToTransaction(req *ConsentToTransactionRequest) error {
@@ -141,6 +181,42 @@ func (h *Handler) emitTransactionSentEvent(sentTransaction service.SentTransacti
 			h.log.Error("couldn't serialize sent transaction for event", zap.Error(err))
 		}
 		runtime.EventsEmit(h.ctx, TransactionSentEvent, req)
+	}()
+}
+
+func (h *Handler) emitReceivedInteraction(interaction interactor.Interaction) {
+	h.log.Info(fmt.Sprintf("Received a new interaction with trace ID %q", interaction.TraceID))
+	go func() {
+		var interactionType string
+		switch iType := interaction.Content.(type) {
+		case interactor.RequestWalletConnectionReview:
+			interactionType = "REQUEST_WALLET_CONNECTION_REVIEW"
+		case interactor.RequestWalletSelection:
+			interactionType = "REQUEST_WALLET_SELECTION"
+		case interactor.RequestPassphrase:
+			interactionType = "REQUEST_PASSPHRASE"
+		case interactor.ErrorOccurred:
+			interactionType = "ERROR_OCCURRED"
+		case interactor.Log:
+			interactionType = "LOG"
+		case interactor.RequestSucceeded:
+			interactionType = "REQUEST_SUCCEEDED"
+		case interactor.RequestPermissionsReview:
+			interactionType = "REQUEST_PERMISSIONS_REVIEW"
+		case interactor.RequestTransactionSendingReview:
+			interactionType = "REQUEST_TRANSACTION_SENDING_REVIEW"
+		case interactor.RequestTransactionSigningReview:
+			interactionType = "REQUEST_TRANSACTION_SIGNING_REVIEW"
+		case interactor.TransactionStatus:
+			interactionType = "TRANSACTION_STATUS"
+		default:
+			h.log.Error(fmt.Sprintf("unsupported interaction type %q", iType))
+		}
+		runtime.EventsEmit(h.ctx, NewInteractionEvent, Interaction{
+			TraceID: interaction.TraceID,
+			Content: interaction.Content,
+			Type:    interactionType,
+		})
 	}()
 }
 

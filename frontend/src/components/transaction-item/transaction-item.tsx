@@ -1,5 +1,5 @@
 import { formatDate } from '../../lib/date'
-import type { ParsedTx, TransactionKeys } from '../../lib/transactions'
+import type { Transaction, TransactionKeys } from '../../lib/transactions'
 import { BreakText } from '../break-text'
 import { Button } from '../button'
 import { CodeBlock } from '../code-block'
@@ -36,7 +36,7 @@ const headingStyles = {
 }
 
 interface TransactionItemProps {
-  transaction: ParsedTx
+  transaction: Transaction
   onRespond: (id: string, decision: boolean) => void
 }
 

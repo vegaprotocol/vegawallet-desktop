@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	"code.vegaprotocol.io/vega/wallet/service"
 )
 
@@ -16,6 +17,9 @@ type State struct {
 
 	ConsentRequests  *ConsentRequests
 	SentTransactions *SentTransactions
+
+	ResponseChan  chan interactor.Interaction
+	ReceptionChan chan interactor.Interaction
 }
 
 func NewState() *State {
@@ -42,6 +46,9 @@ func (s *State) Shutdown() {
 
 	close(s.ConsentRequestsChan)
 	close(s.SentTransactionsChan)
+
+	close(s.ReceptionChan)
+	close(s.ResponseChan)
 }
 
 func (s *State) Reset() {
@@ -51,4 +58,6 @@ func (s *State) Reset() {
 	s.SentTransactions = NewSentTransactions()
 	s.ConsentRequestsChan = make(chan service.ConsentRequest, 1)
 	s.SentTransactionsChan = make(chan service.SentTransaction, 1)
+	s.ReceptionChan = make(chan interactor.Interaction, 1)
+	s.ResponseChan = make(chan interactor.Interaction, 1)
 }

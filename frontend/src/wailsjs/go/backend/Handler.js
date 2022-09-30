@@ -46,6 +46,10 @@ export function ListSentTransactions() {
   return window['go']['backend']['Handler']['ListSentTransactions']();
 }
 
+export function RespondToInteraction(arg1) {
+  return window['go']['backend']['Handler']['RespondToInteraction'](arg1);
+}
+
 export function SearchForExistingConfiguration() {
   return window['go']['backend']['Handler']['SearchForExistingConfiguration']();
 }

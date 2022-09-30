@@ -20,7 +20,7 @@ Be sure to have the following environment variables set:
 - `GO111MODULE=on`
 
 ```sh
-go install github.com/wailsapp/wails/v2/cmd/wails@v2.0.0-beta.44.2
+go install github.com/wailsapp/wails/v2/cmd/wails@v2.0.0
 ```
 
 To check if you have the correct dependencies installed, use the following command:
@@ -28,6 +28,12 @@ To check if you have the correct dependencies installed, use the following comma
 ```sh
 wails doctor
 ```
+
+##### For Linux
+
+Be sure to follow the installation guide from Wails. There are specific dependencies that needs to be installed.
+
+For more details, see [https://wails.app/gettingstarted/linux/#gcc-gtk-webkit](https://wails.app/gettingstarted/linux/#gcc-gtk-webkit)
 
 #### Frontend
 

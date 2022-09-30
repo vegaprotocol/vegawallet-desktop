@@ -1,5 +1,9 @@
+import type { Transaction } from '../../lib/transactions'
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type { config as ConfigModel } from '../../wailsjs/go/models'
+import type {
+  backend as BackendModel,
+  config as ConfigModel
+} from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
   GlobalState,
@@ -21,6 +25,8 @@ export const initialGlobalState: GlobalState = {
   version: '',
   wallet: null,
   wallets: [],
+  transactionQueue: [],
+  transactionHistory: [],
   passphraseModalOpen: false,
   drawerOpen: false,
   sidebarOpen: false,
@@ -165,6 +171,14 @@ export type GlobalAction =
     }
   | {
       type: 'STOP_SERVICE'
+    }
+  | {
+      type: 'SET_TRANSACTION_QUEUE'
+      payload: Transaction[]
+    }
+  | {
+      type: 'SET_TRANSACTION_HISTORY'
+      payload: BackendModel.SentTransaction[]
     }
 
 export function globalReducer(
@@ -452,6 +466,18 @@ export function globalReducer(
         ...state,
         serviceRunning: false,
         serviceUrl: ''
+      }
+    }
+    case 'SET_TRANSACTION_QUEUE': {
+      return {
+        ...state,
+        transactionQueue: action.payload
+      }
+    }
+    case 'SET_TRANSACTION_HISTORY': {
+      return {
+        ...state,
+        transactionHistory: action.payload
       }
     }
     default: {

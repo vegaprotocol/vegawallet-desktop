@@ -4,6 +4,7 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import { parseTx } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
@@ -191,7 +192,7 @@ export function createActions(
             })
 
             const keysWithMeta = await Promise.all(
-              keys.keys.map((key: WalletModel.NamedPublicKey) =>
+              (keys.keys || []).map(key =>
                 service.WalletApi.DescribeKey({
                   wallet,
                   passphrase,
@@ -386,6 +387,53 @@ export function createActions(
             dispatch({ type: 'STOP_SERVICE' })
           }
         } catch (err) {
+          logger.error(err)
+        }
+      }
+    },
+
+    decideOnTransaction(txId: string, decision: boolean) {
+      return async (dispatch: GlobalDispatch) => {
+        logger.debug('ApproveTransaction')
+
+        try {
+          await service.ConsentToTransaction({
+            txId,
+            decision
+          })
+        } catch (err) {
+          AppToaster.show({
+            message: `Something went wrong ${
+              decision ? 'approving' : 'rejecting'
+            } transaction: ${txId}`,
+            intent: Intent.DANGER
+          })
+          logger.error(err)
+        }
+
+        try {
+          const [queue, history] = await Promise.all([
+            service.ListConsentRequests(),
+            service.ListSentTransactions()
+          ])
+
+          const consentRequests = queue.requests.map(parseTx)
+          const transactionsSent = history.transactions
+
+          dispatch({
+            type: 'SET_TRANSACTION_QUEUE',
+            payload: consentRequests
+          })
+
+          dispatch({
+            type: 'SET_TRANSACTION_HISTORY',
+            payload: transactionsSent
+          })
+        } catch (err) {
+          AppToaster.show({
+            message: `Something went wrong requesting transactions`,
+            intent: Intent.DANGER
+          })
           logger.error(err)
         }
       }

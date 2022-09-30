@@ -1,9 +1,9 @@
-import type { ParsedTx } from '../../lib/transactions'
+import type { Transaction } from '../../lib/transactions'
 import { Dialog } from '../dialog'
 import { TransactionItem } from '../transaction-item'
 
 interface TransactionModalProps {
-  transactions: ParsedTx[]
+  transactions: Transaction[]
   onRespond: (txId: string, decision: boolean) => void
 }
 
