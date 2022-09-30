@@ -1,6 +1,6 @@
 module code.vegaprotocol.io/vegawallet-desktop
 
-go 1.18
+go 1.19
 
 require (
 	code.vegaprotocol.io/vega v0.57.1-0.20220929143230-739fa46bb5dc
