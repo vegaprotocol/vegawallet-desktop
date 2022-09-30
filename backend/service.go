@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"code.vegaprotocol.io/vega/libs/jsonrpc"
 	"code.vegaprotocol.io/vega/paths"
+	"code.vegaprotocol.io/vega/wallet/api"
+	"code.vegaprotocol.io/vega/wallet/api/interactor"
+	nodeapi "code.vegaprotocol.io/vega/wallet/api/node"
 	"code.vegaprotocol.io/vega/wallet/network"
 	netstore "code.vegaprotocol.io/vega/wallet/network/store/v1"
 	"code.vegaprotocol.io/vega/wallet/node"
@@ -115,8 +117,26 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 		cancel()
 	}
 
+	jsonRpcLogger := log.Named("json-rpc")
+
+	nodeSelector, err := nodeapi.BuildRoundRobinSelectorWithRetryingNodes(jsonRpcLogger, cfg.API.GRPC.Hosts, cfg.API.GRPC.Retries)
+	if err != nil {
+		h.log.Error(fmt.Sprintf("could not initialise the node selector: %v", err))
+		loggingCancelFn()
+		return false, fmt.Errorf("could not initialise the node selector: %w", err)
+	}
+
+	sequentialInteractor := interactor.NewSequentialInteractor(ctx, h.service.ReceptionChan, h.service.ResponseChan)
+
+	clientAPI, err := api.ClientAPI(jsonRpcLogger, wStore, sequentialInteractor, nodeSelector)
+	if err != nil {
+		h.log.Error(fmt.Sprintf("could not initialise the JSON-RPC API: %v", err))
+		loggingCancelFn()
+		return false, err
+	}
+
 	policy := service.NewExplicitConsentPolicy(ctx, h.service.ConsentRequestsChan, h.service.SentTransactionsChan)
-	srv, err := service.NewService(log.Named("service"), cfg, jsonrpc.New(log.Named("json-rpc"), false), handler, auth, forwarder, policy)
+	srv, err := service.NewService(log.Named("service"), cfg, clientAPI, handler, auth, forwarder, policy)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service: %v", err))
 		loggingCancelFn()
@@ -132,6 +152,19 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 			}
 		},
 	)
+
+	go func() {
+		h.log.Info("Starting to listen to incoming interaction")
+		for {
+			select {
+			case <-ctx.Done():
+				h.log.Info("Stop listening to incoming interaction")
+				return
+			case interaction := <-h.service.ReceptionChan:
+				h.emitReceivedInteraction(interaction)
+			}
+		}
+	}()
 
 	go func() {
 		h.log.Info("Starting to listen to pending request channel")
