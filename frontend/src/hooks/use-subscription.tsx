@@ -18,6 +18,7 @@ export function useSubscription<T>({
   const [isLoading, setLoading] = useState(false)
   const [data, setData] = useState<T[] | null>(null)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const refetch = useCallback(() => getData(), [])
 
   const submit = useCallback(async () => {
@@ -32,6 +33,7 @@ export function useSubscription<T>({
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export function useSubscription<T>({
       setData(data => [...(data || []), newData])
     })
     return () => unsubscribe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {
