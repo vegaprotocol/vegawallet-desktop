@@ -79,6 +79,10 @@ export function TransactionManager() {
     })
   }, [state.transactionQueue])
 
+  if (!state.wallet) {
+    return null
+  }
+
   return (
     <TransactionModal
       transactions={orderedTransactions}

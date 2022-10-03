@@ -347,7 +347,10 @@ export function globalReducer(
       const wallet = state.wallets.find(w => w.name === action.wallet)
 
       if (!wallet) {
-        throw new Error('Wallet not found')
+        return {
+          ...state,
+          wallet: null
+        }
       }
 
       return {
