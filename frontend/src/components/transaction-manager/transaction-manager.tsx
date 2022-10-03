@@ -5,7 +5,6 @@ import { EVENTS } from '../../lib/events'
 import { parseTx } from '../../lib/transactions'
 import type { backend as BackendModel } from '../../wailsjs/go/models'
 import { EventsOff, EventsOn } from '../../wailsjs/runtime'
-import type { Interaction } from '../../wallet-client/interactions'
 import { TransactionModal } from '../transaction-modal'
 
 /**
@@ -36,12 +35,6 @@ export function TransactionManager() {
   // Get any already pending tx on startup
   useEffect(() => {
     // Listen for new incoming transactions
-    EventsOn(EVENTS.NEW_INTERACTION_EVENT, (interaction: Interaction) => {
-      // Add conversion logic here.
-      console.log(interaction)
-    })
-
-    // Listen for new incoming transactions
     EventsOn(EVENTS.NEW_CONSENT_REQUEST, (tx: BackendModel.ConsentRequest) => {
       dispatch({
         type: 'SET_TRANSACTION_QUEUE',
@@ -63,7 +56,6 @@ export function TransactionManager() {
       EventsOff(
         EVENTS.NEW_CONSENT_REQUEST,
         EVENTS.TRANSACTION_SENT,
-        EVENTS.NEW_INTERACTION_EVENT
       )
     }
   }, [service, dispatch, state.transactionHistory, state.transactionQueue])

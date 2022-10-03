@@ -4,7 +4,7 @@ import { animated, config, useTransition } from 'react-spring'
 
 interface DialogProps {
   open: boolean
-  children: React.ReactElement
+  children: React.ReactNode
   size?: 'sm' | 'lg'
   onChange?: (open: boolean) => void
 }

@@ -1,8 +1,21 @@
-export interface Interaction {
-  traceId: string;
-  type: string;
-  content: any;
+export const enum INTERACTION {
+  REQUEST_WALLET_CONNECTION_REVIEW = 'REQUEST_WALLET_CONNECTION_REVIEW',
+  REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
 }
+
+export type RequestWalletConnection = {
+  traceId: string;
+  type: INTERACTION.REQUEST_WALLET_CONNECTION_REVIEW;
+  content: RequestWalletConnectionReview;
+}
+
+export type RequestWalletSelection = {
+  traceId: string;
+  type: INTERACTION.REQUEST_WALLET_SELECTION,
+  content: RequestWalletSelectionReview,
+}
+
+export type Interaction = RequestWalletConnection | RequestWalletSelection
 
 // Received interactions.
 
@@ -20,7 +33,7 @@ export interface RequestWalletConnectionReview {
   hostname: string;
 }
 
-export interface RequestWalletSelection {
+export interface RequestWalletSelectionReview {
   hostname: string;
   availableWallets: string[];
 }

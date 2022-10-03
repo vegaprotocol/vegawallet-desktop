@@ -7,6 +7,7 @@ import { AppFrame, AppLoader } from './app-loader'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Settings } from './components/settings'
 import { TransactionManager } from './components/transaction-manager'
+import { InteractionManager } from './components/interaction-manager'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { createLogger, initLogger } from './lib/logging'
 import { AppRouter } from './routes'
@@ -31,6 +32,7 @@ function App() {
               <AppRouter />
               <PassphraseModal />
               <TransactionManager />
+              <InteractionManager />
               <Settings />
             </AppLoader>
           </AppFrame>
