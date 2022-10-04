@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -71,6 +72,9 @@ func (h *Handler) RespondToInteraction(interaction Interaction) error {
 
 	switch interaction.Type {
 	case "DECISION":
+		if data["approved"] == nil {
+			return errors.New("field \"approved\" is required")
+		}
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
 			Content: interactor.Decision{
@@ -78,6 +82,9 @@ func (h *Handler) RespondToInteraction(interaction Interaction) error {
 			},
 		}
 	case "ENTERED_PASSPHRASE":
+		if data["passphrase"] == nil {
+			return errors.New("field \"passphrase\" is required")
+		}
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
 			Content: interactor.EnteredPassphrase{
@@ -85,6 +92,13 @@ func (h *Handler) RespondToInteraction(interaction Interaction) error {
 			},
 		}
 	case "SELECTED_WALLET":
+		if data["wallet"] == nil {
+			return errors.New("field \"wallet\" is required")
+		}
+		if data["passphrase"] == nil {
+			return errors.New("field \"passphrase\" is required")
+		}
+
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
 			Content: api.SelectedWallet{
