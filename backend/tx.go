@@ -1,7 +1,6 @@
 package backend
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -9,6 +8,7 @@ import (
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	"code.vegaprotocol.io/vega/wallet/service"
 	"github.com/golang/protobuf/jsonpb"
+	"github.com/mitchellh/mapstructure"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 )
@@ -68,43 +68,34 @@ func (h *Handler) RespondToInteraction(interaction Interaction) error {
 		return ErrContextCanceled
 	}
 
-	data := interaction.Content.(map[string]interface{})
-
 	switch interaction.Type {
 	case "DECISION":
-		if data["approved"] == nil {
-			return errors.New("field \"approved\" is required")
+		decision := interactor.Decision{}
+		if err := mapstructure.Decode(interaction.Content, &decision); err != nil {
+			return fmt.Errorf("could not decode the DECISION interaction: %w", err)
 		}
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
-			Content: interactor.Decision{
-				Approved: data["approved"].(bool),
-			},
+			Content: decision,
 		}
 	case "ENTERED_PASSPHRASE":
-		if data["passphrase"] == nil {
-			return errors.New("field \"passphrase\" is required")
+		enteredPassphrase := interactor.EnteredPassphrase{}
+		if err := mapstructure.Decode(interaction.Content, &enteredPassphrase); err != nil {
+			return fmt.Errorf("could not decode the ENTERED_PASSPHRASE interaction: %w", err)
 		}
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
-			Content: interactor.EnteredPassphrase{
-				Passphrase: data["passphrase"].(string),
-			},
+			Content: enteredPassphrase,
 		}
 	case "SELECTED_WALLET":
-		if data["wallet"] == nil {
-			return errors.New("field \"wallet\" is required")
-		}
-		if data["passphrase"] == nil {
-			return errors.New("field \"passphrase\" is required")
+		selectedWallet := api.SelectedWallet{}
+		if err := mapstructure.Decode(interaction.Content, &selectedWallet); err != nil {
+			return fmt.Errorf("could not decode the SELECTED_WALLET interaction: %w", err)
 		}
 
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
-			Content: api.SelectedWallet{
-				Wallet:     data["wallet"].(string),
-				Passphrase: data["passphrase"].(string),
-			},
+			Content: selectedWallet,
 		}
 	default:
 		h.log.Error(fmt.Sprintf("unsupported interaction type %q", interaction.Type))

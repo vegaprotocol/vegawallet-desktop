@@ -5,6 +5,7 @@ go 1.18
 require (
 	code.vegaprotocol.io/vega v0.57.1-0.20220929143230-739fa46bb5dc
 	github.com/golang/protobuf v1.5.2
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/wailsapp/wails/v2 v2.0.0
 	go.uber.org/zap v1.21.0
 )
@@ -30,7 +31,6 @@ require (
 	github.com/leaanthony/slicer v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oasisprotocol/curve25519-voi v0.0.0-20220317090546-adb2f9614b17 // indirect
 	github.com/pkg/browser v0.0.0-20210706143420-7d21f8c997e2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
