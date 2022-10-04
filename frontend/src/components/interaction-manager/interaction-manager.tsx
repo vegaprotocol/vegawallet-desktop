@@ -26,7 +26,7 @@ const InitialConnectionModal = ({ model, onRespond }: InteractionContentProps<Re
       traceId: model.traceId,
       type: 'DECISION',
       content: {
-        decision,
+        approved: decision,
       }
     })
     console.log(a)

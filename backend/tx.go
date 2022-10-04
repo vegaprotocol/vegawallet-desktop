@@ -67,21 +67,30 @@ func (h *Handler) RespondToInteraction(interaction Interaction) error {
 		return ErrContextCanceled
 	}
 
+	data := interaction.Content.(map[string]interface{})
+
 	switch interaction.Type {
 	case "DECISION":
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
-			Content: interaction.Content.(interactor.Decision),
+			Content: interactor.Decision{
+				Approved: data["approved"].(bool),
+			},
 		}
 	case "ENTERED_PASSPHRASE":
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
-			Content: interaction.Content.(interactor.EnteredPassphrase),
+			Content: interactor.EnteredPassphrase{
+				Passphrase: data["passphrase"].(string),
+			},
 		}
 	case "SELECTED_WALLET":
 		h.service.ResponseChan <- interactor.Interaction{
 			TraceID: interaction.TraceID,
-			Content: interaction.Content.(api.SelectedWallet),
+			Content: api.SelectedWallet{
+				Wallet:     data["wallet"].(string),
+				Passphrase: data["passphrase"].(string),
+			},
 		}
 	default:
 		h.log.Error(fmt.Sprintf("unsupported interaction type %q", interaction.Type))
