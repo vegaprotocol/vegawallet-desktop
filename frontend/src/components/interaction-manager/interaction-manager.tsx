@@ -10,26 +10,26 @@ import { INTERACTION } from '../../wallet-client/interactions'
 import type {
   Interaction,
   RequestWalletConnection,
-  RequestWalletSelection,
 } from '../../wallet-client/interactions'
-import { requestPassphrase } from '../passphrase-modal'
+import { ConnectionModal } from '../connection-modal'
 
-type InteractionContentProps<T extends Interaction = Interaction> = {
+export type InteractionContentProps<T extends Interaction = Interaction> = {
   model: T
   onRespond: () => void
 }
 
-const ConnectionModal = ({ model, onRespond }: InteractionContentProps<RequestWalletConnection>) => {
+const InitialConnectionModal = ({ model, onRespond }: InteractionContentProps<RequestWalletConnection>) => {
   const { service } = useGlobal()
 
   const handleResponse = async (decision: boolean) => {
-    await service.RespondToInteraction({
+    const a = await service.RespondToInteraction({
       traceId: model.traceId,
-      type: model.type,
+      type: 'DECISION',
       content: {
         decision,
       }
     })
+    console.log(a)
     onRespond()
   }
 
@@ -44,55 +44,16 @@ const ConnectionModal = ({ model, onRespond }: InteractionContentProps<RequestWa
   )
 }
 
-const WalletSelectionModal = ({ model, onRespond }: InteractionContentProps<RequestWalletSelection>) => {
-  const { service } = useGlobal()
-
-  const handleResponse = async (wallet: string) => {
-    const passphrase = await requestPassphrase()
-
-    await service.RespondToInteraction({
-      traceId: model.traceId,
-      type: model.type,
-      content: {
-        wallet,
-        passphrase,
-      }
-    })
-    onRespond()
-  }
-
-  return (
-    <Dialog open={true}>
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <div>
-          <strong>{model.content.hostname}</strong>
-        </div>
-        <div>is requesting access to a wallet</div>
-      </div>
-      <div>
-        Approving a connection allows this site to see your wallet chain ID, and may allow access to your public keys and allow you to approve transactions depending on your wallet permissions.
-      </div>
-
-      <div>Select a wallet to connect to:</div>
-      <div>
-        {model.content.availableWallets.map((wallet, index) => {
-          <Button key={index} onClick={() => handleResponse(wallet)}>{wallet}</Button>
-        })}
-      </div>
-    </Dialog>
-  )
-}
-
 const InteractionItem = ({ model, onRespond }: InteractionContentProps) => {
   switch (model.type) {
     case INTERACTION.REQUEST_WALLET_CONNECTION_REVIEW: {
       return (
-        <ConnectionModal model={model} onRespond={onRespond} />
+        <InitialConnectionModal model={model} onRespond={onRespond} />
       )
     }
     case INTERACTION.REQUEST_WALLET_SELECTION: {
       return (
-        <WalletSelectionModal model={model} onRespond={onRespond} />
+        <ConnectionModal model={model} onRespond={onRespond} />
       )
     }
     default: {
@@ -134,7 +95,9 @@ export function InteractionManager() {
     // Listen for new incoming transactions
     EventsOn(EVENTS.NEW_INTERACTION_EVENT, (interaction: Interaction) => {
       console.log(interaction)
-      setInteractions(interactions => ([...interactions, interaction]))
+      setInteractions(interactions => {
+        return ([...interactions, interaction])
+      })
     })
     return () => {
       EventsOff(EVENTS.NEW_INTERACTION_EVENT)
