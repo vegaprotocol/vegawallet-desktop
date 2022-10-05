@@ -5,6 +5,7 @@ import { LogComponent } from './content/log'
 import { SuccessComponent } from './content/success'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
+import { SessionEndComponent } from './content/session-end'
 import type {
   ErrorOccured,
   Interaction,
@@ -12,7 +13,8 @@ import type {
   Log,
   RequestSucceeded,
   RequestWalletConnection,
-  RequestWalletSelection
+  RequestWalletSelection,
+  SessionEnded,
 } from './types'
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
@@ -46,6 +48,9 @@ const InteractionItem = (props: InteractionContentProps) => {
     }
     case INTERACTION_TYPE.LOG: {
       return <LogComponent {...(props as InteractionContentProps<Log>)} />
+    }
+    case INTERACTION_TYPE.INTERACTION_SESSION_ENDED: {
+      return <SessionEndComponent {...props as InteractionContentProps<SessionEnded>} />
     }
     default: {
       return null

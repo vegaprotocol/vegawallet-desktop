@@ -1,31 +1,5 @@
 export namespace backend {
 	
-	export class ConsentToTransactionRequest {
-	    txId: string;
-	    decision: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new ConsentToTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	        this.decision = source["decision"];
-	    }
-	}
-	export class GetConsentRequestRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetConsentRequestRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
-	}
 	export class ConsentRequest {
 	    txId: string;
 	    tx: string;
@@ -60,6 +34,74 @@ export namespace backend {
 		    }
 		    return a;
 		}
+	}
+	export class ListConsentRequestsResponse {
+	    requests: ConsentRequest[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ListConsentRequestsResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.requests = this.convertValues(source["requests"], ConsentRequest);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ClearSentTransactionRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ClearSentTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
+	}
+	export class ConsentToTransactionRequest {
+	    txId: string;
+	    decision: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new ConsentToTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	        this.decision = source["decision"];
+	    }
+	}
+	export class GetConsentRequestRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetConsentRequestRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
 	}
 	export class GetServiceStateResponse {
 	    url: string;
@@ -170,30 +212,6 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class ClearSentTransactionRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
-	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
-	}
 	export class Interaction {
 	    traceId: string;
 	    type: string;
@@ -210,35 +228,31 @@ export namespace backend {
 	        this.content = source["content"];
 	    }
 	}
-	export class ListConsentRequestsResponse {
-	    requests: ConsentRequest[];
+	export class CheckVersionResponse {
+	    version: string;
+	    releaseUrl: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ListConsentRequestsResponse(source);
+	        return new CheckVersionResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.requests = this.convertValues(source["requests"], ConsentRequest);
+	        this.version = source["version"];
+	        this.releaseUrl = source["releaseUrl"];
+	    }
+	}
+	export class StartServiceRequest {
+	    network: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new StartServiceRequest(source);
 	    }
 	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
+	    }
 	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
@@ -252,20 +266,6 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.wallets = source["wallets"];
 	        this.networks = source["networks"];
-	    }
-	}
-	export class CheckVersionResponse {
-	    version: string;
-	    releaseUrl: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CheckVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
 

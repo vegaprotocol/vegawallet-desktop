@@ -71,11 +71,13 @@ export interface RequestSucceededContent {}
 // Received interaction events
 
 export const enum INTERACTION_TYPE {
+  INTERACTION_SESSION_BEGAN = 'INTERACTION_SESSION_BEGAN',
+  INTERACTION_SESSION_ENDED = 'INTERACTION_SESSION_ENDED',
   REQUEST_WALLET_CONNECTION_REVIEW = 'REQUEST_WALLET_CONNECTION_REVIEW',
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
-  LOG = 'LOG'
+  LOG = 'LOG',
 }
 
 export type RequestWalletConnection = {
@@ -108,12 +110,24 @@ export type Log = {
   content: LogContent
 }
 
+export type SessionStarted = {
+  traceId: string
+  type: INTERACTION_TYPE.INTERACTION_SESSION_BEGAN
+}
+
+export type SessionEnded = {
+  traceId: string
+  type: INTERACTION_TYPE.INTERACTION_SESSION_ENDED
+}
+
 export type RawInteraction =
   | RequestWalletConnection
   | RequestWalletSelection
   | RequestSucceeded
   | ErrorOccured
   | Log
+  | SessionStarted
+  | SessionEnded
 
 export type Interaction<T extends RawInteraction = RawInteraction> = {
   meta: {
