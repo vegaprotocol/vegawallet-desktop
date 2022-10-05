@@ -35,7 +35,7 @@ require (
 	github.com/oasisprotocol/curve25519-voi v0.0.0-20220317090546-adb2f9614b17 // indirect
 	github.com/pkg/browser v0.0.0-20210706143420-7d21f8c997e2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/rs/cors v1.8.2 // indirect
+	github.com/rs/cors v1.8.2 // indirect; iwndirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/tkrajina/go-reflector v0.5.5 // indirect
 	github.com/tyler-smith/go-bip39 v1.1.0 // indirect
@@ -53,3 +53,5 @@ require (
 	google.golang.org/grpc v1.48.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 )
+
+replace github.com/shopspring/decimal => github.com/vegaprotocol/decimal v1.3.1-uint256
