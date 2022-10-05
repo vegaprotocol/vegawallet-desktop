@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import { EVENT_FLOW_TYPE } from '../types'
-import type { InteractionContentProps, RequestSucceeded } from '../types'
-import { AppToaster } from '../../toaster'
+
 import { Intent } from '../../../config/intent'
+import { AppToaster } from '../../toaster'
+import type { InteractionContentProps, RequestSucceeded } from '../types'
+import { EVENT_FLOW_TYPE } from '../types'
 
 const getSuccessMessage = (flow?: EVENT_FLOW_TYPE) => {
   switch (flow) {
@@ -15,18 +16,23 @@ const getSuccessMessage = (flow?: EVENT_FLOW_TYPE) => {
   }
 }
 
-export const SuccessComponent = ({ interaction, flow, isResolved, onFinish }: InteractionContentProps<RequestSucceeded>) => {
+export const SuccessComponent = ({
+  interaction,
+  flow,
+  isResolved,
+  onFinish
+}: InteractionContentProps<RequestSucceeded>) => {
   const message = getSuccessMessage(flow)
 
   useEffect(() => {
     if (!isResolved && message) {
       AppToaster.show({
         message,
-        intent: Intent.SUCCESS,
+        intent: Intent.SUCCESS
       })
       onFinish()
     }
-  }, [interaction, message, isResolved])
+  }, [interaction, message, isResolved, onFinish])
 
   return null
 }

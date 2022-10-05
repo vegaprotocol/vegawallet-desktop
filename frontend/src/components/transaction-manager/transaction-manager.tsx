@@ -53,10 +53,7 @@ export function TransactionManager() {
     )
 
     return () => {
-      EventsOff(
-        EVENTS.NEW_CONSENT_REQUEST,
-        EVENTS.TRANSACTION_SENT,
-      )
+      EventsOff(EVENTS.NEW_CONSENT_REQUEST, EVENTS.TRANSACTION_SENT)
     }
   }, [service, dispatch, state.transactionHistory, state.transactionQueue])
 

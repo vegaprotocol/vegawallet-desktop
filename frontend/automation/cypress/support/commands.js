@@ -105,17 +105,17 @@ Cypress.Commands.add('sendTransaction', transaction => {
   cy.wrap(sendTransaction())
 })
 
-Cypress.Commands.add('sendConnectionRequest', (hostname) => {
+Cypress.Commands.add('sendConnectionRequest', hostname => {
   const request = async () => {
     const baseUrl = Cypress.env('walletServiceUrl')
 
     await fetch(`${baseUrl}/requests`, {
       method: 'POST',
       body: JSON.stringify({
-        jsonrpc: "2.0",
-        method: "client.connect_wallet",
+        jsonrpc: '2.0',
+        method: 'client.connect_wallet',
         params: {
-          hostname,
+          hostname
         },
         id: '0'
       })
