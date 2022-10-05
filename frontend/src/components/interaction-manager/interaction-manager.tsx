@@ -9,7 +9,7 @@ import { EventsOff, EventsOn } from '../../wailsjs/runtime'
 import { INTERACTION } from '../../wallet-client/interactions'
 import type {
   Interaction,
-  RequestWalletConnection,
+  RequestWalletConnectionReview,
 } from '../../wallet-client/interactions'
 import { ConnectionModal } from '../connection-modal'
 
@@ -18,7 +18,7 @@ export type InteractionContentProps<T extends Interaction = Interaction> = {
   onRespond: () => void
 }
 
-const InitialConnectionModal = ({ model, onRespond }: InteractionContentProps<RequestWalletConnection>) => {
+const InitialConnectionModal = ({ model, onRespond }: InteractionContentProps<RequestWalletConnectionReview>) => {
   const { service } = useGlobal()
 
   const handleResponse = async (decision: boolean) => {

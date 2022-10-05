@@ -209,20 +209,26 @@ func (h *Handler) emitReceivedInteraction(interaction interactor.Interaction) {
 			interactionType = "REQUEST_WALLET_SELECTION"
 		case interactor.RequestPassphrase:
 			interactionType = "REQUEST_PASSPHRASE"
+		case interactor.RequestPermissionsReview:
+			interactionType = "REQUEST_PERMISSIONS_REVIEW"
+		case interactor.RequestTransactionReviewForSending:
+			interactionType = "REQUEST_TRANSACTION_REVIEW_FOR_SENDING"
+		case interactor.RequestTransactionReviewForSigning:
+			interactionType = "REQUEST_TRANSACTION_REVIEW_FOR_SIGNING"
+		case interactor.RequestSucceeded:
+			interactionType = "REQUEST_SUCCEEDED"
+		case interactor.InteractionSessionBegan:
+			interactionType = "INTERACTION_SESSION_BEGAN"
+		case interactor.InteractionSessionEnded:
+			interactionType = "INTERACTION_SESSION_ENDED"
+		case interactor.TransactionSucceeded:
+			interactionType = "TRANSACTION_SUCCEEDED"
+		case interactor.TransactionFailed:
+			interactionType = "TRANSACTION_FAILED"
 		case interactor.ErrorOccurred:
 			interactionType = "ERROR_OCCURRED"
 		case interactor.Log:
 			interactionType = "LOG"
-		case interactor.RequestSucceeded:
-			interactionType = "REQUEST_SUCCEEDED"
-		case interactor.RequestPermissionsReview:
-			interactionType = "REQUEST_PERMISSIONS_REVIEW"
-		case interactor.RequestTransactionSendingReview:
-			interactionType = "REQUEST_TRANSACTION_SENDING_REVIEW"
-		case interactor.RequestTransactionSigningReview:
-			interactionType = "REQUEST_TRANSACTION_SIGNING_REVIEW"
-		case interactor.TransactionStatus:
-			interactionType = "TRANSACTION_STATUS"
 		default:
 			h.log.Error(fmt.Sprintf("unsupported interaction type %q", iType))
 		}

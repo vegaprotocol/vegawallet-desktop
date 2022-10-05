@@ -1,54 +1,158 @@
 export const enum INTERACTION {
   REQUEST_WALLET_CONNECTION_REVIEW = 'REQUEST_WALLET_CONNECTION_REVIEW',
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
+  REQUEST_PASSPHRASE = 'REQUEST_PASSPHRASE',
+  REQUEST_PERMISSIONS_REVIEW = 'REQUEST_PERMISSIONS_REVIEW',
+  REQUEST_TRANSACTION_REVIEW_FOR_SENDING = 'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+  REQUEST_TRANSACTION_REVIEW_FOR_SIGNING = 'REQUEST_TRANSACTION_REVIEW_FOR_SIGNING',
+  REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
+  INTERACTION_SESSION_BEGAN = 'INTERACTION_SESSION_BEGAN',
+  INTERACTION_SESSION_ENDED = 'INTERACTION_SESSION_ENDED',
+  TRANSACTION_SUCCEEDED = 'TRANSACTION_SUCCEEDED',
+  TRANSACTION_FAILED = 'TRANSACTION_FAILED',
+  ERROR_OCCURRED = 'ERROR_OCCURRED',
+  LOG = 'LOG',
+  SELECTED_WALLET = 'SELECTED_WALLET',
+  DECISION = 'DECISION',
+  ENTERED_PASSPHRASE = 'ENTERED_PASSPHRASE',
 }
 
-export type RequestWalletConnection = {
+export type RequestWalletConnectionReview = {
   traceId: string;
   type: INTERACTION.REQUEST_WALLET_CONNECTION_REVIEW;
-  content: RequestWalletConnectionReview;
+  content: RequestWalletConnectionReviewContent;
 }
 
 export type RequestWalletSelection = {
   traceId: string;
   type: INTERACTION.REQUEST_WALLET_SELECTION,
-  content: RequestWalletSelectionReview,
+  content: RequestWalletSelectionContent,
 }
 
-export type Interaction = RequestWalletConnection | RequestWalletSelection
-
-// Received interactions.
-
-export interface ErrorOccurred {
-  type: string;
-  error: string;
+export type RequestPassphrase = {
+  traceId: string;
+  type: INTERACTION.REQUEST_PASSPHRASE,
+  content: RequestPassphraseContent
 }
 
-export interface Log {
-  type: string;
-  message: string;
+export type RequestPermissionsReview = {
+  traceId: string;
+  type: INTERACTION.REQUEST_PERMISSIONS_REVIEW,
+  content: RequestPermissionsReviewContent
 }
 
-export interface RequestWalletConnectionReview {
+export type RequestTransactionReviewForSending = {
+  traceId: string;
+  type: INTERACTION.REQUEST_TRANSACTION_REVIEW_FOR_SENDING,
+  content: RequestTransactionReviewForSendingContent
+}
+
+export type RequestTransactionReviewForSigning = {
+  traceId: string;
+  type: INTERACTION.REQUEST_TRANSACTION_REVIEW_FOR_SIGNING,
+  content: RequestTransactionReviewForSigningContent
+}
+
+export type InteractionSessionStarted = {
+  traceId: string;
+  type: INTERACTION.INTERACTION_SESSION_BEGAN,
+  content: InteractionSessionBeganContent
+}
+
+export type InteractionSessionEnded = {
+  traceId: string;
+  type: INTERACTION.INTERACTION_SESSION_ENDED,
+  content: InteractionSessionEndedContent
+}
+
+export type RequestSucceeded = {
+  traceId: string;
+  type: INTERACTION.REQUEST_SUCCEEDED,
+  content: RequestSucceededContent
+}
+
+export type TransactionFailed = {
+  traceId: string;
+  type: INTERACTION.TRANSACTION_FAILED,
+  content: TransactionFailedContent
+}
+
+export type TransactionSucceeded = {
+  traceId: string;
+  type: INTERACTION.TRANSACTION_SUCCEEDED,
+  content: TransactionSucceededContent
+}
+
+export type ErrorOccurred = {
+  traceId: string;
+  type: INTERACTION.ERROR_OCCURRED,
+  content: ErrorOccurredContent
+}
+
+export type Log = {
+  traceId: string;
+  type: INTERACTION.LOG,
+  content: LogContent
+}
+
+export type SelectedWallet = {
+  traceId: string;
+  type: INTERACTION.SELECTED_WALLET,
+  content: SelectedWalletContent
+}
+
+export type EnteredPassphrase = {
+  traceId: string;
+  type: INTERACTION.ENTERED_PASSPHRASE,
+  content: EnteredPassphraseContent
+}
+
+export type Decision = {
+  traceId: string;
+  type: INTERACTION.DECISION,
+  content: DecisionContent
+}
+
+export type Interaction =
+  RequestWalletConnectionReview
+  | RequestWalletSelection
+  | RequestPassphrase
+  | RequestPermissionsReview
+  | RequestTransactionReviewForSending
+  | RequestTransactionReviewForSigning
+  | InteractionSessionStarted
+  | InteractionSessionEnded
+  | RequestSucceeded
+  | TransactionFailed
+  | TransactionSucceeded
+  | ErrorOccurred
+  | Log
+  | SelectedWallet
+  | EnteredPassphrase
+  | Decision
+
+// Requests.
+
+export interface RequestWalletConnectionReviewContent {
   hostname: string;
 }
 
-export interface RequestWalletSelectionReview {
+export interface RequestWalletSelectionContent {
   hostname: string;
   availableWallets: string[];
 }
 
-export interface RequestPassphrase {
+export interface RequestPassphraseContent {
   wallet: string;
 }
 
-export interface RequestPermissionsReview {
+export interface RequestPermissionsReviewContent {
   hostname: string;
   wallet: string;
   permissions: Map<string, string>
 }
 
-export interface RequestTransactionSendingReview {
+export interface RequestTransactionReviewForSendingContent {
   hostname: string;
   wallet: string;
   publicKey: string;
@@ -56,7 +160,7 @@ export interface RequestTransactionSendingReview {
   receivedAt: string;
 }
 
-export interface RequestTransactionSigningReview {
+export interface RequestTransactionReviewForSigningContent {
   hostname: string;
   wallet: string;
   publicKey: string;
@@ -64,27 +168,52 @@ export interface RequestTransactionSigningReview {
   receivedAt: string;
 }
 
-export interface TransactionStatus {
-  txHash: string;
+// Notifications.
+
+export interface InteractionSessionBeganContent {
+}
+
+export interface InteractionSessionEndedContent {
+}
+
+export interface RequestSucceededContent {
+}
+
+export interface TransactionFailedContent {
+  deserializedInputData: string;
   tx: string;
   error: string;
   sentAt: string;
 }
 
-export interface RequestSucceeded {
+export interface TransactionSucceededContent {
+  deserializedInputData: string;
+  txHash: string;
+  tx: string;
+  sentAt: string;
 }
 
-// Responses
+export interface ErrorOccurredContent {
+  type: string;
+  error: string;
+}
 
-export interface SelectedWallet {
+export interface LogContent {
+  type: string;
+  message: string;
+}
+
+// Responses.
+
+export interface SelectedWalletContent {
   wallet: string;
   passphrase: string;
 }
 
-export interface EnteredPassphrase {
+export interface EnteredPassphraseContent {
   passphrase: string;
 }
 
-export interface Decision {
+export interface DecisionContent {
   approved: boolean;
 }
