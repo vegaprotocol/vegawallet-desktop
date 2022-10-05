@@ -41,6 +41,8 @@ log.methodFactory = (methodName, logLevel, loggerName) => {
   }
 }
 
+export type Logger = log.Logger
+
 // required to apply the plugin
 log.setLevel(log.getLevel())
 
