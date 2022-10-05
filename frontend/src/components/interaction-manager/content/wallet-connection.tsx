@@ -34,7 +34,7 @@ export const WalletConnection = ({
 
       setResolved()
     },
-    [service, setResolved]
+    [service, interaction, setResolved]
   )
 
   useEffect(() => {

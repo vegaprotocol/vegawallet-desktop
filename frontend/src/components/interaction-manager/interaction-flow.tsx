@@ -2,10 +2,10 @@ import { useState } from 'react'
 
 import { ErrorComponent } from './content/error'
 import { LogComponent } from './content/log'
+import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
-import { SessionEndComponent } from './content/session-end'
 import type {
   ErrorOccured,
   Interaction,
@@ -14,7 +14,7 @@ import type {
   RequestSucceeded,
   RequestWalletConnection,
   RequestWalletSelection,
-  SessionEnded,
+  SessionEnded
 } from './types'
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
@@ -50,7 +50,11 @@ const InteractionItem = (props: InteractionContentProps) => {
       return <LogComponent {...(props as InteractionContentProps<Log>)} />
     }
     case INTERACTION_TYPE.INTERACTION_SESSION_ENDED: {
-      return <SessionEndComponent {...props as InteractionContentProps<SessionEnded>} />
+      return (
+        <SessionEndComponent
+          {...(props as InteractionContentProps<SessionEnded>)}
+        />
+      )
     }
     default: {
       return null

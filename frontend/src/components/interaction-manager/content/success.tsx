@@ -20,7 +20,7 @@ export const SuccessComponent = ({
   interaction,
   flow,
   isResolved,
-  onFinish
+  setResolved
 }: InteractionContentProps<RequestSucceeded>) => {
   const message = getSuccessMessage(flow)
 
@@ -30,9 +30,9 @@ export const SuccessComponent = ({
         message,
         intent: Intent.SUCCESS
       })
-      onFinish()
+      setResolved()
     }
-  }, [interaction, message, isResolved, onFinish])
+  }, [interaction, message, isResolved, setResolved])
 
   return null
 }
