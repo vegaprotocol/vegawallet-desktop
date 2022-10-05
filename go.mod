@@ -1,9 +1,9 @@
 module code.vegaprotocol.io/vegawallet-desktop
 
-go 1.18
+go 1.19
 
 require (
-	code.vegaprotocol.io/vega v0.57.1-0.20220929143230-739fa46bb5dc
+	code.vegaprotocol.io/vega v0.57.1-0.20221005121259-e26d1da87f87
 	github.com/golang/protobuf v1.5.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/wailsapp/wails/v2 v2.0.0
@@ -21,6 +21,7 @@ require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.9.0 // indirect
+	github.com/holiman/uint256 v1.2.0 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e // indirect
 	github.com/julienschmidt/httprouter v1.3.0 // indirect
@@ -34,7 +35,8 @@ require (
 	github.com/oasisprotocol/curve25519-voi v0.0.0-20220317090546-adb2f9614b17 // indirect
 	github.com/pkg/browser v0.0.0-20210706143420-7d21f8c997e2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/rs/cors v1.8.2 // indirect
+	github.com/rs/cors v1.8.2 // indirect; iwndirect
+	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/tkrajina/go-reflector v0.5.5 // indirect
 	github.com/tyler-smith/go-bip39 v1.1.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -51,3 +53,5 @@ require (
 	google.golang.org/grpc v1.48.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 )
+
+replace github.com/shopspring/decimal => github.com/vegaprotocol/decimal v1.3.1-uint256
