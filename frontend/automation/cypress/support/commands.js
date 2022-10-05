@@ -105,6 +105,26 @@ Cypress.Commands.add('sendTransaction', transaction => {
   cy.wrap(sendTransaction())
 })
 
+Cypress.Commands.add('sendConnectionRequest', (hostname) => {
+  const request = async () => {
+    const baseUrl = Cypress.env('walletServiceUrl')
+
+    await fetch(`${baseUrl}/api/v2/requests`, {
+      method: 'POST',
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "client.connect_wallet",
+        params: {
+          hostname,
+        },
+        id: '0'
+      })
+    })
+  }
+
+  cy.wrap(request())
+})
+
 Cypress.Commands.add('mockRequests', () => {
   cy.log('mocking presets')
   cy.intercept(
