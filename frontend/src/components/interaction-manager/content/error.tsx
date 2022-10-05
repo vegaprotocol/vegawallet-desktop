@@ -5,7 +5,6 @@ import { Intent } from '../../../config/intent'
 
 export const ErrorComponent = ({ interaction, isResolved, setResolved } : InteractionContentProps<ErrorOccured>) => {
   useEffect(() => {
-    console.log('\nERR!', isResolved, interaction.event.content.error)
     if (!isResolved) {
       AppToaster.show({
         message: interaction.event.content.error,

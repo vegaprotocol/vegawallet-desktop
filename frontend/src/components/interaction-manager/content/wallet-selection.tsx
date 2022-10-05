@@ -30,8 +30,8 @@ export const WalletSelection = ({ interaction, onFinish }: InteractionContentPro
   }
 
   return (
-    <Dialog open={true} data-testid="wallet-selection-modal">
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
+    <Dialog open={true}>
+      <div data-testid="wallet-selection-modal" style={{ textAlign: 'center', marginBottom: 20 }}>
         <div>
           <strong>{interaction.event.content.hostname}</strong>
         </div>

@@ -1,3 +1,5 @@
+const { unlockWallet } = require('../support/helpers')
+
 const MOCK_HOSTNAME = 'https://best-blockchain.app'
 
 const testIds = {
@@ -18,14 +20,13 @@ describe('wallet connection', () => {
         cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
-      .then(() => {
-        cy.waitForHome()
-      })
   })
 
   beforeEach(() => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
+    cy.waitForHome()
+    unlockWallet(walletName, passphrase)
   })
 
   it('handles approval', () => {
@@ -34,8 +35,10 @@ describe('wallet connection', () => {
     cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
     cy.getByTestId(testIds.APPROVE_SELECTION_BUTTON).click()
 
-    cy.getByTestId('passphrase').type(passphrase)
-    cy.getByTestId('submit').click()
+    cy.getByTestId('input-passphrase').type(passphrase)
+    cy.getByTestId('input-submit').click()
+
+    cy.getByTestId('toast').should('have.text', 'Connection approved')
   })
 
   // currently all incoming requests are auto-approved for now

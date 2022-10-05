@@ -19,7 +19,7 @@ export interface ErrorOccurredContent {
 }
 
 export interface LogContent {
-  type: string;
+  type: 'info' | 'warning' | 'error' | 'success';
   message: string;
 }
 
@@ -75,6 +75,7 @@ export const enum INTERACTION_TYPE {
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
+  LOG = 'LOG',
 }
 
 export type RequestWalletConnection = {
@@ -101,11 +102,18 @@ export type ErrorOccured = {
   content: ErrorOccurredContent,
 }
 
+export type Log = {
+  traceId: string;
+  type: INTERACTION_TYPE.LOG,
+  content: LogContent,
+}
+
 export type RawInteraction =
   | RequestWalletConnection
   | RequestWalletSelection
   | RequestSucceeded
   | ErrorOccured
+  | Log
 
 export type Interaction<T extends RawInteraction = RawInteraction> = {
   meta: {

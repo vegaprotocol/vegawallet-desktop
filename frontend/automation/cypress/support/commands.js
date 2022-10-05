@@ -109,7 +109,7 @@ Cypress.Commands.add('sendConnectionRequest', (hostname) => {
   const request = async () => {
     const baseUrl = Cypress.env('walletServiceUrl')
 
-    await fetch(`${baseUrl}/api/v2/requests`, {
+    await fetch(`${baseUrl}/requests`, {
       method: 'POST',
       body: JSON.stringify({
         jsonrpc: "2.0",
@@ -122,7 +122,7 @@ Cypress.Commands.add('sendConnectionRequest', (hostname) => {
     })
   }
 
-  cy.wrap(request())
+  request()
 })
 
 Cypress.Commands.add('mockRequests', () => {

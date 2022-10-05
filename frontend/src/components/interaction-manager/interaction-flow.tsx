@@ -7,12 +7,14 @@ import type {
   RequestWalletSelection,
   RequestSucceeded,
   ErrorOccured,
+  Log,
 } from './types'
 
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import { SuccessComponent } from './content/success'
 import { ErrorComponent } from './content/error'
+import { LogComponent } from './content/log'
 
 const InteractionItem = (props: InteractionContentProps) => {
   switch (props.interaction.event.type) {
@@ -34,6 +36,11 @@ const InteractionItem = (props: InteractionContentProps) => {
     case INTERACTION_TYPE.ERROR_OCCURRED: {
       return (
         <ErrorComponent {...props as InteractionContentProps<ErrorOccured>} />
+      )
+    }
+    case INTERACTION_TYPE.LOG: {
+      return (
+        <LogComponent {...props as InteractionContentProps<Log>} />
       )
     }
     default: {
