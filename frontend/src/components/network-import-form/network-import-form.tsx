@@ -29,7 +29,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   const [showOverwriteCheckbox, setShowOverwriteCheckbox] =
     React.useState(false)
   const {
-    state: { networks, presets }
+    state: { networks, presets, presetsInternal }
   } = useGlobal()
   const { status, submit, error } = useImportNetwork()
 

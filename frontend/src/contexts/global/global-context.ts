@@ -11,6 +11,7 @@ import type {
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
+import type { NetworkPreset } from '../../lib/networks'
 
 export enum AppStatus {
   Pending = 'Pending',
@@ -34,12 +35,6 @@ export interface Wallet {
   auth: boolean
 }
 
-export interface NetworkPreset {
-  name: string
-  configFileUrl: string
-  sha: string
-}
-
 export interface GlobalState {
   status: AppStatus
   version: string
@@ -61,6 +56,7 @@ export interface GlobalState {
   network: string | null
   networks: string[]
   presets: NetworkPreset[]
+  presetsInternal: NetworkPreset[]
   networkConfig: WalletModel.DescribeNetworkResult | null
   serviceRunning: boolean
   serviceUrl: string

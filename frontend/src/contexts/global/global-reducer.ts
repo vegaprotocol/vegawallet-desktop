@@ -8,10 +8,10 @@ import type { WalletModel } from '../../wallet-client'
 import type {
   GlobalState,
   KeyPair,
-  NetworkPreset,
   Wallet
 } from './global-context'
 import { AppStatus } from './global-context'
+import { NetworkPreset } from '../../lib/networks'
 
 function indexBy<T>(key: keyof T) {
   return (obj: Record<string, T>, value: T) => ({
@@ -40,6 +40,7 @@ export const initialGlobalState: GlobalState = {
   network: null,
   networks: [],
   presets: [],
+  presetsInternal: [],
   networkConfig: null,
   serviceRunning: false,
   serviceUrl: ''
@@ -55,6 +56,7 @@ export type GlobalAction =
       networks: string[]
       networkConfig: WalletModel.DescribeNetworkResult | null
       presetNetworks: NetworkPreset[]
+      presetNetworksInternal: NetworkPreset[]
       serviceRunning: boolean
     }
   | {
@@ -143,6 +145,10 @@ export type GlobalAction =
     }
   | {
       type: 'SET_PRESETS'
+      presets: NetworkPreset[]
+    }
+  | {
+      type: 'SET_PRESETS_INTERNAL'
       presets: NetworkPreset[]
     }
   | {

@@ -10,6 +10,7 @@ import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
+import { fetchNetworkPreset } from '../../lib/networks'
 
 export function createActions(
   service: ServiceType,
@@ -28,14 +29,18 @@ export function createActions(
 
           logger.debug('StartApp')
 
-          const [isInit, version, presets] = await Promise.all([
+          const [isInit, version, presets, presetsInternal] = await Promise.all([
             service.IsAppInitialised(),
             service.GetVersion(),
-            fetch(DataSources.NETWORKS).then(res => res.json())
+            fetchNetworkPreset(DataSources.NETWORKS, logger),
+            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger),
           ])
 
           dispatch({ type: 'SET_VERSION', version: version.version })
           dispatch({ type: 'SET_PRESETS', presets })
+          dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
+
+          console.log('HITTING THE THING!')
 
           if (!isInit) {
             const existingConfig =
@@ -79,6 +84,7 @@ export function createActions(
             networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
+            presetNetworksInternal: presetsInternal,
             serviceRunning: serviceState.running
           })
         } catch (err) {
