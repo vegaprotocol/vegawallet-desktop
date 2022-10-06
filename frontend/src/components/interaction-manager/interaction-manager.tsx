@@ -24,8 +24,8 @@ export function InteractionManager() {
     values: {}
   })
   const { service, dispatch } = useGlobal()
-  const traceId = interactions.ids[0]
-  const events = traceId ? interactions.values[traceId] : undefined
+  const traceID = interactions.ids[0]
+  const events = traceID ? interactions.values[traceID] : undefined
 
   useEffect(() => {
     const loadTransactions = async () => {
@@ -61,14 +61,14 @@ export function InteractionManager() {
           }
 
           if (
-            !interactions.ids.includes(interaction.traceId) ||
-            !interactions.values[interaction.traceId]
+            !interactions.ids.includes(interaction.traceID) ||
+            !interactions.values[interaction.traceID]
           ) {
-            interactions.ids.push(interaction.traceId)
-            interactions.values[interaction.traceId] = [wrappedInteraction]
+            interactions.ids.push(interaction.traceID)
+            interactions.values[interaction.traceID] = [wrappedInteraction]
             return
           }
-          interactions.values[interaction.traceId].push(wrappedInteraction)
+          interactions.values[interaction.traceID].push(wrappedInteraction)
         })
       )
     })

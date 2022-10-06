@@ -79,47 +79,45 @@ export const enum INTERACTION_TYPE {
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
   LOG = 'LOG',
-  SELECTED_WALLET = 'SELECTED_WALLET',
-  WALLET_CONNECTION_DECISION = 'WALLET_CONNECTION_DECISION',
 }
 
 export type RequestWalletConnection = {
-  traceId: string
+  traceID: string
   name: INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW
   data: RequestWalletConnectionContent
 }
 
 export type RequestWalletSelection = {
-  traceId: string
+  traceID: string
   name: INTERACTION_TYPE.REQUEST_WALLET_SELECTION
   data: RequestWalletSelectionContent
 }
 
 export type RequestSucceeded = {
-  traceId: string
+  traceID: string
   name: INTERACTION_TYPE.REQUEST_SUCCEEDED
   data: RequestSucceededContent
 }
 
 export type ErrorOccurred = {
-  traceId: string
+  traceID: string
   name: INTERACTION_TYPE.ERROR_OCCURRED
   data: ErrorOccurredContent
 }
 
 export type Log = {
-  traceId: string
+  traceID: string
   name: INTERACTION_TYPE.LOG
   data: LogContent
 }
 
 export type SessionStarted = {
-  traceId: string
+  traceID: string
   name: INTERACTION_TYPE.INTERACTION_SESSION_BEGAN
 }
 
 export type SessionEnded = {
-  traceId: string
+  traceID: string
   name: INTERACTION_TYPE.INTERACTION_SESSION_ENDED
 }
 
@@ -141,19 +139,60 @@ export type Interaction<T extends RawInteraction = RawInteraction> = {
 
 // Responses
 
-export interface SelectedWallet {
-  wallet: string
-  passphrase: string
+export const enum INTERACTION_RESPONSE_TYPE {
+  DECISION = 'DECISION',
+  ENTERED_PASSPHRASE = 'ENTERED_PASSPHRASE',
+  WALLET_CONNECTION_DECISION = 'WALLET_CONNECTION_DECISION',
+  SELECTED_WALLET = 'SELECTED_WALLET',
 }
+
+// response data types
 
 export interface EnteredPassphrase {
   passphrase: string
 }
 
-export interface WalletSelectionDecision {
+export interface WalletConnectionDecision {
   connectionApproval: string
+}
+
+export interface SelectedWallet {
+  wallet: string
+  passphrase: string
 }
 
 export interface Decision {
   approved: boolean
 }
+
+// response types
+
+export type InteractionResponseEnteredPassphrase = {
+  traceID: string
+  name: INTERACTION_RESPONSE_TYPE.ENTERED_PASSPHRASE
+  data: EnteredPassphrase
+}
+
+export type InteractionResponseWalletConnectionDecision = {
+  traceID: string
+  name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION
+  data: WalletConnectionDecision
+}
+
+export type InteractionResponseSelectedWallet = {
+  traceID: string
+  name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET
+  data: SelectedWallet
+}
+
+export type InteractionResponseDecision = {
+  traceID: string
+  name: INTERACTION_RESPONSE_TYPE.DECISION
+  data: Decision
+}
+
+export type InteractionResponse =
+  | InteractionResponseEnteredPassphrase
+  | InteractionResponseWalletConnectionDecision
+  | InteractionResponseSelectedWallet
+  | InteractionResponseDecision
