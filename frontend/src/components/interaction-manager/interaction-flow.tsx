@@ -7,7 +7,7 @@ import { SuccessComponent } from './content/success'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import type {
-  ErrorOccured,
+  ErrorOccurred,
   Interaction,
   InteractionContentProps,
   Log,
@@ -19,7 +19,7 @@ import type {
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
 const InteractionItem = (props: InteractionContentProps) => {
-  switch (props.interaction.event.type) {
+  switch (props.interaction.event.name) {
     case INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW: {
       return (
         <WalletConnection
@@ -43,7 +43,7 @@ const InteractionItem = (props: InteractionContentProps) => {
     }
     case INTERACTION_TYPE.ERROR_OCCURRED: {
       return (
-        <ErrorComponent {...(props as InteractionContentProps<ErrorOccured>)} />
+        <ErrorComponent {...(props as InteractionContentProps<ErrorOccurred>)} />
       )
     }
     case INTERACTION_TYPE.LOG: {
@@ -64,7 +64,7 @@ const InteractionItem = (props: InteractionContentProps) => {
 
 const getEventFlowType = (events: Interaction[]) => {
   return events.reduce<EVENT_FLOW_TYPE | undefined>((acc, interaction) => {
-    switch (interaction.event.type) {
+    switch (interaction.event.name) {
       case INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW: {
         return acc || EVENT_FLOW_TYPE.WALLET_CONNECTION
       }

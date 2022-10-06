@@ -29,8 +29,8 @@ export const LogComponent = ({
   useEffect(() => {
     if (!isResolved) {
       AppToaster.show({
-        message: interaction.event.content.message,
-        intent: getMessageIntent(interaction.event.content.type)
+        message: interaction.event.data.message,
+        intent: getMessageIntent(interaction.event.data.type)
       })
       setResolved()
     }

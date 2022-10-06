@@ -15,7 +15,7 @@ export type InteractionContentProps<T extends RawInteraction = RawInteraction> =
 // Received interaction content
 
 export interface ErrorOccurredContent {
-  type: string
+  name: string
   error: string
 }
 
@@ -66,7 +66,8 @@ export interface TransactionStatusContent {
   sentAt: string
 }
 
-export interface RequestSucceededContent {}
+export interface RequestSucceededContent {
+}
 
 // Received interaction events
 
@@ -77,54 +78,56 @@ export const enum INTERACTION_TYPE {
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
-  LOG = 'LOG'
+  LOG = 'LOG',
+  SELECTED_WALLET = 'SELECTED_WALLET',
+  WALLET_CONNECTION_DECISION = 'WALLET_CONNECTION_DECISION',
 }
 
 export type RequestWalletConnection = {
   traceId: string
-  type: INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW
-  content: RequestWalletConnectionContent
+  name: INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW
+  data: RequestWalletConnectionContent
 }
 
 export type RequestWalletSelection = {
   traceId: string
-  type: INTERACTION_TYPE.REQUEST_WALLET_SELECTION
-  content: RequestWalletSelectionContent
+  name: INTERACTION_TYPE.REQUEST_WALLET_SELECTION
+  data: RequestWalletSelectionContent
 }
 
 export type RequestSucceeded = {
   traceId: string
-  type: INTERACTION_TYPE.REQUEST_SUCCEEDED
-  content: RequestSucceededContent
+  name: INTERACTION_TYPE.REQUEST_SUCCEEDED
+  data: RequestSucceededContent
 }
 
-export type ErrorOccured = {
+export type ErrorOccurred = {
   traceId: string
-  type: INTERACTION_TYPE.ERROR_OCCURRED
-  content: ErrorOccurredContent
+  name: INTERACTION_TYPE.ERROR_OCCURRED
+  data: ErrorOccurredContent
 }
 
 export type Log = {
   traceId: string
-  type: INTERACTION_TYPE.LOG
-  content: LogContent
+  name: INTERACTION_TYPE.LOG
+  data: LogContent
 }
 
 export type SessionStarted = {
   traceId: string
-  type: INTERACTION_TYPE.INTERACTION_SESSION_BEGAN
+  name: INTERACTION_TYPE.INTERACTION_SESSION_BEGAN
 }
 
 export type SessionEnded = {
   traceId: string
-  type: INTERACTION_TYPE.INTERACTION_SESSION_ENDED
+  name: INTERACTION_TYPE.INTERACTION_SESSION_ENDED
 }
 
 export type RawInteraction =
   | RequestWalletConnection
   | RequestWalletSelection
   | RequestSucceeded
-  | ErrorOccured
+  | ErrorOccurred
   | Log
   | SessionStarted
   | SessionEnded
@@ -145,6 +148,10 @@ export interface SelectedWallet {
 
 export interface EnteredPassphrase {
   passphrase: string
+}
+
+export interface WalletSelectionDecision {
+  connectionApproval: string
 }
 
 export interface Decision {

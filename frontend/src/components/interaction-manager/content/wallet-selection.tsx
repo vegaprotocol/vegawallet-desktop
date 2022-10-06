@@ -5,6 +5,7 @@ import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletSelection } from '../types'
+import {INTERACTION_TYPE} from "../types";
 
 export const WalletSelection = ({
   interaction,
@@ -18,8 +19,8 @@ export const WalletSelection = ({
     try {
       await service.RespondToInteraction({
         traceId: interaction.event.traceId,
-        type: 'SELECTED_WALLET',
-        content: {
+        name: INTERACTION_TYPE.SELECTED_WALLET,
+        data: {
           wallet,
           passphrase
         }
@@ -42,7 +43,7 @@ export const WalletSelection = ({
         style={{ textAlign: 'center', marginBottom: 20 }}
       >
         <div>
-          <strong>{interaction.event.content.hostname}</strong>
+          <strong>{interaction.event.data.hostname}</strong>
         </div>
         <div>is requesting access to a wallet</div>
       </div>
@@ -60,7 +61,7 @@ export const WalletSelection = ({
           marginTop: 20
         }}
       >
-        {interaction.event.content.availableWallets.map(wallet => (
+        {interaction.event.data.availableWallets.map(wallet => (
           <Button
             key={wallet}
             data-testid='wallet-selection-button'

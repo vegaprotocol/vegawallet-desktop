@@ -2,17 +2,17 @@ import { useEffect } from 'react'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
-import type { ErrorOccured, InteractionContentProps } from '../types'
+import type { ErrorOccurred, InteractionContentProps } from '../types'
 
 export const ErrorComponent = ({
   interaction,
   isResolved,
   setResolved
-}: InteractionContentProps<ErrorOccured>) => {
+}: InteractionContentProps<ErrorOccurred>) => {
   useEffect(() => {
     if (!isResolved) {
       AppToaster.show({
-        message: interaction.event.content.error,
+        message: interaction.event.data.error,
         intent: Intent.WARNING
       })
       setResolved()
