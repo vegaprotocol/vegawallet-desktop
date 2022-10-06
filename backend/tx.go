@@ -28,9 +28,7 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 
 func (h *Handler) emitReceivedInteraction(interaction interactor.Interaction) {
 	h.log.Info(fmt.Sprintf("Received a new interaction %q with trace ID %q", interaction.Name, interaction.TraceID))
-	go func() {
-		runtime.EventsEmit(h.ctx, NewInteractionEvent, interaction)
-	}()
+	runtime.EventsEmit(h.ctx, NewInteractionEvent, interaction)
 }
 
 // API v1.

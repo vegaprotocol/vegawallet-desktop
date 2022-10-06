@@ -1,7 +1,5 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-code.vegaprotocol.io/vega v0.57.1-0.20221006162051-b073d5e6708d h1:nIzwgR4aEY3zc1e1dbO2e5alkHRa/6sHNV8CiauZrOY=
-code.vegaprotocol.io/vega v0.57.1-0.20221006162051-b073d5e6708d/go.mod h1:FQ3Q23aHsBNIzNL4YyTab2w/cleZQlr/vPfhQym04v4=
 code.vegaprotocol.io/vega v0.57.1-0.20221006163956-39eabf926e3a h1:21IShrQVuYYCAXmXtOE7TmEAbKy1VeEIPHiPO6h0oPs=
 code.vegaprotocol.io/vega v0.57.1-0.20221006163956-39eabf926e3a/go.mod h1:FQ3Q23aHsBNIzNL4YyTab2w/cleZQlr/vPfhQym04v4=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
