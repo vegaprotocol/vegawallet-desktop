@@ -52,14 +52,12 @@ export function InteractionManager() {
     EventsOn(EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => {
       setInteractions(interactions =>
         produce(interactions, interactions => {
-          console.log(interactions)
           const wrappedInteraction = {
             meta: {
               id: nanoid()
             },
             event: interaction
           }
-
           if (
             !interactions.ids.includes(interaction.traceId) ||
             !interactions.values[interaction.traceId]
