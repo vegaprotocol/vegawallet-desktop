@@ -17,7 +17,7 @@ export const WalletConnection = ({
     async (decision: boolean) => {
       try {
         await service.RespondToInteraction({
-          traceId: interaction.event.traceID,
+          traceID: interaction.event.traceID,
           name: INTERACTION_TYPE.WALLET_CONNECTION_DECISION,
           data: {
             connectionApproval: decision ? 'APPROVED_ONLY_THIS_TIME' : 'REJECTED_ONLY_THIS_TIME',
