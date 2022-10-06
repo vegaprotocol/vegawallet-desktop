@@ -4,7 +4,7 @@ import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletConnection } from '../types'
-import {INTERACTION_TYPE} from "../types";
+import { INTERACTION_RESPONSE_TYPE, CONNECTION_RESPONSE } from "../types";
 
 export const WalletConnection = ({
   interaction,
@@ -16,11 +16,18 @@ export const WalletConnection = ({
   const handleResponse = useCallback(
     async (decision: boolean) => {
       try {
+        console.log('SENDING: ', {
+          traceID: interaction.event.traceID,
+          name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
+          data: {
+            connectionApproval: decision ? CONNECTION_RESPONSE.APPROVED_ONCE : CONNECTION_RESPONSE.REJECTED_ONCE,
+          }
+        })
         await service.RespondToInteraction({
           traceID: interaction.event.traceID,
-          name: INTERACTION_TYPE.WALLET_CONNECTION_DECISION,
+          name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
           data: {
-            connectionApproval: decision ? 'APPROVED_ONLY_THIS_TIME' : 'REJECTED_ONLY_THIS_TIME',
+            connectionApproval: decision ? CONNECTION_RESPONSE.APPROVED_ONCE : CONNECTION_RESPONSE.REJECTED_ONCE,
           }
         })
       } catch (err: unknown) {

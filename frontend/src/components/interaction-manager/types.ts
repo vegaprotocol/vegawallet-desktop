@@ -152,8 +152,12 @@ export interface EnteredPassphrase {
   passphrase: string
 }
 
+export const enum CONNECTION_RESPONSE {
+  APPROVED_ONCE = 'APPROVED_ONLY_THIS_TIME',
+  REJECTED_ONCE = 'REJECTED_ONLY_THIS_TIME',
+}
 export interface WalletConnectionDecision {
-  connectionApproval: string
+  connectionApproval: CONNECTION_RESPONSE
 }
 
 export interface SelectedWallet {
