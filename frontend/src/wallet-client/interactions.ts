@@ -13,6 +13,7 @@ export const enum INTERACTION {
   ERROR_OCCURRED = 'ERROR_OCCURRED',
   LOG = 'LOG',
   SELECTED_WALLET = 'SELECTED_WALLET',
+  WALLET_CONNECTION_DECISION = 'WALLET_CONNECTION_DECISION',
   DECISION = 'DECISION',
   ENTERED_PASSPHRASE = 'ENTERED_PASSPHRASE',
 }
@@ -107,6 +108,12 @@ export type EnteredPassphrase = {
   content: EnteredPassphraseContent
 }
 
+export type WalletConnectionDecision = {
+  traceId: string;
+  type: INTERACTION.WALLET_CONNECTION_DECISION,
+  content: WalletConnectionDecisionContent
+}
+
 export type Decision = {
   traceId: string;
   type: INTERACTION.DECISION,
@@ -129,6 +136,7 @@ export type Interaction =
   | Log
   | SelectedWallet
   | EnteredPassphrase
+  | WalletConnectionDecision
   | Decision
 
 // Requests.
@@ -212,6 +220,10 @@ export interface SelectedWalletContent {
 
 export interface EnteredPassphraseContent {
   passphrase: string;
+}
+
+export interface WalletConnectionDecisionContent {
+  connectionApproval: string;
 }
 
 export interface DecisionContent {

@@ -69,6 +69,15 @@ func (h *Handler) RespondToInteraction(interaction Interaction) error {
 	}
 
 	switch interaction.Type {
+	case "WALLET_SELECTION_DECISION":
+		decision := interactor.WalletConnectionDecision{}
+		if err := mapstructure.Decode(interaction.Content, &decision); err != nil {
+			return fmt.Errorf("could not decode the WALLET_SELECTION_DECISION interaction: %w", err)
+		}
+		h.service.ResponseChan <- interactor.Interaction{
+			TraceID: interaction.TraceID,
+			Content: decision,
+		}
 	case "DECISION":
 		decision := interactor.Decision{}
 		if err := mapstructure.Decode(interaction.Content, &decision); err != nil {
