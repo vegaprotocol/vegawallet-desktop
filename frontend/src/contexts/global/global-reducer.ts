@@ -207,6 +207,7 @@ export function globalReducer(
         networks: action.networks,
         networkConfig: action.networkConfig,
         presets: action.presetNetworks,
+        presetsInternal: action.presetNetworksInternal,
         status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
         serviceRunning: action.serviceRunning,
         serviceUrl: action.networkConfig
@@ -421,6 +422,12 @@ export function globalReducer(
       return {
         ...state,
         presets: action.presets
+      }
+    }
+    case 'SET_PRESETS_INTERNAL': {
+      return {
+        ...state,
+        presetsInternal: action.presets
       }
     }
     case 'CHANGE_NETWORK': {

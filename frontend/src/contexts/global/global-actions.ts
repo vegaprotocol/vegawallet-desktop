@@ -40,8 +40,6 @@ export function createActions(
           dispatch({ type: 'SET_PRESETS', presets })
           dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
 
-          console.log('HITTING THE THING!')
-
           if (!isInit) {
             const existingConfig =
               await service.SearchForExistingConfiguration()

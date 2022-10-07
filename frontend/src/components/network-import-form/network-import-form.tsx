@@ -1,7 +1,6 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import type { FieldError } from 'react-hook-form'
-import { useWatch } from 'react-hook-form'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch, Controller } from 'react-hook-form'
 
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -9,9 +8,11 @@ import { FormStatus } from '../../hooks/use-form-state'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
+import { ButtonUnstyled } from '../button-unstyled'
 import { Checkbox } from '../checkbox'
 import { FormGroup } from '../form-group'
-import { Select } from '../forms'
+import { DropdownMenu, DropdownItem } from '../dropdown-menu'
+import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Input } from '../forms/input'
 
 interface FormFields {
@@ -26,8 +27,8 @@ interface NetworkImportFormProps {
 }
 
 export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
-  const [showOverwriteCheckbox, setShowOverwriteCheckbox] =
-    React.useState(false)
+  const [showTestNetworks, setShowTestNetworks] = useState(false)
+  const [showOverwriteCheckbox, setShowOverwriteCheckbox] = useState(false)
   const {
     state: { networks, presets, presetsInternal }
   } = useGlobal()
@@ -51,7 +52,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
 
   const presetNetwork = useWatch({ name: 'network', control })
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === FormStatus.Success) {
       reset()
       setShowOverwriteCheckbox(false)
@@ -63,7 +64,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
   // set the name
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === FormStatus.Error && error && /already exists/.test(error)) {
       setShowOverwriteCheckbox(true)
       setError(
@@ -93,29 +94,102 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
         intent={errors.network?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.network?.message}
       >
-        <Select
-          data-testid='import-network-select'
-          id='network'
-          {...register('network', {
-            required: Validation.REQUIRED
-          })}
-        >
-          <option disabled={true} value=''>
-            Please select
-          </option>
-          {presets.map(preset => {
-            return (
-              <option
-                key={preset.name}
-                value={preset.configFileUrl}
-                disabled={Boolean(networks.find(n => n === preset.name))}
-              >
-                {preset.name}
-              </option>
-            )
-          })}
-          <option value='other'>Other</option>
-        </Select>
+        <Controller
+          name="network"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <DropdownMenu
+              trigger={
+                <Button
+                  data-testid='network-select'
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 5,
+                    minWidth: 75
+                  }}
+                >
+                  <span>{field.value || 'Please select'}</span>
+                  <DropdownArrow
+                    style={{ width: 13, height: 13, marginLeft: 10 }}
+                  />
+                </Button>
+              }
+              content={
+                <div>
+                  {presets.map(preset => {
+                    const isAlreadyImported = Boolean(networks.find(n => n === preset.name))
+                    return (
+                      <DropdownItem key={preset.name}>
+                        <ButtonUnstyled
+                          data-testid={`select-${preset.name}`}
+                          disabled={isAlreadyImported}
+                          style={{
+                            width: '100%',
+                            padding: '10px 15px',
+                            lineHeight: 1,
+                            textAlign: 'left'
+                          }}
+                          onClick={() => field.onChange(preset.name)}
+                        >
+                          {preset.name.toUpperCase()}{isAlreadyImported ? ' (already imported)' : ''}
+                        </ButtonUnstyled>
+                      </DropdownItem>
+                    )
+                  })}
+                  {showTestNetworks && presetsInternal.map(preset => {
+                    const isAlreadyImported = Boolean(networks.find(n => n === preset.name))
+                    return (
+                      <DropdownItem key={preset.name}>
+                        <ButtonUnstyled
+                          data-testid={`select-${preset.name}`}
+                          disabled={isAlreadyImported}
+                          style={{
+                            width: '100%',
+                            padding: '10px 15px',
+                            lineHeight: 1,
+                            textAlign: 'left'
+                          }}
+                          onClick={() => field.onChange(preset.name)}
+                        >
+                          {preset.name.toUpperCase()}{isAlreadyImported ? ' (already imported)' : ''}
+                        </ButtonUnstyled>
+                      </DropdownItem>
+                    )
+                  })}
+                  <hr style={{ margin: '10px 15px' }}/>
+                  <DropdownItem>
+                    <ButtonUnstyled
+                      style={{
+                        width: '100%',
+                        padding: '10px 15px',
+                        lineHeight: 1,
+                        textAlign: 'left'
+                      }}
+                      onClick={() => field.onChange('other')}
+                    >
+                      Other
+                    </ButtonUnstyled>
+                  </DropdownItem>
+                  <hr style={{ margin: '10px 15px' }}/>
+                  <ButtonUnstyled
+                    style={{
+                      width: '100%',
+                      padding: '10px 15px',
+                      lineHeight: 1,
+                      textAlign: 'left'
+                    }}
+                    onClick={() => setShowTestNetworks(!showTestNetworks)}
+                  >
+                    {showTestNetworks ? 'Hide test networks' : 'Show test networks'}
+                  </ButtonUnstyled>
+                </div>
+              }
+            />
+          )}
+        />
       </FormGroup>
       {presetNetwork === 'other' && (
         <>
