@@ -24,7 +24,10 @@ export const ButtonUnstyled = React.forwardRef(
         type='button'
         ref={ref}
         {...props}
-        style={{ ...style, ...props.style }}
+        style={{
+          ...style,
+          ...props.style,
+        }}
       />
     )
   }

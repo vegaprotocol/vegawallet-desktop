@@ -1,10 +1,5 @@
-import React from 'react'
-
-import { useGlobal } from '../../contexts/global/global-context'
-import { BulletList, BulletListItem } from '../bulle-list'
-import { ButtonUnstyled } from '../button-unstyled'
-import { Header } from '../header'
-import { NetworkImportForm } from '../network-import-form'
+import { Button } from '../button'
+import { NetworkPresets } from '../network-presets'
 import type { DrawerViews } from './drawer-content'
 
 interface DrawerManageNetworkProps {
@@ -16,45 +11,15 @@ export function DrawerManageNetwork({
   setView,
   setSelectedNetwork
 }: DrawerManageNetworkProps) {
-  const {
-    state: { networks }
-  } = useGlobal()
   return (
-    <>
-      {networks.length ? (
-        <>
-          <Header style={{ marginTop: 0 }}>Networks</Header>
-          <BulletList style={{ marginBottom: 30 }}>
-            {networks.map(n => (
-              <BulletListItem key={n}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}
-                >
-                  <span>{n}</span>
-                  <ButtonUnstyled
-                    data-testid='edit'
-                    onClick={() => {
-                      setSelectedNetwork(n)
-                      setView('edit')
-                    }}
-                    style={{ marginLeft: 'auto' }}
-                  >
-                    Edit
-                  </ButtonUnstyled>
-                </div>
-              </BulletListItem>
-            ))}
-          </BulletList>
-        </>
-      ) : null}
-      <Header style={{ marginTop: !networks.length ? 0 : undefined }}>
-        Add a network
-      </Header>
-      <NetworkImportForm />
-    </>
+    <div>
+      <NetworkPresets
+        setEditView={() => setView('edit')}
+        setSelectedNetwork={setSelectedNetwork}
+      />
+      <div style={{ margin: '24px 0' }}>
+        <Button onClick={() => setView('add')}>Add network</Button>
+      </div>
+    </div>
   )
 }
