@@ -5,7 +5,7 @@ import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletSelection } from '../types'
-import {INTERACTION_TYPE} from "../types";
+import {INTERACTION_RESPONSE_TYPE} from "../types";
 
 export const WalletSelection = ({
   interaction,
@@ -18,8 +18,8 @@ export const WalletSelection = ({
 
     try {
       await service.RespondToInteraction({
-        traceId: interaction.event.traceId,
-        name: INTERACTION_TYPE.SELECTED_WALLET,
+        traceID: interaction.event.traceID,
+        name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
         data: {
           wallet,
           passphrase

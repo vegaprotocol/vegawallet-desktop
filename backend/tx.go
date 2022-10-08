@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -13,9 +14,24 @@ import (
 
 const NewInteractionEvent = "new_interaction"
 
+var (
+	ErrTraceIDIsRequired = errors.New("a trace ID is required for an interaction")
+	ErrNameIsRequired    = errors.New("a name is required for an interaction")
+)
+
 func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error {
 	h.log.Debug("Entering RespondToInteraction")
 	defer h.log.Debug("Leaving RespondToInteraction")
+
+	if interaction.TraceID == "" {
+		return ErrTraceIDIsRequired
+	}
+
+	if interaction.Name == "" {
+		return ErrNameIsRequired
+	}
+
+	h.log.Debug(fmt.Sprintf("Received a response %q with trace ID %q", interaction.Name, interaction.TraceID))
 
 	if h.ctx.Err() != nil {
 		return ErrContextCanceled
@@ -27,7 +43,7 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 }
 
 func (h *Handler) emitReceivedInteraction(interaction interactor.Interaction) {
-	h.log.Info(fmt.Sprintf("Received a new interaction %q with trace ID %q", interaction.Name, interaction.TraceID))
+	h.log.Debug(fmt.Sprintf("Received a new interaction %q with trace ID %q", interaction.Name, interaction.TraceID))
 	runtime.EventsEmit(h.ctx, NewInteractionEvent, interaction)
 }
 

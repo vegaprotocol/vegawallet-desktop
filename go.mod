@@ -3,7 +3,7 @@ module code.vegaprotocol.io/vegawallet-desktop
 go 1.19
 
 require (
-	code.vegaprotocol.io/vega v0.57.1-0.20221006195058-4a3e03922fb8
+	code.vegaprotocol.io/vega v0.57.1-0.20221008180005-bac85b570380
 	github.com/golang/protobuf v1.5.2
 	github.com/wailsapp/wails/v2 v2.0.0
 	go.uber.org/zap v1.21.0
@@ -26,7 +26,7 @@ require (
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e // indirect
 	github.com/julienschmidt/httprouter v1.3.0 // indirect
-	github.com/labstack/echo/v4 v4.7.2 // indirect
+	github.com/labstack/echo/v4 v4.9.0 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/leaanthony/go-ansi-parser v1.0.1 // indirect
 	github.com/leaanthony/gosod v1.0.3 // indirect
@@ -55,4 +55,7 @@ require (
 	google.golang.org/protobuf v1.28.0 // indirect
 )
 
-replace github.com/shopspring/decimal => github.com/vegaprotocol/decimal v1.3.1-uint256
+replace (
+	github.com/shopspring/decimal => github.com/vegaprotocol/decimal v1.3.1-uint256
+	github.com/wailsapp/wails/v2 => github.com/vegaprotocol/wails/v2 v2.0.0-20221007144640-09417739d1ea
+)
