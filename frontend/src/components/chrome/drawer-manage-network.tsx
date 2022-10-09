@@ -18,7 +18,12 @@ export function DrawerManageNetwork({
         setSelectedNetwork={setSelectedNetwork}
       />
       <div style={{ margin: '24px 0' }}>
-        <Button onClick={() => setView('add')}>Add network</Button>
+        <Button
+          data-testid="add-network"
+          onClick={() => setView('add')}
+        >
+          Add network
+        </Button>
       </div>
     </div>
   )

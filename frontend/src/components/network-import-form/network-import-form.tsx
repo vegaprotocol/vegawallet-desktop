@@ -115,7 +115,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
       )}
       <div>
         <Button
-          data-testid='import'
+          data-testid='import-network'
           type='submit'
           loading={status === FormStatus.Pending}
         >

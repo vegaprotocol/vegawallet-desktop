@@ -21,18 +21,17 @@ describe('import network', () => {
       })
   })
 
-  it('import using dropdown', () => {
-    cy.getByTestId('import-network-select').select('mainnet1')
-    cy.getByTestId('import').click()
+  it('import from preset', () => {
+    cy.getByTestId(`import-network-mainnet1`).click()
     cy.getByTestId('toast').contains('Network imported to:')
   })
 
   it('import successfully using url', () => {
     const url = Cypress.env('mainnetConfigUrl')
 
-    cy.getByTestId('import-network-select').select('Other')
+    cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(url)
-    cy.getByTestId('import').click()
+    cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains('Network imported to:')
   })
 
@@ -40,35 +39,35 @@ describe('import network', () => {
     const url =
       'https://githubusercontent.com/vegaprotocol/networks/master/mainnet1/fake.toml'
 
-    cy.getByTestId('import-network-select').select('Other')
+    cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(url)
-    cy.getByTestId('import').click()
+    cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains(
       "Error: couldn't import network configuration"
     )
   })
 
   it('overwrite network that already exists', () => {
-    cy.getByTestId('import-network-select').select('Other')
+    cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(Cypress.env('testNetworkPath'))
-    cy.getByTestId('import').click()
+    cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains(
       "Error: couldn't import network configuration"
     )
     // overwrite message shown, check overwrite and re submit
     cy.getByTestId('toast').should('not.exist')
     cy.get('button[role="checkbox"]').click()
-    cy.getByTestId('import').click()
+    cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains('Network imported to:')
   })
 
   it('import same network with different name', () => {
     const url = Cypress.env('testnetConfigUrl')
 
-    cy.getByTestId('import-network-select').select('Other')
+    cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(url)
     cy.getByTestId('network-name').type('custom')
-    cy.getByTestId('import').click()
+    cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains('Network imported to:')
   })
 
@@ -78,25 +77,25 @@ describe('import network', () => {
     const url = Cypress.env('mainnetConfigUrl')
 
     cy.downloadFile(url, 'network-config', 'mainnet-config.toml')
-    cy.getByTestId('import-network-select').select('Other')
+    cy.getByTestId('add-network').click()
 
     const filePath = path.join(
       Cypress.config('projectRoot'),
       'network-config/mainnet-config.toml'
     )
 
-    cy.getByTestId('import-network-select').select('Other')
+    cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(filePath)
-    cy.getByTestId('import').click()
+    cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains('Network imported to:')
   })
 
   it('import failure via file path', () => {
     const invalidFilePath = './network-config/mainnet1'
 
-    cy.getByTestId('import-network-select').select('Other')
+    cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(invalidFilePath)
-    cy.getByTestId('import').click()
+    cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains(
       "Error: couldn't import network configuration"
     )

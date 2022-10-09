@@ -362,6 +362,33 @@ export function createActions(
       }
     },
 
+    removeNetwork(network: string) {
+      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+        const state = getState()
+        logger.debug('RemoveNetwork')
+        try {
+          if (state.network === network) {
+            await service.StopService()
+          }
+          await service.WalletApi.RemoveNetwork({ network })
+          dispatch({
+            type: 'REMOVE_NETWORK',
+            network,
+          })
+          AppToaster.show({
+            message: `Successfully removed network "${network}".`,
+            intent: Intent.SUCCESS,
+          })
+        } catch (err) {
+          logger.error(err)
+          AppToaster.show({
+            message: `Error removing network "${network}".`,
+            intent: Intent.DANGER,
+          })
+        }
+      }
+    },
+
     startServiceAction() {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const state = getState()

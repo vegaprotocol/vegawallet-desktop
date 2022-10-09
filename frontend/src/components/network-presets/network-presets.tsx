@@ -16,36 +16,56 @@ const hasImportedTestNetworks = (testPresets: NetworkPreset[], networks: string[
 type NetworkPresetItemProps = {
   preset: NetworkPreset
   onEdit: () => void
+  onRemove: () => void
 }
 
-const NetworkPresetItem = ({ preset, onEdit }: NetworkPresetItemProps) => {
+const NetworkPresetItem = ({ preset, onEdit, onRemove }: NetworkPresetItemProps) => {
   const { state } = useGlobal()
   const { submit } = useImportNetwork()
   const isImported = state.networks.find(n => n === preset.name)
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        margin: '12 0',
+      }}
+    >
       <div>{preset.name}</div>
       <div style={{ display: 'flex', gap: 12 }}>
         {!isImported && (
           <Button
+            data-testid={`import-network-${preset.name}`}
             onClick={() => submit({
               name: preset.name,
               fileOrUrl: preset.configFileUrl,
-              network: preset.name,
+              network: preset.configFileUrl,
               force: false,
             })}
           >
             Import
           </Button>
         )}
-        <Button
-          data-testid='edit'
-          disabled={!isImported}
-          onClick={onEdit}
-        >
-          Edit
-        </Button>
+        {isImported && (
+          <Button
+            data-testid={`remove-network-${preset.name}`}
+            disabled={!isImported}
+            onClick={onRemove}
+          >
+            Remove
+          </Button>
+        )}
+        {isImported && (
+          <Button
+            data-testid={`edit-network-${preset.name}`}
+            disabled={!isImported}
+            onClick={onEdit}
+          >
+            Edit
+          </Button>
+        )}
       </div>
     </div>
   )
@@ -61,6 +81,8 @@ export function NetworkPresets({
   setSelectedNetwork
 }: NetworkPresetsProps) {
   const {
+    actions,
+    dispatch,
     state: { networks, presets, presetsInternal }
   } = useGlobal()
   const [showTestNetworks, setShowTestNetworks] = useState(hasImportedTestNetworks(presetsInternal, networks))
@@ -85,6 +107,9 @@ export function NetworkPresets({
         <NetworkPresetItem
           key={preset.name}
           preset={preset}
+          onRemove={() => {
+            dispatch(actions.removeNetwork(preset.name))
+          }}
           onEdit={() => {
             setSelectedNetwork(preset.name)
             setEditView()
@@ -98,6 +123,9 @@ export function NetworkPresets({
             <NetworkPresetItem
               key={preset.name}
               preset={preset}
+              onRemove={() => {
+                dispatch(actions.removeNetwork(preset.name))
+              }}
               onEdit={() => {
                 setSelectedNetwork(preset.name)
                 setEditView()
@@ -106,25 +134,41 @@ export function NetworkPresets({
           ))}
         </>
       )}
-      <ButtonUnstyled
-        style={{ margin: '20px 0 0' }}
-        onClick={() => setShowTestNetworks(!showTestNetworks)}
-      >
-        {showTestNetworks ? 'Hide test networks' : 'Show test networks'}
-      </ButtonUnstyled>
-      {myNetworks.length && <Header>My Networks</Header>}
+      {!showTestNetworks && (
+        <ButtonUnstyled
+          data-testid="show-test-networks"
+          style={{ margin: '20px 0 0' }}
+          onClick={() => setShowTestNetworks(!showTestNetworks)}
+        >
+          Show test networks
+        </ButtonUnstyled>
+      )}
+      {myNetworks.length > 0 && <Header>My Networks</Header>}
       {myNetworks.map(network => (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div
+          key={network}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        >
           <div>{network}</div>
-          <Button
-            data-testid='edit'
-            onClick={() => {
-              setSelectedNetwork(network)
-              setEditView()
-            }}
-          >
-            Edit
-          </Button>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <Button
+              data-testid={`remove-network-${network}`}
+              onClick={() => {
+                dispatch(actions.removeNetwork(network))
+              }}
+            >
+              Remove
+            </Button>
+            <Button
+              data-testid={`edit-network-${network}`}
+              onClick={() => {
+                setSelectedNetwork(network)
+                setEditView()
+              }}
+            >
+              Edit
+            </Button>
+          </div>
         </div>
       ))}
     </>

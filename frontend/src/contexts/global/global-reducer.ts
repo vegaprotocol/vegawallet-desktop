@@ -171,6 +171,10 @@ export type GlobalAction =
       network: string
       networkConfig: WalletModel.DescribeNetworkResult
     }
+    | {
+        type: 'REMOVE_NETWORK'
+        network: string
+      }
   | {
       type: 'START_SERVICE'
       port: number
@@ -468,6 +472,14 @@ export function globalReducer(
         networks: [...state.networks, ...newNetworks],
         network: action.network,
         networkConfig: action.networkConfig
+      }
+    }
+    case 'REMOVE_NETWORK': {
+      return {
+        ...state,
+        network: null,
+        networks: state.networks.filter(n => n !== action.network),
+        networkConfig: null,
       }
     }
     case 'START_SERVICE': {
