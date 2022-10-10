@@ -22,7 +22,7 @@ interface NetworkImportFormProps {
 }
 
 export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
-  const [showOverwriteCheckbox, setShowOverwriteCheckbox] = useState(false)
+  const [isCheckboxVisible, setCheckboxVisible] = useState(false)
   const { status, submit, error } = useImportNetwork()
 
   const {
@@ -43,7 +43,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   useEffect(() => {
     if (status === FormStatus.Success) {
       reset()
-      setShowOverwriteCheckbox(false)
+      setCheckboxVisible(false)
       if (typeof onComplete === 'function') {
         onComplete()
       }
@@ -54,7 +54,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   // set the name
   useEffect(() => {
     if (status === FormStatus.Error && error && /already exists/.test(error)) {
-      setShowOverwriteCheckbox(true)
+      setCheckboxVisible(true)
       setError(
         'name',
         {
@@ -110,7 +110,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
           {...register('name')}
         />
       </FormGroup>
-      {showOverwriteCheckbox && (
+      {isCheckboxVisible && (
         <FormGroup helperText='Overwrite existing network configuration'>
           <Checkbox name='force' control={control} label='Overwrite' />
         </FormGroup>
