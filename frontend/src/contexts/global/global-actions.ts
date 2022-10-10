@@ -4,6 +4,7 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import { fetchNetworkPreset } from '../../lib/networks'
 import { parseTx } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import { config as ConfigModel } from '../../wailsjs/go/models'
@@ -28,14 +29,18 @@ export function createActions(
 
           logger.debug('StartApp')
 
-          const [isInit, version, presets] = await Promise.all([
-            service.IsAppInitialised(),
-            service.GetVersion(),
-            fetch(DataSources.NETWORKS).then(res => res.json())
-          ])
+          const [isInit, version, presets, presetsInternal] = await Promise.all(
+            [
+              service.IsAppInitialised(),
+              service.GetVersion(),
+              fetchNetworkPreset(DataSources.NETWORKS, logger),
+              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
+            ]
+          )
 
           dispatch({ type: 'SET_VERSION', version: version.version })
           dispatch({ type: 'SET_PRESETS', presets })
+          dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
 
           if (!isInit) {
             const existingConfig =
@@ -79,6 +84,7 @@ export function createActions(
             networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
+            presetNetworksInternal: presetsInternal,
             serviceRunning: serviceState.running
           })
         } catch (err) {
@@ -355,6 +361,33 @@ export function createActions(
           network,
           config
         })
+      }
+    },
+
+    removeNetwork(network: string) {
+      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+        const state = getState()
+        logger.debug('RemoveNetwork')
+        try {
+          if (state.network === network) {
+            await service.StopService()
+          }
+          await service.WalletApi.RemoveNetwork({ network })
+          dispatch({
+            type: 'REMOVE_NETWORK',
+            network
+          })
+          AppToaster.show({
+            message: `Successfully removed network "${network}".`,
+            intent: Intent.SUCCESS
+          })
+        } catch (err) {
+          logger.error(err)
+          AppToaster.show({
+            message: `Error removing network "${network}".`,
+            intent: Intent.DANGER
+          })
+        }
       }
     },
 

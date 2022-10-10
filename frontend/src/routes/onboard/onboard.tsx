@@ -10,6 +10,7 @@ import { Input } from '../../components/forms/input'
 import { Header } from '../../components/header'
 import { Vega } from '../../components/icons'
 import { NetworkImportForm } from '../../components/network-import-form'
+import { NetworkPresets } from '../../components/network-presets'
 import { Splash } from '../../components/splash'
 import { AppToaster } from '../../components/toaster'
 import { WalletCreateForm } from '../../components/wallet-create-form'
@@ -81,9 +82,9 @@ export function OnboardHome() {
         const defaultNetwork = config.defaultNetwork
           ? config.defaultNetwork
           : onboarding.networks[0]
-        const defaultNetworkConfig = await service.GetNetworkConfig(
-          defaultNetwork
-        )
+        const defaultNetworkConfig = await service.WalletApi.DescribeNetwork({
+          network: defaultNetwork
+        })
         dispatch({
           type: 'ADD_NETWORKS',
           networks: onboarding.networks,
@@ -302,16 +303,51 @@ export function OnboardWalletImport() {
 }
 
 export function OnboardNetwork() {
+  const { state, actions, dispatch } = useGlobal()
+  // The current view of the drawer
+  const [view, setView] = React.useState<'add' | 'edit' | 'manage'>('manage')
+  // The network you are currently editing when in the edit view
+  const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(
+    state.network
+  )
   const navigate = useNavigate()
-  const { actions, dispatch } = useGlobal()
 
   const onComplete = React.useCallback(() => {
-    dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
-  }, [dispatch, navigate, actions])
+    if (selectedNetwork) {
+      dispatch(actions.changeNetworkAction(selectedNetwork))
+      dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
+    }
+  }, [dispatch, navigate, actions, selectedNetwork])
 
   return (
     <OnboardPanel title='Import a network' back='/onboard/wallet-create'>
-      <NetworkImportForm onComplete={onComplete} />
+      {view === 'manage' && (
+        <>
+          <NetworkPresets
+            setEditView={() => setView('edit')}
+            setSelectedNetwork={setSelectedNetwork}
+          />
+          <div
+            style={{
+              display: 'flex',
+              gap: 20,
+              marginTop: '24px',
+              paddingTop: '24px',
+              borderTop: `1px solid ${Colors.DARK_GRAY_1}`
+            }}
+          >
+            <Button data-testid='add-network' onClick={() => setView('add')}>
+              Add network
+            </Button>
+            <Button disabled={!state.network} onClick={onComplete}>
+              Continue
+            </Button>
+          </div>
+        </>
+      )}
+      {view === 'add' && (
+        <NetworkImportForm onComplete={() => setView('manage')} />
+      )}
     </OnboardPanel>
   )
 }

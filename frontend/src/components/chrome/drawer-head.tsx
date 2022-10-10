@@ -1,17 +1,26 @@
 import React from 'react'
 
 import { Colors } from '../../config/colors'
-import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
+import { Header } from '../header'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 
 interface DrawerHeadProps {
+  title?: string | null
   height: number
+  isOpen: boolean
+  setOpen: (isOpen: boolean) => void
   children?: React.ReactNode
 }
 
 /** The part of the drawer that remains exposed */
-export function DrawerHead({ height, children }: DrawerHeadProps) {
+export function DrawerHead({
+  height,
+  title,
+  isOpen,
+  setOpen,
+  children
+}: DrawerHeadProps) {
   return (
     <div
       style={{
@@ -27,19 +36,20 @@ export function DrawerHead({ height, children }: DrawerHeadProps) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
         {children}
       </div>
+      {title && <Header style={{ margin: 0 }}>{title}</Header>}
       <div>
-        <DrawerToggle />
+        <DrawerToggle isOpen={isOpen} setOpen={setOpen} />
       </div>
     </div>
   )
 }
 
-function DrawerToggle() {
-  const {
-    state: { drawerOpen },
-    actions,
-    dispatch
-  } = useGlobal()
+type DrawerToggleProps = {
+  isOpen: boolean
+  setOpen: (isOpen: boolean) => void
+}
+
+function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
   const [hover, setHover] = React.useState(false)
 
   return (
@@ -56,13 +66,13 @@ function DrawerToggle() {
         borderRadius: '50%',
         background: hover ? Colors.DARK_GRAY_2 : 'transparent'
       }}
-      onClick={() => dispatch(actions.setDrawerAction(!drawerOpen))}
+      onClick={() => setOpen(!isOpen)}
     >
       <DropdownArrow
         style={{
           width: 16,
           height: 16,
-          transform: drawerOpen ? '' : 'rotate(180deg)'
+          transform: isOpen ? '' : 'rotate(180deg)'
         }}
       />
     </ButtonUnstyled>

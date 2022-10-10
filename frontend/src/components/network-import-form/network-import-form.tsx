@@ -1,22 +1,18 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import type { FieldError } from 'react-hook-form'
-import { useWatch } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
 import { Intent } from '../../config/intent'
-import { useGlobal } from '../../contexts/global/global-context'
 import { FormStatus } from '../../hooks/use-form-state'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { Checkbox } from '../checkbox'
 import { FormGroup } from '../form-group'
-import { Select } from '../forms'
 import { Input } from '../forms/input'
 
 interface FormFields {
   name: string
-  network: string
   fileOrUrl: string
   force: boolean
 }
@@ -26,11 +22,7 @@ interface NetworkImportFormProps {
 }
 
 export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
-  const [showOverwriteCheckbox, setShowOverwriteCheckbox] =
-    React.useState(false)
-  const {
-    state: { networks, presets }
-  } = useGlobal()
+  const [isCheckboxVisible, setCheckboxVisible] = useState(false)
   const { status, submit, error } = useImportNetwork()
 
   const {
@@ -43,18 +35,15 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   } = useForm<FormFields>({
     defaultValues: {
       name: '',
-      network: '',
       fileOrUrl: '',
       force: false
     }
   })
 
-  const presetNetwork = useWatch({ name: 'network', control })
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === FormStatus.Success) {
       reset()
-      setShowOverwriteCheckbox(false)
+      setCheckboxVisible(false)
       if (typeof onComplete === 'function') {
         onComplete()
       }
@@ -63,9 +52,9 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
   // set the name
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === FormStatus.Error && error && /already exists/.test(error)) {
-      setShowOverwriteCheckbox(true)
+      setCheckboxVisible(true)
       setError(
         'name',
         {
@@ -86,81 +75,49 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
+    <form
+      onSubmit={handleSubmit(values => submit({ ...values, network: 'other' }))}
+    >
       <FormGroup
-        label='Network'
-        labelFor='network'
-        intent={errors.network?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.network?.message}
+        label='URL or path'
+        labelFor='fileOrUrl'
+        intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}
       >
-        <Select
-          data-testid='import-network-select'
-          id='network'
-          {...register('network', {
+        <Input
+          id='fileOrUrl'
+          type='text'
+          data-testid='url-path'
+          {...register('fileOrUrl', {
             required: Validation.REQUIRED
           })}
-        >
-          <option disabled={true} value=''>
-            Please select
-          </option>
-          {presets.map(preset => {
-            return (
-              <option
-                key={preset.name}
-                value={preset.configFileUrl}
-                disabled={Boolean(networks.find(n => n === preset.name))}
-              >
-                {preset.name}
-              </option>
-            )
-          })}
-          <option value='other'>Other</option>
-        </Select>
+        />
       </FormGroup>
-      {presetNetwork === 'other' && (
-        <>
-          <FormGroup
-            label='URL or path'
-            labelFor='fileOrUrl'
-            intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
-            helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}
-          >
-            <Input
-              id='fileOrUrl'
-              type='text'
-              data-testid='url-path'
-              {...register('fileOrUrl', {
-                required: Validation.REQUIRED
-              })}
-            />
-          </FormGroup>
-          <FormGroup
-            label='Network name'
-            labelFor='name'
-            intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-            helperText={
-              errors.name
-                ? errors.name?.message
-                : 'Uses name specified in the config by default'
-            }
-          >
-            <Input
-              data-testid='network-name'
-              type='text'
-              id='name'
-              {...register('name')}
-            />
-          </FormGroup>
-          {showOverwriteCheckbox && (
-            <FormGroup helperText='Overwrite existing network configuration'>
-              <Checkbox name='force' control={control} label='Overwrite' />
-            </FormGroup>
-          )}
-        </>
+      <FormGroup
+        label='Network name'
+        labelFor='name'
+        intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+        helperText={
+          errors.name
+            ? errors.name?.message
+            : 'Uses name specified in the config by default'
+        }
+      >
+        <Input
+          data-testid='network-name'
+          type='text'
+          id='name'
+          {...register('name')}
+        />
+      </FormGroup>
+      {isCheckboxVisible && (
+        <FormGroup helperText='Overwrite existing network configuration'>
+          <Checkbox name='force' control={control} label='Overwrite' />
+        </FormGroup>
       )}
       <div>
         <Button
-          data-testid='import'
+          data-testid='import-network'
           type='submit'
           loading={status === FormStatus.Pending}
         >
