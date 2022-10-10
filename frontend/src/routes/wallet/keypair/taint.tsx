@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { BreakText } from '../../../components/break-text'
 import { Button } from '../../../components/button'
-import { Header } from '../../../components/header'
+import { Title } from '../../../components/title'
 import { KeyValueTable } from '../../../components/key-value-table'
 import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
@@ -111,7 +111,7 @@ export const Taint = () => {
 
   return (
     <div data-testid='keypair-taint' style={{ padding: 20 }}>
-      <Header style={{ marginTop: 0 }}>Taint key</Header>
+      <Title style={{ marginTop: 0 }}>Taint key</Title>
       {keypair.isTainted && (
         <div style={{ marginBottom: 20 }}>
           <p style={{ marginBottom: 10 }}>

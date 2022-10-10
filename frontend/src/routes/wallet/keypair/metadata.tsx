@@ -6,7 +6,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { Button } from '../../../components/button'
 import { FormGroup } from '../../../components/form-group'
 import { Input } from '../../../components/forms/input'
-import { Header } from '../../../components/header'
+import { Title } from '../../../components/title'
 import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
 import { Colors } from '../../../config/colors'
@@ -115,7 +115,7 @@ export const Metadata = () => {
     formState: { errors }
   } = useForm<{ meta: Array<{ key: string; value: string }> }>({
     defaultValues: {
-      meta: keypair?.meta || []
+      meta: keypair?.metadata || []
     }
   })
   const { fields, append, remove, move } = useFieldArray({
@@ -146,7 +146,7 @@ export const Metadata = () => {
 
   return (
     <div data-testid='keypair-metadata' style={{ padding: 20 }}>
-      <Header style={{ marginTop: 0 }}>Key metadata</Header>
+      <Title style={{ marginTop: 0 }}>Key metadata</Title>
       <p>Metadata</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DragDropContext onDragEnd={handleDragEnd}>

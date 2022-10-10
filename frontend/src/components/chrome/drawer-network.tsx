@@ -4,7 +4,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
-import { Header } from '../header'
+import { Title } from '../title'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { NetworkInfo } from '../network-info'
 import type { DrawerViews } from './drawer-content'
@@ -21,7 +21,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   } = useGlobal()
   return (
     <>
-      <Header style={{ marginTop: 0 }}>Network</Header>
+      <Title style={{ marginTop: 0 }}>Network</Title>
       {networks.length ? (
         <div
           style={{

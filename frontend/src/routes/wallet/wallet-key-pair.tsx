@@ -2,10 +2,10 @@ import { Link, Navigate, Outlet } from 'react-router-dom'
 
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { DropdownItem, DropdownMenu } from '../../components/dropdown-menu'
+import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { Paths } from '../'
-import { WalletHeader } from './wallet-header'
 
 export function WalletKeyPair() {
   const { keypair } = useCurrentKeypair()
@@ -16,7 +16,7 @@ export function WalletKeyPair() {
 
   return (
     <>
-      <WalletHeader
+      <Header
         center={
           keypair && (
             <>

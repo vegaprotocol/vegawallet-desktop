@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Header } from '../../components/header'
+import { Title } from '../../components/title'
 import { Splash } from '../../components/splash'
 import { WalletImportForm } from '../../components/wallet-import-form'
 import { Colors } from '../../config/colors'
@@ -20,11 +20,11 @@ export const WalletImport = () => {
 
   return (
     <Splash>
-      <Header
+      <Title
         style={{ marginTop: 0, color: Colors.WHITE, textAlign: 'center' }}
       >
         Import wallet
-      </Header>
+      </Title>
       <WalletImportForm submit={submit} cancel={() => navigate(Paths.Home)} />
     </Splash>
   )

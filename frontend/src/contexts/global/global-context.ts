@@ -39,10 +39,6 @@ export interface GlobalState {
   status: AppStatus
   version: string
   config: ConfigModel.Config | null
-  onboarding: {
-    wallets: string[]
-    networks: string[]
-  }
 
   // Transactions
   transactionQueue: Transaction[]

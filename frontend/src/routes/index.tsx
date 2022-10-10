@@ -2,15 +2,7 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 
 import { Center } from '../components/center'
 import { Home } from './home'
-import { NetworkImport } from './network-import'
-import {
-  Onboard,
-  OnboardHome,
-  OnboardNetwork,
-  OnboardSettings,
-  OnboardWalletCreate,
-  OnboardWalletImport
-} from './onboard'
+import { Onboard } from './onboard'
 import { Wallet } from './wallet'
 import { Delete } from './wallet/delete'
 import { KeyPairHome } from './wallet/keypair/home'
@@ -33,16 +25,9 @@ export const AppRouter = () => {
     <Routes>
       <Route path='/' element={<Outlet />}>
         <Route index={true} element={<Home />} />
-        <Route path='onboard' element={<Onboard />}>
-          <Route index={true} element={<OnboardHome />} />
-          <Route path='settings' element={<OnboardSettings />} />
-          <Route path='wallet-create' element={<OnboardWalletCreate />} />
-          <Route path='wallet-import' element={<OnboardWalletImport />} />
-          <Route path='network' element={<OnboardNetwork />} />
-        </Route>
+        <Route path='onboard' element={<Onboard />} />
         <Route path='wallet-create' element={<WalletCreate />} />
         <Route path='wallet-import' element={<WalletImport />} />
-        <Route path='network-import' element={<NetworkImport />} />
         <Route path='wallet/:wallet' element={<Wallet />}>
           <Route
             index={true}

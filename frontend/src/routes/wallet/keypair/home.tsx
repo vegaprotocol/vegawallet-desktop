@@ -1,6 +1,7 @@
 import { BreakText } from '../../../components/break-text'
-import { Header } from '../../../components/header'
+import { Title } from '../../../components/title'
 import { KeyValueTable } from '../../../components/key-value-table'
+import { CopyWithTooltip } from '../../../components/copy-with-tooltip'
 import { TransactionHistory } from '../../../components/transaction-history'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 
@@ -13,18 +14,22 @@ export function KeyPairHome() {
 
   return (
     <div style={{ padding: 20 }} data-testid='keypair-home'>
-      <Header style={{ marginTop: 0 }}>Details</Header>
+      <Title style={{ marginTop: 0 }}>Details</Title>
       <KeyValueTable
         rows={[
           { key: 'Name', value: keypair.name, dataTestId: 'keypair-name' },
           {
             key: 'Public key',
-            value: <BreakText>{keypair.publicKey}</BreakText>,
+            value: (
+              <CopyWithTooltip text={keypair.publicKey ?? ''}>
+                <BreakText>{keypair.publicKey}</BreakText>
+              </CopyWithTooltip>
+            ),
             dataTestId: 'public-key'
           }
         ]}
       />
-      <Header>History</Header>
+      <Title>History</Title>
       <TransactionHistory />
     </div>
   )

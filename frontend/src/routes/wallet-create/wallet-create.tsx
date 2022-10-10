@@ -1,8 +1,7 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
-import { Header } from '../../components/header'
+import { Title } from '../../components/title'
 import { Splash } from '../../components/splash'
 import { WalletCreateForm } from '../../components/wallet-create-form'
 import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
@@ -15,11 +14,11 @@ export const WalletCreate = () => {
 
   return (
     <Splash>
-      <Header
+      <Title
         style={{ marginTop: 0, color: Colors.WHITE, textAlign: 'center' }}
       >
         Create wallet
-      </Header>
+      </Title>
       {response ? (
         <WalletCreateFormSuccess
           response={response}

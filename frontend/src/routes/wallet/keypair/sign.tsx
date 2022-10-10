@@ -8,7 +8,7 @@ import { ButtonUnstyled } from '../../../components/button-unstyled'
 import { CopyWithTooltip } from '../../../components/copy-with-tooltip'
 import { FormGroup } from '../../../components/form-group'
 import { Textarea } from '../../../components/forms/textarea'
-import { Header } from '../../../components/header'
+import { Title } from '../../../components/title'
 import { requestPassphrase } from '../../../components/passphrase-modal'
 import { AppToaster } from '../../../components/toaster'
 import { Colors } from '../../../config/colors'
@@ -78,7 +78,7 @@ export const Sign = () => {
   return (
     <div data-testid='keypair-sign'>
       <div style={{ padding: 20 }}>
-        <Header style={{ margin: 0 }}>Sign</Header>
+        <Title style={{ margin: 0 }}>Sign</Title>
       </div>
       <div style={{ padding: 20 }}>
         {signedData ? (

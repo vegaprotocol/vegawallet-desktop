@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Colors } from '../../config/colors'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Header } from '../header'
+import { Title } from '../title'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 
 interface DrawerHeadProps {
@@ -36,7 +36,7 @@ export function DrawerHead({
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
         {children}
       </div>
-      {title && <Header style={{ margin: 0 }}>{title}</Header>}
+      {title && <Title style={{ margin: 0 }}>{title}</Title>}
       <div>
         <DrawerToggle isOpen={isOpen} setOpen={setOpen} />
       </div>

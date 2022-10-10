@@ -1,27 +1,36 @@
-import type { HTMLAttributes } from 'react'
-import React from 'react'
+import type { ReactNode } from 'react'
 
-import { Colors } from '../../config/colors'
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { Title } from '../../components/title'
+import { useGlobal } from '../../contexts/global/global-context'
+import { useWindowSize } from '../../hooks/use-window-size'
 
-interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
-  children: React.ReactNode
+interface HeaderProps {
+  center: ReactNode
+  right: ReactNode
 }
 
-export const Header = ({ children, style, ...rest }: HeaderProps) => {
+export function Header({ center, right }: HeaderProps) {
+  const { dispatch } = useGlobal()
+  const { width } = useWindowSize()
+  const isWide = width > 900
+
   return (
-    <h1
-      {...rest}
-      style={{
-        fontSize: 15,
-        color: Colors.TEXT_COLOR_DEEMPHASISE,
-        margin: '30px 0 20px 0',
-        textTransform: 'uppercase',
-        letterSpacing: '0.3em',
-        lineHeight: 1.2,
-        ...style
-      }}
+    <Title
+      style={{ display: 'flex', alignItems: 'start', margin: 0, padding: 20 }}
     >
-      {children}
-    </h1>
+      <span style={{ flex: 1 }}>
+        {!isWide && (
+          <ButtonUnstyled
+            style={{ marginRight: 10 }}
+            onClick={() => dispatch({ type: 'SET_SIDEBAR', open: true })}
+          >
+            Wallet
+          </ButtonUnstyled>
+        )}
+      </span>
+      <span style={{ flex: 1, textAlign: 'center' }}>{center}</span>
+      <span style={{ flex: 1, textAlign: 'right' }}>{right}</span>
+    </Title>
   )
 }

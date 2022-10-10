@@ -7,6 +7,7 @@ import { ButtonGroup } from '../../components/button-group'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
 import { AppToaster } from '../../components/toaster'
+import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -15,7 +16,6 @@ import { FormStatus, useFormState } from '../../hooks/use-form-state'
 import { Validation } from '../../lib/form-validation'
 import { createLogger } from '../../lib/logging'
 import { Paths } from '..'
-import { WalletHeader } from './wallet-header'
 
 const logger = createLogger('Delete')
 
@@ -67,7 +67,7 @@ export const Delete = () => {
 
   return (
     <>
-      <WalletHeader
+      <Header
         center={
           <div>
             <div
