@@ -23,11 +23,12 @@ describe('onboarding', () => {
     cy.getByTestId('submit').click()
     cy.getByTestId('toast').contains('Wallet created!')
     cy.getByTestId('toast').should('not.exist')
+    // cy.getByTestId('toast').should('not.exist')
 
     // Import network
     cy.getByTestId('onboard-import-network-button').click()
-    cy.getByTestId('import-network-select').select('fairground')
-    cy.getByTestId('import').click()
+    cy.getByTestId('show-test-networks').click()
+    cy.getByTestId('import-network-fairground').click()
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(100)
     cy.getByTestId('toast').first().contains('Network imported to:')

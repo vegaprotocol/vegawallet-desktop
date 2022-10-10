@@ -20,7 +20,7 @@ const itemStyles = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  margin: '12 0'
+  margin: '12px 0'
 }
 
 type NetworkPresetItemProps = {

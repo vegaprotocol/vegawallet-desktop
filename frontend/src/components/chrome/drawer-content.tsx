@@ -14,14 +14,18 @@ const DEFAULT_VIEW = 'network'
 
 export type DrawerViews = 'network' | 'manage' | 'edit' | 'add'
 
+type DrawerContentProps = {
+  defaultView?: DrawerViews
+}
+
 /**
  * Renders different drawer content based on 'view' state
  */
-export function DrawerContent() {
+export function DrawerContent({ defaultView = DEFAULT_VIEW }: DrawerContentProps) {
   const { state, actions, dispatch } = useGlobal()
 
   // The current view of the drawer
-  const [view, setView] = useState<DrawerViews>(DEFAULT_VIEW)
+  const [view, setView] = useState<DrawerViews>(defaultView)
 
   // The network you are currently editing when in the edit view
   const [selectedNetwork, setSelectedNetwork] = useState<string | null>(null)

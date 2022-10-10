@@ -1,55 +1,46 @@
-export namespace jsonrpc {
+export namespace backend {
 	
-	export class Request {
-	    jsonrpc: string;
-	    method: string;
-	    params?: any;
-	    id?: string;
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new Request(source);
+	        return new GetServiceStateResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.jsonrpc = source["jsonrpc"];
-	        this.method = source["method"];
-	        this.params = source["params"];
-	        this.id = source["id"];
+	        this.url = source["url"];
+	        this.running = source["running"];
 	    }
 	}
-	export class ErrorDetails {
-	    code: number;
-	    message: string;
-	    data?: string;
+	export class InitialiseAppRequest {
+	    vegaHome: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ErrorDetails(source);
+	        return new InitialiseAppRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.code = source["code"];
-	        this.message = source["message"];
-	        this.data = source["data"];
+	        this.vegaHome = source["vegaHome"];
 	    }
 	}
-	export class Response {
-	    jsonrpc: string;
-	    result?: any;
-	    error?: ErrorDetails;
-	    id?: string;
+	export class ConsentRequest {
+	    txId: string;
+	    tx: string;
+	    // Go type: time.Time
+	    receivedAt: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new Response(source);
+	        return new ConsentRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.jsonrpc = source["jsonrpc"];
-	        this.result = source["result"];
-	        this.error = this.convertValues(source["error"], ErrorDetails);
-	        this.id = source["id"];
+	        this.txId = source["txId"];
+	        this.tx = source["tx"];
+	        this.receivedAt = this.convertValues(source["receivedAt"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -70,50 +61,35 @@ export namespace jsonrpc {
 		    return a;
 		}
 	}
-
-}
-
-export namespace backend {
-	
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
+	export class ListConsentRequestsResponse {
+	    requests: ConsentRequest[];
 	
 	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
+	        return new ListConsentRequestsResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
+	        this.requests = this.convertValues(source["requests"], ConsentRequest);
 	    }
 	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
-	    }
-	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
@@ -139,20 +115,6 @@ export namespace backend {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.network = source["network"];
-	    }
-	}
-	export class CheckVersionResponse {
-	    version: string;
-	    releaseUrl: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CheckVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
 	export class ClearSentTransactionRequest {
@@ -181,6 +143,7 @@ export namespace backend {
 	        this.decision = source["decision"];
 	    }
 	}
+	
 	export class SentTransaction {
 	    txId: string;
 	    txHash: string;
@@ -266,6 +229,20 @@ export namespace backend {
 	        this.content = source["content"];
 	    }
 	}
+	export class CheckVersionResponse {
+	    version: string;
+	    releaseUrl: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CheckVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.releaseUrl = source["releaseUrl"];
+	    }
+	}
 	export class GetConsentRequestRequest {
 	    txId: string;
 	
@@ -278,70 +255,19 @@ export namespace backend {
 	        this.txId = source["txId"];
 	    }
 	}
-	export class ConsentRequest {
-	    txId: string;
-	    tx: string;
-	    // Go type: time.Time
-	    receivedAt: any;
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ConsentRequest(source);
+	        return new GetVersionResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	        this.tx = source["tx"];
-	        this.receivedAt = this.convertValues(source["receivedAt"], null);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
 	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class ListConsentRequestsResponse {
-	    requests: ConsentRequest[];
-	
-	    static createFrom(source: any = {}) {
-	        return new ListConsentRequestsResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.requests = this.convertValues(source["requests"], ConsentRequest);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 
 }
@@ -378,6 +304,81 @@ export namespace config {
 	        this.vegaHome = source["vegaHome"];
 	        this.defaultNetwork = source["defaultNetwork"];
 	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace jsonrpc {
+	
+	export class Request {
+	    jsonrpc: string;
+	    method: string;
+	    params?: any;
+	    id?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Request(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.jsonrpc = source["jsonrpc"];
+	        this.method = source["method"];
+	        this.params = source["params"];
+	        this.id = source["id"];
+	    }
+	}
+	export class ErrorDetails {
+	    code: number;
+	    message: string;
+	    data?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ErrorDetails(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.code = source["code"];
+	        this.message = source["message"];
+	        this.data = source["data"];
+	    }
+	}
+	export class Response {
+	    jsonrpc: string;
+	    result?: any;
+	    error?: ErrorDetails;
+	    id?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Response(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.jsonrpc = source["jsonrpc"];
+	        this.result = source["result"];
+	        this.error = this.convertValues(source["error"], ErrorDetails);
+	        this.id = source["id"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
