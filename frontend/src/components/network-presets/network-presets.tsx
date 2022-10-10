@@ -13,6 +13,13 @@ const hasImportedTestNetworks = (testPresets: NetworkPreset[], networks: string[
   }, false)
 }
 
+const itemStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  margin: '12 0',
+}
+
 type NetworkPresetItemProps = {
   preset: NetworkPreset
   onEdit: () => void
@@ -26,12 +33,7 @@ const NetworkPresetItem = ({ preset, onEdit, onRemove }: NetworkPresetItemProps)
 
   return (
     <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: '12 0',
-      }}
+      style={itemStyles}
     >
       <div>{preset.name}</div>
       <div style={{ display: 'flex', gap: 12 }}>
@@ -147,7 +149,7 @@ export function NetworkPresets({
       {myNetworks.map(network => (
         <div
           key={network}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          style={itemStyles}
         >
           <div>{network}</div>
           <div style={{ display: 'flex', gap: 12 }}>

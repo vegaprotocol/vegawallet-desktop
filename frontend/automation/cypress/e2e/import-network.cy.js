@@ -77,7 +77,6 @@ describe('import network', () => {
     const url = Cypress.env('mainnetConfigUrl')
 
     cy.downloadFile(url, 'network-config', 'mainnet-config.toml')
-    cy.getByTestId('add-network').click()
 
     const filePath = path.join(
       Cypress.config('projectRoot'),
@@ -86,6 +85,7 @@ describe('import network', () => {
 
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(filePath)
+    cy.getByTestId('network-name').type('custom')
     cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains('Network imported to:')
   })
@@ -95,6 +95,7 @@ describe('import network', () => {
 
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(invalidFilePath)
+    cy.getByTestId('network-name').type('custom')
     cy.getByTestId('import-network').click()
     cy.getByTestId('toast').contains(
       "Error: couldn't import network configuration"

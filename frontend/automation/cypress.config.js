@@ -30,7 +30,7 @@ module.exports = defineConfig({
     mainnetConfigUrl:
       'https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml',
     testnetConfigUrl:
-      'https://raw.githubusercontent.com/vegaprotocol/networks/master/fairground/fairground.toml',
+      'https://raw.githubusercontent.com/vegaprotocol/networks-internal/main/fairground/vegawallet-fairground.toml',
     testWalletRecoveryPhrase:
       'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold',
     recoveredWalletPublicKey:
