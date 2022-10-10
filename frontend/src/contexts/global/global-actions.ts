@@ -250,6 +250,29 @@ export function createActions(
       }
     },
 
+    activateWalletAction(wallet: string) {
+      return async (dispatch: GlobalDispatch) => {
+        const passphrase = await requestPassphrase()
+
+        try {
+          await service.WalletApi.DescribeWallet({
+            wallet,
+            passphrase,
+          })
+
+          dispatch({
+            type: 'ACTIVATE_WALLET',
+            wallet
+          })
+        } catch (err: unknown) {
+          AppToaster.show({
+            intent: Intent.DANGER,
+            message: err instanceof Error ? err.message : 'Invalid passphrase',
+          })
+        }
+      }
+    },
+
     deactivateWalletAction(wallet: string): GlobalAction {
       return {
         type: 'DEACTIVATE_WALLET',

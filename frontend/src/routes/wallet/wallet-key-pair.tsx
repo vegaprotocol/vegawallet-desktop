@@ -1,13 +1,16 @@
-import { Link, Navigate, Outlet } from 'react-router-dom'
+import { useNavigate, Link, Navigate, Outlet } from 'react-router-dom'
 
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { DropdownItem, DropdownMenu } from '../../components/dropdown-menu'
 import { Header } from '../../components/header'
 import { Colors } from '../../config/colors'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
+import { useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../'
 
 export function WalletKeyPair() {
+  const navigate =  useNavigate()
+  const { state, actions, dispatch } = useGlobal()
   const { keypair } = useCurrentKeypair()
 
   if (!keypair) {
@@ -17,6 +20,19 @@ export function WalletKeyPair() {
   return (
     <>
       <Header
+        left={(
+          <ButtonUnstyled
+            style={{ marginRight: 10, textDecoration: 'none' }}
+            onClick={() => {
+              if (state.wallet) {
+                dispatch(actions.deactivateWalletAction(state.wallet.name))
+              }
+              navigate('/')
+            }}
+          >
+            {'< Wallets'}
+          </ButtonUnstyled>
+        )}
         center={
           keypair && (
             <>
@@ -32,42 +48,6 @@ export function WalletKeyPair() {
                 {keypair.publicKeyShort}
               </div>
             </>
-          )
-        }
-        right={
-          keypair && (
-            <DropdownMenu
-              trigger={
-                <ButtonUnstyled
-                  data-testid='wallet-actions'
-                  style={{ marginRight: 10 }}
-                >
-                  Menu
-                </ButtonUnstyled>
-              }
-              content={
-                <div>
-                  {['sign', 'taint', 'metadata'].map(page => (
-                    <DropdownItem key={page}>
-                      <Link
-                        data-testid={`wallet-action-${page}`}
-                        style={{
-                          display: 'block',
-                          width: '100%',
-                          padding: '10px 15px',
-                          lineHeight: 1,
-                          textAlign: 'left',
-                          textTransform: 'capitalize'
-                        }}
-                        to={page}
-                      >
-                        {page}
-                      </Link>
-                    </DropdownItem>
-                  ))}
-                </div>
-              }
-            />
           )
         }
       />

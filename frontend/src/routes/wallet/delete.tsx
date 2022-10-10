@@ -28,15 +28,11 @@ const useDeleteWallet = () => {
       try {
         setStatus(FormStatus.Pending)
         logger.debug(`DeleteWallet: ${walletName}`)
-        const res = await service.WalletApi.RemoveWallet({ wallet: walletName })
-        if (res instanceof Error) {
-          throw res
-        } else {
-          AppToaster.show({ message: 'Wallet deleted', intent: Intent.SUCCESS })
-          setStatus(FormStatus.Success)
-          dispatch({ type: 'REMOVE_WALLET', wallet: walletName })
-          navigate(Paths.Home)
-        }
+        await service.WalletApi.RemoveWallet({ wallet: walletName })
+        AppToaster.show({ message: 'Wallet deleted', intent: Intent.SUCCESS })
+        setStatus(FormStatus.Success)
+        dispatch({ type: 'REMOVE_WALLET', wallet: walletName })
+        navigate(Paths.Home)
       } catch (err) {
         AppToaster.show({
           message: 'Failed to delete wallet',

@@ -25,12 +25,7 @@ export const initialGlobalState: GlobalState = {
   transactionHistory: [],
   passphraseModalOpen: false,
   drawerOpen: false,
-  sidebarOpen: false,
   settingsModalOpen: false,
-  onboarding: {
-    wallets: [],
-    networks: []
-  },
   config: null,
   // network
   network: null,
@@ -82,6 +77,11 @@ export type GlobalAction =
       key: WalletModel.DescribeKeyResult
     }
   | {
+      type: 'UPDATE_WALLET'
+      wallet: string
+      data: Wallet
+    }
+  | {
       type: 'ADD_WALLETS'
       wallets: string[]
     }
@@ -122,10 +122,6 @@ export type GlobalAction =
     }
   | {
       type: 'SET_DRAWER'
-      open: boolean
-    }
-  | {
-      type: 'SET_SIDEBAR'
       open: boolean
     }
   | {
@@ -243,7 +239,6 @@ export function globalReducer(
       return {
         ...state,
         status: AppStatus.Onboarding,
-        onboarding: action.existing
       }
     }
     case 'ADD_WALLET': {
@@ -395,12 +390,6 @@ export function globalReducer(
       return {
         ...state,
         drawerOpen: action.open
-      }
-    }
-    case 'SET_SIDEBAR': {
-      return {
-        ...state,
-        sidebarOpen: action.open
       }
     }
     case 'SET_SETTINGS_MODAL': {

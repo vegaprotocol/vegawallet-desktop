@@ -5,7 +5,7 @@ import { style as defaultStyle } from './style'
 export function Lock({ style }: { style?: React.CSSProperties }) {
   return (
 		<svg
-			style={{ ...defaultStyle, fill: 'transparent', ...style }}
+			style={{ ...defaultStyle, fill: 'currentColor', ...style }}
 			viewBox='0 0 16 16'
 			xmlns='http://www.w3.org/2000/svg'
 		>

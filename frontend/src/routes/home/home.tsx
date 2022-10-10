@@ -1,9 +1,10 @@
-import { Link, Navigate } from 'react-router-dom'
+import { useNavigate, Link, Navigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { Title } from '../../components/title'
 import { TelemetryDialog } from '../../components/telemetry-dialog'
+import { Lock } from '../../components/icons/lock'
 import { Colors } from '../../config/colors'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { Paths } from '../'
@@ -21,6 +22,7 @@ const itemStyles = {
  * Redirects to import if no wallets are loaded, or to wallet home
  */
 export const Home = () => {
+  const navigate = useNavigate()
   const {
     state: { status, wallets },
     actions,
@@ -50,12 +52,16 @@ export const Home = () => {
             <div
               style={itemStyles}
               onClick={() => {
-                dispatch(actions.getKeysAction(w.name))
+                dispatch(actions.activateWalletAction(w.name))
+                navigate(`/wallet/${encodeURIComponent(w.name)}`)
               }}
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
               key={w.name}
             >
-              {w.name}
+              <div>{w.name}</div>
+              <div style={{ color: Colors.GRAY_1 }}>
+                <Lock style={{ width: 20, margin: '0 20px' }}/>
+              </div>
             </div>
           ))}
         </div>

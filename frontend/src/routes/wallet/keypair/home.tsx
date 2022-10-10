@@ -3,6 +3,7 @@ import { Title } from '../../../components/title'
 import { KeyValueTable } from '../../../components/key-value-table'
 import { CopyWithTooltip } from '../../../components/copy-with-tooltip'
 import { TransactionHistory } from '../../../components/transaction-history'
+import { Copy } from '../../../components/icons/copy'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 
 export function KeyPairHome() {
@@ -22,7 +23,10 @@ export function KeyPairHome() {
             key: 'Public key',
             value: (
               <CopyWithTooltip text={keypair.publicKey ?? ''}>
-                <BreakText>{keypair.publicKey}</BreakText>
+                <>
+                  <BreakText>{keypair.publicKey}</BreakText>
+                  <Copy style={{ width: 11, marginLeft: 6 }} />
+                </>
               </CopyWithTooltip>
             ),
             dataTestId: 'public-key'
