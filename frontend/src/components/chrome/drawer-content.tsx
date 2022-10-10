@@ -1,10 +1,10 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DRAWER_HEIGHT } from '.'
-import { DrawerEditNetwork } from './drawer-edit-network'
 import { DrawerAddPreset } from './drawer-add-preset'
+import { DrawerEditNetwork } from './drawer-edit-network'
 import { DrawerHead } from './drawer-head'
 import { DrawerManageNetwork } from './drawer-manage-network'
 import { DrawerNetwork } from './drawer-network'
@@ -42,18 +42,25 @@ export function DrawerContent() {
     }
   }, [dispatch, actions])
 
-  const handleToggle = useCallback((isOpen: boolean) => {
-    dispatch(actions.setDrawerAction(isOpen))
-    if (!isOpen) {
-      setView(DEFAULT_VIEW)
-    }
-  }, [dispatch, actions])
+  const handleToggle = useCallback(
+    (isOpen: boolean) => {
+      dispatch(actions.setDrawerAction(isOpen))
+      if (!isOpen) {
+        setView(DEFAULT_VIEW)
+      }
+    },
+    [dispatch, actions]
+  )
 
   switch (view) {
     case 'network': {
       return (
         <>
-          <DrawerHead height={DRAWER_HEIGHT} isOpen={state.drawerOpen} setOpen={handleToggle}>
+          <DrawerHead
+            height={DRAWER_HEIGHT}
+            isOpen={state.drawerOpen}
+            setOpen={handleToggle}
+          >
             <ServiceStatus />
           </DrawerHead>
           <DrawerContentWrapper>
@@ -65,7 +72,11 @@ export function DrawerContent() {
     case 'manage': {
       return (
         <>
-          <DrawerHead height={DRAWER_HEIGHT} isOpen={state.drawerOpen} setOpen={handleToggle}>
+          <DrawerHead
+            height={DRAWER_HEIGHT}
+            isOpen={state.drawerOpen}
+            setOpen={handleToggle}
+          >
             <ButtonUnstyled
               data-testid='back'
               style={{ textDecoration: 'none' }}
@@ -109,7 +120,11 @@ export function DrawerContent() {
     case 'add': {
       return (
         <>
-          <DrawerHead height={DRAWER_HEIGHT} isOpen={state.drawerOpen} setOpen={handleToggle}>
+          <DrawerHead
+            height={DRAWER_HEIGHT}
+            isOpen={state.drawerOpen}
+            setOpen={handleToggle}
+          >
             <ButtonUnstyled
               data-testid='back'
               style={{ textDecoration: 'none' }}

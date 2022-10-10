@@ -4,13 +4,13 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import { fetchNetworkPreset } from '../../lib/networks'
 import { parseTx } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
-import { fetchNetworkPreset } from '../../lib/networks'
 
 export function createActions(
   service: ServiceType,
@@ -29,12 +29,14 @@ export function createActions(
 
           logger.debug('StartApp')
 
-          const [isInit, version, presets, presetsInternal] = await Promise.all([
-            service.IsAppInitialised(),
-            service.GetVersion(),
-            fetchNetworkPreset(DataSources.NETWORKS, logger),
-            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger),
-          ])
+          const [isInit, version, presets, presetsInternal] = await Promise.all(
+            [
+              service.IsAppInitialised(),
+              service.GetVersion(),
+              fetchNetworkPreset(DataSources.NETWORKS, logger),
+              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
+            ]
+          )
 
           dispatch({ type: 'SET_VERSION', version: version.version })
           dispatch({ type: 'SET_PRESETS', presets })
@@ -373,17 +375,17 @@ export function createActions(
           await service.WalletApi.RemoveNetwork({ network })
           dispatch({
             type: 'REMOVE_NETWORK',
-            network,
+            network
           })
           AppToaster.show({
             message: `Successfully removed network "${network}".`,
-            intent: Intent.SUCCESS,
+            intent: Intent.SUCCESS
           })
         } catch (err) {
           logger.error(err)
           AppToaster.show({
             message: `Error removing network "${network}".`,
-            intent: Intent.DANGER,
+            intent: Intent.DANGER
           })
         }
       }

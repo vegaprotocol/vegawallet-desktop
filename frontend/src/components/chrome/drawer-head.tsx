@@ -2,8 +2,8 @@ import React from 'react'
 
 import { Colors } from '../../config/colors'
 import { ButtonUnstyled } from '../button-unstyled'
-import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Header } from '../header'
+import { DropdownArrow } from '../icons/dropdown-arrow'
 
 interface DrawerHeadProps {
   title?: string | null
@@ -14,7 +14,13 @@ interface DrawerHeadProps {
 }
 
 /** The part of the drawer that remains exposed */
-export function DrawerHead({ height, title, isOpen, setOpen, children }: DrawerHeadProps) {
+export function DrawerHead({
+  height,
+  title,
+  isOpen,
+  setOpen,
+  children
+}: DrawerHeadProps) {
   return (
     <div
       style={{

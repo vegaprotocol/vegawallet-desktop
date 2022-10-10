@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { FieldError } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
@@ -75,7 +75,9 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(values => submit({ ...values, network: 'other' }))}>
+    <form
+      onSubmit={handleSubmit(values => submit({ ...values, network: 'other' }))}
+    >
       <FormGroup
         label='URL or path'
         labelFor='fileOrUrl'

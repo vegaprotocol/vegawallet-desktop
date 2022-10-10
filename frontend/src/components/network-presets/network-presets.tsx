@@ -1,13 +1,16 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useGlobal } from '../../contexts/global/global-context'
-import { ButtonUnstyled } from '../button-unstyled'
-import { Button } from '../button'
-import { Header } from '../header'
-import type { NetworkPreset } from '../../lib/networks'
 import { useImportNetwork } from '../../hooks/use-import-network'
+import type { NetworkPreset } from '../../lib/networks'
+import { Button } from '../button'
+import { ButtonUnstyled } from '../button-unstyled'
+import { Header } from '../header'
 
-const hasImportedTestNetworks = (testPresets: NetworkPreset[], networks: string[]) => {
+const hasImportedTestNetworks = (
+  testPresets: NetworkPreset[],
+  networks: string[]
+) => {
   return testPresets.reduce<boolean>((acc, preset) => {
     return acc || !!networks.find(n => n === preset.name)
   }, false)
@@ -17,7 +20,7 @@ const itemStyles = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  margin: '12 0',
+  margin: '12 0'
 }
 
 type NetworkPresetItemProps = {
@@ -26,26 +29,30 @@ type NetworkPresetItemProps = {
   onRemove: () => void
 }
 
-const NetworkPresetItem = ({ preset, onEdit, onRemove }: NetworkPresetItemProps) => {
+const NetworkPresetItem = ({
+  preset,
+  onEdit,
+  onRemove
+}: NetworkPresetItemProps) => {
   const { state } = useGlobal()
   const { submit } = useImportNetwork()
   const isImported = state.networks.find(n => n === preset.name)
 
   return (
-    <div
-      style={itemStyles}
-    >
+    <div style={itemStyles}>
       <div>{preset.name}</div>
       <div style={{ display: 'flex', gap: 12 }}>
         {!isImported && (
           <Button
             data-testid={`import-network-${preset.name}`}
-            onClick={() => submit({
-              name: preset.name,
-              fileOrUrl: preset.configFileUrl,
-              network: preset.configFileUrl,
-              force: false,
-            })}
+            onClick={() =>
+              submit({
+                name: preset.name,
+                fileOrUrl: preset.configFileUrl,
+                network: preset.configFileUrl,
+                force: false
+              })
+            }
           >
             Import
           </Button>
@@ -87,7 +94,9 @@ export function NetworkPresets({
     dispatch,
     state: { networks, presets, presetsInternal }
   } = useGlobal()
-  const [showTestNetworks, setShowTestNetworks] = useState(hasImportedTestNetworks(presetsInternal, networks))
+  const [showTestNetworks, setShowTestNetworks] = useState(
+    hasImportedTestNetworks(presetsInternal, networks)
+  )
 
   const myNetworks = useMemo(() => {
     return networks.reduce<string[]>((acc, network) => {
@@ -138,7 +147,7 @@ export function NetworkPresets({
       )}
       {!showTestNetworks && (
         <ButtonUnstyled
-          data-testid="show-test-networks"
+          data-testid='show-test-networks'
           style={{ margin: '20px 0 0' }}
           onClick={() => setShowTestNetworks(!showTestNetworks)}
         >
@@ -147,10 +156,7 @@ export function NetworkPresets({
       )}
       {myNetworks.length > 0 && <Header>My Networks</Header>}
       {myNetworks.map(network => (
-        <div
-          key={network}
-          style={itemStyles}
-        >
+        <div key={network} style={itemStyles}>
           <div>{network}</div>
           <div style={{ display: 'flex', gap: 12 }}>
             <Button

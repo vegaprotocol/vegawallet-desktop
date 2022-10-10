@@ -2,6 +2,7 @@ import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
+import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type {
@@ -11,7 +12,6 @@ import type {
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
-import type { NetworkPreset } from '../../lib/networks'
 
 export enum AppStatus {
   Pending = 'Pending',

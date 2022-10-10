@@ -1,3 +1,4 @@
+import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
 import type {
@@ -5,13 +6,8 @@ import type {
   config as ConfigModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
-import type {
-  GlobalState,
-  KeyPair,
-  Wallet
-} from './global-context'
+import type { GlobalState, KeyPair, Wallet } from './global-context'
 import { AppStatus } from './global-context'
-import { NetworkPreset } from '../../lib/networks'
 
 function indexBy<T>(key: keyof T) {
   return (obj: Record<string, T>, value: T) => ({
@@ -171,10 +167,10 @@ export type GlobalAction =
       network: string
       networkConfig: WalletModel.DescribeNetworkResult
     }
-    | {
-        type: 'REMOVE_NETWORK'
-        network: string
-      }
+  | {
+      type: 'REMOVE_NETWORK'
+      network: string
+    }
   | {
       type: 'START_SERVICE'
       port: number
@@ -479,7 +475,7 @@ export function globalReducer(
         ...state,
         network: null,
         networks: state.networks.filter(n => n !== action.network),
-        networkConfig: null,
+        networkConfig: null
       }
     }
     case 'START_SERVICE': {
