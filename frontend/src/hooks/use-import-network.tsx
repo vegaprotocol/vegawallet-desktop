@@ -37,7 +37,6 @@ export function useImportNetwork() {
           overwrite: force
         })
 
-        console.log(res)
 
         if (res && res.name) {
           const config = await service.WalletApi.DescribeNetwork({
