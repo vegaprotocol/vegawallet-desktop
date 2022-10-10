@@ -2,6 +2,7 @@ import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
+import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type {
@@ -34,12 +35,6 @@ export interface Wallet {
   auth: boolean
 }
 
-export interface NetworkPreset {
-  name: string
-  configFileUrl: string
-  sha: string
-}
-
 export interface GlobalState {
   status: AppStatus
   version: string
@@ -61,6 +56,7 @@ export interface GlobalState {
   network: string | null
   networks: string[]
   presets: NetworkPreset[]
+  presetsInternal: NetworkPreset[]
   networkConfig: WalletModel.DescribeNetworkResult | null
   serviceRunning: boolean
   serviceUrl: string

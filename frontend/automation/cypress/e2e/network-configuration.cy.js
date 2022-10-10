@@ -61,12 +61,18 @@ describe('network configuration', () => {
 
   it('edit network details displayed', () => {
     cy.getByTestId('manage-networks').click()
-    cy.getByTestId('edit').first().click()
+    cy.getByTestId('edit-network-test').first().click()
     cy.getByTestId('service-host').invoke('val').should('not.be.empty')
     cy.getByTestId('service-port').invoke('val').should('not.be.empty')
     cy.getByTestId('node-list').invoke('val').should('not.be.empty')
     cy.getByTestId('log-level').invoke('val').should('not.be.empty')
     cy.getByTestId('node-retries').invoke('val').should('not.be.empty')
     cy.getByTestId('token-expiry').invoke('val').should('not.be.empty')
+  })
+
+  it('remove network', () => {
+    cy.getByTestId('manage-networks').click()
+    cy.getByTestId('remove-network-test2').click()
+    cy.getByTestId('toast').contains('Successfully removed network')
   })
 })

@@ -1,3 +1,4 @@
+import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
 import type {
@@ -5,12 +6,7 @@ import type {
   config as ConfigModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
-import type {
-  GlobalState,
-  KeyPair,
-  NetworkPreset,
-  Wallet
-} from './global-context'
+import type { GlobalState, KeyPair, Wallet } from './global-context'
 import { AppStatus } from './global-context'
 
 function indexBy<T>(key: keyof T) {
@@ -40,6 +36,7 @@ export const initialGlobalState: GlobalState = {
   network: null,
   networks: [],
   presets: [],
+  presetsInternal: [],
   networkConfig: null,
   serviceRunning: false,
   serviceUrl: ''
@@ -55,6 +52,7 @@ export type GlobalAction =
       networks: string[]
       networkConfig: WalletModel.DescribeNetworkResult | null
       presetNetworks: NetworkPreset[]
+      presetNetworksInternal: NetworkPreset[]
       serviceRunning: boolean
     }
   | {
@@ -146,6 +144,10 @@ export type GlobalAction =
       presets: NetworkPreset[]
     }
   | {
+      type: 'SET_PRESETS_INTERNAL'
+      presets: NetworkPreset[]
+    }
+  | {
       type: 'CHANGE_NETWORK'
       network: string
       config: WalletModel.DescribeNetworkResult
@@ -164,6 +166,10 @@ export type GlobalAction =
       networks: string[]
       network: string
       networkConfig: WalletModel.DescribeNetworkResult
+    }
+  | {
+      type: 'REMOVE_NETWORK'
+      network: string
     }
   | {
       type: 'START_SERVICE'
@@ -201,6 +207,7 @@ export function globalReducer(
         networks: action.networks,
         networkConfig: action.networkConfig,
         presets: action.presetNetworks,
+        presetsInternal: action.presetNetworksInternal,
         status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
         serviceRunning: action.serviceRunning,
         serviceUrl: action.networkConfig
@@ -417,6 +424,12 @@ export function globalReducer(
         presets: action.presets
       }
     }
+    case 'SET_PRESETS_INTERNAL': {
+      return {
+        ...state,
+        presetsInternal: action.presets
+      }
+    }
     case 'CHANGE_NETWORK': {
       return {
         ...state,
@@ -455,6 +468,14 @@ export function globalReducer(
         networks: [...state.networks, ...newNetworks],
         network: action.network,
         networkConfig: action.networkConfig
+      }
+    }
+    case 'REMOVE_NETWORK': {
+      return {
+        ...state,
+        network: null,
+        networks: state.networks.filter(n => n !== action.network),
+        networkConfig: null
       }
     }
     case 'START_SERVICE': {
