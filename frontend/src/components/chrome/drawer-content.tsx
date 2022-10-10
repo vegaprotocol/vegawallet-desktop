@@ -21,7 +21,9 @@ type DrawerContentProps = {
 /**
  * Renders different drawer content based on 'view' state
  */
-export function DrawerContent({ defaultView = DEFAULT_VIEW }: DrawerContentProps) {
+export function DrawerContent({
+  defaultView = DEFAULT_VIEW
+}: DrawerContentProps) {
   const { state, actions, dispatch } = useGlobal()
 
   // The current view of the drawer

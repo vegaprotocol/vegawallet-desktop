@@ -9,8 +9,8 @@ import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
 import { Header } from '../../components/header'
 import { Vega } from '../../components/icons'
-import { NetworkPresets } from '../../components/network-presets'
 import { NetworkImportForm } from '../../components/network-import-form'
+import { NetworkPresets } from '../../components/network-presets'
 import { Splash } from '../../components/splash'
 import { AppToaster } from '../../components/toaster'
 import { WalletCreateForm } from '../../components/wallet-create-form'
@@ -83,7 +83,7 @@ export function OnboardHome() {
           ? config.defaultNetwork
           : onboarding.networks[0]
         const defaultNetworkConfig = await service.WalletApi.DescribeNetwork({
-          network: defaultNetwork,
+          network: defaultNetwork
         })
         dispatch({
           type: 'ADD_NETWORKS',
@@ -307,9 +307,10 @@ export function OnboardNetwork() {
   // The current view of the drawer
   const [view, setView] = React.useState<'add' | 'edit' | 'manage'>('manage')
   // The network you are currently editing when in the edit view
-  const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(state.network)
+  const [selectedNetwork, setSelectedNetwork] = React.useState<string | null>(
+    state.network
+  )
   const navigate = useNavigate()
-
 
   const onComplete = React.useCallback(() => {
     if (selectedNetwork) {
@@ -326,27 +327,26 @@ export function OnboardNetwork() {
             setEditView={() => setView('edit')}
             setSelectedNetwork={setSelectedNetwork}
           />
-          <div style={{
-            display: 'flex',
-            gap: 20,
-            marginTop: '24px',
-            paddingTop: '24px',
-            borderTop: `1px solid ${Colors.DARK_GRAY_1}`,
-          }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: 20,
+              marginTop: '24px',
+              paddingTop: '24px',
+              borderTop: `1px solid ${Colors.DARK_GRAY_1}`
+            }}
+          >
             <Button data-testid='add-network' onClick={() => setView('add')}>
               Add network
             </Button>
-            <Button
-              disabled={!state.network}
-              onClick={onComplete}
-            >
+            <Button disabled={!state.network} onClick={onComplete}>
               Continue
             </Button>
           </div>
         </>
       )}
       {view === 'add' && (
-        <NetworkImportForm onComplete={() => setView('manage')}/>
+        <NetworkImportForm onComplete={() => setView('manage')} />
       )}
     </OnboardPanel>
   )
