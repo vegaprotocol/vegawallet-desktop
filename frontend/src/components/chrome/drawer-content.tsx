@@ -82,6 +82,7 @@ export function DrawerContent({
             height={DRAWER_HEIGHT}
             isOpen={state.drawerOpen}
             setOpen={handleToggle}
+            title='Manage networks'
           >
             <ButtonUnstyled
               data-testid='back'
@@ -130,6 +131,7 @@ export function DrawerContent({
             height={DRAWER_HEIGHT}
             isOpen={state.drawerOpen}
             setOpen={handleToggle}
+            title='Add network'
           >
             <ButtonUnstyled
               data-testid='back'
