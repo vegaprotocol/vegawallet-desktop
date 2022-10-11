@@ -43,7 +43,9 @@ const InteractionItem = (props: InteractionContentProps) => {
     }
     case INTERACTION_TYPE.ERROR_OCCURRED: {
       return (
-        <ErrorComponent {...(props as InteractionContentProps<ErrorOccurred>)} />
+        <ErrorComponent
+          {...(props as InteractionContentProps<ErrorOccurred>)}
+        />
       )
     }
     case INTERACTION_TYPE.LOG: {

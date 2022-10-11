@@ -66,8 +66,7 @@ export interface TransactionStatusContent {
   sentAt: string
 }
 
-export interface RequestSucceededContent {
-}
+export interface RequestSucceededContent {}
 
 // Received interaction events
 
@@ -78,7 +77,7 @@ export const enum INTERACTION_TYPE {
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
-  LOG = 'LOG',
+  LOG = 'LOG'
 }
 
 export type RequestWalletConnection = {
@@ -143,7 +142,7 @@ export const enum INTERACTION_RESPONSE_TYPE {
   DECISION = 'DECISION',
   ENTERED_PASSPHRASE = 'ENTERED_PASSPHRASE',
   WALLET_CONNECTION_DECISION = 'WALLET_CONNECTION_DECISION',
-  SELECTED_WALLET = 'SELECTED_WALLET',
+  SELECTED_WALLET = 'SELECTED_WALLET'
 }
 
 // response data types
@@ -154,7 +153,7 @@ export interface EnteredPassphrase {
 
 export const enum CONNECTION_RESPONSE {
   APPROVED_ONCE = 'APPROVED_ONLY_THIS_TIME',
-  REJECTED_ONCE = 'REJECTED_ONLY_THIS_TIME',
+  REJECTED_ONCE = 'REJECTED_ONLY_THIS_TIME'
 }
 export interface WalletConnectionDecision {
   connectionApproval: CONNECTION_RESPONSE

@@ -5,12 +5,12 @@ import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletSelection } from '../types'
-import { INTERACTION_RESPONSE_TYPE, CONNECTION_RESPONSE } from "../types";
+import { CONNECTION_RESPONSE, INTERACTION_RESPONSE_TYPE } from '../types'
 
 export const WalletSelection = ({
   interaction,
   isResolved,
-  setResolved,
+  setResolved
 }: InteractionContentProps<RequestWalletSelection>) => {
   const { service } = useGlobal()
 
@@ -48,7 +48,7 @@ export const WalletSelection = ({
           traceID: interaction.event.traceID,
           name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
           data: {
-            connectionApproval: CONNECTION_RESPONSE.REJECTED_ONCE,
+            connectionApproval: CONNECTION_RESPONSE.REJECTED_ONCE
           }
         })
       } catch (err) {
@@ -108,7 +108,10 @@ export const WalletSelection = ({
           marginTop: 28
         }}
       >
-        <Button data-testid='wallet-selection-cancel' onClick={() => handleReject()}>
+        <Button
+          data-testid='wallet-selection-cancel'
+          onClick={() => handleReject()}
+        >
           Cancel
         </Button>
       </div>
