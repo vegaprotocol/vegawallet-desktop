@@ -50,11 +50,7 @@ export function WalletCreateFormSuccess({
             {response?.wallet?.recoveryPhrase}
           </CodeBlock>
           <span style={{ position: 'absolute', top: 7, right: 10 }}>
-            <CopyWithTooltip text={response?.wallet?.recoveryPhrase ?? ''}>
-              <ButtonUnstyled>
-                <Copy style={{ width: 13, height: 13 }} />
-              </ButtonUnstyled>
-            </CopyWithTooltip>
+            <CopyWithTooltip text={response?.wallet?.recoveryPhrase ?? ''} />
           </span>
         </p>
       </SuccessSection>

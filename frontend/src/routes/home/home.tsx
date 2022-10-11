@@ -7,6 +7,7 @@ import { TelemetryDialog } from '../../components/telemetry-dialog'
 import { Lock } from '../../components/icons/lock'
 import { Colors } from '../../config/colors'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
+import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { Paths } from '../'
 
 const itemStyles = {
@@ -22,10 +23,9 @@ const itemStyles = {
  * Redirects to import if no wallets are loaded, or to wallet home
  */
 export const Home = () => {
-  const navigate = useNavigate()
+  const { open } = useOpenWallet()
   const {
     state: { status, wallets },
-    actions,
     dispatch
   } = useGlobal()
 
@@ -51,10 +51,7 @@ export const Home = () => {
           {wallets.map(w => (
             <div
               style={itemStyles}
-              onClick={() => {
-                dispatch(actions.activateWalletAction(w.name))
-                navigate(`/wallet/${encodeURIComponent(w.name)}`)
-              }}
+              onClick={() => open(w.name)}
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
               key={w.name}
             >

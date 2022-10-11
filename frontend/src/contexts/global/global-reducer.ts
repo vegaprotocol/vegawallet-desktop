@@ -23,8 +23,12 @@ export const initialGlobalState: GlobalState = {
   wallets: [],
   transactionQueue: [],
   transactionHistory: [],
-  passphraseModalOpen: false,
   drawerOpen: false,
+  passphraseModalOpen: false,
+  deleteWalletModalOpen: false,
+  signMessageModalOpen: false,
+  taintKeyModalOpen: false,
+  updateKeyModalOpen: false,
   settingsModalOpen: false,
   config: null,
   // network
@@ -117,15 +121,31 @@ export type GlobalAction =
       wallet: string
     }
   | {
-      type: 'SET_PASSPHRASE_MODAL'
-      open: boolean
-    }
-  | {
       type: 'SET_DRAWER'
       open: boolean
     }
   | {
+      type: 'SET_PASSPHRASE_MODAL'
+      open: boolean
+    }
+  | {
       type: 'SET_SETTINGS_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_DELETE_WALLET_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_TAINT_KEY_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_SIGN_MESSAGE_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_UPDATE_KEY_MODAL'
       open: boolean
     }
   // Network
@@ -380,22 +400,46 @@ export function globalReducer(
         wallet
       }
     }
-    case 'SET_PASSPHRASE_MODAL': {
-      return {
-        ...state,
-        passphraseModalOpen: action.open
-      }
-    }
     case 'SET_DRAWER': {
       return {
         ...state,
         drawerOpen: action.open
       }
     }
+    case 'SET_PASSPHRASE_MODAL': {
+      return {
+        ...state,
+        passphraseModalOpen: action.open
+      }
+    }
     case 'SET_SETTINGS_MODAL': {
       return {
         ...state,
         settingsModalOpen: action.open
+      }
+    }
+    case 'SET_TAINT_KEY_MODAL': {
+      return {
+        ...state,
+        taintKeyModalOpen: action.open,
+      }
+    }
+    case 'SET_SIGN_MESSAGE_MODAL': {
+      return {
+        ...state,
+        signMessageModalOpen: action.open,
+      }
+    }
+    case 'SET_UPDATE_KEY_MODAL': {
+      return {
+        ...state,
+        updateKeyModalOpen: action.open,
+      }  
+    }
+    case 'SET_DELETE_WALLET_MODAL': {
+      return {
+        ...state,
+        deleteWalletModalOpen: action.open
       }
     }
     // network

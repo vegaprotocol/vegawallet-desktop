@@ -58,8 +58,12 @@ export interface GlobalState {
   serviceUrl: string
 
   // UI
-  passphraseModalOpen: boolean
   drawerOpen: boolean
+  passphraseModalOpen: boolean
+  deleteWalletModalOpen: boolean
+  signMessageModalOpen: boolean
+  taintKeyModalOpen: boolean
+  updateKeyModalOpen: boolean
   settingsModalOpen: boolean
 }
 
