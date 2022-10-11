@@ -1,3 +1,24 @@
+export namespace interactor {
+	
+	export class Interaction {
+	    traceID: string;
+	    name: string;
+	    data: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new Interaction(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.traceID = source["traceID"];
+	        this.name = source["name"];
+	        this.data = source["data"];
+	    }
+	}
+
+}
+
 export namespace jsonrpc {
 	
 	export class Request {
@@ -75,32 +96,18 @@ export namespace jsonrpc {
 
 export namespace backend {
 	
-	export class Interaction {
-	    traceId: string;
-	    type: string;
-	    content: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new Interaction(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.traceId = source["traceId"];
-	        this.type = source["type"];
-	        this.content = source["content"];
-	    }
-	}
-	export class ClearSentTransactionRequest {
+	export class ConsentToTransactionRequest {
 	    txId: string;
+	    decision: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
+	        return new ConsentToTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
+	        this.decision = source["decision"];
 	    }
 	}
 	export class GetConsentRequestRequest {
@@ -114,41 +121,6 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
 	    }
-	}
-	export class ConsentRequest {
-	    txId: string;
-	    tx: string;
-	    // Go type: time.Time
-	    receivedAt: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new ConsentRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	        this.tx = source["tx"];
-	        this.receivedAt = this.convertValues(source["receivedAt"], null);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 	export class GetServiceStateResponse {
 	    url: string;
@@ -177,36 +149,6 @@ export namespace backend {
 	        this.version = source["version"];
 	        this.gitHash = source["gitHash"];
 	    }
-	}
-	export class ListConsentRequestsResponse {
-	    requests: ConsentRequest[];
-	
-	    static createFrom(source: any = {}) {
-	        return new ListConsentRequestsResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.requests = this.convertValues(source["requests"], ConsentRequest);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 	export class SentTransaction {
 	    txId: string;
@@ -291,19 +233,52 @@ export namespace backend {
 	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	export class ConsentToTransactionRequest {
+	export class ClearSentTransactionRequest {
 	    txId: string;
-	    decision: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new ConsentToTransactionRequest(source);
+	        return new ClearSentTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
-	        this.decision = source["decision"];
 	    }
+	}
+	export class ConsentRequest {
+	    txId: string;
+	    tx: string;
+	    // Go type: time.Time
+	    receivedAt: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new ConsentRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	        this.tx = source["tx"];
+	        this.receivedAt = this.convertValues(source["receivedAt"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class InitialiseAppRequest {
 	    vegaHome: string;
@@ -316,6 +291,36 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.vegaHome = source["vegaHome"];
 	    }
+	}
+	export class ListConsentRequestsResponse {
+	    requests: ConsentRequest[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ListConsentRequestsResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.requests = this.convertValues(source["requests"], ConsentRequest);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
