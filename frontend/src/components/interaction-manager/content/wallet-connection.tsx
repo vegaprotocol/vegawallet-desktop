@@ -43,12 +43,13 @@ export const WalletConnection = ({
           intent: Intent.DANGER
         })
       }
+
+      setResolved()
     }
 
     if (!isResolved) {
       // automatically accept incoming connections
       handleResponse(true)
-      setResolved()
     }
   }, [interaction, service, isResolved, setResolved])
 

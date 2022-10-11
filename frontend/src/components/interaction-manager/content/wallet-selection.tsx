@@ -13,7 +13,6 @@ export const WalletSelection = ({
   setResolved
 }: InteractionContentProps<RequestWalletSelection>) => {
   const { service } = useGlobal()
-
   const handleApprove = async (wallet: string) => {
     if (!isResolved) {
       const passphrase = await requestPassphrase()
