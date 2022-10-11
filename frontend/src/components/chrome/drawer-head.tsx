@@ -2,8 +2,8 @@ import React from 'react'
 
 import { Colors } from '../../config/colors'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Title } from '../title'
 import { DropdownArrow } from '../icons/dropdown-arrow'
+import { Title } from '../title'
 
 interface DrawerHeadProps {
   title?: string | null

@@ -1,4 +1,4 @@
-import { useNavigate, Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useNavigate } from 'react-router-dom'
 
 import { ButtonUnstyled } from '../../../components/button-unstyled'
 import { Header } from '../../../components/header'
@@ -9,7 +9,7 @@ import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { Paths } from '../../'
 
 export function WalletKeyPair() {
-  const navigate =  useNavigate()
+  const navigate = useNavigate()
   const { keypair, wallet } = useCurrentKeypair()
 
   if (!keypair) {
@@ -19,7 +19,7 @@ export function WalletKeyPair() {
   return (
     <>
       <Header
-        left={(
+        left={
           <ButtonUnstyled
             style={{ marginRight: 10, marginTop: 4, textDecoration: 'none' }}
             onClick={() => {
@@ -28,7 +28,7 @@ export function WalletKeyPair() {
           >
             {'< Wallet'}
           </ButtonUnstyled>
-        )}
+        }
         center={
           keypair && (
             <>

@@ -2,13 +2,13 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 
 import { Home } from './home'
 import { Onboard } from './onboard'
-import { WalletCreate } from './wallet-create'
-import { WalletImport } from './wallet-import'
 import { Wallet } from './wallet'
 import { WalletList } from './wallet/home'
 import { WalletKeyPair } from './wallet/keypair'
 import { KeyPairHome } from './wallet/keypair/home'
 import { Transactions } from './wallet/keypair/transactions'
+import { WalletCreate } from './wallet-create'
+import { WalletImport } from './wallet-import'
 
 // Root paths start with '/'
 export enum Paths {

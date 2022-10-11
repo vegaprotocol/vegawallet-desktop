@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form'
-import { Dialog } from '../dialog'
+
+import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
+import { Dialog } from '../dialog'
 import { RadioGroup } from '../radio-group'
 import { Title } from '../title'
-import { useGlobal } from '../../contexts/global/global-context'
 
 export const TelemetryDialog = () => {
   const {

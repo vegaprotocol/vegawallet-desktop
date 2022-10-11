@@ -73,7 +73,7 @@ export function AppFrame({ children }: AppFrameProps) {
         backgroundSize: 'cover',
         backgroundColor: Colors.DARK_GRAY_1,
         position: 'relative',
-        overflowY: 'auto',
+        overflowY: 'auto'
       }}
       data-testid='app-frame'
       className={useVegaBg ? 'vega-bg' : undefined}

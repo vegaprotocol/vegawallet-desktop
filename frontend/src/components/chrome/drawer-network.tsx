@@ -4,9 +4,9 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
-import { Title } from '../title'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { NetworkInfo } from '../network-info'
+import { Title } from '../title'
 import type { DrawerViews } from './drawer-content'
 
 interface DrawerNetworkProps {

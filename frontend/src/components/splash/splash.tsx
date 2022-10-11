@@ -10,7 +10,7 @@ interface SplashProps extends HTMLAttributes<HTMLDivElement> {
 /**
  * Component to display content centered in the middle of the screen
  */
-export function Splash({ children, style, ...props }: SplashProps) {  
+export function Splash({ children, style, ...props }: SplashProps) {
   return (
     <div
       {...props}

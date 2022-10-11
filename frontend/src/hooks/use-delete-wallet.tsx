@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
-
 import { FormStatus, useFormState } from '../hooks/use-form-state'
 import { createLogger } from '../lib/logging'
 import { Paths } from '../routes'

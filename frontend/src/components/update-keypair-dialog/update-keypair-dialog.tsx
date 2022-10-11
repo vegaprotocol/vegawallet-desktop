@@ -3,18 +3,19 @@ import type { DropResult } from 'react-beautiful-dnd'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useFieldArray, useForm } from 'react-hook-form'
 
-import { Dialog } from '../dialog'
-import { Button } from '../button'
-import { ButtonUnstyled } from '../button-unstyled'
-import { FormGroup } from '../form-group'
-import { Input } from '../forms/input'
-import { Title } from '../title'
 import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
-import { useKeypairUpdate, Meta } from '../../hooks/use-keypair-update'
+import type { Meta } from '../../hooks/use-keypair-update'
+import { useKeypairUpdate } from '../../hooks/use-keypair-update'
 import { Validation } from '../../lib/form-validation'
+import { Button } from '../button'
+import { ButtonUnstyled } from '../button-unstyled'
+import { Dialog } from '../dialog'
+import { FormGroup } from '../form-group'
+import { Input } from '../forms/input'
+import { Title } from '../title'
 
 const notName = (value: string) =>
   value === 'name' ? 'Name is already in use' : true
@@ -247,7 +248,9 @@ export const UpdateKeypairDialog = () => {
               Update
             </Button>
             <ButtonUnstyled
-              onClick={() => dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: false })}
+              onClick={() =>
+                dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: false })
+              }
             >
               Cancel
             </ButtonUnstyled>

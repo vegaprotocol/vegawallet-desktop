@@ -1,17 +1,18 @@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { Dialog } from '../dialog'
-import { Button } from '../button'
-import { ButtonGroup } from '../button-group'
-import { FormGroup } from '../form-group'
-import { Textarea } from '../forms/textarea'
-import { CopyWithTooltip } from '../copy-with-tooltip'
-import { ButtonUnstyled } from '../button-unstyled'
+
 import { Colors } from '../../config/colors'
-import { Title } from '../title'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useSign } from '../../hooks/use-sign'
+import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
+import { CopyWithTooltip } from '../copy-with-tooltip'
+import { Dialog } from '../dialog'
+import { FormGroup } from '../form-group'
+import { Textarea } from '../forms/textarea'
+import { Title } from '../title'
 
 interface FormFields {
   message: string

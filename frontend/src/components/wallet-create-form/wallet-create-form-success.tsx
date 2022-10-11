@@ -2,11 +2,9 @@ import type { ReactNode } from 'react'
 
 import { Colors } from '../../config/colors'
 import type { WalletModel } from '../../wallet-client'
-import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
-import { Copy } from '../icons/copy'
 import { Warning } from '../icons/warning'
 
 interface WalletCreateFormSuccessProps {

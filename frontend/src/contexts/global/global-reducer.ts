@@ -258,7 +258,7 @@ export function globalReducer(
     case 'START_ONBOARDING': {
       return {
         ...state,
-        status: AppStatus.Onboarding,
+        status: AppStatus.Onboarding
       }
     }
     case 'ADD_WALLET': {
@@ -421,20 +421,20 @@ export function globalReducer(
     case 'SET_TAINT_KEY_MODAL': {
       return {
         ...state,
-        taintKeyModalOpen: action.open,
+        taintKeyModalOpen: action.open
       }
     }
     case 'SET_SIGN_MESSAGE_MODAL': {
       return {
         ...state,
-        signMessageModalOpen: action.open,
+        signMessageModalOpen: action.open
       }
     }
     case 'SET_UPDATE_KEY_MODAL': {
       return {
         ...state,
-        updateKeyModalOpen: action.open,
-      }  
+        updateKeyModalOpen: action.open
+      }
     }
     case 'SET_DELETE_WALLET_MODAL': {
       return {

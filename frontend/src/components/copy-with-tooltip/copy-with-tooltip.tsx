@@ -1,7 +1,7 @@
 import React from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
-import { Copy } from '../icons/copy'
 
+import { Copy } from '../icons/copy'
 import { Tooltip } from '../tooltip'
 
 interface CopyWithtooltipProps {
@@ -31,12 +31,12 @@ export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
       {/* Needs this wrapping div as tooltip component interfers with element used to capture click for copy */}
       <span>
         <Tooltip
-          trigger={(
+          trigger={
             <span style={{ cursor: 'pointer' }}>
               {children}
               <Copy style={{ width: 13, marginLeft: 6 }} />
             </span>
-          )}
+          }
           content='Copied'
           isOpen={copied}
         />

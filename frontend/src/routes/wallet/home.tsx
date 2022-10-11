@@ -1,17 +1,17 @@
-import { useNavigate, Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
+import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Header } from '../../components/header'
 import { Title } from '../../components/title'
-import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
 
 export function WalletList() {
-  const navigate =  useNavigate()
+  const navigate = useNavigate()
   const { actions, dispatch } = useGlobal()
   const { wallet } = useCurrentWallet()
 
@@ -22,7 +22,7 @@ export function WalletList() {
   return (
     <>
       <Header
-        left={(
+        left={
           <ButtonUnstyled
             style={{ marginRight: 10, marginTop: 4, textDecoration: 'none' }}
             onClick={() => {
@@ -32,34 +32,49 @@ export function WalletList() {
           >
             {'< Wallets'}
           </ButtonUnstyled>
-        )}
-        center={(
-          <div style={{
+        }
+        center={
+          <div
+            style={{
               color: Colors.WHITE,
               fontSize: 20
             }}
           >
             {wallet.name}
           </div>
-        )}
+        }
       />
       <div style={{ padding: 20 }}>
         <Title>Keypairs</Title>
-        <div style={{ borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : '' }}>
+        <div
+          style={{
+            borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : ''
+          }}
+        >
           {Object.keys(wallet.keypairs || {}).map(key => {
             if (!wallet.keypairs) {
               return null
             }
-            const { name, publicKey, publicKeyShort } = wallet.keypairs[key] || {}
+            const { name, publicKey, publicKeyShort } =
+              wallet.keypairs[key] || {}
             return (
               <div
                 key={publicKey}
-                style={{ borderTop: `1px solid ${Colors.BLACK}`, padding: '20px 0' }}
+                style={{
+                  borderTop: `1px solid ${Colors.BLACK}`,
+                  padding: '20px 0'
+                }}
               >
                 <div>
-                  <ButtonUnstyled onClick={() => {
-                    navigate(`/wallet/${encodeURIComponent(wallet.name)}/keypair/${publicKey}`)
-                  }}>
+                  <ButtonUnstyled
+                    onClick={() => {
+                      navigate(
+                        `/wallet/${encodeURIComponent(
+                          wallet.name
+                        )}/keypair/${publicKey}`
+                      )
+                    }}
+                  >
                     {name}
                   </ButtonUnstyled>
                 </div>
@@ -82,7 +97,9 @@ export function WalletList() {
             Generate key pair
           </Button>
           <Button
-            onClick={() => dispatch({ type: 'SET_DELETE_WALLET_MODAL', open: true })}
+            onClick={() =>
+              dispatch({ type: 'SET_DELETE_WALLET_MODAL', open: true })
+            }
             data-testid='delete-wallet'
           >
             Delete wallet

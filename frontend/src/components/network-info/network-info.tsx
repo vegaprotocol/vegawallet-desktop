@@ -1,7 +1,7 @@
 import { useGlobal } from '../../contexts/global/global-context'
-import { Title } from '../title'
 import { KeyValueTable } from '../key-value-table'
 import { NodeList } from '../node-list'
+import { Title } from '../title'
 
 export function NetworkInfo() {
   const {

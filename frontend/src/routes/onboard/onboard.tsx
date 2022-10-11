@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
-import { Title } from '../../components/title'
 import { Vega } from '../../components/icons'
+import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { createLogger } from '../../lib/logging'
@@ -92,7 +92,14 @@ export function Onboard() {
   }
 
   return (
-    <div style={{ width: '545px', margin: 'auto', textAlign: 'center', paddingTop: 82 }}>
+    <div
+      style={{
+        width: '545px',
+        margin: 'auto',
+        textAlign: 'center',
+        paddingTop: 82
+      }}
+    >
       <Title style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
         <Vega />
       </Title>

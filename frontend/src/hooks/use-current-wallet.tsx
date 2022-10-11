@@ -10,5 +10,7 @@ export function useCurrentWallet() {
     state: { wallet: currentWallet }
   } = useGlobal()
 
-  return { wallet: currentWallet?.name === walletParam ? currentWallet : undefined }
+  return {
+    wallet: currentWallet?.name === walletParam ? currentWallet : undefined
+  }
 }

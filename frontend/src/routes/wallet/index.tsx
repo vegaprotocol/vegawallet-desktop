@@ -1,7 +1,7 @@
-import { useParams, Navigate, Outlet } from 'react-router-dom'
-import { DeleteWalletDialog } from '../../components/delete-wallet-dialog'
+import { Navigate, Outlet, useParams } from 'react-router-dom'
 
 import { Chrome } from '../../components/chrome'
+import { DeleteWalletDialog } from '../../components/delete-wallet-dialog'
 
 export const Wallet = () => {
   const { wallet } = useParams()

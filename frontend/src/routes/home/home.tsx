@@ -1,10 +1,10 @@
-import { useNavigate, Link, Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
-import { Title } from '../../components/title'
-import { TelemetryDialog } from '../../components/telemetry-dialog'
 import { Lock } from '../../components/icons/lock'
+import { TelemetryDialog } from '../../components/telemetry-dialog'
+import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
@@ -16,7 +16,7 @@ const itemStyles = {
   justifyContent: 'space-between',
   borderTop: `1px solid ${Colors.BLACK}`,
   padding: `18px 0`,
-  cursor: 'pointer',
+  cursor: 'pointer'
 }
 
 /**
@@ -38,16 +38,24 @@ export const Home = () => {
       <Title
         style={{
           margin: '0 0 30px 0',
-          color: Colors.WHITE,
+          color: Colors.WHITE
         }}
       >
         Wallets
       </Title>
-      <div style={{
-        paddingBottom: 194,
-        width: '100%',
-      }}>
-        <div style={{ borderBottom: `${wallets.length > 0 ? '1' : '0'}px solid ${Colors.BLACK}` }}>
+      <div
+        style={{
+          paddingBottom: 194,
+          width: '100%'
+        }}
+      >
+        <div
+          style={{
+            borderBottom: `${wallets.length > 0 ? '1' : '0'}px solid ${
+              Colors.BLACK
+            }`
+          }}
+        >
           {wallets.map(w => (
             <div
               style={itemStyles}
@@ -57,21 +65,23 @@ export const Home = () => {
             >
               <div>{w.name}</div>
               <div style={{ color: Colors.GRAY_1 }}>
-                <Lock style={{ width: 20, margin: '0 20px' }}/>
+                <Lock style={{ width: 20, margin: '0 20px' }} />
               </div>
             </div>
           ))}
         </div>
       </div>
-      <div style={{
-        textAlign: 'center',
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        padding: 20,
-        width: '100%',
-        backgroundColor: Colors.DARK_GRAY_1,
-      }}>
+      <div
+        style={{
+          textAlign: 'center',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          padding: 20,
+          width: '100%',
+          backgroundColor: Colors.DARK_GRAY_1
+        }}
+      >
         <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
           <Link to='/wallet-create'>
             <Button data-testid='create-new-wallet' style={{ width: '100%' }}>
