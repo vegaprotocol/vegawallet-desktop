@@ -5,34 +5,63 @@ import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletSelection } from '../types'
-import {INTERACTION_RESPONSE_TYPE} from "../types";
+import { INTERACTION_RESPONSE_TYPE, CONNECTION_RESPONSE } from "../types";
 
 export const WalletSelection = ({
   interaction,
-  onFinish
+  isResolved,
+  setResolved,
 }: InteractionContentProps<RequestWalletSelection>) => {
   const { service } = useGlobal()
 
-  const handleResponse = async (wallet: string) => {
-    const passphrase = await requestPassphrase()
+  const handleApprove = async (wallet: string) => {
+    if (!isResolved) {
+      const passphrase = await requestPassphrase()
 
-    try {
-      await service.RespondToInteraction({
-        traceID: interaction.event.traceID,
-        name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
-        data: {
-          wallet,
-          passphrase
-        }
-      })
-    } catch (err) {
-      AppToaster.show({
-        message:
-          err instanceof Error
-            ? err.message
-            : `Error selecting wallet "${wallet}"`,
-        intent: Intent.DANGER
-      })
+      try {
+        await service.RespondToInteraction({
+          traceID: interaction.event.traceID,
+          name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
+          data: {
+            wallet,
+            passphrase
+          }
+        })
+      } catch (err) {
+        AppToaster.show({
+          message:
+            err instanceof Error
+              ? err.message
+              : `Error selecting wallet "${wallet}"`,
+          intent: Intent.DANGER
+        })
+      }
+
+      setResolved()
+    }
+  }
+
+  const handleReject = async () => {
+    if (!isResolved) {
+      try {
+        await service.RespondToInteraction({
+          traceID: interaction.event.traceID,
+          name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
+          data: {
+            connectionApproval: CONNECTION_RESPONSE.REJECTED_ONCE,
+          }
+        })
+      } catch (err) {
+        AppToaster.show({
+          message:
+            err instanceof Error
+              ? err.message
+              : `Error rejecting connection for "${interaction.event.data.hostname}"`,
+          intent: Intent.DANGER
+        })
+      }
+
+      setResolved()
     }
   }
 
@@ -65,7 +94,7 @@ export const WalletSelection = ({
           <Button
             key={wallet}
             data-testid='wallet-selection-button'
-            onClick={() => handleResponse(wallet)}
+            onClick={() => handleApprove(wallet)}
           >
             {wallet}
           </Button>
@@ -79,7 +108,7 @@ export const WalletSelection = ({
           marginTop: 28
         }}
       >
-        <Button data-testid='wallet-selection-cancel' onClick={onFinish}>
+        <Button data-testid='wallet-selection-cancel' onClick={() => handleReject()}>
           Cancel
         </Button>
       </div>
