@@ -43,21 +43,21 @@ describe('wallet connection', () => {
     )
   })
 
-  it('handles rejection', () => {
-    // @TODO: for some mysterious reason this is failing
-    // const MOCK_HOSTNAME = 'https://best-blockchain-2.app'
-    // cy.sendConnectionRequest(MOCK_HOSTNAME)
-    //
-    // cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
-    // cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
-    // cy.getByTestId(testIds.REJECT_CONNECTION_BUTTON).click()
-    //
-    // cy.getByTestId('input-passphrase').type(passphrase)
-    // cy.getByTestId('input-submit').click()
-    //
-    // cy.getByTestId('toast').should(
-    //   'have.text',
-    //   `The connection request from "${MOCK_HOSTNAME}" has been rejected.`
-    // )
-  })
+  // it('handles rejection', () => {
+  // @TODO: for some mysterious reason this is failing
+  // const MOCK_HOSTNAME = 'https://best-blockchain-2.app'
+  // cy.sendConnectionRequest(MOCK_HOSTNAME)
+  //
+  // cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
+  // cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
+  // cy.getByTestId(testIds.REJECT_CONNECTION_BUTTON).click()
+  //
+  // cy.getByTestId('input-passphrase').type(passphrase)
+  // cy.getByTestId('input-submit').click()
+  //
+  // cy.getByTestId('toast').should(
+  //   'have.text',
+  //   `The connection request from "${MOCK_HOSTNAME}" has been rejected.`
+  // )
+  // })
 })
