@@ -38,7 +38,10 @@ describe('wallet connection', () => {
     cy.getByTestId('input-passphrase').type(passphrase)
     cy.getByTestId('input-submit').click()
 
-    cy.getByTestId('toast').should('have.text', 'The connection to the wallet has been successfully established.')
+    cy.getByTestId('toast').should(
+      'have.text',
+      'The connection to the wallet has been successfully established.'
+    )
   })
 
   it('handles rejection', () => {
@@ -51,6 +54,9 @@ describe('wallet connection', () => {
     cy.getByTestId('input-passphrase').type(passphrase)
     cy.getByTestId('input-submit').click()
 
-    cy.getByTestId('toast').should('have.text', 'The connection request from "https://best-blockchain.app" has been rejected.')
+    cy.getByTestId('toast').should(
+      'have.text',
+      'The connection request from "https://best-blockchain.app" has been rejected.'
+    )
   })
 })
