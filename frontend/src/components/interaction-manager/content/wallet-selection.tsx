@@ -1,6 +1,7 @@
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { Button } from '../../button'
+import { ButtonUnstyled } from '../../button-unstyled'
 import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
@@ -69,7 +70,7 @@ export const WalletSelection = ({
   }
 
   return (
-    <Dialog open={true}>
+    <Dialog open={true} size='lg'>
       <div
         data-testid='wallet-selection-modal'
         style={{ textAlign: 'center', marginBottom: 20 }}
@@ -111,12 +112,12 @@ export const WalletSelection = ({
           marginTop: 28
         }}
       >
-        <Button
+        <ButtonUnstyled
           data-testid='wallet-connection-reject'
           onClick={() => handleReject()}
         >
           Cancel
-        </Button>
+        </ButtonUnstyled>
       </div>
     </Dialog>
   )
