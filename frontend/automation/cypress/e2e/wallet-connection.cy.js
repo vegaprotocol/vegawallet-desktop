@@ -49,7 +49,7 @@ describe('wallet connection', () => {
 
     cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
     cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
-    cy.getByTestId(testIds.REJECT_SELECTION_BUTTON).click()
+    cy.getByTestId(testIds.REJECT_CONNECTION_BUTTON).click()
 
     cy.getByTestId('input-passphrase').type(passphrase)
     cy.getByTestId('input-submit').click()
