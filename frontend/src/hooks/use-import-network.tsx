@@ -37,8 +37,6 @@ export function useImportNetwork() {
           overwrite: force
         })
 
-        console.log(res)
-
         if (res && res.name) {
           const config = await service.WalletApi.DescribeNetwork({
             network: res.name
@@ -58,7 +56,6 @@ export function useImportNetwork() {
           throw new Error("Error: couldn't import network configuration")
         }
       } catch (err: unknown) {
-        console.log(err)
         const message = "Error: couldn't import network configuration"
         setError(
           message + (err instanceof JSONRPCError ? ` - ${err.message}` : '')
