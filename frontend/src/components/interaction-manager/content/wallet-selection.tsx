@@ -5,7 +5,7 @@ import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletSelection } from '../types'
-import { CONNECTION_RESPONSE, INTERACTION_RESPONSE_TYPE } from '../types'
+import { INTERACTION_RESPONSE_TYPE } from '../types'
 
 export const WalletSelection = ({
   interaction,
@@ -45,10 +45,8 @@ export const WalletSelection = ({
       try {
         await service.RespondToInteraction({
           traceID: interaction.event.traceID,
-          name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
-          data: {
-            connectionApproval: CONNECTION_RESPONSE.REJECTED_ONCE
-          }
+          name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
+          data: {}
         })
       } catch (err) {
         AppToaster.show({

@@ -3,9 +3,9 @@ module code.vegaprotocol.io/vegawallet-desktop
 go 1.19
 
 require (
-	code.vegaprotocol.io/vega v0.57.1-0.20221010182324-0e8000b33b76
+	code.vegaprotocol.io/vega v0.57.1-0.20221011140433-955087f66383
 	github.com/golang/protobuf v1.5.2
-	github.com/wailsapp/wails/v2 v2.0.1-0.20221010125055-2a20049ea771
+	github.com/wailsapp/wails/v2 v2.0.0
 	go.uber.org/zap v1.21.0
 )
 
@@ -46,7 +46,7 @@ require (
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
+	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220726230323-06994584191e // indirect
 	golang.org/x/sys v0.0.0-20220727055044-e65921a090b8 // indirect
 	golang.org/x/text v0.3.7 // indirect

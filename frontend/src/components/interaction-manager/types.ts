@@ -66,7 +66,9 @@ export interface TransactionStatusContent {
   sentAt: string
 }
 
-export interface RequestSucceededContent {}
+export interface RequestSucceededContent {
+  message: string
+}
 
 // Received interaction events
 
@@ -139,6 +141,7 @@ export type Interaction<T extends RawInteraction = RawInteraction> = {
 // Responses
 
 export const enum INTERACTION_RESPONSE_TYPE {
+  CANCEL_REQUEST = 'CANCEL_REQUEST',
   DECISION = 'DECISION',
   ENTERED_PASSPHRASE = 'ENTERED_PASSPHRASE',
   WALLET_CONNECTION_DECISION = 'WALLET_CONNECTION_DECISION',
