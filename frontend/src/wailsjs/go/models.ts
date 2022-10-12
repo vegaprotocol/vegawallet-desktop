@@ -199,18 +199,32 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class SearchForExistingConfigurationResponse {
-	    wallets: string[];
-	    networks: string[];
+	export class Interaction {
+	    traceId: string;
+	    type: string;
+	    content: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new SearchForExistingConfigurationResponse(source);
+	        return new Interaction(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallets = source["wallets"];
-	        this.networks = source["networks"];
+	        this.traceId = source["traceId"];
+	        this.type = source["type"];
+	        this.content = source["content"];
+	    }
+	}
+	export class StartServiceRequest {
+	    network: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new StartServiceRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
 	    }
 	}
 	export class ClearSentTransactionRequest {
@@ -251,20 +265,6 @@ export namespace backend {
 	        this.txId = source["txId"];
 	    }
 	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
-	    }
-	}
 	export class ConsentRequest {
 	    txId: string;
 	    tx: string;
@@ -300,6 +300,46 @@ export namespace backend {
 		    return a;
 		}
 	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	    }
+	}
+	export class InitialiseAppRequest {
+	    vegaHome: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InitialiseAppRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.vegaHome = source["vegaHome"];
+	    }
+	}
 	export class ListConsentRequestsResponse {
 	    requests: ConsentRequest[];
 	
@@ -330,18 +370,6 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
-	}
 	export class CheckVersionResponse {
 	    version: string;
 	    releaseUrl: string;
@@ -356,47 +384,18 @@ export namespace backend {
 	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
+	export class SearchForExistingConfigurationResponse {
+	    wallets: string[];
+	    networks: string[];
 	
 	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
+	        return new SearchForExistingConfigurationResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
-	}
-	export class Interaction {
-	    traceId: string;
-	    type: string;
-	    content: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new Interaction(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.traceId = source["traceId"];
-	        this.type = source["type"];
-	        this.content = source["content"];
+	        this.wallets = source["wallets"];
+	        this.networks = source["networks"];
 	    }
 	}
 

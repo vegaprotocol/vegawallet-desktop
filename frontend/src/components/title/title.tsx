@@ -14,68 +14,19 @@ const titleStyles = {
   margin: '30px 0 20px 0',
   textTransform: 'uppercase',
   letterSpacing: '0.3em',
-  lineHeight: 1.2,
-}
+  lineHeight: 1.2
+} as React.CSSProperties
 
-export const Title = ({
-  children,
-  style,
-  element = 'h4',
-  ...rest
-}: HeaderProps) => {
-  switch (element) {
-    case 'h1': {
-      return (
-        <h1
-          {...rest}
-          style={{
-            ...titleStyles
-            ...style
-          }}
-        >
-          {children}
-        </h1>
-      )
-    }
-    case 'h2': {
-      return (
-        <h2
-          {...rest}
-          style={{
-            ...titleStyles
-            ...style
-          }}
-        >
-          {children}
-        </h2>
-      )
-    }
-    case 'h3': {
-      return (
-        <h3
-          {...rest}
-          style={{
-            ...titleStyles
-            ...style
-          }}
-        >
-          {children}
-        </h3>
-      )
-    }
-    case 'h4': {
-      return (
-        <h4
-          {...rest}
-          style={{
-            ...titleStyles
-            ...style
-          }}
-        >
-          {children}
-        </h4>
-      )
-    }
-  }
-
+export const Title = ({ children, style, ...rest }: HeaderProps) => {
+  return (
+    <h1
+      {...rest}
+      style={{
+        ...titleStyles,
+        ...style
+      }}
+    >
+      {children}
+    </h1>
+  )
 }
