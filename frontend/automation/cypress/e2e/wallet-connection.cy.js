@@ -1,7 +1,5 @@
 const { unlockWallet } = require('../support/helpers')
 
-const MOCK_HOSTNAME = 'https://best-blockchain.app'
-
 const testIds = {
   SELECTION_MODAL: 'wallet-selection-modal',
   REJECT_CONNECTION_BUTTON: 'wallet-connection-reject',
@@ -29,6 +27,7 @@ describe('wallet connection', () => {
   })
 
   it('handles approval', () => {
+    const MOCK_HOSTNAME = 'https://best-blockchain.app'
     cy.sendConnectionRequest(MOCK_HOSTNAME)
 
     cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
@@ -45,6 +44,7 @@ describe('wallet connection', () => {
   })
 
   it('handles rejection', () => {
+    const MOCK_HOSTNAME = 'https://best-blockchain-2.app'
     cy.sendConnectionRequest(MOCK_HOSTNAME)
 
     cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
@@ -56,7 +56,7 @@ describe('wallet connection', () => {
 
     cy.getByTestId('toast').should(
       'have.text',
-      'The connection request from "https://best-blockchain.app" has been rejected.'
+      `The connection request from "${MOCK_HOSTNAME}" has been rejected.`
     )
   })
 })
