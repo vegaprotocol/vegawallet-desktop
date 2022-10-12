@@ -20,10 +20,21 @@ export const useOpenWallet = () => {
           service.WalletApi.DescribeWallet({ wallet, passphrase }),
           service.WalletApi.ListKeys({ wallet, passphrase })
         ])
+
+        const keysWithMeta = await Promise.all(
+          keys.map(key =>
+            service.WalletApi.DescribeKey({
+              wallet,
+              passphrase,
+              publicKey: key.publicKey ?? ''
+            })
+          )
+        )
+
         dispatch({
           type: 'SET_KEYPAIRS',
           wallet,
-          keypairs: keys
+          keypairs: keysWithMeta || []
         })
         dispatch({
           type: 'ACTIVATE_WALLET',

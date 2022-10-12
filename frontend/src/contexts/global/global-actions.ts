@@ -179,55 +179,6 @@ export function createActions(
       }
     },
 
-    getKeysAction(wallet: string) {
-      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-        const state = getState()
-        const selectedWallet = state.wallets.find(w => w.name === wallet)
-
-        if (selectedWallet?.keypairs) {
-          dispatch({ type: 'ACTIVATE_WALLET', wallet })
-          const publicKey = Object.keys(selectedWallet.keypairs)[0]
-          window.location.hash = `/wallet/${wallet}/keypair/${publicKey}`
-          logger.debug('ChangeWallet')
-        } else {
-          try {
-            const passphrase = await requestPassphrase()
-            const keys = await service.WalletApi.ListKeys({
-              wallet,
-              passphrase
-            })
-
-            const keysWithMeta = await Promise.all(
-              (keys.keys || []).map(key =>
-                service.WalletApi.DescribeKey({
-                  wallet,
-                  passphrase,
-                  publicKey: key.publicKey ?? ''
-                })
-              )
-            )
-
-            dispatch({
-              type: 'SET_KEYPAIRS',
-              wallet,
-              keypairs: keysWithMeta || []
-            })
-
-            if (keys.keys?.length) {
-              window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
-            } else {
-              window.location.hash = `/wallet/${wallet}`
-            }
-          } catch (err) {
-            if (err !== 'dismissed') {
-              AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-              logger.error(err)
-            }
-          }
-        }
-      }
-    },
-
     updateKeyPairAction(
       wallet: string,
       keypair: WalletModel.DescribeKeyResult

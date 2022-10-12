@@ -1,12 +1,10 @@
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useTaint } from '../../hooks/use-taint'
-import { BreakText } from '../break-text'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
-import { CopyWithTooltip } from '../copy-with-tooltip'
 import { Dialog } from '../dialog'
+import { PublicKey } from '../public-key'
 import { Title } from '../title'
 
 export const TaintKeyDialog = () => {
@@ -25,7 +23,7 @@ export const TaintKeyDialog = () => {
 
   return (
     <Dialog open={state.taintKeyModalOpen}>
-      <div data-testid='keypair-taint' style={{ padding: 20 }}>
+      <div data-testid='keypair-taint' style={{ padding: '20px 20px 0' }}>
         <Title style={{ marginTop: 0 }}>Taint key</Title>
         {keypair.isTainted && (
           <div style={{ marginBottom: 20 }}>
@@ -48,12 +46,9 @@ export const TaintKeyDialog = () => {
             <p>You can choose to untaint the key at any time.</p>
           </div>
         )}
-        <div>Public key:</div>
-        <div style={{ color: Colors.GRAY_1 }}>
-          <CopyWithTooltip text={keypair.publicKey ?? ''}>
-            <BreakText>{keypair.publicKey}</BreakText>
-          </CopyWithTooltip>
-        </div>
+      </div>
+      <PublicKey keypair={keypair} />
+      <div style={{ padding: '0 20px' }}>
         <div style={{ display: 'flex', marginTop: 32, gap: 12 }}>
           <Button
             data-testid='taint-action'
@@ -64,6 +59,7 @@ export const TaintKeyDialog = () => {
               } else {
                 taint()
               }
+              dispatch({ type: 'SET_TAINT_KEY_MODAL', open: false })
             }}
           >
             {keypair.isTainted ? 'Untaint this key' : 'Taint this key'}

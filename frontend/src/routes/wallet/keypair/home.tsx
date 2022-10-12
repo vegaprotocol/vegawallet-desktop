@@ -1,11 +1,17 @@
-import { BreakText } from '../../../components/break-text'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import { Button } from '../../../components/button'
-import { CopyWithTooltip } from '../../../components/copy-with-tooltip'
+import { ButtonUnstyled } from '../../../components/button-unstyled'
+import { Header } from '../../../components/header'
+import { EyeOff } from '../../../components/icons/eye-off'
+import { PublicKey } from '../../../components/public-key'
 import { Colors } from '../../../config/colors'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 
 export function KeyPairHome() {
+  const navigate = useNavigate()
+  const { wallet, pubkey } = useParams<{ wallet: string; pubkey: string }>()
   const { dispatch } = useGlobal()
   const { keypair } = useCurrentKeypair()
 
@@ -14,53 +20,127 @@ export function KeyPairHome() {
   }
 
   return (
-    <div style={{ padding: 20 }} data-testid='keypair-home'>
-      <div>Public key:</div>
-      <div style={{ color: Colors.GRAY_1 }}>
-        <CopyWithTooltip text={keypair.publicKey ?? ''}>
-          <BreakText>{keypair.publicKey}</BreakText>
-        </CopyWithTooltip>
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          padding: '48px 0',
-          gridTemplateColumns: '50% 50%',
-          gap: 20
-        }}
-      >
-        <Button
-          onClick={() =>
-            dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: true })
-          }
+    <>
+      <Header
+        left={
+          <ButtonUnstyled
+            style={{ marginRight: 10, marginTop: 4, textDecoration: 'none' }}
+            onClick={() => {
+              navigate(`/wallet/${wallet})}`)
+            }}
+          >
+            {'< Wallet'}
+          </ButtonUnstyled>
+        }
+        center={
+          keypair && (
+            <>
+              <div
+                style={{
+                  color: Colors.WHITE,
+                  fontSize: 20
+                }}
+              >
+                {keypair.name}
+              </div>
+              <div style={{ textTransform: 'initial' }}>
+                {keypair.publicKeyShort}
+              </div>
+            </>
+          )
+        }
+      />
+      <PublicKey keypair={keypair} />
+      {keypair.isTainted && (
+        <div
+          style={{
+            display: 'flex',
+            gap: 12,
+            alignItems: 'center',
+            padding: 20,
+            border: `1px solid ${Colors.INTENT_WARNING}`,
+            margin: '12px 20px -12px'
+          }}
         >
-          Sign a message
-        </Button>
-        <div>
-          Verify your identity by providing a verifiable link from this key.
+          <div>
+            <EyeOff style={{ width: 24 }} />
+          </div>
+          <div>
+            This key is marked as unsafe to use.{' '}
+            <ButtonUnstyled
+              onClick={() =>
+                dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
+              }
+            >
+              Untaint
+            </ButtonUnstyled>{' '}
+            it to enable this key to be used to sign transactions.
+          </div>
         </div>
-        <Button
-          onClick={() => dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })}
-        >
-          Taint key
-        </Button>
-        <div>
-          Mark as unsafe to use to ensure this key will not be used to sign
-          transactions.
+      )}
+      <div style={{ padding: '48px 20px' }} data-testid='keypair-home'>
+        <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
+          <div style={{ width: '50%' }}>
+            <Button
+              style={{ width: '100%' }}
+              onClick={() =>
+                dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: true })
+              }
+            >
+              Sign a message
+            </Button>
+          </div>
+          <div style={{ width: '50%' }}>
+            Verify your identity by providing a verifiable link from this key.
+          </div>
         </div>
-        <Button
-          onClick={() => dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })}
-        >
-          View transactions
-        </Button>
-        <div>See transactions you have approved or rejected.</div>
-        <Button
-          onClick={() => dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: true })}
-        >
-          Update
-        </Button>
-        <div>Update / change the key name.</div>
+        {!keypair.isTainted && (
+          <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
+            <div style={{ width: '50%' }}>
+              <Button
+                style={{ width: '100%' }}
+                onClick={() =>
+                  dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
+                }
+              >
+                Taint key
+              </Button>
+            </div>
+            <div style={{ width: '50%' }}>
+              Mark as unsafe to use to ensure this key will not be used to sign
+              transactions.
+            </div>
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
+          <div style={{ width: '50%' }}>
+            <Button
+              style={{ width: '100%' }}
+              onClick={() =>
+                navigate(`/wallet/${wallet}/keypair/${pubkey}/transactions`)
+              }
+            >
+              View transactions
+            </Button>
+          </div>
+          <div style={{ width: '50%' }}>
+            See transactions you have approved or rejected.
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
+          <div style={{ width: '50%' }}>
+            <Button
+              style={{ width: '100%' }}
+              onClick={() =>
+                dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: true })
+              }
+            >
+              Update
+            </Button>
+          </div>
+          <div style={{ width: '50%' }}>Update / change the key name.</div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

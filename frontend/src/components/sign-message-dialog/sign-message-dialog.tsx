@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useSign } from '../../hooks/use-sign'
+import { BreakText } from '../break-text'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -19,8 +19,7 @@ interface FormFields {
 }
 
 export const SignMessageDialog = () => {
-  const { state } = useGlobal()
-  const navigate = useNavigate()
+  const { state, dispatch } = useGlobal()
   const { keypair, wallet } = useCurrentKeypair()
   const {
     register,
@@ -37,33 +36,46 @@ export const SignMessageDialog = () => {
     <Dialog open={state.signMessageModalOpen}>
       <div data-testid='keypair-sign'>
         <div style={{ padding: 20 }}>
-          <Title style={{ margin: 0 }}>Sign</Title>
+          <Title style={{ margin: 0 }}>Sign Message</Title>
         </div>
         <div style={{ padding: 20 }}>
           {signedData ? (
             <>
               <h4>Signed message:</h4>
-              <CopyWithTooltip text={signedData}>
-                <ButtonUnstyled
-                  style={{
-                    textAlign: 'left',
-                    wordBreak: 'break-all',
-                    color: Colors.TEXT_COLOR_DEEMPHASISE
-                  }}
-                >
-                  {signedData}
-                </ButtonUnstyled>
-              </CopyWithTooltip>
-              <Button
-                data-testid='sign-more'
-                style={{ marginTop: 12 }}
-                onClick={() => setSignedData('')}
+              <div
+                style={{
+                  color: Colors.TEXT_COLOR_DEEMPHASISE,
+                  marginBottom: 32
+                }}
               >
-                Sign more
-              </Button>
+                <CopyWithTooltip text={signedData}>
+                  <BreakText>{signedData}</BreakText>
+                </CopyWithTooltip>
+              </div>
+              <ButtonGroup>
+                <Button
+                  data-testid='sign-more'
+                  style={{ marginTop: 12 }}
+                  onClick={() => setSignedData('')}
+                >
+                  <div>Sign another</div>
+                </Button>
+                <ButtonUnstyled
+                  data-testid='sign-close'
+                  onClick={() =>
+                    dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: false })
+                  }
+                >
+                  Close
+                </ButtonUnstyled>
+              </ButtonGroup>
             </>
           ) : (
             <form onSubmit={handleSubmit(sign)}>
+              <p style={{ marginBottom: 32 }}>
+                Type a message and press sign to get a verifiable link to prove
+                your identity from this key.
+              </p>
               <FormGroup
                 label='Message'
                 labelFor='message'
@@ -75,10 +87,17 @@ export const SignMessageDialog = () => {
                 />
               </FormGroup>
               <ButtonGroup>
-                <Button onClick={() => navigate(-1)}>Cancel</Button>
                 <Button data-testid='sign' type='submit'>
                   Sign
                 </Button>
+                <ButtonUnstyled
+                  data-testid='sign-close'
+                  onClick={() =>
+                    dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: false })
+                  }
+                >
+                  Cancel
+                </ButtonUnstyled>
               </ButtonGroup>
             </form>
           )}

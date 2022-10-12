@@ -4,7 +4,7 @@ import { animated, config, useTransition } from 'react-spring'
 
 interface DialogProps {
   open: boolean
-  children: React.ReactElement
+  children: React.ReactNode
   size?: 'sm' | 'lg'
   onChange?: (open: boolean) => void
 }
@@ -43,7 +43,7 @@ export function Dialog({ open, children, onChange, size = 'sm' }: DialogProps) {
                     style={{
                       padding: 20,
                       background: 'black',
-                      width: size === 'lg' ? '80%' : 340,
+                      width: size === 'lg' ? '80%' : 375,
                       position: 'fixed',
                       top: 30,
                       left: size === 'lg' ? '10%' : 'calc(50% - 170px)',

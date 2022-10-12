@@ -5,6 +5,7 @@ import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Header } from '../../components/header'
+import { EyeOff } from '../../components/icons/eye-off'
 import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
@@ -55,7 +56,7 @@ export function WalletList() {
             if (!wallet.keypairs) {
               return null
             }
-            const { name, publicKey, publicKeyShort } =
+            const { name, publicKey, publicKeyShort, isTainted } =
               wallet.keypairs[key] || {}
             return (
               <div
@@ -75,6 +76,7 @@ export function WalletList() {
                       )
                     }}
                   >
+                    {isTainted && <EyeOff style={{ width: 13 }} />}
                     {name}
                   </ButtonUnstyled>
                 </div>
@@ -87,7 +89,7 @@ export function WalletList() {
             )
           })}
         </div>
-        <ButtonGroup orientation='vertical' style={{ padding: 20 }}>
+        <ButtonGroup orientation='vertical' style={{ padding: '20px 0' }}>
           <Button
             data-testid='generate-keypair'
             onClick={() => {

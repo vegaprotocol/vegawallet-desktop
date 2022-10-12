@@ -47,6 +47,7 @@ export const useKeypairUpdate = (
         })
 
         dispatch(actions.updateKeyPairAction(wallet, keypair))
+        dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: false })
 
         AppToaster.show({
           message: `Successfully updated metadata`,

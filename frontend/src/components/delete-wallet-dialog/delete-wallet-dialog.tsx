@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
+import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Dialog } from '../../components/dialog'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
@@ -21,8 +22,7 @@ interface FormFields {
 }
 
 export const DeleteWalletDialog = () => {
-  const { state } = useGlobal()
-  const navigate = useNavigate()
+  const { state, dispatch } = useGlobal()
   const { wallet } = useCurrentKeypair()
   const { submit, status } = useDeleteWallet()
 
@@ -63,8 +63,13 @@ export const DeleteWalletDialog = () => {
         <DeleteForm
           walletName={wallet.name}
           status={status}
-          onSubmit={() => submit(wallet.name)}
-          onCancel={() => navigate(-1)}
+          onSubmit={() => {
+            submit(wallet.name)
+            dispatch({ type: 'SET_DELETE_WALLET_MODAL', open: false })
+          }}
+          onCancel={() => {
+            dispatch({ type: 'SET_DELETE_WALLET_MODAL', open: false })
+          }}
         />
       </div>
     </Dialog>
@@ -119,7 +124,7 @@ const DeleteForm = ({
         <Button type='submit' disabled={isPending} loading={isPending}>
           Delete
         </Button>
-        <Button onClick={onCancel}>Cancel</Button>
+        <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>
       </ButtonGroup>
     </form>
   )

@@ -15,6 +15,7 @@ import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
+import { PublicKey } from '../public-key'
 import { Title } from '../title'
 
 const notName = (value: string) =>
@@ -86,7 +87,10 @@ export const UpdateKeypairDialog = () => {
   return (
     <Dialog open={state.updateKeyModalOpen}>
       <div data-testid='keypair-metadata' style={{ padding: 20 }}>
-        <Title style={{ marginTop: 0 }}>Key metadata</Title>
+        <Title style={{ marginTop: 0 }}>Update key</Title>
+      </div>
+      <PublicKey keypair={keypair} />
+      <div style={{ padding: '0 20px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId='meta'>
@@ -97,25 +101,16 @@ export const UpdateKeypairDialog = () => {
                     ref={provided.innerRef}
                     style={{ marginTop: '1rem' }}
                   >
-                    <div style={rowStyles}>
-                      <span />
-                      <span
-                        data-testid='metadata-key-0'
-                        style={{
-                          ...cellStyles,
-                          padding: '0 0.5rem',
-                          backgroundColor: Colors.DARK_GRAY_2
-                        }}
-                      >
-                        name
-                      </span>
+                    <div>
                       <FormGroup
                         helperText={errors.meta?.[0]?.value?.message}
                         intent={
                           errors.meta?.[0]?.value ? Intent.DANGER : Intent.NONE
                         }
                       >
+                        <label htmlFor='meta-name'>Name</label>
                         <Input
+                          id='meta-name'
                           placeholder='value'
                           data-testid='metadata-value-0'
                           aria-invalid={
