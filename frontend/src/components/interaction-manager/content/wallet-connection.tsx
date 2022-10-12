@@ -16,15 +16,7 @@ export const WalletConnection = ({
   useEffect(() => {
     const handleResponse = async (decision: boolean) => {
       try {
-        console.log('SENDING: ', {
-          traceID: interaction.event.traceID,
-          name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
-          data: {
-            connectionApproval: decision
-              ? CONNECTION_RESPONSE.APPROVED_ONCE
-              : CONNECTION_RESPONSE.REJECTED_ONCE
-          }
-        })
+        // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
           traceID: interaction.event.traceID,
           name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
@@ -43,12 +35,11 @@ export const WalletConnection = ({
           intent: Intent.DANGER
         })
       }
-
-      setResolved()
     }
 
     if (!isResolved) {
       // automatically accept incoming connections
+      setResolved()
       handleResponse(true)
     }
   }, [interaction, service, isResolved, setResolved])

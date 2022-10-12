@@ -18,6 +18,7 @@ export const WalletSelection = ({
       const passphrase = await requestPassphrase()
 
       try {
+        // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
           traceID: interaction.event.traceID,
           name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
@@ -43,10 +44,15 @@ export const WalletSelection = ({
   const handleReject = async () => {
     if (!isResolved) {
       try {
+        // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
           traceID: interaction.event.traceID,
           name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
           data: {}
+        })
+        AppToaster.show({
+          message: `The connection request from "${interaction.event.data.hostname}" has been rejected.`,
+          intent: Intent.SUCCESS
         })
       } catch (err) {
         AppToaster.show({
@@ -106,7 +112,7 @@ export const WalletSelection = ({
         }}
       >
         <Button
-          data-testid='wallet-selection-cancel'
+          data-testid='wallet-connection-reject'
           onClick={() => handleReject()}
         >
           Cancel

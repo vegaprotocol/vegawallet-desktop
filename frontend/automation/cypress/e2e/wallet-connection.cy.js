@@ -30,6 +30,7 @@ describe('wallet connection', () => {
 
   it('handles approval', () => {
     cy.sendConnectionRequest(MOCK_HOSTNAME)
+
     cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
     cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
     cy.getByTestId(testIds.APPROVE_SELECTION_BUTTON).click()
@@ -37,11 +38,19 @@ describe('wallet connection', () => {
     cy.getByTestId('input-passphrase').type(passphrase)
     cy.getByTestId('input-submit').click()
 
-    cy.getByTestId('toast').should('have.text', 'Connection approved')
+    cy.getByTestId('toast').should('have.text', 'The connection to the wallet has been successfully established.')
   })
 
-  // currently all incoming requests are auto-approved for now
-  // it('handles rejection', () => {
-  //
-  // })
+  it('handles rejection', () => {
+    cy.sendConnectionRequest(MOCK_HOSTNAME)
+
+    cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
+    cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
+    cy.getByTestId(testIds.REJECT_SELECTION_BUTTON).click()
+
+    cy.getByTestId('input-passphrase').type(passphrase)
+    cy.getByTestId('input-submit').click()
+
+    cy.getByTestId('toast').should('have.text', 'The connection request from "https://best-blockchain.app" has been rejected.')
+  })
 })

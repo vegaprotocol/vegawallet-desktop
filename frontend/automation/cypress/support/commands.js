@@ -117,7 +117,7 @@ Cypress.Commands.add('sendConnectionRequest', hostname => {
         params: {
           hostname
         },
-        id: '0'
+        id: '0',
       })
     })
   }
