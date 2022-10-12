@@ -30,10 +30,12 @@ export function ButtonGroup({
         if (React.isValidElement(child)) {
           return React.cloneElement(child, {
             style: {
-              ...(inline ? {} : {
-                flexGrow: 1,
-                flexBasis: 0,
-              }),
+              ...(inline
+                ? {}
+                : {
+                    flexGrow: 1,
+                    flexBasis: 0
+                  }),
               ...child.props.style
             }
           })

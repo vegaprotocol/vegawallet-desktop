@@ -18,8 +18,8 @@ export function Transactions() {
   return (
     <>
       <Header
-        title="Transactions"
-        breadcrumb="Key"
+        title='Transactions'
+        breadcrumb='Key'
         onBack={() => {
           navigate(`/wallet/${wallet}/keypair/${pubkey}`)
         }}

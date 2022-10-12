@@ -8,12 +8,12 @@ import { Dialog } from '../../components/dialog'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
 import { Title } from '../../components/title'
-import { Intent } from '../../config/intent'
 import { Colors } from '../../config/colors'
+import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
-import { useRemoveWallet } from '../../hooks/use-remove-wallet'
 import { FormStatus } from '../../hooks/use-form-state'
+import { useRemoveWallet } from '../../hooks/use-remove-wallet'
 import { Validation } from '../../lib/form-validation'
 import { Paths } from '../../routes'
 
@@ -31,7 +31,7 @@ export const RemoveWalletDialog = () => {
   }
 
   return (
-    <Dialog size="lg" open={state.removeWalletModalOpen}>
+    <Dialog size='lg' open={state.removeWalletModalOpen}>
       <div style={{ padding: 20 }}>
         <Title
           style={{
@@ -40,7 +40,7 @@ export const RemoveWalletDialog = () => {
             color: Colors.WHITE,
             letterSpacing: 0,
             fontSize: 28,
-            marginBottom: 32,
+            marginBottom: 32
           }}
         >
           Remove wallet
@@ -49,7 +49,9 @@ export const RemoveWalletDialog = () => {
           Are you sure you want to remove "{wallet.name}"?
         </h2>
         <p style={{ marginBottom: 15 }}>
-          Doing so will remove this wallet from your list of wallets. You will only be able to recover assets or re-add your wallet if you have a back up phrase.
+          Doing so will remove this wallet from your list of wallets. You will
+          only be able to recover assets or re-add your wallet if you have a
+          back up phrase.
         </p>
         <RemoveForm
           walletName={wallet.name}

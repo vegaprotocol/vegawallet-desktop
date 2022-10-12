@@ -77,11 +77,13 @@ export const Home = () => {
           padding: 20,
           width: '100%',
           backgroundColor: Colors.DARK_GRAY_1,
-          ...(wallets.length ? {
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-          } : {}),
+          ...(wallets.length
+            ? {
+                position: 'fixed',
+                bottom: 0,
+                left: 0
+              }
+            : {})
         }}
       >
         <ButtonGroup style={{ marginBottom: 20 }}>

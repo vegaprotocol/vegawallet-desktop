@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../../components/button'
 import { ButtonUnstyled } from '../../../components/button-unstyled'
 import { Header } from '../../../components/header'
-import { Title } from '../../../components/title'
 import { EyeOff } from '../../../components/icons/eye-off'
 import { PublicKey } from '../../../components/public-key'
+import { Title } from '../../../components/title'
 import { Colors } from '../../../config/colors'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
@@ -24,7 +24,7 @@ export function KeyPairHome() {
     <>
       <Header
         title={keypair.name}
-        breadcrumb="Wallet"
+        breadcrumb='Wallet'
         onBack={() => {
           navigate(`/wallet/${encodeURIComponent(wallet ?? '')}`)
         }}
@@ -86,7 +86,9 @@ export function KeyPairHome() {
                 Taint key
               </Button>
             </div>
-            <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+            <p
+              style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}
+            >
               Mark as unsafe to use to ensure this key will not be used to sign
               transactions.
             </p>
@@ -118,7 +120,9 @@ export function KeyPairHome() {
               Update key
             </Button>
           </div>
-          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>Update / change the key name.</p>
+          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+            Update / change the key name.
+          </p>
         </div>
       </div>
     </>

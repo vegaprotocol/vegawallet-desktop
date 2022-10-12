@@ -1,8 +1,8 @@
 import { Colors } from '../../config/colors'
 import type { KeyPair } from '../../contexts/global/global-context'
 import { BreakText } from '../break-text'
-import { Title } from '../title'
 import { CopyWithTooltip } from '../copy-with-tooltip'
+import { Title } from '../title'
 
 type PublicKeyProps = {
   keypair: KeyPair

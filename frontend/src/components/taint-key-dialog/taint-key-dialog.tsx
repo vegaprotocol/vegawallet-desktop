@@ -1,3 +1,4 @@
+import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useTaint } from '../../hooks/use-taint'
@@ -7,7 +8,6 @@ import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { PublicKey } from '../public-key'
 import { Title } from '../title'
-import { Colors } from '../../config/colors'
 
 export const TaintKeyDialog = () => {
   const { state, actions, dispatch } = useGlobal()
@@ -24,7 +24,7 @@ export const TaintKeyDialog = () => {
   }
 
   return (
-    <Dialog size="lg" open={state.taintKeyModalOpen}>
+    <Dialog size='lg' open={state.taintKeyModalOpen}>
       <div data-testid='keypair-taint' style={{ padding: '20px 20px 0' }}>
         <Title
           style={{

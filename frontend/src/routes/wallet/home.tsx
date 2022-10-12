@@ -24,14 +24,16 @@ export function WalletList() {
     <>
       <Header
         title={wallet.name}
-        breadcrumb="Wallets"
+        breadcrumb='Wallets'
         onBack={() => {
           dispatch(actions.deactivateWalletAction(wallet.name))
           navigate('/')
         }}
       />
       <div style={{ padding: 20, paddingTop: 0 }}>
-        <Title element="h2" style={{ marginTop: 0 }}>Keypairs</Title>
+        <Title element='h2' style={{ marginTop: 0 }}>
+          Keypairs
+        </Title>
         <div
           style={{
             borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : ''
@@ -61,7 +63,9 @@ export function WalletList() {
                       )
                     }}
                   >
-                    {isTainted && <EyeOff style={{ width: 13, marginRight: 6 }} />}
+                    {isTainted && (
+                      <EyeOff style={{ width: 13, marginRight: 6 }} />
+                    )}
                     {name}
                   </ButtonUnstyled>
                 </div>

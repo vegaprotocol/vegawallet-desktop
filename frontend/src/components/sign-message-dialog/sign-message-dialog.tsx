@@ -42,7 +42,7 @@ export const SignMessageDialog = () => {
               textTransform: 'none',
               color: Colors.WHITE,
               letterSpacing: 0,
-              fontSize: 28,
+              fontSize: 28
             }}
           >
             {signedData ? 'Signed message' : 'Sign message'}
