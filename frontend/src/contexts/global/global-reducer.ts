@@ -25,7 +25,7 @@ export const initialGlobalState: GlobalState = {
   transactionHistory: [],
   drawerOpen: false,
   passphraseModalOpen: false,
-  deleteWalletModalOpen: false,
+  removeWalletModalOpen: false,
   signMessageModalOpen: false,
   taintKeyModalOpen: false,
   updateKeyModalOpen: false,
@@ -133,7 +133,7 @@ export type GlobalAction =
       open: boolean
     }
   | {
-      type: 'SET_DELETE_WALLET_MODAL'
+      type: 'SET_REMOVE_WALLET_MODAL'
       open: boolean
     }
   | {
@@ -436,10 +436,10 @@ export function globalReducer(
         updateKeyModalOpen: action.open
       }
     }
-    case 'SET_DELETE_WALLET_MODAL': {
+    case 'SET_REMOVE_WALLET_MODAL': {
       return {
         ...state,
-        deleteWalletModalOpen: action.open
+        removeWalletModalOpen: action.open
       }
     }
     // network

@@ -10,7 +10,7 @@ import { Paths } from '../routes'
 
 const logger = createLogger('Delete')
 
-export const useDeleteWallet = () => {
+export const useRemoveWallet = () => {
   const navigate = useNavigate()
   const { dispatch, service } = useGlobal()
   const [status, setStatus] = useFormState()
@@ -20,13 +20,13 @@ export const useDeleteWallet = () => {
         setStatus(FormStatus.Pending)
         logger.debug(`DeleteWallet: ${walletName}`)
         await service.WalletApi.RemoveWallet({ wallet: walletName })
-        AppToaster.show({ message: 'Wallet deleted', intent: Intent.SUCCESS })
+        AppToaster.show({ message: 'Wallet removed', intent: Intent.SUCCESS })
         setStatus(FormStatus.Success)
         dispatch({ type: 'REMOVE_WALLET', wallet: walletName })
         navigate(Paths.Home)
       } catch (err) {
         AppToaster.show({
-          message: 'Failed to delete wallet',
+          message: 'Failed to remove wallet',
           intent: Intent.DANGER
         })
         setStatus(FormStatus.Error)

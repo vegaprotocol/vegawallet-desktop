@@ -36,15 +36,24 @@ export const SignMessageDialog = () => {
     <Dialog open={state.signMessageModalOpen}>
       <div data-testid='keypair-sign'>
         <div style={{ padding: 20 }}>
-          <Title style={{ margin: 0 }}>Sign Message</Title>
+          <Title
+            style={{
+              margin: 0,
+              textTransform: 'none',
+              color: Colors.WHITE,
+              letterSpacing: 0,
+              fontSize: 28,
+            }}
+          >
+            {signedData ? 'Signed message' : 'Sign message'}
+          </Title>
         </div>
         <div style={{ padding: 20 }}>
           {signedData ? (
             <>
-              <h4>Signed message:</h4>
               <div
                 style={{
-                  color: Colors.TEXT_COLOR_DEEMPHASISE,
+                  color: Colors.WHITE,
                   marginBottom: 32
                 }}
               >
@@ -52,10 +61,9 @@ export const SignMessageDialog = () => {
                   <BreakText>{signedData}</BreakText>
                 </CopyWithTooltip>
               </div>
-              <ButtonGroup>
+              <ButtonGroup inline>
                 <Button
                   data-testid='sign-more'
-                  style={{ marginTop: 12 }}
                   onClick={() => setSignedData('')}
                 >
                   <div>Sign another</div>
@@ -86,7 +94,7 @@ export const SignMessageDialog = () => {
                   {...register('message', { required: 'Required' })}
                 />
               </FormGroup>
-              <ButtonGroup>
+              <ButtonGroup inline>
                 <Button data-testid='sign' type='submit'>
                   Sign
                 </Button>

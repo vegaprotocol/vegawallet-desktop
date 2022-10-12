@@ -60,7 +60,7 @@ export interface GlobalState {
   // UI
   drawerOpen: boolean
   passphraseModalOpen: boolean
-  deleteWalletModalOpen: boolean
+  removeWalletModalOpen: boolean
   signMessageModalOpen: boolean
   taintKeyModalOpen: boolean
   updateKeyModalOpen: boolean

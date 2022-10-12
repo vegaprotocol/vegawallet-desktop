@@ -1,6 +1,7 @@
 import { Colors } from '../../config/colors'
 import type { KeyPair } from '../../contexts/global/global-context'
 import { BreakText } from '../break-text'
+import { Title } from '../title'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 
 type PublicKeyProps = {
@@ -9,9 +10,9 @@ type PublicKeyProps = {
 
 export const PublicKey = ({ keypair }: PublicKeyProps) => {
   return (
-    <div style={{ padding: '20px 20px 0' }}>
-      <div>Public key:</div>
-      <div style={{ color: Colors.GRAY_1 }}>
+    <div style={{ padding: '0 20px' }}>
+      <Title style={{ margin: '0 0 6px' }}>Public key</Title>
+      <div style={{ color: Colors.WHITE }}>
         <CopyWithTooltip text={keypair.publicKey ?? ''}>
           <BreakText>{keypair.publicKey}</BreakText>
         </CopyWithTooltip>

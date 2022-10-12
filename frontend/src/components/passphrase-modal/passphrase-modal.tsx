@@ -5,6 +5,7 @@ import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
+import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
@@ -99,13 +100,13 @@ function PassphraseModalForm({
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
-      <div style={{ display: 'flex', gap: 10 }}>
+      <div style={{ display: 'flex', gap: 20 }}>
         <Button data-testid='input-submit' type='submit' loading={loading}>
           Submit
         </Button>
-        <Button data-testid='input-cancel' onClick={onCancel}>
+        <ButtonUnstyled data-testid='input-cancel' onClick={onCancel}>
           Cancel
-        </Button>
+        </ButtonUnstyled>
       </div>
     </form>
   )

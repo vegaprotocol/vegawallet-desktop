@@ -23,30 +23,15 @@ export function WalletList() {
   return (
     <>
       <Header
-        left={
-          <ButtonUnstyled
-            style={{ marginRight: 10, marginTop: 4, textDecoration: 'none' }}
-            onClick={() => {
-              dispatch(actions.deactivateWalletAction(wallet.name))
-              navigate('/')
-            }}
-          >
-            {'< Wallets'}
-          </ButtonUnstyled>
-        }
-        center={
-          <div
-            style={{
-              color: Colors.WHITE,
-              fontSize: 20
-            }}
-          >
-            {wallet.name}
-          </div>
-        }
+        title={wallet.name}
+        breadcrumb="Wallets"
+        onBack={() => {
+          dispatch(actions.deactivateWalletAction(wallet.name))
+          navigate('/')
+        }}
       />
-      <div style={{ padding: 20 }}>
-        <Title>Keypairs</Title>
+      <div style={{ padding: 20, paddingTop: 0 }}>
+        <Title element="h2" style={{ marginTop: 0 }}>Keypairs</Title>
         <div
           style={{
             borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : ''
@@ -76,7 +61,7 @@ export function WalletList() {
                       )
                     }}
                   >
-                    {isTainted && <EyeOff style={{ width: 13 }} />}
+                    {isTainted && <EyeOff style={{ width: 13, marginRight: 6 }} />}
                     {name}
                   </ButtonUnstyled>
                 </div>
@@ -98,14 +83,14 @@ export function WalletList() {
           >
             Generate key pair
           </Button>
-          <Button
+          <ButtonUnstyled
             onClick={() =>
-              dispatch({ type: 'SET_DELETE_WALLET_MODAL', open: true })
+              dispatch({ type: 'SET_REMOVE_WALLET_MODAL', open: true })
             }
             data-testid='delete-wallet'
           >
-            Delete wallet
-          </Button>
+            Remove wallet
+          </ButtonUnstyled>
         </ButtonGroup>
       </div>
     </>

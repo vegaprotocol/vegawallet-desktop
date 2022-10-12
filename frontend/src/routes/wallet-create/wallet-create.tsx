@@ -24,8 +24,7 @@ export const WalletCreate = () => {
             <Button
               data-testid='create-wallet-success-cta'
               onClick={() => {
-                const url = `/wallet/${response.wallet.name}/keypair/${response.key.publicKey}`
-                navigate(url)
+                navigate('/')
               }}
             >
               View wallet

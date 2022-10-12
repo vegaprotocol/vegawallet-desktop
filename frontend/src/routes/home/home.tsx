@@ -45,7 +45,7 @@ export const Home = () => {
       </Title>
       <div
         style={{
-          paddingBottom: 194,
+          paddingBottom: 144,
           width: '100%'
         }}
       >
@@ -74,15 +74,17 @@ export const Home = () => {
       <div
         style={{
           textAlign: 'center',
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
           padding: 20,
           width: '100%',
-          backgroundColor: Colors.DARK_GRAY_1
+          backgroundColor: Colors.DARK_GRAY_1,
+          ...(wallets.length ? {
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+          } : {}),
         }}
       >
-        <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
+        <ButtonGroup style={{ marginBottom: 20 }}>
           <Link to='/wallet-create'>
             <Button data-testid='create-new-wallet' style={{ width: '100%' }}>
               Create wallet

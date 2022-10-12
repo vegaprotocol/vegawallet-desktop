@@ -8,6 +8,7 @@ import { createLogger } from '../../lib/logging'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import { WindowReload } from '../../wailsjs/runtime/runtime'
 import { Button } from '../button'
+import { ButtonUnstyled } from '../button-unstyled'
 import { ButtonGroup } from '../button-group'
 import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
@@ -154,9 +155,9 @@ const SettingsForm = ({
         >
           Update and restart
         </Button>
-        <Button onClick={onCancel} data-testid='cancel-settings'>
+        <ButtonUnstyled onClick={onCancel} data-testid='cancel-settings'>
           Cancel
-        </Button>
+        </ButtonUnstyled>
       </ButtonGroup>
     </form>
   )

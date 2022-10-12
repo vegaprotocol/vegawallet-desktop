@@ -1,21 +1,42 @@
 import type { ReactNode } from 'react'
 
 import { Title } from '../../components/title'
+import { Colors } from '../../config/colors'
+import { ChevronLeft } from '../../components/icons/chevron-left'
 
 interface HeaderProps {
-  left?: ReactNode
-  center?: ReactNode
-  right?: ReactNode
+  breadcrumb?: ReactNode
+  title?: string
+  subtitle?: string
+  onBack?: () => void
 }
 
-export function Header({ left, center, right }: HeaderProps) {
+export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
   return (
-    <Title
-      style={{ display: 'flex', alignItems: 'start', margin: 0, padding: 20 }}
-    >
-      <div style={{ flex: 1, textAlign: 'left' }}>{left}</div>
-      <div style={{ flex: 1, textAlign: 'center' }}>{center}</div>
-      <div style={{ flex: 1, textAlign: 'right' }}>{right}</div>
-    </Title>
+    <div style={{ padding: 20 }}>
+      {breadcrumb && onBack && (
+        <div
+          onClick={onBack}
+          style={{ display : 'flex', gap: 10, alignItems: 'center', cursor: 'pointer' }}
+        >
+          <ChevronLeft style={{ width: 14 }} />
+          <Title style={{ color: Colors.WHITE, margin: 0 }}>{breadcrumb}</Title>
+        </div>
+      )}
+      <div>
+        <Title
+          element="h1"
+          style={{
+            color: Colors.WHITE,
+            fontSize: 32,
+            textTransform: 'none',
+            letterSpacing: 0,
+          }}
+        >
+          {title}
+        </Title>
+        <Title>{subtitle}</Title>
+      </div>
+    </div>
   )
 }

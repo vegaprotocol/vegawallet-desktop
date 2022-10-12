@@ -6,6 +6,7 @@ export const Colors = {
   VEGA_YELLOW: 'var(--vega-yellow)',
   VEGA_ORANGE: 'var(--vega-orange)',
   VEGA_BLUE: 'var(--vega-blue)',
+  VEGA_PINK: 'var(--vega-pink)',
   INTENT_SUCCESS: 'var(--intent-success)',
   INTENT_WARNING: 'var(--intent-warning)',
   INTENT_DANGER: 'var(--intent-danger)',

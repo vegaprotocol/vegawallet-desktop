@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../../components/button'
 import { ButtonUnstyled } from '../../../components/button-unstyled'
 import { Header } from '../../../components/header'
+import { Title } from '../../../components/title'
 import { EyeOff } from '../../../components/icons/eye-off'
 import { PublicKey } from '../../../components/public-key'
 import { Colors } from '../../../config/colors'
@@ -22,33 +23,11 @@ export function KeyPairHome() {
   return (
     <>
       <Header
-        left={
-          <ButtonUnstyled
-            style={{ marginRight: 10, marginTop: 4, textDecoration: 'none' }}
-            onClick={() => {
-              navigate(`/wallet/${wallet})}`)
-            }}
-          >
-            {'< Wallet'}
-          </ButtonUnstyled>
-        }
-        center={
-          keypair && (
-            <>
-              <div
-                style={{
-                  color: Colors.WHITE,
-                  fontSize: 20
-                }}
-              >
-                {keypair.name}
-              </div>
-              <div style={{ textTransform: 'initial' }}>
-                {keypair.publicKeyShort}
-              </div>
-            </>
-          )
-        }
+        title={keypair.name}
+        breadcrumb="Wallet"
+        onBack={() => {
+          navigate(`/wallet/${encodeURIComponent(wallet ?? '')}`)
+        }}
       />
       <PublicKey keypair={keypair} />
       {keypair.isTainted && (
@@ -58,8 +37,8 @@ export function KeyPairHome() {
             gap: 12,
             alignItems: 'center',
             padding: 20,
-            border: `1px solid ${Colors.INTENT_WARNING}`,
-            margin: '12px 20px -12px'
+            border: `1px solid ${Colors.VEGA_PINK}`,
+            margin: '20px 20px 12px'
           }}
         >
           <div>
@@ -78,11 +57,12 @@ export function KeyPairHome() {
           </div>
         </div>
       )}
-      <div style={{ padding: '48px 20px' }} data-testid='keypair-home'>
-        <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
-          <div style={{ width: '50%' }}>
+      <div style={{ padding: '20px 20px 48px' }} data-testid='keypair-home'>
+        <Title style={{ marginTop: 0 }}>Actions</Title>
+        <div style={{ padding: '6px 0' }}>
+          <div>
             <Button
-              style={{ width: '100%' }}
+              style={{ marginBottom: 8 }}
               onClick={() =>
                 dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: true })
               }
@@ -90,15 +70,15 @@ export function KeyPairHome() {
               Sign a message
             </Button>
           </div>
-          <div style={{ width: '50%' }}>
+          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
             Verify your identity by providing a verifiable link from this key.
-          </div>
+          </p>
         </div>
         {!keypair.isTainted && (
-          <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
-            <div style={{ width: '50%' }}>
+          <div style={{ padding: '6px 0' }}>
+            <div>
               <Button
-                style={{ width: '100%' }}
+                style={{ marginBottom: 8 }}
                 onClick={() =>
                   dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
                 }
@@ -106,16 +86,16 @@ export function KeyPairHome() {
                 Taint key
               </Button>
             </div>
-            <div style={{ width: '50%' }}>
+            <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
               Mark as unsafe to use to ensure this key will not be used to sign
               transactions.
-            </div>
+            </p>
           </div>
         )}
-        <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
-          <div style={{ width: '50%' }}>
+        <div style={{ padding: '6px 0' }}>
+          <div>
             <Button
-              style={{ width: '100%' }}
+              style={{ marginBottom: 8 }}
               onClick={() =>
                 navigate(`/wallet/${wallet}/keypair/${pubkey}/transactions`)
               }
@@ -123,22 +103,22 @@ export function KeyPairHome() {
               View transactions
             </Button>
           </div>
-          <div style={{ width: '50%' }}>
+          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
             See transactions you have approved or rejected.
-          </div>
+          </p>
         </div>
-        <div style={{ display: 'flex', gap: 20, padding: '6px 0' }}>
-          <div style={{ width: '50%' }}>
+        <div style={{ padding: '6px 0' }}>
+          <div>
             <Button
-              style={{ width: '100%' }}
+              style={{ marginBottom: 8 }}
               onClick={() =>
                 dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: true })
               }
             >
-              Update
+              Update key
             </Button>
           </div>
-          <div style={{ width: '50%' }}>Update / change the key name.</div>
+          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>Update / change the key name.</p>
         </div>
       </div>
     </>

@@ -4,11 +4,13 @@ import React from 'react'
 interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   orientation?: 'horizontal' | 'vertical'
+  inline?: boolean
 }
 
 export function ButtonGroup({
   children,
   orientation = 'horizontal',
+  inline,
   style,
   ...props
 }: ButtonGroupProps) {
@@ -17,9 +19,10 @@ export function ButtonGroup({
       {...props}
       style={{
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'start',
         flexDirection: orientation === 'horizontal' ? 'row' : 'column',
-        gap: 10,
+        alignItems: orientation === 'horizontal' ? 'center' : undefined,
+        gap: 20,
         ...style
       }}
     >
@@ -27,8 +30,10 @@ export function ButtonGroup({
         if (React.isValidElement(child)) {
           return React.cloneElement(child, {
             style: {
-              flexGrow: 1,
-              flexBasis: 0,
+              ...(inline ? {} : {
+                flexGrow: 1,
+                flexBasis: 0,
+              }),
               ...child.props.style
             }
           })
