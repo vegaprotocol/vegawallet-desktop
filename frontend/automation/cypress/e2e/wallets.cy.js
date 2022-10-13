@@ -47,25 +47,21 @@ describe('wallet', () => {
 
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.backend().then(handler => {
+      cy.setVegaHome(handler)
+      cy.restoreNetwork(handler)
+      cy.restoreWallet(handler)
+    })
   })
 
   beforeEach(() => {
+    cy.waitForHome()
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
     pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('view wallet keypairs', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('passphrase-form').should('not.exist')
     cy.getByTestId('generate-keypair').should('exist')
@@ -74,7 +70,6 @@ describe('wallet', () => {
   })
 
   it('wrong passphrase', () => {
-    cy.visit('/')
     unlockWallet(walletName, 'invalid')
     cy.getByTestId('toast').should(
       'have.text',
@@ -83,7 +78,6 @@ describe('wallet', () => {
   })
 
   it('generate new key pair', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-keypair').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
@@ -92,7 +86,6 @@ describe('wallet', () => {
   })
 
   it('key pair page', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     goToKey(pubkey)
     cy.getByTestId('header-title').should('contain', 'Key 1')
@@ -104,7 +97,6 @@ describe('wallet', () => {
   })
 
   it('wallets can be locked', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-keypair').should('contain', 'Key 1')
     cy.getByTestId('back').click()
@@ -113,7 +105,6 @@ describe('wallet', () => {
   })
 
   it('can navigate to transactions page', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     goToKey(pubkey)
     cy.getByTestId('keypair-transactions').should('be.visible')

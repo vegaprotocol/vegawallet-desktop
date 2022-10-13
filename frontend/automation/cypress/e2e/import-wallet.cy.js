@@ -14,10 +14,12 @@ describe('import wallet', () => {
       })
   })
 
-  it('recover wallet', () => {
-    cy.visit('/')
+  beforeEach(() => {
+    cy.waitForHome()
     cy.getByTestId('import-wallet').click()
+  })
 
+  it('recover wallet', () => {
     const walletName = 'import test'
     const passphrase = '123'
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
@@ -40,8 +42,6 @@ describe('import wallet', () => {
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
     const existingWalletName = Cypress.env('testWalletName')
     const existingWalletPassphrase = Cypress.env('testWalletPassphrase')
-    cy.visit('/')
-    cy.getByTestId('import-wallet').click()
     fillInRecoveryForm(
       existingWalletName,
       existingWalletPassphrase,
@@ -55,22 +55,16 @@ describe('import wallet', () => {
 
   it('recover wallet with different version', () => {
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
-    cy.visit('/')
-    cy.getByTestId('import-wallet').click()
     fillInRecoveryForm('newwallet', '123', recoveryPhrase, 1)
     cy.getByTestId('toast').contains('Wallet imported to')
   })
 
   it('form validation', () => {
-    cy.visit('/')
-    cy.getByTestId('import-wallet').click()
     cy.getByTestId('submit').click()
     cy.getByTestId('helper-text').should('have.length', 4)
   })
 
   it('incorrect recovery phrase', () => {
-    cy.visit('/')
-    cy.getByTestId('import-wallet').click()
     fillInRecoveryForm('newallet', '123', 'incorrect')
     cy.getByTestId('toast').should(
       'have.text',
