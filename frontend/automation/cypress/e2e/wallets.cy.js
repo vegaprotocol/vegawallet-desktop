@@ -46,24 +46,20 @@ describe('wallet', () => {
 
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.backend().then(handler => {
+      cy.setVegaHome(handler)
+      cy.restoreNetwork(handler)
+      cy.restoreWallet(handler)
+    })
   })
 
   beforeEach(() => {
+    cy.waitForHome()
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
   })
 
   it('view wallet keypairs', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('passphrase-form').should('not.exist')
     cy.getByTestId('generate-keypair').should('exist')
@@ -71,7 +67,6 @@ describe('wallet', () => {
   })
 
   it('wrong passphrase', () => {
-    cy.visit('/')
     unlockWallet(walletName, 'invalid')
     cy.contains('Error').should(
       'have.text',
@@ -81,7 +76,6 @@ describe('wallet', () => {
   })
 
   it('generate new key pair', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-item').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
@@ -90,7 +84,6 @@ describe('wallet', () => {
   })
 
   it('key pair page', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('keypair-name').should('contain', 'Key 1')
     cy.getByTestId('public-key')
@@ -101,7 +94,6 @@ describe('wallet', () => {
   })
 
   it('wallets can be locked', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('keypair-name').should('contain', 'Key 1')
     cy.getByTestId('log-out').click()
@@ -110,7 +102,6 @@ describe('wallet', () => {
   })
 
   it('can navigate between child pages', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-actions').click()
     cy.getByTestId('wallet-action-sign').click()
