@@ -55,6 +55,7 @@ export function WalletList() {
               >
                 <div>
                   <ButtonUnstyled
+                    data-testid={`wallet-keypair-${publicKey}`}
                     onClick={() => {
                       navigate(
                         `/wallet/${encodeURIComponent(

@@ -14,7 +14,7 @@ export const PublicKey = ({ keypair }: PublicKeyProps) => {
       <Title style={{ margin: '0 0 6px' }}>Public key</Title>
       <div style={{ color: Colors.WHITE }}>
         <CopyWithTooltip text={keypair.publicKey ?? ''}>
-          <BreakText>{keypair.publicKey}</BreakText>
+          <BreakText data-testid="public-key">{keypair.publicKey}</BreakText>
         </CopyWithTooltip>
       </div>
     </div>
