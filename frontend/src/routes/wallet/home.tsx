@@ -92,7 +92,7 @@ export function WalletList() {
             onClick={() =>
               dispatch({ type: 'SET_REMOVE_WALLET_MODAL', open: true })
             }
-            data-testid='delete-wallet'
+            data-testid='remove-wallet'
           >
             Remove wallet
           </ButtonUnstyled>
