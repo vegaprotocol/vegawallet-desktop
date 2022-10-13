@@ -55,10 +55,4 @@ describe('settings', () => {
     cy.get(radioGroupSelector).find('input[value="yes"]').should('be.checked')
     cy.getByTestId(cancelSettingsBtn).click()
   })
-
-  it('can be accessed from the wallet sidebar', () => {
-    unlockWallet(walletName, passphrase)
-    cy.getByTestId('wallet-app-settings').click()
-    cy.getByTestId(settingsForm).should('be.visible')
-  })
 })

@@ -108,7 +108,7 @@ const SettingsForm = ({
     }
   })
   return (
-    <form onSubmit={handleSubmit(onSubmit)} data-testid='settings-form'>
+    <form onSubmit={handleSubmit(onSubmit)} data-testid='settings-form' style={{ padding: 20 }}>
       <FormGroup
         label='Wallet directory'
         labelFor='vegaHome'
