@@ -32,7 +32,7 @@ export function KeyPairHome() {
       <PublicKey keypair={keypair} />
       {keypair.isTainted && (
         <div
-          data-testid="keypair-taint-notification"
+          data-testid='keypair-taint-notification'
           style={{
             display: 'flex',
             gap: 12,
