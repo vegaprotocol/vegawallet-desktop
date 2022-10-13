@@ -47,6 +47,7 @@ export function WalletList() {
               wallet.keypairs[key] || {}
             return (
               <div
+                data-testid='wallet-keypair'
                 key={publicKey}
                 style={{
                   borderTop: `1px solid ${Colors.BLACK}`,
@@ -70,7 +71,7 @@ export function WalletList() {
                     {name}
                   </ButtonUnstyled>
                 </div>
-                <div style={{ color: Colors.GRAY_1 }}>
+                <div style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
                   <CopyWithTooltip text={publicKey ?? ''}>
                     <span>{publicKeyShort}</span>
                   </CopyWithTooltip>

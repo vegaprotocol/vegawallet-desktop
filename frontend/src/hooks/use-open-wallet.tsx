@@ -44,7 +44,7 @@ export const useOpenWallet = () => {
       } catch (err) {
         AppToaster.show({
           intent: Intent.DANGER,
-          message: err instanceof Error ? err.message : ''
+          message: `${err}`
         })
       }
     },

@@ -16,6 +16,7 @@ export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
     <div style={{ padding: 20 }}>
       {breadcrumb && onBack && (
         <div
+          data-testid='back'
           onClick={onBack}
           style={{
             display: 'flex',

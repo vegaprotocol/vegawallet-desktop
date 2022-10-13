@@ -44,10 +44,7 @@ export const WalletSelection = ({
         })
       } catch (err) {
         AppToaster.show({
-          message:
-            err instanceof Error
-              ? err.message
-              : `Error selecting wallet "${wallet}"`,
+          message: `${err}`,
           intent: Intent.DANGER
         })
       }
@@ -71,10 +68,7 @@ export const WalletSelection = ({
         })
       } catch (err) {
         AppToaster.show({
-          message:
-            err instanceof Error
-              ? err.message
-              : `Error rejecting connection for "${interaction.event.data.hostname}"`,
+          message: `${err}`,
           intent: Intent.DANGER
         })
       }
