@@ -26,7 +26,7 @@ export function ListConsentRequests():Promise<backend.ListConsentRequestsRespons
 
 export function ListSentTransactions():Promise<backend.ListSentTransactionsResponse>;
 
-export function RespondToInteraction(arg1:backend.Interaction):Promise<Error>;
+export function RespondToInteraction(arg1:number):Promise<Error>;
 
 export function SearchForExistingConfiguration():Promise<backend.SearchForExistingConfigurationResponse>;
 
