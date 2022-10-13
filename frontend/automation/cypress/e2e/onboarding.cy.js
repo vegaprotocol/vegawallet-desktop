@@ -29,7 +29,7 @@ describe('onboarding', () => {
     cy.getByTestId('show-test-networks').click()
     cy.getByTestId('import-network-fairground').click()
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    // cy.wait(100)
+    cy.wait(100)
     cy.getByTestId('toast')
       .should('be.visible')
       .first()
