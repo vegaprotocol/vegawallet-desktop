@@ -32,6 +32,7 @@ describe('wallet connection', () => {
 
     cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
     cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
+    cy.get(`label[for=${walletName}]`).click()
     cy.getByTestId(testIds.APPROVE_SELECTION_BUTTON).click()
 
     cy.getByTestId('input-passphrase').type(passphrase)
