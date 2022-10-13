@@ -46,12 +46,11 @@ describe('wallet', () => {
 
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
-      })
+    cy.backend().then(handler => {
+      cy.setVegaHome(handler)
+      cy.restoreNetwork(handler)
+      cy.restoreWallet(handler)
+    })
   })
 
   beforeEach(() => {

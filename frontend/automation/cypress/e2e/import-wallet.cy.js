@@ -13,7 +13,7 @@ describe('import wallet', () => {
   })
 
   beforeEach(() => {
-    cy.waitForHome();
+    cy.waitForHome()
     cy.getByTestId('import-wallet').click()
   })
 
