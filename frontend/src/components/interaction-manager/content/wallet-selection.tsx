@@ -114,7 +114,7 @@ export const WalletSelection = ({
       >
         <ButtonUnstyled
           data-testid='wallet-connection-reject'
-          onClick={() => handleReject()}
+          onClick={handleReject}
         >
           Cancel
         </ButtonUnstyled>
