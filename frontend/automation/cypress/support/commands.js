@@ -183,7 +183,7 @@ Cypress.Commands.add('mockRequests', () => {
 
 Cypress.Commands.add('waitForHome', () => {
   cy.visit('/')
-  cy.getByTestId('home-splash', { timeout: 30000 }).should('exist')
+  cy.getByTestId('wallet-home', { timeout: 30000 }).should('exist')
   cy.get('body').then(body => {
     cy.wait(500)
     if (body.find('[data-testid="telemetry-option-form"]').length > 0) {

@@ -84,6 +84,7 @@ function PassphraseModalForm({
 
   return (
     <form
+      style={{ padding: 20 }}
       onSubmit={handleSubmit(values => onSubmit(values.passphrase))}
       data-testid='passphrase-form'
     >
