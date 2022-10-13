@@ -4,7 +4,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { Dialog } from '../dialog'
 import { RadioGroup } from '../radio-group'
-import { Title } from '../title'
 
 export const TelemetryDialog = () => {
   const {
@@ -28,12 +27,15 @@ export const TelemetryDialog = () => {
   }
 
   return (
-    <Dialog open={config?.telemetry.consentAsked === false}>
+    <Dialog
+      open={config?.telemetry.consentAsked === false}
+      title='Report bugs and crashes'
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         data-testid='telemetry-option-form'
+        style={{ padding: '0 20px 20px' }}
       >
-        <Title style={{ marginTop: 0 }}>Report bugs and crashes</Title>
         <p style={{ marginBottom: '1em' }}>
           Selecting yes will help developers improve the software
         </p>

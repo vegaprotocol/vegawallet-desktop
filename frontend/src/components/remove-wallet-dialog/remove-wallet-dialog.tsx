@@ -7,8 +7,6 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Dialog } from '../../components/dialog'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
-import { Title } from '../../components/title'
-import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
@@ -31,20 +29,8 @@ export const RemoveWalletDialog = () => {
   }
 
   return (
-    <Dialog size='lg' open={state.removeWalletModalOpen}>
-      <div style={{ padding: 20 }}>
-        <Title
-          style={{
-            margin: 0,
-            textTransform: 'none',
-            color: Colors.WHITE,
-            letterSpacing: 0,
-            fontSize: 28,
-            marginBottom: 32
-          }}
-        >
-          Remove wallet
-        </Title>
+    <Dialog size='lg' open={state.removeWalletModalOpen} title='Remove wallet'>
+      <div style={{ padding: '0 20px 20px' }}>
         <h2 style={{ marginBottom: 15 }}>
           Are you sure you want to remove "{wallet.name}"?
         </h2>

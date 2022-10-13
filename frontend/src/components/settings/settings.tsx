@@ -76,14 +76,12 @@ export function Settings() {
       open={settingsModalOpen}
       onChange={open => dispatch({ type: 'SET_SETTINGS_MODAL', open })}
     >
-      <div>
-        <SettingsForm
-          config={config}
-          onSubmit={submit}
-          onCancel={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: false })}
-          isPending={isPending}
-        />
-      </div>
+      <SettingsForm
+        config={config}
+        onSubmit={submit}
+        onCancel={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: false })}
+        isPending={isPending}
+      />
     </Dialog>
   )
 }

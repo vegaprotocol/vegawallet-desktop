@@ -10,7 +10,6 @@ import { ButtonUnstyled } from '../../button-unstyled'
 import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { RadioGroup } from '../../radio-group'
-import { Title } from '../../title'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletSelection } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
@@ -88,24 +87,12 @@ export const WalletSelection = ({
   }
 
   return (
-    <Dialog open={true} size='lg'>
+    <Dialog open={true} size='lg' title='Approve connection'>
       <form
         onSubmit={handleSubmit(handleApprove)}
         data-testid='wallet-selection-modal'
-        style={{ padding: 20 }}
+        style={{ padding: '0 20px 20px' }}
       >
-        <Title
-          style={{
-            margin: 0,
-            textTransform: 'none',
-            color: Colors.WHITE,
-            letterSpacing: 0,
-            fontSize: 28,
-            marginBottom: 28
-          }}
-        >
-          Approve connection
-        </Title>
         <p
           style={{
             marginBottom: 20,

@@ -5,7 +5,7 @@ import { Colors } from '../../config/colors'
 
 interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
   children: React.ReactNode
-  element?: 'h1' | 'h2' | 'h3' | 'h4'
+  element?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
 
 const titleStyles = {

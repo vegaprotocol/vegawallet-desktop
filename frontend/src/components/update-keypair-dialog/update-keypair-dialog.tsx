@@ -17,7 +17,6 @@ import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
 import { PublicKey } from '../public-key'
-import { Title } from '../title'
 
 const notName = (value: string) =>
   value === 'name' ? 'Name is already in use' : true
@@ -49,22 +48,9 @@ export const UpdateKeypairDialog = () => {
   }
 
   return (
-    <Dialog open={state.updateKeyModalOpen}>
-      <div data-testid='keypair-metadata' style={{ padding: 20 }}>
-        <Title
-          style={{
-            margin: 0,
-            textTransform: 'none',
-            color: Colors.WHITE,
-            letterSpacing: 0,
-            fontSize: 28
-          }}
-        >
-          Update key
-        </Title>
-      </div>
+    <Dialog open={state.updateKeyModalOpen} title='Update key'>
       <PublicKey keypair={keypair} />
-      <div style={{ padding: '0 20px' }}>
+      <div style={{ padding: '0 20px 20px' }}>
         <UpdateKeyForm keypair={keypair} wallet={wallet} />
       </div>
     </Dialog>
