@@ -32,6 +32,7 @@ export function KeyPairHome() {
       <PublicKey keypair={keypair} />
       {keypair.isTainted && (
         <div
+          data-testid="keypair-taint-notification"
           style={{
             display: 'flex',
             gap: 12,
@@ -47,6 +48,7 @@ export function KeyPairHome() {
           <div>
             This key is marked as unsafe to use.{' '}
             <ButtonUnstyled
+              data-testid='keypair-taint'
               onClick={() =>
                 dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
               }
