@@ -63,6 +63,7 @@ export function KeyPairHome() {
           <div>
             <Button
               style={{ marginBottom: 8 }}
+              data-testid='keypair-sign'
               onClick={() =>
                 dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: true })
               }
@@ -79,6 +80,7 @@ export function KeyPairHome() {
             <div>
               <Button
                 style={{ marginBottom: 8 }}
+                data-testid='keypair-taint'
                 onClick={() =>
                   dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
                 }
@@ -98,6 +100,7 @@ export function KeyPairHome() {
           <div>
             <Button
               style={{ marginBottom: 8 }}
+              data-testid='keypair-transactions'
               onClick={() =>
                 navigate(`/wallet/${wallet}/keypair/${pubkey}/transactions`)
               }
@@ -113,6 +116,7 @@ export function KeyPairHome() {
           <div>
             <Button
               style={{ marginBottom: 8 }}
+              data-testid='keypair-update'
               onClick={() =>
                 dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: true })
               }

@@ -87,8 +87,6 @@ const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
     name: 'meta'
   })
 
-  console.log('RENDERING', fields, keypair)
-
   const onSubmit = useCallback(
     (result: { meta: Meta[] }) => {
       update(result.meta)
@@ -124,7 +122,9 @@ const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
                       errors.meta?.[0]?.value ? Intent.DANGER : Intent.NONE
                     }
                   >
-                    <label htmlFor='meta-name'>Name</label>
+                    <label data-testid='metadata-key-0' htmlFor='meta-name'>
+                      Name
+                    </label>
                     <Input
                       id='meta-name'
                       placeholder='value'

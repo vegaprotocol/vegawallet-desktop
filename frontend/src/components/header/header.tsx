@@ -31,6 +31,7 @@ export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
       <div>
         <Title
           element='h1'
+          data-testid='header-title'
           style={{
             color: Colors.WHITE,
             fontSize: 32,

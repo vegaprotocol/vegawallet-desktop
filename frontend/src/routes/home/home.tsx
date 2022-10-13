@@ -35,7 +35,7 @@ export const Home = () => {
 
   return (
     <div
-      data-testid="wallet-home"
+      data-testid='wallet-home'
       className='vega-border-image'
       style={{ borderTop: '3px solid', padding: 20 }}
     >

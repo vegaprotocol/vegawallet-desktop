@@ -23,13 +23,10 @@ export const WalletSelection = ({
   const {
     control,
     handleSubmit,
-    formState: { isValid },
-    getValues
+    formState: { isValid }
   } = useForm<{ wallet: string }>({
     mode: 'onChange'
   })
-
-  console.log(isValid, getValues('wallet'))
 
   const handleApprove = async ({ wallet }: { wallet: string }) => {
     if (!isResolved) {
