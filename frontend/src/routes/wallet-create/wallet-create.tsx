@@ -25,7 +25,9 @@ export const WalletCreate = () => {
             <Button
               data-testid='create-wallet-success-cta'
               onClick={() => {
-                const path = response.wallet?.name ? `/wallet/${encodeURIComponent(response.wallet.name)}` : Paths.Home
+                const path = response.wallet?.name
+                  ? `/wallet/${encodeURIComponent(response.wallet.name)}`
+                  : Paths.Home
                 navigate(path)
               }}
             >
