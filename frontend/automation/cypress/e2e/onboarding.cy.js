@@ -23,17 +23,9 @@ describe('onboarding', () => {
     cy.getByTestId('submit').click()
     cy.getByTestId('toast').contains('Wallet created!')
     cy.getByTestId('toast').should('not.exist')
-
-    // Import network
-    cy.getByTestId('onboard-import-network-button').click()
-    cy.getByTestId('show-test-networks').click()
-    cy.getByTestId('import-network-fairground').click()
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(100)
-    cy.getByTestId('toast')
-      .should('be.visible')
-      .first()
-      .contains('Network imported to:')
+    cy.getByTestId('create-wallet-success-cta').click()
+    cy.getByTestId('wallet-home').should('exist')
+    cy.getByTestId(`wallet-${walletName.replace(' ', '-')}`).should('exist')
   })
 
   it('import wallet', () => {
