@@ -24,8 +24,7 @@ describe('onboarding', () => {
     cy.getByTestId('toast').contains('Wallet created!')
     cy.getByTestId('toast').should('not.exist')
     cy.getByTestId('create-wallet-success-cta').click()
-    cy.getByTestId('wallet-home').should('exist')
-    cy.getByTestId(`wallet-${walletName.replace(' ', '-')}`).should('exist')
+    cy.getByTestId('header-title').should('have.text', walletName)
   })
 
   it('import wallet', () => {
