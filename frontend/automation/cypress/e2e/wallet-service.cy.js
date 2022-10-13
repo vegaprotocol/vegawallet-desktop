@@ -23,7 +23,6 @@ describe('wallet service', () => {
   })
 
   it('starts service automatically', () => {
-    cy.visit('/')
     unlockWallet(walletName, passphrase)
     cy.getByTestId('service-status').should(
       'contain.text',

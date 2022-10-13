@@ -19,7 +19,6 @@ describe('network configuration', () => {
   beforeEach(() => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
-    cy.visit('/')
     cy.waitForHome()
     unlockWallet(walletName, passphrase)
     cy.getByTestId('network-drawer').click()
