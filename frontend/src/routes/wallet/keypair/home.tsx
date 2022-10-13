@@ -14,7 +14,7 @@ export function KeyPairHome() {
   const navigate = useNavigate()
   const { wallet, pubkey } = useParams<{ wallet: string; pubkey: string }>()
   const { dispatch } = useGlobal()
-  const { keypair } = useCurrentKeypair()
+  const { wallet: currentWallet, keypair } = useCurrentKeypair()
 
   if (!keypair) {
     return null
@@ -24,7 +24,7 @@ export function KeyPairHome() {
     <>
       <Header
         title={keypair.name}
-        breadcrumb='Wallet'
+        breadcrumb={currentWallet?.name}
         onBack={() => {
           navigate(`/wallet/${encodeURIComponent(wallet ?? '')}`)
         }}

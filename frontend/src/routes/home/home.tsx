@@ -34,7 +34,10 @@ export const Home = () => {
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div
+      className='vega-border-image'
+      style={{ borderTop: '3px solid', padding: 20 }}
+    >
       <Title
         style={{
           margin: '0 0 30px 0',

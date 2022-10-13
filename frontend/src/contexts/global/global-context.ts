@@ -21,12 +21,10 @@ export enum AppStatus {
 }
 
 export interface KeyPair
-  extends Pick<
-    WalletModel.DescribeKeyResult,
-    'publicKey' | 'metadata' | 'isTainted'
-  > {
+  extends Pick<WalletModel.DescribeKeyResult, 'publicKey' | 'isTainted'> {
   name: string
   publicKeyShort: string
+  meta: WalletModel.DescribeKeyResult['metadata']
 }
 
 export interface Wallet {

@@ -35,8 +35,12 @@ export const Button = React.forwardRef(
 
     const style: React.CSSProperties = {
       background: hover ? Colors.WHITE : 'transparent',
-      color: hover ? Colors.BLACK : Colors.WHITE,
-      border: `1px solid ${Colors.WHITE}`,
+      color: props.disabled
+        ? Colors.GRAY_3
+        : hover
+        ? Colors.BLACK
+        : Colors.WHITE,
+      border: `1px solid ${props.disabled ? Colors.GRAY_3 : Colors.WHITE}`,
       borderRadius: 2,
       cursor: 'pointer',
       fontSize: 16,

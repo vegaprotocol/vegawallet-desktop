@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
+import { ChevronLeft } from '../icons/chevron-left'
 import { DRAWER_HEIGHT } from '.'
 import { DrawerAddPreset } from './drawer-add-preset'
 import { DrawerEditNetwork } from './drawer-edit-network'
@@ -89,6 +90,7 @@ export function DrawerContent({
               style={{ textDecoration: 'none' }}
               onClick={() => setView('network')}
             >
+              <ChevronLeft style={{ width: 14, marginRight: 6 }} />
               Back
             </ButtonUnstyled>
           </DrawerHead>
