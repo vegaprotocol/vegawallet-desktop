@@ -13,33 +13,19 @@ import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
-const getDefaultNetwork = async (
-  service: ServiceType,
-  {
-    config,
-    networks,
-    preset
-  }: {
-    config: ConfigModel.Config
-    preset: NetworkPreset
-    networks: WalletModel.ListNetworksResult
-  }
-) => {
-  const existingNetwork = config.defaultNetwork
-    ? networks.networks?.find((n: string) => n === config.defaultNetwork) ||
-      networks.networks?.[0]
-    : networks.networks?.[0]
+const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
+  const networks = await service.WalletApi.ListNetworks()
 
-  if (!existingNetwork && preset) {
-    const { name, configFileUrl } = preset
-    const res = await service.WalletApi.ImportNetwork({
-      name,
-      url: configFileUrl
+  if (preset && (!networks.networks || networks.networks.length === 0)) {
+    await service.WalletApi.ImportNetwork({
+      name: preset.name,
+      url: preset.configFileUrl
     })
-    return res.name
+
+    return service.WalletApi.ListNetworks()
   }
 
-  return existingNetwork
+  return networks
 }
 
 export function createActions(
@@ -88,14 +74,14 @@ export function createActions(
             WalletModel.ListNetworksResult
           ] = await Promise.all([
             service.WalletApi.ListWallets(),
-            service.WalletApi.ListNetworks()
+            getNetworks(service, presets[0])
           ])
 
-          const defaultNetwork = await getDefaultNetwork(service, {
-            config,
-            preset: presets[0],
-            networks: networks
-          })
+          const defaultNetwork = config.defaultNetwork
+            ? config.defaultNetwork
+            : networks.networks
+            ? networks.networks[0]
+            : undefined
 
           const defaultNetworkConfig = defaultNetwork
             ? await service.WalletApi.DescribeNetwork({
