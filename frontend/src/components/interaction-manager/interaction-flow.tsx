@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 
 import { ErrorComponent } from './content/error'
 import { LogComponent } from './content/log'
@@ -22,7 +22,9 @@ import type {
 } from './types'
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
-const InteractionItem = (props: Omit<InteractionContentProps, 'isResolved' | 'setResolved'>) => {
+const InteractionItem = (
+  props: Omit<InteractionContentProps, 'isResolved' | 'setResolved'>
+) => {
   const [isResolved, setResolved] = useState(false)
 
   switch (props.interaction.event.name) {

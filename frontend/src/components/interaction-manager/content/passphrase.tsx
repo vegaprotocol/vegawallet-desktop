@@ -48,7 +48,7 @@ export const Passphrase = ({
     if (!isResolved) {
       handleResponse()
     }
-}, [interaction, isResolved, setResolved])
+  }, [service, interaction, isResolved, setResolved])
 
   return null
 }
