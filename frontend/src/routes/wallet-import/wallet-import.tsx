@@ -14,7 +14,10 @@ export const WalletImport = () => {
 
   React.useEffect(() => {
     if (response) {
-      navigate(Paths.Home)
+      const path = response.wallet?.name
+        ? `/wallet/${encodeURIComponent(response.wallet?.name)}`
+        : Paths.Home
+      navigate(path)
     }
   }, [response, navigate])
 

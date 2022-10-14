@@ -36,7 +36,7 @@ describe('create wallet', () => {
         expect(text.split(' ').length).to.equal(24)
       })
     cy.getByTestId('create-wallet-success-cta').click()
-    cy.getByTestId(`wallet-${walletName}`).should('have.text', walletName)
+    cy.getByTestId('header-title').should('have.text', walletName)
   })
 })
 

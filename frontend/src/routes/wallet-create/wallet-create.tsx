@@ -7,6 +7,7 @@ import { WalletCreateForm } from '../../components/wallet-create-form'
 import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
 import { Colors } from '../../config/colors'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
+import { Paths } from '../'
 
 export const WalletCreate = () => {
   const navigate = useNavigate()
@@ -24,7 +25,10 @@ export const WalletCreate = () => {
             <Button
               data-testid='create-wallet-success-cta'
               onClick={() => {
-                navigate('/')
+                const path = response.wallet?.name
+                  ? `/wallet/${encodeURIComponent(response.wallet.name)}`
+                  : Paths.Home
+                navigate(path)
               }}
             >
               View wallet

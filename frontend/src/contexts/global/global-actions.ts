@@ -4,6 +4,7 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
 import { parseTx } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
@@ -11,6 +12,35 @@ import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
+
+const getDefaultNetwork = async (
+  service: ServiceType,
+  {
+    config,
+    networks,
+    preset
+  }: {
+    config: ConfigModel.Config
+    preset: NetworkPreset
+    networks: WalletModel.ListNetworksResult
+  }
+) => {
+  const existingNetwork = config.defaultNetwork
+    ? networks.networks?.find((n: string) => n === config.defaultNetwork) ||
+      networks.networks?.[0]
+    : networks.networks?.[0]
+
+  if (!existingNetwork && preset) {
+    const { name, configFileUrl } = preset
+    const res = await service.WalletApi.ImportNetwork({
+      name,
+      url: configFileUrl
+    })
+    return res.name
+  }
+
+  return existingNetwork
+}
 
 export function createActions(
   service: ServiceType,
@@ -61,11 +91,11 @@ export function createActions(
             service.WalletApi.ListNetworks()
           ])
 
-          const defaultNetwork = config.defaultNetwork
-            ? networks.networks?.find(
-                (n: string) => n === config.defaultNetwork
-              ) || networks.networks?.[0]
-            : networks.networks?.[0]
+          const defaultNetwork = await getDefaultNetwork(service, {
+            config,
+            preset: presets[0],
+            networks: networks
+          })
 
           const defaultNetworkConfig = defaultNetwork
             ? await service.WalletApi.DescribeNetwork({
