@@ -93,11 +93,19 @@ export const Permissions = ({
 
   return (
     <Dialog open={true} title='Wallet permissions'>
-      <div style={{ padding: '0 20px 20px' }}>
+      <div data-testid="wallet-request-permissions" style={{ padding: '0 20px 20px' }}>
         {message}
         <ButtonGroup inline>
-          <Button onClick={() => onAccept(true)}>Approve</Button>
-          <ButtonUnstyled onClick={() => onAccept(false)}>
+          <Button
+            data-testid="wallet-request-permissions-approve"
+            onClick={() => onAccept(true)}
+          >
+            Approve
+          </Button>
+          <ButtonUnstyled
+            data-testid="wallet-request-permissions-reject"
+            onClick={() => onAccept(false)}
+          >
             Cancel
           </ButtonUnstyled>
         </ButtonGroup>

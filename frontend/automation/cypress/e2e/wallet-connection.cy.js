@@ -1,10 +1,4 @@
-const { unlockWallet } = require('../support/helpers')
-
-const testIds = {
-  SELECTION_MODAL: 'wallet-selection-modal',
-  REJECT_CONNECTION_BUTTON: 'wallet-connection-reject',
-  APPROVE_SELECTION_BUTTON: 'wallet-connection-approve'
-}
+const { unlockWallet, approveConnection } = require('../support/helpers')
 
 describe('wallet connection', () => {
   let walletName
@@ -28,15 +22,7 @@ describe('wallet connection', () => {
 
   it('handles approval', () => {
     const MOCK_HOSTNAME = 'https://best-blockchain.app'
-    cy.sendConnectionRequest(MOCK_HOSTNAME)
-
-    cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
-    cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
-    cy.get(`label[for=${walletName}]`).click()
-    cy.getByTestId(testIds.APPROVE_SELECTION_BUTTON).click()
-
-    cy.getByTestId('input-passphrase').type(passphrase)
-    cy.getByTestId('input-submit').click()
+    approveConnection(MOCK_HOSTNAME, walletName, passphrase)
 
     cy.getByTestId('toast').should(
       'have.text',
@@ -49,9 +35,8 @@ describe('wallet connection', () => {
   // const MOCK_HOSTNAME = 'https://best-blockchain-2.app'
   // cy.sendConnectionRequest(MOCK_HOSTNAME)
   //
-  // cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
-  // cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
-  // cy.getByTestId(testIds.REJECT_CONNECTION_BUTTON).click()
+  // cy.getByTestId('wallet-selection-modal').should('exist')
+  // cy.getByTestId('wallet-connection-reject').click()
   //
   // cy.getByTestId('input-passphrase').type(passphrase)
   // cy.getByTestId('input-submit').click()
