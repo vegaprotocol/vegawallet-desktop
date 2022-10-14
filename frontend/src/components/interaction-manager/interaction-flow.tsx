@@ -6,6 +6,8 @@ import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
+import { Permissions } from './content/permissions'
+import { Passphrase } from './content/passphrase'
 import type {
   ErrorOccurred,
   Interaction,
@@ -14,6 +16,8 @@ import type {
   RequestSucceeded,
   RequestWalletConnection,
   RequestWalletSelection,
+  RequestPermissions,
+  RequestPassphrase,
   SessionEnded
 } from './types'
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
@@ -31,6 +35,20 @@ const InteractionItem = (props: InteractionContentProps) => {
       return (
         <WalletSelection
           {...(props as InteractionContentProps<RequestWalletSelection>)}
+        />
+      )
+    }
+    case INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW: {
+      return (
+        <Permissions
+          {...(props as InteractionContentProps<RequestPermissions>)}
+        />
+      )
+    }
+    case INTERACTION_TYPE.REQUEST_PASSPHRASE: {
+      return (
+        <Passphrase
+          {...(props as InteractionContentProps<RequestPassphrase>)}
         />
       )
     }
@@ -72,6 +90,9 @@ const getEventFlowType = (events: Interaction[]) => {
       }
       case INTERACTION_TYPE.REQUEST_WALLET_SELECTION: {
         return acc || EVENT_FLOW_TYPE.WALLET_CONNECTION
+      }
+      case INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW: {
+        return acc || EVENT_FLOW_TYPE.PERMISSION_REQUEST
       }
       default: {
         return acc
