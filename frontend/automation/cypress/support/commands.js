@@ -125,28 +125,31 @@ Cypress.Commands.add('sendConnectionRequest', hostname => {
   request()
 })
 
-Cypress.Commands.add('sendPermissionsRequest', (hostname, requestedPermissions) => {
-  const request = async () => {
-    const baseUrl = Cypress.env('walletServiceUrl')
-    const wallet = Cypress.env('testWalletName')
+Cypress.Commands.add(
+  'sendPermissionsRequest',
+  (hostname, requestedPermissions) => {
+    const request = async () => {
+      const baseUrl = Cypress.env('walletServiceUrl')
+      const wallet = Cypress.env('testWalletName')
 
-    await fetch(`${baseUrl}/requests`, {
-      method: 'POST',
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        method: 'client.connect_wallet',
-        params: {
-          hostname,
-          wallet,
-          requestedPermissions,
-        },
-        id: '0'
+      await fetch(`${baseUrl}/requests`, {
+        method: 'POST',
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'client.connect_wallet',
+          params: {
+            hostname,
+            wallet,
+            requestedPermissions
+          },
+          id: '0'
+        })
       })
-    })
-  }
+    }
 
-  request()
-})
+    request()
+  }
+)
 
 Cypress.Commands.add('mockRequests', () => {
   cy.log('mocking presets')

@@ -1,4 +1,8 @@
-const { authenticate, unlockWallet, approveConnection } = require('../support/helpers')
+const {
+  authenticate,
+  unlockWallet,
+  approveConnection
+} = require('../support/helpers')
 
 const testIds = {
   SELECTION_MODAL: 'wallet-selection-modal',
@@ -31,7 +35,7 @@ describe('wallet permissions', () => {
 
   it('handles approval', () => {
     cy.sendPermissionsRequest(MOCK_HOSTNAME, {
-      public_keys: 'read',
+      public_keys: 'read'
     })
 
     cy.getByTestId('wallet-request-permissions').should('exist')
@@ -46,7 +50,7 @@ describe('wallet permissions', () => {
 
   it('handles rejection', () => {
     cy.sendPermissionsRequest(MOCK_HOSTNAME, {
-      public_keys: 'read',
+      public_keys: 'read'
     })
 
     cy.getByTestId('wallet-request-permissions').should('exist')
