@@ -28,6 +28,16 @@ const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
   return networks
 }
 
+const getDefaultNetwork = (
+  config: ConfigModel.Config,
+  networks: WalletModel.ListNetworksResult
+) => {
+  if (config.defaultNetwork) {
+    return config.defaultNetwork
+  }
+  return networks.networks?.[0]
+}
+
 export function createActions(
   service: ServiceType,
   logger: log.Logger,
@@ -77,11 +87,7 @@ export function createActions(
             getNetworks(service, presets[0])
           ])
 
-          const defaultNetwork = config.defaultNetwork
-            ? config.defaultNetwork
-            : networks.networks
-            ? networks.networks[0]
-            : undefined
+          const defaultNetwork = getDefaultNetwork(config, networks)
 
           const defaultNetworkConfig = defaultNetwork
             ? await service.WalletApi.DescribeNetwork({
