@@ -109,7 +109,7 @@ Cypress.Commands.add('sendConnectionRequest', hostname => {
   const request = async () => {
     const baseUrl = Cypress.env('walletServiceUrl')
 
-    await fetch(`${baseUrl}/requests`, {
+    const res = await fetch(`${baseUrl}/requests`, {
       method: 'POST',
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -120,6 +120,11 @@ Cypress.Commands.add('sendConnectionRequest', hostname => {
         id: '0'
       })
     })
+
+    const {
+      result: { token }
+    } = await res.json()
+    Cypress.env('clientSessionToken', token)
   }
 
   request()
@@ -130,16 +135,16 @@ Cypress.Commands.add(
   (hostname, requestedPermissions) => {
     const request = async () => {
       const baseUrl = Cypress.env('walletServiceUrl')
-      const wallet = Cypress.env('testWalletName')
+      const token = Cypress.env('clientSessionToken')
 
       await fetch(`${baseUrl}/requests`, {
         method: 'POST',
         body: JSON.stringify({
           jsonrpc: '2.0',
-          method: 'client.connect_wallet',
+          method: 'client.request_permissions',
           params: {
             hostname,
-            wallet,
+            token,
             requestedPermissions
           },
           id: '0'
