@@ -43,7 +43,7 @@ describe('create wallet', () => {
 describe('wallet', () => {
   let passphrase = ''
   let walletName = ''
-  let pubkey
+  let pubkey = ''
 
   before(() => {
     cy.clean()

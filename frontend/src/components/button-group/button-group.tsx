@@ -7,6 +7,11 @@ interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   inline?: boolean
 }
 
+const itemStyles = {
+  flexGrow: 1,
+  flexBasis: 0
+}
+
 export function ButtonGroup({
   children,
   orientation = 'horizontal',
@@ -28,14 +33,10 @@ export function ButtonGroup({
     >
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
+          const styles = inline ? itemStyles : undefined
           return React.cloneElement(child, {
             style: {
-              ...(inline
-                ? {}
-                : {
-                    flexGrow: 1,
-                    flexBasis: 0
-                  }),
+              ...styles,
               ...child.props.style
             }
           })
