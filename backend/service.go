@@ -15,7 +15,10 @@ import (
 	"code.vegaprotocol.io/vega/wallet/node"
 	"code.vegaprotocol.io/vega/wallet/service"
 	"code.vegaprotocol.io/vega/wallet/wallets"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
+
+const StartingServiceFailed = "starting_service_failed"
 
 type StartServiceRequest struct {
 	Network string `json:"network"`
@@ -188,6 +191,13 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 			loggingCancelFn()
 			h.service.Reset()
 			h.log.Info("Service state has been reset")
+			runtime.EventsEmit(h.ctx, StartingServiceFailed, struct {
+				Network string
+				Error   error
+			}{
+				Network: req.Network,
+				Error:   err,
+			})
 		}
 	}()
 
