@@ -20,6 +20,12 @@ const itemStyles = {
   textDecoration: 'none'
 }
 
+const actionStyles = {
+  position: 'fixed',
+  bottom: 0,
+  left: 0
+} as React.CSSProperties
+
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
  */
@@ -33,6 +39,8 @@ export const Home = () => {
   if (status === AppStatus.Onboarding) {
     return <Navigate to={Paths.Onboard} />
   }
+
+  const actionWrapperStyles = wallets.length ? actionStyles : undefined
 
   return (
     <div
@@ -82,13 +90,7 @@ export const Home = () => {
           padding: 20,
           width: '100%',
           backgroundColor: Colors.DARK_GRAY_1,
-          ...(wallets.length
-            ? {
-                position: 'fixed',
-                bottom: 0,
-                left: 0
-              }
-            : {})
+          ...actionWrapperStyles
         }}
       >
         <ButtonGroup style={{ marginBottom: 20 }}>
