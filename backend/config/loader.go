@@ -24,7 +24,7 @@ func NewLoader() (*Loader, error) {
 
 	pid := os.Getpid()
 	date := time.Now().UTC().Format("2006-01-02-15-04-05")
-	logFileName := fmt.Sprintf("%d-%s.log", pid, date)
+	logFileName := fmt.Sprintf("%s-%d.log", date, pid)
 
 	logPathForApp, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, logFileName))
 	if err != nil {
@@ -76,6 +76,15 @@ func (l *Loader) GetConfig() (Config, error) {
 	}
 
 	return config, nil
+}
+
+func (l *Loader) GenerateDefaultConfig() (Config, error) {
+	cfg := DefaultConfig()
+	if err := paths.WriteStructuredFile(l.configFilePath, cfg); err != nil {
+		return Config{}, fmt.Errorf("couldn't write configuration file: %w", err)
+	}
+
+	return cfg, nil
 }
 
 func (l *Loader) SaveConfig(config Config) error {

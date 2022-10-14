@@ -23,7 +23,7 @@
 
 ### 🐛 Fixes
 
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [358](https://github.com/vegaprotocol/vegawallet-desktop/issues/358) - Fix application crasher when not initialized
 - [257](https://github.com/vegaprotocol/vegawallet-desktop/issues/257) - Update readme with more/improved links
 - [264](https://github.com/vegaprotocol/vegawallet-desktop/issues/264) - Let the transaction review window grow with the main window
 

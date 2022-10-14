@@ -4,7 +4,10 @@ import (
 	"embed"
 	_ "embed"
 	"fmt"
+	"os"
+	"time"
 
+	"code.vegaprotocol.io/vega/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/backend"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
@@ -20,13 +23,24 @@ var assets embed.FS
 var icon []byte
 
 func main() {
-	log := logger.NewDefaultLogger()
+	logPathForApp, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, "startup.log"))
+	if err != nil {
+		panic(err)
+	}
+
+	pid := os.Getpid()
+	date := time.Now().UTC().Format("2006-01-02-15-04-05")
+
+	log := logger.NewFileLogger(logPathForApp)
 
 	// Create an instance of the handler structure
 	handler, err := backend.NewHandler()
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Couldn't instantiate backend: %v", err))
+		log.Fatal(fmt.Sprintf("Couldn't instantiate backend: %v, PID(%d), date(%v)", err, pid, date))
 	}
+
+	log.Info(fmt.Sprintf("Starting the application: PID(%d), date(%v)", pid, date))
+	defer log.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
 
 	// Create application with options
 	if err := wails.Run(&options.App{
@@ -60,6 +74,6 @@ func main() {
 			},
 		},
 	}); err != nil {
-		log.Fatal(fmt.Sprintf("Couldn't run the application: %v", err))
+		log.Fatal(fmt.Sprintf("Couldn't run the application: %v, PID(%d), date(%v)", err, pid, date))
 	}
 }
