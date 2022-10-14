@@ -49,7 +49,7 @@ export const WalletSelection = ({
         })
       }
 
-      setResolved()
+      setResolved(true)
     }
   }
 
@@ -73,7 +73,7 @@ export const WalletSelection = ({
         })
       }
 
-      setResolved()
+      setResolved(true)
     }
   }
 

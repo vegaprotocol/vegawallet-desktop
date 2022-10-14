@@ -15,7 +15,7 @@ export const ErrorComponent = ({
         message: interaction.event.data.error,
         intent: Intent.WARNING
       })
-      setResolved()
+      setResolved(true)
     }
   }, [interaction, isResolved, setResolved])
 

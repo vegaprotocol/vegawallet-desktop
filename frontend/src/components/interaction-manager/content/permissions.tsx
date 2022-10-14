@@ -1,24 +1,26 @@
-import { useMemo, useEffect } from 'react'
+import { useMemo } from 'react'
+
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
-import { AppToaster } from '../../toaster'
-import { Dialog } from '../../dialog'
 import { Button } from '../../button'
-import { ButtonUnstyled } from '../../button-unstyled'
 import { ButtonGroup } from '../../button-group'
+import { ButtonUnstyled } from '../../button-unstyled'
+import { Dialog } from '../../dialog'
 import { ChevronLeft } from '../../icons/chevron-left'
+import { AppToaster } from '../../toaster'
 import type {
   InteractionContentProps,
   RequestPermissions,
-  RequestPermissionsContent,
+  RequestPermissionsContent
 } from '../types'
-import {
-  PermissionTarget,
-  PermissionType,
-} from '../types'
+import { PermissionTarget, PermissionType } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
-const getPermissionAction = (data: RequestPermissionsContent, target: PermissionTarget, type: PermissionType) => {
+const getPermissionAction = (
+  data: RequestPermissionsContent,
+  target: PermissionTarget,
+  type: PermissionType
+) => {
   switch (`${type}:${target}`) {
     case `${PermissionType.READ}:${PermissionTarget.PUBLIC_KEYS}`: {
       return `access to see all your public keys for ${data.wallet}.`
@@ -31,12 +33,17 @@ const getPermissionAction = (data: RequestPermissionsContent, target: Permission
 
 const getDisplayDetails = (data: RequestPermissionsContent) => {
   const targets = Object.keys(data.permissions) as PermissionTarget[]
-  const requestText = <><strong>{data.hostname}</strong> is requesting</>
+  const requestText = (
+    <>
+      <strong>{data.hostname}</strong> is requesting
+    </>
+  )
 
   if (targets.length === 1) {
     return (
       <p style={{ paddingBottom: 20 }}>
-        {requestText} {getPermissionAction(data, targets[0], data.permissions[targets[0]])}
+        {requestText}{' '}
+        {getPermissionAction(data, targets[0], data.permissions[targets[0]])}
       </p>
     )
   }
@@ -47,7 +54,9 @@ const getDisplayDetails = (data: RequestPermissionsContent) => {
       <ul style={{ margin: '12px 0' }}>
         {targets.map(target => (
           <li key={target} style={{ marginLeft: 12 }}>
-            <ChevronLeft style={{ marginRight: 6, width: 13, transform: 'scale(-1, 1)' }} />
+            <ChevronLeft
+              style={{ marginRight: 6, width: 13, transform: 'scale(-1, 1)' }}
+            />
             {getPermissionAction(data, target, data.permissions[target])}
           </li>
         ))}
@@ -57,7 +66,7 @@ const getDisplayDetails = (data: RequestPermissionsContent) => {
 }
 
 export const Permissions = ({
-  interaction,
+  interaction
 }: InteractionContentProps<RequestPermissions>) => {
   const { service } = useGlobal()
   const message = useMemo(() => {
@@ -71,7 +80,7 @@ export const Permissions = ({
         traceID: interaction.event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
         data: {
-          approved: decision,
+          approved: decision
         }
       })
     } catch (err: unknown) {
@@ -83,13 +92,11 @@ export const Permissions = ({
   }
 
   return (
-    <Dialog open={true} title="Wallet permissions">
-      <div style={{ padding: '0 20px 20px'}}>
+    <Dialog open={true} title='Wallet permissions'>
+      <div style={{ padding: '0 20px 20px' }}>
         {message}
         <ButtonGroup inline>
-          <Button onClick={() => onAccept(true)}>
-            Approve
-          </Button>
+          <Button onClick={() => onAccept(true)}>Approve</Button>
           <ButtonUnstyled onClick={() => onAccept(false)}>
             Cancel
           </ButtonUnstyled>

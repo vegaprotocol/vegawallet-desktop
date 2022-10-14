@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
-import { AppToaster } from '../../toaster'
 import { requestPassphrase } from '../../passphrase-modal'
+import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestPassphrase } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
@@ -15,7 +15,6 @@ export const Passphrase = ({
   const { service } = useGlobal()
 
   useEffect(() => {
-    let isResolving = false
     const handleResponse = async () => {
       try {
         const passphrase = await requestPassphrase()
@@ -24,7 +23,7 @@ export const Passphrase = ({
           traceID: interaction.event.traceID,
           name: INTERACTION_RESPONSE_TYPE.ENTERED_PASSPHRASE,
           data: {
-            passphrase,
+            passphrase
           }
         })
       } catch (err: unknown) {
@@ -43,15 +42,13 @@ export const Passphrase = ({
         }
       }
 
-      setResolved()
+      setResolved(true)
     }
 
-    if (!isResolved  && !isResolving) {
-      isResolving = true
-      // automatically accept incoming connections
+    if (!isResolved) {
       handleResponse()
     }
-  }, [])
+}, [interaction, isResolved, setResolved])
 
   return null
 }

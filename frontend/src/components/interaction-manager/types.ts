@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from 'react'
+
 export const enum EVENT_FLOW_TYPE {
   WALLET_CONNECTION = 'WALLET_CONNECTION',
   TRANSACTION_CONSENT = 'TRANSACTION_CONSENT',
@@ -9,7 +11,7 @@ export type InteractionContentProps<T extends RawInteraction = RawInteraction> =
     interaction: Interaction<T>
     flow?: EVENT_FLOW_TYPE
     isResolved: boolean
-    setResolved: () => void
+    setResolved: Dispatch<SetStateAction<boolean>>
     onFinish: () => void
   }
 
@@ -39,11 +41,11 @@ export interface RequestPassphraseContent {
 }
 
 export const enum PermissionTarget {
-  PUBLIC_KEYS = 'public_keys',
+  PUBLIC_KEYS = 'public_keys'
 }
 
 export const enum PermissionType {
-  READ = 'read',
+  READ = 'read'
 }
 
 export interface RequestPermissionsContent {
@@ -107,13 +109,13 @@ export type RequestWalletSelection = {
 
 export type RequestPermissions = {
   traceID: string
-  name: INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW,
+  name: INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
   data: RequestPermissionsContent
 }
 
 export type RequestPassphrase = {
   traceID: string
-  name: INTERACTION_TYPE.REQUEST_PASSPHRASE,
+  name: INTERACTION_TYPE.REQUEST_PASSPHRASE
   data: RequestPassphraseContent
 }
 
