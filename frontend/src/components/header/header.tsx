@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
+import { ButtonUnstyled } from '../../components/button-unstyled'
 import { ChevronLeft } from '../../components/icons/chevron-left'
 import { Title } from '../../components/title'
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Colors } from '../../config/colors'
 
 interface HeaderProps {
@@ -23,7 +23,7 @@ export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
             display: 'flex',
             gap: 10,
             alignItems: 'center',
-            textDecoration: 'none',
+            textDecoration: 'none'
           }}
         >
           <ChevronLeft style={{ width: 14 }} />
