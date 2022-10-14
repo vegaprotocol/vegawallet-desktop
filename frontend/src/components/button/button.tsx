@@ -8,6 +8,22 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean
 }
 
+const getColor = ({
+  hover,
+  disabled
+}: {
+  hover: boolean
+  disabled?: boolean
+}): Colors => {
+  if (disabled) {
+    return Colors.GRAY_3
+  }
+  if (hover) {
+    return Colors.BLACK
+  }
+  return Colors.WHITE
+}
+
 export const Button = React.forwardRef(
   (
     { children, loading, onMouseEnter, onMouseLeave, ...props }: ButtonProps,
@@ -33,13 +49,18 @@ export const Button = React.forwardRef(
       }
     }
 
+    const color = React.useMemo(
+      () =>
+        getColor({
+          hover,
+          disabled: props.disabled
+        }),
+      [hover, props.disabled]
+    )
+
     const style: React.CSSProperties = {
       background: hover ? Colors.WHITE : 'transparent',
-      color: props.disabled
-        ? Colors.GRAY_3
-        : hover
-        ? Colors.BLACK
-        : Colors.WHITE,
+      color,
       border: `1px solid ${props.disabled ? Colors.GRAY_3 : Colors.WHITE}`,
       borderRadius: 2,
       cursor: 'pointer',

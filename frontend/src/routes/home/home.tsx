@@ -2,6 +2,7 @@ import { Link, Navigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
+import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Lock } from '../../components/icons/lock'
 import { TelemetryDialog } from '../../components/telemetry-dialog'
 import { Title } from '../../components/title'
@@ -16,8 +17,14 @@ const itemStyles = {
   justifyContent: 'space-between',
   borderTop: `1px solid ${Colors.BLACK}`,
   padding: `18px 0`,
-  cursor: 'pointer'
+  textDecoration: 'none'
 }
+
+const actionStyles = {
+  position: 'fixed',
+  bottom: 0,
+  left: 0
+} as React.CSSProperties
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -32,6 +39,8 @@ export const Home = () => {
   if (status === AppStatus.Onboarding) {
     return <Navigate to={Paths.Onboard} />
   }
+
+  const actionWrapperStyles = wallets.length ? actionStyles : undefined
 
   return (
     <div
@@ -61,7 +70,7 @@ export const Home = () => {
           }}
         >
           {wallets.map(w => (
-            <div
+            <ButtonUnstyled
               style={itemStyles}
               onClick={() => open(w.name)}
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
@@ -71,7 +80,7 @@ export const Home = () => {
               <div style={{ color: Colors.GRAY_1 }}>
                 <Lock style={{ width: 20, margin: '0 20px' }} />
               </div>
-            </div>
+            </ButtonUnstyled>
           ))}
         </div>
       </div>
@@ -81,13 +90,7 @@ export const Home = () => {
           padding: 20,
           width: '100%',
           backgroundColor: Colors.DARK_GRAY_1,
-          ...(wallets.length
-            ? {
-                position: 'fixed',
-                bottom: 0,
-                left: 0
-              }
-            : {})
+          ...actionWrapperStyles
         }}
       >
         <ButtonGroup style={{ marginBottom: 20 }}>

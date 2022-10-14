@@ -1,81 +1,5 @@
 export namespace backend {
 	
-	export class SearchForExistingConfigurationResponse {
-	    wallets: string[];
-	    networks: string[];
-	
-	    static createFrom(source: any = {}) {
-	        return new SearchForExistingConfigurationResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallets = source["wallets"];
-	        this.networks = source["networks"];
-	    }
-	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
-	}
-	export class ClearSentTransactionRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
-	}
-	export class GetConsentRequestRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetConsentRequestRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
-	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
-	}
 	export class SentTransaction {
 	    txId: string;
 	    txHash: string;
@@ -159,6 +83,18 @@ export namespace backend {
 	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
+	export class ClearSentTransactionRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ClearSentTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
+	}
 	export class ConsentToTransactionRequest {
 	    txId: string;
 	    decision: boolean;
@@ -171,6 +107,18 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
 	        this.decision = source["decision"];
+	    }
+	}
+	export class GetConsentRequestRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetConsentRequestRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
 	    }
 	}
 	export class ConsentRequest {
@@ -208,18 +156,16 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
+	export class InitialiseAppRequest {
+	    vegaHome: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
+	        return new InitialiseAppRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
+	        this.vegaHome = source["vegaHome"];
 	    }
 	}
 	export class ListConsentRequestsResponse {
@@ -251,6 +197,60 @@ export namespace backend {
 		    }
 		    return a;
 		}
+	}
+	export class SearchForExistingConfigurationResponse {
+	    wallets: string[];
+	    networks: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SearchForExistingConfigurationResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.wallets = source["wallets"];
+	        this.networks = source["networks"];
+	    }
+	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	    }
+	}
+	export class StartServiceRequest {
+	    network: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new StartServiceRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
+	    }
 	}
 
 }
@@ -333,6 +333,22 @@ export namespace interactor {
 
 export namespace jsonrpc {
 	
+	export class ErrorDetails {
+	    code: number;
+	    message: string;
+	    data?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ErrorDetails(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.code = source["code"];
+	        this.message = source["message"];
+	        this.data = source["data"];
+	    }
+	}
 	export class Request {
 	    jsonrpc: string;
 	    method: string;
@@ -349,22 +365,6 @@ export namespace jsonrpc {
 	        this.method = source["method"];
 	        this.params = source["params"];
 	        this.id = source["id"];
-	    }
-	}
-	export class ErrorDetails {
-	    code: number;
-	    message: string;
-	    data?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ErrorDetails(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.code = source["code"];
-	        this.message = source["message"];
-	        this.data = source["data"];
 	    }
 	}
 	export class Response {

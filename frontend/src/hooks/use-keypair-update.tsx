@@ -25,7 +25,7 @@ export const useKeypairUpdate = (
   const [loading, setLoading] = useState(false)
 
   const update = useCallback(
-    async (metadata: Meta[]) => {
+    async (metadata: Meta[]): Promise<void> => {
       setLoading(true)
       try {
         if (!pubKey || !wallet) {
