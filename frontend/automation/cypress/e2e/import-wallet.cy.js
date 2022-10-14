@@ -20,6 +20,7 @@ describe('import wallet', () => {
   })
 
   it('recover wallet', () => {
+    // 0001-WALL-004
     const walletName = 'import test'
     const passphrase = '123'
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')

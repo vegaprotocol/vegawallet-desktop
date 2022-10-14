@@ -21,7 +21,8 @@ describe('create wallet', () => {
       })
   })
 
-  it('create wallet', () => {
+  it.only('create wallet', () => {
+    // 0001-WALL-005
     cy.getByTestId('create-new-wallet').click()
     cy.getByTestId('create-wallet-form-name').type(walletName)
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
@@ -30,6 +31,7 @@ describe('create wallet', () => {
     cy.contains('Wallet created!')
     cy.getByTestId('recovery-phrase-warning').should('not.be.empty')
     cy.getByTestId('wallet-version').next('p').should('contain', 2)
+    // 0001-WALL-006
     cy.getByTestId('recovery-phrase')
       .invoke('text')
       .then(text => {
@@ -37,6 +39,20 @@ describe('create wallet', () => {
       })
     cy.getByTestId('create-wallet-success-cta').click()
     cy.getByTestId('header-title').should('have.text', walletName)
+    // 0001-WALL-008
+    cy.getByTestId('wallet-keypair')
+      .contains('Key 1')
+      .should('be.visible')
+      .parent()
+      .siblings()
+      .invoke('text')
+      .should('match',/\w{6}.\w{4}$/)
+    cy.getByTestId('wallet-keypair')
+      .contains('Key 1')
+      .click()
+    cy.getByTestId('public-key')
+      .invoke('text')
+      .should('match',/\w{64}$/)
   })
 })
 
