@@ -39,7 +39,7 @@ const underlined = {
   textDecoration: 'underline'
 }
 
-export const UpdateKeypairDialog = () => {
+export function UpdateKeypairDialog() {
   const { state } = useGlobal()
   const { keypair, wallet } = useCurrentKeypair()
 
@@ -62,7 +62,7 @@ type UpdateKeyFormProps = {
   wallet: Wallet
 }
 
-const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
+function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
   const { actions, dispatch } = useGlobal()
 
   const { loading, update } = useKeypairUpdate(
