@@ -91,6 +91,12 @@ export function Onboard() {
     )
   }
 
+  const handleAction = async (type: 'create' | 'import') => {
+    setLoading(type)
+    await initialiseWithDefaultHome()
+    navigate(`/wallet-${type}`)
+  }
+
   return (
     <div
       style={{
@@ -108,22 +114,14 @@ export function Onboard() {
         <Button
           loading={loading === 'create'}
           data-testid='create-new-wallet'
-          onClick={async () => {
-            setLoading('create')
-            await initialiseWithDefaultHome()
-            navigate('/wallet-create')
-          }}
+          onClick={() => handleAction('create')}
         >
           Create new wallet
         </Button>
         <Button
           data-testid='import-wallet'
           loading={loading === 'import'}
-          onClick={async () => {
-            setLoading('import')
-            await initialiseWithDefaultHome()
-            navigate('/wallet-import')
-          }}
+          onClick={() => handleAction('import')}
         >
           Use recovery phrase
         </Button>

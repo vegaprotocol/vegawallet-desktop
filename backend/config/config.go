@@ -1,5 +1,7 @@
 package config
 
+import "go.uber.org/zap"
+
 type Config struct {
 	LogLevel       string          `json:"logLevel"`
 	VegaHome       string          `json:"vegaHome"`
@@ -16,4 +18,16 @@ type TelemetryConfig struct {
 	// Enabled is used to enable or disable the collection of errors on the
 	// software.
 	Enabled bool `json:"enabled"`
+}
+
+func DefaultConfig() Config {
+	return Config{
+		LogLevel:       zap.DebugLevel.String(),
+		VegaHome:       "",
+		DefaultNetwork: "",
+		Telemetry: TelemetryConfig{
+			ConsentAsked: false,
+			Enabled:      true,
+		},
+	}
 }
