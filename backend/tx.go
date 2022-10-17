@@ -3,10 +3,13 @@ package backend
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	"code.vegaprotocol.io/vega/wallet/service"
+	"code.vegaprotocol.io/vegawallet-desktop/app"
+	"code.vegaprotocol.io/vegawallet-desktop/os"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
@@ -44,7 +47,21 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 
 func (h *Handler) emitReceivedInteraction(interaction interactor.Interaction) {
 	h.log.Debug(fmt.Sprintf("Received a new interaction %q with trace ID %q", interaction.Name, interaction.TraceID))
+
+	if shouldEmitOSNotification(interaction.Name) {
+		message := strings.ToLower(strings.ReplaceAll(string(interaction.Name), "_", " "))
+		if err := os.Notify(app.Name, message); err != nil {
+			h.log.Warn("Could not send the OS notification", zap.Error(err))
+		}
+	}
+
 	runtime.EventsEmit(h.ctx, NewInteractionEvent, interaction)
+}
+
+func shouldEmitOSNotification(interactionName interactor.InteractionName) bool {
+	return !(interactionName == interactor.LogName ||
+		interactionName == interactor.InteractionSessionBeganName ||
+		interactionName == interactor.InteractionSessionEndedName)
 }
 
 // API v1.

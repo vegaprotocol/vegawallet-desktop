@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"code.vegaprotocol.io/vega/paths"
+	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"code.vegaprotocol.io/vegawallet-desktop/backend"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
@@ -43,8 +44,9 @@ func main() {
 	defer log.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
 
 	// Create application with options
+
 	if err := wails.Run(&options.App{
-		Title:            "Vegawallet",
+		Title:            app.Name,
 		Width:            760,
 		Height:           760,
 		MinWidth:         460,
@@ -68,8 +70,8 @@ func main() {
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
 			About: &mac.AboutInfo{
-				Title:   "Vegawallet",
-				Message: fmt.Sprintf("Application to manage your Vega Protocol wallet.\n\n%s - %s\n\nMIT License\nCopyright (c) 2022 Gobalsky Labs Ltd.", backend.Version, backend.Hash),
+				Title:   app.Name,
+				Message: app.About,
 				Icon:    icon,
 			},
 		},
