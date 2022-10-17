@@ -1,5 +1,8 @@
 # Created when applications are built
 build/bin
+# Auto-generated files during application build
+build/windows/installer
+build/windows/icon.ico
 
 # Misc
 .DS_Store
