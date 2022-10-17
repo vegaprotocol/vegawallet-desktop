@@ -20,10 +20,11 @@
 - [332](https://github.com/vegaprotocol/vegawallet-desktop/issues/332) - Migrate to wails 2.0.0 (stable)
 - [304](https://github.com/vegaprotocol/vegawallet-desktop/issues/304) - Warn Linux users about extra dependencies they need to install
 - [325](https://github.com/vegaprotocol/vegawallet-desktop/issues/325) - Support Wallet Service API version 2
+- [336](https://github.com/vegaprotocol/vegawallet-desktop/issues/336) - Trigger a notification when a back-end event is emitted on Windows and Linux
 
 ### 🐛 Fixes
 
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [358](https://github.com/vegaprotocol/vegawallet-desktop/issues/358) - Fix application crasher when not initialized
 - [257](https://github.com/vegaprotocol/vegawallet-desktop/issues/257) - Update readme with more/improved links
 - [264](https://github.com/vegaprotocol/vegawallet-desktop/issues/264) - Let the transaction review window grow with the main window
 

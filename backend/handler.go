@@ -45,26 +45,32 @@ func NewHandler() (*Handler, error) {
 		return nil, fmt.Errorf("could not verify the application configuration state: %w", err)
 	}
 
-	var logLevel string
-	cfg, err := configLoader.GetConfig()
-	if err != nil {
-		logLevel = zap.InfoLevel.String()
+	var cfg config.Config
+	if !isConfigInit {
+		cfg, err = configLoader.GenerateDefaultConfig()
+		if err != nil {
+			return nil, fmt.Errorf("could not generate the default configuration: %w", err)
+		}
 	} else {
-		logLevel = cfg.LogLevel
+		cfg, err = configLoader.GetConfig()
+		if err != nil {
+			return nil, fmt.Errorf("could not load the configuration: %w", err)
+		}
 	}
 
-	log, err := buildLogger(logLevel, configLoader.LogFilePathForApp())
+	log, err := buildLogger(cfg.LogLevel, configLoader.LogFilePathForApp())
 	if err != nil {
 		return nil, err
 	}
 
 	handler.log = log
 
-	if isConfigInit {
-		if err := handler.initializeWalletAPI(cfg); err != nil {
-			return nil, err
-		}
+	if err := handler.initializeWalletAPI(cfg); err != nil {
+		handler.log.Error("Could not initialize the wallet JSON-RPC API", zap.Error(err))
+		return nil, err
 	}
+
+	handler.log.Info("Application backend has been successfully initialised")
 
 	return handler, nil
 }
@@ -133,8 +139,8 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 }
 
 func (h *Handler) SubmitWalletAPIRequest(request *jsonrpc.Request) *jsonrpc.Response {
-	h.log.Debug("Entering SubmitWalletAPIRequest")
-	defer h.log.Debug("Leaving SubmitWalletAPIRequest")
+	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
+	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
 
 	return h.walletAPI.DispatchRequest(h.ctx, request)
 }
