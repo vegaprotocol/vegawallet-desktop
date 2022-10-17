@@ -12,6 +12,7 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
+	"github.com/wailsapp/wails/v2/pkg/options/linux"
 	"github.com/wailsapp/wails/v2/pkg/options/mac"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
@@ -80,6 +81,9 @@ func main() {
 				Message: app.About,
 				Icon:    icon,
 			},
+		},
+		Linux: &linux.Options{
+			Icon: icon,
 		},
 	}); err != nil {
 		log.Fatal(fmt.Sprintf("Couldn't run the application: %v, PID(%d), date(%v)", err, pid, date))
