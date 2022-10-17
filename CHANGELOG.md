@@ -20,6 +20,7 @@
 - [332](https://github.com/vegaprotocol/vegawallet-desktop/issues/332) - Migrate to wails 2.0.0 (stable)
 - [304](https://github.com/vegaprotocol/vegawallet-desktop/issues/304) - Warn Linux users about extra dependencies they need to install
 - [325](https://github.com/vegaprotocol/vegawallet-desktop/issues/325) - Support Wallet Service API version 2
+- [324](https://github.com/vegaprotocol/vegawallet-desktop/issues/324) - Handle wallet version and network incompatibility
 
 ### 🐛 Fixes
 

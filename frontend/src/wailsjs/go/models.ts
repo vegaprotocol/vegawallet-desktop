@@ -53,6 +53,63 @@ export namespace config {
 
 }
 
+export namespace version {
+	
+	export class NetworkCompatibility {
+	    network: string;
+	    isCompatible: boolean;
+	    retrievedVersion: string;
+	    error: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new NetworkCompatibility(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
+	        this.isCompatible = source["isCompatible"];
+	        this.retrievedVersion = source["retrievedVersion"];
+	        this.error = source["error"];
+	    }
+	}
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	    networksCompatibility: NetworkCompatibility[];
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	        this.networksCompatibility = this.convertValues(source["networksCompatibility"], NetworkCompatibility);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace interactor {
 	
 	export class Interaction {
@@ -151,17 +208,40 @@ export namespace jsonrpc {
 
 export namespace backend {
 	
-	export class ClearSentTransactionRequest {
+	export class ConsentRequest {
 	    txId: string;
+	    tx: string;
+	    // Go type: time.Time
+	    receivedAt: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
+	        return new ConsentRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
+	        this.tx = source["tx"];
+	        this.receivedAt = this.convertValues(source["receivedAt"], null);
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class GetServiceStateResponse {
 	    url: string;
@@ -189,21 +269,20 @@ export namespace backend {
 	        this.vegaHome = source["vegaHome"];
 	    }
 	}
-	export class ConsentRequest {
-	    txId: string;
-	    tx: string;
-	    // Go type: time.Time
-	    receivedAt: any;
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	    backend?: version.GetVersionResponse;
 	
 	    static createFrom(source: any = {}) {
-	        return new ConsentRequest(source);
+	        return new GetVersionResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	        this.tx = source["tx"];
-	        this.receivedAt = this.convertValues(source["receivedAt"], null);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	        this.backend = this.convertValues(source["backend"], version.GetVersionResponse);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -349,18 +428,16 @@ export namespace backend {
 	        this.network = source["network"];
 	    }
 	}
-	export class CheckVersionResponse {
-	    version: string;
-	    releaseUrl: string;
+	export class ClearSentTransactionRequest {
+	    txId: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new CheckVersionResponse(source);
+	        return new ClearSentTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.releaseUrl = source["releaseUrl"];
+	        this.txId = source["txId"];
 	    }
 	}
 	export class ConsentToTransactionRequest {
@@ -387,21 +464,6 @@ export namespace backend {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
-	    }
-	}
-	
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
 	    }
 	}
 

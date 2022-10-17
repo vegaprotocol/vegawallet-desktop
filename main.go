@@ -51,6 +51,7 @@ func main() {
 		MinHeight:        460,
 		BackgroundColour: options.NewRGBA(0, 0, 0, 255),
 		Assets:           assets,
+		Logger:           log,
 		LogLevel:         logger.INFO,
 		OnStartup:        handler.Startup,
 		OnDomReady:       handler.DOMReady,

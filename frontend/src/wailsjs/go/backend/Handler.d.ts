@@ -4,8 +4,6 @@ import {backend} from '../models';
 import {config} from '../models';
 import {jsonrpc} from '../models';
 
-export function CheckVersion():Promise<backend.CheckVersionResponse>;
-
 export function ClearSentTransaction(arg1:backend.ClearSentTransactionRequest):Promise<Error>;
 
 export function ConsentToTransaction(arg1:backend.ConsentToTransactionRequest):Promise<Error>;

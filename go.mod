@@ -3,7 +3,7 @@ module code.vegaprotocol.io/vegawallet-desktop
 go 1.19
 
 require (
-	code.vegaprotocol.io/vega v0.57.1-0.20221011140433-955087f66383
+	code.vegaprotocol.io/vega v0.58.1-0.20221014165605-0cd6e8ac3eb6
 	github.com/golang/protobuf v1.5.2
 	github.com/wailsapp/wails/v2 v2.0.0
 	go.uber.org/zap v1.21.0

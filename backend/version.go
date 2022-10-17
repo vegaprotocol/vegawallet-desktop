@@ -1,11 +1,10 @@
 package backend
 
 import (
-	"context"
 	"fmt"
 	"time"
 
-	vgversion "code.vegaprotocol.io/vega/libs/version"
+	wversion "code.vegaprotocol.io/vega/wallet/version"
 )
 
 const (
@@ -27,40 +26,28 @@ var (
 )
 
 type GetVersionResponse struct {
-	Version string `json:"version"`
-	GitHash string `json:"gitHash"`
+	Version string                       `json:"version"`
+	GitHash string                       `json:"gitHash"`
+	Backend *wversion.GetVersionResponse `json:"backend"`
 }
 
-func (h *Handler) GetVersion() *GetVersionResponse {
+func (h *Handler) GetVersion() (*GetVersionResponse, error) {
 	h.log.Debug("Entering GetVersion")
 	defer h.log.Debug("Leaving GetVersion")
+
+	cfg, err := h.configLoader.GetConfig()
+	if err != nil {
+		return nil, fmt.Errorf("could not load the configuration: %w", err)
+	}
+
+	netStore, err := h.getNetworksStore(cfg)
+	if err != nil {
+		return nil, err
+	}
 
 	return &GetVersionResponse{
 		Version: Version,
 		GitHash: Hash,
-	}
-}
-
-type CheckVersionResponse struct {
-	Version    string `json:"version"`
-	ReleaseURL string `json:"releaseUrl"`
-}
-
-func (h *Handler) CheckVersion() (*CheckVersionResponse, error) {
-	h.log.Debug("Entering CheckVersion")
-	defer h.log.Debug("Leaving CheckVersion")
-
-	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
-	defer cancel()
-	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), Version)
-	if err != nil {
-		return nil, fmt.Errorf("couldn't check latest releases: %w", err)
-	}
-	if v == nil {
-		return nil, nil
-	}
-	return &CheckVersionResponse{
-		Version:    v.String(),
-		ReleaseURL: vgversion.GetGithubReleaseURL(ReleasesURL, v),
+		Backend: wversion.GetVersionInfo(netStore, wversion.GetNetworkVersionThroughGRPC),
 	}, nil
 }
