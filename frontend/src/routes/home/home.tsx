@@ -17,7 +17,8 @@ const itemStyles = {
   justifyContent: 'space-between',
   borderTop: `1px solid ${Colors.BLACK}`,
   padding: `18px 0`,
-  textDecoration: 'none'
+  textDecoration: 'none',
+  width: '100%'
 }
 
 const actionStyles = {

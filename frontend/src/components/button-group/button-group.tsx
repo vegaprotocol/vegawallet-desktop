@@ -7,10 +7,13 @@ interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   inline?: boolean
 }
 
-const itemStyles = {
-  flexGrow: 1,
-  flexBasis: 0
-}
+const getItemStyles = (isInline?: boolean) =>
+  isInline
+    ? undefined
+    : {
+        flexGrow: 1,
+        flexBasis: 0
+      }
 
 export function ButtonGroup({
   children,
@@ -33,7 +36,7 @@ export function ButtonGroup({
     >
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
-          const styles = inline ? itemStyles : undefined
+          const styles = getItemStyles(inline)
           return React.cloneElement(child, {
             style: {
               ...styles,
