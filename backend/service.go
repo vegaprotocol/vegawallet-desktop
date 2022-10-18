@@ -21,14 +21,37 @@ import (
 )
 
 const (
-	ServiceIsHealthy        = "service_is_healthy"
-	ServiceIsUnhealthy      = "service_is_unhealthy"
-	ServiceUnreachable      = "service_unreachable"
-	ServiceStopped          = "service_stopped"
+	// ServiceIsHealthy is sent when the service is healthy.
+	// This event can be emitted every 15 seconds.
+	ServiceIsHealthy = "service_is_healthy"
+
+	// ServiceIsUnhealthy is sent when the service is unhealthy, meaning we could
+	// connect but the endpoint didn't answer what we expected.
+	// This event can be emitted every 15 seconds.
+	ServiceIsUnhealthy = "service_is_unhealthy"
+
+	// ServiceUnreachable is sent when no service is not running anymore.
+	// This event can be emitted every 15 seconds.
+	ServiceUnreachable = "service_unreachable"
+
+	// ServiceStopped is sent when the service has been stopped by the user.
+	// This event is emitted once per service lifecycle.
+	// If emitted, the `ServiceStoppedWithError` is not be emitted.
+	ServiceStopped = "service_stopped"
+
+	// ServiceStoppedWithError is sent when the service unexpectedly stopped,
+	// like an internal crash, of a fail to bind the port.
+	// This event is emitted once per service lifecycle.
+	// If emitted, the `ServiceStopped` is not be emitted.
 	ServiceStoppedWithError = "service_stopped_with_error"
 
+	// serviceHealthMonitoringDelayedStart is the delay before the monitoring
+	// start.
 	serviceHealthMonitoringDelayedStart = 5 * time.Second
-	serviceHealthMonitoringInterval     = 15 * time.Second
+
+	// serviceHealthMonitoringInterval is the interval between each health
+	// monitoring verification.
+	serviceHealthMonitoringInterval = 15 * time.Second
 )
 
 type StartServiceRequest struct {

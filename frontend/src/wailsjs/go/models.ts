@@ -1,43 +1,15 @@
 export namespace backend {
 	
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
+	export class ClearSentTransactionRequest {
+	    txId: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
+	        return new ClearSentTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
-	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
+	        this.txId = source["txId"];
 	    }
 	}
 	export class ConsentRequest {
@@ -74,6 +46,32 @@ export namespace backend {
 		    }
 		    return a;
 		}
+	}
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	    }
+	}
+	export class InitialiseAppRequest {
+	    vegaHome: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InitialiseAppRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.vegaHome = source["vegaHome"];
+	    }
 	}
 	export class ListConsentRequestsResponse {
 	    requests: ConsentRequest[];
@@ -188,18 +186,6 @@ export namespace backend {
 	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	export class ClearSentTransactionRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
-	}
 	export class ConsentToTransactionRequest {
 	    txId: string;
 	    decision: boolean;
@@ -226,7 +212,20 @@ export namespace backend {
 	        this.txId = source["txId"];
 	    }
 	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
 	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
 	    networks: string[];
@@ -350,6 +349,24 @@ export namespace jsonrpc {
 	        this.data = source["data"];
 	    }
 	}
+	export class Request {
+	    jsonrpc: string;
+	    method: string;
+	    params?: any;
+	    id?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Request(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.jsonrpc = source["jsonrpc"];
+	        this.method = source["method"];
+	        this.params = source["params"];
+	        this.id = source["id"];
+	    }
+	}
 	export class Response {
 	    jsonrpc: string;
 	    result?: any;
@@ -385,25 +402,6 @@ export namespace jsonrpc {
 		    }
 		    return a;
 		}
-	}
-	
-	export class Request {
-	    jsonrpc: string;
-	    method: string;
-	    params?: any;
-	    id?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Request(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.jsonrpc = source["jsonrpc"];
-	        this.method = source["method"];
-	        this.params = source["params"];
-	        this.id = source["id"];
-	    }
 	}
 
 }

@@ -46,7 +46,10 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 }
 
 func (h *Handler) emitReceivedInteraction(log *zap.Logger, interaction interactor.Interaction) {
-	log.Debug(fmt.Sprintf("Received a new interaction %q with trace ID %q", interaction.Name, interaction.TraceID))
+	log.Debug("Received a new interaction",
+		zap.String("interaction", string(interaction.Name)),
+		zap.String("trace-id", interaction.TraceID),
+	)
 
 	if shouldEmitOSNotification(interaction.Name) {
 		message := strings.ToLower(strings.ReplaceAll(string(interaction.Name), "_", " "))
