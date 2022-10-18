@@ -1,9 +1,9 @@
 const { unlockWallet } = require('../support/helpers')
 
-describe('wallet delete', () => {
+describe('wallet remove', () => {
   let walletName
   let passphrase
-  const form = 'delete-wallet-form'
+  const form = 'remove-wallet-form'
 
   before(() => {
     cy.clean()
@@ -23,9 +23,9 @@ describe('wallet delete', () => {
     walletName = Cypress.env('testWalletName')
   })
 
-  it('deletes a wallet', () => {
+  it('removes a wallet', () => {
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('delete-wallet').click()
+    cy.getByTestId('remove-wallet').click()
     submitForm()
     cy.getByTestId('helper-text').contains('Required')
     cy.getByTestId(form).get('input[type="text"]').type('invalid text')
@@ -34,10 +34,10 @@ describe('wallet delete', () => {
     cy.getByTestId(form)
       .get('input[type="text"]')
       .clear()
-      .type(`Delete ${walletName}`)
+      .type(`Remove ${walletName}`)
     submitForm()
-    cy.getByTestId('toast').contains('Wallet deleted')
-    cy.getByTestId('home-splash').should('be.visible')
+    cy.getByTestId('toast').contains('Wallet removed')
+    cy.getByTestId('wallet-home').should('be.visible')
     cy.getByTestId(`wallet-${walletName}`).should('not.exist')
   })
 

@@ -5,7 +5,7 @@ import { useImportNetwork } from '../../hooks/use-import-network'
 import type { NetworkPreset } from '../../lib/networks'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Header } from '../header'
+import { Title } from '../title'
 
 const hasImportedTestNetworks = (
   testPresets: NetworkPreset[],
@@ -113,7 +113,7 @@ export function NetworkPresets({
 
   return (
     <>
-      <Header>Networks</Header>
+      <Title>Networks</Title>
       {presets.map(preset => (
         <NetworkPresetItem
           key={preset.name}
@@ -129,7 +129,7 @@ export function NetworkPresets({
       ))}
       {showTestNetworks && (
         <>
-          <Header>Test Networks</Header>
+          <Title>Test Networks</Title>
           {presetsInternal.map(preset => (
             <NetworkPresetItem
               key={preset.name}
@@ -154,7 +154,7 @@ export function NetworkPresets({
           Show test networks
         </ButtonUnstyled>
       )}
-      {myNetworks.length > 0 && <Header>My Networks</Header>}
+      {myNetworks.length > 0 && <Title>My Networks</Title>}
       {myNetworks.map(network => (
         <div key={network} style={itemStyles}>
           <div>{network}</div>

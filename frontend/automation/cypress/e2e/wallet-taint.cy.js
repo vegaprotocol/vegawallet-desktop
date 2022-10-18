@@ -1,8 +1,9 @@
-const { unlockWallet, authenticate } = require('../support/helpers')
+const { unlockWallet, authenticate, goToKey } = require('../support/helpers')
 
 describe('wallet taint key', () => {
   let walletName
   let passphrase
+  let pubkey
 
   before(() => {
     cy.clean()
@@ -20,38 +21,33 @@ describe('wallet taint key', () => {
   beforeEach(() => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
+    pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('message taint success', () => {
     unlockWallet(walletName, passphrase)
-    goToTaintPage()
+    goToKey(pubkey)
+    goToTaint()
     taintKey()
     authenticate(passphrase)
     cy.getByTestId('toast')
       .contains('This key has been tainted')
       .getByTestId('close')
       .click()
-    cy.getByTestId(`keypair-${Cypress.env('testWalletPublicKey')}`).should(
-      'contain',
-      'Tainted'
-    )
+    cy.getByTestId('keypair-taint-notification').should('exist')
   })
 
   it('message untaint success', () => {
+    goToTaint()
     taintKey()
     authenticate(passphrase)
     cy.getByTestId('toast').contains('This key has been untainted')
-    cy.getByTestId(`keypair-${Cypress.env('testWalletPublicKey')}`).should(
-      'not.contain',
-      'Tainted'
-    )
+    cy.getByTestId('keypair-taint-notification').should('not.exist')
   })
 })
 
-function goToTaintPage() {
-  cy.getByTestId('wallet-actions').click()
-  cy.getByTestId('wallet-action-taint').click()
-  cy.get('html').click() // close dropdown
+function goToTaint() {
+  cy.getByTestId('keypair-taint').click()
 }
 
 function taintKey() {

@@ -3,7 +3,7 @@ const { unlockWallet } = require('../support/helpers')
 const testIds = {
   SELECTION_MODAL: 'wallet-selection-modal',
   REJECT_CONNECTION_BUTTON: 'wallet-connection-reject',
-  APPROVE_SELECTION_BUTTON: 'wallet-selection-button'
+  APPROVE_SELECTION_BUTTON: 'wallet-connection-approve'
 }
 
 describe('wallet connection', () => {
@@ -32,6 +32,7 @@ describe('wallet connection', () => {
 
     cy.getByTestId(testIds.SELECTION_MODAL).should('exist')
     cy.getByTestId(testIds.SELECTION_MODAL).should('be.visible')
+    cy.get(`label[for=${walletName}]`).click()
     cy.getByTestId(testIds.APPROVE_SELECTION_BUTTON).click()
 
     cy.getByTestId('input-passphrase').type(passphrase)

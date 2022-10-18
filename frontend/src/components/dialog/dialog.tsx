@@ -2,14 +2,24 @@ import * as DialogPrimitives from '@radix-ui/react-dialog'
 import * as React from 'react'
 import { animated, config, useTransition } from 'react-spring'
 
+import { Colors } from '../../config/colors'
+import { Title } from '../title'
+
 interface DialogProps {
   open: boolean
+  title?: string
   children: React.ReactNode
   size?: 'sm' | 'lg'
   onChange?: (open: boolean) => void
 }
 
-export function Dialog({ open, children, onChange, size = 'sm' }: DialogProps) {
+export function Dialog({
+  open,
+  title,
+  children,
+  onChange,
+  size = 'sm'
+}: DialogProps) {
   const transitions = useTransition(open, {
     from: { opacity: 0, y: -10 },
     enter: { opacity: 1, y: 0 },
@@ -41,9 +51,8 @@ export function Dialog({ open, children, onChange, size = 'sm' }: DialogProps) {
                 <DialogPrimitives.Content forceMount={true} asChild={true}>
                   <animated.div
                     style={{
-                      padding: 20,
                       background: 'black',
-                      width: size === 'lg' ? '80%' : 340,
+                      width: size === 'lg' ? '80%' : 375,
                       position: 'fixed',
                       top: 30,
                       left: size === 'lg' ? '10%' : 'calc(50% - 170px)',
@@ -54,6 +63,20 @@ export function Dialog({ open, children, onChange, size = 'sm' }: DialogProps) {
                       opacity: styles.opacity
                     }}
                   >
+                    {title && (
+                      <Title
+                        style={{
+                          margin: 0,
+                          padding: 20,
+                          textTransform: 'none',
+                          color: Colors.WHITE,
+                          letterSpacing: 0,
+                          fontSize: 28
+                        }}
+                      >
+                        {title}
+                      </Title>
+                    )}
                     {children}
                   </animated.div>
                 </DialogPrimitives.Content>

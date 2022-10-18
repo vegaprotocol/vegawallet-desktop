@@ -21,12 +21,12 @@ const logger = createLogger('GlobalActions')
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
-        <GlobalProvider
-          service={Service}
-          logger={logger}
-          enableTelemetry={initLogger}
-        >
+      <GlobalProvider
+        service={Service}
+        logger={logger}
+        enableTelemetry={initLogger}
+      >
+        <Router>
           <AppFrame>
             <AppLoader>
               <AppRouter />
@@ -36,8 +36,8 @@ function App() {
               <Settings />
             </AppLoader>
           </AppFrame>
-        </GlobalProvider>
-      </Router>
+        </Router>
+      </GlobalProvider>
     </ErrorBoundary>
   )
 }

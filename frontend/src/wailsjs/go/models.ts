@@ -1,79 +1,3 @@
-export namespace config {
-	
-	export class TelemetryConfig {
-	    consentAsked: boolean;
-	    enabled: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new TelemetryConfig(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.consentAsked = source["consentAsked"];
-	        this.enabled = source["enabled"];
-	    }
-	}
-	export class Config {
-	    logLevel: string;
-	    vegaHome: string;
-	    defaultNetwork: string;
-	    telemetry: TelemetryConfig;
-	
-	    static createFrom(source: any = {}) {
-	        return new Config(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.logLevel = source["logLevel"];
-	        this.vegaHome = source["vegaHome"];
-	        this.defaultNetwork = source["defaultNetwork"];
-	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-
-}
-
-export namespace interactor {
-	
-	export class Interaction {
-	    traceID: string;
-	    name: string;
-	    data: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new Interaction(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.traceID = source["traceID"];
-	        this.name = source["name"];
-	        this.data = source["data"];
-	    }
-	}
-
-}
-
 export namespace jsonrpc {
 	
 	export class Request {
@@ -165,11 +89,11 @@ export namespace backend {
 	        this.releaseUrl = source["releaseUrl"];
 	    }
 	}
-	export class GetConsentRequestRequest {
+	export class ClearSentTransactionRequest {
 	    txId: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetConsentRequestRequest(source);
+	        return new ClearSentTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -212,20 +136,6 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
 	export class GetVersionResponse {
 	    version: string;
 	    gitHash: string;
@@ -238,6 +148,18 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.version = source["version"];
 	        this.gitHash = source["gitHash"];
+	    }
+	}
+	export class InitialiseAppRequest {
+	    vegaHome: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InitialiseAppRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.vegaHome = source["vegaHome"];
 	    }
 	}
 	export class ListConsentRequestsResponse {
@@ -269,6 +191,46 @@ export namespace backend {
 		    }
 		    return a;
 		}
+	}
+	export class ConsentToTransactionRequest {
+	    txId: string;
+	    decision: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new ConsentToTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	        this.decision = source["decision"];
+	    }
+	}
+	export class GetConsentRequestRequest {
+	    txId: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetConsentRequestRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.txId = source["txId"];
+	    }
+	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
 	}
 	export class SentTransaction {
 	    txId: string;
@@ -339,44 +301,6 @@ export namespace backend {
 		    return a;
 		}
 	}
-	export class ClearSentTransactionRequest {
-	    txId: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ClearSentTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	    }
-	}
-	export class ConsentToTransactionRequest {
-	    txId: string;
-	    decision: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new ConsentToTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.txId = source["txId"];
-	        this.decision = source["decision"];
-	    }
-	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
-	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
 	    networks: string[];
@@ -401,6 +325,82 @@ export namespace backend {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.network = source["network"];
+	    }
+	}
+
+}
+
+export namespace config {
+	
+	export class TelemetryConfig {
+	    consentAsked: boolean;
+	    enabled: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new TelemetryConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.consentAsked = source["consentAsked"];
+	        this.enabled = source["enabled"];
+	    }
+	}
+	export class Config {
+	    logLevel: string;
+	    vegaHome: string;
+	    defaultNetwork: string;
+	    telemetry: TelemetryConfig;
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.logLevel = source["logLevel"];
+	        this.vegaHome = source["vegaHome"];
+	        this.defaultNetwork = source["defaultNetwork"];
+	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace interactor {
+	
+	export class Interaction {
+	    traceID: string;
+	    name: string;
+	    data: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new Interaction(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.traceID = source["traceID"];
+	        this.name = source["name"];
+	        this.data = source["data"];
 	    }
 	}
 

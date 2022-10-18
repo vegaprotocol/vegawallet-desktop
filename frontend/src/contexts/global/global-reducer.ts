@@ -23,14 +23,13 @@ export const initialGlobalState: GlobalState = {
   wallets: [],
   transactionQueue: [],
   transactionHistory: [],
-  passphraseModalOpen: false,
   drawerOpen: false,
-  sidebarOpen: false,
+  passphraseModalOpen: false,
+  removeWalletModalOpen: false,
+  signMessageModalOpen: false,
+  taintKeyModalOpen: false,
+  updateKeyModalOpen: false,
   settingsModalOpen: false,
-  onboarding: {
-    wallets: [],
-    networks: []
-  },
   config: null,
   // network
   network: null,
@@ -82,6 +81,11 @@ export type GlobalAction =
       key: WalletModel.DescribeKeyResult
     }
   | {
+      type: 'UPDATE_WALLET'
+      wallet: string
+      data: Wallet
+    }
+  | {
       type: 'ADD_WALLETS'
       wallets: string[]
     }
@@ -117,19 +121,31 @@ export type GlobalAction =
       wallet: string
     }
   | {
-      type: 'SET_PASSPHRASE_MODAL'
-      open: boolean
-    }
-  | {
       type: 'SET_DRAWER'
       open: boolean
     }
   | {
-      type: 'SET_SIDEBAR'
+      type: 'SET_PASSPHRASE_MODAL'
       open: boolean
     }
   | {
       type: 'SET_SETTINGS_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_REMOVE_WALLET_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_TAINT_KEY_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_SIGN_MESSAGE_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_UPDATE_KEY_MODAL'
       open: boolean
     }
   // Network
@@ -242,8 +258,7 @@ export function globalReducer(
     case 'START_ONBOARDING': {
       return {
         ...state,
-        status: AppStatus.Onboarding,
-        onboarding: action.existing
+        status: AppStatus.Onboarding
       }
     }
     case 'ADD_WALLET': {
@@ -385,28 +400,46 @@ export function globalReducer(
         wallet
       }
     }
-    case 'SET_PASSPHRASE_MODAL': {
-      return {
-        ...state,
-        passphraseModalOpen: action.open
-      }
-    }
     case 'SET_DRAWER': {
       return {
         ...state,
         drawerOpen: action.open
       }
     }
-    case 'SET_SIDEBAR': {
+    case 'SET_PASSPHRASE_MODAL': {
       return {
         ...state,
-        sidebarOpen: action.open
+        passphraseModalOpen: action.open
       }
     }
     case 'SET_SETTINGS_MODAL': {
       return {
         ...state,
         settingsModalOpen: action.open
+      }
+    }
+    case 'SET_TAINT_KEY_MODAL': {
+      return {
+        ...state,
+        taintKeyModalOpen: action.open
+      }
+    }
+    case 'SET_SIGN_MESSAGE_MODAL': {
+      return {
+        ...state,
+        signMessageModalOpen: action.open
+      }
+    }
+    case 'SET_UPDATE_KEY_MODAL': {
+      return {
+        ...state,
+        updateKeyModalOpen: action.open
+      }
+    }
+    case 'SET_REMOVE_WALLET_MODAL': {
+      return {
+        ...state,
+        removeWalletModalOpen: action.open
       }
     }
     // network

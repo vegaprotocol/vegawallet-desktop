@@ -20,6 +20,8 @@ $color5 = Lightest
   --vega-orange: rgb(var(--vega-orange-rgb));
   --vega-blue-rgb: 72 175 240;
   --vega-blue: rgb(var(--vega-blue-rgb));
+  --vega-pink-rgb: 255 7 127;
+  --vega-pink: rgb(var(--vega-pink-rgb));
 
   /* Contextual colors */
   --intent-none-rgb: 110 110 110;

@@ -21,12 +21,10 @@ export enum AppStatus {
 }
 
 export interface KeyPair
-  extends Pick<
-    WalletModel.DescribeKeyResult,
-    'publicKey' | 'metadata' | 'isTainted'
-  > {
+  extends Pick<WalletModel.DescribeKeyResult, 'publicKey' | 'isTainted'> {
   name: string
   publicKeyShort: string
+  meta: WalletModel.DescribeKeyResult['metadata']
 }
 
 export interface Wallet {
@@ -39,10 +37,6 @@ export interface GlobalState {
   status: AppStatus
   version: string
   config: ConfigModel.Config | null
-  onboarding: {
-    wallets: string[]
-    networks: string[]
-  }
 
   // Transactions
   transactionQueue: Transaction[]
@@ -62,9 +56,12 @@ export interface GlobalState {
   serviceUrl: string
 
   // UI
-  sidebarOpen: boolean
-  passphraseModalOpen: boolean
   drawerOpen: boolean
+  passphraseModalOpen: boolean
+  removeWalletModalOpen: boolean
+  signMessageModalOpen: boolean
+  taintKeyModalOpen: boolean
+  updateKeyModalOpen: boolean
   settingsModalOpen: boolean
 }
 

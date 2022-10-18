@@ -4,6 +4,7 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
 import { parseTx } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
@@ -11,6 +12,31 @@ import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import type { GlobalAction } from './global-reducer'
+
+const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
+  const networks = await service.WalletApi.ListNetworks()
+
+  if (preset && (!networks.networks || networks.networks.length === 0)) {
+    await service.WalletApi.ImportNetwork({
+      name: preset.name,
+      url: preset.configFileUrl
+    })
+
+    return service.WalletApi.ListNetworks()
+  }
+
+  return networks
+}
+
+const getDefaultNetwork = (
+  config: ConfigModel.Config,
+  networks: WalletModel.ListNetworksResult
+) => {
+  if (config.defaultNetwork) {
+    return config.defaultNetwork
+  }
+  return networks.networks?.[0]
+}
 
 export function createActions(
   service: ServiceType,
@@ -58,14 +84,10 @@ export function createActions(
             WalletModel.ListNetworksResult
           ] = await Promise.all([
             service.WalletApi.ListWallets(),
-            service.WalletApi.ListNetworks()
+            getNetworks(service, presets[0])
           ])
 
-          const defaultNetwork = config.defaultNetwork
-            ? networks.networks?.find(
-                (n: string) => n === config.defaultNetwork
-              ) || networks.networks?.[0]
-            : networks.networks?.[0]
+          const defaultNetwork = getDefaultNetwork(config, networks)
 
           const defaultNetworkConfig = defaultNetwork
             ? await service.WalletApi.DescribeNetwork({
@@ -174,55 +196,6 @@ export function createActions(
           if (err !== 'dismissed') {
             AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
             logger.error(err)
-          }
-        }
-      }
-    },
-
-    getKeysAction(wallet: string) {
-      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-        const state = getState()
-        const selectedWallet = state.wallets.find(w => w.name === wallet)
-
-        if (selectedWallet?.keypairs) {
-          dispatch({ type: 'ACTIVATE_WALLET', wallet })
-          const publicKey = Object.keys(selectedWallet.keypairs)[0]
-          window.location.hash = `/wallet/${wallet}/keypair/${publicKey}`
-          logger.debug('ChangeWallet')
-        } else {
-          try {
-            const passphrase = await requestPassphrase()
-            const keys = await service.WalletApi.ListKeys({
-              wallet,
-              passphrase
-            })
-
-            const keysWithMeta = await Promise.all(
-              (keys.keys || []).map(key =>
-                service.WalletApi.DescribeKey({
-                  wallet,
-                  passphrase,
-                  publicKey: key.publicKey ?? ''
-                })
-              )
-            )
-
-            dispatch({
-              type: 'SET_KEYPAIRS',
-              wallet,
-              keypairs: keysWithMeta || []
-            })
-
-            if (keys.keys?.length) {
-              window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
-            } else {
-              window.location.hash = `/wallet/${wallet}`
-            }
-          } catch (err) {
-            if (err !== 'dismissed') {
-              AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-              logger.error(err)
-            }
           }
         }
       }

@@ -185,7 +185,7 @@ Cypress.Commands.add('waitForHome', () => {
   cy.visit('/')
   cy.getByTestId('splash-loader').should('be.visible')
   cy.getByTestId('splash-loader').should('not.exist')
-  cy.getByTestId('home-splash', { timeout: 30000 }).should('be.visible')
+  cy.getByTestId('wallet-home', { timeout: 30000 }).should('be.visible')
   cy.get('body').then(body => {
     if (body.find('[data-testid="telemetry-option-form"]').length > 0) {
       cy.get('button[role="radio"][value="no"]').click()

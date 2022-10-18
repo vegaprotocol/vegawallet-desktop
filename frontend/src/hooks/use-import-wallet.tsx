@@ -30,7 +30,7 @@ export function useImportWallet() {
           version: Number(values.version)
         })
 
-        if (resp) {
+        if (resp && resp.key && resp.wallet) {
           setResponse(resp)
 
           const keypair = await service.WalletApi.DescribeKey({

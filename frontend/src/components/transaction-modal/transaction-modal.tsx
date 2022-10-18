@@ -7,18 +7,20 @@ interface TransactionModalProps {
   onRespond: (txId: string, decision: boolean) => void
 }
 
+const getTitle = (size: number) =>
+  `${size} pending transaction${size !== 1 ? 's' : ''}`
+
 export function TransactionModal({
   transactions,
   onRespond
 }: TransactionModalProps) {
   return (
-    <Dialog open={Boolean(transactions.length)} size='lg'>
+    <Dialog
+      open={Boolean(transactions.length)}
+      size='lg'
+      title={getTitle(transactions.length)}
+    >
       <div data-testid='transaction-dialog'>
-        {transactions.length > 1 && (
-          <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: 20 }}>
-            {transactions.length} pending transactions
-          </h2>
-        )}
         {transactions.map((transaction, i) => {
           const itemStyles =
             i < transactions.length - 1

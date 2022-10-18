@@ -1,6 +1,5 @@
 import type { ErrorInfo, ReactNode } from 'react'
 import { Component, useEffect } from 'react'
-import { useMatch } from 'react-router-dom'
 
 import { Button } from './components/button'
 import { Splash } from './components/splash'
@@ -64,14 +63,17 @@ interface AppFrameProps {
  * drag the app window aroung. Also renders the vega-bg className if onboard mode
  */
 export function AppFrame({ children }: AppFrameProps) {
-  const walletMatch = useMatch('/wallet/*')
-  const useVegaBg = !Boolean(walletMatch)
+  const { state } = useGlobal()
+  const useVegaBg = state.status === AppStatus.Onboarding
   return (
     <div
       style={{
         height: '100%',
         paddingTop: APP_FRAME_HEIGHT,
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        backgroundColor: Colors.DARK_GRAY_1,
+        position: 'relative',
+        overflowY: 'auto'
       }}
       data-testid='app-frame'
       className={useVegaBg ? 'vega-bg' : undefined}
