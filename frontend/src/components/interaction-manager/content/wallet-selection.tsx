@@ -1,9 +1,15 @@
+import { useForm } from 'react-hook-form'
+
+import { Colors } from '../../../config/colors'
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
+import { Validation } from '../../../lib/form-validation'
 import { Button } from '../../button'
+import { ButtonGroup } from '../../button-group'
 import { ButtonUnstyled } from '../../button-unstyled'
 import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
+import { RadioGroup } from '../../radio-group'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestWalletSelection } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
@@ -14,7 +20,15 @@ export const WalletSelection = ({
   setResolved
 }: InteractionContentProps<RequestWalletSelection>) => {
   const { service } = useGlobal()
-  const handleApprove = async (wallet: string) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid }
+  } = useForm<{ wallet: string }>({
+    mode: 'onChange'
+  })
+
+  const handleApprove = async ({ wallet }: { wallet: string }) => {
     if (!isResolved) {
       const passphrase = await requestPassphrase()
 
@@ -30,10 +44,7 @@ export const WalletSelection = ({
         })
       } catch (err) {
         AppToaster.show({
-          message:
-            err instanceof Error
-              ? err.message
-              : `Error selecting wallet "${wallet}"`,
+          message: `${err}`,
           intent: Intent.DANGER
         })
       }
@@ -57,10 +68,7 @@ export const WalletSelection = ({
         })
       } catch (err) {
         AppToaster.show({
-          message:
-            err instanceof Error
-              ? err.message
-              : `Error rejecting connection for "${interaction.event.data.hostname}"`,
+          message: `${err}`,
           intent: Intent.DANGER
         })
       }
@@ -70,55 +78,70 @@ export const WalletSelection = ({
   }
 
   return (
-    <Dialog open={true} size='lg'>
-      <div
+    <Dialog open={true} size='lg' title='Approve connection'>
+      <form
+        onSubmit={handleSubmit(handleApprove)}
         data-testid='wallet-selection-modal'
-        style={{ textAlign: 'center', marginBottom: 20 }}
+        style={{ padding: '0 20px 20px' }}
       >
-        <div>
-          <strong>{interaction.event.data.hostname}</strong>
-        </div>
-        <div>is requesting access to a wallet</div>
-      </div>
-      <div>
-        Approving a connection allows this site to see your wallet chain ID, and
-        may allow access to your public keys and allow you to approve
-        transactions depending on your wallet permissions.
-      </div>
-      <div style={{ marginTop: 20 }}>Select a wallet to connect to:</div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 12,
-          marginTop: 20
-        }}
-      >
-        {interaction.event.data.availableWallets.map(wallet => (
-          <Button
-            key={wallet}
-            data-testid='wallet-selection-button'
-            onClick={() => handleApprove(wallet)}
-          >
-            {wallet}
-          </Button>
-        ))}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'center',
-          marginTop: 28
-        }}
-      >
-        <ButtonUnstyled
-          data-testid='wallet-connection-reject'
-          onClick={handleReject}
+        <p
+          style={{
+            marginBottom: 20,
+            border: `1px solid ${Colors.VEGA_PINK}`,
+            padding: 20,
+            textAlign: 'center'
+          }}
         >
-          Cancel
-        </ButtonUnstyled>
-      </div>
+          <strong>{interaction.event.data.hostname}</strong> is requesting
+          access to a wallet
+        </p>
+        <p>
+          Approving a connection allows this site to see your wallet chain ID,
+          and may allow access to your public keys and allow you to approve
+          transactions depending on your wallet permissions.
+        </p>
+        <div style={{ marginTop: 20 }}>Select a wallet to connect to:</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+            margin: '20px 0 32px'
+          }}
+        >
+          <RadioGroup
+            name='wallet'
+            rules={{
+              required: Validation.REQUIRED
+            }}
+            control={control}
+            options={interaction.event.data.availableWallets.map(w => ({
+              value: w,
+              label: w
+            }))}
+            itemStyle={{
+              padding: 10,
+              borderTop: `1px solid ${Colors.DARK_GRAY_1}`,
+              width: '100%'
+            }}
+          />
+        </div>
+        <ButtonGroup inline>
+          <Button
+            data-testid='wallet-connection-approve'
+            type='submit'
+            disabled={!isValid}
+          >
+            Approve
+          </Button>
+          <ButtonUnstyled
+            data-testid='wallet-connection-reject'
+            onClick={handleReject}
+          >
+            Cancel
+          </ButtonUnstyled>
+        </ButtonGroup>
+      </form>
     </Dialog>
   )
 }

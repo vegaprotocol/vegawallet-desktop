@@ -1,27 +1,50 @@
-import type { HTMLAttributes } from 'react'
-import React from 'react'
+import type { ReactNode } from 'react'
 
+import { ButtonUnstyled } from '../../components/button-unstyled'
+import { ChevronLeft } from '../../components/icons/chevron-left'
+import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 
-interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
-  children: React.ReactNode
+interface HeaderProps {
+  breadcrumb?: ReactNode
+  title?: string
+  subtitle?: string
+  onBack?: () => void
 }
 
-export const Header = ({ children, style, ...rest }: HeaderProps) => {
+export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
   return (
-    <h1
-      {...rest}
-      style={{
-        fontSize: 15,
-        color: Colors.TEXT_COLOR_DEEMPHASISE,
-        margin: '30px 0 20px 0',
-        textTransform: 'uppercase',
-        letterSpacing: '0.3em',
-        lineHeight: 1.2,
-        ...style
-      }}
-    >
-      {children}
-    </h1>
+    <div style={{ padding: 20 }}>
+      {breadcrumb && onBack && (
+        <ButtonUnstyled
+          data-testid='back'
+          onClick={onBack}
+          style={{
+            display: 'flex',
+            gap: 10,
+            alignItems: 'center',
+            textDecoration: 'none'
+          }}
+        >
+          <ChevronLeft style={{ width: 14 }} />
+          <Title style={{ color: Colors.WHITE, margin: 0 }}>{breadcrumb}</Title>
+        </ButtonUnstyled>
+      )}
+      <div>
+        <Title
+          element='h1'
+          data-testid='header-title'
+          style={{
+            color: Colors.WHITE,
+            fontSize: 32,
+            textTransform: 'none',
+            letterSpacing: 0
+          }}
+        >
+          {title}
+        </Title>
+        <Title>{subtitle}</Title>
+      </div>
+    </div>
   )
 }

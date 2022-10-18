@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Header } from '../../components/header'
 import { Splash } from '../../components/splash'
+import { Title } from '../../components/title'
 import { WalletImportForm } from '../../components/wallet-import-form'
 import { Colors } from '../../config/colors'
 import { useImportWallet } from '../../hooks/use-import-wallet'
@@ -14,17 +14,18 @@ export const WalletImport = () => {
 
   React.useEffect(() => {
     if (response) {
-      navigate(Paths.Home)
+      const path = response.wallet?.name
+        ? `/wallet/${encodeURIComponent(response.wallet?.name)}`
+        : Paths.Home
+      navigate(path)
     }
   }, [response, navigate])
 
   return (
     <Splash>
-      <Header
-        style={{ marginTop: 0, color: Colors.WHITE, textAlign: 'center' }}
-      >
+      <Title style={{ marginTop: 0, color: Colors.WHITE, textAlign: 'center' }}>
         Import wallet
-      </Header>
+      </Title>
       <WalletImportForm submit={submit} cancel={() => navigate(Paths.Home)} />
     </Splash>
   )

@@ -1,8 +1,9 @@
-const { unlockWallet, authenticate } = require('../support/helpers')
+const { unlockWallet, authenticate, goToKey } = require('../support/helpers')
 
 describe('wallet sign key', () => {
   let walletName
   let passphrase
+  let pubkey
 
   before(() => {
     cy.clean()
@@ -20,11 +21,13 @@ describe('wallet sign key', () => {
   beforeEach(() => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
+    pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('message signing success', () => {
     unlockWallet(walletName, passphrase)
-    goToSignPage()
+    goToKey(pubkey)
+    goToSign()
     signMessage('Sign message successfully')
     authenticate(passphrase)
     cy.getByTestId('toast').contains('Message signed successfully')
@@ -52,10 +55,8 @@ describe('wallet sign key', () => {
   })
 })
 
-function goToSignPage() {
-  cy.getByTestId('wallet-actions').click()
-  cy.getByTestId('wallet-action-sign').click()
-  cy.get('html').click() // close dropdown
+function goToSign() {
+  cy.getByTestId('keypair-sign').click()
 }
 
 function signMessage(message) {

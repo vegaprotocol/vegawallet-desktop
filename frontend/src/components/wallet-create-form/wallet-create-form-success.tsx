@@ -2,11 +2,9 @@ import type { ReactNode } from 'react'
 
 import { Colors } from '../../config/colors'
 import type { WalletModel } from '../../wallet-client'
-import { ButtonUnstyled } from '../button-unstyled'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
-import { Copy } from '../icons/copy'
 import { Warning } from '../icons/warning'
 
 interface WalletCreateFormSuccessProps {
@@ -50,11 +48,7 @@ export function WalletCreateFormSuccess({
             {response?.wallet?.recoveryPhrase}
           </CodeBlock>
           <span style={{ position: 'absolute', top: 7, right: 10 }}>
-            <CopyWithTooltip text={response?.wallet?.recoveryPhrase ?? ''}>
-              <ButtonUnstyled>
-                <Copy style={{ width: 13, height: 13 }} />
-              </ButtonUnstyled>
-            </CopyWithTooltip>
+            <CopyWithTooltip text={response?.wallet?.recoveryPhrase ?? ''} />
           </span>
         </p>
       </SuccessSection>

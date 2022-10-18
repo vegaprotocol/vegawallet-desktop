@@ -6,6 +6,10 @@ export function unlockWallet(name, passphrase) {
   cy.getByTestId('passphrase-form').should('not.exist')
 }
 
+export function goToKey(pubkey) {
+  cy.getByTestId(`wallet-keypair-${pubkey}`).click()
+}
+
 export function authenticate(passphrase) {
   cy.getByTestId('passphrase-form').should('be.visible')
   cy.getByTestId('input-passphrase').type(passphrase)
