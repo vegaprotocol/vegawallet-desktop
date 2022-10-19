@@ -169,7 +169,7 @@ const getJsonFileContent = async filePath => {
     return getRemoteFile(filePath)
   } else {
     logger.info(`Reading specs file content...`)
-    return require(path.join(process.cwd(), filePath))
+    return require(filePath)
   }
 }
 
