@@ -82,7 +82,7 @@ const NetworkPresetItem = ({
 
 interface NetworkPresetsProps {
   setEditView: () => void
-  setSelectedNetwork: React.Dispatch<React.SetStateAction<string | null>>
+  setSelectedNetwork: (network: string) => void
 }
 
 export function NetworkPresets({

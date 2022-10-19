@@ -17,7 +17,9 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
   const { state } = useGlobal()
   const styles = useSpring({
     to: {
-      y: state.drawerOpen ? -(height - APP_FRAME_HEIGHT - DRAWER_HEIGHT) : 0
+      y: state.drawerState.isOpen
+        ? -(height - APP_FRAME_HEIGHT - DRAWER_HEIGHT)
+        : 0
     },
     config: { ...config.default, duration: 170 }
   })
@@ -30,7 +32,7 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
         background: Colors.BLACK,
         borderTop: '3px solid',
         height: height - APP_FRAME_HEIGHT,
-        overflowY: state.drawerOpen ? 'auto' : 'hidden'
+        overflowY: state.drawerState.isOpen ? 'auto' : 'hidden'
       }}
     >
       <DrawerContent />

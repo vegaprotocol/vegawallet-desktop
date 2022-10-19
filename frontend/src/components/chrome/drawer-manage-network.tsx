@@ -1,10 +1,10 @@
+import { DrawerPanel } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { NetworkPresets } from '../network-presets'
-import type { DrawerViews } from './drawer-content'
 
 interface DrawerManageNetworkProps {
-  setView: React.Dispatch<React.SetStateAction<DrawerViews>>
-  setSelectedNetwork: React.Dispatch<React.SetStateAction<string | null>>
+  setView: (panel: DrawerPanel) => void
+  setSelectedNetwork: (network: string) => void
 }
 
 export function DrawerManageNetwork({
@@ -14,11 +14,14 @@ export function DrawerManageNetwork({
   return (
     <div>
       <NetworkPresets
-        setEditView={() => setView('edit')}
+        setEditView={() => setView(DrawerPanel.Edit)}
         setSelectedNetwork={setSelectedNetwork}
       />
       <div style={{ margin: '24px 0' }}>
-        <Button data-testid='add-network' onClick={() => setView('add')}>
+        <Button
+          data-testid='add-network'
+          onClick={() => setView(DrawerPanel.Add)}
+        >
           Add network
         </Button>
       </div>

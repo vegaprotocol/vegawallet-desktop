@@ -20,6 +20,25 @@ export enum AppStatus {
   Onboarding = 'Onboarding'
 }
 
+export enum ServiceState {
+  Started = 'Started',
+  Stopped = 'Stopped',
+  Loading = 'Loading'
+}
+
+export enum DrawerPanel {
+  Network,
+  Manage,
+  Edit,
+  Add
+}
+
+export type DrawerState = {
+  isOpen: boolean
+  panel: DrawerPanel | null
+  editingNetwork: string | null
+}
+
 export interface KeyPair
   extends Pick<WalletModel.DescribeKeyResult, 'publicKey' | 'isTainted'> {
   name: string
@@ -52,17 +71,16 @@ export interface GlobalState {
   presets: NetworkPreset[]
   presetsInternal: NetworkPreset[]
   networkConfig: WalletModel.DescribeNetworkResult | null
-  serviceRunning: boolean
-  serviceUrl: string
+  serviceStatus: ServiceState
 
   // UI
-  drawerOpen: boolean
-  passphraseModalOpen: boolean
-  removeWalletModalOpen: boolean
-  signMessageModalOpen: boolean
-  taintKeyModalOpen: boolean
-  updateKeyModalOpen: boolean
-  settingsModalOpen: boolean
+  drawerState: DrawerState
+  isPassphraseModalOpen: boolean
+  isRemoveWalletModalOpen: boolean
+  isSignMessageModalOpen: boolean
+  isTaintKeyModalOpen: boolean
+  isUpdateKeyModalOpen: boolean
+  isSettingsModalOpen: boolean
 }
 
 export type GlobalDispatch = React.Dispatch<

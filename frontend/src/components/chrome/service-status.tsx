@@ -1,19 +1,56 @@
-import React from 'react'
+import { useCallback } from 'react'
 
 import { Colors } from '../../config/colors'
 import { Fonts } from '../../config/fonts'
-import { useGlobal } from '../../contexts/global/global-context'
+import { ServiceState, useGlobal } from '../../contexts/global/global-context'
+import { ButtonUnstyled } from '../button-unstyled'
+
+function StatusCircle({
+  background,
+  loading
+}: {
+  background: string
+  loading?: boolean
+}) {
+  const baseStyles: React.CSSProperties = {
+    display: 'inline-block',
+    width: 11,
+    height: 11,
+    borderRadius: '50%',
+    marginRight: 5,
+    background
+  }
+
+  return (
+    <span className={loading ? 'blink' : undefined} style={{ ...baseStyles }} />
+  )
+}
 
 export function ServiceStatus() {
   const {
-    state: { network, serviceRunning, serviceUrl }
+    service,
+    dispatch,
+    state: { network, networkConfig, serviceStatus }
   } = useGlobal()
+  const serviceUrl = networkConfig
+    ? `${networkConfig.host}:${networkConfig.port}`
+    : ''
 
-  return (
-    <>
-      <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
-        <StatusCircle running={serviceRunning} />
-        {serviceRunning ? (
+  const startService = useCallback(async () => {
+    if (network) {
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Loading
+      })
+      await service.StartService({ network })
+    }
+  }, [dispatch, service, network])
+
+  switch (serviceStatus) {
+    case ServiceState.Started: {
+      return (
+        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+          <StatusCircle background={Colors.VEGA_GREEN} />
           <>
             Wallet Service:{' '}
             <span
@@ -27,24 +64,27 @@ export function ServiceStatus() {
             </span>{' '}
             on {serviceUrl}
           </>
-        ) : (
-          <>Wallet Service: Not running</>
-        )}
-      </div>
-    </>
-  )
-}
-
-function StatusCircle({ running }: any) {
-  const baseStyles: React.CSSProperties = {
-    display: 'inline-block',
-    width: 11,
-    height: 11,
-    borderRadius: '50%',
-    marginRight: 5
+        </div>
+      )
+    }
+    case ServiceState.Stopped: {
+      return (
+        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+          <StatusCircle background={Colors.VEGA_RED} />
+          <span>
+            Wallet Service: Not running.{' '}
+            <ButtonUnstyled onClick={startService}>Start</ButtonUnstyled>
+          </span>
+        </div>
+      )
+    }
+    case ServiceState.Loading: {
+      return (
+        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+          <StatusCircle loading background={Colors.VEGA_ORANGE} />
+          <span className='loading'>Wallet Service: Loading</span>
+        </div>
+      )
+    }
   }
-  const contextualStyles: React.CSSProperties = {
-    background: running ? Colors.VEGA_GREEN : Colors.VEGA_RED
-  }
-  return <span style={{ ...baseStyles, ...contextualStyles }} />
 }

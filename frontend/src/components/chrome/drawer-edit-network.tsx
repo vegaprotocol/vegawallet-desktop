@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useGlobal } from '../../contexts/global/global-context'
 import { NetworkConfigContainer } from '../network-config-container'
 import { NetworkConfigForm } from '../network-config-form'
