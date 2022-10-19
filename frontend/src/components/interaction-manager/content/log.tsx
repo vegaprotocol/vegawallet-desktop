@@ -32,7 +32,7 @@ export const LogComponent = ({
         message: interaction.event.data.message,
         intent: getMessageIntent(interaction.event.data.type)
       })
-      setResolved()
+      setResolved(true)
     }
   }, [interaction, isResolved, setResolved])
 

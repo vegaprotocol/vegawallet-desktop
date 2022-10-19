@@ -36,7 +36,7 @@ export const WalletConnection = ({
 
     if (!isResolved) {
       // automatically accept incoming connections
-      setResolved()
+      setResolved(true)
       handleResponse(true)
     }
   }, [interaction, service, isResolved, setResolved])
