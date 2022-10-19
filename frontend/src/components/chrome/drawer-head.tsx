@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { Colors } from '../../config/colors'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -50,7 +50,7 @@ type DrawerToggleProps = {
 }
 
 function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
-  const [hover, setHover] = React.useState(false)
+  const [hover, setHover] = useState(false)
 
   return (
     <ButtonUnstyled

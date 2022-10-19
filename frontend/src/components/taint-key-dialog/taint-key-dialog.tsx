@@ -22,7 +22,7 @@ export const TaintKeyDialog = () => {
   }
 
   return (
-    <Dialog size='lg' open={state.taintKeyModalOpen} title='Taint key'>
+    <Dialog size='lg' open={state.isTaintKeyModalOpen} title='Taint key'>
       <div data-testid='keypair-taint' style={{ padding: '0 20px 20px' }}>
         {keypair.isTainted && (
           <div style={{ marginBottom: 20 }}>

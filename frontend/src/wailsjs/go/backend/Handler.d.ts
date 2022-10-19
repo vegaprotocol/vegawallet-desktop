@@ -30,9 +30,9 @@ export function RespondToInteraction(arg1:number):Promise<Error>;
 
 export function SearchForExistingConfiguration():Promise<backend.SearchForExistingConfigurationResponse>;
 
-export function StartService(arg1:backend.StartServiceRequest):Promise<boolean>;
+export function StartService(arg1:backend.StartServiceRequest):Promise<Error>;
 
-export function StopService():Promise<boolean>;
+export function StopService():Promise<Error>;
 
 export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<jsonrpc.Response>;
 

@@ -17,6 +17,7 @@ export function authenticate(passphrase) {
 }
 
 export function approveConnection(hostname, walletName, passphrase) {
+  cy.getByTestId('service-status').should('contain.text', 'http://127.0.0.1')
   cy.sendConnectionRequest(hostname)
   cy.getByTestId('wallet-selection-modal').should('exist')
   cy.get(`label[for=${walletName}]`).click()

@@ -45,13 +45,16 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 	return nil
 }
 
-func (h *Handler) emitReceivedInteraction(interaction interactor.Interaction) {
-	h.log.Debug(fmt.Sprintf("Received a new interaction %q with trace ID %q", interaction.Name, interaction.TraceID))
+func (h *Handler) emitReceivedInteraction(log *zap.Logger, interaction interactor.Interaction) {
+	log.Debug("Received a new interaction",
+		zap.String("interaction", string(interaction.Name)),
+		zap.String("trace-id", interaction.TraceID),
+	)
 
 	if shouldEmitOSNotification(interaction.Name) {
 		message := strings.ToLower(strings.ReplaceAll(string(interaction.Name), "_", " "))
 		if err := os.Notify(app.Name, message); err != nil {
-			h.log.Warn("Could not send the OS notification", zap.Error(err))
+			log.Warn("Could not send the OS notification", zap.Error(err))
 		}
 	}
 
@@ -187,25 +190,25 @@ func (h *Handler) ClearSentTransaction(req *ClearSentTransactionRequest) error {
 	return nil
 }
 
-func (h *Handler) emitTransactionSentEvent(sentTransaction service.SentTransaction) {
-	h.log.Info(fmt.Sprintf("Received a \"transaction_sent\" event with ID: %s", sentTransaction.TxID))
+func (h *Handler) emitTransactionSentEvent(log *zap.Logger, sentTransaction service.SentTransaction) {
+	log.Info(fmt.Sprintf("Received a \"transaction_sent\" event with ID: %s", sentTransaction.TxID))
 	h.service.SentTransactions.Store(sentTransaction)
 	go func() {
 		req, err := toSerializableSentTransaction(sentTransaction)
 		if err != nil {
-			h.log.Error("couldn't serialize sent transaction for event", zap.Error(err))
+			log.Error("couldn't serialize sent transaction for event", zap.Error(err))
 		}
 		runtime.EventsEmit(h.ctx, TransactionSentEvent, req)
 	}()
 }
 
-func (h *Handler) emitNewConsentRequestEvent(consentRequest service.ConsentRequest) {
-	h.log.Info(fmt.Sprintf("Received a \"new_consent_request\" event with ID: %s", consentRequest.TxID))
+func (h *Handler) emitNewConsentRequestEvent(log *zap.Logger, consentRequest service.ConsentRequest) {
+	log.Info(fmt.Sprintf("Received a \"new_consent_request\" event with ID: %s", consentRequest.TxID))
 	h.service.ConsentRequests.Store(consentRequest)
 	go func() {
 		req, err := toSerializableConsentRequest(consentRequest)
 		if err != nil {
-			h.log.Error("couldn't serialize consent request for event", zap.Error(err))
+			log.Error("couldn't serialize consent request for event", zap.Error(err))
 		}
 		runtime.EventsEmit(h.ctx, NewConsentRequestEvent, req)
 	}()

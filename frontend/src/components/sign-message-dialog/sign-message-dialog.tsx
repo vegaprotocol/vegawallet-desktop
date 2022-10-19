@@ -33,7 +33,7 @@ export const SignMessageDialog = () => {
 
   return (
     <Dialog
-      open={state.signMessageModalOpen}
+      open={state.isSignMessageModalOpen}
       title={signedData ? 'Signed message' : 'Sign message'}
     >
       <div data-testid='keypair-sign' style={{ padding: '0 20px 20px' }}>

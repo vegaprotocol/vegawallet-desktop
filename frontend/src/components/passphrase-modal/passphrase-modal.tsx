@@ -55,7 +55,7 @@ export function PassphraseModal() {
   }
 
   return (
-    <Dialog open={state.passphraseModalOpen}>
+    <Dialog open={state.isPassphraseModalOpen}>
       <PassphraseModalForm
         onSubmit={onSubmit}
         onCancel={close}

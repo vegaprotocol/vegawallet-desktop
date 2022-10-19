@@ -1,0 +1,26 @@
+.blink {
+  opacity: 1;
+  animation: blink 1500ms infinite;
+  transition: opacity 0.2s;
+}
+
+@keyframes blink {
+  to {
+    opacity: 0.5;
+  }
+}
+
+.loading::after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  content: '\2026';
+  width: 0;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 14px;
+  }
+}

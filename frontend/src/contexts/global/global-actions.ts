@@ -11,6 +11,7 @@ import type { ServiceType } from '../../service'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
+import { DrawerPanel } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
 const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
@@ -95,19 +96,15 @@ export function createActions(
               })
             : null
 
-          const serviceState = await service.GetServiceState()
-
           dispatch({
             type: 'INIT_APP',
-            isInit: true,
             config: config,
             wallets: wallets.wallets ?? [],
             network: defaultNetwork ?? '',
             networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
-            presetNetworksInternal: presetsInternal,
-            serviceRunning: serviceState.running
+            presetNetworksInternal: presetsInternal
           })
         } catch (err) {
           dispatch({ type: 'INIT_APP_FAILED' })
@@ -147,11 +144,6 @@ export function createActions(
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-
-            dispatch({
-              type: 'START_SERVICE',
-              port: state.networkConfig.port ?? 80
-            })
           }
         } catch (err) {
           logger.error(err)
@@ -208,12 +200,23 @@ export function createActions(
       return { type: 'UPDATE_KEYPAIR', wallet, keypair }
     },
 
-    setPassphraseModalAction(open: boolean): GlobalAction {
-      return { type: 'SET_PASSPHRASE_MODAL', open }
+    setDrawerAction(
+      isOpen: boolean,
+      panel?: DrawerPanel | null,
+      editingNetwork?: string
+    ): GlobalAction {
+      return {
+        type: 'SET_DRAWER',
+        state: {
+          isOpen,
+          panel: panel ?? DrawerPanel.Network,
+          editingNetwork: editingNetwork ?? null
+        }
+      }
     },
 
-    setDrawerAction(open: boolean): GlobalAction {
-      return { type: 'SET_DRAWER', open }
+    setPassphraseModalAction(open: boolean): GlobalAction {
+      return { type: 'SET_PASSPHRASE_MODAL', open }
     },
 
     changeWalletAction(wallet: string): GlobalAction {
@@ -304,8 +307,6 @@ export function createActions(
           await service.StartService({
             network: state.network
           })
-
-          dispatch({ type: 'START_SERVICE', port: networkConfig.port ?? 80 })
         } catch (err) {
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
           logger.error(err)
@@ -323,7 +324,6 @@ export function createActions(
           const status = await service.GetServiceState()
           if (!status.running) {
             await service.StartService({ network })
-            dispatch({ type: 'START_SERVICE', port: config.port ?? 80 })
           }
         } catch (err) {
           logger.error(err)
@@ -365,17 +365,13 @@ export function createActions(
     },
 
     startServiceAction() {
-      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+      return async (_dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const state = getState()
         logger.debug('StartService')
         try {
           const status = await service.GetServiceState()
           if (!status.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-            dispatch({
-              type: 'START_SERVICE',
-              port: state.networkConfig.port ?? 80
-            })
           }
         } catch (err) {
           logger.error(err)
@@ -384,13 +380,12 @@ export function createActions(
     },
 
     stopServiceAction() {
-      return async (dispatch: GlobalDispatch) => {
+      return async () => {
         logger.debug('StopService')
         try {
           const status = await service.GetServiceState()
           if (status.running) {
             await service.StopService()
-            dispatch({ type: 'STOP_SERVICE' })
           }
         } catch (err) {
           logger.error(err)

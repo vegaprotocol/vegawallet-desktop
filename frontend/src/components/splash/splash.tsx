@@ -15,8 +15,9 @@ export function Splash({ children, style, ...props }: SplashProps) {
     <div
       {...props}
       style={{
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        top: '35px',
+        bottom: 0,
         display: 'flex',
         justifyContent: 'flex-start',
         flexDirection: 'column',
@@ -29,7 +30,15 @@ export function Splash({ children, style, ...props }: SplashProps) {
       }}
     >
       <div
-        style={{ width: 545, maxWidth: '100%', marginTop: '13%', padding: 20 }}
+        style={{
+          display: 'flex',
+          width: 545,
+          minHeight: '100%',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          maxWidth: '100%',
+          padding: 20
+        }}
       >
         {children}
       </div>

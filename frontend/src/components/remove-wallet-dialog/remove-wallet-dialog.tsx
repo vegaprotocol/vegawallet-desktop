@@ -29,7 +29,11 @@ export const RemoveWalletDialog = () => {
   }
 
   return (
-    <Dialog size='lg' open={state.removeWalletModalOpen} title='Remove wallet'>
+    <Dialog
+      size='lg'
+      open={state.isRemoveWalletModalOpen}
+      title='Remove wallet'
+    >
       <div style={{ padding: '0 20px 20px' }}>
         <h2 style={{ marginBottom: 15 }}>
           Are you sure you want to remove "{wallet.name}"?
