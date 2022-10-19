@@ -1,6 +1,9 @@
+import type { Dispatch, SetStateAction } from 'react'
+
 export const enum EVENT_FLOW_TYPE {
   WALLET_CONNECTION = 'WALLET_CONNECTION',
-  TRANSACTION_CONSENT = 'TRANSACTION_CONSENT'
+  TRANSACTION_CONSENT = 'TRANSACTION_CONSENT',
+  PERMISSION_REQUEST = 'PERMISSION_REQUEST'
 }
 
 export type InteractionContentProps<T extends RawInteraction = RawInteraction> =
@@ -8,7 +11,7 @@ export type InteractionContentProps<T extends RawInteraction = RawInteraction> =
     interaction: Interaction<T>
     flow?: EVENT_FLOW_TYPE
     isResolved: boolean
-    setResolved: () => void
+    setResolved: Dispatch<SetStateAction<boolean>>
     onFinish: () => void
   }
 
@@ -37,10 +40,18 @@ export interface RequestPassphraseContent {
   wallet: string
 }
 
+export const enum PermissionTarget {
+  PUBLIC_KEYS = 'public_keys'
+}
+
+export const enum PermissionType {
+  READ = 'read'
+}
+
 export interface RequestPermissionsContent {
   hostname: string
   wallet: string
-  permissions: Map<string, string>
+  permissions: Record<PermissionTarget, PermissionType>
 }
 
 export interface RequestTransactionSendingContent {
@@ -77,6 +88,8 @@ export const enum INTERACTION_TYPE {
   INTERACTION_SESSION_ENDED = 'INTERACTION_SESSION_ENDED',
   REQUEST_WALLET_CONNECTION_REVIEW = 'REQUEST_WALLET_CONNECTION_REVIEW',
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
+  REQUEST_PERMISSIONS_REVIEW = 'REQUEST_PERMISSIONS_REVIEW',
+  REQUEST_PASSPHRASE = 'REQUEST_PASSPHRASE',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
   LOG = 'LOG'
@@ -92,6 +105,18 @@ export type RequestWalletSelection = {
   traceID: string
   name: INTERACTION_TYPE.REQUEST_WALLET_SELECTION
   data: RequestWalletSelectionContent
+}
+
+export type RequestPermissions = {
+  traceID: string
+  name: INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
+  data: RequestPermissionsContent
+}
+
+export type RequestPassphrase = {
+  traceID: string
+  name: INTERACTION_TYPE.REQUEST_PASSPHRASE
+  data: RequestPassphraseContent
 }
 
 export type RequestSucceeded = {
@@ -125,6 +150,8 @@ export type SessionEnded = {
 export type RawInteraction =
   | RequestWalletConnection
   | RequestWalletSelection
+  | RequestPermissions
+  | RequestPassphrase
   | RequestSucceeded
   | ErrorOccurred
   | Log
