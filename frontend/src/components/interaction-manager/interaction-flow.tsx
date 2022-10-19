@@ -6,17 +6,17 @@ import { Passphrase } from './content/passphrase'
 import { Permissions } from './content/permissions'
 import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
+import { Transaction } from './content/transaction'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
-import { Transaction } from './content/transaction'
 import type {
   ErrorOccurred,
   InteractionContentProps,
   Log,
-  RequestTransactionSending,
   RequestPassphrase,
   RequestPermissions,
   RequestSucceeded,
+  RequestTransactionSending,
   RequestWalletConnection,
   RequestWalletSelection,
   SessionEnded

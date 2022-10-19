@@ -33,7 +33,7 @@ export function InteractionManager() {
         service.ListConsentRequests(),
         service.ListSentTransactions()
       ])
-      console.log(queue)
+      console.log(queue, history)
       dispatch({
         type: 'SET_TRANSACTION_QUEUE',
         payload: queue.requests.map(parseTx)

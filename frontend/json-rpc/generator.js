@@ -131,7 +131,7 @@ const getTsDefs = async openrpcDocument => {
       type: 'object',
       properties: {},
       components: {
-        schemas:  Object.keys(openrpcDocument.components.schemas).reduce(
+        schemas: Object.keys(openrpcDocument.components.schemas).reduce(
           (acc, key) => {
             acc[key] = {
               ...openrpcDocument.components.schemas[key],
