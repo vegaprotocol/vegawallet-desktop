@@ -23,7 +23,10 @@ export enum AppStatus {
 export enum ServiceState {
   Started = 'Started',
   Stopped = 'Stopped',
-  Loading = 'Loading'
+  Loading = 'Loading',
+  Unhealthy = 'Unhealthy',
+  Unreachable = 'Unreachable',
+  Error = 'Error'
 }
 
 export enum DrawerPanel {

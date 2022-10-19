@@ -1,6 +1,8 @@
 import { useCallback } from 'react'
 
+import { AppToaster } from '../toaster'
 import { Colors } from '../../config/colors'
+import { Intent } from '../../config/intent'
 import { Fonts } from '../../config/fonts'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -42,9 +44,39 @@ export function ServiceStatus() {
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading
       })
-      await service.StartService({ network })
+      try {
+        await service.StartService({ network })
+      } catch (err) {
+        dispatch({
+          type: 'SET_SERVICE_STATUS',
+          status: ServiceState.Error
+        })
+        AppToaster.show({
+          intent: Intent.DANGER,
+          message: `${err}`,
+        })
+      }
     }
   }, [dispatch, service, network])
+
+  const restartService = useCallback(async () => {
+    if (network) {
+      try {
+        await service.StopService()
+      } catch (err) {
+        dispatch({
+          type: 'SET_SERVICE_STATUS',
+          status: ServiceState.Error
+        })
+        AppToaster.show({
+          intent: Intent.DANGER,
+          message: `${err}`,
+        })
+      }
+
+      await startService()
+    }
+  }, [startService, dispatch, service, network])
 
   switch (serviceStatus) {
     case ServiceState.Started: {
@@ -83,6 +115,37 @@ export function ServiceStatus() {
         <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle loading background={Colors.VEGA_ORANGE} />
           <span className='loading'>Wallet Service: Loading</span>
+        </div>
+      )
+    }
+    case ServiceState.Unhealthy: {
+      return (
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
+          <StatusCircle loading background={Colors.VEGA_ORANGE} />
+          <span>
+            Wallet Service: Unhealthy{' '}
+            <ButtonUnstyled onClick={restartService}>Restart</ButtonUnstyled>
+          </span>
+        </div>
+      )
+    }
+    case ServiceState.Unreachable: {
+      return (
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
+          <StatusCircle loading background={Colors.VEGA_ORANGE} />
+          <span className='loading'>Wallet Service: Not reachable, retrying</span>
+        </div>
+      )
+    }
+    case ServiceState.Error: {
+      return (
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
+          <StatusCircle background={Colors.VEGA_RED} />
+          <span>
+            Wallet Service: Failed.{' '}
+            <ButtonUnstyled onClick={startService}>Restart</ButtonUnstyled>
+          </span>
+
         </div>
       )
     }

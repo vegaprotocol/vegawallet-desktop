@@ -14,8 +14,7 @@ export function DrawerManageNetwork({
   return (
     <div>
       <NetworkPresets
-        setEditView={() => setView(DrawerPanel.Edit)}
-        setSelectedNetwork={setSelectedNetwork}
+        setEditView={setSelectedNetwork}
       />
       <div style={{ margin: '24px 0' }}>
         <Button

@@ -29,6 +29,10 @@ describe('network configuration', () => {
     cy.getByTestId('select-test2').click()
     cy.getByTestId('service-status').should(
       'contain.text',
+      'Wallet Service: Loading'
+    )
+    cy.getByTestId('service-status').should(
+      'contain.text',
       'Wallet Service: test2'
     )
 
