@@ -34,7 +34,6 @@ export const Passphrase = ({
             data: {}
           })
         } else {
-          console.log('INFINITE LOOP :scream:')
           AppToaster.show({
             message: `${err}`,
             intent: Intent.DANGER
