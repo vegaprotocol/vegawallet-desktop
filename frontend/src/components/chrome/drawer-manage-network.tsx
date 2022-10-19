@@ -4,16 +4,16 @@ import { NetworkPresets } from '../network-presets'
 
 interface DrawerManageNetworkProps {
   setView: (panel: DrawerPanel) => void
-  setSelectedNetwork: (network: string) => void
+  setEditingNetwork: (network: string) => void
 }
 
 export function DrawerManageNetwork({
   setView,
-  setSelectedNetwork
+  setEditingNetwork
 }: DrawerManageNetworkProps) {
   return (
     <div>
-      <NetworkPresets setEditView={setSelectedNetwork} />
+      <NetworkPresets setEditView={setEditingNetwork} />
       <div style={{ margin: '24px 0' }}>
         <Button
           data-testid='add-network'

@@ -46,13 +46,11 @@ export function DrawerContent() {
     [dispatch, actions]
   )
 
-  const setSelectedNetwork = useCallback(
+  const setEditingNetwork = useCallback(
     (editingNetwork: string) => {
-      dispatch(
-        actions.setDrawerAction(true, state.drawerState.panel, editingNetwork)
-      )
+      dispatch(actions.setDrawerAction(true, DrawerPanel.Edit, editingNetwork))
     },
-    [state, dispatch, actions]
+    [dispatch, actions]
   )
 
   switch (state.drawerState.panel) {
@@ -93,7 +91,7 @@ export function DrawerContent() {
           <DrawerContentWrapper>
             <DrawerManageNetwork
               setView={setView}
-              setSelectedNetwork={setSelectedNetwork}
+              setEditingNetwork={setEditingNetwork}
             />
           </DrawerContentWrapper>
         </>
