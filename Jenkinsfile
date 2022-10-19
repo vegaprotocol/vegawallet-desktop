@@ -16,9 +16,7 @@ pipeline {
         script {
           commitHash = getCommitHash()
         }
-        runApprobation ignoreFailure: false,
-          vegawalletDesktopBranch: commitHash,
-          type: 'frontend',
+        runApprobation ignoreFailure: false, vegawalletDesktopBranch: commitHash, type: 'frontend',
       }
     }
   }
