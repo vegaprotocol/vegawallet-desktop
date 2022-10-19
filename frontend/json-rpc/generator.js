@@ -1,6 +1,6 @@
 const path = require('path')
 const log = require('loglevel')
-const { copy, remove, readFile, writeFile } = require('fs-extra')
+const { readFile, writeFile } = require('fs-extra')
 const { template, camelCase, toUpper } = require('lodash')
 const { compile } = require('json-schema-to-typescript')
 const { Command } = require('commander')
@@ -130,18 +130,18 @@ const getTsDefs = async openrpcDocument => {
       title: 'Methods',
       type: 'object',
       properties: {},
-      components: Object.keys(openrpcDocument.components.schemas).reduce(
-        (acc, key) => {
-          acc.schemas[key] = {
-            ...openrpcDocument.components.schemas[key],
-            title: pascalCase(key)
-          }
-          return acc
-        },
-        {
-          schemas: {}
-        }
-      )
+      components: {
+        schemas:  Object.keys(openrpcDocument.components.schemas).reduce(
+          (acc, key) => {
+            acc[key] = {
+              ...openrpcDocument.components.schemas[key],
+              title: pascalCase(key)
+            }
+            return acc
+          },
+          {}
+        )
+      }
     }
   )
 
