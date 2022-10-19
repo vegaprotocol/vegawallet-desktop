@@ -35,7 +35,7 @@ export function ServiceStatus() {
     state: { network, networkConfig, serviceStatus }
   } = useGlobal()
   const serviceUrl = networkConfig
-    ? `${networkConfig.host}:${networkConfig.port}`
+    ? `http://${networkConfig.host}:${networkConfig.port}`
     : ''
 
   const startService = useCallback(async () => {
