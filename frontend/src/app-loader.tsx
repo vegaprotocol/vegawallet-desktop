@@ -2,6 +2,7 @@ import type { ErrorInfo, ReactNode } from 'react'
 import { Component, useEffect } from 'react'
 
 import { Button } from './components/button'
+import { ServiceLoader } from './components/service-loader'
 import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
@@ -45,7 +46,7 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
     )
   }
 
-  return <>{children}</>
+  return <ServiceLoader>{children}</ServiceLoader>
 }
 
 export const APP_FRAME_HEIGHT = 35
