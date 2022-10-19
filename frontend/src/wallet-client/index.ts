@@ -33,22 +33,6 @@ export type Token = string;
  */
 export type AccessMode = "read" | "none";
 /**
- * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
- */
-export type Token1 = string;
-/**
- * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
- */
-export type Token2 = string;
-/**
- * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
- */
-export type Token3 = string;
-/**
- * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
- */
-export type Token4 = string;
-/**
  * The Vega public key to use.
  */
 export type PublicKey = string;
@@ -57,64 +41,21 @@ export type PublicKey = string;
  */
 export type EncodedTransaction = string;
 /**
- * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
- */
-export type Token5 = string;
-/**
- * The Vega public key to use.
- */
-export type PublicKey1 = string;
-/**
  * The chosen mode to send the transaction:
  * - `TYPE_SYNC` returns the result of running the transaction.
  * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
  * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
  */
 export type SendingMode = "TYPE_SYNC" | "TYPE_ASYNC" | "TYPE_COMMIT";
-/**
- * The transaction encoded using base-64.
- */
-export type EncodedTransaction1 = string;
-/**
- * The Vega public key to use.
- */
-export type PublicKey2 = string;
 export type ListWalletsParams = [];
 export type ListNetworksParams = [];
 export type UpdateNetworkResult = null;
 export type RemoveNetworkResult = null;
 export type RemoveWalletResult = null;
-/**
- * The Vega public key to use.
- */
-export type PublicKey3 = string;
-/**
- * The Vega public key to use.
- */
-export type PublicKey4 = string;
-/**
- * The Vega public key to use.
- */
-export type PublicKey5 = string;
 export type TaintKeyResult = null;
-/**
- * The Vega public key to use.
- */
-export type PublicKey6 = string;
 export type UntaintKeyResult = null;
-/**
- * The Vega public key to use.
- */
-export type PublicKey7 = string;
 export type RevokePermissionsResult = null;
 export type PurgePermissionsResult = null;
-/**
- * The chosen mode to send the transaction:
- * - `TYPE_SYNC` returns the result of running the transaction.
- * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
- * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
- */
-export type SendingMode1 = "TYPE_SYNC" | "TYPE_ASYNC" | "TYPE_COMMIT";
 
 export interface Methods {
   ClientConnectWalletResult?: ClientConnectWalletResult;
@@ -192,13 +133,13 @@ export interface ClientConnectWalletParams {
   /**
    * The name of the third-party application initiating the connection.
    */
-  hostname?: string;
+  hostname: string;
 }
 export interface ClientDisconnectWalletResult {
   [k: string]: unknown;
 }
 export interface ClientDisconnectWalletParams {
-  token?: Token;
+  token: Token;
 }
 /**
  * The description of the permissions a third-party application has.
@@ -207,7 +148,7 @@ export interface ClientGetPermissionsResult {
   public_keys?: AccessMode;
 }
 export interface ClientGetPermissionsParams {
-  token?: Token1;
+  token: Token;
 }
 /**
  * The description of the permissions a third-party application has.
@@ -216,8 +157,8 @@ export interface ClientRequestPermissionsResult {
   public_keys?: AccessMode;
 }
 export interface ClientRequestPermissionsParams {
-  token?: Token2;
-  requestedPermissions?: PermissionsSummary;
+  token: Token;
+  requestedPermissions: PermissionsSummary;
 }
 /**
  * The description of the permissions a third-party application has.
@@ -229,7 +170,7 @@ export interface ClientListKeysResult {
   [k: string]: unknown;
 }
 export interface ClientListKeysParams {
-  token?: Token3;
+  token: Token;
 }
 export interface ClientSignTransactionResult {
   transaction?: SignedTransaction;
@@ -255,9 +196,9 @@ export interface SignedTransaction {
   };
 }
 export interface ClientSignTransactionParams {
-  token?: Token4;
-  publicKey?: PublicKey;
-  encodedTransaction?: EncodedTransaction;
+  token: Token;
+  publicKey: PublicKey;
+  encodedTransaction: EncodedTransaction;
 }
 export interface ClientSendTransactionResult {
   /**
@@ -279,10 +220,10 @@ export interface ClientSendTransactionResult {
   transaction?: SignedTransaction;
 }
 export interface ClientSendTransactionParams {
-  token?: Token5;
-  publicKey?: PublicKey1;
-  sendingMode?: SendingMode;
-  encodedTransaction?: EncodedTransaction1;
+  token: Token;
+  publicKey: PublicKey;
+  sendingMode: SendingMode;
+  encodedTransaction: EncodedTransaction;
 }
 export interface ClientGetChainIdResult {
   /**
@@ -305,7 +246,7 @@ export interface CreateWalletResult {
    * the first public key generated
    */
   key?: {
-    publicKey?: PublicKey2;
+    publicKey?: PublicKey;
     algorithm?: Algorithm;
     metadata?: Metadata[];
   };
@@ -325,8 +266,8 @@ export interface Metadata {
   value?: string;
 }
 export interface CreateWalletParams {
-  wallet?: string;
-  passphrase?: string;
+  wallet: string;
+  passphrase: string;
 }
 export interface ImportWalletResult {
   /**
@@ -341,16 +282,16 @@ export interface ImportWalletResult {
    * the first public key generated
    */
   key?: {
-    publicKey?: PublicKey2;
+    publicKey?: PublicKey;
     algorithm?: Algorithm;
     metadata?: Metadata[];
   };
 }
 export interface ImportWalletParams {
-  wallet?: string;
-  passphrase?: string;
-  recoveryPhrase?: string;
-  version?: number;
+  wallet: string;
+  passphrase: string;
+  recoveryPhrase: string;
+  version: number;
 }
 export interface DescribeWalletResult {
   name?: string;
@@ -359,8 +300,8 @@ export interface DescribeWalletResult {
   type?: string;
 }
 export interface DescribeWalletParams {
-  wallet?: string;
-  passphrase?: string;
+  wallet: string;
+  passphrase: string;
 }
 export interface ListWalletsResult {
   wallets?: string[];
@@ -393,34 +334,18 @@ export interface NetworkApiConfig {
   };
 }
 export interface DescribeNetworkParams {
-  network?: string;
+  network: string;
 }
 export interface UpdateNetworkParams {
-  name?: string;
-  logLevel?: string;
-  tokenExpiry?: string;
-  port?: number;
-  host?: string;
-  api?: NetworkApiConfig1;
-}
-/**
- * The API configuration for the network.
- */
-export interface NetworkApiConfig1 {
-  grpcConfig?: {
-    hosts?: string[];
-    retries?: number;
-  };
-  graphQLConfig?: {
-    hosts?: string[];
-    retries?: number;
-  };
-  restConfig?: {
-    hosts?: string[];
-  };
+  name: string;
+  logLevel: string;
+  tokenExpiry: string;
+  port: number;
+  host: string;
+  api: NetworkApiConfig;
 }
 export interface RemoveNetworkParams {
-  network?: string;
+  network: string;
 }
 export interface ImportNetworkResult {
   name?: string;
@@ -428,25 +353,25 @@ export interface ImportNetworkResult {
 }
 export interface ImportNetworkParams {
   name?: string;
-  filePath?: string;
-  url?: string;
-  overwrite?: boolean;
+  filePath: string;
+  url: string;
+  overwrite: boolean;
 }
 export interface RemoveWalletParams {
-  wallet?: string;
+  wallet: string;
 }
 export interface GenerateKeyResult {
-  publicKey?: PublicKey2;
+  publicKey?: PublicKey;
   algorithm?: Algorithm;
   metadata?: Metadata[];
 }
 export interface GenerateKeyParams {
-  wallet?: string;
-  passphrase?: string;
-  metadata?: Metadata[];
+  wallet: string;
+  passphrase: string;
+  metadata: Metadata[];
 }
 export interface DescribeKeyResult {
-  publicKey?: PublicKey2;
+  publicKey?: PublicKey;
   algorithm?: Algorithm;
   metadata?: Metadata[];
   /**
@@ -455,9 +380,9 @@ export interface DescribeKeyResult {
   isTainted?: boolean;
 }
 export interface DescribeKeyParams {
-  wallet?: string;
-  passphrase?: string;
-  publicKey?: PublicKey3;
+  wallet: string;
+  passphrase: string;
+  publicKey: PublicKey;
 }
 export interface ListKeysResult {
   keys?: NamedPublicKey[];
@@ -470,17 +395,17 @@ export interface NamedPublicKey {
   publicKey?: string;
 }
 export interface ListKeysParams {
-  wallet?: string;
-  passphrase?: string;
+  wallet: string;
+  passphrase: string;
 }
 export interface AnnotateKeyResult {
   metadata?: Metadata[];
 }
 export interface AnnotateKeyParams {
-  wallet?: string;
-  passphrase?: string;
-  publicKey?: PublicKey4;
-  metadata?: Metadata[];
+  wallet: string;
+  passphrase: string;
+  publicKey: PublicKey;
+  metadata: Metadata[];
 }
 export interface IsolateKeyResult {
   /**
@@ -493,10 +418,10 @@ export interface IsolateKeyResult {
   filePath?: string;
 }
 export interface IsolateKeyParams {
-  wallet?: string;
-  passphrase?: string;
-  isolatedWalletPassphrase?: string;
-  publicKey?: PublicKey5;
+  wallet: string;
+  passphrase: string;
+  isolatedWalletPassphrase: string;
+  publicKey: PublicKey;
 }
 export interface RotateKeyResult {
   /**
@@ -509,38 +434,38 @@ export interface RotateKeyResult {
   encodedTransaction?: string;
 }
 export interface RotateKeyParams {
-  wallet?: string;
-  passphrase?: string;
+  wallet: string;
+  passphrase: string;
   /**
    * The current public key
    */
-  fromPublicKey?: string;
+  fromPublicKey: string;
   /**
    * The next public key to rotate to
    */
-  toPublicKey?: string;
+  toPublicKey: string;
   /**
    * The chain identifier
    */
-  chainID?: string;
+  chainID: string;
   /**
    * The block height (approximation) at which the transaction will be submitted
    */
-  submissionBlockHeight?: string;
+  submissionBlockHeight: string;
   /**
    * The block height at which the rotation should happen
    */
-  enactmentBlockHeight?: string;
+  enactmentBlockHeight: string;
 }
 export interface TaintKeyParams {
-  wallet?: string;
-  passphrase?: string;
-  publicKey?: PublicKey6;
+  wallet: string;
+  passphrase: string;
+  publicKey: PublicKey;
 }
 export interface UntaintKeyParams {
-  wallet?: string;
-  passphrase?: string;
-  publicKey?: PublicKey7;
+  wallet: string;
+  passphrase: string;
+  publicKey: PublicKey;
 }
 export interface DescribePermissionsResult {
   permissions?: Permissions;
@@ -561,96 +486,75 @@ export interface Permissions {
   };
 }
 export interface DescribePermissionsParams {
-  wallet?: string;
-  passphrase?: string;
-  hostname?: string;
+  wallet: string;
+  passphrase: string;
+  hostname: string;
 }
 export interface ListPermissionsResult {
   permissions?: {
-    hostname1?: PermissionsSummary1;
-    hostname2?: PermissionsSummary1;
+    hostname1?: PermissionsSummary;
+    hostname2?: PermissionsSummary;
   };
 }
-/**
- * The description of the permissions a third-party application has.
- */
-export interface PermissionsSummary1 {
-  public_keys?: AccessMode;
-}
 export interface ListPermissionsParams {
-  wallet?: string;
-  passphrase?: string;
+  wallet: string;
+  passphrase: string;
 }
 export interface UpdatePermissionsResult {
   permissions?: Permissions;
 }
 export interface UpdatePermissionsParams {
-  wallet?: string;
-  passphrase?: string;
-  hostname?: string;
-  permissions?: Permissions1;
-}
-/**
- * The full description of the permissions a third-party application has.
- */
-export interface Permissions1 {
-  /**
-   * The permissions related to public keys.
-   */
-  publicKeys?: {
-    access?: AccessMode;
-    /**
-     * The subset of public keys the user selected for this hostname. If empty, the wallet assumes all keys are accessible.
-     */
-    restrictedKeys?: string[];
-  };
+  wallet: string;
+  passphrase: string;
+  hostname: string;
+  permissions: Permissions;
 }
 export interface RevokePermissionsParams {
-  wallet?: string;
-  passphrase?: string;
-  hostname?: string;
+  wallet: string;
+  passphrase: string;
+  hostname: string;
 }
 export interface PurgePermissionsParams {
-  wallet?: string;
-  passphrase?: string;
+  wallet: string;
+  passphrase: string;
 }
 export interface SignTransactionResult {
   encodedTransaction?: string;
 }
 export interface SignTransactionParams {
-  wallet?: string;
-  passphrase?: string;
-  pubKey?: string;
-  chainId?: string;
-  blockHeight?: number;
+  wallet: string;
+  passphrase: string;
+  pubKey: string;
+  chainId: string;
+  blockHeight: number;
   network?: number;
-  encodedCommand?: string;
+  encodedCommand: string;
 }
 export interface SignMessageResult {
   encodedSignature?: string;
 }
 export interface SignMessageParams {
-  wallet?: string;
-  passphrase?: string;
-  pubKey?: string;
+  wallet: string;
+  passphrase: string;
+  pubKey: string;
   /**
    * The message to sign encoded using base-64.
    */
-  encodedMessage?: string;
+  encodedMessage: string;
 }
 export interface VerifyMessageResult {
   isValid?: string;
 }
 export interface VerifyMessageParams {
-  pubKey?: string;
+  pubKey: string;
   /**
    * The message use to create the signature, encoded using base-64.
    */
-  encodedMessage?: string;
+  encodedMessage: string;
   /**
    * The signature to verify, encoded using base-64.
    */
-  encodedSignature?: string;
+  encodedSignature: string;
 }
 export interface SendTransactionResult {
   /**
@@ -675,20 +579,20 @@ export interface SendTransactionParams {
   /**
    * The signed transaction to be sent, encoded using base-64.
    */
-  encodedTransaction?: string;
+  encodedTransaction: string;
   /**
    * The network to send the transaction to.
    */
-  network?: string;
+  network: string;
   /**
    * The node address to send the transaction to.
    */
-  nodeAddress?: string;
+  nodeAddress: string;
   /**
    * the number of times sending the transaction should be attempted if it fails
    */
-  retries?: number;
-  sendingMode?: SendingMode1;
+  retries: number;
+  sendingMode: SendingMode;
 }
 
 }

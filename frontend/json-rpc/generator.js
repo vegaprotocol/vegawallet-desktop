@@ -81,13 +81,17 @@ const normalizeDocument = doc => {
 const getParamsSchemaByName = method =>
   method.params.reduce(
     (acc, param) => {
-      const { name, ...rest } = param
+      const { name, required, ...rest } = param
       acc.properties[name] = rest
+      if (required) {
+        acc.required.push(name)
+      }
       return acc
     },
     {
       title: `${getMethodName(method)}Params`,
       type: 'object',
+      required: [],
       properties: {}
     }
   )
