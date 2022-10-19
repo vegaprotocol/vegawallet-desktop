@@ -13,9 +13,7 @@ export function DrawerManageNetwork({
 }: DrawerManageNetworkProps) {
   return (
     <div>
-      <NetworkPresets
-        setEditView={setSelectedNetwork}
-      />
+      <NetworkPresets setEditView={setSelectedNetwork} />
       <div style={{ margin: '24px 0' }}>
         <Button
           data-testid='add-network'

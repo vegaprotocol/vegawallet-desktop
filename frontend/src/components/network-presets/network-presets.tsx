@@ -84,9 +84,7 @@ interface NetworkPresetsProps {
   setEditView: (network: string) => void
 }
 
-export function NetworkPresets({
-  setEditView
-}: NetworkPresetsProps) {
+export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
   const {
     actions,
     dispatch,

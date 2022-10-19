@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 
-import { AppToaster } from '../toaster'
 import { Colors } from '../../config/colors'
-import { Intent } from '../../config/intent'
 import { Fonts } from '../../config/fonts'
+import { Intent } from '../../config/intent'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
+import { AppToaster } from '../toaster'
 
 function StatusCircle({
   background,
@@ -53,7 +53,7 @@ export function ServiceStatus() {
         })
         AppToaster.show({
           intent: Intent.DANGER,
-          message: `${err}`,
+          message: `${err}`
         })
       }
     }
@@ -70,7 +70,7 @@ export function ServiceStatus() {
         })
         AppToaster.show({
           intent: Intent.DANGER,
-          message: `${err}`,
+          message: `${err}`
         })
       }
 
@@ -120,7 +120,7 @@ export function ServiceStatus() {
     }
     case ServiceState.Unhealthy: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle loading background={Colors.VEGA_ORANGE} />
           <span>
             Wallet Service: Unhealthy{' '}
@@ -131,21 +131,22 @@ export function ServiceStatus() {
     }
     case ServiceState.Unreachable: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle loading background={Colors.VEGA_ORANGE} />
-          <span className='loading'>Wallet Service: Not reachable, retrying</span>
+          <span className='loading'>
+            Wallet Service: Not reachable, retrying
+          </span>
         </div>
       )
     }
     case ServiceState.Error: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle background={Colors.VEGA_RED} />
           <span>
             Wallet Service: Failed.{' '}
             <ButtonUnstyled onClick={startService}>Restart</ButtonUnstyled>
           </span>
-
         </div>
       )
     }
