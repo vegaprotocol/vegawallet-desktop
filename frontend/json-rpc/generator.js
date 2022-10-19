@@ -1,6 +1,6 @@
 const path = require('path')
 const log = require('loglevel')
-const { copy, remove, readFile, writeFile } = require('fs-extra')
+const { readFile, writeFile } = require('fs-extra')
 const { template, camelCase, toUpper } = require('lodash')
 const { compile } = require('json-schema-to-typescript')
 const { Command } = require('commander')
@@ -81,13 +81,17 @@ const normalizeDocument = doc => {
 const getParamsSchemaByName = method =>
   method.params.reduce(
     (acc, param) => {
-      const { name, ...rest } = param
+      const { name, required, ...rest } = param
       acc.properties[name] = rest
+      if (required) {
+        acc.required.push(name)
+      }
       return acc
     },
     {
       title: `${getMethodName(method)}Params`,
       type: 'object',
+      required: [],
       properties: {}
     }
   )
@@ -126,18 +130,18 @@ const getTsDefs = async openrpcDocument => {
       title: 'Methods',
       type: 'object',
       properties: {},
-      components: Object.keys(openrpcDocument.components.schemas).reduce(
-        (acc, key) => {
-          acc.schemas[key] = {
-            ...openrpcDocument.components.schemas[key],
-            title: pascalCase(key)
-          }
-          return acc
-        },
-        {
-          schemas: {}
-        }
-      )
+      components: {
+        schemas:  Object.keys(openrpcDocument.components.schemas).reduce(
+          (acc, key) => {
+            acc[key] = {
+              ...openrpcDocument.components.schemas[key],
+              title: pascalCase(key)
+            }
+            return acc
+          },
+          {}
+        )
+      }
     }
   )
 
@@ -165,7 +169,7 @@ const getJsonFileContent = async filePath => {
     return getRemoteFile(filePath)
   } else {
     logger.info(`Reading specs file content...`)
-    return require(path.join(process.cwd(), filePath))
+    return require(filePath)
   }
 }
 
