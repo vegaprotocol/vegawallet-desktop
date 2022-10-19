@@ -8,7 +8,7 @@ export function unlockWallet(name, passphrase) {
     'contain.text',
     'Wallet Service: Loading'
   )
-  cy.getByTestId('service-status').should('contain.text', '127.0.0.1')
+  cy.getByTestId('service-status').should('contain.text', 'http://127.0.0.1')
 }
 
 export function goToKey(pubkey) {
