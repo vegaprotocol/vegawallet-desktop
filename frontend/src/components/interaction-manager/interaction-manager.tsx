@@ -50,6 +50,7 @@ export function InteractionManager() {
   useEffect(() => {
     // Listen for new incoming transactions
     EventsOn(EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => {
+      console.log(interaction)
       setInteractions(interactions =>
         produce(interactions, interactions => {
           const wrappedInteraction = {

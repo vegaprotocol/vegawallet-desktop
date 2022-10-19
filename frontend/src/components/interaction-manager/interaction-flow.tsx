@@ -8,11 +8,12 @@ import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
+import { Transaction } from './content/transaction'
 import type {
   ErrorOccurred,
-  Interaction,
   InteractionContentProps,
   Log,
+  RequestTransactionSending,
   RequestPassphrase,
   RequestPermissions,
   RequestSucceeded,
@@ -52,6 +53,13 @@ const InteractionItem = (
           {...(props as InteractionContentProps<RequestPermissions>)}
           isResolved={isResolved}
           setResolved={setResolved}
+        />
+      )
+    }
+    case INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING: {
+      return (
+        <Transaction
+          {...(props as InteractionContentProps<RequestTransactionSending>)}
         />
       )
     }
