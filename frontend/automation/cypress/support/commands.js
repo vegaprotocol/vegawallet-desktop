@@ -224,17 +224,17 @@ Cypress.Commands.add('waitForHome', () => {
 })
 
 Cypress.Commands.add('monitor_clipboard', () => {
-  cy.window().then((win) => {
-    return cy.stub(win, 'prompt').returns(win.prompt);
-  });
-});
+  cy.window().then(win => {
+    return cy.stub(win, 'prompt').returns(win.prompt)
+  })
+})
 
 Cypress.Commands.add(
   'get_copied_text_from_clipboard',
   { prevSubject: true },
-  (clipboard) => {
+  clipboard => {
     // Must first setup with cy.monitor_clipboard().as('clipboard')
     // This function then chained off a cy.get('@clipboard')
-    return clipboard.args[0][1];
+    return clipboard.args[0][1]
   }
-);
+)

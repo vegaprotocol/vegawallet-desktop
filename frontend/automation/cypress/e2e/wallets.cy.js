@@ -128,5 +128,4 @@ describe('wallet', () => {
     cy.getByTestId('keypair-transactions').click()
     cy.getByTestId('header-title').should('contain', 'Transactions')
   })
-  
 })

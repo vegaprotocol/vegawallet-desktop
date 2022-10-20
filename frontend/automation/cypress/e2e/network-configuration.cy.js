@@ -207,11 +207,14 @@ describe('change network details', () => {
     cy.getByTestId('toast').contains('Configuration saved').should('be.visible')
   })
 
-  Cypress.Commands.add('edit_network_config_form_for_specified_network', (network) => {
-    cy.getByTestId('network-drawer').click()
-    cy.getByTestId('network-drawer').click()
-    cy.getByTestId('manage-networks').click()
-    cy.getByTestId(`edit-network-${network}`).first().click()
-    cy.getByTestId('service-host', { timeout: 30000 }).should('be.visible')
-  })
+  Cypress.Commands.add(
+    'edit_network_config_form_for_specified_network',
+    network => {
+      cy.getByTestId('network-drawer').click()
+      cy.getByTestId('network-drawer').click()
+      cy.getByTestId('manage-networks').click()
+      cy.getByTestId(`edit-network-${network}`).first().click()
+      cy.getByTestId('service-host', { timeout: 30000 }).should('be.visible')
+    }
+  )
 })
