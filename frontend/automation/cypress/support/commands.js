@@ -14,6 +14,7 @@ Cypress.Commands.add('clean', () => {
 
 Cypress.Commands.add('backend', () => {
   cy.visit('/')
+
   return cy.window().then(win => {
     return win.go.backend.Handler
   })
@@ -214,7 +215,6 @@ Cypress.Commands.add('waitForHome', () => {
   cy.visit('/')
   cy.getByTestId('splash-loader').should('be.visible')
   cy.getByTestId('splash-loader').should('not.exist')
-  cy.getByTestId('wallet-home', { timeout: 30000 }).should('be.visible')
   cy.get('body').then(body => {
     if (body.find('[data-testid="telemetry-option-form"]').length > 0) {
       cy.get('button[role="radio"][value="no"]').click()
@@ -222,3 +222,19 @@ Cypress.Commands.add('waitForHome', () => {
     }
   })
 })
+
+Cypress.Commands.add('monitor_clipboard', () => {
+  cy.window().then(win => {
+    return cy.stub(win, 'prompt').returns(win.prompt)
+  })
+})
+
+Cypress.Commands.add(
+  'get_copied_text_from_clipboard',
+  { prevSubject: true },
+  clipboard => {
+    // Must first setup with cy.monitor_clipboard().as('clipboard')
+    // This function then chained off a cy.get('@clipboard')
+    return clipboard.args[0][1]
+  }
+)
