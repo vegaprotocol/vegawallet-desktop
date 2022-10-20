@@ -1,6 +1,6 @@
 //go:build !darwin
 
-package os
+package notification
 
 import (
 	"code.vegaprotocol.io/vegawallet-desktop/app"
