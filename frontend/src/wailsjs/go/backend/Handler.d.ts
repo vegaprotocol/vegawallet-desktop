@@ -6,13 +6,7 @@ import {jsonrpc} from '../models';
 
 export function CheckVersion():Promise<backend.CheckVersionResponse>;
 
-export function ClearSentTransaction(arg1:backend.ClearSentTransactionRequest):Promise<Error>;
-
-export function ConsentToTransaction(arg1:backend.ConsentToTransactionRequest):Promise<Error>;
-
 export function GetAppConfig():Promise<config.Config>;
-
-export function GetConsentRequest(arg1:backend.GetConsentRequestRequest):Promise<backend.ConsentRequest>;
 
 export function GetServiceState():Promise<backend.GetServiceStateResponse>;
 
@@ -21,10 +15,6 @@ export function GetVersion():Promise<backend.GetVersionResponse>;
 export function InitialiseApp(arg1:backend.InitialiseAppRequest):Promise<Error>;
 
 export function IsAppInitialised():Promise<boolean>;
-
-export function ListConsentRequests():Promise<backend.ListConsentRequestsResponse>;
-
-export function ListSentTransactions():Promise<backend.ListSentTransactionsResponse>;
 
 export function RespondToInteraction(arg1:number):Promise<Error>;
 
