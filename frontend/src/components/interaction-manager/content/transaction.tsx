@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { useGlobal } from '../../../contexts/global/global-context'
 import { formatDate } from '../../../lib/date'
-import { parseTransaction } from '../../../lib/transactions'
+import { parseTransaction, TransactionKeys } from '../../../lib/transactions'
 import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
 import { CodeBlock } from '../../code-block'
@@ -15,11 +15,39 @@ import type {
 } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
+const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
+  [TransactionKeys.UNKNOWN]: 'Unknown transaction',
+  [TransactionKeys.ORDER_SUBMISSION]: 'Order submission',
+  [TransactionKeys.ORDER_CANCELLATION]: 'Order cancellation',
+  [TransactionKeys.ORDER_AMENDMENT]: 'Order amendment',
+  [TransactionKeys.VOTE_SUBMISSION]: 'Vote submission',
+  [TransactionKeys.WITHDRAW_SUBMISSION]: 'Withdraw submission',
+  [TransactionKeys.LIQUIDTY_PROVISION_SUBMISSION]: 'Liquidity provision',
+  [TransactionKeys.LIQUIDTY_PROVISION_CANCELLATION]:
+    'Liquidity provision cancellation',
+  [TransactionKeys.LIQUIDITY_PROVISION_AMENDMENT]:
+    'Liquidity provision amendment',
+  [TransactionKeys.PROPOSAL_SUBMISSION]: 'Proposal submission',
+  [TransactionKeys.ANNOUNCE_NODE]: 'Announce node',
+  [TransactionKeys.NODE_VOTE]: 'Node vote',
+  [TransactionKeys.NODE_SIGNATURE]: 'Node signature',
+  [TransactionKeys.CHAIN_EVENT]: 'Chain event',
+  [TransactionKeys.ORACLE_DATA_SUBMISSION]: 'Oracle data submission',
+  [TransactionKeys.UNDELEGATE_SUBMISSION]: 'Undelegate submission',
+  [TransactionKeys.DELEGATE_SUBMISSION]: 'Delegate submission',
+  [TransactionKeys.TRANSFER]: 'Transfer',
+  [TransactionKeys.CANCEL_TRANSFER]: 'Cancel transfer',
+  [TransactionKeys.KEY_ROTATE_SUBMISSION]: 'Key rotation submission',
+  [TransactionKeys.ETHEREUM_KEY_ROTATE_SUBMISSION]:
+    'Ethereum key rotation submission'
+}
+
 export const Transaction = ({
   interaction
 }: InteractionContentProps<RequestTransactionSending>) => {
-  const { service } = useGlobal()
+  const { dispatch, service } = useGlobal()
   const transaction = parseTransaction(interaction.event.data)
+  const title = TRANSACTION_TITLES[transaction.type]
 
   const onReponse = useCallback(
     async (decision: boolean) => {
@@ -36,11 +64,11 @@ export const Transaction = ({
   )
 
   return (
-    <Dialog open={true} size='lg' title='Transaction request'>
+    <Dialog open={true} size='lg' title={title}>
       <div style={{ padding: '0 20px 20px' }}>
         <p>
-          <pre>{transaction.hostname}</pre> has requesteda transaction "
-          {transaction.title}" for <pre>{transaction.wallet}</pre>.
+          <pre>{transaction.hostname}</pre> has requested a transaction "{title}
+          " for <pre>{transaction.wallet}</pre>.
         </p>
       </div>
       <div style={{ padding: '0 20px 20px' }}>
