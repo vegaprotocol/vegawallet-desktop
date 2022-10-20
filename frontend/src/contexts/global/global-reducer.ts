@@ -6,8 +6,13 @@ import type {
   config as ConfigModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
-import type { GlobalState, KeyPair, Wallet } from './global-context'
-import { AppStatus } from './global-context'
+import type {
+  DrawerState,
+  GlobalState,
+  KeyPair,
+  Wallet
+} from './global-context'
+import { AppStatus, DrawerPanel, ServiceState } from './global-context'
 
 function indexBy<T>(key: keyof T) {
   return (obj: Record<string, T>, value: T) => ({
@@ -19,32 +24,41 @@ function indexBy<T>(key: keyof T) {
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   version: '',
-  wallet: null,
-  wallets: [],
+  config: null,
+
+  // Transactions
   transactionQueue: [],
   transactionHistory: [],
-  drawerOpen: false,
-  passphraseModalOpen: false,
-  removeWalletModalOpen: false,
-  signMessageModalOpen: false,
-  taintKeyModalOpen: false,
-  updateKeyModalOpen: false,
-  settingsModalOpen: false,
-  config: null,
-  // network
+
+  // Wallet
+  wallet: null,
+  wallets: [],
+
+  // Network
   network: null,
   networks: [],
   presets: [],
   presetsInternal: [],
   networkConfig: null,
-  serviceRunning: false,
-  serviceUrl: ''
+  serviceStatus: ServiceState.Stopped,
+
+  // UI
+  drawerState: {
+    isOpen: false,
+    panel: DrawerPanel.Network,
+    editingNetwork: null
+  },
+  isPassphraseModalOpen: false,
+  isRemoveWalletModalOpen: false,
+  isSignMessageModalOpen: false,
+  isTaintKeyModalOpen: false,
+  isUpdateKeyModalOpen: false,
+  isSettingsModalOpen: false
 }
 
 export type GlobalAction =
   | {
       type: 'INIT_APP'
-      isInit: boolean
       config: ConfigModel.Config
       wallets: string[]
       network: string
@@ -52,10 +66,10 @@ export type GlobalAction =
       networkConfig: WalletModel.DescribeNetworkResult | null
       presetNetworks: NetworkPreset[]
       presetNetworksInternal: NetworkPreset[]
-      serviceRunning: boolean
     }
   | {
       type: 'INIT_APP_FAILED'
+      message?: string
     }
   | {
       type: 'COMPLETE_ONBOARD'
@@ -122,7 +136,7 @@ export type GlobalAction =
     }
   | {
       type: 'SET_DRAWER'
-      open: boolean
+      state: DrawerState
     }
   | {
       type: 'SET_PASSPHRASE_MODAL'
@@ -188,11 +202,8 @@ export type GlobalAction =
       network: string
     }
   | {
-      type: 'START_SERVICE'
-      port: number
-    }
-  | {
-      type: 'STOP_SERVICE'
+      type: 'SET_SERVICE_STATUS'
+      status: ServiceState
     }
   | {
       type: 'SET_TRANSACTION_QUEUE'
@@ -224,11 +235,7 @@ export function globalReducer(
         networkConfig: action.networkConfig,
         presets: action.presetNetworks,
         presetsInternal: action.presetNetworksInternal,
-        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
-        serviceRunning: action.serviceRunning,
-        serviceUrl: action.networkConfig
-          ? `http://127.0.0.1:${action.networkConfig.port}`
-          : ''
+        status: AppStatus.Initialised
       }
     }
     case 'INIT_APP_FAILED': {
@@ -403,43 +410,43 @@ export function globalReducer(
     case 'SET_DRAWER': {
       return {
         ...state,
-        drawerOpen: action.open
+        drawerState: action.state
       }
     }
     case 'SET_PASSPHRASE_MODAL': {
       return {
         ...state,
-        passphraseModalOpen: action.open
+        isPassphraseModalOpen: action.open
       }
     }
     case 'SET_SETTINGS_MODAL': {
       return {
         ...state,
-        settingsModalOpen: action.open
+        isSettingsModalOpen: action.open
       }
     }
     case 'SET_TAINT_KEY_MODAL': {
       return {
         ...state,
-        taintKeyModalOpen: action.open
+        isTaintKeyModalOpen: action.open
       }
     }
     case 'SET_SIGN_MESSAGE_MODAL': {
       return {
         ...state,
-        signMessageModalOpen: action.open
+        isSignMessageModalOpen: action.open
       }
     }
     case 'SET_UPDATE_KEY_MODAL': {
       return {
         ...state,
-        updateKeyModalOpen: action.open
+        isUpdateKeyModalOpen: action.open
       }
     }
     case 'SET_REMOVE_WALLET_MODAL': {
       return {
         ...state,
-        removeWalletModalOpen: action.open
+        isRemoveWalletModalOpen: action.open
       }
     }
     // network
@@ -511,18 +518,10 @@ export function globalReducer(
         networkConfig: null
       }
     }
-    case 'START_SERVICE': {
+    case 'SET_SERVICE_STATUS': {
       return {
         ...state,
-        serviceRunning: true,
-        serviceUrl: `http://127.0.0.1:${action.port}`
-      }
-    }
-    case 'STOP_SERVICE': {
-      return {
-        ...state,
-        serviceRunning: false,
-        serviceUrl: ''
+        serviceStatus: action.status
       }
     }
     case 'SET_TRANSACTION_QUEUE': {

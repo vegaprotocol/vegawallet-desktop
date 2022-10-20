@@ -95,7 +95,7 @@ func (h *Handler) Shutdown(_ context.Context) {
 	h.log.Debug("Entering Shutdown")
 	defer h.log.Debug("Leaving Shutdown")
 
-	_, _ = h.StopService()
+	_ = h.StopService()
 }
 
 func (h *Handler) IsAppInitialised() (bool, error) {

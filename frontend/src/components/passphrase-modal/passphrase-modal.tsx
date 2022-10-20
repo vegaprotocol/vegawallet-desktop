@@ -38,7 +38,7 @@ export function PassphraseModal() {
     }
   }, [dispatch, actions])
 
-  function onSubmit(passphrase: string) {
+  function onSubmit({ passphrase }: { passphrase: string }) {
     setLoading(true)
     handler.resolve(passphrase)
 
@@ -55,7 +55,7 @@ export function PassphraseModal() {
   }
 
   return (
-    <Dialog open={state.passphraseModalOpen}>
+    <Dialog open={state.isPassphraseModalOpen}>
       <PassphraseModalForm
         onSubmit={onSubmit}
         onCancel={close}
@@ -66,7 +66,7 @@ export function PassphraseModal() {
 }
 
 interface PassphraseModalFormProps {
-  onSubmit: (passphrase: string) => void
+  onSubmit: (props: { passphrase: string }) => void
   onCancel: () => void
   loading: boolean
 }
@@ -85,7 +85,7 @@ function PassphraseModalForm({
   return (
     <form
       style={{ padding: 20 }}
-      onSubmit={handleSubmit(values => onSubmit(values.passphrase))}
+      onSubmit={handleSubmit(onSubmit)}
       data-testid='passphrase-form'
     >
       <FormGroup

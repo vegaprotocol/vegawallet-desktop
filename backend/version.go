@@ -6,24 +6,14 @@ import (
 	"time"
 
 	vgversion "code.vegaprotocol.io/vega/libs/version"
+	"code.vegaprotocol.io/vegawallet-desktop/app"
 )
 
 const (
-	ReleasesAPI        = "https://api.github.com/repos/vegaprotocol/vegawallet-desktop/releases"
-	ReleasesURL        = "https://github.com/vegaprotocol/vegawallet-desktop/releases"
-	defaultVersionHash = "unknown"
-	defaultVersion     = "v0.3.0+dev"
-	requestTimeout     = 5 * time.Second
-)
+	ReleasesAPI = "https://api.github.com/repos/vegaprotocol/vegawallet-desktop/releases"
+	ReleasesURL = "https://github.com/vegaprotocol/vegawallet-desktop/releases"
 
-var (
-	// Hash specifies the git commit used to build the application.
-	// See VERSION_HASH in Makefile for details.
-	Hash = defaultVersionHash
-
-	// Version specifies the version used to build the application.
-	// See VERSION in Makefile for details.
-	Version = defaultVersion
+	requestTimeout = 5 * time.Second
 )
 
 type GetVersionResponse struct {
@@ -36,8 +26,8 @@ func (h *Handler) GetVersion() *GetVersionResponse {
 	defer h.log.Debug("Leaving GetVersion")
 
 	return &GetVersionResponse{
-		Version: Version,
-		GitHash: Hash,
+		Version: app.Version,
+		GitHash: app.VersionHash,
 	}
 }
 
@@ -52,7 +42,7 @@ func (h *Handler) CheckVersion() (*CheckVersionResponse, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
-	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), Version)
+	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), app.Version)
 	if err != nil {
 		return nil, fmt.Errorf("couldn't check latest releases: %w", err)
 	}

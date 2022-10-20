@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import { ErrorComponent } from './content/error'
 import { LogComponent } from './content/log'
+import { Passphrase } from './content/passphrase'
+import { Permissions } from './content/permissions'
 import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
 import { WalletConnection } from './content/wallet-connection'
@@ -11,6 +13,8 @@ import type {
   Interaction,
   InteractionContentProps,
   Log,
+  RequestPassphrase,
+  RequestPermissions,
   RequestSucceeded,
   RequestWalletConnection,
   RequestWalletSelection,
@@ -18,12 +22,18 @@ import type {
 } from './types'
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
-const InteractionItem = (props: InteractionContentProps) => {
+const InteractionItem = (
+  props: Omit<InteractionContentProps, 'isResolved' | 'setResolved'>
+) => {
+  const [isResolved, setResolved] = useState(false)
+
   switch (props.interaction.event.name) {
     case INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW: {
       return (
         <WalletConnection
           {...(props as InteractionContentProps<RequestWalletConnection>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
@@ -31,6 +41,26 @@ const InteractionItem = (props: InteractionContentProps) => {
       return (
         <WalletSelection
           {...(props as InteractionContentProps<RequestWalletSelection>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
+        />
+      )
+    }
+    case INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW: {
+      return (
+        <Permissions
+          {...(props as InteractionContentProps<RequestPermissions>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
+        />
+      )
+    }
+    case INTERACTION_TYPE.REQUEST_PASSPHRASE: {
+      return (
+        <Passphrase
+          {...(props as InteractionContentProps<RequestPassphrase>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
@@ -38,6 +68,8 @@ const InteractionItem = (props: InteractionContentProps) => {
       return (
         <SuccessComponent
           {...(props as InteractionContentProps<RequestSucceeded>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
@@ -45,16 +77,26 @@ const InteractionItem = (props: InteractionContentProps) => {
       return (
         <ErrorComponent
           {...(props as InteractionContentProps<ErrorOccurred>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
     case INTERACTION_TYPE.LOG: {
-      return <LogComponent {...(props as InteractionContentProps<Log>)} />
+      return (
+        <LogComponent
+          {...(props as InteractionContentProps<Log>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
+        />
+      )
     }
     case INTERACTION_TYPE.INTERACTION_SESSION_ENDED: {
       return (
         <SessionEndComponent
           {...(props as InteractionContentProps<SessionEnded>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
@@ -73,6 +115,9 @@ const getEventFlowType = (events: Interaction[]) => {
       case INTERACTION_TYPE.REQUEST_WALLET_SELECTION: {
         return acc || EVENT_FLOW_TYPE.WALLET_CONNECTION
       }
+      case INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW: {
+        return acc || EVENT_FLOW_TYPE.PERMISSION_REQUEST
+      }
       default: {
         return acc
       }
@@ -86,9 +131,6 @@ type InteractionFlowProps = {
 }
 
 export const InteractionFlow = ({ events, onFinish }: InteractionFlowProps) => {
-  const [resolvedEvents, setResolvedEvents] = useState<Record<string, boolean>>(
-    {}
-  )
   const flow = getEventFlowType(events)
 
   return (
@@ -99,13 +141,6 @@ export const InteractionFlow = ({ events, onFinish }: InteractionFlowProps) => {
           interaction={event}
           flow={flow}
           onFinish={onFinish}
-          isResolved={resolvedEvents[event.meta.id] || false}
-          setResolved={() =>
-            setResolvedEvents(registry => ({
-              ...registry,
-              [event.meta.id]: true
-            }))
-          }
         />
       ))}
     </>

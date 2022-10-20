@@ -81,14 +81,10 @@ const NetworkPresetItem = ({
 }
 
 interface NetworkPresetsProps {
-  setEditView: () => void
-  setSelectedNetwork: React.Dispatch<React.SetStateAction<string | null>>
+  setEditView: (network: string) => void
 }
 
-export function NetworkPresets({
-  setEditView,
-  setSelectedNetwork
-}: NetworkPresetsProps) {
+export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
   const {
     actions,
     dispatch,
@@ -122,8 +118,7 @@ export function NetworkPresets({
             dispatch(actions.removeNetwork(preset.name))
           }}
           onEdit={() => {
-            setSelectedNetwork(preset.name)
-            setEditView()
+            setEditView(preset.name)
           }}
         />
       ))}
@@ -138,8 +133,7 @@ export function NetworkPresets({
                 dispatch(actions.removeNetwork(preset.name))
               }}
               onEdit={() => {
-                setSelectedNetwork(preset.name)
-                setEditView()
+                setEditView(preset.name)
               }}
             />
           ))}
@@ -170,8 +164,7 @@ export function NetworkPresets({
             <Button
               data-testid={`edit-network-${network}`}
               onClick={() => {
-                setSelectedNetwork(network)
-                setEditView()
+                setEditView(network)
               }}
             >
               Edit

@@ -42,8 +42,7 @@ export const TelemetryDialog = () => {
         <div style={{ marginBottom: '1em' }}>
           <RadioGroup
             name='consent'
-            // TODO: Figure out how best to type the control prop
-            control={control as any}
+            control={control}
             options={[
               { label: 'No', value: 'no' },
               { label: 'Yes', value: 'yes' }

@@ -60,7 +60,7 @@ interface FormFields {
 
 export function Settings() {
   const {
-    state: { settingsModalOpen, config },
+    state: { isSettingsModalOpen, config },
     dispatch
   } = useGlobal()
 
@@ -73,7 +73,7 @@ export function Settings() {
 
   return (
     <Dialog
-      open={settingsModalOpen}
+      open={isSettingsModalOpen}
       onChange={open => dispatch({ type: 'SET_SETTINGS_MODAL', open })}
     >
       <SettingsForm

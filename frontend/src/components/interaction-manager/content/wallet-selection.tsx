@@ -49,7 +49,7 @@ export const WalletSelection = ({
         })
       }
 
-      setResolved()
+      setResolved(true)
     }
   }
 
@@ -73,7 +73,7 @@ export const WalletSelection = ({
         })
       }
 
-      setResolved()
+      setResolved(true)
     }
   }
 
@@ -136,7 +136,7 @@ export const WalletSelection = ({
           </Button>
           <ButtonUnstyled
             data-testid='wallet-connection-reject'
-            onClick={() => handleReject()}
+            onClick={handleReject}
           >
             Cancel
           </ButtonUnstyled>

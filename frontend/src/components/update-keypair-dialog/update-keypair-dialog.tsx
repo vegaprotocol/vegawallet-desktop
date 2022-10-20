@@ -39,7 +39,7 @@ const underlined = {
   textDecoration: 'underline'
 }
 
-export const UpdateKeypairDialog = () => {
+export function UpdateKeypairDialog() {
   const { state } = useGlobal()
   const { keypair, wallet } = useCurrentKeypair()
 
@@ -48,7 +48,7 @@ export const UpdateKeypairDialog = () => {
   }
 
   return (
-    <Dialog open={state.updateKeyModalOpen} title='Update key'>
+    <Dialog open={state.isUpdateKeyModalOpen} title='Update key'>
       <PublicKey keypair={keypair} />
       <div style={{ padding: '0 20px 20px' }}>
         <UpdateKeyForm keypair={keypair} wallet={wallet} />
@@ -62,7 +62,7 @@ type UpdateKeyFormProps = {
   wallet: Wallet
 }
 
-const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
+function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
   const { actions, dispatch } = useGlobal()
 
   const { loading, update } = useKeypairUpdate(
@@ -104,6 +104,8 @@ const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
     [move]
   )
 
+  const nameError = errors.meta?.[0]?.value
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -117,10 +119,8 @@ const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
               >
                 <div>
                   <FormGroup
-                    helperText={errors.meta?.[0]?.value?.message}
-                    intent={
-                      errors.meta?.[0]?.value ? Intent.DANGER : Intent.NONE
-                    }
+                    helperText={nameError?.message}
+                    intent={nameError ? Intent.DANGER : Intent.NONE}
                   >
                     <label data-testid='metadata-key-0' htmlFor='meta-name'>
                       Name
@@ -129,9 +129,7 @@ const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
                       id='meta-name'
                       placeholder='value'
                       data-testid='metadata-value-0'
-                      aria-invalid={
-                        !!errors.meta?.[0]?.value ? 'true' : 'false'
-                      }
+                      aria-invalid={nameError ? 'true' : 'false'}
                       {...register(`meta.0.value`, {
                         required: Validation.REQUIRED
                       })}
@@ -173,9 +171,14 @@ const UpdateKeyForm = ({ keypair, wallet }: UpdateKeyFormProps) => {
                                   alignItems: 'center'
                                 }}
                               >
-                                <span style={draggerBarStyle}></span>
-                                <span style={draggerBarStyle}></span>
-                                <span style={draggerBarStyle}></span>
+                                {Array(3)
+                                  .fill(0)
+                                  .map((_, i) => (
+                                    <span
+                                      key={i}
+                                      style={draggerBarStyle}
+                                    ></span>
+                                  ))}
                               </div>
                               <FormGroup
                                 helperText={

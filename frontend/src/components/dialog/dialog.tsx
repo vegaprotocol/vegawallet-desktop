@@ -2,7 +2,6 @@ import * as DialogPrimitives from '@radix-ui/react-dialog'
 import * as React from 'react'
 import { animated, config, useTransition } from 'react-spring'
 
-import { Colors } from '../../config/colors'
 import { Title } from '../title'
 
 interface DialogProps {
@@ -63,20 +62,7 @@ export function Dialog({
                       opacity: styles.opacity
                     }}
                   >
-                    {title && (
-                      <Title
-                        style={{
-                          margin: 0,
-                          padding: 20,
-                          textTransform: 'none',
-                          color: Colors.WHITE,
-                          letterSpacing: 0,
-                          fontSize: 28
-                        }}
-                      >
-                        {title}
-                      </Title>
-                    )}
+                    {title && <Title variant='main'>{title}</Title>}
                     {children}
                   </animated.div>
                 </DialogPrimitives.Content>

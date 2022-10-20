@@ -16,6 +16,15 @@ export function authenticate(passphrase) {
   cy.getByTestId('input-submit').click()
 }
 
+export function approveConnection(hostname, walletName, passphrase) {
+  cy.getByTestId('service-status').should('contain.text', 'http://127.0.0.1')
+  cy.sendConnectionRequest(hostname)
+  cy.getByTestId('wallet-selection-modal').should('exist')
+  cy.get(`label[for=${walletName}]`).click()
+  cy.getByTestId('wallet-connection-approve').click()
+  authenticate(passphrase)
+}
+
 export function generateAccounts() {
   const accounts = [
     {

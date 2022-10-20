@@ -38,6 +38,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           bottom: 0,
           left: 0,
           width: '100%',
+          transition: 'bottom 0.2s',
           height: DRAWER_HEIGHT
         }}
       >

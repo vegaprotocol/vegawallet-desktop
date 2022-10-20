@@ -17,7 +17,7 @@ export const SuccessComponent = ({
         message,
         intent: Intent.SUCCESS
       })
-      setResolved()
+      setResolved(true)
     }
   }, [interaction, message, isResolved, setResolved])
 
