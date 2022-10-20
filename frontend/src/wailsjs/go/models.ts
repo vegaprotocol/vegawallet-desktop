@@ -1,19 +1,5 @@
 export namespace backend {
 	
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
-	    }
-	}
 	export class InitialiseAppRequest {
 	    vegaHome: string;
 	
@@ -78,6 +64,20 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.url = source["url"];
 	        this.running = source["running"];
+	    }
+	}
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
 	    }
 	}
 
@@ -161,6 +161,24 @@ export namespace interactor {
 
 export namespace jsonrpc {
 	
+	export class Request {
+	    jsonrpc: string;
+	    method: string;
+	    params?: any;
+	    id?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Request(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.jsonrpc = source["jsonrpc"];
+	        this.method = source["method"];
+	        this.params = source["params"];
+	        this.id = source["id"];
+	    }
+	}
 	export class ErrorDetails {
 	    code: number;
 	    message: string;
@@ -212,25 +230,6 @@ export namespace jsonrpc {
 		    }
 		    return a;
 		}
-	}
-	
-	export class Request {
-	    jsonrpc: string;
-	    method: string;
-	    params?: any;
-	    id?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Request(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.jsonrpc = source["jsonrpc"];
-	        this.method = source["method"];
-	        this.params = source["params"];
-	        this.id = source["id"];
-	    }
 	}
 
 }

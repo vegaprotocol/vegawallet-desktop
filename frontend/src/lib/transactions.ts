@@ -53,68 +53,6 @@ const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
     'Ethereum key rotation submission'
 }
 
-// export interface Transaction {
-//   txId: string // signature
-//   tx: object // payload
-//   txHash: string | null
-//   type: TransactionKeys
-//   receivedAt: Date
-//   pubKey: string
-//   pending: boolean
-//   sentAt: Date | null
-//   error: string | null
-// }
-//
-// /**
-//  * Parses a raw consent request object into a more usable object where the transaction
-//  * payload has been turned from a json string into an object and we have determined
-//  * what kind of transaction it is
-//  */
-// export const parseTx = (
-//   consentRequest: BackendModel.ConsentRequest
-// ): Transaction => {
-//   let payload: { pubKey: string; propagate: boolean }
-//
-//   try {
-//     payload = JSON.parse(consentRequest.tx)
-//   } catch (err) {
-//     throw new Error('Could not parse transaction payload')
-//   }
-//
-//   const result: Transaction = {
-//     txId: consentRequest.txId,
-//     receivedAt: new Date(consentRequest.receivedAt as string),
-//     tx: {},
-//     type: TransactionKeys.UNKNOWN,
-//     pubKey: '',
-//     pending: false,
-//     txHash: null,
-//     sentAt: null,
-//     error: null
-//   }
-//
-//   if (
-//     payload !== null &&
-//     payload !== undefined &&
-//     typeof payload === 'object'
-//   ) {
-//     result.pubKey = payload.pubKey
-//
-//     for (const key in payload) {
-//       if (Object.values(TransactionKeys).indexOf(key as TransactionKeys) > -1) {
-//         result.type = key as TransactionKeys
-//         // @ts-ignore doesnt appear to be a good way to type this without defining
-//         // interfaces for every single transaction
-//         result.tx = payload[key]
-//       }
-//     }
-//
-//     return result
-//   } else {
-//     throw new Error('Invalid payload')
-//   }
-// }
-
 export type Transaction = RequestTransactionSendingContent & {
   type: TransactionKeys
   payload: object

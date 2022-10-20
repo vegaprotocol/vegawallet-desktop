@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 
-import { Colors } from '../../../config/colors'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { formatDate } from '../../../lib/date'
 import { parseTransaction } from '../../../lib/transactions'
@@ -8,8 +7,8 @@ import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
 import { CodeBlock } from '../../code-block'
 import { Dialog } from '../../dialog'
-import { KeyValueTable } from '../../key-value-table'
 import { PublicKey } from '../../public-key'
+import { Title } from '../../title'
 import type {
   InteractionContentProps,
   RequestTransactionSending
@@ -37,35 +36,31 @@ export const Transaction = ({
   )
 
   return (
-    <Dialog open={true} size='lg' title={`${transaction.title} received`}>
+    <Dialog open={true} size='lg' title='Transaction request'>
       <div style={{ padding: '0 20px 20px' }}>
-        <p
-          style={{
-            border: `1px solid ${Colors.VEGA_PINK}`,
-            padding: 20,
-            textAlign: 'center'
-          }}
-        >
-          <strong>{transaction.hostname}</strong> is trying to send a
-          transaction to <strong>{transaction.wallet}</strong>
+        <p>
+          <pre>{transaction.hostname}</pre> has requesteda transaction "
+          {transaction.title}" for <pre>{transaction.wallet}</pre>.
         </p>
       </div>
+      <div style={{ padding: '0 20px 20px' }}>
+        <Title style={{ margin: '0 0 6px' }}>Wallet</Title>
+        <p>{transaction.wallet}</p>
+      </div>
       <PublicKey publicKey={transaction.publicKey} />
-      <div style={{ padding: '0 20px 20px', marginTop: 20 }}>
-        <KeyValueTable
-          style={{ marginBottom: 10 }}
-          rows={[
-            {
-              key: 'Received at',
-              value: formatDate(new Date(transaction.receivedAt))
-            }
-          ]}
-        />
-        <CodeBlock style={{ fontSize: 12, marginBottom: 16 }}>
+      <div style={{ padding: '20px 20px 0' }}>
+        <Title style={{ margin: '0 0 12px' }}>Transaction details</Title>
+        <CodeBlock style={{ fontSize: 12, marginBottom: 0 }}>
           <pre data-testid='transaction-payload'>
             {JSON.stringify(transaction.payload, null, 2)}
           </pre>
         </CodeBlock>
+      </div>
+      <div style={{ padding: '20px 20px 0' }}>
+        <Title style={{ margin: '0 0 6px' }}>Received</Title>
+        <p>{formatDate(new Date(transaction.receivedAt))}</p>
+      </div>
+      <div style={{ padding: 20 }}>
         <ButtonGroup>
           <Button
             data-testid='wallet-transaction-request-approve'

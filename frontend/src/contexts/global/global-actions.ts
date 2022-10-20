@@ -10,7 +10,6 @@ import type { ServiceType } from '../../service'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
-// import { parseTx } from '../../lib/transactions'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
@@ -440,53 +439,6 @@ export function createActions(
         }
       }
     }
-
-    // decideOnTransaction(txId: string, decision: boolean) {
-    //   return async (dispatch: GlobalDispatch) => {
-    //     logger.debug('ApproveTransaction')
-    //
-    //     try {
-    //       await service.ConsentToTransaction({
-    //         txId,
-    //         decision
-    //       })
-    //     } catch (err) {
-    //       AppToaster.show({
-    //         message: `Something went wrong ${
-    //           decision ? 'approving' : 'rejecting'
-    //         } transaction: ${txId}`,
-    //         intent: Intent.DANGER
-    //       })
-    //       logger.error(err)
-    //     }
-    //
-    //     try {
-    //       const [queue, history] = await Promise.all([
-    //         service.ListConsentRequests(),
-    //         service.ListSentTransactions()
-    //       ])
-    //
-    //       const consentRequests = queue.requests //.map(parseTx)
-    //       const transactionsSent = history.transactions
-    //
-    //       dispatch({
-    //         type: 'SET_TRANSACTION_QUEUE',
-    //         payload: consentRequests
-    //       })
-    //
-    //       dispatch({
-    //         type: 'SET_TRANSACTION_HISTORY',
-    //         payload: transactionsSent
-    //       })
-    //     } catch (err) {
-    //       AppToaster.show({
-    //         message: `Something went wrong requesting transactions`,
-    //         intent: Intent.DANGER
-    //       })
-    //       logger.error(err)
-    //     }
-    //   }
-    // }
   }
 }
 

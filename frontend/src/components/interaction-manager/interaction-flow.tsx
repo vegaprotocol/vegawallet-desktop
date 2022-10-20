@@ -11,6 +11,7 @@ import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import type {
   ErrorOccurred,
+  Interaction,
   InteractionContentProps,
   Log,
   RequestPassphrase,
