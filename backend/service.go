@@ -209,14 +209,12 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 		h.listenToIncomingInteractions(ctx)
 	}()
 
-	// Starting the service.
 	go func() {
 		h.startService(srv, loggingCancelFn)
 	}()
 
-	// Since running the service is async, we have to verify its health,
-	// asynchronously. If not, we warn the front-end. This is done so the
-	// front-end doesn't have to do it.
+	// We warn the front-end by sending events when the service is unhealthy.
+	// This is done so the front-end doesn't have to do it.
 	go func() {
 		h.monitorServiceHealth(ctx, svcURL)
 	}()
