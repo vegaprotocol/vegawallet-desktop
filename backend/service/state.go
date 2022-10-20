@@ -4,19 +4,12 @@ import (
 	"context"
 
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
-	"code.vegaprotocol.io/vega/wallet/service"
 )
 
 type State struct {
 	url string
 
 	cancelFunc context.CancelFunc
-
-	ConsentRequestsChan  chan service.ConsentRequest
-	SentTransactionsChan chan service.SentTransaction
-
-	ConsentRequests  *ConsentRequests
-	SentTransactions *SentTransactions
 
 	ResponseChan  chan interactor.Interaction
 	ReceptionChan chan interactor.Interaction
@@ -44,9 +37,6 @@ func (s *State) IsRunning() bool {
 func (s *State) Shutdown() {
 	s.cancelFunc()
 
-	close(s.ConsentRequestsChan)
-	close(s.SentTransactionsChan)
-
 	close(s.ReceptionChan)
 	close(s.ResponseChan)
 }
@@ -54,10 +44,6 @@ func (s *State) Shutdown() {
 func (s *State) Reset() {
 	s.url = ""
 	s.cancelFunc = nil
-	s.ConsentRequests = NewConsentRequests()
-	s.SentTransactions = NewSentTransactions()
-	s.ConsentRequestsChan = make(chan service.ConsentRequest, 1)
-	s.SentTransactionsChan = make(chan service.SentTransaction, 1)
 	s.ReceptionChan = make(chan interactor.Interaction, 1)
 	s.ResponseChan = make(chan interactor.Interaction, 1)
 }

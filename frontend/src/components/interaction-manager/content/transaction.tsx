@@ -1,3 +1,6 @@
+import { useCallback } from 'react'
+
+import { Colors } from '../../../config/colors'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { formatDate } from '../../../lib/date'
 import { parseTransaction } from '../../../lib/transactions'
@@ -19,21 +22,36 @@ export const Transaction = ({
   const { service } = useGlobal()
   const transaction = parseTransaction(interaction.event.data)
 
-  const onReponse = async (decision: boolean) => {
-    // @ts-ignore
-    await service.RespondToInteraction({
-      traceID: interaction.event.traceID,
-      name: INTERACTION_RESPONSE_TYPE.DECISION,
-      data: {
-        approved: decision
-      }
-    })
-  }
+  const onReponse = useCallback(
+    async (decision: boolean) => {
+      // @ts-ignore
+      await service.RespondToInteraction({
+        traceID: interaction.event.traceID,
+        name: INTERACTION_RESPONSE_TYPE.DECISION,
+        data: {
+          approved: decision
+        }
+      })
+    },
+    [service, interaction]
+  )
 
   return (
-    <Dialog open={true} title={`${transaction.title} received`}>
+    <Dialog open={true} size='lg' title={`${transaction.title} received`}>
       <div style={{ padding: '0 20px 20px' }}>
-        <PublicKey publicKey={transaction.publicKey} />
+        <p
+          style={{
+            border: `1px solid ${Colors.VEGA_PINK}`,
+            padding: 20,
+            textAlign: 'center'
+          }}
+        >
+          <strong>{transaction.hostname}</strong> is trying to send a
+          transaction to <strong>{transaction.wallet}</strong>
+        </p>
+      </div>
+      <PublicKey publicKey={transaction.publicKey} />
+      <div style={{ padding: '0 20px 20px', marginTop: 20 }}>
         <KeyValueTable
           style={{ marginBottom: 10 }}
           rows={[

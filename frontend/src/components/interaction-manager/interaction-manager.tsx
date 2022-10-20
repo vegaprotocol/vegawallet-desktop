@@ -3,9 +3,9 @@ import omit from 'lodash/omit'
 import { nanoid } from 'nanoid'
 import { useEffect, useState } from 'react'
 
-import { useGlobal } from '../../contexts/global/global-context'
+// import { useGlobal } from '../../contexts/global/global-context'
 import { EVENTS } from '../../lib/events'
-import { parseTx } from '../../lib/transactions'
+// import { parseTx } from '../../lib/transactions'
 import { EventsOff, EventsOn } from '../../wailsjs/runtime'
 import { InteractionFlow } from './interaction-flow'
 import type { Interaction, RawInteraction } from './types'
@@ -23,29 +23,29 @@ export function InteractionManager() {
     ids: [],
     values: {}
   })
-  const { service, dispatch } = useGlobal()
+  // const { service, dispatch } = useGlobal()
   const traceID = interactions.ids[0]
   const events = traceID ? interactions.values[traceID] : undefined
 
-  useEffect(() => {
-    const loadTransactions = async () => {
-      const [queue, history] = await Promise.all([
-        service.ListConsentRequests(),
-        service.ListSentTransactions()
-      ])
-      console.log(queue, history)
-      dispatch({
-        type: 'SET_TRANSACTION_QUEUE',
-        payload: queue.requests.map(parseTx)
-      })
-      dispatch({
-        type: 'SET_TRANSACTION_HISTORY',
-        payload: history.transactions
-      })
-    }
-
-    loadTransactions()
-  }, [service, dispatch])
+  // useEffect(() => {
+  //   const loadTransactions = async () => {
+  //     const [queue, history] = await Promise.all([
+  //       service.ListConsentRequests(),
+  //       service.ListSentTransactions()
+  //     ])
+  //     console.log(queue, history)
+  //     dispatch({
+  //       type: 'SET_TRANSACTION_QUEUE',
+  //       payload: queue.requests.map(parseTx)
+  //     })
+  //     dispatch({
+  //       type: 'SET_TRANSACTION_HISTORY',
+  //       payload: history.transactions
+  //     })
+  //   }
+  //
+  //   loadTransactions()
+  // }, [service, dispatch])
 
   // Get any already pending tx on startup
   useEffect(() => {
