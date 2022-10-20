@@ -9,7 +9,7 @@ import (
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	"code.vegaprotocol.io/vega/wallet/service"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
-	"code.vegaprotocol.io/vegawallet-desktop/os"
+	"code.vegaprotocol.io/vegawallet-desktop/os/notification"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
@@ -53,7 +53,7 @@ func (h *Handler) emitReceivedInteraction(log *zap.Logger, interaction interacto
 
 	if shouldEmitOSNotification(interaction.Name) {
 		message := strings.ToLower(strings.ReplaceAll(string(interaction.Name), "_", " "))
-		if err := os.Notify(app.Name, message); err != nil {
+		if err := notification.Notify(app.Name, message); err != nil {
 			log.Warn("Could not send the OS notification", zap.Error(err))
 		}
 	}
