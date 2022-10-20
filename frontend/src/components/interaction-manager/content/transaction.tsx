@@ -42,12 +42,40 @@ const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
     'Ethereum key rotation submission'
 }
 
+const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
+  [TransactionKeys.UNKNOWN]: 'submit an unknown transaction',
+  [TransactionKeys.ORDER_SUBMISSION]: 'submit an order',
+  [TransactionKeys.ORDER_CANCELLATION]: 'cancel an order',
+  [TransactionKeys.ORDER_AMENDMENT]: 'amend an order',
+  [TransactionKeys.VOTE_SUBMISSION]: 'submit a vote for a governance proposal',
+  [TransactionKeys.WITHDRAW_SUBMISSION]: 'withdraw funds',
+  [TransactionKeys.LIQUIDTY_PROVISION_SUBMISSION]: 'provide liquidity',
+  [TransactionKeys.LIQUIDTY_PROVISION_CANCELLATION]:
+    'cancel a liquidity provision',
+  [TransactionKeys.LIQUIDITY_PROVISION_AMENDMENT]:
+    'amend a liquidity provision',
+  [TransactionKeys.PROPOSAL_SUBMISSION]: 'submit a governance proposal',
+  [TransactionKeys.ANNOUNCE_NODE]: 'announce a node',
+  [TransactionKeys.NODE_VOTE]: 'submit a node vote',
+  [TransactionKeys.NODE_SIGNATURE]: 'submit a node signature',
+  [TransactionKeys.CHAIN_EVENT]: 'submit a chain event',
+  [TransactionKeys.ORACLE_DATA_SUBMISSION]: 'submit oracle data',
+  [TransactionKeys.UNDELEGATE_SUBMISSION]: 'undelegate stake to a node',
+  [TransactionKeys.DELEGATE_SUBMISSION]: 'delegate stake to a node',
+  [TransactionKeys.TRANSFER]: 'transfer assets',
+  [TransactionKeys.CANCEL_TRANSFER]: 'cancel a recurring transfer',
+  [TransactionKeys.KEY_ROTATE_SUBMISSION]: 'submit a key rotation',
+  [TransactionKeys.ETHEREUM_KEY_ROTATE_SUBMISSION]:
+    'submit an Ethereum key rotation'
+}
+
 export const Transaction = ({
   interaction
 }: InteractionContentProps<RequestTransactionSending>) => {
-  const { dispatch, service } = useGlobal()
+  const { service } = useGlobal()
   const transaction = parseTransaction(interaction.event.data)
   const title = TRANSACTION_TITLES[transaction.type]
+  const description = TRANSACTION_DESCRIPTIONS[transaction.type]
 
   const onReponse = useCallback(
     async (decision: boolean) => {
@@ -67,8 +95,8 @@ export const Transaction = ({
     <Dialog open={true} size='lg' title={title}>
       <div style={{ padding: '0 20px 20px' }}>
         <p>
-          <pre>{transaction.hostname}</pre> has requested a transaction "{title}
-          " for <pre>{transaction.wallet}</pre>.
+          <pre>{transaction.hostname}</pre> requested to use your key to{' '}
+          {description} from <pre>{transaction.wallet}</pre>.
         </p>
       </div>
       <div style={{ padding: '0 20px 20px' }}>

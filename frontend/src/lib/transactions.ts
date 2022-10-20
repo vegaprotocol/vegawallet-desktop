@@ -1,5 +1,3 @@
-// import type { backend as BackendModel } from '../wailsjs/go/models'
-
 import type { RequestTransactionSendingContent } from '../components/interaction-manager/types'
 
 export enum TransactionKeys {
@@ -29,6 +27,7 @@ export enum TransactionKeys {
 export type Transaction = RequestTransactionSendingContent & {
   type: TransactionKeys
   payload: object
+  decision?: boolean
 }
 
 const getPayload = (transaction: string): object => {
