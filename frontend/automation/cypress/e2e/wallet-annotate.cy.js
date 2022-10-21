@@ -25,6 +25,7 @@ describe('wallet annotate metadata', () => {
   })
 
   it('handles key name update', () => {
+    // 0001-WALL-055 must be able to change key name/alias
     const NEW_NAME = 'new name'
     goToUpdate(walletName, passphrase, pubkey)
 
