@@ -1,13 +1,13 @@
+import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useTaint } from '../../hooks/use-taint'
-import { Colors } from '../../config/colors'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
-import { PublicKey } from '../public-key'
 import { Warning } from '../icons/warning'
+import { PublicKey } from '../public-key'
 
 export const TaintKeyDialog = () => {
   const { state, actions, dispatch } = useGlobal()
@@ -24,7 +24,11 @@ export const TaintKeyDialog = () => {
   }
 
   return (
-    <Dialog size='lg' open={state.isTaintKeyModalOpen} title={keypair.isTainted ? 'Untaint key' : 'Taint key'}>
+    <Dialog
+      size='lg'
+      open={state.isTaintKeyModalOpen}
+      title={keypair.isTainted ? 'Untaint key' : 'Taint key'}
+    >
       <div data-testid='keypair-taint' style={{ padding: '0 20px 20px' }}>
         {keypair.isTainted && (
           <div style={{ marginBottom: 20 }}>
@@ -32,8 +36,9 @@ export const TaintKeyDialog = () => {
               This key has been marked as tainted.
             </p>
             <p style={{ border: `1px solid ${Colors.VEGA_PINK}`, padding: 20 }}>
-              <Warning style={{ width: '13', marginRight: 6 }}/>
-              If your key has been compromised or leaked, you should not untaint it as you will be exposing your assets.
+              <Warning style={{ width: '13', marginRight: 6 }} />
+              If your key has been compromised or leaked, you should not untaint
+              it as you will be exposing your assets.
             </p>
           </div>
         )}
