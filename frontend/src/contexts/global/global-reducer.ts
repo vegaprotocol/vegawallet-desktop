@@ -384,15 +384,7 @@ export function globalReducer(
 
       return {
         ...state,
-        wallet: null,
-        wallets: [
-          ...state.wallets.filter(w => w.name !== wallet.name),
-          {
-            ...wallet,
-            auth: false,
-            keypairs: null // remove keypairs so if you deactivate you are required password again
-          }
-        ].sort(sortWallet)
+        wallet: null
       }
     }
     case 'CHANGE_WALLET': {

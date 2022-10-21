@@ -8,10 +8,21 @@ import { useGlobal } from '../contexts/global/global-context'
 
 export const useOpenWallet = () => {
   const navigate = useNavigate()
-  const { dispatch, service } = useGlobal()
+  const { dispatch, service, state } = useGlobal()
 
   const open = useCallback(
     async (wallet: string) => {
+      const w = state.wallets.find(w => w.name === wallet)
+
+      if (w?.auth) {
+        dispatch({
+          type: 'ACTIVATE_WALLET',
+          wallet
+        })
+        navigate(`/wallet/${encodeURIComponent(wallet)}`)
+        return
+      }
+
       const passphrase = await requestPassphrase()
 
       try {
@@ -48,7 +59,7 @@ export const useOpenWallet = () => {
         })
       }
     },
-    [navigate, service, dispatch]
+    [navigate, state, service, dispatch]
   )
 
   return { open }

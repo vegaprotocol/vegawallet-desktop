@@ -1,5 +1,92 @@
+export namespace jsonrpc {
+	
+	export class Request {
+	    jsonrpc: string;
+	    method: string;
+	    params?: any;
+	    id?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Request(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.jsonrpc = source["jsonrpc"];
+	        this.method = source["method"];
+	        this.params = source["params"];
+	        this.id = source["id"];
+	    }
+	}
+	export class ErrorDetails {
+	    code: number;
+	    message: string;
+	    data?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ErrorDetails(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.code = source["code"];
+	        this.message = source["message"];
+	        this.data = source["data"];
+	    }
+	}
+	export class Response {
+	    jsonrpc: string;
+	    result?: any;
+	    error?: ErrorDetails;
+	    id?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Response(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.jsonrpc = source["jsonrpc"];
+	        this.result = source["result"];
+	        this.error = this.convertValues(source["error"], ErrorDetails);
+	        this.id = source["id"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace backend {
 	
+	export class StartServiceRequest {
+	    network: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new StartServiceRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
+	    }
+	}
 	export class ConsentToTransactionRequest {
 	    txId: string;
 	    decision: boolean;
@@ -14,31 +101,40 @@ export namespace backend {
 	        this.decision = source["decision"];
 	    }
 	}
-	export class GetConsentRequestRequest {
+	export class ConsentRequest {
 	    txId: string;
+	    tx: string;
+	    // Go type: time.Time
+	    receivedAt: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new GetConsentRequestRequest(source);
+	        return new ConsentRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
-	    }
-	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
+	        this.tx = source["tx"];
+	        this.receivedAt = this.convertValues(source["receivedAt"], null);
 	    }
 	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class GetVersionResponse {
 	    version: string;
@@ -175,40 +271,31 @@ export namespace backend {
 	        this.txId = source["txId"];
 	    }
 	}
-	export class ConsentRequest {
+	export class GetConsentRequestRequest {
 	    txId: string;
-	    tx: string;
-	    // Go type: time.Time
-	    receivedAt: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new ConsentRequest(source);
+	        return new GetConsentRequestRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.txId = source["txId"];
-	        this.tx = source["tx"];
-	        this.receivedAt = this.convertValues(source["receivedAt"], null);
+	    }
+	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
 	    }
 	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
 	}
 	export class ListConsentRequestsResponse {
 	    requests: ConsentRequest[];
@@ -239,18 +326,6 @@ export namespace backend {
 		    }
 		    return a;
 		}
-	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
 	}
 
 }
@@ -327,81 +402,6 @@ export namespace interactor {
 	        this.name = source["name"];
 	        this.data = source["data"];
 	    }
-	}
-
-}
-
-export namespace jsonrpc {
-	
-	export class Request {
-	    jsonrpc: string;
-	    method: string;
-	    params?: any;
-	    id?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Request(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.jsonrpc = source["jsonrpc"];
-	        this.method = source["method"];
-	        this.params = source["params"];
-	        this.id = source["id"];
-	    }
-	}
-	export class ErrorDetails {
-	    code: number;
-	    message: string;
-	    data?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ErrorDetails(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.code = source["code"];
-	        this.message = source["message"];
-	        this.data = source["data"];
-	    }
-	}
-	export class Response {
-	    jsonrpc: string;
-	    result?: any;
-	    error?: ErrorDetails;
-	    id?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Response(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.jsonrpc = source["jsonrpc"];
-	        this.result = source["result"];
-	        this.error = this.convertValues(source["error"], ErrorDetails);
-	        this.id = source["id"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 
 }
