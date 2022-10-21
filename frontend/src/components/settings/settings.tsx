@@ -99,7 +99,7 @@ const SettingsForm = ({
   config,
   isPending
 }: SettingsFormProps) => {
-  const { control, register, handleSubmit, getValues } = useForm<FormFields>({
+  const { control, register, handleSubmit } = useForm<FormFields>({
     defaultValues: {
       vegaHome: config.vegaHome,
       logLevel: config.logLevel,
@@ -108,7 +108,6 @@ const SettingsForm = ({
     }
   })
 
-  console.log(getValues('logLevel'))
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

@@ -29,7 +29,11 @@ export function NetworkInfo() {
             value: `http://${config.host}:${config.port}`,
             dataTestId: 'service-url'
           },
-          { key: 'Log level', value: config.logLevel, dataTestId: 'log-level' },
+          {
+            key: 'Log level',
+            value: config.logLevel,
+            dataTestId: 'network-log-level'
+          },
           {
             key: 'Token expiry',
             value: config.tokenExpiry,
