@@ -261,7 +261,7 @@ export function globalReducer(
             [keypairExtended.publicKey ?? '']: keypairExtended
           })
         },
-        auth: true
+        auth: false
       }
       return {
         ...state,

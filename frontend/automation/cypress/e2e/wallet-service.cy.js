@@ -10,20 +10,13 @@ describe('wallet service', () => {
       .then(handler => {
         cy.setVegaHome(handler)
         cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
       })
       .then(() => {
         cy.waitForHome()
       })
   })
 
-  beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-  })
-
   it('starts service automatically', () => {
-    unlockWallet(walletName, passphrase)
     cy.getByTestId('service-status').should(
       'contain.text',
       'Wallet Service: test'
