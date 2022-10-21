@@ -1,3 +1,151 @@
+export namespace backend {
+	
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	    backend?: version.GetVersionResponse;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	        this.backend = this.convertValues(source["backend"], version.GetVersionResponse);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class InitialiseAppRequest {
+	    vegaHome: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InitialiseAppRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.vegaHome = source["vegaHome"];
+	    }
+	}
+	export class SearchForExistingConfigurationResponse {
+	    wallets: string[];
+	    networks: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SearchForExistingConfigurationResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.wallets = source["wallets"];
+	        this.networks = source["networks"];
+	    }
+	}
+	export class StartServiceRequest {
+	    network: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new StartServiceRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
+	    }
+	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
+
+}
+
+export namespace version {
+	
+	export class NetworkCompatibility {
+	    network: string;
+	    isCompatible: boolean;
+	    retrievedVersion: string;
+	    error: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new NetworkCompatibility(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.network = source["network"];
+	        this.isCompatible = source["isCompatible"];
+	        this.retrievedVersion = source["retrievedVersion"];
+	        this.error = source["error"];
+	    }
+	}
+	export class GetVersionResponse {
+	    version: string;
+	    gitHash: string;
+	    networksCompatibility: NetworkCompatibility[];
+	
+	    static createFrom(source: any = {}) {
+	        return new GetVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	        this.networksCompatibility = this.convertValues(source["networksCompatibility"], NetworkCompatibility);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace interactor {
 	
 	export class Interaction {
@@ -126,154 +274,6 @@ export namespace config {
 	        this.vegaHome = source["vegaHome"];
 	        this.defaultNetwork = source["defaultNetwork"];
 	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-
-}
-
-export namespace backend {
-	
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
-	    }
-	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	    backend?: version.GetVersionResponse;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
-	        this.backend = this.convertValues(source["backend"], version.GetVersionResponse);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class InitialiseAppRequest {
-	    vegaHome: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InitialiseAppRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.vegaHome = source["vegaHome"];
-	    }
-	}
-	export class SearchForExistingConfigurationResponse {
-	    wallets: string[];
-	    networks: string[];
-	
-	    static createFrom(source: any = {}) {
-	        return new SearchForExistingConfigurationResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.wallets = source["wallets"];
-	        this.networks = source["networks"];
-	    }
-	}
-	export class StartServiceRequest {
-	    network: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new StartServiceRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	    }
-	}
-
-}
-
-export namespace version {
-	
-	export class NetworkCompatibility {
-	    network: string;
-	    isCompatible: boolean;
-	    retrievedVersion: string;
-	    error: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new NetworkCompatibility(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.network = source["network"];
-	        this.isCompatible = source["isCompatible"];
-	        this.retrievedVersion = source["retrievedVersion"];
-	        this.error = source["error"];
-	    }
-	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
-	    networksCompatibility: NetworkCompatibility[];
-	
-	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
-	        this.networksCompatibility = this.convertValues(source["networksCompatibility"], NetworkCompatibility);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
