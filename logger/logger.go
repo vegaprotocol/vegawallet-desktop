@@ -1,4 +1,4 @@
-package backend
+package logger
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func buildLogger(level, output string) (*zap.Logger, error) {
+func New(level, output string) (*zap.Logger, error) {
 	zapFilePath := toZapLogPath(output)
 	cfg := zap.Config{
 		Level:    zap.NewAtomicLevelAt(zapcore.InfoLevel),
@@ -46,22 +46,7 @@ func buildLogger(level, output string) (*zap.Logger, error) {
 	return log, nil
 }
 
-func getLoggerLevel(level string) (*zapcore.Level, error) {
-	if !isSupportedLogLevel(level) {
-		return nil, fmt.Errorf("unsupported logger level %s", level)
-	}
-
-	l := new(zapcore.Level)
-
-	err := l.UnmarshalText([]byte(level))
-	if err != nil {
-		return nil, fmt.Errorf("couldn't parse logger level: %w", err)
-	}
-
-	return l, nil
-}
-
-func isSupportedLogLevel(level string) bool {
+func IsSupportedLevel(level string) bool {
 	for _, supported := range []string{
 		zapcore.DebugLevel.String(),
 		zapcore.InfoLevel.String(),
@@ -75,7 +60,7 @@ func isSupportedLogLevel(level string) bool {
 	return false
 }
 
-func syncLogger(logger *zap.Logger) func() {
+func Sync(logger *zap.Logger) func() {
 	return func() {
 		err := logger.Sync()
 		if err != nil {
@@ -86,4 +71,19 @@ func syncLogger(logger *zap.Logger) func() {
 			}
 		}
 	}
+}
+
+func getLoggerLevel(level string) (*zapcore.Level, error) {
+	if !IsSupportedLevel(level) {
+		return nil, fmt.Errorf("unsupported logger level %s", level)
+	}
+
+	l := new(zapcore.Level)
+
+	err := l.UnmarshalText([]byte(level))
+	if err != nil {
+		return nil, fmt.Errorf("couldn't parse logger level: %w", err)
+	}
+
+	return l, nil
 }

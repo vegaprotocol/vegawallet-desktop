@@ -6,6 +6,7 @@ import { Passphrase } from './content/passphrase'
 import { Permissions } from './content/permissions'
 import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
+import { Transaction } from './content/transaction'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import type {
@@ -16,6 +17,7 @@ import type {
   RequestPassphrase,
   RequestPermissions,
   RequestSucceeded,
+  RequestTransactionSending,
   RequestWalletConnection,
   RequestWalletSelection,
   SessionEnded
@@ -52,6 +54,13 @@ const InteractionItem = (
           {...(props as InteractionContentProps<RequestPermissions>)}
           isResolved={isResolved}
           setResolved={setResolved}
+        />
+      )
+    }
+    case INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING: {
+      return (
+        <Transaction
+          {...(props as InteractionContentProps<RequestTransactionSending>)}
         />
       )
     }

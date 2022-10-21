@@ -98,6 +98,10 @@ pre {
   font-size: 1em; /* 2 */
 }
 
+pre {
+  display: inline-block;
+}
+
 /*
 Add the correct font size in all browsers.
 */

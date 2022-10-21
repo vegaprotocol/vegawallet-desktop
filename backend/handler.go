@@ -14,6 +14,7 @@ import (
 	"code.vegaprotocol.io/vega/wallet/wallets"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/service"
+	"code.vegaprotocol.io/vegawallet-desktop/logger"
 	"go.uber.org/zap"
 )
 
@@ -58,12 +59,12 @@ func NewHandler() (*Handler, error) {
 		}
 	}
 
-	log, err := buildLogger(cfg.LogLevel, configLoader.LogFilePathForApp())
+	log, err := logger.New(cfg.LogLevel, configLoader.LogFilePathForApp())
 	if err != nil {
 		return nil, err
 	}
 
-	handler.log = log
+	handler.log = log.Named("backend")
 
 	if err := handler.initializeWalletAPI(cfg); err != nil {
 		handler.log.Error("Could not initialize the wallet JSON-RPC API", zap.Error(err))
@@ -136,13 +137,6 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 	}
 
 	return nil
-}
-
-func (h *Handler) SubmitWalletAPIRequest(request *jsonrpc.Request) *jsonrpc.Response {
-	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
-	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
-
-	return h.walletAPI.DispatchRequest(h.ctx, request)
 }
 
 func (h *Handler) getServiceStore(config config.Config) (*svcstore.Store, error) {

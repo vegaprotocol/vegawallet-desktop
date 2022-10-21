@@ -1,10 +1,6 @@
 import type { NetworkPreset } from '../../lib/networks'
-import type { Transaction } from '../../lib/transactions'
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type {
-  backend as BackendModel,
-  config as ConfigModel
-} from '../../wailsjs/go/models'
+import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
   DrawerState,
@@ -25,10 +21,6 @@ export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   version: '',
   config: null,
-
-  // Transactions
-  transactionQueue: [],
-  transactionHistory: [],
 
   // Wallet
   wallet: null,
@@ -204,14 +196,6 @@ export type GlobalAction =
   | {
       type: 'SET_SERVICE_STATUS'
       status: ServiceState
-    }
-  | {
-      type: 'SET_TRANSACTION_QUEUE'
-      payload: Transaction[]
-    }
-  | {
-      type: 'SET_TRANSACTION_HISTORY'
-      payload: BackendModel.SentTransaction[]
     }
 
 export function globalReducer(
@@ -522,18 +506,6 @@ export function globalReducer(
       return {
         ...state,
         serviceStatus: action.status
-      }
-    }
-    case 'SET_TRANSACTION_QUEUE': {
-      return {
-        ...state,
-        transactionQueue: action.payload
-      }
-    }
-    case 'SET_TRANSACTION_HISTORY': {
-      return {
-        ...state,
-        transactionHistory: action.payload
       }
     }
     default: {

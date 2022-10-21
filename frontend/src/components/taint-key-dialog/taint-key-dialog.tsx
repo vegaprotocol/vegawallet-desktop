@@ -46,7 +46,7 @@ export const TaintKeyDialog = () => {
           </div>
         )}
       </div>
-      <PublicKey keypair={keypair} />
+      <PublicKey publicKey={keypair.publicKey} />
       <div style={{ padding: '32px 20px 20px' }}>
         <ButtonGroup inline>
           <Button
