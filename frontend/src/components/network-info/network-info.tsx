@@ -1,7 +1,7 @@
 import { useGlobal } from '../../contexts/global/global-context'
-import { Header } from '../header'
 import { KeyValueTable } from '../key-value-table'
 import { NodeList } from '../node-list'
+import { Title } from '../title'
 
 export function NetworkInfo() {
   const {
@@ -14,13 +14,13 @@ export function NetworkInfo() {
 
   return (
     <>
-      <Header>gRPC Nodes</Header>
+      <Title>gRPC Nodes</Title>
       <NodeList items={config.api?.grpcConfig?.hosts ?? []} />
-      <Header>GraphQL Nodes</Header>
+      <Title>GraphQL Nodes</Title>
       <NodeList items={config.api?.graphQLConfig?.hosts ?? []} />
-      <Header>REST Nodes</Header>
+      <Title>REST Nodes</Title>
       <NodeList items={config.api?.restConfig?.hosts ?? []} />
-      <Header>Application Settings</Header>
+      <Title>Application Settings</Title>
       <KeyValueTable
         style={{ fontSize: 16 }}
         rows={[

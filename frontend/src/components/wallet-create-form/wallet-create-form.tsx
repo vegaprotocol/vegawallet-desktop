@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 
+import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -68,11 +69,11 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
           })}
         />
       </FormGroup>
-      <ButtonGroup>
+      <ButtonGroup inline>
         <Button data-testid='submit' type='submit'>
           Submit
         </Button>
-        <Button onClick={cancel}>Cancel</Button>
+        <ButtonUnstyled onClick={cancel}>Cancel</ButtonUnstyled>
       </ButtonGroup>
     </form>
   )

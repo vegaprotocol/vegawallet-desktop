@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 
-import { useGlobal } from '../../contexts/global/global-context'
+import { DrawerPanel, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
+import { ChevronLeft } from '../icons/chevron-left'
 import { DRAWER_HEIGHT } from '.'
 import { DrawerAddPreset } from './drawer-add-preset'
 import { DrawerEditNetwork } from './drawer-edit-network'
@@ -10,34 +11,17 @@ import { DrawerManageNetwork } from './drawer-manage-network'
 import { DrawerNetwork } from './drawer-network'
 import { ServiceStatus } from './service-status'
 
-const DEFAULT_VIEW = 'network'
-
-export type DrawerViews = 'network' | 'manage' | 'edit' | 'add'
-
-type DrawerContentProps = {
-  defaultView?: DrawerViews
-}
-
 /**
  * Renders different drawer content based on 'view' state
  */
-export function DrawerContent({
-  defaultView = DEFAULT_VIEW
-}: DrawerContentProps) {
+export function DrawerContent() {
   const { state, actions, dispatch } = useGlobal()
-
-  // The current view of the drawer
-  const [view, setView] = useState<DrawerViews>(defaultView)
-
-  // The network you are currently editing when in the edit view
-  const [selectedNetwork, setSelectedNetwork] = useState<string | null>(null)
 
   // Close modal on escape key
   useEffect(() => {
     function handleKeydown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
         dispatch(actions.setDrawerAction(false))
-        setView(DEFAULT_VIEW)
       }
     }
 
@@ -51,20 +35,31 @@ export function DrawerContent({
   const handleToggle = useCallback(
     (isOpen: boolean) => {
       dispatch(actions.setDrawerAction(isOpen))
-      if (!isOpen) {
-        setView(DEFAULT_VIEW)
-      }
     },
     [dispatch, actions]
   )
 
-  switch (view) {
-    case 'network': {
+  const setView = useCallback(
+    (panel: DrawerPanel) => {
+      dispatch(actions.setDrawerAction(true, panel))
+    },
+    [dispatch, actions]
+  )
+
+  const setEditingNetwork = useCallback(
+    (editingNetwork: string) => {
+      dispatch(actions.setDrawerAction(true, DrawerPanel.Edit, editingNetwork))
+    },
+    [dispatch, actions]
+  )
+
+  switch (state.drawerState.panel) {
+    case DrawerPanel.Network: {
       return (
         <>
           <DrawerHead
             height={DRAWER_HEIGHT}
-            isOpen={state.drawerOpen}
+            isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
           >
             <ServiceStatus />
@@ -75,68 +70,71 @@ export function DrawerContent({
         </>
       )
     }
-    case 'manage': {
+    case DrawerPanel.Manage: {
       return (
         <>
           <DrawerHead
             height={DRAWER_HEIGHT}
-            isOpen={state.drawerOpen}
+            isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
             title='Manage networks'
           >
             <ButtonUnstyled
               data-testid='back'
               style={{ textDecoration: 'none' }}
-              onClick={() => setView('network')}
+              onClick={() => setView(DrawerPanel.Network)}
             >
+              <ChevronLeft style={{ width: 14, marginRight: 6 }} />
               Back
             </ButtonUnstyled>
           </DrawerHead>
           <DrawerContentWrapper>
             <DrawerManageNetwork
               setView={setView}
-              setSelectedNetwork={setSelectedNetwork}
+              setEditingNetwork={setEditingNetwork}
             />
           </DrawerContentWrapper>
         </>
       )
     }
-    case 'edit': {
+    case DrawerPanel.Edit: {
       return (
         <>
           <DrawerHead
             height={DRAWER_HEIGHT}
-            isOpen={state.drawerOpen}
-            title={selectedNetwork}
+            isOpen={state.drawerState.isOpen}
+            title={state.drawerState.editingNetwork}
             setOpen={handleToggle}
           >
             <ButtonUnstyled
               data-testid='back'
               style={{ textDecoration: 'none' }}
-              onClick={() => setView('manage')}
+              onClick={() => setView(DrawerPanel.Manage)}
             >
               Back
             </ButtonUnstyled>
           </DrawerHead>
           <DrawerContentWrapper>
-            <DrawerEditNetwork selectedNetwork={selectedNetwork} />
+            <DrawerEditNetwork
+              selectedNetwork={state.drawerState.editingNetwork}
+            />
           </DrawerContentWrapper>
         </>
       )
     }
-    case 'add': {
+    case DrawerPanel.Add: {
       return (
         <>
           <DrawerHead
             height={DRAWER_HEIGHT}
-            isOpen={state.drawerOpen}
+            isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
             title='Add network'
           >
             <ButtonUnstyled
               data-testid='back'
               style={{ textDecoration: 'none' }}
-              onClick={() => setView('manage')}
+              onClick={() => setView(DrawerPanel.Manage)}
             >
               Back
             </ButtonUnstyled>

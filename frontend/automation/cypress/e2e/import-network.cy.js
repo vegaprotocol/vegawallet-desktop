@@ -83,6 +83,7 @@ describe('import network', () => {
       'network-config/mainnet-config.toml'
     )
 
+    // 0001-WALL-010
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(filePath)
     cy.getByTestId('network-name').type('custom')

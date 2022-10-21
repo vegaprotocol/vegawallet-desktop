@@ -28,10 +28,7 @@ export const WalletConnection = ({
         })
       } catch (err: unknown) {
         AppToaster.show({
-          message:
-            err instanceof Error
-              ? err.message
-              : `There was an error handling an incoming connection from ${interaction.event.data.hostname}`,
+          message: `${err}`,
           intent: Intent.DANGER
         })
       }
@@ -39,7 +36,7 @@ export const WalletConnection = ({
 
     if (!isResolved) {
       // automatically accept incoming connections
-      setResolved()
+      setResolved(true)
       handleResponse(true)
     }
   }, [interaction, service, isResolved, setResolved])

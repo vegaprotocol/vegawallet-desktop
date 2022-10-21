@@ -1,15 +1,16 @@
 import type { ErrorInfo, ReactNode } from 'react'
 import { Component, useEffect } from 'react'
-import { useMatch } from 'react-router-dom'
 
 import { Button } from './components/button'
+import { ServiceLoader } from './components/service-loader'
 import { Splash } from './components/splash'
+import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
 import { Colors } from './config/colors'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { createLogger } from './lib/logging'
-import { WindowReload } from './wailsjs/runtime/runtime'
+import { WindowReload } from './wailsjs/runtime'
 
 /**
  * Initialiases the app
@@ -18,7 +19,7 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
   useCheckForUpdate()
 
   const {
-    state: { status, network, networkConfig },
+    state: { status },
     actions,
     dispatch
   } = useGlobal()
@@ -27,12 +28,6 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     dispatch(actions.initAppAction())
   }, [dispatch, actions])
-
-  useEffect(() => {
-    if (network && networkConfig) {
-      dispatch(actions.startServiceAction())
-    }
-  }, [network, networkConfig, dispatch, actions])
 
   if (status === AppStatus.Pending) {
     return (
@@ -44,13 +39,14 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
 
   if (status === AppStatus.Failed) {
     return (
-      <Splash style={{ textAlign: 'center' }}>
-        <p>Failed to initialise</p>
-      </Splash>
+      <SplashError
+        message='Failed to initialise'
+        actions={<Button onClick={() => WindowReload()}>Reload</Button>}
+      />
     )
   }
 
-  return <>{children}</>
+  return <ServiceLoader>{children}</ServiceLoader>
 }
 
 export const APP_FRAME_HEIGHT = 35
@@ -64,14 +60,17 @@ interface AppFrameProps {
  * drag the app window aroung. Also renders the vega-bg className if onboard mode
  */
 export function AppFrame({ children }: AppFrameProps) {
-  const walletMatch = useMatch('/wallet/*')
-  const useVegaBg = !Boolean(walletMatch)
+  const { state } = useGlobal()
+  const useVegaBg = state.status === AppStatus.Onboarding
   return (
     <div
       style={{
         height: '100%',
         paddingTop: APP_FRAME_HEIGHT,
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        backgroundColor: Colors.DARK_GRAY_1,
+        position: 'relative',
+        overflowY: 'auto'
       }}
       data-testid='app-frame'
       className={useVegaBg ? 'vega-bg' : undefined}
@@ -83,12 +82,13 @@ export function AppFrame({ children }: AppFrameProps) {
           left: 0,
           width: '100%',
           height: APP_FRAME_HEIGHT,
-          backgroundColor: useVegaBg ? 'transparent' : Colors.BLACK
+          backgroundColor: useVegaBg ? 'transparent' : Colors.BLACK,
+          // The app is frameless by default so this element creates a space at the top of the app
+          // which you can click and drag to move the app around.
+          // https://wails.io/docs/guides/frameless/
+          // @ts-ignore: Allow custom css property for wails
+          '--wails-draggable': 'drag'
         }}
-        // The app is frameless by default so this element creates a space at the top of the app
-        // which you can click and drag to move the app around. The drag function is triggered
-        // by the data-wails drag element
-        data-wails-drag
       />
       {children}
     </div>
@@ -97,11 +97,8 @@ export function AppFrame({ children }: AppFrameProps) {
 
 const logger = createLogger('ErrorBoundary')
 
-export class ErrorBoundary extends Component<
-  { children: ReactNode },
-  { error: Error | null }
-> {
-  state = {
+export class ErrorBoundary extends Component<{ children: ReactNode }> {
+  state: { error: Error | null } = {
     error: null
   }
 
@@ -118,13 +115,10 @@ export class ErrorBoundary extends Component<
 
     if (error) {
       return (
-        <Splash style={{ textAlign: 'center' }}>
-          <p style={{ marginBottom: 10 }}>
-            {/* @ts-ignore */}
-            Something went wrong: {error.message}
-          </p>
-          <Button onClick={() => WindowReload()}>Reload</Button>
-        </Splash>
+        <SplashError
+          message={`Something went wrong: ${error.message}`}
+          actions={<Button onClick={() => WindowReload()}>Reload</Button>}
+        />
       )
     }
 

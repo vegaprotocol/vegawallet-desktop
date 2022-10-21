@@ -1,6 +1,7 @@
 @import './styles/_reset.css';
 @import './styles/_colors.css';
 @import './styles/_fonts.css';
+@import './styles/_animations.css';
 
 html,
 body,

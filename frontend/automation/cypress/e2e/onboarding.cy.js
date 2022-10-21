@@ -8,11 +8,9 @@ describe('onboarding', () => {
       .then(() => {
         cy.waitForHome()
       })
-    cy.visit('/#/onboard')
   })
 
   it('create new wallet', () => {
-    // Create wallet
     const randomNum = Math.floor(Math.random() * 101)
     const walletName = `Test ${randomNum.toString()}`
     const passphrase = '123'
@@ -23,17 +21,55 @@ describe('onboarding', () => {
     cy.getByTestId('submit').click()
     cy.getByTestId('toast').contains('Wallet created!')
     cy.getByTestId('toast').should('not.exist')
+    cy.getByTestId('create-wallet-success-cta').click()
+    cy.getByTestId('header-title').should('have.text', walletName)
+  })
 
-    // Import network
-    cy.getByTestId('onboard-import-network-button').click()
-    cy.getByTestId('show-test-networks').click()
-    cy.getByTestId('import-network-fairground').click()
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(100)
-    cy.getByTestId('toast')
-      .should('be.visible')
-      .first()
-      .contains('Network imported to:')
+  it('create multiple wallets - switch between them', () => {
+    // 0001-WALL-066 must be able to create multiple wallets
+    // 0001-WALL-067 must be able to switch between wallets
+    const randomNum = Math.floor(Math.random() * 101)
+    const randomNum2 = Math.floor(Math.random() * 101)
+    const walletName = `Test ${randomNum.toString()}`
+    const walletName2 = `Test ${randomNum2.toString()}`
+    const passphrase = '123'
+
+    // Create first new wallet
+    cy.getByTestId('create-new-wallet').click()
+    cy.getByTestId('create-wallet-form-name').type(walletName)
+    cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
+    cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
+    cy.getByTestId('submit').click()
+    cy.getByTestId('toast').contains('Wallet created!')
+    cy.getByTestId('toast').should('not.exist')
+    cy.getByTestId('create-wallet-success-cta').click()
+    cy.getByTestId('header-title').should('have.text', walletName)
+
+    // Create another new wallet
+    cy.getByTestId('back').click()
+    cy.getByTestId('create-new-wallet').click()
+    cy.getByTestId('create-wallet-form-name').type(walletName2)
+    cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
+    cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
+    cy.getByTestId('submit').click()
+    cy.getByTestId('toast').contains('Wallet created!')
+    cy.getByTestId('toast').should('not.exist')
+    cy.getByTestId('create-wallet-success-cta').click()
+    cy.getByTestId('header-title').should('have.text', walletName2)
+
+    // Access first wallet
+    cy.getByTestId('back').click()
+    cy.get('button').contains(walletName).click()
+    cy.getByTestId('input-passphrase').type(passphrase)
+    cy.getByTestId('input-submit').click()
+    cy.getByTestId('header-title').should('have.text', walletName)
+
+    // Back out and access wallet2
+    cy.getByTestId('back').click()
+    cy.get('button').contains(walletName2).click()
+    cy.getByTestId('input-passphrase').type(passphrase)
+    cy.getByTestId('input-submit').click()
+    cy.getByTestId('header-title').should('have.text', walletName2)
   })
 
   it('import wallet', () => {

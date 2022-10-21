@@ -1,15 +1,13 @@
+const { unlockWallet } = require('../support/helpers')
+
 describe('import wallet', () => {
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.backend().then(handler => {
+      cy.setVegaHome(handler)
+      cy.restoreNetwork(handler)
+      cy.restoreWallet(handler)
+    })
   })
 
   beforeEach(() => {
@@ -18,19 +16,22 @@ describe('import wallet', () => {
   })
 
   it('recover wallet', () => {
+    // 0001-WALL-004
     const walletName = 'import test'
     const passphrase = '123'
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
+    const pubkey = Cypress.env('recoveredWalletPublicKey')
 
     fillInRecoveryForm(walletName, passphrase, recoveryPhrase)
     cy.getByTestId('toast').contains('Wallet imported to')
 
     // Can open newly imported wallet
-    cy.getByTestId('wallet-import-test').click()
+    unlockWallet(walletName.replace(' ', '-'), passphrase)
+    cy.getByTestId(`wallet-keypair-${pubkey}`).click()
     cy.getByTestId('public-key')
       .invoke('text')
       .then(text => {
-        expect(text).to.eq(Cypress.env('recoveredWalletPublicKey'))
+        expect(text).to.eq(pubkey)
       })
   })
 

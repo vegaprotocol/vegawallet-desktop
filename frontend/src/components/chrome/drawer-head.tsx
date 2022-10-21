@@ -1,9 +1,9 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { Colors } from '../../config/colors'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Header } from '../header'
 import { DropdownArrow } from '../icons/dropdown-arrow'
+import { Title } from '../title'
 
 interface DrawerHeadProps {
   title?: string | null
@@ -36,7 +36,7 @@ export function DrawerHead({
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
         {children}
       </div>
-      {title && <Header style={{ margin: 0 }}>{title}</Header>}
+      {title && <Title style={{ margin: 0 }}>{title}</Title>}
       <div>
         <DrawerToggle isOpen={isOpen} setOpen={setOpen} />
       </div>
@@ -50,7 +50,7 @@ type DrawerToggleProps = {
 }
 
 function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
-  const [hover, setHover] = React.useState(false)
+  const [hover, setHover] = useState(false)
 
   return (
     <ButtonUnstyled

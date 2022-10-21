@@ -3,12 +3,8 @@ import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
 import type { NetworkPreset } from '../../lib/networks'
-import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
-import type {
-  backend as BackendModel,
-  config as ConfigModel
-} from '../../wailsjs/go/models'
+import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
@@ -20,13 +16,33 @@ export enum AppStatus {
   Onboarding = 'Onboarding'
 }
 
+export enum ServiceState {
+  Started = 'Started',
+  Stopped = 'Stopped',
+  Loading = 'Loading',
+  Unhealthy = 'Unhealthy',
+  Unreachable = 'Unreachable',
+  Error = 'Error'
+}
+
+export enum DrawerPanel {
+  Network,
+  Manage,
+  Edit,
+  Add
+}
+
+export type DrawerState = {
+  isOpen: boolean
+  panel: DrawerPanel | null
+  editingNetwork: string | null
+}
+
 export interface KeyPair
-  extends Pick<
-    WalletModel.DescribeKeyResult,
-    'publicKey' | 'metadata' | 'isTainted'
-  > {
+  extends Pick<WalletModel.DescribeKeyResult, 'publicKey' | 'isTainted'> {
   name: string
   publicKeyShort: string
+  meta: WalletModel.DescribeKeyResult['metadata']
 }
 
 export interface Wallet {
@@ -39,14 +55,6 @@ export interface GlobalState {
   status: AppStatus
   version: string
   config: ConfigModel.Config | null
-  onboarding: {
-    wallets: string[]
-    networks: string[]
-  }
-
-  // Transactions
-  transactionQueue: Transaction[]
-  transactionHistory: BackendModel.SentTransaction[]
 
   // Wallet
   wallet: Wallet | null
@@ -58,14 +66,16 @@ export interface GlobalState {
   presets: NetworkPreset[]
   presetsInternal: NetworkPreset[]
   networkConfig: WalletModel.DescribeNetworkResult | null
-  serviceRunning: boolean
-  serviceUrl: string
+  serviceStatus: ServiceState
 
   // UI
-  sidebarOpen: boolean
-  passphraseModalOpen: boolean
-  drawerOpen: boolean
-  settingsModalOpen: boolean
+  drawerState: DrawerState
+  isPassphraseModalOpen: boolean
+  isRemoveWalletModalOpen: boolean
+  isSignMessageModalOpen: boolean
+  isTaintKeyModalOpen: boolean
+  isUpdateKeyModalOpen: boolean
+  isSettingsModalOpen: boolean
 }
 
 export type GlobalDispatch = React.Dispatch<

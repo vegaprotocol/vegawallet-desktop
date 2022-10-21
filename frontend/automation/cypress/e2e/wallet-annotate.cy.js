@@ -1,8 +1,9 @@
-const { unlockWallet, authenticate } = require('../support/helpers')
+const { unlockWallet, authenticate, goToKey } = require('../support/helpers')
 
 describe('wallet annotate metadata', () => {
   let walletName
   let passphrase
+  let pubkey
 
   before(() => {
     cy.clean()
@@ -20,72 +21,30 @@ describe('wallet annotate metadata', () => {
   beforeEach(() => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
+    pubkey = Cypress.env('testWalletPublicKey')
   })
 
-  it('handles metadata updates', () => {
-    unlockWallet(walletName, passphrase)
-    goToMetadataPage()
+  it('handles key name update', () => {
+    // 0001-WALL-055 must be able to change key name/alias
+    const NEW_NAME = 'new name'
+    goToUpdate(walletName, passphrase, pubkey)
 
-    cy.getByTestId('metadata-key-0').contains('name')
+    cy.getByTestId('metadata-key-0').contains('Name')
     cy.getByTestId('metadata-value-0').should('exist')
 
-    addPair('first', 'value-1')
-    addPair('second', 'value-2')
-    addPair('third', 'value-3')
-    updateMetadata()
+    cy.getByTestId('metadata-value-0').type(NEW_NAME)
+    cy.getByTestId('metadata-submit').click()
+
     authenticate(passphrase)
     assertSuccessfulUpdate()
-    cy.reload()
-    unlockWallet(walletName, passphrase)
-    goToMetadataPage()
-    cy.getByTestId('metadata-key-0').should('exist')
-    const key = 'metadata-key'
-    const value = 'metadata-value'
-
-    cy.getByTestId(key).should('have.length', 3)
-    cy.getByTestId(key).eq(0).should('have.value', 'first')
-    cy.getByTestId(key).eq(1).should('have.value', 'second')
-    cy.getByTestId(key).eq(2).should('have.value', 'third')
-
-    cy.getByTestId(value).should('have.length', 3)
-    cy.getByTestId(value).eq(0).should('have.value', 'value-1')
-    cy.getByTestId(value).eq(1).should('have.value', 'value-2')
-    cy.getByTestId(value).eq(2).should('have.value', 'value-3')
-
-    cy.getByTestId('metadata-remove').eq(1).click()
-    assertMetadataRemoved()
-    updateMetadata()
-    authenticate(passphrase)
-    assertSuccessfulUpdate()
-    cy.reload()
-    unlockWallet(walletName, passphrase)
-    goToMetadataPage()
-    assertMetadataRemoved()
+    cy.getByTestId('header-title').should('have.text', NEW_NAME)
   })
 })
 
-function goToMetadataPage() {
-  cy.getByTestId('wallet-actions').click()
-  cy.getByTestId('wallet-action-metadata').click()
-  cy.get('html').click() // close dropdown
-}
-
-function addPair(key, value) {
-  cy.getByTestId('metadata-add').click()
-  cy.getByTestId('metadata-key').last().type(key)
-  cy.getByTestId('metadata-value').last().type(value)
-}
-
-function updateMetadata() {
-  cy.getByTestId('metadata-submit').click()
-}
-
-function assertMetadataRemoved() {
-  const key = 'metadata-key'
-  const value = 'metadata-value'
-  cy.getByTestId(value).should('have.length', 2)
-  cy.getByTestId(key).eq(1).should('have.value', 'third')
-  cy.getByTestId(value).eq(1).should('have.value', 'value-3')
+function goToUpdate(walletName, passphrase, pubkey) {
+  unlockWallet(walletName, passphrase)
+  goToKey(pubkey)
+  cy.getByTestId('keypair-update').click()
 }
 
 function assertSuccessfulUpdate() {

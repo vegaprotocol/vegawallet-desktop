@@ -1,16 +1,14 @@
-import React from 'react'
-
-import { useGlobal } from '../../contexts/global/global-context'
+import { DrawerPanel, useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
-import { Header } from '../header'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { NetworkInfo } from '../network-info'
-import type { DrawerViews } from './drawer-content'
+import { Title } from '../title'
+import type {} from './drawer-content'
 
 interface DrawerNetworkProps {
-  setView: React.Dispatch<React.SetStateAction<DrawerViews>>
+  setView: (panel: DrawerPanel) => void
 }
 
 export function DrawerNetwork({ setView }: DrawerNetworkProps) {
@@ -21,7 +19,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   } = useGlobal()
   return (
     <>
-      <Header style={{ marginTop: 0 }}>Network</Header>
+      <Title style={{ marginTop: 0 }}>Network</Title>
       {networks.length ? (
         <div
           style={{
@@ -74,14 +72,17 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
           />
           <ButtonUnstyled
             data-testid='manage-networks'
-            onClick={() => setView('manage')}
+            onClick={() => setView(DrawerPanel.Manage)}
           >
             Manage networks
           </ButtonUnstyled>
         </div>
       ) : (
         <div>
-          <Button data-testid='import' onClick={() => setView('manage')}>
+          <Button
+            data-testid='import'
+            onClick={() => setView(DrawerPanel.Manage)}
+          >
             Import
           </Button>
         </div>

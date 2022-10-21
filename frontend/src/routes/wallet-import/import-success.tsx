@@ -1,8 +1,6 @@
-import React from 'react'
-
 import { Button } from '../../components/button'
 import { CodeBlock } from '../../components/code-block'
-import { Header } from '../../components/header'
+import { Title } from '../../components/title'
 
 export interface ImportSuccessProps {
   walletPath: string
@@ -12,7 +10,7 @@ export interface ImportSuccessProps {
 export function ImportSuccess({ walletPath, onComplete }: ImportSuccessProps) {
   return (
     <>
-      <Header style={{ marginTop: 0 }}>Wallet successfully imported</Header>
+      <Title style={{ marginTop: 0 }}>Wallet successfully imported</Title>
       <p>Wallet location:</p>
       <p>
         <CodeBlock>{walletPath}</CodeBlock>

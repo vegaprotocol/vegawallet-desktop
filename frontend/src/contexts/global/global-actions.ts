@@ -4,13 +4,39 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
+import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
-import { parseTx } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
+import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
+
+const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
+  const networks = await service.WalletApi.ListNetworks()
+
+  if (preset && (!networks.networks || networks.networks.length === 0)) {
+    await service.WalletApi.ImportNetwork({
+      name: preset.name,
+      url: preset.configFileUrl
+    })
+
+    return service.WalletApi.ListNetworks()
+  }
+
+  return networks
+}
+
+const getDefaultNetwork = (
+  config: ConfigModel.Config,
+  networks: WalletModel.ListNetworksResult
+) => {
+  if (config.defaultNetwork) {
+    return config.defaultNetwork
+  }
+  return networks.networks?.[0]
+}
 
 export function createActions(
   service: ServiceType,
@@ -58,14 +84,10 @@ export function createActions(
             WalletModel.ListNetworksResult
           ] = await Promise.all([
             service.WalletApi.ListWallets(),
-            service.WalletApi.ListNetworks()
+            getNetworks(service, presets[0])
           ])
 
-          const defaultNetwork = config.defaultNetwork
-            ? networks.networks?.find(
-                (n: string) => n === config.defaultNetwork
-              ) || networks.networks?.[0]
-            : networks.networks?.[0]
+          const defaultNetwork = getDefaultNetwork(config, networks)
 
           const defaultNetworkConfig = defaultNetwork
             ? await service.WalletApi.DescribeNetwork({
@@ -73,19 +95,15 @@ export function createActions(
               })
             : null
 
-          const serviceState = await service.GetServiceState()
-
           dispatch({
             type: 'INIT_APP',
-            isInit: true,
             config: config,
             wallets: wallets.wallets ?? [],
             network: defaultNetwork ?? '',
             networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
-            presetNetworksInternal: presetsInternal,
-            serviceRunning: serviceState.running
+            presetNetworksInternal: presetsInternal
           })
         } catch (err) {
           dispatch({ type: 'INIT_APP_FAILED' })
@@ -125,11 +143,6 @@ export function createActions(
           const serviceState = await service.GetServiceState()
           if (!serviceState.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
-
-            dispatch({
-              type: 'START_SERVICE',
-              port: state.networkConfig.port ?? 80
-            })
           }
         } catch (err) {
           logger.error(err)
@@ -179,55 +192,6 @@ export function createActions(
       }
     },
 
-    getKeysAction(wallet: string) {
-      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-        const state = getState()
-        const selectedWallet = state.wallets.find(w => w.name === wallet)
-
-        if (selectedWallet?.keypairs) {
-          dispatch({ type: 'ACTIVATE_WALLET', wallet })
-          const publicKey = Object.keys(selectedWallet.keypairs)[0]
-          window.location.hash = `/wallet/${wallet}/keypair/${publicKey}`
-          logger.debug('ChangeWallet')
-        } else {
-          try {
-            const passphrase = await requestPassphrase()
-            const keys = await service.WalletApi.ListKeys({
-              wallet,
-              passphrase
-            })
-
-            const keysWithMeta = await Promise.all(
-              (keys.keys || []).map(key =>
-                service.WalletApi.DescribeKey({
-                  wallet,
-                  passphrase,
-                  publicKey: key.publicKey ?? ''
-                })
-              )
-            )
-
-            dispatch({
-              type: 'SET_KEYPAIRS',
-              wallet,
-              keypairs: keysWithMeta || []
-            })
-
-            if (keys.keys?.length) {
-              window.location.hash = `/wallet/${wallet}/keypair/${keys.keys[0].publicKey}`
-            } else {
-              window.location.hash = `/wallet/${wallet}`
-            }
-          } catch (err) {
-            if (err !== 'dismissed') {
-              AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-              logger.error(err)
-            }
-          }
-        }
-      }
-    },
-
     updateKeyPairAction(
       wallet: string,
       keypair: WalletModel.DescribeKeyResult
@@ -235,12 +199,23 @@ export function createActions(
       return { type: 'UPDATE_KEYPAIR', wallet, keypair }
     },
 
-    setPassphraseModalAction(open: boolean): GlobalAction {
-      return { type: 'SET_PASSPHRASE_MODAL', open }
+    setDrawerAction(
+      isOpen: boolean,
+      panel?: DrawerPanel | null,
+      editingNetwork?: string
+    ): GlobalAction {
+      return {
+        type: 'SET_DRAWER',
+        state: {
+          isOpen,
+          panel: panel ?? DrawerPanel.Network,
+          editingNetwork: editingNetwork ?? null
+        }
+      }
     },
 
-    setDrawerAction(open: boolean): GlobalAction {
-      return { type: 'SET_DRAWER', open }
+    setPassphraseModalAction(open: boolean): GlobalAction {
+      return { type: 'SET_PASSPHRASE_MODAL', open }
     },
 
     changeWalletAction(wallet: string): GlobalAction {
@@ -304,6 +279,10 @@ export function createActions(
             const serviceStatus = await service.GetServiceState()
             if (serviceStatus.running) {
               await service.StopService()
+              dispatch({
+                type: 'SET_SERVICE_STATUS',
+                status: ServiceState.Stopped
+              })
             }
           }
 
@@ -328,12 +307,22 @@ export function createActions(
             throw new Error('No network selected')
           }
 
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Loading
+          })
           await service.StartService({
             network: state.network
           })
-
-          dispatch({ type: 'START_SERVICE', port: networkConfig.port ?? 80 })
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Started
+          })
         } catch (err) {
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
           logger.error(err)
         }
@@ -345,22 +334,33 @@ export function createActions(
       config: WalletModel.DescribeNetworkResult
     ) {
       return async (dispatch: GlobalDispatch) => {
-        // If no service running start service for newly added network
-        try {
-          const status = await service.GetServiceState()
-          if (!status.running) {
-            await service.StartService({ network })
-            dispatch({ type: 'START_SERVICE', port: config.port ?? 80 })
-          }
-        } catch (err) {
-          logger.error(err)
-        }
-
         dispatch({
           type: 'ADD_NETWORK',
           network,
           config
         })
+
+        // If no service running start service for newly added network
+        try {
+          const status = await service.GetServiceState()
+          if (!status.running) {
+            await service.StartService({ network })
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Started
+            })
+          }
+        } catch (err) {
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
+          AppToaster.show({
+            message: `${err}`,
+            intent: Intent.DANGER
+          })
+          logger.error(err)
+        }
       }
     },
 
@@ -400,12 +400,20 @@ export function createActions(
           if (!status.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
             dispatch({
-              type: 'START_SERVICE',
-              port: state.networkConfig.port ?? 80
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Started
             })
           }
         } catch (err) {
           logger.error(err)
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
+          AppToaster.show({
+            message: `${err}`,
+            intent: Intent.DANGER
+          })
         }
       }
     },
@@ -417,57 +425,17 @@ export function createActions(
           const status = await service.GetServiceState()
           if (status.running) {
             await service.StopService()
-            dispatch({ type: 'STOP_SERVICE' })
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Stopped
+            })
           }
         } catch (err) {
           logger.error(err)
-        }
-      }
-    },
-
-    decideOnTransaction(txId: string, decision: boolean) {
-      return async (dispatch: GlobalDispatch) => {
-        logger.debug('ApproveTransaction')
-
-        try {
-          await service.ConsentToTransaction({
-            txId,
-            decision
-          })
-        } catch (err) {
           AppToaster.show({
-            message: `Something went wrong ${
-              decision ? 'approving' : 'rejecting'
-            } transaction: ${txId}`,
+            message: `${err}`,
             intent: Intent.DANGER
           })
-          logger.error(err)
-        }
-
-        try {
-          const [queue, history] = await Promise.all([
-            service.ListConsentRequests(),
-            service.ListSentTransactions()
-          ])
-
-          const consentRequests = queue.requests.map(parseTx)
-          const transactionsSent = history.transactions
-
-          dispatch({
-            type: 'SET_TRANSACTION_QUEUE',
-            payload: consentRequests
-          })
-
-          dispatch({
-            type: 'SET_TRANSACTION_HISTORY',
-            payload: transactionsSent
-          })
-        } catch (err) {
-          AppToaster.show({
-            message: `Something went wrong requesting transactions`,
-            intent: Intent.DANGER
-          })
-          logger.error(err)
         }
       }
     }

@@ -5,6 +5,8 @@ import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
@@ -36,7 +38,7 @@ export function PassphraseModal() {
     }
   }, [dispatch, actions])
 
-  function onSubmit(passphrase: string) {
+  function onSubmit({ passphrase }: { passphrase: string }) {
     setLoading(true)
     handler.resolve(passphrase)
 
@@ -53,7 +55,7 @@ export function PassphraseModal() {
   }
 
   return (
-    <Dialog open={state.passphraseModalOpen}>
+    <Dialog open={state.isPassphraseModalOpen}>
       <PassphraseModalForm
         onSubmit={onSubmit}
         onCancel={close}
@@ -64,7 +66,7 @@ export function PassphraseModal() {
 }
 
 interface PassphraseModalFormProps {
-  onSubmit: (passphrase: string) => void
+  onSubmit: (props: { passphrase: string }) => void
   onCancel: () => void
   loading: boolean
 }
@@ -82,7 +84,8 @@ function PassphraseModalForm({
 
   return (
     <form
-      onSubmit={handleSubmit(values => onSubmit(values.passphrase))}
+      style={{ padding: 20 }}
+      onSubmit={handleSubmit(onSubmit)}
       data-testid='passphrase-form'
     >
       <FormGroup
@@ -99,14 +102,14 @@ function PassphraseModalForm({
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
-      <div style={{ display: 'flex', gap: 10 }}>
+      <ButtonGroup inline>
         <Button data-testid='input-submit' type='submit' loading={loading}>
           Submit
         </Button>
-        <Button data-testid='input-cancel' onClick={onCancel}>
+        <ButtonUnstyled data-testid='input-cancel' onClick={onCancel}>
           Cancel
-        </Button>
-      </div>
+        </ButtonUnstyled>
+      </ButtonGroup>
     </form>
   )
 }

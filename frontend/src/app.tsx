@@ -7,7 +7,6 @@ import { AppFrame, AppLoader } from './app-loader'
 import { InteractionManager } from './components/interaction-manager'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Settings } from './components/settings'
-import { TransactionManager } from './components/transaction-manager'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { createLogger, initLogger } from './lib/logging'
 import { AppRouter } from './routes'
@@ -21,23 +20,22 @@ const logger = createLogger('GlobalActions')
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
-        <GlobalProvider
-          service={Service}
-          logger={logger}
-          enableTelemetry={initLogger}
-        >
+      <GlobalProvider
+        service={Service}
+        logger={logger}
+        enableTelemetry={initLogger}
+      >
+        <Router>
           <AppFrame>
             <AppLoader>
               <AppRouter />
               <PassphraseModal />
-              <TransactionManager />
               <InteractionManager />
               <Settings />
             </AppLoader>
           </AppFrame>
-        </GlobalProvider>
-      </Router>
+        </Router>
+      </GlobalProvider>
     </ErrorBoundary>
   )
 }

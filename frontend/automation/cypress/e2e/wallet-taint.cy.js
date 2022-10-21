@@ -1,8 +1,9 @@
-const { unlockWallet, authenticate } = require('../support/helpers')
+const { unlockWallet, authenticate, goToKey } = require('../support/helpers')
 
 describe('wallet taint key', () => {
   let walletName
   let passphrase
+  let pubkey
 
   before(() => {
     cy.clean()
@@ -20,38 +21,42 @@ describe('wallet taint key', () => {
   beforeEach(() => {
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
+    pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('message taint success', () => {
     unlockWallet(walletName, passphrase)
-    goToTaintPage()
+    goToKey(pubkey)
+    // 0001-WALL-057 must select a key I wish to taint
+    goToTaint()
     taintKey()
+    // 0001-WALL-058 must be prompted to enter wallet password to taint key
     authenticate(passphrase)
     cy.getByTestId('toast')
       .contains('This key has been tainted')
       .getByTestId('close')
       .click()
-    cy.getByTestId(`keypair-${Cypress.env('testWalletPublicKey')}`).should(
-      'contain',
-      'Tainted'
-    )
+    cy.getByTestId('keypair-taint-notification')
+      .should('exist')
+      .within(() => {
+        cy.contains(
+          'This key is marked as unsafe to use. Untaint it to enable this key to be used to sign transactions.'
+        ).should('be.visible')
+      })
   })
 
   it('message untaint success', () => {
+    goToTaint()
     taintKey()
+    // 0001-WALL-061 must select a key to un-taint and be required to enter wallet password
     authenticate(passphrase)
     cy.getByTestId('toast').contains('This key has been untainted')
-    cy.getByTestId(`keypair-${Cypress.env('testWalletPublicKey')}`).should(
-      'not.contain',
-      'Tainted'
-    )
+    cy.getByTestId('keypair-taint-notification').should('not.exist')
   })
 })
 
-function goToTaintPage() {
-  cy.getByTestId('wallet-actions').click()
-  cy.getByTestId('wallet-action-taint').click()
-  cy.get('html').click() // close dropdown
+function goToTaint() {
+  cy.getByTestId('keypair-taint').click()
 }
 
 function taintKey() {

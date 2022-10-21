@@ -8,21 +8,19 @@ import (
 )
 
 const (
-	ReleasesAPI        = "https://api.github.com/repos/vegaprotocol/vegawallet-desktop/releases"
-	ReleasesURL        = "https://github.com/vegaprotocol/vegawallet-desktop/releases"
-	defaultVersionHash = "unknown"
-	defaultVersion     = "v0.3.0+dev"
-	requestTimeout     = 5 * time.Second
+	ReleasesAPI = "https://api.github.com/repos/vegaprotocol/vegawallet-desktop/releases"
+	ReleasesURL = "https://github.com/vegaprotocol/vegawallet-desktop/releases"
+
+	requestTimeout = 5 * time.Second
 )
 
 var (
 	// Hash specifies the git commit used to build the application.
 	// See VERSION_HASH in Makefile for details.
-	Hash = defaultVersionHash
-
+	Hash = "unknown"
 	// Version specifies the version used to build the application.
 	// See VERSION in Makefile for details.
-	Version = defaultVersion
+	Version = "v0.3.0+dev"
 )
 
 type GetVersionResponse struct {

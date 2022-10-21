@@ -1,6 +1,7 @@
 const {
   authenticate,
   unlockWallet,
+  goToKey,
   generateAccounts
 } = require('../support/helpers')
 
@@ -21,6 +22,7 @@ describe('create wallet', () => {
   })
 
   it('create wallet', () => {
+    // 0001-WALL-005
     cy.getByTestId('create-new-wallet').click()
     cy.getByTestId('create-wallet-form-name').type(walletName)
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
@@ -29,20 +31,35 @@ describe('create wallet', () => {
     cy.contains('Wallet created!')
     cy.getByTestId('recovery-phrase-warning').should('not.be.empty')
     cy.getByTestId('wallet-version').next('p').should('contain', 2)
+
+    // 0001-WALL-006
     cy.getByTestId('recovery-phrase')
       .invoke('text')
       .then(text => {
         expect(text.split(' ').length).to.equal(24)
       })
     cy.getByTestId('create-wallet-success-cta').click()
-    cy.url().should('contain', `/wallet/${walletName}/keypair`)
-    cy.getByTestId('wallet-name').contains(walletName)
+    cy.getByTestId('header-title').should('have.text', walletName)
+
+    // 0001-WALL-008
+    cy.getByTestId('wallet-keypair')
+      .contains('Key 1')
+      .should('be.visible')
+      .parent()
+      .siblings()
+      .invoke('text')
+      .should('match', /\w{6}.\w{4}$/)
+    cy.getByTestId('wallet-keypair').contains('Key 1').click()
+    cy.getByTestId('public-key')
+      .invoke('text')
+      .should('match', /\w{64}$/)
   })
 })
 
 describe('wallet', () => {
   let passphrase = ''
   let walletName = ''
+  let pubkey = ''
 
   before(() => {
     cy.clean()
@@ -57,35 +74,62 @@ describe('wallet', () => {
     cy.waitForHome()
     passphrase = Cypress.env('testWalletPassphrase')
     walletName = Cypress.env('testWalletName')
+    pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('view wallet keypairs', () => {
     unlockWallet(walletName, passphrase)
     cy.getByTestId('passphrase-form').should('not.exist')
     cy.getByTestId('generate-keypair').should('exist')
-    cy.getByTestId('log-out').should('exist')
+    cy.getByTestId('remove-wallet').should('exist')
+    cy.getByTestId(`wallet-keypair-${pubkey}`).should('exist')
   })
 
   it('wrong passphrase', () => {
     unlockWallet(walletName, 'invalid')
-    cy.contains('Error').should(
+    cy.getByTestId('toast').should(
       'have.text',
       'Error: could not retrieve the wallet: wrong passphrase'
     )
-    cy.getByTestId('log-out').should('not.exist')
   })
 
   it('generate new key pair', () => {
+    // 0001-WALL-052 must be able to create new keys (derived from the source of wallet)
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('wallet-item').should('have.length', 1)
+    cy.getByTestId('wallet-keypair').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
     authenticate(passphrase)
-    cy.getByTestId('wallet-item').should('have.length', 2)
+    cy.getByTestId('wallet-keypair').should('have.length', 2)
+  })
+
+  it('copy public key from keylist', { browser: 'chrome' }, function () {
+    // 0001-WALL-054 must see full public key or be able to copy it to clipboard
+    const copyButton = '[data-state="closed"] > svg'
+    unlockWallet(walletName, passphrase)
+    cy.monitor_clipboard().as('clipboard')
+    cy.getByTestId('wallet-keypair').within(() => {
+      cy.get(copyButton).first().click()
+    })
+    cy.get('@clipboard')
+      .get_copied_text_from_clipboard()
+      .should('match', /\w{64}$/)
+  })
+
+  it('copy public key from key details', { browser: 'chrome' }, function () {
+    // 0001-WALL-054 must see full public key or be able to copy it to clipboard
+    unlockWallet(walletName, passphrase)
+    goToKey(pubkey)
+    cy.monitor_clipboard().as('clipboard')
+    cy.getByTestId('public-key').next().click()
+    cy.get('@clipboard')
+      .get_copied_text_from_clipboard()
+      .should('match', /\w{64}$/)
   })
 
   it('key pair page', () => {
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('keypair-name').should('contain', 'Key 1')
+    goToKey(pubkey)
+    cy.getByTestId('header-title').should('contain', 'Key 1')
     cy.getByTestId('public-key')
       .invoke('text')
       .then(text => {
@@ -95,20 +139,17 @@ describe('wallet', () => {
 
   it('wallets can be locked', () => {
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('keypair-name').should('contain', 'Key 1')
-    cy.getByTestId('log-out').click()
-    cy.getByTestId('keypair-name').should('not.exist')
-    cy.getByTestId('home-splash').should('exist')
+    cy.getByTestId('wallet-keypair').should('contain', 'Key 1')
+    cy.getByTestId('back').click()
+    cy.getByTestId('wallet-keypair').should('not.exist')
+    cy.getByTestId('wallet-home').should('exist')
   })
 
-  it('can navigate between child pages', () => {
+  it('can navigate to transactions page', () => {
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('wallet-actions').click()
-    cy.getByTestId('wallet-action-sign').click()
-    cy.getByTestId('keypair-sign').should('be.visible')
-    cy.getByTestId('wallet-action-taint').click()
-    cy.getByTestId('keypair-taint').should('be.visible')
-    cy.getByTestId('wallet-action-metadata').click()
-    cy.getByTestId('keypair-metadata').should('be.visible')
+    goToKey(pubkey)
+    cy.getByTestId('keypair-transactions').should('be.visible')
+    cy.getByTestId('keypair-transactions').click()
+    cy.getByTestId('header-title').should('contain', 'Transactions')
   })
 })

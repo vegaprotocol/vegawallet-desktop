@@ -5,7 +5,7 @@ import { useImportNetwork } from '../../hooks/use-import-network'
 import type { NetworkPreset } from '../../lib/networks'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Header } from '../header'
+import { Title } from '../title'
 
 const hasImportedTestNetworks = (
   testPresets: NetworkPreset[],
@@ -81,14 +81,10 @@ const NetworkPresetItem = ({
 }
 
 interface NetworkPresetsProps {
-  setEditView: () => void
-  setSelectedNetwork: React.Dispatch<React.SetStateAction<string | null>>
+  setEditView: (network: string) => void
 }
 
-export function NetworkPresets({
-  setEditView,
-  setSelectedNetwork
-}: NetworkPresetsProps) {
+export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
   const {
     actions,
     dispatch,
@@ -113,7 +109,7 @@ export function NetworkPresets({
 
   return (
     <>
-      <Header>Networks</Header>
+      <Title>Networks</Title>
       {presets.map(preset => (
         <NetworkPresetItem
           key={preset.name}
@@ -122,14 +118,13 @@ export function NetworkPresets({
             dispatch(actions.removeNetwork(preset.name))
           }}
           onEdit={() => {
-            setSelectedNetwork(preset.name)
-            setEditView()
+            setEditView(preset.name)
           }}
         />
       ))}
       {showTestNetworks && (
         <>
-          <Header>Test Networks</Header>
+          <Title>Test Networks</Title>
           {presetsInternal.map(preset => (
             <NetworkPresetItem
               key={preset.name}
@@ -138,8 +133,7 @@ export function NetworkPresets({
                 dispatch(actions.removeNetwork(preset.name))
               }}
               onEdit={() => {
-                setSelectedNetwork(preset.name)
-                setEditView()
+                setEditView(preset.name)
               }}
             />
           ))}
@@ -154,7 +148,7 @@ export function NetworkPresets({
           Show test networks
         </ButtonUnstyled>
       )}
-      {myNetworks.length > 0 && <Header>My Networks</Header>}
+      {myNetworks.length > 0 && <Title>My Networks</Title>}
       {myNetworks.map(network => (
         <div key={network} style={itemStyles}>
           <div>{network}</div>
@@ -170,8 +164,7 @@ export function NetworkPresets({
             <Button
               data-testid={`edit-network-${network}`}
               onClick={() => {
-                setSelectedNetwork(network)
-                setEditView()
+                setEditView(network)
               }}
             >
               Edit

@@ -1,13 +1,14 @@
 import type { NetworkPreset } from '../../lib/networks'
-import type { Transaction } from '../../lib/transactions'
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type {
-  backend as BackendModel,
-  config as ConfigModel
-} from '../../wailsjs/go/models'
+import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
-import type { GlobalState, KeyPair, Wallet } from './global-context'
-import { AppStatus } from './global-context'
+import type {
+  DrawerState,
+  GlobalState,
+  KeyPair,
+  Wallet
+} from './global-context'
+import { AppStatus, DrawerPanel, ServiceState } from './global-context'
 
 function indexBy<T>(key: keyof T) {
   return (obj: Record<string, T>, value: T) => ({
@@ -19,33 +20,37 @@ function indexBy<T>(key: keyof T) {
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   version: '',
+  config: null,
+
+  // Wallet
   wallet: null,
   wallets: [],
-  transactionQueue: [],
-  transactionHistory: [],
-  passphraseModalOpen: false,
-  drawerOpen: false,
-  sidebarOpen: false,
-  settingsModalOpen: false,
-  onboarding: {
-    wallets: [],
-    networks: []
-  },
-  config: null,
-  // network
+
+  // Network
   network: null,
   networks: [],
   presets: [],
   presetsInternal: [],
   networkConfig: null,
-  serviceRunning: false,
-  serviceUrl: ''
+  serviceStatus: ServiceState.Stopped,
+
+  // UI
+  drawerState: {
+    isOpen: false,
+    panel: DrawerPanel.Network,
+    editingNetwork: null
+  },
+  isPassphraseModalOpen: false,
+  isRemoveWalletModalOpen: false,
+  isSignMessageModalOpen: false,
+  isTaintKeyModalOpen: false,
+  isUpdateKeyModalOpen: false,
+  isSettingsModalOpen: false
 }
 
 export type GlobalAction =
   | {
       type: 'INIT_APP'
-      isInit: boolean
       config: ConfigModel.Config
       wallets: string[]
       network: string
@@ -53,10 +58,10 @@ export type GlobalAction =
       networkConfig: WalletModel.DescribeNetworkResult | null
       presetNetworks: NetworkPreset[]
       presetNetworksInternal: NetworkPreset[]
-      serviceRunning: boolean
     }
   | {
       type: 'INIT_APP_FAILED'
+      message?: string
     }
   | {
       type: 'COMPLETE_ONBOARD'
@@ -80,6 +85,11 @@ export type GlobalAction =
       type: 'ADD_WALLET'
       wallet: string
       key: WalletModel.DescribeKeyResult
+    }
+  | {
+      type: 'UPDATE_WALLET'
+      wallet: string
+      data: Wallet
     }
   | {
       type: 'ADD_WALLETS'
@@ -117,19 +127,31 @@ export type GlobalAction =
       wallet: string
     }
   | {
+      type: 'SET_DRAWER'
+      state: DrawerState
+    }
+  | {
       type: 'SET_PASSPHRASE_MODAL'
       open: boolean
     }
   | {
-      type: 'SET_DRAWER'
-      open: boolean
-    }
-  | {
-      type: 'SET_SIDEBAR'
-      open: boolean
-    }
-  | {
       type: 'SET_SETTINGS_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_REMOVE_WALLET_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_TAINT_KEY_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_SIGN_MESSAGE_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_UPDATE_KEY_MODAL'
       open: boolean
     }
   // Network
@@ -172,19 +194,8 @@ export type GlobalAction =
       network: string
     }
   | {
-      type: 'START_SERVICE'
-      port: number
-    }
-  | {
-      type: 'STOP_SERVICE'
-    }
-  | {
-      type: 'SET_TRANSACTION_QUEUE'
-      payload: Transaction[]
-    }
-  | {
-      type: 'SET_TRANSACTION_HISTORY'
-      payload: BackendModel.SentTransaction[]
+      type: 'SET_SERVICE_STATUS'
+      status: ServiceState
     }
 
 export function globalReducer(
@@ -208,11 +219,7 @@ export function globalReducer(
         networkConfig: action.networkConfig,
         presets: action.presetNetworks,
         presetsInternal: action.presetNetworksInternal,
-        status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
-        serviceRunning: action.serviceRunning,
-        serviceUrl: action.networkConfig
-          ? `http://127.0.0.1:${action.networkConfig.port}`
-          : ''
+        status: AppStatus.Initialised
       }
     }
     case 'INIT_APP_FAILED': {
@@ -242,8 +249,7 @@ export function globalReducer(
     case 'START_ONBOARDING': {
       return {
         ...state,
-        status: AppStatus.Onboarding,
-        onboarding: action.existing
+        status: AppStatus.Onboarding
       }
     }
     case 'ADD_WALLET': {
@@ -385,28 +391,46 @@ export function globalReducer(
         wallet
       }
     }
-    case 'SET_PASSPHRASE_MODAL': {
-      return {
-        ...state,
-        passphraseModalOpen: action.open
-      }
-    }
     case 'SET_DRAWER': {
       return {
         ...state,
-        drawerOpen: action.open
+        drawerState: action.state
       }
     }
-    case 'SET_SIDEBAR': {
+    case 'SET_PASSPHRASE_MODAL': {
       return {
         ...state,
-        sidebarOpen: action.open
+        isPassphraseModalOpen: action.open
       }
     }
     case 'SET_SETTINGS_MODAL': {
       return {
         ...state,
-        settingsModalOpen: action.open
+        isSettingsModalOpen: action.open
+      }
+    }
+    case 'SET_TAINT_KEY_MODAL': {
+      return {
+        ...state,
+        isTaintKeyModalOpen: action.open
+      }
+    }
+    case 'SET_SIGN_MESSAGE_MODAL': {
+      return {
+        ...state,
+        isSignMessageModalOpen: action.open
+      }
+    }
+    case 'SET_UPDATE_KEY_MODAL': {
+      return {
+        ...state,
+        isUpdateKeyModalOpen: action.open
+      }
+    }
+    case 'SET_REMOVE_WALLET_MODAL': {
+      return {
+        ...state,
+        isRemoveWalletModalOpen: action.open
       }
     }
     // network
@@ -478,30 +502,10 @@ export function globalReducer(
         networkConfig: null
       }
     }
-    case 'START_SERVICE': {
+    case 'SET_SERVICE_STATUS': {
       return {
         ...state,
-        serviceRunning: true,
-        serviceUrl: `http://127.0.0.1:${action.port}`
-      }
-    }
-    case 'STOP_SERVICE': {
-      return {
-        ...state,
-        serviceRunning: false,
-        serviceUrl: ''
-      }
-    }
-    case 'SET_TRANSACTION_QUEUE': {
-      return {
-        ...state,
-        transactionQueue: action.payload
-      }
-    }
-    case 'SET_TRANSACTION_HISTORY': {
-      return {
-        ...state,
-        transactionHistory: action.payload
+        serviceStatus: action.status
       }
     }
     default: {
