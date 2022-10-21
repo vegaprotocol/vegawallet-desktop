@@ -24,6 +24,7 @@ describe('wallet remove', () => {
   })
 
   it('removes a wallet', () => {
+    // 0001-WALL-068 must be able to remove a wallet
     unlockWallet(walletName, passphrase)
     cy.getByTestId('remove-wallet').click()
     submitForm()
