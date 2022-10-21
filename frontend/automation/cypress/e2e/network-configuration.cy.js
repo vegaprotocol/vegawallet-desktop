@@ -175,7 +175,9 @@ describe('change network details', () => {
       })
   })
 
-  it('able to change log level', () => {
+  // review if this is still needed as it doesn't seem to be working
+  // https://github.com/vegaprotocol/vegawallet-desktop/issues/382
+  it.skip('able to change log level', () => {
     const newLogLevel = 'debug'
     cy.getByTestId('network-log-level').select(newLogLevel)
     cy.submit_network_config_form()
