@@ -98,7 +98,7 @@ export const NetworkConfigForm = ({
         helperText={errors.logLevel?.message}
       >
         <Select
-          data-testid='log-level'
+          data-testid='network-log-level'
           {...register('logLevel', { required: Validation.REQUIRED })}
         >
           {Object.values(LogLevels).map(level => (
@@ -170,7 +170,10 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
               <Input
                 data-testid='node-list'
                 type='text'
-                {...register(`${name}.${i}.value` as any)}
+                {...register(`${name}.${i}.value` as any, {
+                  required: Validation.REQUIRED,
+                  pattern: Validation.URL
+                })}
               />
               <Button
                 data-testid='remove'
@@ -212,8 +215,12 @@ function fieldsToConfig(
         hosts: values.grpcHosts.map(x => x.value),
         retries: Number(values.grpcNodeRetries)
       },
-      graphQLConfig: config.api?.graphQLConfig,
-      restConfig: config.api?.restConfig
+      graphQLConfig: {
+        hosts: values.graphqlHosts.map(x => x.value)
+      },
+      restConfig: {
+        hosts: values.restHosts.map(x => x.value)
+      }
     }
   }
 }
