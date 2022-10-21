@@ -94,12 +94,36 @@ describe('wallet', () => {
   })
 
   it('generate new key pair', () => {
-    // 0001-WALL-052
+    // 0001-WALL-052 must be able to create new keys (derived from the source of wallet)
     unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-keypair').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
     authenticate(passphrase)
     cy.getByTestId('wallet-keypair').should('have.length', 2)
+  })
+
+  it('copy public key from keylist', { browser: 'chrome' }, function () {
+    // 0001-WALL-054 must see full public key or be able to copy it to clipboard
+    const copyButton = '[data-state="closed"] > svg'
+    unlockWallet(walletName, passphrase)
+    cy.monitor_clipboard().as('clipboard')
+    cy.getByTestId('wallet-keypair').within(() => {
+      cy.get(copyButton).first().click()
+    })
+    cy.get('@clipboard')
+      .get_copied_text_from_clipboard()
+      .should('match', /\w{64}$/)
+  })
+
+  it('copy public key from key details', { browser: 'chrome' }, function () {
+    // 0001-WALL-054 must see full public key or be able to copy it to clipboard
+    unlockWallet(walletName, passphrase)
+    goToKey(pubkey)
+    cy.monitor_clipboard().as('clipboard')
+    cy.getByTestId('public-key').next().click()
+    cy.get('@clipboard')
+      .get_copied_text_from_clipboard()
+      .should('match', /\w{64}$/)
   })
 
   it('key pair page', () => {
