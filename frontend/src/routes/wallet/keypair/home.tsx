@@ -29,7 +29,7 @@ export function KeyPairHome() {
           navigate(`/wallet/${encodeURIComponent(wallet ?? '')}`)
         }}
       />
-      <PublicKey keypair={keypair} />
+      <PublicKey publicKey={keypair.publicKey} />
       {keypair.isTainted && (
         <div
           data-testid='keypair-taint-notification'

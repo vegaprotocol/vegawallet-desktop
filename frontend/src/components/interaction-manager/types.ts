@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from 'react'
 
 export const enum EVENT_FLOW_TYPE {
   WALLET_CONNECTION = 'WALLET_CONNECTION',
-  TRANSACTION_CONSENT = 'TRANSACTION_CONSENT',
+  TRANSACTION_REVIEW = 'TRANSACTION_REVIEW',
   PERMISSION_REQUEST = 'PERMISSION_REQUEST'
 }
 
@@ -89,6 +89,7 @@ export const enum INTERACTION_TYPE {
   REQUEST_WALLET_CONNECTION_REVIEW = 'REQUEST_WALLET_CONNECTION_REVIEW',
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
   REQUEST_PERMISSIONS_REVIEW = 'REQUEST_PERMISSIONS_REVIEW',
+  REQUEST_TRANSACTION_REVIEW_FOR_SENDING = 'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
   REQUEST_PASSPHRASE = 'REQUEST_PASSPHRASE',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
@@ -111,6 +112,12 @@ export type RequestPermissions = {
   traceID: string
   name: INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
   data: RequestPermissionsContent
+}
+
+export type RequestTransactionSending = {
+  traceID: string
+  name: INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING
+  data: RequestTransactionSendingContent
 }
 
 export type RequestPassphrase = {
@@ -151,6 +158,7 @@ export type RawInteraction =
   | RequestWalletConnection
   | RequestWalletSelection
   | RequestPermissions
+  | RequestTransactionSending
   | RequestPassphrase
   | RequestSucceeded
   | ErrorOccurred
