@@ -6,12 +6,11 @@ import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
-import { parseTx } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
-import { DrawerPanel } from './global-context'
+import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
 const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
@@ -280,6 +279,10 @@ export function createActions(
             const serviceStatus = await service.GetServiceState()
             if (serviceStatus.running) {
               await service.StopService()
+              dispatch({
+                type: 'SET_SERVICE_STATUS',
+                status: ServiceState.Stopped
+              })
             }
           }
 
@@ -304,10 +307,22 @@ export function createActions(
             throw new Error('No network selected')
           }
 
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Loading
+          })
           await service.StartService({
             network: state.network
           })
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Started
+          })
         } catch (err) {
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
           AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
           logger.error(err)
         }
@@ -319,21 +334,33 @@ export function createActions(
       config: WalletModel.DescribeNetworkResult
     ) {
       return async (dispatch: GlobalDispatch) => {
-        // If no service running start service for newly added network
-        try {
-          const status = await service.GetServiceState()
-          if (!status.running) {
-            await service.StartService({ network })
-          }
-        } catch (err) {
-          logger.error(err)
-        }
-
         dispatch({
           type: 'ADD_NETWORK',
           network,
           config
         })
+
+        // If no service running start service for newly added network
+        try {
+          const status = await service.GetServiceState()
+          if (!status.running) {
+            await service.StartService({ network })
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Started
+            })
+          }
+        } catch (err) {
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
+          AppToaster.show({
+            message: `${err}`,
+            intent: Intent.DANGER
+          })
+          logger.error(err)
+        }
       }
     },
 
@@ -365,77 +392,50 @@ export function createActions(
     },
 
     startServiceAction() {
-      return async (_dispatch: GlobalDispatch, getState: () => GlobalState) => {
+      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const state = getState()
         logger.debug('StartService')
         try {
           const status = await service.GetServiceState()
           if (!status.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Started
+            })
           }
         } catch (err) {
           logger.error(err)
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
+          AppToaster.show({
+            message: `${err}`,
+            intent: Intent.DANGER
+          })
         }
       }
     },
 
     stopServiceAction() {
-      return async () => {
+      return async (dispatch: GlobalDispatch) => {
         logger.debug('StopService')
         try {
           const status = await service.GetServiceState()
           if (status.running) {
             await service.StopService()
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Stopped
+            })
           }
         } catch (err) {
           logger.error(err)
-        }
-      }
-    },
-
-    decideOnTransaction(txId: string, decision: boolean) {
-      return async (dispatch: GlobalDispatch) => {
-        logger.debug('ApproveTransaction')
-
-        try {
-          await service.ConsentToTransaction({
-            txId,
-            decision
-          })
-        } catch (err) {
           AppToaster.show({
-            message: `Something went wrong ${
-              decision ? 'approving' : 'rejecting'
-            } transaction: ${txId}`,
+            message: `${err}`,
             intent: Intent.DANGER
           })
-          logger.error(err)
-        }
-
-        try {
-          const [queue, history] = await Promise.all([
-            service.ListConsentRequests(),
-            service.ListSentTransactions()
-          ])
-
-          const consentRequests = queue.requests.map(parseTx)
-          const transactionsSent = history.transactions
-
-          dispatch({
-            type: 'SET_TRANSACTION_QUEUE',
-            payload: consentRequests
-          })
-
-          dispatch({
-            type: 'SET_TRANSACTION_HISTORY',
-            payload: transactionsSent
-          })
-        } catch (err) {
-          AppToaster.show({
-            message: `Something went wrong requesting transactions`,
-            intent: Intent.DANGER
-          })
-          logger.error(err)
         }
       }
     }
