@@ -99,14 +99,16 @@ const SettingsForm = ({
   config,
   isPending
 }: SettingsFormProps) => {
-  const { control, register, handleSubmit } = useForm<FormFields>({
+  const { control, register, handleSubmit, getValues } = useForm<FormFields>({
     defaultValues: {
-      vegaHome: config?.vegaHome,
-      logLevel: config?.logLevel,
-      defaultNetwork: config?.defaultNetwork,
-      telemetry: config?.telemetry.enabled ? 'yes' : 'no'
+      vegaHome: config.vegaHome,
+      logLevel: config.logLevel,
+      defaultNetwork: config.defaultNetwork,
+      telemetry: config.telemetry.enabled ? 'yes' : 'no'
     }
   })
+
+  console.log(getValues('logLevel'))
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

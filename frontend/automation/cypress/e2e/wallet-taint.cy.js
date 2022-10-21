@@ -47,6 +47,7 @@ describe('wallet taint key', () => {
 })
 
 function goToTaint() {
+  cy.getByTestId('keypair-taint').should('exist')
   cy.getByTestId('keypair-taint').click()
 }
 
