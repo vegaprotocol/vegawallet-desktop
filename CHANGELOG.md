@@ -21,6 +21,7 @@
 - [304](https://github.com/vegaprotocol/vegawallet-desktop/issues/304) - Warn Linux users about extra dependencies they need to install
 - [325](https://github.com/vegaprotocol/vegawallet-desktop/issues/325) - Support Wallet Service API version 2
 - [336](https://github.com/vegaprotocol/vegawallet-desktop/issues/336) - Trigger a notification when a back-end event is emitted on Windows and Linux
+- [366](https://github.com/vegaprotocol/vegawallet-desktop/issues/366) - Trigger a notification when a back-end event is emitted on MacOS
 
 ### 🐛 Fixes
 - [358](https://github.com/vegaprotocol/vegawallet-desktop/issues/358) - Fix application crasher when not initialized
