@@ -5,6 +5,7 @@ import (
 
 	"code.vegaprotocol.io/vega/wallet/api"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
+	"code.vegaprotocol.io/vegawallet-desktop/logger"
 )
 
 type SearchForExistingConfigurationResponse struct {
@@ -56,7 +57,7 @@ func (h *Handler) UpdateAppConfig(cfg *config.Config) error {
 	h.log.Debug("Entering UpdateAppConfig")
 	defer h.log.Debug("Leaving UpdateAppConfig")
 
-	if !isSupportedLogLevel(cfg.LogLevel) {
+	if !logger.IsSupportedLevel(cfg.LogLevel) {
 		return fmt.Errorf("unsupported logger level %s", cfg.LogLevel)
 	}
 

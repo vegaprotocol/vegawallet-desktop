@@ -1,6 +1,6 @@
 //go:build !windows
 
-package backend
+package logger
 
 func toZapLogPath(p string) string {
 	return p

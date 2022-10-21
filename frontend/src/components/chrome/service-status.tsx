@@ -105,7 +105,9 @@ export function ServiceStatus() {
           <StatusCircle background={Colors.VEGA_RED} />
           <span>
             Wallet Service: Not running.{' '}
-            <ButtonUnstyled onClick={startService}>Start</ButtonUnstyled>
+            <ButtonUnstyled onClick={startService}>
+              Start service
+            </ButtonUnstyled>
           </span>
         </div>
       )
@@ -144,8 +146,10 @@ export function ServiceStatus() {
         <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle background={Colors.VEGA_RED} />
           <span>
-            Wallet Service: Failed.{' '}
-            <ButtonUnstyled onClick={startService}>Restart</ButtonUnstyled>
+            Wallet Service: Failed to start.{' '}
+            <ButtonUnstyled onClick={startService}>
+              Try to restart
+            </ButtonUnstyled>
           </span>
         </div>
       )

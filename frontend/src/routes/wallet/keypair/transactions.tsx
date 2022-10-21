@@ -24,7 +24,7 @@ export function Transactions() {
           navigate(`/wallet/${wallet}/keypair/${pubkey}`)
         }}
       />
-      <PublicKey keypair={keypair} />
+      <PublicKey publicKey={keypair.publicKey} />
       <div style={{ padding: 20, paddingTop: 0 }} data-testid='keypair-home'>
         <Title>History</Title>
         <TransactionHistory />

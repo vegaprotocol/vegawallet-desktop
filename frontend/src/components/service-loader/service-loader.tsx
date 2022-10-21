@@ -14,6 +14,7 @@ import {
   WindowReload
 } from '../../wailsjs/runtime/runtime'
 import { Button } from '../button'
+import { Chrome } from '../chrome'
 import { SplashError } from '../splash-error'
 import { AppToaster } from '../toaster'
 
@@ -31,6 +32,12 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
   } = useGlobal()
 
   useEffect(() => {
+    if (serviceStatus === ServiceState.Started && serviceError) {
+      setServiceError(null)
+    }
+  }, [serviceStatus, serviceError])
+
+  useEffect(() => {
     EventsOn(EVENTS.SERVICE_HEALTHY, () => {
       setServiceError(null)
       dispatch({
@@ -42,21 +49,21 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
     EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Loading
+        status: ServiceState.Unreachable
       })
     })
 
     EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Loading
+        status: ServiceState.Unhealthy
       })
     })
 
     EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Stopped
+        status: ServiceState.Error
       })
 
       AppToaster.show({
@@ -87,15 +94,24 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
     async function start() {
       if (network && networkConfig && serviceStatus === ServiceState.Stopped) {
         try {
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Loading
-          })
           const { running } = await service.GetServiceState()
           if (!running) {
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Loading
+            })
             await service.StartService({ network })
+          } else {
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Started
+            })
           }
         } catch (err) {
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
           setServiceError(`${err}`)
         }
       }
@@ -106,36 +122,38 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
 
   if (serviceError && networkConfig) {
     return (
-      <SplashError
-        title='Wallet service cannot load'
-        message={
-          <span>
-            There is an application already running on your machine on port{' '}
-            <strong>:{networkConfig.port}</strong>, which is preventing this
-            application from loading. Close the application, or change your
-            network port.
-          </span>
-        }
-        actions={
-          <>
-            <Button onClick={() => WindowReload()}>Reload</Button>
-            <Button
-              onClick={() =>
-                dispatch({
-                  type: 'SET_DRAWER',
-                  state: {
-                    isOpen: true,
-                    panel: DrawerPanel.Edit,
-                    editingNetwork: network
-                  }
-                })
-              }
-            >
-              Change port
-            </Button>
-          </>
-        }
-      />
+      <Chrome>
+        <SplashError
+          title='Wallet service cannot load'
+          message={
+            <span>
+              Make sure you don't already have an application running on machine
+              on port{' '}
+              <pre style={{ display: 'inline' }}>:{networkConfig.port}</pre>.
+              Reload the application, or change your network port.
+            </span>
+          }
+          actions={
+            <>
+              <Button onClick={() => WindowReload()}>Reload</Button>
+              <Button
+                onClick={() =>
+                  dispatch({
+                    type: 'SET_DRAWER',
+                    state: {
+                      isOpen: true,
+                      panel: DrawerPanel.Edit,
+                      editingNetwork: network
+                    }
+                  })
+                }
+              >
+                Change port
+              </Button>
+            </>
+          }
+        />
+      </Chrome>
     )
   }
 
