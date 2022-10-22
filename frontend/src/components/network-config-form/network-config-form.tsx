@@ -98,7 +98,7 @@ export const NetworkConfigForm = ({
         helperText={errors.logLevel?.message}
       >
         <Select
-          data-testid='log-level'
+          data-testid='network-log-level'
           {...register('logLevel', { required: Validation.REQUIRED })}
         >
           {Object.values(LogLevels).map(level => (
