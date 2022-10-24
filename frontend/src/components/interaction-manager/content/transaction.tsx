@@ -87,6 +87,14 @@ export const Transaction = ({
           approved: decision
         }
       })
+
+      dispatch({
+        type: 'ADD_TRANSACTION',
+        payload: {
+          ...interaction.event.data,
+          decision,
+        }
+      })
     },
     [service, interaction]
   )

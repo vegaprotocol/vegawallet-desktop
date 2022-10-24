@@ -8,6 +8,7 @@ import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
+import type { Transaction } from '../../lib/transactions'
 
 export enum AppStatus {
   Pending = 'Pending',
@@ -43,6 +44,7 @@ export interface KeyPair
   name: string
   publicKeyShort: string
   meta: WalletModel.DescribeKeyResult['metadata']
+  transactions: Transaction[]
 }
 
 export interface Wallet {
@@ -57,8 +59,8 @@ export interface GlobalState {
   config: ConfigModel.Config | null
 
   // Wallet
-  wallet: Wallet | null
-  wallets: Wallet[]
+  wallet: string | null
+  wallets: Record<string, Wallet>
 
   // Network
   network: string | null
