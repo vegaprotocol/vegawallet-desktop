@@ -1,5 +1,33 @@
 export namespace backend {
 	
+	export class CheckVersionResponse {
+	    version: string;
+	    releaseUrl: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CheckVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.releaseUrl = source["releaseUrl"];
+	    }
+	}
+	export class GetServiceStateResponse {
+	    url: string;
+	    running: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetServiceStateResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.running = source["running"];
+	    }
+	}
 	export class GetVersionResponse {
 	    version: string;
 	    gitHash: string;
@@ -50,34 +78,6 @@ export namespace backend {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.network = source["network"];
-	    }
-	}
-	export class CheckVersionResponse {
-	    version: string;
-	    releaseUrl: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CheckVersionResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.releaseUrl = source["releaseUrl"];
-	    }
-	}
-	export class GetServiceStateResponse {
-	    url: string;
-	    running: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new GetServiceStateResponse(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.url = source["url"];
-	        this.running = source["running"];
 	    }
 	}
 
@@ -161,6 +161,22 @@ export namespace interactor {
 
 export namespace jsonrpc {
 	
+	export class ErrorDetails {
+	    code: number;
+	    message: string;
+	    data?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ErrorDetails(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.code = source["code"];
+	        this.message = source["message"];
+	        this.data = source["data"];
+	    }
+	}
 	export class Request {
 	    jsonrpc: string;
 	    method: string;
@@ -177,22 +193,6 @@ export namespace jsonrpc {
 	        this.method = source["method"];
 	        this.params = source["params"];
 	        this.id = source["id"];
-	    }
-	}
-	export class ErrorDetails {
-	    code: number;
-	    message: string;
-	    data?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ErrorDetails(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.code = source["code"];
-	        this.message = source["message"];
-	        this.data = source["data"];
 	    }
 	}
 	export class Response {
