@@ -1,4 +1,7 @@
+import omit from 'lodash/omit'
+
 import type { NetworkPreset } from '../../lib/networks'
+import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
@@ -8,9 +11,7 @@ import type {
   KeyPair,
   Wallet
 } from './global-context'
-import omit from 'lodash/omit'
 import { AppStatus, DrawerPanel, ServiceState } from './global-context'
-import { Transaction } from '../../lib/transactions'
 
 function indexBy<T>(key: keyof T) {
   return (obj: Record<string, T>, value: T) => ({
@@ -200,11 +201,11 @@ export type GlobalAction =
       status: ServiceState
     }
   | {
-    type: 'ADD_TRANSACTION'
-    transaction: Transaction
-    wallet: string
-    publicKey: string
-  }
+      type: 'ADD_TRANSACTION'
+      transaction: Transaction
+      wallet: string
+      publicKey: string
+    }
 
 export function globalReducer(
   state: GlobalState,
@@ -215,15 +216,17 @@ export function globalReducer(
       return {
         ...state,
         config: action.config,
-        wallets: action.wallets
-          .reduce((acc, name) => ({
+        wallets: action.wallets.reduce(
+          (acc, name) => ({
             ...acc,
             [name]: {
               name,
               keypairs: null,
               auth: false
             }
-          }), {}),
+          }),
+          {}
+        ),
         network: action.network,
         networks: action.networks,
         networkConfig: action.networkConfig,
@@ -278,24 +281,27 @@ export function globalReducer(
         wallet: newWallet.name,
         wallets: {
           ...state.wallets,
-          [newWallet.name]: newWallet,
+          [newWallet.name]: newWallet
         }
       }
     }
     case 'ADD_WALLETS': {
-      const newWallets = action.wallets.reduce((acc, name) => ({
-        ...acc,
-        [name]: {
-          name,
-          keypairs: null,
-          auth: false
-        }
-      }), {})
+      const newWallets = action.wallets.reduce(
+        (acc, name) => ({
+          ...acc,
+          [name]: {
+            name,
+            keypairs: null,
+            auth: false
+          }
+        }),
+        {}
+      )
       return {
         ...state,
         wallets: {
           ...state.wallets,
-          ...newWallets,
+          ...newWallets
         }
       }
     }
@@ -303,7 +309,7 @@ export function globalReducer(
       return {
         ...state,
         wallet: null,
-        wallets: omit(state.wallets, [action.wallet]),
+        wallets: omit(state.wallets, [action.wallet])
       }
     }
     case 'SET_KEYPAIRS': {
@@ -323,7 +329,7 @@ export function globalReducer(
         ...state,
         wallets: {
           ...state.wallets,
-          [action.wallet]: newWallet,
+          [action.wallet]: newWallet
         }
       }
     }
@@ -365,7 +371,7 @@ export function globalReducer(
           ...state.wallets,
           [action.wallet]: {
             ...state.wallets[action.wallet],
-            auth: true,
+            auth: true
           }
         }
       }

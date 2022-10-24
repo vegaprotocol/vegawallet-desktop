@@ -92,7 +92,7 @@ export const Transaction = ({
         type: 'ADD_TRANSACTION',
         payload: {
           ...interaction.event.data,
-          decision,
+          decision
         }
       })
     },
