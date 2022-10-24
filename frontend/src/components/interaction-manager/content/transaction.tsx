@@ -1,8 +1,12 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { useGlobal } from '../../../contexts/global/global-context'
 import { formatDate } from '../../../lib/date'
-import { parseTransaction, TransactionKeys } from '../../../lib/transactions'
+import {
+  parseTransactionInput,
+  TransactionKeys,
+  TransactionStatus,
+} from '../../../lib/transactions'
 import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
 import { CodeBlock } from '../../code-block'
@@ -11,11 +15,11 @@ import { PublicKey } from '../../public-key'
 import { Title } from '../../title'
 import type {
   InteractionContentProps,
-  RequestTransactionSending
+  RequestTransactionReview
 } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
-const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
+export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
   [TransactionKeys.UNKNOWN]: 'Unknown transaction',
   [TransactionKeys.ORDER_SUBMISSION]: 'Order submission',
   [TransactionKeys.ORDER_CANCELLATION]: 'Order cancellation',
@@ -71,15 +75,21 @@ const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
 
 export const Transaction = ({
   interaction
-}: InteractionContentProps<RequestTransactionSending>) => {
+}: InteractionContentProps<RequestTransactionReview>) => {
   const { service, dispatch } = useGlobal()
-  const transaction = parseTransaction(interaction.event.data)
+  const transaction = parseTransactionInput(interaction.event)
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
 
+  useEffect(() => {
+    dispatch({
+      type: 'ADD_TRANSACTION',
+      transaction,
+    })
+  }, [])
+
   const onReponse = useCallback(
     async (decision: boolean) => {
-      // @ts-ignore
       await service.RespondToInteraction({
         traceID: interaction.event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
@@ -88,8 +98,17 @@ export const Transaction = ({
         }
       })
 
+      if (!decision) {
+        dispatch({
+          type: 'UPDATE_TRANSACTION',
+          transaction: {
+            ...transaction,
+            status: TransactionStatus.REJECTED,
+          }
+        })
+      }
     },
-    [service, interaction]
+    [service, interaction, transaction]
   )
 
   return (

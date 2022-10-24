@@ -7,6 +7,7 @@ import { Permissions } from './content/permissions'
 import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
 import { Transaction } from './content/transaction'
+import { TransactionSuccess } from './content/transaction-success'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import type {
@@ -17,7 +18,8 @@ import type {
   RequestPassphrase,
   RequestPermissions,
   RequestSucceeded,
-  RequestTransactionSending,
+  RequestTransactionReview,
+  RequestTransactionSuccess,
   RequestWalletConnection,
   RequestWalletSelection,
   SessionEnded
@@ -60,7 +62,14 @@ const InteractionItem = (
     case INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING: {
       return (
         <Transaction
-          {...(props as InteractionContentProps<RequestTransactionSending>)}
+          {...(props as InteractionContentProps<RequestTransactionReview>)}
+        />
+      )
+    }
+    case INTERACTION_TYPE.TRANSACTION_SUCCEEDED: {
+      return (
+        <TransactionSuccess
+          {...(props as InteractionContentProps<RequestTransactionSuccess>)}
         />
       )
     }
@@ -147,6 +156,7 @@ export const InteractionFlow = ({ events, onFinish }: InteractionFlowProps) => {
       {events.map(event => (
         <InteractionItem
           key={event.meta.id}
+          history={events}
           interaction={event}
           flow={flow}
           onFinish={onFinish}

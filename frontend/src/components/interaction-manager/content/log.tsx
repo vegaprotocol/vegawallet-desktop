@@ -6,13 +6,13 @@ import type { InteractionContentProps, Log } from '../types'
 
 const getMessageIntent = (type: string) => {
   switch (type) {
-    case 'error': {
+    case 'Error': {
       return Intent.DANGER
     }
-    case 'warning': {
+    case 'Warning': {
       return Intent.WARNING
     }
-    case 'success': {
+    case 'Success': {
       return Intent.SUCCESS
     }
     default: {

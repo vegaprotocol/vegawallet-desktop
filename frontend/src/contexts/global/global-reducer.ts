@@ -203,9 +203,11 @@ export type GlobalAction =
   | {
       type: 'ADD_TRANSACTION'
       transaction: Transaction
-      wallet: string
-      publicKey: string
     }
+  | {
+    type: 'UPDATE_TRANSACTION'
+    transaction: Transaction
+  }
 
 export function globalReducer(
   state: GlobalState,
@@ -509,14 +511,15 @@ export function globalReducer(
         serviceStatus: action.status
       }
     }
-    case 'ADD_TRANSACTION': {
-      const currentWallet = state.wallets[action.wallet]
+    case 'ADD_TRANSACTION':
+    case 'UPDATE_TRANSACTION': {
+      const currentWallet = state.wallets[action.transaction.wallet]
 
       if (!currentWallet) {
         throw new Error('Wallet not found')
       }
 
-      const keypair = currentWallet.keypairs?.[action.publicKey]
+      const keypair = currentWallet.keypairs?.[action.transaction.publicKey]
 
       if (!keypair) {
         throw new Error('Public key not found')
@@ -526,9 +529,12 @@ export function globalReducer(
         ...currentWallet,
         keypairs: {
           ...currentWallet.keypairs,
-          [action.publicKey]: {
+          [action.transaction.publicKey]: {
             ...keypair,
-            transactions: [...keypair.transactions, action.transaction]
+            transactions: {
+              ...keypair.transactions,
+              [action.transaction.id]: action.transaction
+            }
           }
         }
       }
@@ -537,7 +543,7 @@ export function globalReducer(
         ...state,
         wallets: {
           ...state.wallets,
-          [action.wallet]: updatedWallet
+          [action.transaction.wallet]: updatedWallet
         }
       }
     }

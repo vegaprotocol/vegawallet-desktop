@@ -44,7 +44,7 @@ export interface KeyPair
   name: string
   publicKeyShort: string
   meta: WalletModel.DescribeKeyResult['metadata']
-  transactions: Transaction[]
+  transactions: Record<string, Transaction>
 }
 
 export interface Wallet {
