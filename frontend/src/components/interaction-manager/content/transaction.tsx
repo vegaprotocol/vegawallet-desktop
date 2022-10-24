@@ -72,7 +72,7 @@ const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
 export const Transaction = ({
   interaction
 }: InteractionContentProps<RequestTransactionSending>) => {
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
   const transaction = parseTransaction(interaction.event.data)
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
@@ -88,13 +88,6 @@ export const Transaction = ({
         }
       })
 
-      dispatch({
-        type: 'ADD_TRANSACTION',
-        payload: {
-          ...interaction.event.data,
-          decision
-        }
-      })
     },
     [service, interaction]
   )
