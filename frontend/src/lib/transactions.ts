@@ -1,13 +1,12 @@
 import omit from 'lodash/omit'
-import type {
-  RequestTransactionReview,
-} from '../components/interaction-manager/types'
+
+import type { RequestTransactionReview } from '../components/interaction-manager/types'
 
 export enum TransactionStatus {
   PENDING = 'pending',
   REJECTED = 'rejected',
   SUCCESS = 'success',
-  FAILURE = 'failure',
+  FAILURE = 'failure'
 }
 
 export enum TransactionKeys {
@@ -57,10 +56,14 @@ const getPayload = (transaction: string): TransactionData => {
 }
 
 const getType = (payload: object) => {
-  return Object.keys(omit(payload, ['blockHeight', 'nonce']))[0] as TransactionKeys
+  return Object.keys(
+    omit(payload, ['blockHeight', 'nonce'])
+  )[0] as TransactionKeys
 }
 
-export const parseTransactionInput = (event: RequestTransactionReview): Transaction => {
+export const parseTransactionInput = (
+  event: RequestTransactionReview
+): Transaction => {
   const payload = getPayload(event.data.transaction)
   const type = getType(payload)
 

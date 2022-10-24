@@ -7,7 +7,7 @@ import { Permissions } from './content/permissions'
 import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
 import { Transaction } from './content/transaction'
-import { TransactionSuccess } from './content/transaction-success'
+import { TransactionEnd } from './content/transaction-end'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import type {
@@ -18,6 +18,7 @@ import type {
   RequestPassphrase,
   RequestPermissions,
   RequestSucceeded,
+  RequestTransactionFailure,
   RequestTransactionReview,
   RequestTransactionSuccess,
   RequestWalletConnection,
@@ -68,8 +69,15 @@ const InteractionItem = (
     }
     case INTERACTION_TYPE.TRANSACTION_SUCCEEDED: {
       return (
-        <TransactionSuccess
+        <TransactionEnd
           {...(props as InteractionContentProps<RequestTransactionSuccess>)}
+        />
+      )
+    }
+    case INTERACTION_TYPE.TRANSACTION_FAILED: {
+      return (
+        <TransactionEnd
+          {...(props as InteractionContentProps<RequestTransactionFailure>)}
         />
       )
     }

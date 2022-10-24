@@ -205,9 +205,9 @@ export type GlobalAction =
       transaction: Transaction
     }
   | {
-    type: 'UPDATE_TRANSACTION'
-    transaction: Transaction
-  }
+      type: 'UPDATE_TRANSACTION'
+      transaction: Transaction
+    }
 
 export function globalReducer(
   state: GlobalState,

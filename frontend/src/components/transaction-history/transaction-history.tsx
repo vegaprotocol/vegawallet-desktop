@@ -1,11 +1,11 @@
-import { ButtonUnstyled } from '../button-unstyled'
-import { ArrowTopRight } from '../icons/arrow-top-right'
 import { Colors } from '../../config/colors'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
-import { truncateMiddle } from '../../lib/truncate-middle'
 import { formatDate } from '../../lib/date'
-import { TransactionStatus, sortTransaction } from '../../lib/transactions'
 import type { Transaction } from '../../lib/transactions'
+import { sortTransaction, TransactionStatus } from '../../lib/transactions'
+import { truncateMiddle } from '../../lib/truncate-middle'
+import { ButtonUnstyled } from '../button-unstyled'
+import { ArrowTopRight } from '../icons/arrow-top-right'
 import { TRANSACTION_TITLES } from '../interaction-manager/content/transaction'
 
 const statusStyles = {
@@ -50,15 +50,13 @@ const getTransactionInfo = (status?: TransactionStatus) => {
   }
 }
 
-const TransactionItem = ({
-  transaction
-}: {
-  transaction: Transaction
-}) => {
+const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
   const { color, text } = getTransactionInfo(transaction.status)
 
   return (
-    <div style={{ borderBottom: `1px solid ${Colors.BLACK}`, padding: '20px 0' }}>
+    <div
+      style={{ borderBottom: `1px solid ${Colors.BLACK}`, padding: '20px 0' }}
+    >
       <div
         style={{
           display: 'flex',
@@ -67,22 +65,27 @@ const TransactionItem = ({
         }}
       >
         <div>
-          <span style={{...statusStyles, background: color }}>
-            {text}
-          </span>
+          <span style={{ ...statusStyles, background: color }}>{text}</span>
           {TRANSACTION_TITLES[transaction.type]}
         </div>
         <div>
-          {transaction.txHash
-              ? (
-                <ButtonUnstyled>
-                  {truncateMiddle(transaction.txHash)}
-                  <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
-                </ButtonUnstyled>
-              )
-              : <span style={{ visibility: 'hidden' }}>No id</span>
-          }
-          <div style={{ textAlign: 'right', color: Colors.TEXT_COLOR_DEEMPHASISE, fontSize: 14 }}>{formatDate(transaction.receivedAt)}</div>
+          {transaction.txHash ? (
+            <ButtonUnstyled>
+              {truncateMiddle(transaction.txHash)}
+              <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
+            </ButtonUnstyled>
+          ) : (
+            <span style={{ visibility: 'hidden' }}>No id</span>
+          )}
+          <div
+            style={{
+              textAlign: 'right',
+              color: Colors.TEXT_COLOR_DEEMPHASISE,
+              fontSize: 14
+            }}
+          >
+            {formatDate(transaction.receivedAt)}
+          </div>
         </div>
       </div>
     </div>
@@ -91,16 +94,17 @@ const TransactionItem = ({
 
 export const TransactionHistory = () => {
   const { keypair } = useCurrentKeypair()
-  const transactionList = Object.values(keypair?.transactions || []).sort(sortTransaction)
+  const transactionList = Object.values(keypair?.transactions || []).sort(
+    sortTransaction
+  )
 
   return (
     <>
-      {transactionList.length === 0 && (
-        <div>No transactions in history.</div>
-      )}
-      {transactionList.length > 0 && transactionList.map((item, index) => (
-        <TransactionItem key={index} transaction={item} />
-      ))}
+      {transactionList.length === 0 && <div>No transactions in history.</div>}
+      {transactionList.length > 0 &&
+        transactionList.map((item, index) => (
+          <TransactionItem key={index} transaction={item} />
+        ))}
     </>
   )
 }

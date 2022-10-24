@@ -68,7 +68,13 @@ export interface RequestTransactionSuccessContent {
   tx: string
   deserializedInputData: string
   sentAt: string
-  error?: string
+}
+
+export interface RequestTransactionFailureContent {
+  tx: string
+  deserializedInputData: string
+  error: string
+  sentAt: string
 }
 
 export interface RequestTransactionSigningContent {
@@ -93,6 +99,7 @@ export const enum INTERACTION_TYPE {
   REQUEST_PERMISSIONS_REVIEW = 'REQUEST_PERMISSIONS_REVIEW',
   REQUEST_TRANSACTION_REVIEW_FOR_SENDING = 'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
   TRANSACTION_SUCCEEDED = 'TRANSACTION_SUCCEEDED',
+  TRANSACTION_FAILED = 'TRANSACTION_FAILED',
   REQUEST_PASSPHRASE = 'REQUEST_PASSPHRASE',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
@@ -127,6 +134,12 @@ export type RequestTransactionSuccess = {
   traceID: string
   name: INTERACTION_TYPE.TRANSACTION_SUCCEEDED
   data: RequestTransactionSuccessContent
+}
+
+export type RequestTransactionFailure = {
+  traceID: string
+  name: INTERACTION_TYPE.TRANSACTION_FAILED
+  data: RequestTransactionFailureContent
 }
 
 export type RequestPassphrase = {
@@ -169,6 +182,7 @@ export type RawInteraction =
   | RequestPermissions
   | RequestTransactionReview
   | RequestTransactionSuccess
+  | RequestTransactionFailure
   | RequestPassphrase
   | RequestSucceeded
   | ErrorOccurred

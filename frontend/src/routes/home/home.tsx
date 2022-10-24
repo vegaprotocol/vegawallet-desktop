@@ -41,9 +41,10 @@ export const Home = () => {
     dispatch
   } = useGlobal()
 
-  const walletsList = useMemo(() => (
-    Object.values(wallets).sort(sortWallet)
-  ), [wallets])
+  const walletsList = useMemo(
+    () => Object.values(wallets).sort(sortWallet),
+    [wallets]
+  )
 
   if (status === AppStatus.Onboarding) {
     return <Navigate to={Paths.Onboard} />

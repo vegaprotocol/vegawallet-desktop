@@ -1,11 +1,11 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useGlobal } from '../../../contexts/global/global-context'
 import { formatDate } from '../../../lib/date'
 import {
   parseTransactionInput,
   TransactionKeys,
-  TransactionStatus,
+  TransactionStatus
 } from '../../../lib/transactions'
 import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
@@ -77,16 +77,19 @@ export const Transaction = ({
   interaction
 }: InteractionContentProps<RequestTransactionReview>) => {
   const { service, dispatch } = useGlobal()
-  const transaction = parseTransactionInput(interaction.event)
+  const transaction = useMemo(
+    () => parseTransactionInput(interaction.event),
+    [interaction]
+  )
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
 
   useEffect(() => {
     dispatch({
       type: 'ADD_TRANSACTION',
-      transaction,
+      transaction
     })
-  }, [])
+  }, [dispatch, transaction])
 
   const onReponse = useCallback(
     async (decision: boolean) => {
@@ -103,12 +106,12 @@ export const Transaction = ({
           type: 'UPDATE_TRANSACTION',
           transaction: {
             ...transaction,
-            status: TransactionStatus.REJECTED,
+            status: TransactionStatus.REJECTED
           }
         })
       }
     },
-    [service, interaction, transaction]
+    [service, dispatch, interaction, transaction]
   )
 
   return (
