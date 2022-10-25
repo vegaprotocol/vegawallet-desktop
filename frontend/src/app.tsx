@@ -4,6 +4,7 @@ import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
 
 import { AppFrame, AppLoader } from './app-loader'
+import { Chrome } from './components/chrome'
 import { InteractionManager } from './components/interaction-manager'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Settings } from './components/settings'
@@ -27,12 +28,14 @@ function App() {
       >
         <Router>
           <AppFrame>
-            <AppLoader>
-              <AppRouter />
-              <PassphraseModal />
-              <InteractionManager />
-              <Settings />
-            </AppLoader>
+            <Chrome>
+              <AppLoader>
+                <AppRouter />
+                <PassphraseModal />
+                <InteractionManager />
+                <Settings />
+              </AppLoader>
+            </Chrome>
           </AppFrame>
         </Router>
       </GlobalProvider>

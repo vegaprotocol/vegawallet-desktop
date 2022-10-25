@@ -101,12 +101,13 @@ const SettingsForm = ({
 }: SettingsFormProps) => {
   const { control, register, handleSubmit } = useForm<FormFields>({
     defaultValues: {
-      vegaHome: config?.vegaHome,
-      logLevel: config?.logLevel,
-      defaultNetwork: config?.defaultNetwork,
-      telemetry: config?.telemetry.enabled ? 'yes' : 'no'
+      vegaHome: config.vegaHome,
+      logLevel: config.logLevel,
+      defaultNetwork: config.defaultNetwork,
+      telemetry: config.telemetry.enabled ? 'yes' : 'no'
     }
   })
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
