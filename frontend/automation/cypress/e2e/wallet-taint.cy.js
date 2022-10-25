@@ -56,7 +56,8 @@ describe('wallet taint key', () => {
 })
 
 function goToTaint() {
-  cy.getByTestId('keypair-taint').click()
+  cy.getByTestId('keypair-taint-toggle').should('exist')
+  cy.getByTestId('keypair-taint-toggle').click()
 }
 
 function taintKey() {

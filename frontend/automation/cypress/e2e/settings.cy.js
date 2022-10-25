@@ -8,8 +8,6 @@ describe('settings', () => {
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
       })
       .then(() => {
         cy.waitForHome()
@@ -28,7 +26,10 @@ describe('settings', () => {
     cy.getByTestId(settingsForm).should('be.visible')
 
     // assert and change log level
-    cy.getByTestId('log-level').last().should('have.value', 'info').select('debug')
+    cy.getByTestId('log-level')
+      .last()
+      .should('have.value', 'info')
+      .select('debug')
 
     // change telemetry
     const radioGroupSelector = '[role="radiogroup"]'

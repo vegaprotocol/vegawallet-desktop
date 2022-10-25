@@ -52,7 +52,7 @@ describe('manage networks', () => {
       // eslint-disable-next-line no-unused-expressions
       expect($node.text()).not.to.be.empty
     })
-    cy.getByTestId('log-level').should('have.text', 'info')
+    cy.getByTestId('network-log-level').should('have.text', 'info')
     cy.getByTestId('token-expiry').should('have.text', '168h0m0s')
   })
 
@@ -72,7 +72,7 @@ describe('manage networks', () => {
       .within(() => {
         cy.getByTestId('node-list').first().invoke('val').should('not.be.empty')
       })
-    cy.getByTestId('log-level').invoke('val').should('not.be.empty')
+    cy.getByTestId('network-log-level').invoke('val').should('not.be.empty')
     cy.getByTestId('node-retries').invoke('val').should('not.be.empty')
     cy.getByTestId('token-expiry').invoke('val').should('not.be.empty')
   })
@@ -133,8 +133,7 @@ describe('change network details', () => {
       })
   })
 
-  // Skipping due to bug #357
-  it.skip('able to add a new GraphQL Node, and delete existing', () => {
+  it('able to add a new GraphQL Node, and delete existing', () => {
     const newGraphQlUrl = 'https://mochachoca.vega.xyz/query'
     cy.contains('GraphQL Nodes')
       .next()
@@ -156,8 +155,7 @@ describe('change network details', () => {
       })
   })
 
-  // Skipping due to bug #357
-  it.skip('able to add a new REST Node', () => {
+  it('able to add a new REST Node', () => {
     const newRestUrl = 'https://rest.nodes.vega.xyz/query'
     cy.contains('REST Nodes')
       .next()
@@ -177,13 +175,14 @@ describe('change network details', () => {
       })
   })
 
-  // Skipping due to bug #357
+  // review if this is still needed as it doesn't seem to be working
+  // https://github.com/vegaprotocol/vegawallet-desktop/issues/382
   it.skip('able to change log level', () => {
     const newLogLevel = 'debug'
-    cy.getByTestId('log-level').select(newLogLevel)
+    cy.getByTestId('network-log-level').select(newLogLevel)
     cy.submit_network_config_form()
     cy.edit_network_config_form_for_specified_network('test_network3')
-    cy.getByTestId('log-level').should('have.value', newLogLevel)
+    cy.getByTestId('network-log-level').should('have.value', newLogLevel)
   })
 
   it('able to change gRPC Node retries', () => {

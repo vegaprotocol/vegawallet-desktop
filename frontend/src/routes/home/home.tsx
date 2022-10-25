@@ -3,7 +3,9 @@ import { Link, Navigate } from 'react-router-dom'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
+import { DRAWER_HEIGHT } from '../../components/chrome'
 import { Lock } from '../../components/icons/lock'
+import { OpenLock } from '../../components/icons/open-lock'
 import { TelemetryDialog } from '../../components/telemetry-dialog'
 import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
@@ -23,7 +25,7 @@ const itemStyles = {
 
 const actionStyles = {
   position: 'fixed',
-  bottom: 0,
+  bottom: DRAWER_HEIGHT,
   left: 0
 } as React.CSSProperties
 
@@ -79,7 +81,11 @@ export const Home = () => {
             >
               <div>{w.name}</div>
               <div style={{ color: Colors.GRAY_1 }}>
-                <Lock style={{ width: 20, margin: '0 20px' }} />
+                {w.auth ? (
+                  <OpenLock style={{ width: 20, margin: '0 20px' }} />
+                ) : (
+                  <Lock style={{ width: 20, margin: '0 20px' }} />
+                )}
               </div>
             </ButtonUnstyled>
           ))}
