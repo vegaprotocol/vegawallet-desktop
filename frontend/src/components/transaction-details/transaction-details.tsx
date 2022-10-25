@@ -48,6 +48,15 @@ const compileSectionList = (transaction: Transaction) => {
     })
   }
 
+  if (transaction.error) {
+    rows.push({
+      key: 'Error',
+      value: (
+        <p>{transaction.error}</p>
+      )
+    })
+  }
+
   rows.push({
     key: 'Transaction details',
     value: (
