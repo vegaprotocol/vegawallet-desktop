@@ -64,6 +64,8 @@ const InteractionItem = (
       return (
         <Transaction
           {...(props as InteractionContentProps<RequestTransactionReview>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
@@ -71,6 +73,8 @@ const InteractionItem = (
       return (
         <TransactionEnd
           {...(props as InteractionContentProps<RequestTransactionSuccess>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
@@ -78,6 +82,8 @@ const InteractionItem = (
       return (
         <TransactionEnd
           {...(props as InteractionContentProps<RequestTransactionFailure>)}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }

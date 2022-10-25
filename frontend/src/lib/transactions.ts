@@ -45,6 +45,9 @@ export type Transaction = {
   status: TransactionStatus
   receivedAt: Date
   txHash?: null | string
+  blockHeight?: number
+  signature?: string
+  error?: string
 }
 
 const getPayload = (transaction: string): TransactionData => {
