@@ -26,7 +26,10 @@ describe('settings', () => {
     cy.getByTestId(settingsForm).should('be.visible')
 
     // assert and change log level
-    cy.getByTestId('log-level').last().should('have.value', 'info').select('debug')
+    cy.getByTestId('log-level')
+      .last()
+      .should('have.value', 'info')
+      .select('debug')
 
     // change telemetry
     const radioGroupSelector = '[role="radiogroup"]'
