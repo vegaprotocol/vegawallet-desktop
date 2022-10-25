@@ -48,7 +48,7 @@ export function KeyPairHome() {
           <div>
             This key is marked as unsafe to use.{' '}
             <ButtonUnstyled
-              data-testid='keypair-taint'
+              data-testid='keypair-taint-toggle'
               onClick={() =>
                 dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
               }
@@ -82,7 +82,7 @@ export function KeyPairHome() {
             <div>
               <Button
                 style={{ marginBottom: 8 }}
-                data-testid='keypair-taint'
+                data-testid='keypair-taint-toggle'
                 onClick={() =>
                   dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
                 }

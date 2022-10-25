@@ -285,7 +285,16 @@ export function createActions(
               })
             }
           }
+        } catch (err) {
+          dispatch({
+            type: 'SET_SERVICE_STATUS',
+            status: ServiceState.Error
+          })
+          AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+          logger.error(err)
+        }
 
+        try {
           const isSuccessful = await service.WalletApi.UpdateNetwork(
             networkConfig
           )
@@ -295,29 +304,37 @@ export function createActions(
               message: 'Configuration saved',
               intent: Intent.SUCCESS
             })
-            dispatch({ type: 'UPDATE_NETWORK_CONFIG', config: networkConfig })
+
+            const updatedNetwork = await service.WalletApi.DescribeNetwork({
+              network: networkConfig.name
+            })
+
+            dispatch({ type: 'UPDATE_NETWORK_CONFIG', config: updatedNetwork })
           } else {
             AppToaster.show({
-              message: 'Error: Unknown',
+              message: 'Error: Failed updating network configuration.',
               intent: Intent.DANGER
             })
           }
+        } catch (err) {
+          AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+          logger.error(err)
+        }
 
-          if (!state.network) {
-            throw new Error('No network selected')
+        try {
+          if (state.network === editingNetwork) {
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Loading
+            })
+            await service.StartService({
+              network: state.network
+            })
+            dispatch({
+              type: 'SET_SERVICE_STATUS',
+              status: ServiceState.Started
+            })
           }
-
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Loading
-          })
-          await service.StartService({
-            network: state.network
-          })
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Started
-          })
         } catch (err) {
           dispatch({
             type: 'SET_SERVICE_STATUS',

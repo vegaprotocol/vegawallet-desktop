@@ -133,8 +133,7 @@ describe('change network details', () => {
       })
   })
 
-  // Skipping due to bug #357
-  it.skip('able to add a new GraphQL Node, and delete existing', () => {
+  it('able to add a new GraphQL Node, and delete existing', () => {
     const newGraphQlUrl = 'https://mochachoca.vega.xyz/query'
     cy.contains('GraphQL Nodes')
       .next()
@@ -156,8 +155,7 @@ describe('change network details', () => {
       })
   })
 
-  // Skipping due to bug #357
-  it.skip('able to add a new REST Node', () => {
+  it('able to add a new REST Node', () => {
     const newRestUrl = 'https://rest.nodes.vega.xyz/query'
     cy.contains('REST Nodes')
       .next()
@@ -177,7 +175,8 @@ describe('change network details', () => {
       })
   })
 
-  // Skipping due to bug #357
+  // review if this is still needed as it doesn't seem to be working
+  // https://github.com/vegaprotocol/vegawallet-desktop/issues/382
   it.skip('able to change log level', () => {
     const newLogLevel = 'debug'
     cy.getByTestId('network-log-level').select(newLogLevel)
