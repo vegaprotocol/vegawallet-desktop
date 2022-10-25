@@ -1,19 +1,21 @@
 import { Colors } from '../../config/colors'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
-
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { ButtonUnstyled } from '../button-unstyled'
-import { TransactionStatus } from '../transaction-status'
 import { ArrowTopRight } from '../icons/arrow-top-right'
 import { TRANSACTION_TITLES } from '../interaction-manager/content/transaction'
+import { TransactionStatus } from '../transaction-status'
 
 type TransactionItemProps = {
-  transaction: Transaction,
+  transaction: Transaction
   viewDetails: () => void
 }
 
-export const TransactionItem = ({ transaction, viewDetails }: TransactionItemProps) => {
+export const TransactionItem = ({
+  transaction,
+  viewDetails
+}: TransactionItemProps) => {
   return (
     <div
       style={{ borderBottom: `1px solid ${Colors.BLACK}`, padding: '20px 0' }}

@@ -1,6 +1,6 @@
-import { TransactionStatus as TransactionStatusTypes } from '../../lib/transactions'
 import { Colors } from '../../config/colors'
 import type { Transaction } from '../../lib/transactions'
+import { TransactionStatus as TransactionStatusTypes } from '../../lib/transactions'
 
 const statusStyles = {
   display: 'inline-block',
@@ -52,7 +52,5 @@ type TransactionStatusProps = {
 export const TransactionStatus = ({ transaction }: TransactionStatusProps) => {
   const { background, text } = getTransactionInfo(transaction.status)
 
-  return (
-    <span style={{ ...statusStyles, background }}>{text}</span>
-  )
+  return <span style={{ ...statusStyles, background }}>{text}</span>
 }

@@ -1,14 +1,15 @@
 import { useState } from 'react'
+
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
+import type { Transaction } from '../../lib/transactions'
 import { sortTransaction } from '../../lib/transactions'
-import { Dialog } from '../dialog'
 import { Button } from '../button'
-import { ButtonUnstyled } from '../button-unstyled'
 import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
+import { Dialog } from '../dialog'
+import { TRANSACTION_TITLES } from '../interaction-manager/content/transaction'
 import { TransactionDetails } from '../transaction-details'
 import { TransactionItem } from './transaction-item'
-import type { Transaction } from '../../lib/transactions'
-import { TRANSACTION_TITLES } from '../interaction-manager/content/transaction'
 
 export const TransactionHistory = () => {
   const { keypair } = useCurrentKeypair()
@@ -27,18 +28,19 @@ export const TransactionHistory = () => {
             transaction={item}
             viewDetails={() => setTransaction(item)}
           />
-        ))
-      }
+        ))}
       <Dialog
-        size="lg"
+        size='lg'
         open={!!transaction}
         title={transaction ? TRANSACTION_TITLES[transaction.type] : ''}
-        onChange={(open) => setTransaction(open ? transaction : null)}
+        onChange={open => setTransaction(open ? transaction : null)}
       >
         {transaction && <TransactionDetails transaction={transaction} />}
         <ButtonGroup inline style={{ padding: 20 }}>
           <Button>View in explorer</Button>
-          <ButtonUnstyled onClick={() => setTransaction(null)}>Close</ButtonUnstyled>
+          <ButtonUnstyled onClick={() => setTransaction(null)}>
+            Close
+          </ButtonUnstyled>
         </ButtonGroup>
       </Dialog>
     </>

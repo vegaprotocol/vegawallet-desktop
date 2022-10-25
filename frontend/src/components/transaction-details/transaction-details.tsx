@@ -1,11 +1,11 @@
-import type { Transaction } from '../../lib/transactions'
-import { CodeBlock } from '../code-block'
-import { Title } from '../title'
-import { BreakText } from '../break-text'
-import { CopyWithTooltip } from '../copy-with-tooltip'
-import { TransactionStatus } from '../transaction-status'
 import { formatDate } from '../../lib/date'
+import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
+import { BreakText } from '../break-text'
+import { CodeBlock } from '../code-block'
+import { CopyWithTooltip } from '../copy-with-tooltip'
+import { Title } from '../title'
+import { TransactionStatus } from '../transaction-status'
 
 type TransactionDetailsProps = {
   transaction: Transaction
@@ -14,15 +14,11 @@ type TransactionDetailsProps = {
 const compileSectionList = (transaction: Transaction) => {
   const rows = [
     {
-      value: (
-        <TransactionStatus transaction={transaction} />
-      )
+      value: <TransactionStatus transaction={transaction} />
     },
     {
       key: 'Wallet',
-      value: (
-        <p>{transaction.wallet}</p>
-      )
+      value: <p>{transaction.wallet}</p>
     },
     {
       key: 'Public key',
@@ -31,13 +27,13 @@ const compileSectionList = (transaction: Transaction) => {
           <BreakText>{transaction.publicKey}</BreakText>
         </CopyWithTooltip>
       )
-    },
+    }
   ]
 
   if (transaction.blockHeight) {
     rows.push({
       key: 'Block height',
-      value: <>{transaction.blockHeight}</>,
+      value: <>{transaction.blockHeight}</>
     })
   }
 
@@ -65,15 +61,15 @@ const compileSectionList = (transaction: Transaction) => {
 
   rows.push({
     key: 'Received at',
-    value: (
-      <p>{formatDate(new Date(transaction.receivedAt))}</p>
-    )
+    value: <p>{formatDate(new Date(transaction.receivedAt))}</p>
   })
 
   return rows
 }
 
-export const TransactionDetails = ({ transaction }: TransactionDetailsProps) => {
+export const TransactionDetails = ({
+  transaction
+}: TransactionDetailsProps) => {
   const sectionList = compileSectionList(transaction)
 
   return (

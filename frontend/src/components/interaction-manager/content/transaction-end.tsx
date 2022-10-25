@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
-import { useGlobal, Wallet } from '../../../contexts/global/global-context'
+import type { Wallet } from '../../../contexts/global/global-context'
+import { useGlobal } from '../../../contexts/global/global-context'
 import { TransactionStatus } from '../../../lib/transactions'
 import type {
   Interaction,
@@ -15,9 +16,7 @@ type TransactionEndProps =
   | InteractionContentProps<RequestTransactionSuccess>
   | InteractionContentProps<RequestTransactionFailure>
 
-type TransactionEvent =
- | RequestTransactionSuccess
- | RequestTransactionFailure
+type TransactionEvent = RequestTransactionSuccess | RequestTransactionFailure
 
 type InputData = {
   blockHeight: string
@@ -55,15 +54,15 @@ const parseEvent = (event: TransactionEvent) => {
   return {
     ...txData,
     ...inputData,
-    status: isSuccess
-      ? TransactionStatus.SUCCESS
-      : TransactionStatus.FAILURE,
-    txHash: event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
-      ? event.data.txHash
-      : null,
-    error: event.name === INTERACTION_TYPE.TRANSACTION_FAILED
-      ? event.data.error
-      : undefined
+    status: isSuccess ? TransactionStatus.SUCCESS : TransactionStatus.FAILURE,
+    txHash:
+      event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+        ? event.data.txHash
+        : null,
+    error:
+      event.name === INTERACTION_TYPE.TRANSACTION_FAILED
+        ? event.data.error
+        : undefined
   }
 }
 
@@ -77,9 +76,9 @@ const getTransaction = (
   }
 
   const { wallet, publicKey } = source.event.data
-  return wallets[wallet]?.keypairs?.[publicKey]?.transactions[
-    event.traceID
-  ] || null
+  return (
+    wallets[wallet]?.keypairs?.[publicKey]?.transactions[event.traceID] || null
+  )
 }
 
 export const TransactionEnd = ({
@@ -106,7 +105,7 @@ export const TransactionEnd = ({
         type: 'UPDATE_TRANSACTION',
         transaction: {
           ...transaction,
-          ...parseEvent(interaction.event),
+          ...parseEvent(interaction.event)
         }
       })
 
