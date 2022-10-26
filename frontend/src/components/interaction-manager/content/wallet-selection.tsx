@@ -15,7 +15,7 @@ import type { InteractionContentProps, RequestWalletSelection } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
 export const WalletSelection = ({
-  interaction,
+  event,
   isResolved,
   setResolved
 }: InteractionContentProps<RequestWalletSelection>) => {
@@ -35,7 +35,7 @@ export const WalletSelection = ({
       try {
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
-          traceID: interaction.event.traceID,
+          traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
           data: {
             wallet,
@@ -58,12 +58,12 @@ export const WalletSelection = ({
       try {
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
-          traceID: interaction.event.traceID,
+          traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
           data: {}
         })
         AppToaster.show({
-          message: `The connection request from "${interaction.event.data.hostname}" has been rejected.`,
+          message: `The connection request from "${event.data.hostname}" has been rejected.`,
           intent: Intent.SUCCESS
         })
       } catch (err) {
@@ -92,7 +92,7 @@ export const WalletSelection = ({
             textAlign: 'center'
           }}
         >
-          <strong>{interaction.event.data.hostname}</strong> is requesting
+          <strong>{event.data.hostname}</strong> is requesting
           access to a wallet
         </p>
         <p>
@@ -115,7 +115,7 @@ export const WalletSelection = ({
               required: Validation.REQUIRED
             }}
             control={control}
-            options={interaction.event.data.availableWallets.map(w => ({
+            options={event.data.availableWallets.map(w => ({
               value: w,
               label: w
             }))}

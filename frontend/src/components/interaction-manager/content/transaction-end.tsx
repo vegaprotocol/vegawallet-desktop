@@ -12,7 +12,7 @@ import type {
 import { INTERACTION_TYPE } from '../types'
 
 export const TransactionEnd = ({
-  interaction,
+  event,
   history,
   isResolved,
   setResolved
@@ -34,12 +34,12 @@ export const TransactionEnd = ({
       const { wallet, publicKey } = source.event.data
       const transaction =
         state.wallets[wallet]?.keypairs?.[publicKey]?.transactions[
-          interaction.event.traceID
+          event.traceID
         ]
 
       if (transaction) {
         const isSuccess =
-          interaction.event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+          event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
 
         dispatch({
           type: 'UPDATE_TRANSACTION',
@@ -49,8 +49,8 @@ export const TransactionEnd = ({
               ? TransactionStatus.SUCCESS
               : TransactionStatus.FAILURE,
             txHash:
-              interaction.event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
-                ? interaction.event.data.txHash
+              event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+                ? event.data.txHash
                 : null
           }
         })
@@ -58,7 +58,7 @@ export const TransactionEnd = ({
 
       setResolved(true)
     }
-  }, [source, state, dispatch, interaction, isResolved, setResolved])
+  }, [source, state, dispatch, event, isResolved, setResolved])
 
   return null
 }

@@ -6,9 +6,9 @@ export const enum EVENT_FLOW_TYPE {
   PERMISSION_REQUEST = 'PERMISSION_REQUEST'
 }
 
-export type InteractionContentProps<T extends RawInteraction = RawInteraction> =
+export type InteractionContentProps<T extends RawInteraction> =
   {
-    interaction: Interaction<T>
+    event: T
     history: Interaction[]
     flow?: EVENT_FLOW_TYPE
     isResolved: boolean

@@ -74,12 +74,12 @@ const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
 }
 
 export const Transaction = ({
-  interaction
+  event
 }: InteractionContentProps<RequestTransactionReview>) => {
   const { service, dispatch } = useGlobal()
   const transaction = useMemo(
-    () => parseTransactionInput(interaction.event),
-    [interaction]
+    () => parseTransactionInput(event),
+    [event]
   )
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
@@ -94,7 +94,7 @@ export const Transaction = ({
   const onReponse = useCallback(
     async (decision: boolean) => {
       await service.RespondToInteraction({
-        traceID: interaction.event.traceID,
+        traceID: event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
         data: {
           approved: decision
@@ -111,7 +111,7 @@ export const Transaction = ({
         })
       }
     },
-    [service, dispatch, interaction, transaction]
+    [service, dispatch, event, transaction]
   )
 
   return (

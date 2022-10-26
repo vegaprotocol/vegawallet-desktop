@@ -7,7 +7,7 @@ import type { InteractionContentProps, RequestWalletConnection } from '../types'
 import { CONNECTION_RESPONSE, INTERACTION_RESPONSE_TYPE } from '../types'
 
 export const WalletConnection = ({
-  interaction,
+  event,
   isResolved,
   setResolved
 }: InteractionContentProps<RequestWalletConnection>) => {
@@ -18,7 +18,7 @@ export const WalletConnection = ({
       try {
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
-          traceID: interaction.event.traceID,
+          traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
           data: {
             connectionApproval: decision
@@ -39,7 +39,7 @@ export const WalletConnection = ({
       setResolved(true)
       handleResponse(true)
     }
-  }, [interaction, service, isResolved, setResolved])
+  }, [event, service, isResolved, setResolved])
 
   return null
 }
