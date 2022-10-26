@@ -38,8 +38,7 @@ export const TransactionEnd = ({
         ]
 
       if (transaction) {
-        const isSuccess =
-          event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+        const isSuccess = event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
 
         dispatch({
           type: 'UPDATE_TRANSACTION',

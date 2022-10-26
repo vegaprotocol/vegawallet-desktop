@@ -92,8 +92,8 @@ export const WalletSelection = ({
             textAlign: 'center'
           }}
         >
-          <strong>{event.data.hostname}</strong> is requesting
-          access to a wallet
+          <strong>{event.data.hostname}</strong> is requesting access to a
+          wallet
         </p>
         <p>
           Approving a connection allows this site to see your wallet chain ID,

@@ -13,7 +13,7 @@ import { WalletSelection } from './content/wallet-selection'
 import type {
   Interaction,
   InteractionContentProps,
-  RawInteraction,
+  RawInteraction
 } from './types'
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
@@ -21,7 +21,10 @@ const InteractionItem = ({
   event,
   history,
   onFinish
-}: Omit<InteractionContentProps<RawInteraction>, 'isResolved' | 'setResolved'>) => {
+}: Omit<
+  InteractionContentProps<RawInteraction>,
+  'isResolved' | 'setResolved'
+>) => {
   const [isResolved, setResolved] = useState(false)
 
   switch (event.name) {

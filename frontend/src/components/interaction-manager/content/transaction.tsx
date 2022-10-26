@@ -77,10 +77,7 @@ export const Transaction = ({
   event
 }: InteractionContentProps<RequestTransactionReview>) => {
   const { service, dispatch } = useGlobal()
-  const transaction = useMemo(
-    () => parseTransactionInput(event),
-    [event]
-  )
+  const transaction = useMemo(() => parseTransactionInput(event), [event])
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
 
