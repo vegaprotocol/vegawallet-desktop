@@ -2,8 +2,10 @@ import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { BreakText } from '../break-text'
+import { ButtonUnstyled } from '../button-unstyled'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
+import { ArrowTopRight } from '../icons/arrow-top-right'
 import { Title } from '../title'
 import { TransactionStatus } from '../transaction-status'
 
@@ -33,7 +35,12 @@ const compileSectionList = (transaction: Transaction) => {
   if (transaction.blockHeight) {
     rows.push({
       key: 'Block height',
-      value: <>{transaction.blockHeight}</>
+      value: (
+        <ButtonUnstyled>
+          {transaction.blockHeight}
+          <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
+        </ButtonUnstyled>
+      )
     })
   }
 
