@@ -19,7 +19,7 @@ export const WalletSelection = ({
   isResolved,
   setResolved
 }: InteractionContentProps<RequestWalletSelection>) => {
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
   const {
     control,
     handleSubmit,
@@ -40,6 +40,15 @@ export const WalletSelection = ({
           data: {
             wallet,
             passphrase
+          }
+        })
+
+        dispatch({
+          type: 'ADD_CONNECTION',
+          wallet,
+          connection: {
+            hostname: event.data.hostname,
+            active: true
           }
         })
       } catch (err) {

@@ -6,6 +6,7 @@ import { extendKeypair } from '../../lib/wallet-helpers'
 import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
+  Connection,
   DrawerState,
   GlobalState,
   KeyPair,
@@ -208,6 +209,11 @@ export type GlobalAction =
       type: 'UPDATE_TRANSACTION'
       transaction: Transaction
     }
+  | {
+      type: 'ADD_CONNECTION'
+      connection: Connection
+      wallet: string
+    }
 
 export function globalReducer(
   state: GlobalState,
@@ -271,6 +277,7 @@ export function globalReducer(
       const keypairExtended: KeyPair = extendKeypair(action.key)
       const newWallet: Wallet = {
         name: action.wallet,
+        connections: {},
         keypairs: {
           ...(keypairExtended.publicKey && {
             [keypairExtended.publicKey ?? '']: keypairExtended
@@ -513,22 +520,22 @@ export function globalReducer(
     }
     case 'ADD_TRANSACTION':
     case 'UPDATE_TRANSACTION': {
-      const currentWallet = state.wallets[action.transaction.wallet]
+      const targetWallet = state.wallets[action.transaction.wallet]
 
-      if (!currentWallet) {
+      if (!targetWallet) {
         throw new Error('Wallet not found')
       }
 
-      const keypair = currentWallet.keypairs?.[action.transaction.publicKey]
+      const keypair = targetWallet.keypairs?.[action.transaction.publicKey]
 
       if (!keypair) {
         throw new Error('Public key not found')
       }
 
       const updatedWallet: Wallet = {
-        ...currentWallet,
+        ...targetWallet,
         keypairs: {
-          ...currentWallet.keypairs,
+          ...targetWallet.keypairs,
           [action.transaction.publicKey]: {
             ...keypair,
             transactions: {
@@ -544,6 +551,28 @@ export function globalReducer(
         wallets: {
           ...state.wallets,
           [action.transaction.wallet]: updatedWallet
+        }
+      }
+    }
+    case 'ADD_CONNECTION': {
+      const targetWallet = state.wallets[action.wallet]
+
+      if (!targetWallet) {
+        throw new Error('Wallet not found')
+      }
+
+      const updatedWallet: Wallet = {
+        ...targetWallet,
+        connections: {
+          ...targetWallet.connections,
+          [action.connection.hostname]: action.connection
+        }
+      }
+
+      return {
+        ...state,
+        wallets: {
+          [action.wallet]: updatedWallet
         }
       }
     }

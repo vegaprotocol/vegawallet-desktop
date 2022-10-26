@@ -39,6 +39,11 @@ export type DrawerState = {
   editingNetwork: string | null
 }
 
+export type Connection = {
+  hostname: string
+  active: boolean
+}
+
 export interface KeyPair
   extends Pick<WalletModel.DescribeKeyResult, 'publicKey' | 'isTainted'> {
   name: string
@@ -49,7 +54,8 @@ export interface KeyPair
 
 export interface Wallet {
   name: string
-  keypairs: null | Record<string, KeyPair>
+  keypairs: Record<string, KeyPair>
+  connections: Record<string, Connection>
   auth: boolean
 }
 
