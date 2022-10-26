@@ -75,10 +75,7 @@ export const Transaction = ({
 }: InteractionContentProps<RequestTransactionReview>) => {
   const [status, setStatus] = useState<null | 'approving' | 'rejecting'>(null)
   const { service, dispatch } = useGlobal()
-  const transaction = useMemo(
-    () => parseTransactionInput(event),
-    [event]
-  )
+  const transaction = useMemo(() => parseTransactionInput(event), [event])
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
 
