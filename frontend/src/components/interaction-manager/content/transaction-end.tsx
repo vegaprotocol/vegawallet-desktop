@@ -82,7 +82,7 @@ const getTransaction = (
 }
 
 export const TransactionEnd = ({
-  interaction,
+  event,
   history,
   isResolved,
   setResolved
@@ -98,20 +98,20 @@ export const TransactionEnd = ({
   )
 
   useEffect(() => {
-    const transaction = getTransaction(state.wallets, source, interaction.event)
+    const transaction = getTransaction(state.wallets, source, event)
 
     if (!isResolved && transaction) {
       dispatch({
         type: 'UPDATE_TRANSACTION',
         transaction: {
           ...transaction,
-          ...parseEvent(interaction.event)
+          ...parseEvent(event)
         }
       })
 
       setResolved(true)
     }
-  }, [source, state, dispatch, interaction, isResolved, setResolved])
+  }, [source, state, dispatch, event, isResolved, setResolved])
 
   return null
 }

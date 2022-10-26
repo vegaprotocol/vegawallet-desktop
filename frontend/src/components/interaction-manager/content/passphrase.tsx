@@ -8,7 +8,7 @@ import type { InteractionContentProps, RequestPassphrase } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
 export const Passphrase = ({
-  interaction,
+  event,
   isResolved,
   setResolved
 }: InteractionContentProps<RequestPassphrase>) => {
@@ -20,7 +20,7 @@ export const Passphrase = ({
         const passphrase = await requestPassphrase()
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
-          traceID: interaction.event.traceID,
+          traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.ENTERED_PASSPHRASE,
           data: {
             passphrase
@@ -29,7 +29,7 @@ export const Passphrase = ({
       } catch (err: unknown) {
         if (err === 'dismissed') {
           await service.RespondToInteraction({
-            traceID: interaction.event.traceID,
+            traceID: event.traceID,
             name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
             data: {}
           })
@@ -47,7 +47,7 @@ export const Passphrase = ({
     if (!isResolved) {
       handleResponse()
     }
-  }, [service, interaction, isResolved, setResolved])
+  }, [service, event, isResolved, setResolved])
 
   return null
 }
