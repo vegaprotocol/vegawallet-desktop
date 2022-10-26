@@ -12,7 +12,7 @@ export const useOpenWallet = () => {
 
   const open = useCallback(
     async (wallet: string) => {
-      const w = state.wallets.find(w => w.name === wallet)
+      const w = state.wallets[wallet]
 
       if (w?.auth) {
         dispatch({

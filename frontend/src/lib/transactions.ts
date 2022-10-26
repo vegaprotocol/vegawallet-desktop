@@ -1,4 +1,13 @@
-import type { RequestTransactionSendingContent } from '../components/interaction-manager/types'
+import omit from 'lodash/omit'
+
+import type { RequestTransactionReview } from '../components/interaction-manager/types'
+
+export enum TransactionStatus {
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  SUCCESS = 'success',
+  FAILURE = 'failure'
+}
 
 export enum TransactionKeys {
   UNKNOWN = 'unknown',
@@ -24,13 +33,21 @@ export enum TransactionKeys {
   ETHEREUM_KEY_ROTATE_SUBMISSION = 'ethereumKeyRotateSubmission'
 }
 
-export type Transaction = RequestTransactionSendingContent & {
+type TransactionData = object
+
+export type Transaction = {
+  id: string
   type: TransactionKeys
-  payload: object
-  decision?: boolean
+  hostname: string
+  wallet: string
+  publicKey: string
+  payload: TransactionData
+  status: TransactionStatus
+  receivedAt: Date
+  txHash?: null | string
 }
 
-const getPayload = (transaction: string): object => {
+const getPayload = (transaction: string): TransactionData => {
   try {
     return JSON.parse(transaction)
   } catch (err) {
@@ -39,16 +56,32 @@ const getPayload = (transaction: string): object => {
 }
 
 const getType = (payload: object) => {
-  return Object.keys(payload)[0] as TransactionKeys
+  return Object.keys(
+    omit(payload, ['blockHeight', 'nonce'])
+  )[0] as TransactionKeys
 }
 
-export const parseTransaction = (data: RequestTransactionSendingContent) => {
-  const payload = getPayload(data.transaction)
+export const parseTransactionInput = (
+  event: RequestTransactionReview
+): Transaction => {
+  const payload = getPayload(event.data.transaction)
   const type = getType(payload)
 
   return {
-    ...data,
+    id: event.traceID,
     type,
-    payload
+    payload,
+    status: TransactionStatus.PENDING,
+    hostname: event.data.hostname,
+    receivedAt: new Date(event.data.receivedAt),
+    wallet: event.data.wallet,
+    publicKey: event.data.publicKey,
+    txHash: null
   }
+}
+
+export const sortTransaction = (a: Transaction, b: Transaction) => {
+  if (a.receivedAt < b.receivedAt) return -1
+  if (a.receivedAt > b.receivedAt) return 1
+  return 0
 }

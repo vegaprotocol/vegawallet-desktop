@@ -1,5 +1,8 @@
+import omit from 'lodash/omit'
+
 import type { NetworkPreset } from '../../lib/networks'
-import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
+import type { Transaction } from '../../lib/transactions'
+import { extendKeypair } from '../../lib/wallet-helpers'
 import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
@@ -24,7 +27,7 @@ export const initialGlobalState: GlobalState = {
 
   // Wallet
   wallet: null,
-  wallets: [],
+  wallets: {},
 
   // Network
   network: null,
@@ -197,6 +200,14 @@ export type GlobalAction =
       type: 'SET_SERVICE_STATUS'
       status: ServiceState
     }
+  | {
+      type: 'ADD_TRANSACTION'
+      transaction: Transaction
+    }
+  | {
+      type: 'UPDATE_TRANSACTION'
+      transaction: Transaction
+    }
 
 export function globalReducer(
   state: GlobalState,
@@ -207,13 +218,17 @@ export function globalReducer(
       return {
         ...state,
         config: action.config,
-        wallets: action.wallets
-          .map(name => ({
-            name,
-            keypairs: null,
-            auth: false
-          }))
-          .sort(sortWallet),
+        wallets: action.wallets.reduce(
+          (acc, name) => ({
+            ...acc,
+            [name]: {
+              name,
+              keypairs: null,
+              auth: false
+            }
+          }),
+          {}
+        ),
         network: action.network,
         networks: action.networks,
         networkConfig: action.networkConfig,
@@ -265,35 +280,48 @@ export function globalReducer(
       }
       return {
         ...state,
-        wallet: newWallet,
-        wallets: [...state.wallets, newWallet].sort(sortWallet)
+        wallet: newWallet.name,
+        wallets: {
+          ...state.wallets,
+          [newWallet.name]: newWallet
+        }
       }
     }
     case 'ADD_WALLETS': {
-      const newWallets = action.wallets.map(name => ({
-        name,
-        keypairs: null,
-        auth: false
-      }))
+      const newWallets = action.wallets.reduce(
+        (acc, name) => ({
+          ...acc,
+          [name]: {
+            name,
+            keypairs: null,
+            auth: false
+          }
+        }),
+        {}
+      )
       return {
         ...state,
-        wallets: [...state.wallets, ...newWallets].sort(sortWallet)
+        wallets: {
+          ...state.wallets,
+          ...newWallets
+        }
       }
     }
     case 'REMOVE_WALLET': {
       return {
         ...state,
         wallet: null,
-        wallets: state.wallets
-          .filter(w => w.name !== action.wallet)
-          .sort(sortWallet)
+        wallets: omit(state.wallets, [action.wallet])
       }
     }
     case 'SET_KEYPAIRS': {
+      if (!state.wallets[action.wallet]) {
+        throw new Error('Wallet not found')
+      }
+
       const keypairsExtended: KeyPair[] = action.keypairs.map(extendKeypair)
-      const currWallet = state.wallets.find(w => w.name === action.wallet)
       const newWallet: Wallet = {
-        ...currWallet,
+        ...state.wallets[action.wallet],
         name: action.wallet,
         keypairs: keypairsExtended.reduce(indexBy('publicKey'), {}),
         auth: true
@@ -301,27 +329,24 @@ export function globalReducer(
 
       return {
         ...state,
-        wallet: newWallet,
-        wallets: [
-          ...state.wallets.filter(w => w.name !== action.wallet),
-          newWallet
-        ].sort(sortWallet)
+        wallets: {
+          ...state.wallets,
+          [action.wallet]: newWallet
+        }
       }
     }
     case 'ADD_KEYPAIR':
     case 'UPDATE_KEYPAIR': {
-      const wallets = state.wallets.filter(w => w.name !== action.wallet)
-      const currWallet = state.wallets.find(w => w.name === action.wallet)
-
-      if (!currWallet) {
+      if (!state.wallets[action.wallet]) {
         throw new Error('Wallet not found')
       }
+      const currentWallet = state.wallets[action.wallet]
 
       const newKeypair = extendKeypair(action.keypair)
       const updatedWallet: Wallet = {
-        ...currWallet,
+        ...currentWallet,
         keypairs: {
-          ...currWallet.keypairs,
+          ...currentWallet.keypairs,
           ...(newKeypair.publicKey && {
             [newKeypair.publicKey ?? '']: newKeypair
           })
@@ -330,57 +355,43 @@ export function globalReducer(
 
       return {
         ...state,
-        wallet: updatedWallet,
-        wallets: [...wallets, updatedWallet].sort(sortWallet)
+        wallets: {
+          ...state.wallets,
+          [action.wallet]: updatedWallet
+        }
       }
     }
     case 'ACTIVATE_WALLET': {
-      const wallet = state.wallets.find(w => w.name === action.wallet)
-
-      if (!wallet) {
+      if (!state.wallets[action.wallet]) {
         throw new Error('Wallet not found')
       }
 
       return {
         ...state,
-        wallet: {
-          ...wallet,
-          auth: true
-        },
-        wallets: [
-          ...state.wallets.filter(w => w.name !== wallet.name),
-          {
-            ...wallet,
+        wallet: action.wallet,
+        wallets: {
+          ...state.wallets,
+          [action.wallet]: {
+            ...state.wallets[action.wallet],
             auth: true
           }
-        ].sort(sortWallet)
+        }
       }
     }
     case 'DEACTIVATE_WALLET': {
-      const wallet = state.wallets.find(w => w.name === action.wallet)
-
-      if (!wallet) {
-        return {
-          ...state,
-          wallet: null
-        }
-      }
-
       return {
         ...state,
         wallet: null
       }
     }
     case 'CHANGE_WALLET': {
-      const wallet = state.wallets.find(w => w.name === action.wallet)
-
-      if (!wallet) {
+      if (!state.wallets[action.wallet]) {
         throw new Error('Wallet not found')
       }
 
       return {
         ...state,
-        wallet
+        wallet: action.wallet
       }
     }
     case 'SET_DRAWER': {
@@ -498,6 +509,42 @@ export function globalReducer(
       return {
         ...state,
         serviceStatus: action.status
+      }
+    }
+    case 'ADD_TRANSACTION':
+    case 'UPDATE_TRANSACTION': {
+      const currentWallet = state.wallets[action.transaction.wallet]
+
+      if (!currentWallet) {
+        throw new Error('Wallet not found')
+      }
+
+      const keypair = currentWallet.keypairs?.[action.transaction.publicKey]
+
+      if (!keypair) {
+        throw new Error('Public key not found')
+      }
+
+      const updatedWallet: Wallet = {
+        ...currentWallet,
+        keypairs: {
+          ...currentWallet.keypairs,
+          [action.transaction.publicKey]: {
+            ...keypair,
+            transactions: {
+              ...keypair.transactions,
+              [action.transaction.id]: action.transaction
+            }
+          }
+        }
+      }
+
+      return {
+        ...state,
+        wallets: {
+          ...state.wallets,
+          [action.transaction.wallet]: updatedWallet
+        }
       }
     }
     default: {

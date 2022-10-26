@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { ButtonUnstyled } from '../../../components/button-unstyled'
 import { Header } from '../../../components/header'
+import { ArrowTopRight } from '../../../components/icons/arrow-top-right'
 import { PublicKey } from '../../../components/public-key'
 import { Title } from '../../../components/title'
 import { TransactionHistory } from '../../../components/transaction-history'
@@ -26,7 +28,19 @@ export function Transactions() {
       />
       <PublicKey publicKey={keypair.publicKey} />
       <div style={{ padding: 20, paddingTop: 0 }} data-testid='keypair-home'>
-        <Title>History</Title>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <Title>Current session transactions</Title>
+          <ButtonUnstyled>
+            View full history
+            <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
+          </ButtonUnstyled>
+        </div>
         <TransactionHistory />
       </div>
     </>

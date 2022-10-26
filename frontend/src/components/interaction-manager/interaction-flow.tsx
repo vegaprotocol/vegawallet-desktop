@@ -7,33 +7,33 @@ import { Permissions } from './content/permissions'
 import { SessionEndComponent } from './content/session-end'
 import { SuccessComponent } from './content/success'
 import { Transaction } from './content/transaction'
+import { TransactionEnd } from './content/transaction-end'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import type {
-  ErrorOccurred,
   Interaction,
   InteractionContentProps,
-  Log,
-  RequestPassphrase,
-  RequestPermissions,
-  RequestSucceeded,
-  RequestTransactionSending,
-  RequestWalletConnection,
-  RequestWalletSelection,
-  SessionEnded
+  RawInteraction
 } from './types'
 import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
-const InteractionItem = (
-  props: Omit<InteractionContentProps, 'isResolved' | 'setResolved'>
-) => {
+const InteractionItem = ({
+  event,
+  history,
+  onFinish
+}: Omit<
+  InteractionContentProps<RawInteraction>,
+  'isResolved' | 'setResolved'
+>) => {
   const [isResolved, setResolved] = useState(false)
 
-  switch (props.interaction.event.name) {
+  switch (event.name) {
     case INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW: {
       return (
         <WalletConnection
-          {...(props as InteractionContentProps<RequestWalletConnection>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -42,7 +42,9 @@ const InteractionItem = (
     case INTERACTION_TYPE.REQUEST_WALLET_SELECTION: {
       return (
         <WalletSelection
-          {...(props as InteractionContentProps<RequestWalletSelection>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -51,7 +53,9 @@ const InteractionItem = (
     case INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW: {
       return (
         <Permissions
-          {...(props as InteractionContentProps<RequestPermissions>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -60,14 +64,42 @@ const InteractionItem = (
     case INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING: {
       return (
         <Transaction
-          {...(props as InteractionContentProps<RequestTransactionSending>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
+          isResolved={isResolved}
+          setResolved={setResolved}
+        />
+      )
+    }
+    case INTERACTION_TYPE.TRANSACTION_SUCCEEDED: {
+      return (
+        <TransactionEnd
+          event={event}
+          history={history}
+          onFinish={onFinish}
+          isResolved={isResolved}
+          setResolved={setResolved}
+        />
+      )
+    }
+    case INTERACTION_TYPE.TRANSACTION_FAILED: {
+      return (
+        <TransactionEnd
+          event={event}
+          history={history}
+          onFinish={onFinish}
+          isResolved={isResolved}
+          setResolved={setResolved}
         />
       )
     }
     case INTERACTION_TYPE.REQUEST_PASSPHRASE: {
       return (
         <Passphrase
-          {...(props as InteractionContentProps<RequestPassphrase>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -76,7 +108,9 @@ const InteractionItem = (
     case INTERACTION_TYPE.REQUEST_SUCCEEDED: {
       return (
         <SuccessComponent
-          {...(props as InteractionContentProps<RequestSucceeded>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -85,7 +119,9 @@ const InteractionItem = (
     case INTERACTION_TYPE.ERROR_OCCURRED: {
       return (
         <ErrorComponent
-          {...(props as InteractionContentProps<ErrorOccurred>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -94,7 +130,9 @@ const InteractionItem = (
     case INTERACTION_TYPE.LOG: {
       return (
         <LogComponent
-          {...(props as InteractionContentProps<Log>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -103,7 +141,9 @@ const InteractionItem = (
     case INTERACTION_TYPE.INTERACTION_SESSION_ENDED: {
       return (
         <SessionEndComponent
-          {...(props as InteractionContentProps<SessionEnded>)}
+          event={event}
+          history={history}
+          onFinish={onFinish}
           isResolved={isResolved}
           setResolved={setResolved}
         />
@@ -144,10 +184,11 @@ export const InteractionFlow = ({ events, onFinish }: InteractionFlowProps) => {
 
   return (
     <>
-      {events.map(event => (
+      {events.map(interaction => (
         <InteractionItem
-          key={event.meta.id}
-          interaction={event}
+          key={interaction.meta.id}
+          history={events}
+          event={interaction.event}
           flow={flow}
           onFinish={onFinish}
         />

@@ -1,8 +1,12 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useGlobal } from '../../../contexts/global/global-context'
 import { formatDate } from '../../../lib/date'
-import { parseTransaction, TransactionKeys } from '../../../lib/transactions'
+import {
+  parseTransactionInput,
+  TransactionKeys,
+  TransactionStatus
+} from '../../../lib/transactions'
 import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
 import { CodeBlock } from '../../code-block'
@@ -11,11 +15,11 @@ import { PublicKey } from '../../public-key'
 import { Title } from '../../title'
 import type {
   InteractionContentProps,
-  RequestTransactionSending
+  RequestTransactionReview
 } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
-const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
+export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
   [TransactionKeys.UNKNOWN]: 'Unknown transaction',
   [TransactionKeys.ORDER_SUBMISSION]: 'Order submission',
   [TransactionKeys.ORDER_CANCELLATION]: 'Order cancellation',
@@ -70,25 +74,41 @@ const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
 }
 
 export const Transaction = ({
-  interaction
-}: InteractionContentProps<RequestTransactionSending>) => {
-  const { service } = useGlobal()
-  const transaction = parseTransaction(interaction.event.data)
+  event
+}: InteractionContentProps<RequestTransactionReview>) => {
+  const { service, dispatch } = useGlobal()
+  const transaction = useMemo(() => parseTransactionInput(event), [event])
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
 
+  useEffect(() => {
+    dispatch({
+      type: 'ADD_TRANSACTION',
+      transaction
+    })
+  }, [dispatch, transaction])
+
   const onReponse = useCallback(
     async (decision: boolean) => {
-      // @ts-ignore
       await service.RespondToInteraction({
-        traceID: interaction.event.traceID,
+        traceID: event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
         data: {
           approved: decision
         }
       })
+
+      if (!decision) {
+        dispatch({
+          type: 'UPDATE_TRANSACTION',
+          transaction: {
+            ...transaction,
+            status: TransactionStatus.REJECTED
+          }
+        })
+      }
     },
-    [service, interaction]
+    [service, dispatch, event, transaction]
   )
 
   return (

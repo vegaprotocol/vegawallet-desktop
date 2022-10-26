@@ -3,6 +3,7 @@ import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
 import type { NetworkPreset } from '../../lib/networks'
+import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
@@ -43,6 +44,7 @@ export interface KeyPair
   name: string
   publicKeyShort: string
   meta: WalletModel.DescribeKeyResult['metadata']
+  transactions: Record<string, Transaction>
 }
 
 export interface Wallet {
@@ -57,8 +59,8 @@ export interface GlobalState {
   config: ConfigModel.Config | null
 
   // Wallet
-  wallet: Wallet | null
-  wallets: Wallet[]
+  wallet: string | null
+  wallets: Record<string, Wallet>
 
   // Network
   network: string | null

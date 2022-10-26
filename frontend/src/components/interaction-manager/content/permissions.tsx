@@ -66,18 +66,18 @@ const getDisplayDetails = (data: RequestPermissionsContent) => {
 }
 
 export const Permissions = ({
-  interaction
+  event
 }: InteractionContentProps<RequestPermissions>) => {
   const { service } = useGlobal()
   const message = useMemo(() => {
-    return getDisplayDetails(interaction.event.data)
-  }, [interaction])
+    return getDisplayDetails(event.data)
+  }, [event])
 
   const onAccept = async (decision: boolean) => {
     try {
       // @ts-ignore: wails generates the wrong type signature for this handler
       await service.RespondToInteraction({
-        traceID: interaction.event.traceID,
+        traceID: event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
         data: {
           approved: decision
