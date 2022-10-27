@@ -12,13 +12,15 @@ import { requestPassphrase } from '../passphrase-modal'
 import { AppToaster } from '../toaster'
 import { PermissionSection } from './connection-manage-section'
 
+type KeyItem = {
+  key: string
+  name: string
+  value: boolean
+}
+
 export type NormalizedPermission = {
   access: WalletModel.AccessMode
-  restrictedKeys: Array<{
-    key: string
-    name: string
-    value: boolean
-  }>
+  restrictedKeys: KeyItem[]
 }
 
 export type NormalizedPermissionMap = Record<
@@ -51,14 +53,17 @@ const compileDefaultValues = (
         ...acc,
         [key]: {
           access: p.access,
-          restrictedKeys: keyList.map(
-            key => ({
-              key,
-              name: wallet.keypairs[key].name,
-              value: p.restrictedKeys?.includes(key) ? false : true
-            }),
-            {}
-          )
+          restrictedKeys: keyList.reduce<KeyItem[]>((acc, key) => {
+            const keypair = wallet.keypairs[key]
+            if (!keypair.isTainted) {
+              acc.push({
+                key,
+                name: keypair.name,
+                value: p.restrictedKeys?.includes(key) ? false : true
+              })
+            }
+            return acc
+          }, [])
         }
       }
     },
