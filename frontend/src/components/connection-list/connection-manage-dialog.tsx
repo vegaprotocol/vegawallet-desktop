@@ -1,12 +1,16 @@
+import { useMemo, useCallback } from 'react'
+import { useForm } from 'react-hook-form'
+
 import { Intent } from '../../config/intent'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
+import { Dialog } from '../dialog'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Dialog } from '../dialog'
-import { requestPassphrase } from '../passphrase-modal'
 import { AppToaster } from '../toaster'
+import { PermissionSection } from './connection-manage-section'
+import { requestPassphrase } from '../passphrase-modal'
 
 type ManageDialogProps = {
   isOpen: boolean
@@ -21,13 +25,19 @@ export const ManageDialog = ({
   hostname,
   onClose
 }: ManageDialogProps) => {
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
+  const permissions = useMemo(() => (
+    wallet.connections?.[hostname].permissions
+  ), [wallet.connections])
+  const { control, handleSubmit } = useForm({
+    defaultValues: permissions || {},
+  })
 
-  const handleUpdate = async () => {
+  const onUpdate = useCallback(() => async () => {
     try {
       const passphrase = await requestPassphrase()
 
-      const r = await service.WalletApi.UpdatePermissions({
+      const { permissions } = await service.WalletApi.UpdatePermissions({
         wallet: wallet.name,
         passphrase,
         hostname,
@@ -39,7 +49,12 @@ export const ManageDialog = ({
         }
       })
 
-      console.log('UPDATED PERM', r)
+      dispatch({
+        type: 'SET_PERMISSONS',
+        wallet: wallet.name,
+        hostname,
+        permissions,
+      })
     } catch (err) {
       if (err !== 'dismissed') {
         AppToaster.show({
@@ -48,20 +63,32 @@ export const ManageDialog = ({
         })
       }
     }
-  }
+  }, [service, dispatch])
 
   return (
     <Dialog open={isOpen} title='Update permissions' onChange={onClose}>
-      <div style={{ padding: 20 }}>
-        <p>
-          <pre>{hostname}</pre> has access to the following operations in the
-          wallet <pre>{wallet.name}</pre>:
-        </p>
-      </div>
-      <ButtonGroup inline style={{ padding: 20 }}>
-        <Button onClick={handleUpdate}>Update</Button>
-        <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
-      </ButtonGroup>
+      <form onSubmit={handleSubmit(onUpdate)}>
+        <div style={{ padding: 20 }}>
+          <p>
+            <code>{hostname}</code> has access to the following operations in the
+            wallet <code>{wallet.name}</code>:
+          </p>
+          <div>
+            {Object.keys(permissions || {}).map(key => (
+              <PermissionSection
+                key={key}
+                type={key}
+                wallet={wallet}
+                control={control}
+              />
+            ))}
+          </div>
+        </div>
+        <ButtonGroup inline style={{ padding: 20 }}>
+          <Button type="submit">Update</Button>
+          <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
+        </ButtonGroup>
+      </form>
     </Dialog>
   )
 }

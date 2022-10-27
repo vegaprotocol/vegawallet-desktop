@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, Fragment } from 'react'
 
 import { Colors } from '../../config/colors'
 import type { Wallet } from '../../contexts/global/global-context'
@@ -33,15 +33,15 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
         <p style={{ margin: '20px 0' }}>No connections established.</p>
       )}
       {connectionList.map(key => (
-        <>
+        <Fragment key={key}>
           {wallet.connections && (
             <ConnectionItem
               connection={wallet.connections[key]}
-              onManage={() => {}}
+              onManage={() => setManageHost(key)}
               onDisconnect={() => setDisconnectHost(key)}
             />
           )}
-        </>
+        </Fragment>
       ))}
       <DisconnectDialog
         isOpen={!!disconnectHost}
