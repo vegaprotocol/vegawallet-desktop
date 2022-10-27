@@ -54,8 +54,8 @@ export const ManageDialog = ({
     <Dialog open={isOpen} title='Update permissions' onChange={onClose}>
       <div style={{ padding: 20 }}>
         <p>
-          <pre>{hostname}</pre> has access to the following operations in the
-          wallet <pre>{wallet.name}</pre>:
+          <code>{hostname}</code> has access to the following operations in the
+          wallet <code>{wallet.name}</code>:
         </p>
       </div>
       <ButtonGroup inline style={{ padding: 20 }}>

@@ -74,7 +74,7 @@ export function ServiceStatus() {
             >
               {network}
             </span>{' '}
-            on <pre>{serviceUrl}</pre>
+            on <code>{serviceUrl}</code>
           </>
         </div>
       )
