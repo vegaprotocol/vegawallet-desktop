@@ -1,6 +1,6 @@
 import { Colors } from '../../config/colors'
-import { formatDate } from '../../lib/date'
 import { useExplorerUrl } from '../../hooks/use-explorer-url'
+import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -13,20 +13,20 @@ type TransactionItemProps = {
   viewDetails: () => void
 }
 
-const TransactionId = ({ transaction }: Pick<TransactionItemProps, 'transaction'>) => {
+const TransactionId = ({
+  transaction
+}: Pick<TransactionItemProps, 'transaction'>) => {
   const explorerUrl = useExplorerUrl()
 
   if (!transaction.txHash) {
-    return (
-      <span style={{ visibility: 'hidden' }}>No id</span>
-    )
+    return <span style={{ visibility: 'hidden' }}>No id</span>
   }
 
   if (explorerUrl) {
     return (
       <a
         href={`${explorerUrl}/txs/${transaction.txHash}`}
-        target="_blank"
+        target='_blank'
         rel='noopener noreferrer'
       >
         {truncateMiddle(transaction.txHash)}
@@ -35,11 +35,7 @@ const TransactionId = ({ transaction }: Pick<TransactionItemProps, 'transaction'
     )
   }
 
-  return (
-    <span>
-      {truncateMiddle(transaction.txHash)}
-    </span>
-  )
+  return <span>{truncateMiddle(transaction.txHash)}</span>
 }
 
 export const TransactionItem = ({

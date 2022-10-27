@@ -1,7 +1,7 @@
-import type { Transaction } from '../../lib/transactions'
-import { formatDate } from '../../lib/date'
-import { truncateMiddle } from '../../lib/truncate-middle'
 import { useExplorerUrl } from '../../hooks/use-explorer-url'
+import { formatDate } from '../../lib/date'
+import type { Transaction } from '../../lib/transactions'
+import { truncateMiddle } from '../../lib/truncate-middle'
 import { BreakText } from '../break-text'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
@@ -44,7 +44,9 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
           {transaction.blockHeight}
           <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
         </a>
-      ) : <>{transaction.blockHeight}</>
+      ) : (
+        <>{transaction.blockHeight}</>
+      )
     })
   }
 

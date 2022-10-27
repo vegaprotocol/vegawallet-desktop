@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
+import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import type { Transaction } from '../../lib/transactions'
 import { sortTransaction } from '../../lib/transactions'
 import { AnchorButton } from '../button'
@@ -42,8 +42,8 @@ export const TransactionHistory = () => {
           {explorerUrl && transaction?.txHash && (
             <AnchorButton
               href={`${explorerUrl}/txs/${transaction.txHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              target='_blank'
+              rel='noopener noreferrer'
             >
               View in explorer
             </AnchorButton>

@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { ButtonUnstyled } from '../../../components/button-unstyled'
 import { Header } from '../../../components/header'
 import { ArrowTopRight } from '../../../components/icons/arrow-top-right'
 import { PublicKey } from '../../../components/public-key'
@@ -43,8 +42,9 @@ export function Transactions() {
           {explorerUrl && (
             <a
               href={`${explorerUrl}/parties/${keypair.publicKey}`}
-              target="_blank"
+              target='_blank'
               style={{ textDecoration: 'underline' }}
+              rel='noreferrer'
             >
               View full history
               <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />

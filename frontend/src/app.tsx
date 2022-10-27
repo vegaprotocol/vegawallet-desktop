@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import { ErrorBoundary } from '@sentry/react'
+import { useEffect } from 'react'
 // Wails recommends to use Hash routing.
 // See https://wails.io/docs/guides/routing
 import { HashRouter as Router } from 'react-router-dom'
@@ -36,13 +36,13 @@ function App() {
   useEffect(() => {
     const handler = (event: MouseEvent) => {
       var anchor = getAnchor(event.target as HTMLElement | null)
-      var url = anchor?.getAttribute("href")
+      var url = anchor?.getAttribute('href')
 
       if (url && anchor?.nodeName.toLocaleLowerCase() === 'a') {
         BrowserOpenURL(url)
       }
     }
-    document.body.addEventListener("click", handler)
+    document.body.addEventListener('click', handler)
 
     return () => document.body.removeEventListener('click', handler)
   }, [])

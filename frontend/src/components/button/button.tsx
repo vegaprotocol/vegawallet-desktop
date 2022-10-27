@@ -1,4 +1,8 @@
-import type { ButtonHTMLAttributes, AnchorHTMLAttributes, ForwardedRef } from 'react'
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ForwardedRef
+} from 'react'
 import React from 'react'
 
 import { Colors } from '../../config/colors'
@@ -103,7 +107,14 @@ interface AnchorButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 
 export const AnchorButton = React.forwardRef(
   (
-    { children, loading, disabled, onMouseEnter, onMouseLeave, ...props }: AnchorButtonProps,
+    {
+      children,
+      loading,
+      disabled,
+      onMouseEnter,
+      onMouseLeave,
+      ...props
+    }: AnchorButtonProps,
     ref: ForwardedRef<HTMLAnchorElement>
   ) => {
     const [hover, setHover] = React.useState(false)
@@ -147,7 +158,7 @@ export const AnchorButton = React.forwardRef(
       textDecoration: 'none',
       minWidth: 145,
       transition: 'all .3s ease',
-      pointerEvents: (disabled || loading) ? 'none' : 'initial',
+      pointerEvents: disabled || loading ? 'none' : 'initial'
     }
 
     return (
