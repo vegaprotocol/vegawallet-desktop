@@ -31,11 +31,13 @@ export function Transactions() {
         <div
           style={{
             display: 'flex',
+            gap: 20,
+            margin: '20px 0',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
         >
-          <Title>Current session transactions</Title>
+          <Title style={{ margin: 0 }}>Current session transactions</Title>
           <ButtonUnstyled>
             View full history
             <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />

@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import type { Wallet } from '../../../contexts/global/global-context'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { TransactionStatus } from '../../../lib/transactions'
 import type {
@@ -11,14 +12,81 @@ import type {
 } from '../types'
 import { INTERACTION_TYPE } from '../types'
 
+type TransactionEndProps =
+  | InteractionContentProps<RequestTransactionSuccess>
+  | InteractionContentProps<RequestTransactionFailure>
+
+type TransactionEvent = RequestTransactionSuccess | RequestTransactionFailure
+
+type InputData = {
+  blockHeight: string
+}
+
+const parseInputData = (inputData: string) => {
+  try {
+    const { blockHeight } = JSON.parse(inputData) as InputData
+    return { blockHeight: parseInt(blockHeight, 10) }
+  } catch (err) {
+    return {}
+  }
+}
+
+type Tx = {
+  signature: {
+    value: string
+  }
+}
+
+const parseTx = (tx: string) => {
+  try {
+    const { signature } = JSON.parse(tx) as Tx
+    return { signature: signature.value }
+  } catch (err) {
+    return {}
+  }
+}
+
+const parseEvent = (event: TransactionEvent) => {
+  const isSuccess = event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+  const txData = parseTx(event.data.tx)
+  const inputData = parseInputData(event.data.deserializedInputData)
+
+  return {
+    ...txData,
+    ...inputData,
+    status: isSuccess ? TransactionStatus.SUCCESS : TransactionStatus.FAILURE,
+    txHash:
+      event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+        ? event.data.txHash
+        : null,
+    error:
+      event.name === INTERACTION_TYPE.TRANSACTION_FAILED
+        ? event.data.error
+        : undefined
+  }
+}
+
+const getTransaction = (
+  wallets: Record<string, Wallet>,
+  source: Interaction<RequestTransactionReview> | null,
+  event: TransactionEvent
+) => {
+  if (!source) {
+    return null
+  }
+
+  const { wallet, publicKey } = source.event.data
+  return (
+    wallets[wallet]?.keypairs?.[publicKey]?.transactions[event.traceID] || null
+  )
+}
+
 export const TransactionEnd = ({
   event,
   history,
   isResolved,
   setResolved
-}:
-  | InteractionContentProps<RequestTransactionSuccess>
-  | InteractionContentProps<RequestTransactionFailure>) => {
+}: TransactionEndProps) => {
   const { dispatch, state } = useGlobal()
   const source = useMemo(
     () =>
@@ -30,30 +98,16 @@ export const TransactionEnd = ({
   )
 
   useEffect(() => {
-    if (source && !isResolved) {
-      const { wallet, publicKey } = source.event.data
-      const transaction =
-        state.wallets[wallet]?.keypairs?.[publicKey]?.transactions[
-          event.traceID
-        ]
+    const transaction = getTransaction(state.wallets, source, event)
 
-      if (transaction) {
-        const isSuccess = event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
-
-        dispatch({
-          type: 'UPDATE_TRANSACTION',
-          transaction: {
-            ...transaction,
-            status: isSuccess
-              ? TransactionStatus.SUCCESS
-              : TransactionStatus.FAILURE,
-            txHash:
-              event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
-                ? event.data.txHash
-                : null
-          }
-        })
-      }
+    if (!isResolved && transaction) {
+      dispatch({
+        type: 'UPDATE_TRANSACTION',
+        transaction: {
+          ...transaction,
+          ...parseEvent(event)
+        }
+      })
 
       setResolved(true)
     }
