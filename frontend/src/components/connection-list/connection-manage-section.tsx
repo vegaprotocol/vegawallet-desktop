@@ -1,17 +1,16 @@
-import { Controller, useFieldArray } from 'react-hook-form'
-import type { Control } from 'react-hook-form'
-
 import startCase from 'lodash/startCase'
+import type { Control } from 'react-hook-form'
+import { Controller, useFieldArray } from 'react-hook-form'
 
-import type { WalletModel } from '../../wallet-client'
-import type { NormalizedPermissionMap } from './connection-manage'
-import { Title } from '../title'
-import { ButtonUnstyled } from '../button-unstyled'
-import { Checkbox } from '../checkbox'
-import { DropdownMenu, DropdownItem } from '../dropdown-menu'
-import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Colors } from '../../config/colors'
 import { truncateMiddle } from '../../lib/truncate-middle'
+import type { WalletModel } from '../../wallet-client'
+import { ButtonUnstyled } from '../button-unstyled'
+import { Checkbox } from '../checkbox'
+import { DropdownItem, DropdownMenu } from '../dropdown-menu'
+import { DropdownArrow } from '../icons/dropdown-arrow'
+import { Title } from '../title'
+import type { NormalizedPermissionMap } from './connection-manage'
 
 const AccessModes: Record<string, WalletModel.AccessMode> = {
   Read: 'read',
@@ -19,10 +18,13 @@ const AccessModes: Record<string, WalletModel.AccessMode> = {
 }
 
 const descriptionMapping = {
-  publicKeys: 'Determines the permissions the application has in regards your public keys.'
+  publicKeys:
+    'Determines the permissions the application has in regards your public keys.'
 }
 
-const hasDescription = (accessType: string): accessType is keyof typeof descriptionMapping => {
+const hasDescription = (
+  accessType: string
+): accessType is keyof typeof descriptionMapping => {
   return Object.keys(descriptionMapping).includes(accessType)
 }
 
@@ -35,7 +37,7 @@ const getDescriptor = (accessType: string) => {
     }
   }
   return {
-    title,
+    title
   }
 }
 
@@ -44,11 +46,14 @@ type PermissionSectionProps = {
   control: Control<NormalizedPermissionMap>
 }
 
-export const PermissionSection = ({ accessType, control }: PermissionSectionProps) => {
+export const PermissionSection = ({
+  accessType,
+  control
+}: PermissionSectionProps) => {
   const { title, description } = getDescriptor(accessType)
   const { fields } = useFieldArray({
     name: `${accessType}.restrictedKeys`,
-    control,
+    control
   })
 
   return (
@@ -63,23 +68,25 @@ export const PermissionSection = ({ accessType, control }: PermissionSectionProp
         control={control}
         render={({ field }) => (
           <>
-            <div style={{
-              display: 'flex',
-              gap: 20,
-              margin: '20px 0',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: 20,
+                margin: '20px 0',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
               <Title style={{ margin: 0 }}>{title}</Title>
               <DropdownMenu
-                trigger={(
+                trigger={
                   <ButtonUnstyled style={{ padding: '0 12px' }}>
                     {field.value}
                     <DropdownArrow
                       style={{ width: 13, height: 13, marginLeft: 10 }}
                     />
                   </ButtonUnstyled>
-                )}
+                }
                 content={Object.keys(AccessModes).map(key => (
                   <DropdownItem
                     key={key}
@@ -90,22 +97,29 @@ export const PermissionSection = ({ accessType, control }: PermissionSectionProp
                 ))}
               />
             </div>
-            {description && (
-              <p style={{ marginBottom: 20 }}>{description}</p>
-            )}
-            {field.value !== 'none' && fields.map((field, index) => (
-              <Checkbox
-                key={field.id}
-                name={`${accessType}.restrictedKeys.${index}.value`}
-                label={(
-                  <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                    <Title style={{ margin: '0 12px 0 0' }}>{field.name}</Title>
-                    (<code>{truncateMiddle(field.key)}</code>)
-                  </div>
-                )}
-                control={control}
-              />
-            ))}
+            {description && <p style={{ marginBottom: 20 }}>{description}</p>}
+            {field.value !== 'none' &&
+              fields.map((field, index) => (
+                <Checkbox
+                  key={field.id}
+                  name={`${accessType}.restrictedKeys.${index}.value`}
+                  label={
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Title style={{ margin: '0 12px 0 0' }}>
+                        {field.name}
+                      </Title>
+                      (<code>{truncateMiddle(field.key)}</code>)
+                    </div>
+                  }
+                  control={control}
+                />
+              ))}
           </>
         )}
       />

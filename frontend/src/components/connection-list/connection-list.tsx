@@ -1,7 +1,7 @@
-import { useCallback, useState, Fragment } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 
-import type { Wallet } from '../../contexts/global/global-context'
 import { Colors } from '../../config/colors'
+import type { Wallet } from '../../contexts/global/global-context'
 import { Dialog } from '../dialog'
 import { Disconnect } from './connection-disconnect'
 import { ConnectionItem } from './connection-item'

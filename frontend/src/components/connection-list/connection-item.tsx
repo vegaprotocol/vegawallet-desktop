@@ -47,7 +47,9 @@ export const ConnectionItem = ({
       </div>
       <div style={{ display: 'flex', gap: 20 }}>
         <ButtonUnstyled onClick={onManage}>Manage</ButtonUnstyled>
-        <ButtonUnstyled style={{ display: 'none' }} onClick={onDisconnect}>Disconnect</ButtonUnstyled>
+        <ButtonUnstyled style={{ display: 'none' }} onClick={onDisconnect}>
+          Disconnect
+        </ButtonUnstyled>
       </div>
     </div>
   )
