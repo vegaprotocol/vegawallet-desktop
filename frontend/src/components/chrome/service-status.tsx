@@ -6,27 +6,7 @@ import { Intent } from '../../config/intent'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { AppToaster } from '../toaster'
-
-function StatusCircle({
-  background,
-  loading
-}: {
-  background: string
-  loading?: boolean
-}) {
-  const baseStyles: React.CSSProperties = {
-    display: 'inline-block',
-    width: 11,
-    height: 11,
-    borderRadius: '50%',
-    marginRight: 5,
-    background
-  }
-
-  return (
-    <span className={loading ? 'blink' : undefined} style={{ ...baseStyles }} />
-  )
-}
+import { StatusCircle } from '../status-circle'
 
 export function ServiceStatus() {
   const {
@@ -94,7 +74,7 @@ export function ServiceStatus() {
             >
               {network}
             </span>{' '}
-            on {serviceUrl}
+            on <pre>{serviceUrl}</pre>
           </>
         </div>
       )
@@ -115,7 +95,7 @@ export function ServiceStatus() {
     case ServiceState.Loading: {
       return (
         <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle loading background={Colors.VEGA_ORANGE} />
+          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
           <span className='loading'>Wallet Service: Loading</span>
         </div>
       )
@@ -123,7 +103,7 @@ export function ServiceStatus() {
     case ServiceState.Unhealthy: {
       return (
         <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle loading background={Colors.VEGA_ORANGE} />
+          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
           <span>
             Wallet Service: Unhealthy{' '}
             <ButtonUnstyled onClick={restartService}>Restart</ButtonUnstyled>
@@ -134,7 +114,7 @@ export function ServiceStatus() {
     case ServiceState.Unreachable: {
       return (
         <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle loading background={Colors.VEGA_ORANGE} />
+          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
           <span className='loading'>
             Wallet Service: Not reachable, retrying
           </span>

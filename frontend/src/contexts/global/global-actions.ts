@@ -19,7 +19,9 @@ const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
   if (preset && (!networks.networks || networks.networks.length === 0)) {
     await service.WalletApi.ImportNetwork({
       name: preset.name,
-      url: preset.configFileUrl
+      url: preset.configFileUrl,
+      filePath: '',
+      overwrite: true,
     })
 
     return service.WalletApi.ListNetworks()

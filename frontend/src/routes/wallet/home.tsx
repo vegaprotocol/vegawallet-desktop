@@ -1,17 +1,52 @@
+import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
-import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { Header } from '../../components/header'
-import { EyeOff } from '../../components/icons/eye-off'
 import { Title } from '../../components/title'
+import { KeypairList } from '../../components/keypair-list'
+import { ConnectionList } from '../../components/connection-list'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
 
+enum Tabs {
+  KEYPAIRS = 'Keypairs',
+  CONNECTIONS = 'Connections'
+}
+
+type TabTitlesProps = {
+  activeTab: Tabs
+  setTab: (tab: Tabs) => void
+}
+
+const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
+  return (
+    <div style={{ display: 'flex', gap: 20 }}>
+      {Object.values(Tabs).map((tab) => (
+        <Title
+          key={tab}
+          element='h2'
+          onClick={() => setTab(tab)}
+          style={{
+            cursor: 'pointer',
+            marginTop: 0,
+            color: tab === activeTab
+              ? Colors.WHITE
+              : Colors.TEXT_COLOR_DEEMPHASISE,
+          }}
+        >
+          {tab}
+        </Title>
+      ))}
+    </div>
+  )
+}
+
 export function WalletList() {
+  const [tab, setTab] = useState<Tabs>(Tabs.KEYPAIRS)
   const navigate = useNavigate()
   const { actions, dispatch } = useGlobal()
   const { wallet } = useCurrentWallet()
@@ -31,64 +66,31 @@ export function WalletList() {
         }}
       />
       <div style={{ padding: 20, paddingTop: 0 }}>
-        <Title element='h2' style={{ marginTop: 0 }}>
-          Keypairs
-        </Title>
-        <div
-          style={{
-            borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : ''
-          }}
-        >
-          {Object.keys(wallet.keypairs || {}).map(key => {
-            if (!wallet.keypairs) {
-              return null
-            }
-            const { name, publicKey, publicKeyShort, isTainted } =
-              wallet.keypairs[key] || {}
-            return (
-              <div
-                data-testid='wallet-keypair'
-                key={publicKey}
-                style={{
-                  borderTop: `1px solid ${Colors.BLACK}`,
-                  padding: '20px 0'
-                }}
-              >
-                <div>
-                  <ButtonUnstyled
-                    data-testid={`wallet-keypair-${publicKey}`}
-                    onClick={() => {
-                      navigate(
-                        `/wallet/${encodeURIComponent(
-                          wallet.name
-                        )}/keypair/${publicKey}`
-                      )
-                    }}
-                  >
-                    {isTainted && (
-                      <EyeOff style={{ width: 13, marginRight: 6 }} />
-                    )}
-                    {name}
-                  </ButtonUnstyled>
-                </div>
-                <div style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
-                  <CopyWithTooltip text={publicKey ?? ''}>
-                    <span>{publicKeyShort}</span>
-                  </CopyWithTooltip>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        <TabTitles activeTab={tab} setTab={setTab} />
+        {tab === Tabs.KEYPAIRS && (
+          <KeypairList
+            wallet={wallet}
+            onClick={(publicKey) => navigate(
+              `/wallet/${encodeURIComponent(
+                wallet.name
+              )}/keypair/${publicKey}`
+            )}
+          />
+        )}
+        {tab === Tabs.CONNECTIONS && (
+          <ConnectionList wallet={wallet} />
+        )}
         <ButtonGroup orientation='vertical' style={{ padding: '20px 0' }}>
-          <Button
-            data-testid='generate-keypair'
-            onClick={() => {
-              dispatch(actions.addKeypairAction(wallet.name))
-            }}
-          >
-            Generate key pair
-          </Button>
+          {tab === Tabs.KEYPAIRS && (
+            <Button
+              data-testid='generate-keypair'
+              onClick={() => {
+                dispatch(actions.addKeypairAction(wallet.name))
+              }}
+            >
+              Generate key pair
+            </Button>
+          )}
           <ButtonUnstyled
             onClick={() =>
               dispatch({ type: 'SET_REMOVE_WALLET_MODAL', open: true })
