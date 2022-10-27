@@ -1,9 +1,9 @@
 import omit from 'lodash/omit'
 
+import { indexBy } from '../../lib/index-by'
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
-import { indexBy } from '../../lib/index-by'
 import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
@@ -381,7 +381,10 @@ export function globalReducer(
 
       const updatedWallet: Wallet = {
         ...targetWallet,
-        connections: action.connections.reduce(indexBy<Connection>('hostname'), {}),
+        connections: action.connections.reduce(
+          indexBy<Connection>('hostname'),
+          {}
+        )
       }
 
       return {
@@ -410,7 +413,7 @@ export function globalReducer(
           ...targetWallet.connections,
           [action.hostname]: {
             ...targetConnection,
-            permissions: action.permissions,
+            permissions: action.permissions
           }
         }
       }

@@ -45,7 +45,7 @@ export const WalletSelection = ({
         const { permissions } = await service.WalletApi.DescribePermissions({
           wallet,
           passphrase,
-          hostname: event.data.hostname,
+          hostname: event.data.hostname
         })
 
         dispatch({
@@ -54,7 +54,7 @@ export const WalletSelection = ({
           connection: {
             hostname: event.data.hostname,
             active: true,
-            permissions,
+            permissions
           }
         })
       } catch (err) {

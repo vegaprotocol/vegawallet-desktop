@@ -5,8 +5,8 @@ import { Fonts } from '../../config/fonts'
 import { Intent } from '../../config/intent'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
-import { AppToaster } from '../toaster'
 import { StatusCircle } from '../status-circle'
+import { AppToaster } from '../toaster'
 
 export function ServiceStatus() {
   const {

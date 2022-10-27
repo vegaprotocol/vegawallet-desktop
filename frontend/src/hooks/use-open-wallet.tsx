@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import type { Connection } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
 
 export const useOpenWallet = () => {
@@ -31,7 +30,7 @@ export const useOpenWallet = () => {
         const [_w, { keys = [] }, { permissions }] = await Promise.all([
           service.WalletApi.DescribeWallet({ wallet, passphrase }),
           service.WalletApi.ListKeys({ wallet, passphrase }),
-          service.WalletApi.ListPermissions({ wallet, passphrase }),
+          service.WalletApi.ListPermissions({ wallet, passphrase })
         ])
 
         const keysWithMeta = await Promise.all(
@@ -49,7 +48,7 @@ export const useOpenWallet = () => {
             const result = await service.WalletApi.DescribePermissions({
               wallet,
               passphrase,
-              hostname,
+              hostname
             })
             return {
               hostname,
@@ -62,12 +61,12 @@ export const useOpenWallet = () => {
         dispatch({
           type: 'SET_KEYPAIRS',
           wallet,
-          keypairs: keysWithMeta,
+          keypairs: keysWithMeta
         })
         dispatch({
           type: 'SET_CONNECTIONS',
           wallet,
-          connections: permissionDetails,
+          connections: permissionDetails
         })
         dispatch({
           type: 'ACTIVATE_WALLET',

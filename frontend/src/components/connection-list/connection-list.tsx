@@ -1,10 +1,10 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
-import { DisconnectDialog } from './connection-disconnect-dialog'
-import { ManageDialog } from './connection-manage-dialog'
-import { ConnectionItem } from './connection-item'
 import { Colors } from '../../config/colors'
 import type { Wallet } from '../../contexts/global/global-context'
+import { DisconnectDialog } from './connection-disconnect-dialog'
+import { ConnectionItem } from './connection-item'
+import { ManageDialog } from './connection-manage-dialog'
 
 type ConnectionListProps = {
   wallet: Wallet
@@ -30,9 +30,7 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
       }}
     >
       {connectionList.length === 0 && (
-        <p style={{ margin: '20px 0' }}>
-          No connections established.
-        </p>
+        <p style={{ margin: '20px 0' }}>No connections established.</p>
       )}
       {connectionList.map(key => (
         <>

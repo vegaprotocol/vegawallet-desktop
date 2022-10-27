@@ -1,7 +1,7 @@
-import { StatusCircle } from '../status-circle'
-import { ButtonUnstyled } from '../button-unstyled'
 import { Colors } from '../../config/colors'
 import type { Connection } from '../../contexts/global/global-context'
+import { ButtonUnstyled } from '../button-unstyled'
+import { StatusCircle } from '../status-circle'
 
 type ConnectionItemProps = {
   connection: Connection
@@ -9,7 +9,11 @@ type ConnectionItemProps = {
   onDisconnect: () => void
 }
 
-export const ConnectionItem = ({ connection, onManage, onDisconnect }: ConnectionItemProps) => {
+export const ConnectionItem = ({
+  connection,
+  onManage,
+  onDisconnect
+}: ConnectionItemProps) => {
   return (
     <div
       style={{
@@ -18,7 +22,7 @@ export const ConnectionItem = ({ connection, onManage, onDisconnect }: Connectio
         alignItems: 'center',
         gap: 20,
         padding: '20px 0',
-        borderTop: `1px solid ${Colors.BLACK}`,
+        borderTop: `1px solid ${Colors.BLACK}`
       }}
     >
       <div
@@ -42,12 +46,8 @@ export const ConnectionItem = ({ connection, onManage, onDisconnect }: Connectio
         </pre>
       </div>
       <div style={{ display: 'flex', gap: 20 }}>
-        <ButtonUnstyled onClick={onManage}>
-          Manage
-        </ButtonUnstyled>
-        <ButtonUnstyled onClick={onDisconnect}>
-          Disconnect
-        </ButtonUnstyled>
+        <ButtonUnstyled onClick={onManage}>Manage</ButtonUnstyled>
+        <ButtonUnstyled onClick={onDisconnect}>Disconnect</ButtonUnstyled>
       </div>
     </div>
   )

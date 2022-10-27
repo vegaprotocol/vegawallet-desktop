@@ -3,10 +3,7 @@ type StatusCircleProps = {
   blinking?: boolean
 }
 
-export const StatusCircle = ({
-  background,
-  blinking
-}: StatusCircleProps) => {
+export const StatusCircle = ({ background, blinking }: StatusCircleProps) => {
   const baseStyles: React.CSSProperties = {
     display: 'inline-block',
     width: 11,
@@ -17,6 +14,9 @@ export const StatusCircle = ({
   }
 
   return (
-    <span className={blinking ? 'blink' : undefined} style={{ ...baseStyles }} />
+    <span
+      className={blinking ? 'blink' : undefined}
+      style={{ ...baseStyles }}
+    />
   )
 }

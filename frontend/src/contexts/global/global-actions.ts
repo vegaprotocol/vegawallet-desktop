@@ -21,7 +21,7 @@ const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
       name: preset.name,
       url: preset.configFileUrl,
       filePath: '',
-      overwrite: true,
+      overwrite: true
     })
 
     return service.WalletApi.ListNetworks()

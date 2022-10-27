@@ -4,13 +4,12 @@ import { EyeOff } from '../../components/icons/eye-off'
 import { Colors } from '../../config/colors'
 import type { Wallet } from '../../contexts/global/global-context'
 
-type KeypairList = {
+type KeypairListProps = {
   wallet: Wallet
   onClick: (publicKey: string) => void
 }
 
-export const KeypairList = ({ wallet, onClick }: KeypairList) => {
-
+export const KeypairList = ({ wallet, onClick }: KeypairListProps) => {
   return (
     <div
       style={{
@@ -37,9 +36,7 @@ export const KeypairList = ({ wallet, onClick }: KeypairList) => {
                 data-testid={`wallet-keypair-${publicKey}`}
                 onClick={() => onClick(publicKey)}
               >
-                {isTainted && (
-                  <EyeOff style={{ width: 13, marginRight: 6 }} />
-                )}
+                {isTainted && <EyeOff style={{ width: 13, marginRight: 6 }} />}
                 {name}
               </ButtonUnstyled>
             </div>

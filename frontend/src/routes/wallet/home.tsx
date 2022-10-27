@@ -4,10 +4,10 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
-import { Header } from '../../components/header'
-import { Title } from '../../components/title'
-import { KeypairList } from '../../components/keypair-list'
 import { ConnectionList } from '../../components/connection-list'
+import { Header } from '../../components/header'
+import { KeypairList } from '../../components/keypair-list'
+import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
@@ -25,7 +25,7 @@ type TabTitlesProps = {
 const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
   return (
     <div style={{ display: 'flex', gap: 20 }}>
-      {Object.values(Tabs).map((tab) => (
+      {Object.values(Tabs).map(tab => (
         <Title
           key={tab}
           element='h2'
@@ -33,9 +33,8 @@ const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
           style={{
             cursor: 'pointer',
             marginTop: 0,
-            color: tab === activeTab
-              ? Colors.WHITE
-              : Colors.TEXT_COLOR_DEEMPHASISE,
+            color:
+              tab === activeTab ? Colors.WHITE : Colors.TEXT_COLOR_DEEMPHASISE
           }}
         >
           {tab}
@@ -70,16 +69,16 @@ export function WalletList() {
         {tab === Tabs.KEYPAIRS && (
           <KeypairList
             wallet={wallet}
-            onClick={(publicKey) => navigate(
-              `/wallet/${encodeURIComponent(
-                wallet.name
-              )}/keypair/${publicKey}`
-            )}
+            onClick={publicKey =>
+              navigate(
+                `/wallet/${encodeURIComponent(
+                  wallet.name
+                )}/keypair/${publicKey}`
+              )
+            }
           />
         )}
-        {tab === Tabs.CONNECTIONS && (
-          <ConnectionList wallet={wallet} />
-        )}
+        {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
         <ButtonGroup orientation='vertical' style={{ padding: '20px 0' }}>
           {tab === Tabs.KEYPAIRS && (
             <Button
