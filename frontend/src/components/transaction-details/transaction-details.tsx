@@ -1,8 +1,8 @@
-import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
+import { formatDate } from '../../lib/date'
 import { truncateMiddle } from '../../lib/truncate-middle'
+import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import { BreakText } from '../break-text'
-import { ButtonUnstyled } from '../button-unstyled'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 import { ArrowTopRight } from '../icons/arrow-top-right'
@@ -13,7 +13,7 @@ type TransactionDetailsProps = {
   transaction: Transaction
 }
 
-const compileSectionList = (transaction: Transaction) => {
+const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
   const rows = [
     {
       value: <TransactionStatus transaction={transaction} />
@@ -35,12 +35,16 @@ const compileSectionList = (transaction: Transaction) => {
   if (transaction.blockHeight) {
     rows.push({
       key: 'Block height',
-      value: (
-        <ButtonUnstyled>
+      value: explorerUrl ? (
+        <a
+          href={`${explorerUrl}/blocks/${transaction.blockHeight}`}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
           {transaction.blockHeight}
           <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
-        </ButtonUnstyled>
-      )
+        </a>
+      ) : <>{transaction.blockHeight}</>
     })
   }
 
@@ -84,7 +88,8 @@ const compileSectionList = (transaction: Transaction) => {
 export const TransactionDetails = ({
   transaction
 }: TransactionDetailsProps) => {
-  const sectionList = compileSectionList(transaction)
+  const explorerUrl = useExplorerUrl()
+  const sectionList = compileSectionList(transaction, explorerUrl)
 
   return (
     <div>

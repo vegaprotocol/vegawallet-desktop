@@ -46,7 +46,7 @@ export function useImportNetwork() {
           dispatch(actions.addNetworkAction(res.name, config))
 
           setStatus(FormStatus.Success)
-          setResponse(res)
+          setResponse(config)
 
           AppToaster.show({
             message: `Network imported to: ${res.filePath}`,

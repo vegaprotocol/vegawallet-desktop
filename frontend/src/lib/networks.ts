@@ -11,6 +11,7 @@ export type NetworkConfig = z.infer<typeof networkConfigSchema>
 
 export const networkPresetSchema = z.object({
   name: z.string(),
+  explorer: z.string().optional(),
   configFileUrl: z
     .string()
     .url({ message: 'Invalid network configuration url.' })

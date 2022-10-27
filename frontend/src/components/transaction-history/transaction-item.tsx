@@ -1,5 +1,6 @@
 import { Colors } from '../../config/colors'
 import { formatDate } from '../../lib/date'
+import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -10,6 +11,35 @@ import { TransactionStatus } from '../transaction-status'
 type TransactionItemProps = {
   transaction: Transaction
   viewDetails: () => void
+}
+
+const TransactionId = ({ transaction }: Pick<TransactionItemProps, 'transaction'>) => {
+  const explorerUrl = useExplorerUrl()
+
+  if (!transaction.txHash) {
+    return (
+      <span style={{ visibility: 'hidden' }}>No id</span>
+    )
+  }
+
+  if (explorerUrl) {
+    return (
+      <a
+        href={`${explorerUrl}/txs/${transaction.txHash}`}
+        target="_blank"
+        rel='noopener noreferrer'
+      >
+        {truncateMiddle(transaction.txHash)}
+        <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
+      </a>
+    )
+  }
+
+  return (
+    <span>
+      {truncateMiddle(transaction.txHash)}
+    </span>
+  )
 }
 
 export const TransactionItem = ({
@@ -32,14 +62,7 @@ export const TransactionItem = ({
           {TRANSACTION_TITLES[transaction.type]}
         </ButtonUnstyled>
         <div>
-          {transaction.txHash ? (
-            <ButtonUnstyled>
-              {truncateMiddle(transaction.txHash)}
-              <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
-            </ButtonUnstyled>
-          ) : (
-            <span style={{ visibility: 'hidden' }}>No id</span>
-          )}
+          <TransactionId transaction={transaction} />
           <div
             style={{
               textAlign: 'right',
