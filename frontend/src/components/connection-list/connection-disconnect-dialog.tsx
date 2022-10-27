@@ -25,8 +25,8 @@ export const DisconnectDialog = ({
       <div style={{ padding: 20 }}>
         <p>
           Are you sure you want to disconnect your wallet{' '}
-          <code>{wallet.name}</code> from <code>{hostname}</code>? You may lose site
-          functionality.
+          <code>{wallet.name}</code> from <code>{hostname}</code>? You may lose
+          site functionality.
         </p>
       </div>
       <ButtonGroup inline style={{ padding: 20 }}>
