@@ -5,7 +5,7 @@ import { Copy } from '../icons/copy'
 import { Tooltip } from '../tooltip'
 
 interface CopyWithtooltipProps {
-  children?: React.ReactElement
+  children?: React.ReactNode
   text: string
 }
 
