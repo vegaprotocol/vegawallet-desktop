@@ -115,8 +115,8 @@ export const Transaction = ({
     <Dialog open={true} size='lg' title={title}>
       <div style={{ padding: '0 20px 20px' }}>
         <p>
-          <pre>{transaction.hostname}</pre> requested to use your key to{' '}
-          {description} from <pre>{transaction.wallet}</pre>.
+          <code>{transaction.hostname}</code> requested to use your key to{' '}
+          {description} from <code>{transaction.wallet}</code>.
         </p>
       </div>
       <TransactionDetails transaction={transaction} />

@@ -27,7 +27,7 @@ describe('import network', () => {
   })
 
   it('import successfully using url', () => {
-    const url = Cypress.env('mainnetConfigUrl')
+    const url = Cypress.env('testnetConfigUrl')
 
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(url)

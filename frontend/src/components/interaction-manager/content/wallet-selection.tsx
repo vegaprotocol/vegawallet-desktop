@@ -19,7 +19,7 @@ export const WalletSelection = ({
   isResolved,
   setResolved
 }: InteractionContentProps<RequestWalletSelection>) => {
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
   const {
     control,
     handleSubmit,
@@ -33,13 +33,28 @@ export const WalletSelection = ({
       const passphrase = await requestPassphrase()
 
       try {
-        // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
           traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
           data: {
             wallet,
             passphrase
+          }
+        })
+
+        const { permissions } = await service.WalletApi.DescribePermissions({
+          wallet,
+          passphrase,
+          hostname: event.data.hostname
+        })
+
+        dispatch({
+          type: 'ADD_CONNECTION',
+          wallet,
+          connection: {
+            hostname: event.data.hostname,
+            active: true,
+            permissions
           }
         })
       } catch (err) {
