@@ -1,12 +1,13 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+
+import { Colors } from '../../config/colors'
+import type { Wallet } from '../../contexts/global/global-context'
+import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { ConnectionsWarningDialog } from './connections-warning-dialog'
-import { Colors } from '../../config/colors'
-import { useGlobal } from '../../contexts/global/global-context'
-import type { Wallet } from '../../contexts/global/global-context'
 
 const findActiveConnections = (wallets: Record<string, Wallet>) => {
   return Object.keys(wallets).reduce<string[]>((acc, walletName) => {
@@ -20,27 +21,27 @@ const findActiveConnections = (wallets: Record<string, Wallet>) => {
 }
 
 export const NetworkSwitcher = () => {
-  const {
-    state,
-    actions,
-    dispatch
-  } = useGlobal()
+  const { state, actions, dispatch } = useGlobal()
   const [hasConnectionWarning, setConnectionWarning] = useState(false)
   const [selectedNetwork, setSelectedNetwork] = useState(state.network)
-  const activeConnections = useMemo(() => (
-    findActiveConnections(state.wallets)
-  ), [state.wallets])
+  const activeConnections = useMemo(
+    () => findActiveConnections(state.wallets),
+    [state.wallets]
+  )
 
   console.log(activeConnections)
 
-  const handleNetworkChange = useCallback((network: string) => {
-    if (activeConnections.length) {
-      setSelectedNetwork(network)
-      setConnectionWarning(true)
-      return
-    }
-    dispatch(actions.changeNetworkAction(network))
-  }, [dispatch, actions, activeConnections])
+  const handleNetworkChange = useCallback(
+    (network: string) => {
+      if (activeConnections.length) {
+        setSelectedNetwork(network)
+        setConnectionWarning(true)
+        return
+      }
+      dispatch(actions.changeNetworkAction(network))
+    },
+    [dispatch, actions, activeConnections]
+  )
 
   const handleConfirm = useCallback(() => {
     if (selectedNetwork) {
@@ -63,9 +64,7 @@ export const NetworkSwitcher = () => {
             }}
           >
             <span>{state.network}</span>
-            <DropdownArrow
-              style={{ width: 13, height: 13, marginLeft: 10 }}
-            />
+            <DropdownArrow style={{ width: 13, height: 13, marginLeft: 10 }} />
           </Button>
         }
         content={
@@ -79,7 +78,10 @@ export const NetworkSwitcher = () => {
                     padding: '10px 15px',
                     lineHeight: 1,
                     textAlign: 'left',
-                    color: network === selectedNetwork ? Colors.TEXT_COLOR_DEEMPHASISE : Colors.WHITE,
+                    color:
+                      network === selectedNetwork
+                        ? Colors.TEXT_COLOR_DEEMPHASISE
+                        : Colors.WHITE
                   }}
                   onClick={() => {
                     handleNetworkChange(network)

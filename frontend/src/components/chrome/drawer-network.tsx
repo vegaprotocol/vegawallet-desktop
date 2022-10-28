@@ -2,8 +2,8 @@ import { DrawerPanel, useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { NetworkInfo } from '../network-info'
-import { Title } from '../title'
 import { NetworkSwitcher } from '../network-switcher'
+import { Title } from '../title'
 
 interface DrawerNetworkProps {
   setView: (panel: DrawerPanel) => void
@@ -11,7 +11,7 @@ interface DrawerNetworkProps {
 
 export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   const {
-    state: { networks },
+    state: { networks }
   } = useGlobal()
 
   return (
