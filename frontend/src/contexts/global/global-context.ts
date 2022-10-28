@@ -39,6 +39,20 @@ export type DrawerState = {
   editingNetwork: string | null
 }
 
+export const enum PermissionTarget {
+  PUBLIC_KEYS = 'public_keys'
+}
+
+export const enum PermissionType {
+  READ = 'read'
+}
+
+export type Connection = {
+  hostname: string
+  active: boolean
+  permissions: WalletModel.Permissions
+}
+
 export interface KeyPair
   extends Pick<WalletModel.DescribeKeyResult, 'publicKey' | 'isTainted'> {
   name: string
@@ -49,7 +63,8 @@ export interface KeyPair
 
 export interface Wallet {
   name: string
-  keypairs: null | Record<string, KeyPair>
+  keypairs: Record<string, KeyPair>
+  connections?: Record<string, Connection>
   auth: boolean
 }
 
