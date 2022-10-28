@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
@@ -11,6 +12,7 @@ import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
+import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
 
 const itemStyles = {
@@ -38,6 +40,11 @@ export const Home = () => {
     state: { status, wallets },
     dispatch
   } = useGlobal()
+
+  const walletsList = useMemo(
+    () => Object.values(wallets).sort(sortWallet),
+    [wallets]
+  )
 
   if (status === AppStatus.Onboarding) {
     return <Navigate to={Paths.Onboard} />
@@ -67,12 +74,12 @@ export const Home = () => {
       >
         <div
           style={{
-            borderBottom: `${wallets.length > 0 ? '1' : '0'}px solid ${
+            borderBottom: `${walletsList.length > 0 ? '1' : '0'}px solid ${
               Colors.BLACK
             }`
           }}
         >
-          {wallets.map(w => (
+          {walletsList.map(w => (
             <ButtonUnstyled
               style={itemStyles}
               onClick={() => open(w.name)}

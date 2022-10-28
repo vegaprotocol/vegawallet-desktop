@@ -7,10 +7,10 @@ export function useCurrentWallet() {
   const walletParam = decodeURIComponent(wallet)
 
   const {
-    state: { wallet: currentWallet }
+    state: { wallets, wallet: currentWallet }
   } = useGlobal()
 
   return {
-    wallet: currentWallet?.name === walletParam ? currentWallet : undefined
+    wallet: currentWallet === walletParam ? wallets[currentWallet] : undefined
   }
 }

@@ -15,11 +15,11 @@ import type { InteractionContentProps, RequestWalletSelection } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
 export const WalletSelection = ({
-  interaction,
+  event,
   isResolved,
   setResolved
 }: InteractionContentProps<RequestWalletSelection>) => {
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
   const {
     control,
     handleSubmit,
@@ -33,13 +33,28 @@ export const WalletSelection = ({
       const passphrase = await requestPassphrase()
 
       try {
-        // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
-          traceID: interaction.event.traceID,
+          traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
           data: {
             wallet,
             passphrase
+          }
+        })
+
+        const { permissions } = await service.WalletApi.DescribePermissions({
+          wallet,
+          passphrase,
+          hostname: event.data.hostname
+        })
+
+        dispatch({
+          type: 'ADD_CONNECTION',
+          wallet,
+          connection: {
+            hostname: event.data.hostname,
+            active: true,
+            permissions
           }
         })
       } catch (err) {
@@ -58,12 +73,12 @@ export const WalletSelection = ({
       try {
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
-          traceID: interaction.event.traceID,
+          traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
           data: {}
         })
         AppToaster.show({
-          message: `The connection request from "${interaction.event.data.hostname}" has been rejected.`,
+          message: `The connection request from "${event.data.hostname}" has been rejected.`,
           intent: Intent.SUCCESS
         })
       } catch (err) {
@@ -92,8 +107,8 @@ export const WalletSelection = ({
             textAlign: 'center'
           }}
         >
-          <strong>{interaction.event.data.hostname}</strong> is requesting
-          access to a wallet
+          <strong>{event.data.hostname}</strong> is requesting access to a
+          wallet
         </p>
         <p>
           Approving a connection allows this site to see your wallet chain ID,
@@ -115,7 +130,7 @@ export const WalletSelection = ({
               required: Validation.REQUIRED
             }}
             control={control}
-            options={interaction.event.data.availableWallets.map(w => ({
+            options={event.data.availableWallets.map(w => ({
               value: w,
               label: w
             }))}

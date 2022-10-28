@@ -5,11 +5,11 @@ import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestSucceeded } from '../types'
 
 export const SuccessComponent = ({
-  interaction,
+  event,
   isResolved,
   setResolved
 }: InteractionContentProps<RequestSucceeded>) => {
-  const message = interaction.event.data.message
+  const message = event.data.message
 
   useEffect(() => {
     if (!isResolved && message) {
@@ -19,7 +19,7 @@ export const SuccessComponent = ({
       })
       setResolved(true)
     }
-  }, [interaction, message, isResolved, setResolved])
+  }, [event, message, isResolved, setResolved])
 
   return null
 }

@@ -5,7 +5,7 @@ go 1.19
 require (
 	code.vegaprotocol.io/vega v0.59.1-0.20221021155217-5bee2c18565f
 	github.com/gen2brain/beeep v0.0.0-20220909211152-5a9ec94374f6
-	github.com/wailsapp/wails/v2 v2.0.0
+	github.com/wailsapp/wails/v2 v2.1.0
 	go.uber.org/zap v1.22.0
 )
 

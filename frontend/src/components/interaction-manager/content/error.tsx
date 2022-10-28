@@ -5,19 +5,19 @@ import { AppToaster } from '../../toaster'
 import type { ErrorOccurred, InteractionContentProps } from '../types'
 
 export const ErrorComponent = ({
-  interaction,
+  event,
   isResolved,
   setResolved
 }: InteractionContentProps<ErrorOccurred>) => {
   useEffect(() => {
     if (!isResolved) {
       AppToaster.show({
-        message: interaction.event.data.error,
+        message: event.data.error,
         intent: Intent.WARNING
       })
       setResolved(true)
     }
-  }, [interaction, isResolved, setResolved])
+  }, [event, isResolved, setResolved])
 
   return null
 }

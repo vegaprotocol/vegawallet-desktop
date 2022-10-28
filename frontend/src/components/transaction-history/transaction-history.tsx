@@ -1,64 +1,48 @@
-// import { Colors } from '../../config/colors'
-//
-// const statusStyles = {
-//   display: 'inline-block',
-//   padding: '0.25rem 0.5rem',
-//   margin: '0.5rem 0.5rem 0.5rem 0',
-//   borderRadius: 2
-// }
+import { useState } from 'react'
 
-// const TransactionStatus = ({ isSuccess }: { isSuccess: boolean }) => {
-//   if (isSuccess) {
-//     return (
-//       <span
-//         style={{
-//           ...statusStyles,
-//           backgroundColor: Colors.INTENT_SUCCESS
-//         }}
-//       >
-//         Approved
-//       </span>
-//     )
-//   }
-//   return (
-//     <span
-//       style={{
-//         ...statusStyles,
-//         backgroundColor: Colors.INTENT_DANGER
-//       }}
-//     >
-//       Failed
-//     </span>
-//   )
-// }
-
-// @TODO: style and intergate when more data is available
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// const TransactionItem = ({
-//   transaction
-// }: {
-//   transaction: Transaction
-// }) => {
-//   ;<div
-//     key={transaction.txId}
-//     style={{
-//       display: 'flex',
-//       justifyContent: 'space-between',
-//       alignItems: 'center'
-//     }}
-//   >
-//     <div>
-//       <TransactionStatus isSuccess={!transaction.error} />
-//       <span>transaction id: {transaction.txId}</span>
-//     </div>
-//     <div>{formatDate(new Date(transaction.sentAt))}</div>
-//   </div>
-// }
+import { useCurrentKeypair } from '../../hooks/use-current-keypair'
+import type { Transaction } from '../../lib/transactions'
+import { sortTransaction } from '../../lib/transactions'
+import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
+import { Dialog } from '../dialog'
+import { TRANSACTION_TITLES } from '../interaction-manager/content/transaction'
+import { TransactionDetails } from '../transaction-details'
+import { TransactionItem } from './transaction-item'
 
 export const TransactionHistory = () => {
+  const { keypair } = useCurrentKeypair()
+  const [transaction, setTransaction] = useState<Transaction | null>(null)
+  const transactionList = Object.values(keypair?.transactions || []).sort(
+    sortTransaction
+  )
+
   return (
     <>
-      <div>No transactions in history.</div>
+      {transactionList.length === 0 && <div>No transactions in history.</div>}
+      {transactionList.length > 0 &&
+        transactionList.map((item, index) => (
+          <TransactionItem
+            key={index}
+            transaction={item}
+            viewDetails={() => setTransaction(item)}
+          />
+        ))}
+      <Dialog
+        size='lg'
+        open={!!transaction}
+        title={transaction ? TRANSACTION_TITLES[transaction.type] : ''}
+        onChange={open => setTransaction(open ? transaction : null)}
+      >
+        {transaction && <TransactionDetails transaction={transaction} />}
+        <ButtonGroup inline style={{ padding: 20 }}>
+          <Button>View in explorer</Button>
+          <ButtonUnstyled onClick={() => setTransaction(null)}>
+            Close
+          </ButtonUnstyled>
+        </ButtonGroup>
+      </Dialog>
     </>
   )
 }

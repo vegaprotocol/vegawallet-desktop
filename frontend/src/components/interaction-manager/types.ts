@@ -6,14 +6,14 @@ export const enum EVENT_FLOW_TYPE {
   PERMISSION_REQUEST = 'PERMISSION_REQUEST'
 }
 
-export type InteractionContentProps<T extends RawInteraction = RawInteraction> =
-  {
-    interaction: Interaction<T>
-    flow?: EVENT_FLOW_TYPE
-    isResolved: boolean
-    setResolved: Dispatch<SetStateAction<boolean>>
-    onFinish: () => void
-  }
+export type InteractionContentProps<T extends RawInteraction> = {
+  event: T
+  history: Interaction[]
+  flow?: EVENT_FLOW_TYPE
+  isResolved: boolean
+  setResolved: Dispatch<SetStateAction<boolean>>
+  onFinish: () => void
+}
 
 // Received interaction content
 
@@ -23,7 +23,7 @@ export interface ErrorOccurredContent {
 }
 
 export interface LogContent {
-  type: 'info' | 'warning' | 'error' | 'success'
+  type: 'Info' | 'Warning' | 'Error' | 'Success'
   message: string
 }
 
@@ -54,12 +54,26 @@ export interface RequestPermissionsContent {
   permissions: Record<PermissionTarget, PermissionType>
 }
 
-export interface RequestTransactionSendingContent {
+export interface RequestTransactionReviewContent {
   hostname: string
   wallet: string
   publicKey: string
   transaction: string
   receivedAt: string
+}
+
+export interface RequestTransactionSuccessContent {
+  txHash: string
+  tx: string
+  deserializedInputData: string
+  sentAt: string
+}
+
+export interface RequestTransactionFailureContent {
+  tx: string
+  deserializedInputData: string
+  error: string
+  sentAt: string
 }
 
 export interface RequestTransactionSigningContent {
@@ -68,13 +82,6 @@ export interface RequestTransactionSigningContent {
   publicKey: string
   transaction: string
   receivedAt: string
-}
-
-export interface TransactionStatusContent {
-  txHash: string
-  tx: string
-  error: string
-  sentAt: string
 }
 
 export interface RequestSucceededContent {
@@ -90,6 +97,8 @@ export const enum INTERACTION_TYPE {
   REQUEST_WALLET_SELECTION = 'REQUEST_WALLET_SELECTION',
   REQUEST_PERMISSIONS_REVIEW = 'REQUEST_PERMISSIONS_REVIEW',
   REQUEST_TRANSACTION_REVIEW_FOR_SENDING = 'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+  TRANSACTION_SUCCEEDED = 'TRANSACTION_SUCCEEDED',
+  TRANSACTION_FAILED = 'TRANSACTION_FAILED',
   REQUEST_PASSPHRASE = 'REQUEST_PASSPHRASE',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
@@ -114,10 +123,22 @@ export type RequestPermissions = {
   data: RequestPermissionsContent
 }
 
-export type RequestTransactionSending = {
+export type RequestTransactionReview = {
   traceID: string
   name: INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING
-  data: RequestTransactionSendingContent
+  data: RequestTransactionReviewContent
+}
+
+export type RequestTransactionSuccess = {
+  traceID: string
+  name: INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+  data: RequestTransactionSuccessContent
+}
+
+export type RequestTransactionFailure = {
+  traceID: string
+  name: INTERACTION_TYPE.TRANSACTION_FAILED
+  data: RequestTransactionFailureContent
 }
 
 export type RequestPassphrase = {
@@ -158,7 +179,9 @@ export type RawInteraction =
   | RequestWalletConnection
   | RequestWalletSelection
   | RequestPermissions
-  | RequestTransactionSending
+  | RequestTransactionReview
+  | RequestTransactionSuccess
+  | RequestTransactionFailure
   | RequestPassphrase
   | RequestSucceeded
   | ErrorOccurred

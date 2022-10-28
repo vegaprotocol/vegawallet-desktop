@@ -1,12 +1,10 @@
 import { useParams } from 'react-router-dom'
 
-import { useGlobal } from '../contexts/global/global-context'
+import { useCurrentWallet } from './use-current-wallet'
 
 export function useCurrentKeypair() {
+  const { wallet } = useCurrentWallet()
   const { pubkey } = useParams<{ pubkey: string }>()
-  const {
-    state: { wallet }
-  } = useGlobal()
-  const keypair = pubkey ? wallet?.keypairs?.[pubkey] : undefined
+  const keypair = pubkey && wallet ? wallet.keypairs?.[pubkey] : undefined
   return { keypair, wallet }
 }

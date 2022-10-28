@@ -1,21 +1,22 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useGlobal } from '../../../contexts/global/global-context'
-import { formatDate } from '../../../lib/date'
-import { parseTransaction, TransactionKeys } from '../../../lib/transactions'
+import {
+  parseTransactionInput,
+  TransactionKeys,
+  TransactionStatus
+} from '../../../lib/transactions'
 import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
-import { CodeBlock } from '../../code-block'
 import { Dialog } from '../../dialog'
-import { PublicKey } from '../../public-key'
-import { Title } from '../../title'
+import { TransactionDetails } from '../../transaction-details'
 import type {
   InteractionContentProps,
-  RequestTransactionSending
+  RequestTransactionReview
 } from '../types'
 import { INTERACTION_RESPONSE_TYPE } from '../types'
 
-const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
+export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
   [TransactionKeys.UNKNOWN]: 'Unknown transaction',
   [TransactionKeys.ORDER_SUBMISSION]: 'Order submission',
   [TransactionKeys.ORDER_CANCELLATION]: 'Order cancellation',
@@ -70,63 +71,70 @@ const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
 }
 
 export const Transaction = ({
-  interaction
-}: InteractionContentProps<RequestTransactionSending>) => {
-  const { service } = useGlobal()
-  const transaction = parseTransaction(interaction.event.data)
+  event
+}: InteractionContentProps<RequestTransactionReview>) => {
+  const [status, setStatus] = useState<null | 'approving' | 'rejecting'>(null)
+  const { service, dispatch } = useGlobal()
+  const transaction = useMemo(() => parseTransactionInput(event), [event])
   const title = TRANSACTION_TITLES[transaction.type]
   const description = TRANSACTION_DESCRIPTIONS[transaction.type]
 
+  useEffect(() => {
+    dispatch({
+      type: 'ADD_TRANSACTION',
+      transaction
+    })
+  }, [dispatch, transaction])
+
   const onReponse = useCallback(
     async (decision: boolean) => {
-      // @ts-ignore
+      setStatus(decision ? 'approving' : 'rejecting')
+
       await service.RespondToInteraction({
-        traceID: interaction.event.traceID,
+        traceID: event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
         data: {
           approved: decision
         }
       })
+
+      if (!decision) {
+        dispatch({
+          type: 'UPDATE_TRANSACTION',
+          transaction: {
+            ...transaction,
+            status: TransactionStatus.REJECTED
+          }
+        })
+      }
     },
-    [service, interaction]
+    [service, dispatch, event, transaction]
   )
 
   return (
     <Dialog open={true} size='lg' title={title}>
       <div style={{ padding: '0 20px 20px' }}>
         <p>
-          <pre>{transaction.hostname}</pre> requested to use your key to{' '}
-          {description} from <pre>{transaction.wallet}</pre>.
+          <code>{transaction.hostname}</code> requested to use your key to{' '}
+          {description} from <code>{transaction.wallet}</code>.
         </p>
       </div>
-      <div style={{ padding: '0 20px 20px' }}>
-        <Title style={{ margin: '0 0 6px' }}>Wallet</Title>
-        <p>{transaction.wallet}</p>
-      </div>
-      <PublicKey publicKey={transaction.publicKey} />
-      <div style={{ padding: '20px 20px 0' }}>
-        <Title style={{ margin: '0 0 12px' }}>Transaction details</Title>
-        <CodeBlock style={{ fontSize: 12, marginBottom: 0 }}>
-          <pre data-testid='transaction-payload'>
-            {JSON.stringify(transaction.payload, null, 2)}
-          </pre>
-        </CodeBlock>
-      </div>
-      <div style={{ padding: '20px 20px 0' }}>
-        <Title style={{ margin: '0 0 6px' }}>Received</Title>
-        <p>{formatDate(new Date(transaction.receivedAt))}</p>
-      </div>
+      <TransactionDetails transaction={transaction} />
       <div style={{ padding: 20 }}>
         <ButtonGroup>
           <Button
-            data-testid='wallet-transaction-request-approve'
+            data-testid='transaction-request-approve'
             onClick={() => onReponse(true)}
+            disabled={status === 'rejecting'}
+            loading={status === 'approving'}
           >
             Approve
           </Button>
           <Button
-            data-testid='wallet-transaction-request-reject'
+            data-testid='transaction-request-reject'
             onClick={() => onReponse(false)}
+            disabled={status === 'approving'}
+            loading={status === 'rejecting'}
           >
             Reject
           </Button>

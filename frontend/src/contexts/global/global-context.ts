@@ -3,6 +3,7 @@ import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
 
 import type { NetworkPreset } from '../../lib/networks'
+import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
@@ -38,16 +39,32 @@ export type DrawerState = {
   editingNetwork: string | null
 }
 
+export const enum PermissionTarget {
+  PUBLIC_KEYS = 'public_keys'
+}
+
+export const enum PermissionType {
+  READ = 'read'
+}
+
+export type Connection = {
+  hostname: string
+  active: boolean
+  permissions: WalletModel.Permissions
+}
+
 export interface KeyPair
   extends Pick<WalletModel.DescribeKeyResult, 'publicKey' | 'isTainted'> {
   name: string
   publicKeyShort: string
   meta: WalletModel.DescribeKeyResult['metadata']
+  transactions: Record<string, Transaction>
 }
 
 export interface Wallet {
   name: string
-  keypairs: null | Record<string, KeyPair>
+  keypairs: Record<string, KeyPair>
+  connections?: Record<string, Connection>
   auth: boolean
 }
 
@@ -57,8 +74,8 @@ export interface GlobalState {
   config: ConfigModel.Config | null
 
   // Wallet
-  wallet: Wallet | null
-  wallets: Wallet[]
+  wallet: string | null
+  wallets: Record<string, Wallet>
 
   // Network
   network: string | null
