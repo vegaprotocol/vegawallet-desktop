@@ -45,9 +45,11 @@ export const ConnectionItem = ({
           {connection.hostname}
         </pre>
       </div>
-      <div style={{ display: 'none', gap: 20 }}>
+      <div style={{ display: 'flex', gap: 20 }}>
         <ButtonUnstyled onClick={onManage}>Manage</ButtonUnstyled>
-        <ButtonUnstyled onClick={onDisconnect}>Disconnect</ButtonUnstyled>
+        <ButtonUnstyled style={{ display: 'none' }} onClick={onDisconnect}>
+          Disconnect
+        </ButtonUnstyled>
       </div>
     </div>
   )

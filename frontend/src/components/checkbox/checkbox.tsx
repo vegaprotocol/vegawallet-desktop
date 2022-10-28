@@ -1,17 +1,18 @@
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
-import React from 'react'
+import type { ReactNode } from 'react'
+import type { Control, Path } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 import { Colors } from '../../config/colors'
 import { Tick } from '../icons/tick'
 
-interface CheckboxProps {
-  name: string
-  control: any
-  label: string
+type CheckboxProps<T> = {
+  name: Path<T>
+  control: Control<T>
+  label: ReactNode
 }
 
-export function Checkbox({ name, control, label }: CheckboxProps) {
+export function Checkbox<T>({ name, control, label }: CheckboxProps<T>) {
   return (
     <Controller
       name={name}
@@ -20,7 +21,7 @@ export function Checkbox({ name, control, label }: CheckboxProps) {
         return (
           <div style={wrapper}>
             <CheckboxPrimitive.Root
-              checked={field.value}
+              checked={!!field.value}
               onCheckedChange={field.onChange}
               name={name}
               id={name}
