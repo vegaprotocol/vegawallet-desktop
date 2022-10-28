@@ -6,10 +6,12 @@ import { Warning } from '../icons/warning'
 
 const WarningPrompt = ({ wallets }: { wallets: string[] }) => {
   if (wallets.length > 1) {
-    ;<p>
-      You have active connections in the following wallets:{' '}
-      <code>{wallets.join(', ')}</code>.
-    </p>
+    return (
+      <p>
+        You have active connections in the following wallets:{' '}
+        <code>{wallets.join(', ')}</code>.
+      </p>
+    )
   }
   return (
     <p>

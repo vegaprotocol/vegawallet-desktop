@@ -29,8 +29,6 @@ export const NetworkSwitcher = () => {
     [state.wallets]
   )
 
-  console.log(activeConnections)
-
   const handleNetworkChange = useCallback(
     (network: string) => {
       if (activeConnections.length) {
