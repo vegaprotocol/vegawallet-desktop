@@ -16,7 +16,8 @@ coverage
 
 # production
 build
-dist
+dist/**
+!dist/.gitkeep
 
 # misc
 .DS_Store

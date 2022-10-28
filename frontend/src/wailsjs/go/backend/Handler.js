@@ -10,8 +10,8 @@ export function GetAppConfig() {
   return window['go']['backend']['Handler']['GetAppConfig']();
 }
 
-export function GetServiceState() {
-  return window['go']['backend']['Handler']['GetServiceState']();
+export function GetCurrentServiceInfo() {
+  return window['go']['backend']['Handler']['GetCurrentServiceInfo']();
 }
 
 export function GetVersion() {

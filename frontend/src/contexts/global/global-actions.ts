@@ -7,7 +7,7 @@ import { Intent } from '../../config/intent'
 import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
 import type { ServiceType } from '../../service'
-import { config as ConfigModel } from '../../wailsjs/go/models'
+import { app as AppModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
@@ -29,7 +29,7 @@ const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
 }
 
 const getDefaultNetwork = (
-  config: ConfigModel.Config,
+  config: AppModel.Config,
   networks: WalletModel.ListNetworksResult
 ) => {
   if (config.defaultNetwork) {
@@ -122,7 +122,7 @@ export function createActions(
         try {
           const { config } = getState()
           if (config) {
-            const newConfig = new ConfigModel.Config({ ...config, telemetry })
+            const newConfig = new AppModel.Config({ ...config, telemetry })
             await service.UpdateAppConfig(newConfig)
             dispatch({
               type: 'SET_CONFIG',
@@ -140,7 +140,7 @@ export function createActions(
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const state = getState()
         try {
-          const serviceState = await service.GetServiceState()
+          const serviceState = await service.GetCurrentServiceInfo()
           if (!serviceState.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
           }
@@ -241,7 +241,7 @@ export function createActions(
         try {
           const state = getState()
           await service.UpdateAppConfig(
-            new ConfigModel.Config({
+            new AppModel.Config({
               ...state.config,
               defaultNetwork: network
             })
@@ -276,7 +276,7 @@ export function createActions(
         try {
           // Stop main REST service if you are editing the active network config
           if (state.network === editingNetwork) {
-            const serviceStatus = await service.GetServiceState()
+            const serviceStatus = await service.GetCurrentServiceInfo()
             if (serviceStatus.running) {
               await service.StopService()
               dispatch({
@@ -359,7 +359,7 @@ export function createActions(
 
         // If no service running start service for newly added network
         try {
-          const status = await service.GetServiceState()
+          const status = await service.GetCurrentServiceInfo()
           if (!status.running) {
             await service.StartService({ network })
             dispatch({
@@ -413,7 +413,7 @@ export function createActions(
         const state = getState()
         logger.debug('StartService')
         try {
-          const status = await service.GetServiceState()
+          const status = await service.GetCurrentServiceInfo()
           if (!status.running && state.network && state.networkConfig) {
             await service.StartService({ network: state.network })
             dispatch({
@@ -439,7 +439,7 @@ export function createActions(
       return async (dispatch: GlobalDispatch) => {
         logger.debug('StopService')
         try {
-          const status = await service.GetServiceState()
+          const status = await service.GetCurrentServiceInfo()
           if (status.running) {
             await service.StopService()
             dispatch({

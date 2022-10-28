@@ -94,7 +94,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
     async function start() {
       if (network && networkConfig && serviceStatus === ServiceState.Stopped) {
         try {
-          const { running } = await service.GetServiceState()
+          const { running } = await service.GetCurrentServiceInfo()
           if (!running) {
             dispatch({
               type: 'SET_SERVICE_STATUS',

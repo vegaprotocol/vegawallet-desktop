@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	vgzap "code.vegaprotocol.io/vega/libs/zap"
 	"code.vegaprotocol.io/vega/paths"
 	"code.vegaprotocol.io/vega/wallet/api"
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
@@ -15,8 +16,8 @@ import (
 	netstore "code.vegaprotocol.io/vega/wallet/network/store/v1"
 	"code.vegaprotocol.io/vega/wallet/node"
 	"code.vegaprotocol.io/vega/wallet/service"
+	svcstore "code.vegaprotocol.io/vega/wallet/service/store/v1"
 	"code.vegaprotocol.io/vega/wallet/wallets"
-	"code.vegaprotocol.io/vegawallet-desktop/logger"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 )
@@ -67,7 +68,7 @@ type StartServiceRequest struct {
 
 func (r StartServiceRequest) Check() error {
 	if len(r.Network) == 0 {
-		return errors.New("network is required")
+		return errors.New("the network is required")
 	}
 
 	return nil
@@ -77,111 +78,117 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 	h.log.Debug("Entering StartService")
 	defer h.log.Debug("Leaving StartService")
 
-	if h.service.IsRunning() {
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return err
+	}
+
+	if h.currentService.IsRunning() {
 		h.log.Error("The service is already running")
 		return ErrServiceAlreadyRunning
 	}
 
 	if err := req.Check(); err != nil {
+		h.log.Debug("invalid start service request", zap.Error(err))
 		return err
 	}
 
-	config, err := h.loadAppConfig()
+	config, err := h.appConfig()
 	if err != nil {
 		return err
 	}
 
-	wStore, err := h.getWalletsStore(config)
+	walletStore, err := h.getWalletsStore(config)
 	if err != nil {
 		return err
 	}
 
-	handler := wallets.NewHandler(wStore)
+	handler := wallets.NewHandler(walletStore)
 
-	netStore, err := netstore.InitialiseStore(paths.New(config.VegaHome))
+	vegaPath := paths.New(config.VegaHome)
+
+	netStore, err := netstore.InitialiseStore(vegaPath)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Could not initialise network store: %v", err))
-		return fmt.Errorf("couldn't initialise network store: %w", err)
+		return fmt.Errorf("could not initialise network store: %w", err)
 	}
 
 	exists, err := netStore.NetworkExists(req.Network)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Could not verify the network existence: %v", err))
-		return fmt.Errorf("couldn't verify the network existence: %w", err)
+		return fmt.Errorf("could not verify the network existence: %w", err)
 	}
 	if !exists {
 		h.log.Error(fmt.Sprintf("Network %s does not exist", req.Network))
 		return network.NewDoesNotExistError(req.Network)
 	}
 
-	cfg, err := netStore.GetNetwork(req.Network)
+	netCfg, err := netStore.GetNetwork(req.Network)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Could not initialise network store: %v", err))
-		return fmt.Errorf("couldn't initialise network store: %w", err)
+		return fmt.Errorf("could not initialise network store: %w", err)
 	}
 
-	logLevel := cfg.LogLevel.String()
-	log, err := logger.New(logLevel, h.configLoader.LogFilePathForSvc())
+	log, logFilePath, err := buildServiceLogger(vegaPath, netCfg.LogLevel.String())
 	if err != nil {
+		h.log.Error(fmt.Sprintf("Could not build the service logger: %v", err))
 		return err
 	}
-	log = log.Named("service")
-	defer logger.Sync(log)
+	defer vgzap.Sync(log)
 
-	svcStore, err := h.getServiceStore(config)
+	svcStore, err := svcstore.InitialiseStore(vegaPath)
 	if err != nil {
-		return err
+		h.log.Error(fmt.Sprintf("Couldn't initialise the service store: %v", err))
+		return fmt.Errorf("could not initialise the service store: %w", err)
 	}
 
 	isInit, err := service.IsInitialised(svcStore)
 	if err != nil {
-		return fmt.Errorf("couldn't verify service initialisation state: %w", err)
+		return fmt.Errorf("could not verify service initialisation state: %w", err)
 	}
 
 	if !isInit {
 		if err = service.InitialiseService(svcStore, false); err != nil {
-			return fmt.Errorf("couldn't initialise the service: %w", err)
+			return fmt.Errorf("could not initialise the service: %w", err)
 		}
 	}
 
-	auth, err := service.NewAuth(log.Named("auth"), svcStore, cfg.TokenExpiry.Get())
+	auth, err := service.NewAuth(log.Named("auth"), svcStore, netCfg.TokenExpiry.Get())
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Could not initialise authentication: %v", err))
-		return fmt.Errorf("couldn't initialise authentication: %w", err)
+		return fmt.Errorf("could not initialise authentication: %w", err)
 	}
 
-	forwarder, err := node.NewForwarder(log.Named("forwarder"), cfg.API.GRPC)
+	forwarder, err := node.NewForwarder(log.Named("forwarder"), netCfg.API.GRPC)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Could not initialise the node forwarder: %v", err))
-		return fmt.Errorf("couldn't initialise the node forwarder: %w", err)
+		return fmt.Errorf("could not initialise the node forwarder: %w", err)
 	}
 
 	ctx, cancelFn := context.WithCancel(context.Background())
-	loggingCancelFn := func() {
-		log.Info("Cancel function triggered")
+	shutdownServiceFn := func() {
+		log.Warn("Shutdown function triggered")
 		cancelFn()
-		logger.Sync(log)
 	}
 
 	jsonRpcLogger := log.Named("json-rpc")
 
-	nodeSelector, err := nodeapi.BuildRoundRobinSelectorWithRetryingNodes(jsonRpcLogger, cfg.API.GRPC.Hosts, cfg.API.GRPC.Retries)
+	nodeSelector, err := nodeapi.BuildRoundRobinSelectorWithRetryingNodes(jsonRpcLogger, netCfg.API.GRPC.Hosts, netCfg.API.GRPC.Retries)
 	if err != nil {
 		h.log.Error("Could not initialise the node selector", zap.Error(err))
-		loggingCancelFn()
+		shutdownServiceFn()
 		return fmt.Errorf("could not initialise the node selector: %w", err)
 	}
 
-	sequentialInteractor := interactor.NewSequentialInteractor(ctx, h.service.ReceptionChan, h.service.ResponseChan)
+	sequentialInteractor := interactor.NewSequentialInteractor(ctx, h.currentService.receptionChan, h.currentService.responseChan)
 
-	clientAPI, err := api.ClientAPI(jsonRpcLogger, wStore, sequentialInteractor, nodeSelector)
+	clientAPI, err := api.ClientAPI(jsonRpcLogger, walletStore, sequentialInteractor, nodeSelector)
 	if err != nil {
 		h.log.Error("Could not initialise the JSON-RPC API", zap.Error(err))
-		loggingCancelFn()
+		shutdownServiceFn()
 		return err
 	}
 
-	svcURL := fmt.Sprintf("%s:%v", cfg.Host, cfg.Port)
+	svcURL := fmt.Sprintf("%s:%v", netCfg.Host, netCfg.Port)
 
 	// Check if something is already served. If not, we proceed.
 	// It's not fool-proof, but it should catch 99% of the problems.
@@ -189,17 +196,22 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 		return err
 	}
 
-	// Past this point, we assume we can bind the service.
+	// Past this point, we assume we can bind the service, relatively, safely.
 
-	srv, err := service.NewService(log.Named("service"), cfg, clientAPI, handler, auth, forwarder, UnsupportedV1APIPolicy{})
+	unsupportedV1APIPolicy := &unsupportedV1APIPolicy{
+		log: log.Named("api-v1-policy"),
+	}
+
+	srv, err := service.NewService(log.Named("http-server"), netCfg, clientAPI, handler, auth, forwarder, unsupportedV1APIPolicy)
 	if err != nil {
 		h.log.Error("Could not initialise the service", zap.Error(err))
-		loggingCancelFn()
+		shutdownServiceFn()
 		return err
 	}
 
-	h.service.Set(svcURL, func() {
-		loggingCancelFn()
+	h.currentService.SetInfo(svcURL, logFilePath)
+	h.currentService.OnShutdown(func() {
+		shutdownServiceFn()
 		if err := srv.Stop(); err != nil {
 			h.log.Error("Could not properly stop the service", zap.Error(err))
 		}
@@ -207,16 +219,19 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 
 	go func() {
 		h.listenToIncomingInteractions(ctx)
+		vgzap.Sync(log)
 	}()
 
 	go func() {
-		h.startService(srv, loggingCancelFn)
+		h.startService(srv, shutdownServiceFn)
+		vgzap.Sync(log)
 	}()
 
 	// We warn the front-end by sending events when the service is unhealthy.
 	// This is done so the front-end doesn't have to do it.
 	go func() {
 		h.monitorServiceHealth(ctx, svcURL)
+		vgzap.Sync(log)
 	}()
 
 	return nil
@@ -226,33 +241,40 @@ func (h *Handler) StopService() error {
 	h.log.Debug("Entering StopService")
 	defer h.log.Debug("Leaving StopService")
 
-	if !h.service.IsRunning() {
+	if h.currentService.IsRunning() {
 		h.log.Error("No service running")
 		return ErrServiceNotRunning
 	}
 
 	h.log.Info("Stopping the service")
-	h.service.Shutdown()
-	h.service.Reset()
+	h.currentService.Shutdown()
 	h.log.Info("Service stopped")
 	runtime.EventsEmit(h.ctx, ServiceStopped)
 
 	return nil
 }
 
-type GetServiceStateResponse struct {
-	URL     string `json:"url"`
-	Running bool   `json:"running"`
+type GetCurrentServiceInfo struct {
+	URL         string `json:"url"`
+	LogFilePath string `json:"logFilePath"`
 }
 
-func (h *Handler) GetServiceState() GetServiceStateResponse {
-	h.log.Debug("Entering GetServiceState")
-	defer h.log.Debug("Leaving GetServiceState")
+func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
+	h.log.Debug("Entering GetCurrentServiceInfo")
+	defer h.log.Debug("Leaving GetCurrentServiceInfo")
 
-	return GetServiceStateResponse{
-		URL:     h.service.URL(),
-		Running: h.service.IsRunning(),
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return GetCurrentServiceInfo{}, err
 	}
+
+	if h.currentService == nil {
+		return GetCurrentServiceInfo{}, ErrServiceNotRunning
+	}
+
+	return GetCurrentServiceInfo{
+		URL:         h.currentService.url,
+		LogFilePath: h.currentService.logFilePath,
+	}, nil
 }
 
 func (h *Handler) ensurePortCanBeBound(svcURL string) error {
@@ -272,7 +294,7 @@ func (h *Handler) listenToIncomingInteractions(ctx context.Context) {
 		case <-ctx.Done():
 			log.Info("Stopping the listening to incoming interactions")
 			return
-		case interaction := <-h.service.ReceptionChan:
+		case interaction := <-h.currentService.receptionChan:
 			h.emitReceivedInteraction(log, interaction)
 		}
 	}
@@ -284,8 +306,7 @@ func (h *Handler) startService(srv *service.Service, cancelFn context.CancelFunc
 	if err := srv.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Error(fmt.Sprintf("Error while running HTTP server: %v", err))
 		cancelFn()
-		h.service.Shutdown()
-		h.service.Reset()
+		h.currentService.Shutdown()
 		log.Debug("Service state has been reset")
 		runtime.EventsEmit(h.ctx, ServiceStoppedWithError, struct {
 			Error error
@@ -309,7 +330,7 @@ func (h *Handler) monitorServiceHealth(ctx context.Context, svcURL string) {
 
 	// We query the service health once before moving to the ticker, otherwise
 	// we have to wait for delayedStart + monitoringInterval.
-	h.queryServiceHeath(log, svcURL)
+	h.queryServiceHealth(log, svcURL)
 
 	ticker := time.NewTicker(serviceHealthMonitoringInterval)
 	defer ticker.Stop()
@@ -320,12 +341,12 @@ func (h *Handler) monitorServiceHealth(ctx context.Context, svcURL string) {
 			log.Info("Stopping the service health monitoring")
 			return
 		case <-ticker.C:
-			h.queryServiceHeath(log, svcURL)
+			h.queryServiceHealth(log, svcURL)
 		}
 	}
 }
 
-func (h *Handler) queryServiceHeath(log *zap.Logger, svcURL string) {
+func (h *Handler) queryServiceHealth(log *zap.Logger, svcURL string) {
 	url := "http://" + svcURL + "/api/v2/methods"
 	log.Debug("Checking the service health", zap.String("url", url))
 	response, err := http.Get(url)
@@ -339,4 +360,24 @@ func (h *Handler) queryServiceHeath(log *zap.Logger, svcURL string) {
 		runtime.EventsEmit(h.ctx, ServiceIsUnhealthy)
 		log.Warn("The service is reachable but is not healthy", zap.String("code", response.Status))
 	}
+}
+
+func buildServiceLogger(vegaPath paths.Paths, level string) (*zap.Logger, string, error) {
+	appLogsDir, err := vegaPath.CreateStateDirFor(paths.WalletAppLogsHome)
+	if err != nil {
+		return nil, "", fmt.Errorf("could not create configuration file at %s: %w", paths.WalletAppDefaultConfigFile, err)
+	}
+
+	loggerConfig := vgzap.DefaultConfig()
+	loggerConfig = vgzap.WithFileOutputForDedicatedProcess(loggerConfig, appLogsDir)
+	logFilePath := loggerConfig.OutputPaths[0]
+	loggerConfig = vgzap.WithJSONFormat(loggerConfig)
+	loggerConfig = vgzap.WithLevel(loggerConfig, level)
+
+	log, err := vgzap.Build(loggerConfig)
+	if err != nil {
+		return nil, "", fmt.Errorf("could not setup the application logger: %w", err)
+	}
+
+	return log.Named("service"), logFilePath, nil
 }

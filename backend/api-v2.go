@@ -20,11 +20,15 @@ var (
 	ErrNameIsRequired    = errors.New("a name is required for an interaction")
 )
 
-func (h *Handler) SubmitWalletAPIRequest(request *jsonrpc.Request) *jsonrpc.Response {
+func (h *Handler) SubmitWalletAPIRequest(request *jsonrpc.Request) (*jsonrpc.Response, error) {
 	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
 	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
 
-	return h.walletAPI.DispatchRequest(h.ctx, request)
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return nil, err
+	}
+
+	return h.walletAPI.DispatchRequest(h.ctx, request), nil
 }
 
 func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error {
@@ -42,10 +46,11 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 	h.log.Debug(fmt.Sprintf("Received a response %q with trace ID %q", interaction.Name, interaction.TraceID))
 
 	if h.ctx.Err() != nil {
+		h.log.Error("The application context has been canceled, could not respond to the interaction")
 		return ErrContextCanceled
 	}
 
-	h.service.ResponseChan <- interaction
+	h.currentService.responseChan <- interaction
 
 	return nil
 }

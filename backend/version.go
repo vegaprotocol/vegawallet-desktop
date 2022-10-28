@@ -21,14 +21,18 @@ type GetVersionResponse struct {
 	GitHash string `json:"gitHash"`
 }
 
-func (h *Handler) GetVersion() *GetVersionResponse {
+func (h *Handler) GetVersion() (*GetVersionResponse, error) {
 	h.log.Debug("Entering GetVersion")
 	defer h.log.Debug("Leaving GetVersion")
+
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return nil, err
+	}
 
 	return &GetVersionResponse{
 		Version: app.Version,
 		GitHash: app.VersionHash,
-	}
+	}, nil
 }
 
 type CheckVersionResponse struct {
@@ -44,7 +48,7 @@ func (h *Handler) CheckVersion() (*CheckVersionResponse, error) {
 	defer cancel()
 	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), app.Version)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't check latest releases: %w", err)
+		return nil, fmt.Errorf("could not check latest releases: %w", err)
 	}
 	if v == nil {
 		return nil, nil
