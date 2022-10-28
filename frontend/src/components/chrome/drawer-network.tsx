@@ -1,11 +1,9 @@
 import { DrawerPanel, useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
-import { DropdownItem, DropdownMenu } from '../dropdown-menu'
-import { DropdownArrow } from '../icons/dropdown-arrow'
 import { NetworkInfo } from '../network-info'
 import { Title } from '../title'
-import type {} from './drawer-content'
+import { NetworkSwitcher } from '../network-switcher'
 
 interface DrawerNetworkProps {
   setView: (panel: DrawerPanel) => void
@@ -13,10 +11,9 @@ interface DrawerNetworkProps {
 
 export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   const {
-    state: { network, networks },
-    actions,
-    dispatch
+    state: { networks },
   } = useGlobal()
+
   return (
     <>
       <Title style={{ marginTop: 0 }}>Network</Title>
@@ -29,47 +26,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
             marginBottom: 20
           }}
         >
-          <DropdownMenu
-            trigger={
-              <Button
-                data-testid='network-select'
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: 5,
-                  minWidth: 75
-                }}
-              >
-                <span>{network}</span>
-                <DropdownArrow
-                  style={{ width: 13, height: 13, marginLeft: 10 }}
-                />
-              </Button>
-            }
-            content={
-              <div>
-                {networks.map(network => (
-                  <DropdownItem key={network}>
-                    <ButtonUnstyled
-                      data-testid={`select-${network}`}
-                      style={{
-                        width: '100%',
-                        padding: '10px 15px',
-                        lineHeight: 1,
-                        textAlign: 'left'
-                      }}
-                      onClick={() => {
-                        dispatch(actions.changeNetworkAction(network))
-                      }}
-                    >
-                      {network}
-                    </ButtonUnstyled>
-                  </DropdownItem>
-                ))}
-              </div>
-            }
-          />
+          <NetworkSwitcher />
           <ButtonUnstyled
             data-testid='manage-networks'
             onClick={() => setView(DrawerPanel.Manage)}

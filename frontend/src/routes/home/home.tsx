@@ -55,8 +55,7 @@ export const Home = () => {
   return (
     <div
       data-testid='wallet-home'
-      className='vega-border-image'
-      style={{ borderTop: '3px solid', padding: 20 }}
+      style={{ padding: 20 }}
     >
       <Title
         style={{

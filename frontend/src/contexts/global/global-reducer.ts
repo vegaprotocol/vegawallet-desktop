@@ -79,6 +79,7 @@ export type GlobalAction =
         networks: string[]
       }
     }
+  // Wallet
   | {
       type: 'ADD_WALLET'
       wallet: string
@@ -135,6 +136,7 @@ export type GlobalAction =
       type: 'DEACTIVATE_WALLET'
       wallet: string
     }
+  // UI
   | {
       type: 'SET_DRAWER'
       state: DrawerState
