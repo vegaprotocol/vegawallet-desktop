@@ -7,6 +7,7 @@ import { AppFrame, AppLoader } from './app-loader'
 import { Chrome } from './components/chrome'
 import { InteractionManager } from './components/interaction-manager'
 import { PassphraseModal } from './components/passphrase-modal'
+import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
 import { Settings } from './components/settings'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { createLogger, initLogger } from './lib/logging'
@@ -33,6 +34,7 @@ function App() {
                 <AppRouter />
                 <PassphraseModal />
                 <InteractionManager />
+                <NetworkCompatibilityDialog />
                 <Settings />
               </AppLoader>
             </Chrome>

@@ -66,7 +66,9 @@ export function createActions(
             ]
           )
 
-          dispatch({ type: 'SET_VERSION', version: version.version })
+          console.log(version)
+
+          dispatch({ type: 'SET_VERSION', version })
           dispatch({ type: 'SET_PRESETS', presets })
           dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
 
