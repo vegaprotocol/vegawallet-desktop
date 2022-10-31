@@ -16,6 +16,7 @@ const findNetworkData = (
   network: string | null,
   version: BackendModel.GetVersionResponse | null
 ) => {
+
   if (!network || !version?.backend) {
     return {}
   }
@@ -27,22 +28,41 @@ const findNetworkData = (
 }
 
 export const NetworkCompatibilityDialog = () => {
-  const { state, dispatch, actions } = useGlobal()
+  const { state, service, dispatch, actions } = useGlobal()
   const { supportedVersion, networkData } = useMemo(() => (
     findNetworkData(state.network, state.version)
   ), [state.network, state.version])
-  const [isOpen, setOpen] = useState(networkData ? networkData.isCompatible : false)
   const compatibleNetworksList = useMemo(() => {
     return state.version?.backend?.networksCompatibility
-      .filter(n => n.isCompatible)
-      .map(n => n.network) || []
+      .reduce<string[]>((acc, n) => {
+        if (n.isCompatible) {
+          acc.push(n.network)
+        }
+        return acc
+      }, [])
   }, [state.version])
+  const [isOpen, setOpen] = useState(networkData ? networkData.isCompatible : false)
+
 
   useEffect(() => {
     if (networkData && !networkData.isCompatible) {
       setOpen(true)
     }
   }, [supportedVersion, networkData])
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const version = await service.GetVersion()
+      dispatch({
+        type: 'SET_VERSION',
+        version
+      })
+    }, ONE_DAY)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [service, dispatch])
 
   if (!networkData) {
     return null
