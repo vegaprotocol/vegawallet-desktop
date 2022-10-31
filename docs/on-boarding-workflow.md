@@ -8,7 +8,7 @@
 flowchart TB
     be_iai["IsAppInitialised()"]:::be --> iai
     iai>Is app initialised?] -- Yes --> d_ms{{Main screen}}:::ui
-    iai --> be_sec["SearchExisitingConfig()"]
+    iai -- No --> be_sec["SearchExisitingConfig()"]
     be_sec:::be --> sec>Has existing config at default location]
     sec -- Yes --> d_exoch{{Use existing config or custom home?}}:::ui
     sec -- No --> d_doch{{Use default or custom home?}}:::ui
