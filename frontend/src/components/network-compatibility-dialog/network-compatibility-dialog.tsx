@@ -6,7 +6,7 @@ import type {
   backend as BackendModel,
   version as VersionModel
 } from '../../wailsjs/go/models'
-import { Button, AnchorButton } from '../button'
+import { AnchorButton, Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
@@ -163,9 +163,9 @@ export const NetworkCompatibilityDialog = () => {
           )}
           <ButtonGroup inline style={{ padding: `20px 0` }}>
             <AnchorButton
-              href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
-              target="_blank"
-              rel="noopener noreferrer"
+              href='https://github.com/vegaprotocol/vegawallet-desktop/releases'
+              target='_blank'
+              rel='noopener noreferrer'
             >
               Get a compatible release
             </AnchorButton>
