@@ -52,7 +52,7 @@ export const useOpenWallet = () => {
             })
             return {
               hostname,
-              active: true,
+              active: false,
               permissions: result.permissions
             }
           })

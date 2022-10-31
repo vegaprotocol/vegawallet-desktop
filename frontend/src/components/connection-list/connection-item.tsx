@@ -40,7 +40,9 @@ export const ConnectionItem = ({
         >
           <StatusCircle
             blinking={connection.active}
-            background={connection.active ? Colors.VEGA_GREEN : Colors.VEGA_RED}
+            background={
+              connection.active ? Colors.VEGA_GREEN : Colors.VEGA_ORANGE
+            }
           />
           {connection.hostname}
         </pre>
