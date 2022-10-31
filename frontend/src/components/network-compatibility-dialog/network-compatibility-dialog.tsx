@@ -1,14 +1,19 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 
 import { Dialog } from '../dialog'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { ButtonGroup } from '../button-group'
-import { DropdownMenu, DropdownItem } from '../dropdown-menu'
 import { Warning } from '../icons/warning'
-import { DropdownArrow } from '../icons/dropdown-arrow'
+import { AppToaster } from '../toaster'
 import { useGlobal } from '../../contexts/global/global-context'
-import type { backend as BackendModel } from '../../wailsjs/go/models'
+import type {
+  backend as BackendModel,
+  version as VersionModel,
+} from '../../wailsjs/go/models'
+import { Intent } from '../../config/intent'
+import { AddNetwork } from './add-network'
+import { ChangeNetwork } from './choose-network'
 
 const ONE_DAY = 86400000
 
@@ -27,22 +32,48 @@ const findNetworkData = (
   }
 }
 
+const addCompatibleNetwork = (
+  acc: string[],
+  { isCompatible, network }: VersionModel.NetworkCompatibility
+) => {
+  if (isCompatible) {
+    acc.push(network)
+  }
+  return acc
+}
+
+type Subview = 'change' | 'add' | null
+
+const getTitle = (subview: Subview) => {
+  switch (subview) {
+    case 'add': {
+      return 'Add network'
+    }
+    case 'change': {
+      return 'Choose a compatible network'
+    }
+    default: {
+      return (
+        <>
+          <Warning style={{ width: 20, marginRight: 12 }}/>
+          Incompatible network
+        </>
+      )
+    }
+  }
+}
+
 export const NetworkCompatibilityDialog = () => {
   const { state, service, dispatch, actions } = useGlobal()
   const { supportedVersion, networkData } = useMemo(() => (
     findNetworkData(state.network, state.version)
   ), [state.network, state.version])
   const compatibleNetworksList = useMemo(() => {
-    return state.version?.backend?.networksCompatibility
-      .reduce<string[]>((acc, n) => {
-        if (n.isCompatible) {
-          acc.push(n.network)
-        }
-        return acc
-      }, [])
+    return (state.version?.backend?.networksCompatibility || [])
+      .reduce<string[]>(addCompatibleNetwork, [])
   }, [state.version])
   const [isOpen, setOpen] = useState(networkData ? networkData.isCompatible : false)
-
+  const [subview, setSubview] = useState<Subview>(null)
 
   useEffect(() => {
     if (networkData && !networkData.isCompatible) {
@@ -64,64 +95,90 @@ export const NetworkCompatibilityDialog = () => {
     }
   }, [service, dispatch])
 
+  const handleChangeNetwork = useCallback(async ({ network }: { network?: string }) => {
+    if (network) {
+      dispatch(actions.changeNetworkAction(network))
+      setOpen(false)
+      setSubview(null)
+    }
+  }, [dispatch, actions, setOpen, setSubview])
+
+  const handleAddNetwork = useCallback(async () => {
+    const version = await service.GetVersion()
+    const newCompatibleNetworksList = (version.backend?.networksCompatibility || [])
+      .reduce<string[]>(addCompatibleNetwork, [])
+
+    if (newCompatibleNetworksList.length > 0) {
+      setOpen(false)
+      setSubview(null)
+      dispatch({
+        type: 'SET_VERSION',
+        version
+      })
+      dispatch(actions.changeNetworkAction(newCompatibleNetworksList[0]))
+    } else {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: 'The network added is not compatible with the app. Try another one.'
+      })
+    }
+  }, [setOpen, setSubview])
+
+  const title = useMemo(() => getTitle(subview), [subview])
+
   if (!networkData) {
     return null
   }
 
   return (
     <Dialog
+      size="lg"
       open={isOpen}
-      title={(
-        <>
-          <Warning style={{ width: 20, marginRight: 12 }}/>
-          Warning
-        </>
-      )}
+      title={title}
     >
-      <div style={{ padding: 20 }}>
-        <p style={{ marginBottom: 12 }}>The selected network <code>{networkData.network}</code> is running on <code>{networkData.retrievedVersion}</code>. This app has support for <code>{supportedVersion}</code>.</p>
-        {compatibleNetworksList.length === 0 && (
-          <p>To ensure all features are functional, we recommend you to check out our <a href="https://some-link.com" target="_blank" rel="noreferrer noopener">release list</a> and download a version which is compatible with your network.</p>
-        )}
-        {compatibleNetworksList.length === 1 && (
-          <p>To ensure all features are functional, we recommend you to either check out our <a href="https://some-link.com" target="_blank" rel="noreferrer noopener">release list</a> and download a version which is compatible with your network, or <ButtonUnstyled onClick={() => dispatch(actions.changeNetworkAction(compatibleNetworksList[0]))}>switch to the <code>{}</code> network</ButtonUnstyled>, which is suported by this app.</p>
-        )}
-        {compatibleNetworksList.length > 1 && (
-          <>
-            <p>To ensure all features are functional, we recommend you to either check out our <a href="https://some-link.com" target="_blank" rel="noreferrer noopener">release list</a> and download a version which is compatible with your network, or switch to one of the networks which this app supports:</p>
-            <DropdownMenu
-              trigger={(
-                <Button>
-                  {}
-                  <DropdownArrow style={{ width: 12, marginLeft: 6 }} />
-                </Button>
-              )}
-              content={(
-                <div>
-                  {compatibleNetworksList.map(network => (
-                    <DropdownItem key={network}>
-                      <ButtonUnstyled
-                        style={{
-                          width: '100%',
-                          padding: '10px 15px',
-                        }}
-                        onClick={() => {
-                          dispatch(actions.changeNetworkAction(network))
-                        }}
-                      >
-                        {network}
-                      </ButtonUnstyled>
-                    </DropdownItem>
-                  ))}
-                </div>
-              )}
-            />
-          </>
-        )}
-      </div>
-      <ButtonGroup inline style={{ padding: 20 }}>
-        <Button onClick={() => setOpen(false)}>Accept risk and continue</Button>
-      </ButtonGroup>
+      {subview === null && (
+        <div style={{ padding: 20 }}>
+          <p style={{ marginBottom: 12 }}>Your selected network "<code>{networkData.network}</code>" is running on Vega <code>{networkData.retrievedVersion}</code>, however this app only supports networks running <code>{supportedVersion}</code>.</p>
+          {compatibleNetworksList.length > 0 && (
+            <p style={{ marginBottom: 12 }}>Download a compatible release or change network to continue.</p>
+          )}
+          {compatibleNetworksList.length === 0 && (
+            <p style={{ marginBottom: 12 }}>Download a compatible release or add a compatible network to continue.</p>
+          )}
+          <ButtonGroup inline style={{ padding: `20px 0` }}>
+            <Button>Get a compatible release</Button>
+            {compatibleNetworksList.length > 0 && (
+              <Button onClick={() => setSubview('change')}>
+                Change network
+              </Button>
+            )}
+            {compatibleNetworksList.length === 0 && (
+              <Button onClick={() => setSubview('add')}>
+                Add network
+              </Button>
+            )}
+          </ButtonGroup>
+          <ButtonGroup inline>
+            <ButtonUnstyled onClick={() => setOpen(false)}>
+              Continue with existing network
+            </ButtonUnstyled>
+          </ButtonGroup>
+        </div>
+      )}
+      {subview === 'add' && (
+        <AddNetwork
+          onSubmit={handleAddNetwork}
+          onCancel={() => setSubview(null)}
+        />
+      )}
+      {subview === 'change' && (
+        <ChangeNetwork
+          networks={compatibleNetworksList}
+          onSubmit={handleChangeNetwork}
+          onCancel={() => setSubview(null)}
+          onAddNetwork={() => setSubview('add')}
+        />
+      )}
     </Dialog>
   )
 }

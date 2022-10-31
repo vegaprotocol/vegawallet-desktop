@@ -175,6 +175,7 @@ export function createActions(
             presetNetworksInternal: presetsInternal
           })
         } catch (err) {
+          console.log(err)
           dispatch({ type: 'INIT_APP_FAILED' })
           logger.error(err)
         }
@@ -335,6 +336,7 @@ export function createActions(
             service
           })
         } catch (err) {
+          console.log(err)
           AppToaster.show({
             message: `${err}`,
             intent: Intent.DANGER
