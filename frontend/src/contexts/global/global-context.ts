@@ -6,8 +6,8 @@ import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type {
-  config as ConfigModel,
-  backend as BackendModel
+  backend as BackendModel,
+  config as ConfigModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
@@ -73,7 +73,7 @@ export interface Wallet {
 
 export interface GlobalState {
   status: AppStatus
-  version: BackendModel.GetVersionResponse | null,
+  version: BackendModel.GetVersionResponse | null
   config: ConfigModel.Config | null
 
   // Wallet

@@ -8,10 +8,7 @@ type AddNetworkProps = {
 export const AddNetwork = ({ onSubmit, onCancel }: AddNetworkProps) => {
   return (
     <div style={{ padding: 20 }}>
-      <NetworkImportForm
-        onComplete={onSubmit}
-        onCancel={onCancel}
-      />
+      <NetworkImportForm onComplete={onSubmit} onCancel={onCancel} />
     </div>
   )
 }

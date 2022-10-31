@@ -5,8 +5,8 @@ import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type {
-  config as ConfigModel,
-  backend as BackendModel
+  backend as BackendModel,
+  config as ConfigModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {

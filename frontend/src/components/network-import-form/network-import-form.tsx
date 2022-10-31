@@ -7,8 +7,8 @@ import { FormStatus } from '../../hooks/use-form-state'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
-import { ButtonUnstyled } from '../button-unstyled'
 import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
 import { Checkbox } from '../checkbox'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
@@ -24,7 +24,10 @@ interface NetworkImportFormProps {
   onCancel?: () => void
 }
 
-export function NetworkImportForm({ onComplete, onCancel }: NetworkImportFormProps) {
+export function NetworkImportForm({
+  onComplete,
+  onCancel
+}: NetworkImportFormProps) {
   const [isCheckboxVisible, setCheckboxVisible] = useState(false)
   const { status, submit, error } = useImportNetwork()
 
@@ -126,11 +129,7 @@ export function NetworkImportForm({ onComplete, onCancel }: NetworkImportFormPro
         >
           Import
         </Button>
-        {onCancel && (
-          <ButtonUnstyled onClick={onCancel}>
-            Cancel
-          </ButtonUnstyled>
-        )}
+        {onCancel && <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>}
       </ButtonGroup>
     </form>
   )
