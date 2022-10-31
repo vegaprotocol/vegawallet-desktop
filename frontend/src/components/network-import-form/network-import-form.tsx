@@ -20,7 +20,7 @@ interface FormFields {
 }
 
 interface NetworkImportFormProps {
-  onComplete?: () => void
+  onComplete?: (network: string) => void
   onCancel?: () => void
 }
 
@@ -37,6 +37,7 @@ export function NetworkImportForm({
     handleSubmit,
     setError,
     reset,
+    getValues,
     formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
@@ -47,14 +48,15 @@ export function NetworkImportForm({
   })
 
   useEffect(() => {
+    const name = getValues('name')
     if (status === FormStatus.Success) {
       reset()
       setCheckboxVisible(false)
       if (typeof onComplete === 'function') {
-        onComplete()
+        onComplete(name)
       }
     }
-  }, [status, reset, onComplete])
+  }, [status, reset, getValues, onComplete])
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
   // set the name

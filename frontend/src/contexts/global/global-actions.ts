@@ -131,8 +131,6 @@ export function createActions(
             ]
           )
 
-          console.log(version)
-
           dispatch({ type: 'SET_VERSION', version })
           dispatch({ type: 'SET_PRESETS', presets })
           dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
@@ -175,7 +173,6 @@ export function createActions(
             presetNetworksInternal: presetsInternal
           })
         } catch (err) {
-          console.log(err)
           dispatch({ type: 'INIT_APP_FAILED' })
           logger.error(err)
         }
@@ -336,7 +333,6 @@ export function createActions(
             service
           })
         } catch (err) {
-          console.log(err)
           AppToaster.show({
             message: `${err}`,
             intent: Intent.DANGER

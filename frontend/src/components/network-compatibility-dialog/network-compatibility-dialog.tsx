@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import type {
   backend as BackendModel,
@@ -11,7 +10,6 @@ import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { Warning } from '../icons/warning'
-import { AppToaster } from '../toaster'
 import { AddNetwork } from './add-network'
 import { ChangeNetwork } from './choose-network'
 
@@ -101,7 +99,7 @@ export const NetworkCompatibilityDialog = () => {
   }, [service, dispatch])
 
   const handleChangeNetwork = useCallback(
-    async ({ network }: { network?: string }) => {
+    ({ network }: { network?: string }) => {
       if (network) {
         dispatch(actions.changeNetworkAction(network))
         setOpen(false)
@@ -111,28 +109,20 @@ export const NetworkCompatibilityDialog = () => {
     [dispatch, actions, setOpen, setSubview]
   )
 
-  const handleAddNetwork = useCallback(async () => {
-    const version = await service.GetVersion()
-    const newCompatibleNetworksList = (
-      version.backend?.networksCompatibility || []
-    ).reduce<string[]>(addCompatibleNetwork, [])
-
-    if (newCompatibleNetworksList.length > 0) {
+  const handleAddNetwork = useCallback(
+    async (network: string) => {
       setOpen(false)
       setSubview(null)
+      const version = await service.GetVersion()
       dispatch({
         type: 'SET_VERSION',
         version
       })
-      dispatch(actions.changeNetworkAction(newCompatibleNetworksList[0]))
-    } else {
-      AppToaster.show({
-        intent: Intent.DANGER,
-        message:
-          'The network added is not compatible with the app. Try another one.'
-      })
-    }
-  }, [dispatch, actions, service, setOpen, setSubview])
+
+      dispatch(actions.changeNetworkAction(network))
+    },
+    [dispatch, actions, service, setOpen, setSubview]
+  )
 
   const title = useMemo(() => getTitle(subview), [subview])
 

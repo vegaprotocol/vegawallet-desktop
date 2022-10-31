@@ -1,7 +1,7 @@
 import { NetworkImportForm } from '../network-import-form'
 
 type AddNetworkProps = {
-  onSubmit: () => void
+  onSubmit: (network: string) => void
   onCancel: () => void
 }
 
