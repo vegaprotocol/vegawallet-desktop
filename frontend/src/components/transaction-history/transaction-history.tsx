@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
+import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import type { Transaction } from '../../lib/transactions'
 import { sortTransaction } from '../../lib/transactions'
-import { Button } from '../button'
+import { AnchorButton } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
@@ -12,6 +13,7 @@ import { TransactionDetails } from '../transaction-details'
 import { TransactionItem } from './transaction-item'
 
 export const TransactionHistory = () => {
+  const explorerUrl = useExplorerUrl()
   const { keypair } = useCurrentKeypair()
   const [transaction, setTransaction] = useState<Transaction | null>(null)
   const transactionList = Object.values(keypair?.transactions || []).sort(
@@ -37,7 +39,15 @@ export const TransactionHistory = () => {
       >
         {transaction && <TransactionDetails transaction={transaction} />}
         <ButtonGroup inline style={{ padding: 20 }}>
-          <Button>View in explorer</Button>
+          {explorerUrl && transaction?.txHash && (
+            <AnchorButton
+              href={`${explorerUrl}/txs/${transaction.txHash}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              View in explorer
+            </AnchorButton>
+          )}
           <ButtonUnstyled onClick={() => setTransaction(null)}>
             Close
           </ButtonUnstyled>
