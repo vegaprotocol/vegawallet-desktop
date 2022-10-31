@@ -2,17 +2,14 @@ import type { Wallet } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
-import { Dialog } from '../dialog'
 
 type DisconnectDialogProps = {
-  isOpen: boolean
   wallet: Wallet
   hostname: string
   onClose: () => void
 }
 
-export const DisconnectDialog = ({
-  isOpen,
+export const Disconnect = ({
   wallet,
   hostname,
   onClose
@@ -21,7 +18,7 @@ export const DisconnectDialog = ({
   const handleDisconnect = () => {}
 
   return (
-    <Dialog open={isOpen} title='Disconnect site' onChange={onClose}>
+    <div>
       <div style={{ padding: 20 }}>
         <p>
           Are you sure you want to disconnect your wallet{' '}
@@ -33,6 +30,6 @@ export const DisconnectDialog = ({
         <Button onClick={handleDisconnect}>Disconnect</Button>
         <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
       </ButtonGroup>
-    </Dialog>
+    </div>
   )
 }

@@ -1,12 +1,12 @@
 import * as DialogPrimitives from '@radix-ui/react-dialog'
-import * as React from 'react'
+import type { ReactNode } from 'react'
 import { animated, config, useTransition } from 'react-spring'
 
 import { Title } from '../title'
 
 interface DialogProps {
   open: boolean
-  title?: string
+  title?: ReactNode
   children: React.ReactNode
   size?: 'sm' | 'lg'
   onChange?: (open: boolean) => void
