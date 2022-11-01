@@ -623,6 +623,7 @@ export function globalReducer(
 
       const updatedWallet: Wallet = {
         ...targetWallet,
+        auth: true,
         connections: {
           ...targetWallet.connections,
           [action.connection.hostname]: action.connection
@@ -632,6 +633,7 @@ export function globalReducer(
       return {
         ...state,
         wallets: {
+          ...state.wallets,
           [action.wallet]: updatedWallet
         }
       }
