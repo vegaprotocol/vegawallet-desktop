@@ -34,7 +34,9 @@ const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
             cursor: 'pointer',
             marginTop: 0,
             paddingBottom: 4,
-            borderBottom: `2px solid ${tab === activeTab ? Colors.WHITE : 'transparent'}`,
+            borderBottom: `2px solid ${
+              tab === activeTab ? Colors.WHITE : 'transparent'
+            }`,
             color:
               tab === activeTab ? Colors.WHITE : Colors.TEXT_COLOR_DEEMPHASISE
           }}
