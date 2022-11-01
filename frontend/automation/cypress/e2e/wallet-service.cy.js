@@ -11,9 +11,10 @@ describe('wallet service', () => {
   })
 
   it('imports and starts mainnet automatically', () => {
-    cy.getByTestId('service-status').should(
-      'contain.text',
-      'Wallet Service: mainnet1'
-    )
+    cy.getByTestId('service-status')
+      .scrollIntoView()
+      .contains('Wallet Service: mainnet1', {
+        timeout: 20000
+      })
   })
 })
