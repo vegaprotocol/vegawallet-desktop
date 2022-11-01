@@ -8,6 +8,7 @@ import { AppFrame, AppLoader } from './app-loader'
 import { Chrome } from './components/chrome'
 import { InteractionManager } from './components/interaction-manager'
 import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
+import { TelemetryDialog } from './components/telemetry-dialog'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Settings } from './components/settings'
 import { GlobalProvider } from './contexts/global/global-provider'
@@ -60,6 +61,7 @@ function App() {
             <Chrome>
               <AppLoader>
                 <AppRouter />
+                <TelemetryDialog />
                 <PassphraseModal />
                 <InteractionManager />
                 <NetworkCompatibilityDialog />

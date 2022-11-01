@@ -220,6 +220,9 @@ Cypress.Commands.add('waitForHome', () => {
       cy.get('button[role="radio"][value="no"]').click()
       cy.getByTestId('telemetry-option-continue').click()
     }
+    if (body.find('[data-testid="network-compatibility-dialod"]').length > 0) {
+      cy.get('button[data-testid="network-compatibility-continue"]').click()
+    }
   })
 })
 

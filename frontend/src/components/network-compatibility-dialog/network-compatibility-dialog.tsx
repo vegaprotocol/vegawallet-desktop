@@ -62,6 +62,13 @@ const getTitle = (subview: Subview) => {
   }
 }
 
+const shouldBeOpen = (
+  networkData?: VersionModel.NetworkCompatibility,
+  telemetryConsentAsked?: boolean
+) => {
+  return telemetryConsentAsked === true && !networkData?.isCompatible === false
+}
+
 export const NetworkCompatibilityDialog = () => {
   const { state, service, dispatch, actions } = useGlobal()
   const { supportedVersion, networkData } = useMemo(
@@ -74,15 +81,15 @@ export const NetworkCompatibilityDialog = () => {
     >(addCompatibleNetwork, [])
   }, [state.version])
   const [isOpen, setOpen] = useState(
-    networkData ? networkData.isCompatible : false
+    shouldBeOpen(networkData, state.config?.telemetry.consentAsked)
   )
   const [subview, setSubview] = useState<Subview>(null)
 
   useEffect(() => {
-    if (networkData && !networkData.isCompatible) {
+    if (shouldBeOpen(networkData, state.config?.telemetry.consentAsked)) {
       setOpen(true)
     }
-  }, [supportedVersion, networkData])
+  }, [supportedVersion, networkData, state.config?.telemetry.consentAsked])
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -131,7 +138,12 @@ export const NetworkCompatibilityDialog = () => {
   }
 
   return (
-    <Dialog size='lg' open={isOpen} title={title}>
+    <Dialog
+      size='lg'
+      data-testid="network-compatibility-dialog"
+      open={isOpen}
+      title={title}
+    >
       {subview === null && (
         <div style={{ padding: 20 }}>
           <p style={{ marginBottom: 12 }}>
@@ -153,6 +165,7 @@ export const NetworkCompatibilityDialog = () => {
           )}
           <ButtonGroup inline style={{ padding: `20px 0` }}>
             <AnchorButton
+              data-testid="network-compatibility-release"
               href='https://github.com/vegaprotocol/vegawallet-desktop/releases'
               target='_blank'
               rel='noopener noreferrer'
@@ -160,7 +173,10 @@ export const NetworkCompatibilityDialog = () => {
               Get a compatible release
             </AnchorButton>
             {compatibleNetworksList.length > 0 && (
-              <Button onClick={() => setSubview('change')}>
+              <Button
+                data-testid="network-compatibility-change"
+                onClick={() => setSubview('change')}
+              >
                 Change network
               </Button>
             )}
@@ -169,7 +185,10 @@ export const NetworkCompatibilityDialog = () => {
             )}
           </ButtonGroup>
           <ButtonGroup inline>
-            <ButtonUnstyled onClick={() => setOpen(false)}>
+            <ButtonUnstyled
+              data-testid="network-compatibility-continue"
+              onClick={() => setOpen(false)}
+            >
               Continue with existing network
             </ButtonUnstyled>
           </ButtonGroup>
