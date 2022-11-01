@@ -140,7 +140,7 @@ export const NetworkCompatibilityDialog = () => {
   return (
     <Dialog
       size='lg'
-      data-testid="network-compatibility-dialog"
+      data-testid='network-compatibility-dialog'
       open={isOpen}
       title={title}
     >
@@ -165,7 +165,7 @@ export const NetworkCompatibilityDialog = () => {
           )}
           <ButtonGroup inline style={{ padding: `20px 0` }}>
             <AnchorButton
-              data-testid="network-compatibility-release"
+              data-testid='network-compatibility-release'
               href='https://github.com/vegaprotocol/vegawallet-desktop/releases'
               target='_blank'
               rel='noopener noreferrer'
@@ -174,7 +174,7 @@ export const NetworkCompatibilityDialog = () => {
             </AnchorButton>
             {compatibleNetworksList.length > 0 && (
               <Button
-                data-testid="network-compatibility-change"
+                data-testid='network-compatibility-change'
                 onClick={() => setSubview('change')}
               >
                 Change network
@@ -186,7 +186,7 @@ export const NetworkCompatibilityDialog = () => {
           </ButtonGroup>
           <ButtonGroup inline>
             <ButtonUnstyled
-              data-testid="network-compatibility-continue"
+              data-testid='network-compatibility-continue'
               onClick={() => setOpen(false)}
             >
               Continue with existing network
