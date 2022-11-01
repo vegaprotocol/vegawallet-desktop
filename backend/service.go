@@ -241,7 +241,7 @@ func (h *Handler) StopService() error {
 	h.log.Debug("Entering StopService")
 	defer h.log.Debug("Leaving StopService")
 
-	if h.currentService.IsRunning() {
+	if !h.currentService.IsRunning() {
 		h.log.Error("No service running")
 		return ErrServiceNotRunning
 	}
