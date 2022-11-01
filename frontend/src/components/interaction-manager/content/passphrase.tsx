@@ -4,15 +4,21 @@ import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestPassphrase } from '../types'
-import { INTERACTION_RESPONSE_TYPE } from '../types'
+import type { InteractionContentProps, RequestPassphrase, RequestPermissions } from '../types'
+import {
+  INTERACTION_TYPE,
+  INTERACTION_RESPONSE_TYPE,
+  EVENT_FLOW_TYPE,
+} from '../types'
 
 export const Passphrase = ({
   event,
+  flow,
+  history,
   isResolved,
   setResolved
 }: InteractionContentProps<RequestPassphrase>) => {
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
 
   useEffect(() => {
     const handleResponse = async () => {
@@ -26,6 +32,34 @@ export const Passphrase = ({
             passphrase
           }
         })
+
+        if (flow === EVENT_FLOW_TYPE.PERMISSION_REQUEST) {
+          const source = history.find(interaction => (
+            interaction.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
+          ))
+
+          if (source && source.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW) {
+            const { wallet, hostname } = source?.event.data
+
+            const { permissions } = await service.WalletApi.DescribePermissions({
+              wallet,
+              passphrase,
+              hostname
+            })
+
+            console.log(permissions)
+
+            dispatch({
+              type: 'ADD_CONNECTION',
+              wallet,
+              connection: {
+                hostname,
+                active: true,
+                permissions
+              }
+            })
+          }
+        }
       } catch (err: unknown) {
         if (err === 'dismissed') {
           await service.RespondToInteraction({
