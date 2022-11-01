@@ -24,7 +24,6 @@ export function Splash({ children, style, ...props }: SplashProps) {
         alignItems: 'center',
         padding: 20,
         overflowY: 'auto',
-        backgroundColor: Colors.DARK_GRAY_1,
         color: Colors.WHITE,
         ...style
       }}

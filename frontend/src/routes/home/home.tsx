@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import type { CSSProperties } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
@@ -25,11 +26,11 @@ const itemStyles = {
   width: '100%'
 }
 
-const actionStyles = {
+const actionStyles: CSSProperties = {
   position: 'fixed',
   bottom: DRAWER_HEIGHT,
   left: 0
-} as React.CSSProperties
+}
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -37,9 +38,11 @@ const actionStyles = {
 export const Home = () => {
   const { open } = useOpenWallet()
   const {
-    state: { status, wallets },
+    state: { wallets, status },
     dispatch
   } = useGlobal()
+
+  const actionWrapperStyles = wallets.length ? actionStyles : undefined
 
   const walletsList = useMemo(
     () => Object.values(wallets).sort(sortWallet),
@@ -49,8 +52,6 @@ export const Home = () => {
   if (status === AppStatus.Onboarding) {
     return <Navigate to={Paths.Onboard} />
   }
-
-  const actionWrapperStyles = wallets.length ? actionStyles : undefined
 
   return (
     <div data-testid='wallet-home' style={{ padding: 20 }}>
@@ -116,13 +117,12 @@ export const Home = () => {
           </Link>
         </ButtonGroup>
         <p>
-          <button
-            style={{ textDecoration: 'underline' }}
+          <ButtonUnstyled
             onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
             data-testid='home-settings'
           >
             App settings
-          </button>
+          </ButtonUnstyled>
         </p>
       </div>
       <TelemetryDialog />

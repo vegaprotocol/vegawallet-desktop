@@ -2,14 +2,16 @@ import React from 'react'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import { useGlobal } from '../contexts/global/global-context'
+import { useGlobal, AppStatus } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
+import { useVegaHome } from './use-vega-home'
 import type { WalletModel } from '../wallet-client'
 
 const logger = createLogger('UseCreateWallet')
 
 export function useCreateWallet() {
-  const { actions, service, dispatch } = useGlobal()
+  const vegaHome = useVegaHome()
+  const { actions, service, dispatch, state } = useGlobal()
   const [response, setResponse] =
     React.useState<WalletModel.CreateWalletResult | null>(null)
 
@@ -17,6 +19,10 @@ export function useCreateWallet() {
     async (values: { wallet: string; passphrase: string }) => {
       try {
         logger.debug('CreateWallet')
+        if (state.status !== AppStatus.Initialised) {
+          await service.InitialiseApp({ vegaHome })
+        }
+
         const resp = await service.WalletApi.CreateWallet({
           wallet: values.wallet,
           passphrase: values.passphrase

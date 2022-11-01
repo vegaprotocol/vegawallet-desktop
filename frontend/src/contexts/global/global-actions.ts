@@ -20,11 +20,20 @@ type ServiceAction = {
   dispatch: GlobalDispatch
 }
 
-const stopService = async ({ logger, service, dispatch }: ServiceAction) => {
+const stopService = async ({
+  logger,
+  getState,
+  service,
+  dispatch,
+}: ServiceAction) => {
   logger.debug('StopService')
+  const state = getState()
   try {
-    const status = await service.GetServiceState()
-    if (status.running) {
+    if (![ServiceState.Stopped, ServiceState.Stopping].includes(state.serviceStatus)) {
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Stopping
+      })
       await service.StopService()
       dispatch({
         type: 'SET_SERVICE_STATUS',
@@ -53,8 +62,7 @@ const startService = async ({
   logger.debug('StartService')
   const state = getState()
   try {
-    const status = await service.GetCurrentServiceInfo()
-    if (!status.running && state.network && state.networkConfig) {
+    if (![ServiceState.Started, ServiceState.Loading].includes(state.serviceStatus) && state.network && state.networkConfig) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading
@@ -114,36 +122,37 @@ export function createActions(
     initAppAction() {
       return async (dispatch: GlobalDispatch) => {
         try {
-          const config = await service.GetAppConfig()
-
-          if (config.telemetry.enabled) {
-            enableTelemetry()
-          }
-
           logger.debug('StartApp')
 
-          const [isInit, version, presets, presetsInternal] = await Promise.all(
-            [
-              service.IsAppInitialised(),
-              service.GetVersion(),
-              fetchNetworkPreset(DataSources.NETWORKS, logger),
-              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
-            ]
-          )
-
-          dispatch({ type: 'SET_VERSION', version })
-          dispatch({ type: 'SET_PRESETS', presets })
-          dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
+          const isInit = await service.IsAppInitialised()
 
           if (!isInit) {
             const existingConfig =
               await service.SearchForExistingConfiguration()
+            console.log(existingConfig)
             dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
             return
           }
 
           // else continue with app setup, get wallets/networks
           logger.debug('InitApp')
+
+          const [config, version, presets, presetsInternal] = await Promise.all(
+            [
+              service.GetAppConfig(),
+              service.GetVersion(),
+              fetchNetworkPreset(DataSources.NETWORKS, logger),
+              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
+            ]
+          )
+
+          if (config.telemetry.enabled) {
+            enableTelemetry()
+          }
+
+          dispatch({ type: 'SET_VERSION', version: version.version })
+          dispatch({ type: 'SET_PRESETS', presets })
+          dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
 
           // should now have an app config
           const [wallets, networks]: [
