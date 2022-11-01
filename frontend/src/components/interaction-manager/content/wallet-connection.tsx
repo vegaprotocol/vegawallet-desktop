@@ -16,7 +16,6 @@ export const WalletConnection = ({
   useEffect(() => {
     const handleResponse = async (decision: boolean) => {
       try {
-        // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
           traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,

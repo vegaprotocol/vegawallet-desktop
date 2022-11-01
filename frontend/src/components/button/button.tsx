@@ -1,4 +1,8 @@
-import type { ButtonHTMLAttributes, ForwardedRef } from 'react'
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ForwardedRef
+} from 'react'
 import React from 'react'
 
 import { Colors } from '../../config/colors'
@@ -92,6 +96,91 @@ export const Button = React.forwardRef(
           {loading ? <Spinner /> : children}
         </span>
       </button>
+    )
+  }
+)
+
+interface AnchorButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  loading?: boolean
+  disabled?: boolean
+}
+
+export const AnchorButton = React.forwardRef(
+  (
+    {
+      children,
+      loading,
+      disabled,
+      onMouseEnter,
+      onMouseLeave,
+      ...props
+    }: AnchorButtonProps,
+    ref: ForwardedRef<HTMLAnchorElement>
+  ) => {
+    const [hover, setHover] = React.useState(false)
+
+    const handleMouseEnter = (
+      e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    ) => {
+      setHover(true)
+      if (typeof onMouseEnter === 'function') {
+        onMouseEnter(e)
+      }
+    }
+
+    const handleMouseLeave = (
+      e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    ) => {
+      setHover(false)
+      if (typeof onMouseLeave === 'function') {
+        onMouseLeave(e)
+      }
+    }
+
+    const color = React.useMemo(
+      () =>
+        getColor({
+          hover,
+          disabled: disabled
+        }),
+      [hover, disabled]
+    )
+
+    const style: React.CSSProperties = {
+      background: hover ? Colors.WHITE : 'transparent',
+      color,
+      border: `1px solid ${disabled ? Colors.GRAY_3 : Colors.WHITE}`,
+      borderRadius: 2,
+      cursor: 'pointer',
+      fontSize: 16,
+      padding: '7px 17px',
+      textTransform: 'uppercase',
+      textDecoration: 'none',
+      minWidth: 145,
+      transition: 'all .3s ease',
+      pointerEvents: disabled || loading ? 'none' : 'initial'
+    }
+
+    return (
+      <a
+        ref={ref}
+        role='button'
+        {...props}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        style={{ ...style, ...props.style }}
+      >
+        <span
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 5
+          }}
+        >
+          {loading ? <Spinner /> : children}
+        </span>
+      </a>
     )
   }
 )

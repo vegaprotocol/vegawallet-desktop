@@ -13,13 +13,80 @@ import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
+type ServiceAction = {
+  logger: log.Logger
+  getState: () => GlobalState
+  service: ServiceType
+  dispatch: GlobalDispatch
+}
+
+const stopService = async ({ logger, service, dispatch }: ServiceAction) => {
+  logger.debug('StopService')
+  try {
+    const status = await service.GetServiceState()
+    if (status.running) {
+      await service.StopService()
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Stopped
+      })
+    }
+  } catch (err) {
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Error
+    })
+    logger.error(err)
+    AppToaster.show({
+      message: `${err}`,
+      intent: Intent.DANGER
+    })
+  }
+}
+
+const startService = async ({
+  logger,
+  getState,
+  service,
+  dispatch
+}: ServiceAction) => {
+  logger.debug('StartService')
+  const state = getState()
+  try {
+    const status = await service.GetCurrentServiceInfo()
+    if (!status.running && state.network && state.networkConfig) {
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Loading
+      })
+      await service.StartService({ network: state.network })
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Started
+      })
+    }
+  } catch (err) {
+    logger.error(err)
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Error
+    })
+    AppToaster.show({
+      message: `${err}`,
+      intent: Intent.DANGER
+    })
+  }
+}
+
 const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
   const networks = await service.WalletApi.ListNetworks()
 
   if (preset && (!networks.networks || networks.networks.length === 0)) {
     await service.WalletApi.ImportNetwork({
       name: preset.name,
-      url: preset.configFileUrl
+      url: preset.configFileUrl,
+      filePath: '',
+      overwrite: true
     })
 
     return service.WalletApi.ListNetworks()
@@ -43,7 +110,7 @@ export function createActions(
   logger: log.Logger,
   enableTelemetry: () => void
 ) {
-  return {
+  const actions = {
     initAppAction() {
       return async (dispatch: GlobalDispatch) => {
         try {
@@ -64,7 +131,7 @@ export function createActions(
             ]
           )
 
-          dispatch({ type: 'SET_VERSION', version: version.version })
+          dispatch({ type: 'SET_VERSION', version })
           dispatch({ type: 'SET_PRESETS', presets })
           dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
 
@@ -138,15 +205,12 @@ export function createActions(
 
     completeOnboardAction(onComplete: () => void) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-        const state = getState()
-        try {
-          const serviceState = await service.GetCurrentServiceInfo()
-          if (!serviceState.running && state.network && state.networkConfig) {
-            await service.StartService({ network: state.network })
-          }
-        } catch (err) {
-          logger.error(err)
-        }
+        await startService({
+          getState,
+          logger,
+          dispatch,
+          service
+        })
         dispatch({
           type: 'COMPLETE_ONBOARD'
         })
@@ -237,9 +301,16 @@ export function createActions(
     changeNetworkAction(network: string) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         logger.debug('ChangeNetwork')
+        const state = getState()
 
         try {
-          const state = getState()
+          await stopService({
+            getState,
+            logger,
+            dispatch,
+            service
+          })
+
           await service.UpdateAppConfig(
             new AppModel.Config({
               ...state.config,
@@ -253,6 +324,13 @@ export function createActions(
             type: 'CHANGE_NETWORK',
             network,
             config
+          })
+
+          await stopService({
+            getState,
+            logger,
+            dispatch,
+            service
           })
         } catch (err) {
           AppToaster.show({
@@ -273,25 +351,14 @@ export function createActions(
 
         logger.debug('UpdateNetworkConfig')
 
-        try {
-          // Stop main REST service if you are editing the active network config
-          if (state.network === editingNetwork) {
-            const serviceStatus = await service.GetCurrentServiceInfo()
-            if (serviceStatus.running) {
-              await service.StopService()
-              dispatch({
-                type: 'SET_SERVICE_STATUS',
-                status: ServiceState.Stopped
-              })
-            }
-          }
-        } catch (err) {
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Error
+        // Stop main REST service if you are editing the active network config
+        if (state.network === editingNetwork) {
+          await stopService({
+            getState,
+            logger,
+            dispatch,
+            service
           })
-          AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-          logger.error(err)
         }
 
         try {
@@ -321,27 +388,13 @@ export function createActions(
           logger.error(err)
         }
 
-        try {
-          if (state.network === editingNetwork) {
-            dispatch({
-              type: 'SET_SERVICE_STATUS',
-              status: ServiceState.Loading
-            })
-            await service.StartService({
-              network: state.network
-            })
-            dispatch({
-              type: 'SET_SERVICE_STATUS',
-              status: ServiceState.Started
-            })
-          }
-        } catch (err) {
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Error
+        if (state.network === editingNetwork) {
+          await startService({
+            getState,
+            logger,
+            dispatch,
+            service
           })
-          AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
-          logger.error(err)
         }
       }
     },
@@ -350,33 +403,17 @@ export function createActions(
       network: string,
       config: WalletModel.DescribeNetworkResult
     ) {
-      return async (dispatch: GlobalDispatch) => {
+      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+        const state = getState()
+
         dispatch({
           type: 'ADD_NETWORK',
           network,
           config
         })
 
-        // If no service running start service for newly added network
-        try {
-          const status = await service.GetCurrentServiceInfo()
-          if (!status.running) {
-            await service.StartService({ network })
-            dispatch({
-              type: 'SET_SERVICE_STATUS',
-              status: ServiceState.Started
-            })
-          }
-        } catch (err) {
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Error
-          })
-          AppToaster.show({
-            message: `${err}`,
-            intent: Intent.DANGER
-          })
-          logger.error(err)
+        if (!state.network) {
+          dispatch(actions.changeNetworkAction(network))
         }
       }
     },
@@ -387,7 +424,12 @@ export function createActions(
         logger.debug('RemoveNetwork')
         try {
           if (state.network === network) {
-            await service.StopService()
+            await stopService({
+              getState,
+              logger,
+              dispatch,
+              service
+            })
           }
           await service.WalletApi.RemoveNetwork({ network })
           dispatch({
@@ -410,53 +452,28 @@ export function createActions(
 
     startServiceAction() {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-        const state = getState()
-        logger.debug('StartService')
-        try {
-          const status = await service.GetCurrentServiceInfo()
-          if (!status.running && state.network && state.networkConfig) {
-            await service.StartService({ network: state.network })
-            dispatch({
-              type: 'SET_SERVICE_STATUS',
-              status: ServiceState.Started
-            })
-          }
-        } catch (err) {
-          logger.error(err)
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Error
-          })
-          AppToaster.show({
-            message: `${err}`,
-            intent: Intent.DANGER
-          })
-        }
+        await startService({
+          logger,
+          getState,
+          service,
+          dispatch
+        })
       }
     },
 
     stopServiceAction() {
-      return async (dispatch: GlobalDispatch) => {
-        logger.debug('StopService')
-        try {
-          const status = await service.GetCurrentServiceInfo()
-          if (status.running) {
-            await service.StopService()
-            dispatch({
-              type: 'SET_SERVICE_STATUS',
-              status: ServiceState.Stopped
-            })
-          }
-        } catch (err) {
-          logger.error(err)
-          AppToaster.show({
-            message: `${err}`,
-            intent: Intent.DANGER
-          })
-        }
+      return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+        await stopService({
+          logger,
+          getState,
+          service,
+          dispatch
+        })
       }
     }
   }
+
+  return actions
 }
 
 export type GlobalActions = ReturnType<typeof createActions>

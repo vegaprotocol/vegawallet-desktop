@@ -1,24 +1,19 @@
 import omit from 'lodash/omit'
 
+import { indexBy } from '../../lib/index-by'
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type { config as ConfigModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
+  Connection,
   DrawerState,
   GlobalState,
   KeyPair,
   Wallet
 } from './global-context'
 import { AppStatus, DrawerPanel, ServiceState } from './global-context'
-
-function indexBy<T>(key: keyof T) {
-  return (obj: Record<string, T>, value: T) => ({
-    ...obj,
-    [value[key] as unknown as string]: value
-  })
-}
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
@@ -84,6 +79,7 @@ export type GlobalAction =
         networks: string[]
       }
     }
+  // Wallet
   | {
       type: 'ADD_WALLET'
       wallet: string
@@ -118,6 +114,17 @@ export type GlobalAction =
       keypair: WalletModel.DescribeKeyResult
     }
   | {
+      type: 'SET_CONNECTIONS'
+      wallet: string
+      connections: Connection[]
+    }
+  | {
+      type: 'SET_PERMISSONS'
+      wallet: string
+      hostname: string
+      permissions: WalletModel.Permissions
+    }
+  | {
       type: 'CHANGE_WALLET'
       wallet: string
     }
@@ -129,6 +136,7 @@ export type GlobalAction =
       type: 'DEACTIVATE_WALLET'
       wallet: string
     }
+  // UI
   | {
       type: 'SET_DRAWER'
       state: DrawerState
@@ -208,6 +216,11 @@ export type GlobalAction =
       type: 'UPDATE_TRANSACTION'
       transaction: Transaction
     }
+  | {
+      type: 'ADD_CONNECTION'
+      connection: Connection
+      wallet: string
+    }
 
 export function globalReducer(
   state: GlobalState,
@@ -271,6 +284,7 @@ export function globalReducer(
       const keypairExtended: KeyPair = extendKeypair(action.key)
       const newWallet: Wallet = {
         name: action.wallet,
+        connections: {},
         keypairs: {
           ...(keypairExtended.publicKey && {
             [keypairExtended.publicKey ?? '']: keypairExtended
@@ -350,6 +364,59 @@ export function globalReducer(
           ...(newKeypair.publicKey && {
             [newKeypair.publicKey ?? '']: newKeypair
           })
+        }
+      }
+
+      return {
+        ...state,
+        wallets: {
+          ...state.wallets,
+          [action.wallet]: updatedWallet
+        }
+      }
+    }
+    case 'SET_CONNECTIONS': {
+      if (!state.wallets[action.wallet]) {
+        throw new Error('Wallet not found')
+      }
+      const targetWallet = state.wallets[action.wallet]
+
+      const updatedWallet: Wallet = {
+        ...targetWallet,
+        connections: action.connections.reduce(
+          indexBy<Connection>('hostname'),
+          {}
+        )
+      }
+
+      return {
+        ...state,
+        wallets: {
+          ...state.wallets,
+          [action.wallet]: updatedWallet
+        }
+      }
+    }
+    case 'SET_PERMISSONS': {
+      if (!state.wallets[action.wallet]) {
+        throw new Error('Wallet not found')
+      }
+      const targetWallet = state.wallets[action.wallet]
+
+      if (!targetWallet.connections?.[action.hostname]) {
+        throw new Error('Connection not found')
+      }
+
+      const targetConnection = targetWallet.connections[action.hostname]
+
+      const updatedWallet: Wallet = {
+        ...targetWallet,
+        connections: {
+          ...targetWallet.connections,
+          [action.hostname]: {
+            ...targetConnection,
+            permissions: action.permissions
+          }
         }
       }
 
@@ -513,22 +580,22 @@ export function globalReducer(
     }
     case 'ADD_TRANSACTION':
     case 'UPDATE_TRANSACTION': {
-      const currentWallet = state.wallets[action.transaction.wallet]
+      const targetWallet = state.wallets[action.transaction.wallet]
 
-      if (!currentWallet) {
+      if (!targetWallet) {
         throw new Error('Wallet not found')
       }
 
-      const keypair = currentWallet.keypairs?.[action.transaction.publicKey]
+      const keypair = targetWallet.keypairs?.[action.transaction.publicKey]
 
       if (!keypair) {
         throw new Error('Public key not found')
       }
 
       const updatedWallet: Wallet = {
-        ...currentWallet,
+        ...targetWallet,
         keypairs: {
-          ...currentWallet.keypairs,
+          ...targetWallet.keypairs,
           [action.transaction.publicKey]: {
             ...keypair,
             transactions: {
@@ -544,6 +611,28 @@ export function globalReducer(
         wallets: {
           ...state.wallets,
           [action.transaction.wallet]: updatedWallet
+        }
+      }
+    }
+    case 'ADD_CONNECTION': {
+      const targetWallet = state.wallets[action.wallet]
+
+      if (!targetWallet) {
+        throw new Error('Wallet not found')
+      }
+
+      const updatedWallet: Wallet = {
+        ...targetWallet,
+        connections: {
+          ...targetWallet.connections,
+          [action.connection.hostname]: action.connection
+        }
+      }
+
+      return {
+        ...state,
+        wallets: {
+          [action.wallet]: updatedWallet
         }
       }
     }
