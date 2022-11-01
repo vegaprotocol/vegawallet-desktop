@@ -25,16 +25,16 @@ import (
 const (
 	// ServiceIsHealthy is sent when the service is healthy.
 	// This event can be emitted every 15 seconds.
-	ServiceIsHealthy = "service_is_healthy"
+	ServiceIsHealthy HealthCheckStatus = "service_is_healthy"
 
 	// ServiceIsUnhealthy is sent when the service is unhealthy, meaning we could
 	// connect but the endpoint didn't answer what we expected.
 	// This event can be emitted every 15 seconds.
-	ServiceIsUnhealthy = "service_is_unhealthy"
+	ServiceIsUnhealthy HealthCheckStatus = "service_is_unhealthy"
 
 	// ServiceUnreachable is sent when no service is not running anymore.
 	// This event can be emitted every 15 seconds.
-	ServiceUnreachable = "service_unreachable"
+	ServiceUnreachable HealthCheckStatus = "service_unreachable"
 
 	// ServiceStopped is sent when the service has been stopped by the user.
 	// This event is emitted once per service lifecycle.
@@ -61,6 +61,8 @@ var (
 	ErrServiceAlreadyRunning = errors.New("the service is already running")
 	ErrServiceNotRunning     = errors.New("the service is not running")
 )
+
+type HealthCheckStatus string
 
 type StartServiceRequest struct {
 	Network string `json:"network"`
@@ -255,8 +257,10 @@ func (h *Handler) StopService() error {
 }
 
 type GetCurrentServiceInfo struct {
-	URL         string `json:"url"`
-	LogFilePath string `json:"logFilePath"`
+	URL               string `json:"url"`
+	LogFilePath       string `json:"logFilePath"`
+	IsRunning         bool   `json:"isRunning"`
+	LatestHealthState string `json:"latestHealthState"`
 }
 
 func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
@@ -267,13 +271,17 @@ func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
 		return GetCurrentServiceInfo{}, err
 	}
 
-	if h.currentService == nil {
-		return GetCurrentServiceInfo{}, ErrServiceNotRunning
+	if !h.currentService.IsRunning() {
+		return GetCurrentServiceInfo{
+			IsRunning: false,
+		}, nil
 	}
 
 	return GetCurrentServiceInfo{
-		URL:         h.currentService.url,
-		LogFilePath: h.currentService.logFilePath,
+		URL:               h.currentService.url,
+		LogFilePath:       h.currentService.logFilePath,
+		IsRunning:         true,
+		LatestHealthState: string(h.currentService.latestHealthState),
 	}, nil
 }
 
@@ -352,14 +360,15 @@ func (h *Handler) queryServiceHealth(log *zap.Logger, svcURL string) {
 	response, err := http.Get(url)
 	if err != nil {
 		log.Error("Could not reach the service", zap.Error(err))
-		runtime.EventsEmit(h.ctx, ServiceUnreachable)
+		h.currentService.SetHealth(ServiceUnreachable)
 	} else if response != nil && response.StatusCode == http.StatusOK {
 		log.Debug("The service is healthy")
-		runtime.EventsEmit(h.ctx, ServiceIsHealthy)
+		h.currentService.SetHealth(ServiceIsHealthy)
 	} else {
-		runtime.EventsEmit(h.ctx, ServiceIsUnhealthy)
 		log.Warn("The service is reachable but is not healthy", zap.String("code", response.Status))
+		h.currentService.SetHealth(ServiceIsUnhealthy)
 	}
+	runtime.EventsEmit(h.ctx, string(h.currentService.Health()))
 }
 
 func buildServiceLogger(vegaPath paths.Paths, level string) (*zap.Logger, string, error) {

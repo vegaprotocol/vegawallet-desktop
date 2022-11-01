@@ -72,6 +72,8 @@ export namespace backend {
 	export class GetCurrentServiceInfo {
 	    url: string;
 	    logFilePath: string;
+	    isRunning: boolean;
+	    latestHealthState: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new GetCurrentServiceInfo(source);
@@ -81,6 +83,8 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.url = source["url"];
 	        this.logFilePath = source["logFilePath"];
+	        this.isRunning = source["isRunning"];
+	        this.latestHealthState = source["latestHealthState"];
 	    }
 	}
 	export class GetVersionResponse {

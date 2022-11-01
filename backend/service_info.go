@@ -11,6 +11,8 @@ type serviceInfo struct {
 
 	cancelFunc context.CancelFunc
 
+	latestHealthState HealthCheckStatus
+
 	logFilePath string
 
 	responseChan  chan interactor.Interaction
@@ -25,6 +27,14 @@ func newServiceInfo() *serviceInfo {
 
 func (s *serviceInfo) IsRunning() bool {
 	return s.cancelFunc != nil
+}
+
+func (s *serviceInfo) Health() HealthCheckStatus {
+	return s.latestHealthState
+}
+
+func (s *serviceInfo) SetHealth(state HealthCheckStatus) {
+	s.latestHealthState = state
 }
 
 func (s *serviceInfo) SetInfo(url string, logFilePath string) {
@@ -48,6 +58,7 @@ func (s *serviceInfo) Shutdown() {
 func (s *serviceInfo) reset() {
 	s.url = ""
 	s.logFilePath = ""
+	s.latestHealthState = ""
 	s.cancelFunc = nil
 	s.receptionChan = make(chan interactor.Interaction, 1)
 	s.responseChan = make(chan interactor.Interaction, 1)
