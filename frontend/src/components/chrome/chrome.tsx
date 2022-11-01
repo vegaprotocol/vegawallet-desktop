@@ -13,8 +13,6 @@ export function Chrome({ children }: { children: React.ReactNode }) {
   const { height } = useWindowSize()
   const useVegaBg = state.status === AppStatus.Onboarding
 
-  console.log(state.status)
-
   return (
     <>
       <div

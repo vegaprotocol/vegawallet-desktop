@@ -45,6 +45,13 @@ const stopService = async ({
       })
     }
   } catch (err) {
+    if (err instanceof Error && err.message === 'the service is not running') {
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Stopped
+      })
+      return
+    }
     dispatch({
       type: 'SET_SERVICE_STATUS',
       status: ServiceState.Error
@@ -149,7 +156,6 @@ export function createActions(
           if (!isInit) {
             const existingConfig =
               await service.SearchForExistingConfiguration()
-            console.log(existingConfig)
             dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
             return
           }
