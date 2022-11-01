@@ -25,28 +25,35 @@ describe('manage networks', () => {
   it('change network and persists after reload', () => {
     cy.getByTestId('network-select').click()
     cy.getByTestId('select-test_network2').click()
-    cy.getByTestId('service-status').should(
-      'contain.text',
-      'Wallet Service: Loading'
-    )
-    cy.getByTestId('service-status').should(
-      'contain.text',
-      'Wallet Service: test_network2'
-    )
+    cy.getByTestId('service-status')
+      .scrollIntoView()
+      .contains('Wallet Service: Loading', {
+        timeout: 20000
+      })
+    cy.getByTestId('service-status')
+      .scrollIntoView()
+      .contains('Wallet Service: test_network2', {
+        timeout: 20000
+      })
 
     cy.reload()
     unlockWallet(walletName, passphrase)
 
     cy.getByTestId('service-status')
-      .contains('Wallet Service: test_network2 on http://127.0.0.1:1789')
-      .should('exist')
+      .scrollIntoView()
+      .contains('Wallet Service: test_network2 on http://127.0.0.1:1789', {
+        timeout: 20000
+      })
+      .should('be.visible')
 
     cy.getByTestId('network-select').click()
     cy.getByTestId('select-test').click()
-    cy.getByTestId('service-status').should(
-      'contain.text',
-      'Wallet Service: test'
-    )
+    cy.getByTestId('service-status')
+      .scrollIntoView()
+      .contains('Wallet Service: test', {
+        timeout: 20000
+      })
+    // .should('be.visible')
   })
 
   it('view network details', () => {
