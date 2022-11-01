@@ -43,9 +43,10 @@ export const NetworkSwitcher = () => {
 
   const handleConfirm = useCallback(() => {
     if (selectedNetwork) {
+      setConnectionWarning(false)
       dispatch(actions.changeNetworkAction(selectedNetwork))
     }
-  }, [dispatch, actions, selectedNetwork])
+  }, [dispatch, actions, selectedNetwork, setConnectionWarning])
 
   return (
     <>
