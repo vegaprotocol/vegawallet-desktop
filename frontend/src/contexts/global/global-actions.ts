@@ -20,11 +20,7 @@ type ServiceAction = {
   dispatch: GlobalDispatch
 }
 
-const stopService = async ({
-  logger,
-  service,
-  dispatch
-}: ServiceAction) => {
+const stopService = async ({ logger, service, dispatch }: ServiceAction) => {
   logger.debug('StopService')
   const { isRunning } = await service.GetCurrentServiceInfo()
   if (!isRunning) {
@@ -70,10 +66,7 @@ const startService = async ({
     return
   }
   try {
-    if (
-      state.network &&
-      state.networkConfig
-    ) {
+    if (state.network && state.networkConfig) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading
