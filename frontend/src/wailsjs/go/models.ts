@@ -1,13 +1,13 @@
 export namespace backend {
-	
+
 	export class GetServiceStateResponse {
 	    url: string;
 	    running: boolean;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new GetServiceStateResponse(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.url = source["url"];
@@ -17,11 +17,11 @@ export namespace backend {
 	export class LatestRelease {
 	    version: string;
 	    url: string;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new LatestRelease(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.version = source["version"];
@@ -33,11 +33,11 @@ export namespace backend {
 	    latestRelease: LatestRelease;
 	    gitHash: string;
 	    backend?: version.GetVersionResponse;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new GetVersionResponse(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.version = source["version"];
@@ -45,7 +45,7 @@ export namespace backend {
 	        this.gitHash = source["gitHash"];
 	        this.backend = this.convertValues(source["backend"], version.GetVersionResponse);
 	    }
-	
+
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
 		    if (!a) {
 		        return a;
@@ -66,25 +66,25 @@ export namespace backend {
 	}
 	export class InitialiseAppRequest {
 	    vegaHome: string;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new InitialiseAppRequest(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.vegaHome = source["vegaHome"];
 	    }
 	}
-	
+
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
 	    networks: string[];
-	
+
 	    static createFrom(source: any = {}) {
 	        return new SearchForExistingConfigurationResponse(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.wallets = source["wallets"];
@@ -93,11 +93,11 @@ export namespace backend {
 	}
 	export class StartServiceRequest {
 	    network: string;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new StartServiceRequest(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.network = source["network"];
@@ -107,15 +107,15 @@ export namespace backend {
 }
 
 export namespace config {
-	
+
 	export class TelemetryConfig {
 	    consentAsked: boolean;
 	    enabled: boolean;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new TelemetryConfig(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.consentAsked = source["consentAsked"];
@@ -127,11 +127,11 @@ export namespace config {
 	    vegaHome: string;
 	    defaultNetwork: string;
 	    telemetry: TelemetryConfig;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.logLevel = source["logLevel"];
@@ -139,7 +139,7 @@ export namespace config {
 	        this.defaultNetwork = source["defaultNetwork"];
 	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
 	    }
-	
+
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
 		    if (!a) {
 		        return a;
@@ -162,16 +162,16 @@ export namespace config {
 }
 
 export namespace interactor {
-	
+
 	export class Interaction {
 	    traceID: string;
 	    name: string;
 	    data: any;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new Interaction(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.traceID = source["traceID"];
@@ -183,16 +183,16 @@ export namespace interactor {
 }
 
 export namespace jsonrpc {
-	
+
 	export class ErrorDetails {
 	    code: number;
 	    message: string;
 	    data?: string;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new ErrorDetails(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.code = source["code"];
@@ -205,11 +205,11 @@ export namespace jsonrpc {
 	    method: string;
 	    params?: any;
 	    id?: string;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new Request(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.jsonrpc = source["jsonrpc"];
@@ -223,11 +223,11 @@ export namespace jsonrpc {
 	    result?: any;
 	    error?: ErrorDetails;
 	    id?: string;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new Response(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.jsonrpc = source["jsonrpc"];
@@ -235,7 +235,7 @@ export namespace jsonrpc {
 	        this.error = this.convertValues(source["error"], ErrorDetails);
 	        this.id = source["id"];
 	    }
-	
+
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
 		    if (!a) {
 		        return a;
@@ -258,17 +258,17 @@ export namespace jsonrpc {
 }
 
 export namespace version {
-	
+
 	export class NetworkCompatibility {
 	    network: string;
 	    isCompatible: boolean;
 	    retrievedVersion: string;
 	    error: any;
-	
+
 	    static createFrom(source: any = {}) {
 	        return new NetworkCompatibility(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.network = source["network"];
@@ -281,18 +281,18 @@ export namespace version {
 	    version: string;
 	    gitHash: string;
 	    networksCompatibility: NetworkCompatibility[];
-	
+
 	    static createFrom(source: any = {}) {
 	        return new GetVersionResponse(source);
 	    }
-	
+
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.version = source["version"];
 	        this.gitHash = source["gitHash"];
 	        this.networksCompatibility = this.convertValues(source["networksCompatibility"], NetworkCompatibility);
 	    }
-	
+
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
 		    if (!a) {
 		        return a;
@@ -313,4 +313,3 @@ export namespace version {
 	}
 
 }
-

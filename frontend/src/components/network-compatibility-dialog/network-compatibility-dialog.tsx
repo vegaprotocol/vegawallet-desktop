@@ -66,7 +66,7 @@ const shouldBeOpen = (
   networkData?: VersionModel.NetworkCompatibility,
   telemetryConsentAsked?: boolean
 ) => {
-  return telemetryConsentAsked === true && !networkData?.isCompatible === false
+  return telemetryConsentAsked === true && networkData?.isCompatible === false
 }
 
 export const NetworkCompatibilityDialog = () => {
@@ -76,9 +76,8 @@ export const NetworkCompatibilityDialog = () => {
     [state.network, state.version]
   )
   const compatibleNetworksList = useMemo(() => {
-    return (state.version?.backend?.networksCompatibility || []).reduce<
-      string[]
-    >(addCompatibleNetwork, [])
+    const checkList = state.version?.backend?.networksCompatibility || []
+    return checkList.reduce<string[]>(addCompatibleNetwork, [])
   }, [state.version])
   const [isOpen, setOpen] = useState(
     shouldBeOpen(networkData, state.config?.telemetry.consentAsked)
