@@ -7,8 +7,8 @@ import { Vega } from '../../components/icons'
 import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
-import { createLogger } from '../../lib/logging'
 import { useVegaHome } from '../../hooks/use-vega-home'
+import { createLogger } from '../../lib/logging'
 import { Paths } from '..'
 
 const logger = createLogger('Onboard')
@@ -65,10 +65,7 @@ export function Onboard() {
       <>
         <p style={{ marginBottom: 20 }}>Existing wallets found</p>
         <ButtonGroup>
-          <Button
-            loading={isLoading}
-            onClick={handleImportExistingWallet}
-          >
+          <Button loading={isLoading} onClick={handleImportExistingWallet}>
             Use existing
           </Button>
         </ButtonGroup>

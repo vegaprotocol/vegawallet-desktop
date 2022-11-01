@@ -27,7 +27,6 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
 
   const {
     state: { serviceStatus, network, networkConfig },
-    service,
     actions,
     dispatch
   } = useGlobal()
@@ -95,7 +94,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
     if (serviceStatus === ServiceState.Stopped) {
       dispatch(actions.startServiceAction())
     }
-  }, [service, dispatch, network, networkConfig, serviceStatus])
+  }, [dispatch, actions, serviceStatus])
 
   if (serviceError && networkConfig) {
     return (

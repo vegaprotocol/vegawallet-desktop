@@ -1,6 +1,6 @@
 import { Colors } from '../../config/colors'
+import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useWindowSize } from '../../hooks/use-window-size'
-import { useGlobal, AppStatus } from '../../contexts/global/global-context'
 import { ChromeDrawer } from './chrome-drawer'
 
 export const DRAWER_HEIGHT = 70
@@ -22,7 +22,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         style={{
           position: 'relative',
           display: 'block',
-          paddingBottom: state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT,
+          paddingBottom:
+            state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT,
           height: '100%',
           backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
           backgroundSize: 'cover',
@@ -46,7 +47,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             left: 0,
             width: '100%',
             transition: 'bottom 0.2s',
-            height: state.status !== AppStatus.Initialised  ? 0 : DRAWER_HEIGHT
+            height: state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT
           }}
         >
           <ChromeDrawer height={height} />

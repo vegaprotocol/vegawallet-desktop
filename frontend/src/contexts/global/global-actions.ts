@@ -24,12 +24,16 @@ const stopService = async ({
   logger,
   getState,
   service,
-  dispatch,
+  dispatch
 }: ServiceAction) => {
   logger.debug('StopService')
   const state = getState()
   try {
-    if (![ServiceState.Stopped, ServiceState.Stopping].includes(state.serviceStatus)) {
+    if (
+      ![ServiceState.Stopped, ServiceState.Stopping].includes(
+        state.serviceStatus
+      )
+    ) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Stopping
@@ -62,7 +66,13 @@ const startService = async ({
   logger.debug('StartService')
   const state = getState()
   try {
-    if (![ServiceState.Started, ServiceState.Loading].includes(state.serviceStatus) && state.network && state.networkConfig) {
+    if (
+      ![ServiceState.Started, ServiceState.Loading].includes(
+        state.serviceStatus
+      ) &&
+      state.network &&
+      state.networkConfig
+    ) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading

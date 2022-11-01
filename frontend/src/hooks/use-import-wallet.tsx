@@ -2,10 +2,10 @@ import React from 'react'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import { useGlobal, AppStatus } from '../contexts/global/global-context'
+import { AppStatus, useGlobal } from '../contexts/global/global-context'
 import { createLogger } from '../lib/logging'
-import { useVegaHome } from './use-vega-home'
 import type { WalletModel } from '../wallet-client'
+import { useVegaHome } from './use-vega-home'
 
 const logger = createLogger('UseImportWallet')
 
@@ -61,7 +61,7 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [dispatch, service, actions]
+    [dispatch, actions, service, state.status, vegaHome]
   )
 
   return {

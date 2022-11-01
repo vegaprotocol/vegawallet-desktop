@@ -279,13 +279,16 @@ export function globalReducer(
         ...state,
         status: AppStatus.Onboarding,
         networks: action.existing.networks || state.networks,
-        wallets: action.existing.wallets.reduce((acc, w) => ({
-          ...acc,
-          [w]: {
-            name: w,
-            auth: false,
-          }
-        }), {}),
+        wallets: action.existing.wallets.reduce(
+          (acc, w) => ({
+            ...acc,
+            [w]: {
+              name: w,
+              auth: false
+            }
+          }),
+          {}
+        )
       }
     }
     case 'ADD_WALLET': {
