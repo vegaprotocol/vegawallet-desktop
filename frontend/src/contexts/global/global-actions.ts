@@ -84,7 +84,10 @@ const startService = async ({
       })
     }
   } catch (err) {
-    if (err instanceof Error && err.message === 'the service is already running') {
+    if (
+      err instanceof Error &&
+      err.message === 'the service is already running'
+    ) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Started
