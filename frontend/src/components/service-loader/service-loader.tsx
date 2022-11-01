@@ -32,6 +32,13 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
   } = useGlobal()
 
   useEffect(() => {
+    if (serviceStatus === ServiceState.Stopped) {
+      dispatch(actions.startServiceAction())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     if (serviceStatus === ServiceState.Started && serviceError) {
       setServiceError(null)
     }
@@ -89,12 +96,6 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
       )
     }
   }, [dispatch])
-
-  useEffect(() => {
-    if (serviceStatus === ServiceState.Stopped) {
-      dispatch(actions.startServiceAction())
-    }
-  }, [dispatch, actions, serviceStatus])
 
   if (serviceError && networkConfig) {
     return (
