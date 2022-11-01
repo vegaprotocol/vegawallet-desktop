@@ -22,36 +22,25 @@ type ServiceAction = {
 
 const stopService = async ({
   logger,
-  getState,
   service,
   dispatch
 }: ServiceAction) => {
   logger.debug('StopService')
-  const state = getState()
+  const { isRunning } = await service.GetCurrentServiceInfo()
+  if (!isRunning) {
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Stopped
+    })
+    return
+  }
   try {
-    if (
-      ![ServiceState.Stopped, ServiceState.Stopping].includes(
-        state.serviceStatus
-      )
-    ) {
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Stopping
-      })
-      await service.StopService()
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Stopped
-      })
-    }
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Stopping
+    })
+    await service.StopService()
   } catch (err) {
-    if (err instanceof Error && err.message === 'the service is not running') {
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Stopped
-      })
-      return
-    }
     dispatch({
       type: 'SET_SERVICE_STATUS',
       status: ServiceState.Error
@@ -72,11 +61,16 @@ const startService = async ({
 }: ServiceAction) => {
   logger.debug('StartService')
   const state = getState()
+  const { isRunning } = await service.GetCurrentServiceInfo()
+  if (isRunning) {
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Started
+    })
+    return
+  }
   try {
     if (
-      ![ServiceState.Started, ServiceState.Loading].includes(
-        state.serviceStatus
-      ) &&
       state.network &&
       state.networkConfig
     ) {
@@ -85,22 +79,8 @@ const startService = async ({
         status: ServiceState.Loading
       })
       await service.StartService({ network: state.network })
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Started
-      })
     }
   } catch (err) {
-    if (
-      err instanceof Error &&
-      err.message === 'the service is already running'
-    ) {
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Started
-      })
-      return
-    }
     logger.error(err)
     dispatch({
       type: 'SET_SERVICE_STATUS',
@@ -361,7 +341,7 @@ export function createActions(
             config
           })
 
-          await stopService({
+          await startService({
             getState,
             logger,
             dispatch,

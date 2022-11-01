@@ -4,7 +4,7 @@ after(() => {
     const handler = win.go.backend.Handler
 
     const service = await handler.GetCurrentServiceInfo()
-    if (service.running) {
+    if (service.isRunning) {
       await handler.StopService()
     }
   })
