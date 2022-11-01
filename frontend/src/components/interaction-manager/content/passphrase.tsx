@@ -4,11 +4,11 @@ import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestPassphrase, RequestPermissions } from '../types'
+import type { InteractionContentProps, RequestPassphrase } from '../types'
 import {
-  INTERACTION_TYPE,
-  INTERACTION_RESPONSE_TYPE,
   EVENT_FLOW_TYPE,
+  INTERACTION_RESPONSE_TYPE,
+  INTERACTION_TYPE
 } from '../types'
 
 export const Passphrase = ({
@@ -34,20 +34,25 @@ export const Passphrase = ({
         })
 
         if (flow === EVENT_FLOW_TYPE.PERMISSION_REQUEST) {
-          const source = history.find(interaction => (
-            interaction.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
-          ))
+          const source = history.find(
+            interaction =>
+              interaction.event.name ===
+              INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
+          )
 
-          if (source && source.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW) {
+          if (
+            source &&
+            source.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
+          ) {
             const { wallet, hostname } = source?.event.data
 
-            const { permissions } = await service.WalletApi.DescribePermissions({
-              wallet,
-              passphrase,
-              hostname
-            })
-
-            console.log(permissions)
+            const { permissions } = await service.WalletApi.DescribePermissions(
+              {
+                wallet,
+                passphrase,
+                hostname
+              }
+            )
 
             dispatch({
               type: 'ADD_CONNECTION',
@@ -81,7 +86,7 @@ export const Passphrase = ({
     if (!isResolved) {
       handleResponse()
     }
-  }, [service, event, isResolved, setResolved])
+  }, [dispatch, flow, history, service, event, isResolved, setResolved])
 
   return null
 }
