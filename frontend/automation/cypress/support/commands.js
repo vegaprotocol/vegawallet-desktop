@@ -219,8 +219,11 @@ Cypress.Commands.add('waitForHome', () => {
     if (body.find('[data-testid="telemetry-option-form"]').length > 0) {
       cy.get('button[role="radio"][value="no"]').click()
       cy.getByTestId('telemetry-option-continue').click()
+      cy.getByTestId('telemetry-option-continue').should('not.exist')
     }
-    if (body.find('[data-testid="network-compatibility-dialod"]').length > 0) {
+  })
+  cy.get('body').then(body => {
+    if (body.find('[data-testid="network-compatibility-continue"]').length > 0) {
       cy.get('button[data-testid="network-compatibility-continue"]').click()
     }
   })
