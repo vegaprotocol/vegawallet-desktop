@@ -3,8 +3,8 @@ after(() => {
   cy.window().then(async win => {
     const handler = win.go.backend.Handler
 
-    const service = await handler.GetServiceState()
-    if (service.running) {
+    const service = await handler.GetCurrentServiceInfo()
+    if (service.isRunning) {
       await handler.StopService()
     }
   })

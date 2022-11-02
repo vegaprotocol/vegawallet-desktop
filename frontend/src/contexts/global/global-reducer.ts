@@ -6,7 +6,7 @@ import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type {
   backend as BackendModel,
-  config as ConfigModel
+  app as AppModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
@@ -52,7 +52,7 @@ export const initialGlobalState: GlobalState = {
 export type GlobalAction =
   | {
       type: 'INIT_APP'
-      config: ConfigModel.Config
+      config: AppModel.Config
       wallets: string[]
       network: string
       networks: string[]
@@ -73,7 +73,7 @@ export type GlobalAction =
     }
   | {
       type: 'SET_CONFIG'
-      config: ConfigModel.Config
+      config: AppModel.Config
     }
   | {
       type: 'START_ONBOARDING'
@@ -280,7 +280,18 @@ export function globalReducer(
     case 'START_ONBOARDING': {
       return {
         ...state,
-        status: AppStatus.Onboarding
+        status: AppStatus.Onboarding,
+        networks: action.existing.networks || state.networks,
+        wallets: action.existing.wallets.reduce(
+          (acc, w) => ({
+            ...acc,
+            [w]: {
+              name: w,
+              auth: false
+            }
+          }),
+          {}
+        )
       }
     }
     case 'ADD_WALLET': {

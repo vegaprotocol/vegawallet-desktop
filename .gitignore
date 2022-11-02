@@ -1,9 +1,5 @@
 # Created when applications are built
 build/bin
 
-# Created when frontend is built
-frontend/build
-frontend/dist
-
 # Misc
 .DS_Store

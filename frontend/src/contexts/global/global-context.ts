@@ -7,7 +7,7 @@ import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type {
   backend as BackendModel,
-  config as ConfigModel
+  app as AppModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
@@ -24,6 +24,7 @@ export enum ServiceState {
   Started = 'Started',
   Stopped = 'Stopped',
   Loading = 'Loading',
+  Stopping = 'Stopping',
   Unhealthy = 'Unhealthy',
   Unreachable = 'Unreachable',
   Error = 'Error'
@@ -74,7 +75,7 @@ export interface Wallet {
 export interface GlobalState {
   status: AppStatus
   version: BackendModel.GetVersionResponse | null
-  config: ConfigModel.Config | null
+  config: AppModel.Config | null
 
   // Wallet
   wallet: string | null

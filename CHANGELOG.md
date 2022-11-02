@@ -29,6 +29,7 @@
 - [257](https://github.com/vegaprotocol/vegawallet-desktop/issues/257) - Update readme with more/improved links
 - [264](https://github.com/vegaprotocol/vegawallet-desktop/issues/264) - Let the transaction review window grow with the main window
 - [296](https://github.com/vegaprotocol/vegawallet-desktop/issues/296) - Service does not silently fail anymore if port is already in use
+- [393](https://github.com/vegaprotocol/vegawallet-desktop/issues/393) - Ensure the on-boarding workflow is correctly handled
 
 ## 0.2.1
 

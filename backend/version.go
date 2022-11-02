@@ -53,7 +53,7 @@ func (h *Handler) GetVersion() (*GetVersionResponse, error) {
 
 	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), app.Version)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't check latest releases: %w", err)
+		return nil, fmt.Errorf("could not check latest releases: %w", err)
 	}
 
 	latestRelease := LatestRelease{}
