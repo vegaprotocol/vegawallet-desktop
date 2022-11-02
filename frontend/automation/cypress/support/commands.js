@@ -223,7 +223,9 @@ Cypress.Commands.add('waitForHome', () => {
     }
   })
   cy.get('body').then(body => {
-    if (body.find('[data-testid="network-compatibility-continue"]').length > 0) {
+    if (
+      body.find('[data-testid="network-compatibility-continue"]').length > 0
+    ) {
       cy.get('button[data-testid="network-compatibility-continue"]').click()
     }
   })
