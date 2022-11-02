@@ -14,6 +14,7 @@ Cypress.Commands.add('clean', () => {
 
 Cypress.Commands.add('backend', () => {
   cy.visit('/')
+  cy.getByTestId('splash-loader', { timeout: 30000 }).should('not.exist')
 
   return cy.window().then(win => {
     return win.go.backend.Handler
@@ -221,7 +222,7 @@ Cypress.Commands.add('waitForHome', () => {
       cy.getByTestId('telemetry-option-continue').click()
     }
   })
-  cy.getByTestId('telemetry-option-continue', { timeout: 15000 }).should(
+  cy.getByTestId('telemetry-option-continue', { timeout: 30000 }).should(
     'not.exist'
   )
   cy.get('body').then(body => {
