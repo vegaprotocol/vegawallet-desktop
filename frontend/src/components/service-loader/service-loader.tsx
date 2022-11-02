@@ -27,9 +27,16 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
 
   const {
     state: { serviceStatus, network, networkConfig },
-    service,
+    actions,
     dispatch
   } = useGlobal()
+
+  useEffect(() => {
+    if (serviceStatus === ServiceState.Stopped) {
+      dispatch(actions.startServiceAction())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (serviceStatus === ServiceState.Started && serviceError) {
@@ -90,36 +97,6 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
     }
   }, [dispatch])
 
-  useEffect(() => {
-    async function start() {
-      if (network && networkConfig && serviceStatus === ServiceState.Stopped) {
-        try {
-          const { running } = await service.GetServiceState()
-          if (!running) {
-            dispatch({
-              type: 'SET_SERVICE_STATUS',
-              status: ServiceState.Loading
-            })
-            await service.StartService({ network })
-          } else {
-            dispatch({
-              type: 'SET_SERVICE_STATUS',
-              status: ServiceState.Started
-            })
-          }
-        } catch (err) {
-          dispatch({
-            type: 'SET_SERVICE_STATUS',
-            status: ServiceState.Error
-          })
-          setServiceError(`${err}`)
-        }
-      }
-    }
-
-    start()
-  }, [service, dispatch, network, networkConfig, serviceStatus])
-
   if (serviceError && networkConfig) {
     return (
       <Chrome>
@@ -129,7 +106,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
             <span>
               Make sure you don't already have an application running on machine
               on port{' '}
-              <pre style={{ display: 'inline' }}>:{networkConfig.port}</pre>.
+              <code style={{ display: 'inline' }}>:{networkConfig.port}</code>.
               Reload the application, or change your network port.
             </span>
           }

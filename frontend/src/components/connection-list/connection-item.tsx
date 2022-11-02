@@ -31,7 +31,7 @@ export const ConnectionItem = ({
           flexBasis: '50%'
         }}
       >
-        <pre
+        <code
           style={{
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -45,7 +45,7 @@ export const ConnectionItem = ({
             }
           />
           {connection.hostname}
-        </pre>
+        </code>
       </div>
       <div style={{ display: 'flex', gap: 20 }}>
         <ButtonUnstyled onClick={onManage}>Manage</ButtonUnstyled>

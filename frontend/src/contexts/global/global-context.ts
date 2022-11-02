@@ -5,7 +5,7 @@ import type { Thunk } from 'react-hook-thunk-reducer'
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
-import type { config as ConfigModel } from '../../wailsjs/go/models'
+import type { app as AppModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
@@ -21,6 +21,7 @@ export enum ServiceState {
   Started = 'Started',
   Stopped = 'Stopped',
   Loading = 'Loading',
+  Stopping = 'Stopping',
   Unhealthy = 'Unhealthy',
   Unreachable = 'Unreachable',
   Error = 'Error'
@@ -71,7 +72,7 @@ export interface Wallet {
 export interface GlobalState {
   status: AppStatus
   version: string
-  config: ConfigModel.Config | null
+  config: AppModel.Config | null
 
   // Wallet
   wallet: string | null

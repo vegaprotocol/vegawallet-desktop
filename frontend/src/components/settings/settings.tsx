@@ -5,7 +5,7 @@ import { LogLevels } from '../../config/log-levels'
 import { useGlobal } from '../../contexts/global/global-context'
 import { FormStatus, useFormState } from '../../hooks/use-form-state'
 import { createLogger } from '../../lib/logging'
-import { config as ConfigModel } from '../../wailsjs/go/models'
+import { app as AppModel } from '../../wailsjs/go/models'
 import { WindowReload } from '../../wailsjs/runtime/runtime'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -27,11 +27,11 @@ const useUpdateConfig = () => {
       logger.debug('UpdateAppConfig')
       setStatus(FormStatus.Pending)
       await service.UpdateAppConfig(
-        new ConfigModel.Config({
+        new AppModel.Config({
           vegaHome: fields.vegaHome,
           logLevel: fields.logLevel,
           defaultNetwork: fields.defaultNetwork,
-          telemetry: new ConfigModel.TelemetryConfig({
+          telemetry: new AppModel.TelemetryConfig({
             enabled: fields.telemetry === 'yes' ? true : false,
             consentAsked: true
           })
@@ -89,7 +89,7 @@ export function Settings() {
 interface SettingsFormProps {
   onSubmit: (fields: FormFields) => void
   onCancel: () => void
-  config: ConfigModel.Config
+  config: AppModel.Config
   isPending: boolean
 }
 

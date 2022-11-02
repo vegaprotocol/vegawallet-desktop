@@ -100,6 +100,14 @@ export function ServiceStatus() {
         </div>
       )
     }
+    case ServiceState.Stopping: {
+      return (
+        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
+          <span className='loading'>Wallet Service: Stopping</span>
+        </div>
+      )
+    }
     case ServiceState.Unhealthy: {
       return (
         <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>

@@ -1,4 +1,5 @@
 import { Colors } from '../../config/colors'
+import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useWindowSize } from '../../hooks/use-window-size'
 import { ChromeDrawer } from './chrome-drawer'
 
@@ -8,19 +9,23 @@ export const DRAWER_HEIGHT = 70
  * Handles app layout for main content, sidebar and footer
  */
 export function Chrome({ children }: { children: React.ReactNode }) {
+  const { state } = useGlobal()
   const { height } = useWindowSize()
+  const useVegaBg = state.status === AppStatus.Onboarding
 
   return (
     <>
       <div
-        className='vega-border-image'
+        className={!useVegaBg ? 'vega-border-image' : undefined}
         style={{
           position: 'relative',
           display: 'block',
-          paddingBottom: DRAWER_HEIGHT,
+          paddingBottom:
+            state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT,
           height: '100%',
-          background: Colors.DARK_GRAY_1,
-          borderTop: '3px solid'
+          backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
+          backgroundSize: 'cover',
+          borderTop: useVegaBg ? undefined : '3px solid'
         }}
       >
         <main
@@ -32,18 +37,20 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          transition: 'bottom 0.2s',
-          height: DRAWER_HEIGHT
-        }}
-      >
-        <ChromeDrawer height={height} />
-      </div>
+      {state.status === AppStatus.Initialised && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            transition: 'bottom 0.2s',
+            height: state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT
+          }}
+        >
+          <ChromeDrawer height={height} />
+        </div>
+      )}
     </>
   )
 }

@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"code.vegaprotocol.io/vega/paths"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"code.vegaprotocol.io/vegawallet-desktop/backend"
 	"github.com/wailsapp/wails/v2"
@@ -24,39 +23,46 @@ var assets embed.FS
 var icon []byte
 
 func main() {
-	logPathForApp, err := paths.CreateDefaultStatePathFor(paths.JoinStatePath(paths.WalletAppLogsHome, "startup.log"))
+	startupLogFilePath, err := app.StartupLogFilePath()
 	if err != nil {
+		// There is not much we can do to log such an early error.
 		panic(err)
 	}
+
+	log := logger.NewFileLogger(startupLogFilePath)
+
+	defer func() {
+		if r := recover(); r != nil {
+			log.Fatal(fmt.Sprintf("Recovered from a panic: %v", r))
+		}
+	}()
 
 	pid := os.Getpid()
 	date := time.Now().UTC().Format("2006-01-02-15-04-05")
 
-	log := logger.NewFileLogger(logPathForApp)
-
 	// Create an instance of the handler structure
 	handler, err := backend.NewHandler()
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Couldn't instantiate backend: %v, PID(%d), date(%v)", err, pid, date))
+		log.Fatal(fmt.Sprintf("Couldn't instantiate the backend: %v, PID(%d), date(%v)", err, pid, date))
 	}
 
 	log.Info(fmt.Sprintf("Starting the application: PID(%d), date(%v)", pid, date))
 	defer log.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
 
 	// Create application with options
-
 	if err := wails.Run(&options.App{
-		Title:            app.Name,
-		Width:            760,
-		Height:           760,
-		MinWidth:         460,
-		MinHeight:        460,
-		BackgroundColour: options.NewRGBA(0, 0, 0, 255),
-		Assets:           assets,
-		LogLevel:         logger.INFO,
-		OnStartup:        handler.Startup,
-		OnDomReady:       handler.DOMReady,
-		OnShutdown:       handler.Shutdown,
+		Title:              app.Name,
+		Width:              760,
+		Height:             760,
+		MinWidth:           460,
+		MinHeight:          460,
+		BackgroundColour:   options.NewRGBA(0, 0, 0, 255),
+		Assets:             assets,
+		LogLevel:           logger.DEBUG,
+		LogLevelProduction: logger.INFO,
+		OnStartup:          handler.Startup,
+		OnDomReady:         handler.DOMReady,
+		OnShutdown:         handler.Shutdown,
 		Bind: []interface{}{
 			handler,
 		},

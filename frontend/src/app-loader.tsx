@@ -67,7 +67,7 @@ export function AppFrame({ children }: AppFrameProps) {
         height: '100%',
         paddingTop: APP_FRAME_HEIGHT,
         backgroundSize: 'cover',
-        backgroundColor: Colors.DARK_GRAY_1,
+        backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
         position: 'relative',
         overflowY: 'auto'
       }}

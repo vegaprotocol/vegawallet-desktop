@@ -1,6 +1,9 @@
-package config
+package app
 
-import "go.uber.org/zap"
+import (
+	vgzap "code.vegaprotocol.io/vega/libs/zap"
+	"go.uber.org/zap"
+)
 
 type Config struct {
 	LogLevel       string          `json:"logLevel"`
@@ -22,7 +25,7 @@ type TelemetryConfig struct {
 
 func DefaultConfig() Config {
 	return Config{
-		LogLevel:       zap.DebugLevel.String(),
+		LogLevel:       zap.InfoLevel.String(),
 		VegaHome:       "",
 		DefaultNetwork: "",
 		Telemetry: TelemetryConfig{
@@ -30,4 +33,16 @@ func DefaultConfig() Config {
 			Enabled:      true,
 		},
 	}
+}
+
+func (c Config) EnsureIsValid() error {
+	if len(c.LogLevel) == 0 {
+		return ErrLogLevelIsRequired
+	}
+
+	if err := vgzap.EnsureIsSupportedLogLevel(c.LogLevel); err != nil {
+		return err
+	}
+
+	return nil
 }

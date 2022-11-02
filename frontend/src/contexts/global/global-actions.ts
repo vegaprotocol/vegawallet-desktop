@@ -7,7 +7,7 @@ import { Intent } from '../../config/intent'
 import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
 import type { ServiceType } from '../../service'
-import { config as ConfigModel } from '../../wailsjs/go/models'
+import { app as AppModel } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
@@ -22,15 +22,20 @@ type ServiceAction = {
 
 const stopService = async ({ logger, service, dispatch }: ServiceAction) => {
   logger.debug('StopService')
+  const { isRunning } = await service.GetCurrentServiceInfo()
+  if (!isRunning) {
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Stopped
+    })
+    return
+  }
   try {
-    const status = await service.GetServiceState()
-    if (status.running) {
-      await service.StopService()
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Stopped
-      })
-    }
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Stopping
+    })
+    await service.StopService()
   } catch (err) {
     dispatch({
       type: 'SET_SERVICE_STATUS',
@@ -52,18 +57,21 @@ const startService = async ({
 }: ServiceAction) => {
   logger.debug('StartService')
   const state = getState()
+  const { isRunning } = await service.GetCurrentServiceInfo()
+  if (isRunning) {
+    dispatch({
+      type: 'SET_SERVICE_STATUS',
+      status: ServiceState.Started
+    })
+    return
+  }
   try {
-    const status = await service.GetServiceState()
-    if (!status.running && state.network && state.networkConfig) {
+    if (state.network && state.networkConfig) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading
       })
       await service.StartService({ network: state.network })
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Started
-      })
     }
   } catch (err) {
     logger.error(err)
@@ -96,7 +104,7 @@ const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
 }
 
 const getDefaultNetwork = (
-  config: ConfigModel.Config,
+  config: AppModel.Config,
   networks: WalletModel.ListNetworksResult
 ) => {
   if (config.defaultNetwork) {
@@ -114,26 +122,9 @@ export function createActions(
     initAppAction() {
       return async (dispatch: GlobalDispatch) => {
         try {
-          const config = await service.GetAppConfig()
-
-          if (config.telemetry.enabled) {
-            enableTelemetry()
-          }
-
           logger.debug('StartApp')
 
-          const [isInit, version, presets, presetsInternal] = await Promise.all(
-            [
-              service.IsAppInitialised(),
-              service.GetVersion(),
-              fetchNetworkPreset(DataSources.NETWORKS, logger),
-              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
-            ]
-          )
-
-          dispatch({ type: 'SET_VERSION', version: version.version })
-          dispatch({ type: 'SET_PRESETS', presets })
-          dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
+          const isInit = await service.IsAppInitialised()
 
           if (!isInit) {
             const existingConfig =
@@ -144,6 +135,23 @@ export function createActions(
 
           // else continue with app setup, get wallets/networks
           logger.debug('InitApp')
+
+          const [config, version, presets, presetsInternal] = await Promise.all(
+            [
+              service.GetAppConfig(),
+              service.GetVersion(),
+              fetchNetworkPreset(DataSources.NETWORKS, logger),
+              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
+            ]
+          )
+
+          if (config.telemetry.enabled) {
+            enableTelemetry()
+          }
+
+          dispatch({ type: 'SET_VERSION', version: version.version })
+          dispatch({ type: 'SET_PRESETS', presets })
+          dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
 
           // should now have an app config
           const [wallets, networks]: [
@@ -189,7 +197,7 @@ export function createActions(
         try {
           const { config } = getState()
           if (config) {
-            const newConfig = new ConfigModel.Config({ ...config, telemetry })
+            const newConfig = new AppModel.Config({ ...config, telemetry })
             await service.UpdateAppConfig(newConfig)
             dispatch({
               type: 'SET_CONFIG',
@@ -312,7 +320,7 @@ export function createActions(
           })
 
           await service.UpdateAppConfig(
-            new ConfigModel.Config({
+            new AppModel.Config({
               ...state.config,
               defaultNetwork: network
             })
@@ -326,7 +334,7 @@ export function createActions(
             config
           })
 
-          await stopService({
+          await startService({
             getState,
             logger,
             dispatch,
