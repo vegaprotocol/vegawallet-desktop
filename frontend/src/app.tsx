@@ -12,10 +12,12 @@ import { PassphraseModal } from './components/passphrase-modal'
 import { Settings } from './components/settings'
 import { TelemetryDialog } from './components/telemetry-dialog'
 import { GlobalProvider } from './contexts/global/global-provider'
+import { SplashError } from './components/splash-error'
+import { Button } from './components/button'
 import { createLogger, initLogger } from './lib/logging'
 import { AppRouter } from './routes'
 import { Service } from './service'
-import { BrowserOpenURL } from './wailsjs/runtime'
+import { BrowserOpenURL, WindowReload } from './wailsjs/runtime'
 
 const logger = createLogger('GlobalActions')
 
@@ -50,7 +52,19 @@ function App() {
   }, [])
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary
+      fallback={({ error }) => (
+        <SplashError
+          title="Somthing went wrong"
+          message={error.message}
+          actions={[
+            <Button onClick={WindowReload}>
+              Reload
+            </Button>
+          ]}
+        />
+      )}
+    >
       <GlobalProvider
         service={Service}
         logger={logger}
