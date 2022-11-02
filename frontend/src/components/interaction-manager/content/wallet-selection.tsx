@@ -48,7 +48,6 @@ export const WalletSelection = ({
           hostname: event.data.hostname
         })
 
-
         dispatch({
           type: 'ADD_CONNECTION',
           wallet,
