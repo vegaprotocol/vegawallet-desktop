@@ -61,12 +61,12 @@ export function InteractionManager() {
   return (
     <InteractionFlow
       events={events}
-      onFinish={() =>
+      onFinish={() => {
         setInteractions(interactions => ({
           ids: interactions.ids.slice(1),
           values: omit(interactions.values, interactions.ids.slice(0, 1))
         }))
-      }
+      }}
     />
   )
 }
