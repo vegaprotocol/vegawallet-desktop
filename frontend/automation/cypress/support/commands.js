@@ -221,7 +221,9 @@ Cypress.Commands.add('waitForHome', () => {
       cy.getByTestId('telemetry-option-continue').click()
     }
   })
-  cy.getByTestId('telemetry-option-continue').should('not.exist')
+  cy.getByTestId('telemetry-option-continue', { timeout: 15000 }).should(
+    'not.exist'
+  )
   cy.get('body').then(body => {
     if (
       body.find('[data-testid="network-compatibility-continue"]').length > 0
