@@ -63,10 +63,7 @@ describe('import wallet', () => {
 
   it('incorrect recovery phrase', () => {
     fillInRecoveryForm('newallet', '123', 'incorrect')
-    cy.getByTestId('toast').should(
-      'have.text',
-      'Error: could not import the wallet: the recovery phrase is not valid'
-    )
+    cy.getByTestId('toast').contains('Error: could not import the wallet: the recovery phrase is not valid')
   })
 })
 
