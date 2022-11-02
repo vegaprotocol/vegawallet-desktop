@@ -19,6 +19,7 @@ import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
 
 const InteractionItem = ({
   event,
+  flow,
   history,
   onFinish
 }: Omit<
@@ -32,6 +33,7 @@ const InteractionItem = ({
       return (
         <WalletConnection
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -43,6 +45,7 @@ const InteractionItem = ({
       return (
         <WalletSelection
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -54,6 +57,7 @@ const InteractionItem = ({
       return (
         <Permissions
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -65,6 +69,7 @@ const InteractionItem = ({
       return (
         <Transaction
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -76,6 +81,7 @@ const InteractionItem = ({
       return (
         <TransactionEnd
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -87,6 +93,7 @@ const InteractionItem = ({
       return (
         <TransactionEnd
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -98,6 +105,7 @@ const InteractionItem = ({
       return (
         <Passphrase
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -109,6 +117,7 @@ const InteractionItem = ({
       return (
         <SuccessComponent
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -120,6 +129,7 @@ const InteractionItem = ({
       return (
         <ErrorComponent
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -131,6 +141,7 @@ const InteractionItem = ({
       return (
         <LogComponent
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
@@ -142,6 +153,7 @@ const InteractionItem = ({
       return (
         <SessionEndComponent
           event={event}
+          flow={flow}
           history={history}
           onFinish={onFinish}
           isResolved={isResolved}
