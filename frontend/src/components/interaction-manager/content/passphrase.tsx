@@ -5,14 +5,20 @@ import { useGlobal } from '../../../contexts/global/global-context'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
 import type { InteractionContentProps, RequestPassphrase } from '../types'
-import { INTERACTION_RESPONSE_TYPE } from '../types'
+import {
+  EVENT_FLOW_TYPE,
+  INTERACTION_RESPONSE_TYPE,
+  INTERACTION_TYPE
+} from '../types'
 
 export const Passphrase = ({
   event,
+  flow,
+  history,
   isResolved,
   setResolved
 }: InteractionContentProps<RequestPassphrase>) => {
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
 
   useEffect(() => {
     const handleResponse = async () => {
@@ -26,6 +32,39 @@ export const Passphrase = ({
             passphrase
           }
         })
+
+        if (flow === EVENT_FLOW_TYPE.PERMISSION_REQUEST) {
+          const source = history.find(
+            interaction =>
+              interaction.event.name ===
+              INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
+          )
+
+          if (
+            source &&
+            source.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
+          ) {
+            const { wallet, hostname } = source?.event.data
+
+            const { permissions } = await service.WalletApi.DescribePermissions(
+              {
+                wallet,
+                passphrase,
+                hostname
+              }
+            )
+
+            dispatch({
+              type: 'ADD_CONNECTION',
+              wallet,
+              connection: {
+                hostname,
+                active: true,
+                permissions
+              }
+            })
+          }
+        }
       } catch (err: unknown) {
         if (err === 'dismissed') {
           await service.RespondToInteraction({
@@ -47,7 +86,7 @@ export const Passphrase = ({
     if (!isResolved) {
       handleResponse()
     }
-  }, [service, event, isResolved, setResolved])
+  }, [dispatch, flow, history, service, event, isResolved, setResolved])
 
   return null
 }
