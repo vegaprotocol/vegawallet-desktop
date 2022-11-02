@@ -57,7 +57,7 @@ func (h *Handler) GetLatestRelease() (*LatestRelease, error) {
 		latestRelease.URL = vgversion.GetGithubReleaseURL(ReleasesURL, &version)
 	}
 
-	return latestRelease, err
+	return latestRelease, nil
 }
 
 func (h *Handler) GetVersion() (*GetVersionResponse, error) {
