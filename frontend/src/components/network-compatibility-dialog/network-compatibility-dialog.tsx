@@ -5,6 +5,8 @@ import type {
   backend as BackendModel,
   version as VersionModel
 } from '../../wailsjs/go/models'
+import { Intent } from '../../config/intent'
+import { AppToaster } from '../toaster'
 import { AnchorButton, Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -91,13 +93,23 @@ export const NetworkCompatibilityDialog = () => {
   }, [supportedVersion, networkData, state.config?.telemetry.consentAsked])
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const version = await service.GetVersion()
-      dispatch({
-        type: 'SET_VERSION',
-        version
-      })
-    }, ONE_DAY)
+    const getVersion = async () => {
+      try {
+        const version = await service.GetVersion()
+        dispatch({
+          type: 'SET_VERSION',
+          version
+        })
+      } catch (err) {
+        AppToaster.show({
+          intent: Intent.DANGER,
+          message: 'There was an error checking for new releases',
+        })
+      }
+    }
+
+    const interval = setInterval(getVersion, ONE_DAY)
+    getVersion()
 
     return () => {
       clearInterval(interval)
