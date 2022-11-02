@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import type {
   backend as BackendModel,
   version as VersionModel
 } from '../../wailsjs/go/models'
-import { Intent } from '../../config/intent'
-import { AppToaster } from '../toaster'
 import { AnchorButton, Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { Warning } from '../icons/warning'
+import { AppToaster } from '../toaster'
 import { AddNetwork } from './add-network'
 import { ChangeNetwork } from './choose-network'
 
@@ -103,7 +103,7 @@ export const NetworkCompatibilityDialog = () => {
       } catch (err) {
         AppToaster.show({
           intent: Intent.DANGER,
-          message: 'There was an error checking for new releases',
+          message: 'There was an error checking for new releases'
         })
       }
     }

@@ -136,13 +136,11 @@ export function createActions(
           // else continue with app setup, get wallets/networks
           logger.debug('InitApp')
 
-          const [config, presets, presetsInternal] = await Promise.all(
-            [
-              service.GetAppConfig(),
-              fetchNetworkPreset(DataSources.NETWORKS, logger),
-              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
-            ]
-          )
+          const [config, presets, presetsInternal] = await Promise.all([
+            service.GetAppConfig(),
+            fetchNetworkPreset(DataSources.NETWORKS, logger),
+            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
+          ])
 
           if (config.telemetry.enabled) {
             enableTelemetry()

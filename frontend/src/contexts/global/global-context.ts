@@ -6,8 +6,8 @@ import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type {
-  backend as BackendModel,
-  app as AppModel
+  app as AppModel,
+  backend as BackendModel
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
