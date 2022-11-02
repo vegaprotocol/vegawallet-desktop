@@ -86,12 +86,15 @@ const compileSubmissionData = (
       ...acc,
       [key]: {
         access: p.access,
-        restrictedKeys: p.restrictedKeys.reduce<string[]>((acc, item) => {
-          if (!item.value) {
-            acc.push(item.key)
-          }
-          return acc
-        }, [])
+        restrictedKeys:
+          p.access === 'none'
+            ? []
+            : p.restrictedKeys.reduce<string[]>((acc, item) => {
+                if (!item.value) {
+                  acc.push(item.key)
+                }
+                return acc
+              }, [])
       }
     }
   }, {} as WalletModel.Permissions)
@@ -159,7 +162,7 @@ export const ManagePermissions = ({
       <div style={{ padding: 20 }}>
         <p>
           <code>{hostname}</code> has access to the following operations in the
-          wallet <code>{wallet.name}</code>:
+          wallet "<code>{wallet.name}</code>":
         </p>
         <div>
           {permissionAccessKeys.map(key => (
