@@ -9,6 +9,8 @@ export function GetAppConfig():Promise<app.Config>;
 
 export function GetCurrentServiceInfo():Promise<backend.GetCurrentServiceInfo>;
 
+export function GetLatestRelease():Promise<backend.LatestRelease>;
+
 export function GetVersion():Promise<backend.GetVersionResponse>;
 
 export function InitialiseApp(arg1:backend.InitialiseAppRequest):Promise<Error>;

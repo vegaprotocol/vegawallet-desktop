@@ -73,23 +73,8 @@ export namespace backend {
 	        this.latestHealthState = source["latestHealthState"];
 	    }
 	}
-	export class LatestRelease {
-	    version: string;
-	    url: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new LatestRelease(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.url = source["url"];
-	    }
-	}
 	export class GetVersionResponse {
 	    version: string;
-	    latestRelease: LatestRelease;
 	    gitHash: string;
 	    backend?: version.GetVersionResponse;
 	
@@ -100,7 +85,6 @@ export namespace backend {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.version = source["version"];
-	        this.latestRelease = this.convertValues(source["latestRelease"], LatestRelease);
 	        this.gitHash = source["gitHash"];
 	        this.backend = this.convertValues(source["backend"], version.GetVersionResponse);
 	    }
@@ -135,7 +119,20 @@ export namespace backend {
 	        this.vegaHome = source["vegaHome"];
 	    }
 	}
+	export class LatestRelease {
+	    version: string;
+	    url: string;
 	
+	    static createFrom(source: any = {}) {
+	        return new LatestRelease(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.url = source["url"];
+	    }
+	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
 	    networks: string[];

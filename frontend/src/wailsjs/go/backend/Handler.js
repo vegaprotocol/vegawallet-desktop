@@ -10,6 +10,10 @@ export function GetCurrentServiceInfo() {
   return window['go']['backend']['Handler']['GetCurrentServiceInfo']();
 }
 
+export function GetLatestRelease() {
+  return window['go']['backend']['Handler']['GetLatestRelease']();
+}
+
 export function GetVersion() {
   return window['go']['backend']['Handler']['GetVersion']();
 }
