@@ -45,6 +45,6 @@ describe('settings', () => {
     cy.getByTestId(homeSettingsBtn).click()
     cy.getByTestId('log-level').last().should('have.value', 'debug')
     cy.get(radioGroupSelector).find('input[value="yes"]').should('be.checked')
-    cy.getByTestId(cancelSettingsBtn).click()
+    cy.getByTestId(cancelSettingsBtn).click({force:true})
   })
 })
