@@ -28,9 +28,9 @@ var (
 )
 
 type GetVersionResponse struct {
-	Version       string                       `json:"version"`
-	GitHash       string                       `json:"gitHash"`
-	Backend       *wversion.GetVersionResponse `json:"backend"`
+	Version string                       `json:"version"`
+	GitHash string                       `json:"gitHash"`
+	Backend *wversion.GetVersionResponse `json:"backend"`
 }
 
 type LatestRelease struct {
@@ -38,16 +38,16 @@ type LatestRelease struct {
 	URL     string `json:"url"`
 }
 
-func (h *Handler) GetLatestRelease() (*LatestRelease, error) {
+func (h *Handler) GetLatestRelease() (LatestRelease, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
 	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), app.Version)
 	if err != nil {
-		return nil, fmt.Errorf("could not check latest releases: %w", err)
+		return LatestRelease{}, fmt.Errorf("could not check latest releases: %w", err)
 	}
 
-	latestRelease := &LatestRelease{}
+	latestRelease := LatestRelease{}
 	if v != nil {
 		latestRelease.Version = v.String()
 		latestRelease.URL = vgversion.GetGithubReleaseURL(ReleasesURL, v)
@@ -75,8 +75,8 @@ func (h *Handler) GetVersion() (*GetVersionResponse, error) {
 	}
 
 	return &GetVersionResponse{
-		Version:       Version,
-		GitHash:       Hash,
-		Backend:       wversion.GetVersionInfo(netStore, wversion.GetNetworkVersionThroughGRPC),
+		Version: Version,
+		GitHash: Hash,
+		Backend: wversion.GetVersionInfo(netStore, wversion.GetNetworkVersionThroughGRPC),
 	}, nil
 }
