@@ -304,13 +304,13 @@ export function createActions(
           await service.WalletApi.RenameWallet({
             wallet: from,
             newName: to,
-            passphrase,
+            passphrase
           })
 
           dispatch({
             type: 'RENAME_WALLET',
             from,
-            to,
+            to
           })
 
           onComplete?.()

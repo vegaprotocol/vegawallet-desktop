@@ -5,15 +5,15 @@ import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { ConnectionList } from '../../components/connection-list'
-import { Header } from '../../components/header'
-import { KeypairList } from '../../components/keypair-list'
-import { Title } from '../../components/title'
-import { RemoveWallet } from '../../components/remove-wallet'
 import { Dialog } from '../../components/dialog'
-import { WalletEdit } from '../../components/wallet-edit'
-import { Colors } from '../../config/colors'
+import { Header } from '../../components/header'
 import { Edit } from '../../components/icons/edit'
 import { Trash } from '../../components/icons/trash'
+import { KeypairList } from '../../components/keypair-list'
+import { RemoveWallet } from '../../components/remove-wallet'
+import { Title } from '../../components/title'
+import { WalletEdit } from '../../components/wallet-edit'
+import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
 
@@ -68,7 +68,7 @@ export function WalletList() {
   return (
     <>
       <Header
-        title={(
+        title={
           <>
             {wallet.name}
             <ButtonGroup
@@ -83,17 +83,17 @@ export function WalletList() {
                 style={{ textDecoration: 'none' }}
                 onClick={() => setEditing(true)}
               >
-                <Edit style={{ width: 20 }} />
+                <Edit style={{ width: 16 }} />
               </ButtonUnstyled>
               <ButtonUnstyled
                 style={{ textDecoration: 'none' }}
                 onClick={() => setRemoving(true)}
               >
-                <Trash style={{ width: 20 }} />
+                <Trash style={{ width: 16 }} />
               </ButtonUnstyled>
             </ButtonGroup>
           </>
-        )}
+        }
         breadcrumb='Wallets'
         onBack={() => {
           dispatch(actions.deactivateWalletAction(wallet.name))
@@ -126,18 +126,10 @@ export function WalletList() {
           </Button>
         )}
       </div>
-      <Dialog
-        size='lg'
-        open={isRemoving}
-        title='Remove wallet'
-      >
+      <Dialog size='lg' open={isRemoving} title='Remove wallet'>
         <RemoveWallet onClose={() => setRemoving(false)} />
       </Dialog>
-      <Dialog
-        open={isEditing}
-        onChange={setEditing}
-        title="Edit wallet"
-      >
+      <Dialog open={isEditing} onChange={setEditing} title='Edit wallet'>
         <WalletEdit onClose={() => setEditing(false)} />
       </Dialog>
     </>
