@@ -5,15 +5,19 @@ import { useEffect } from 'react'
 import { HashRouter as Router } from 'react-router-dom'
 
 import { AppFrame, AppLoader } from './app-loader'
+import { Button } from './components/button'
 import { Chrome } from './components/chrome'
 import { InteractionManager } from './components/interaction-manager'
+import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
 import { PassphraseModal } from './components/passphrase-modal'
 import { Settings } from './components/settings'
+import { SplashError } from './components/splash-error'
+import { TelemetryDialog } from './components/telemetry-dialog'
 import { GlobalProvider } from './contexts/global/global-provider'
 import { createLogger, initLogger } from './lib/logging'
 import { AppRouter } from './routes'
 import { Service } from './service'
-import { BrowserOpenURL } from './wailsjs/runtime'
+import { BrowserOpenURL, WindowReload } from './wailsjs/runtime'
 
 const logger = createLogger('GlobalActions')
 
@@ -48,7 +52,15 @@ function App() {
   }, [])
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary
+      fallback={({ error }) => (
+        <SplashError
+          title='Somthing went wrong'
+          message={error.message}
+          actions={[<Button onClick={WindowReload}>Reload</Button>]}
+        />
+      )}
+    >
       <GlobalProvider
         service={Service}
         logger={logger}
@@ -59,8 +71,10 @@ function App() {
             <Chrome>
               <AppLoader>
                 <AppRouter />
+                <TelemetryDialog />
                 <PassphraseModal />
                 <InteractionManager />
+                <NetworkCompatibilityDialog />
                 <Settings />
               </AppLoader>
             </Chrome>

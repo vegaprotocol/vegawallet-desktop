@@ -24,6 +24,9 @@ export const Passphrase = ({
     const handleResponse = async () => {
       try {
         const passphrase = await requestPassphrase()
+
+        setResolved(true)
+
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
           traceID: event.traceID,
@@ -67,6 +70,8 @@ export const Passphrase = ({
         }
       } catch (err: unknown) {
         if (err === 'dismissed') {
+          setResolved(true)
+
           await service.RespondToInteraction({
             traceID: event.traceID,
             name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
@@ -79,8 +84,6 @@ export const Passphrase = ({
           })
         }
       }
-
-      setResolved(true)
     }
 
     if (!isResolved) {

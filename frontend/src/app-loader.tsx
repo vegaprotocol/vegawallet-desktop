@@ -8,7 +8,6 @@ import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
 import { Colors } from './config/colors'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
-import { useCheckForUpdate } from './hooks/use-check-for-update'
 import { createLogger } from './lib/logging'
 import { WindowReload } from './wailsjs/runtime'
 
@@ -16,8 +15,6 @@ import { WindowReload } from './wailsjs/runtime'
  * Initialiases the app
  */
 export function AppLoader({ children }: { children: React.ReactNode }) {
-  useCheckForUpdate()
-
   const {
     state: { status },
     actions,

@@ -77,10 +77,12 @@ export const NetworkSwitcher = () => {
                     padding: '10px 15px',
                     lineHeight: 1,
                     textAlign: 'left',
+                    textDecoration:
+                      network === selectedNetwork ? 'underline' : 'none',
                     color:
                       network === selectedNetwork
-                        ? Colors.TEXT_COLOR_DEEMPHASISE
-                        : Colors.WHITE
+                        ? Colors.WHITE
+                        : Colors.TEXT_COLOR_DEEMPHASISE
                   }}
                   onClick={() => {
                     handleNetworkChange(network)

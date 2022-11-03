@@ -4,7 +4,10 @@ import { indexBy } from '../../lib/index-by'
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
-import type { app as AppModel } from '../../wailsjs/go/models'
+import type {
+  app as AppModel,
+  backend as BackendModel
+} from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type {
   Connection,
@@ -17,7 +20,7 @@ import { AppStatus, DrawerPanel, ServiceState } from './global-context'
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
-  version: '',
+  version: null,
   config: null,
 
   // Wallet
@@ -66,7 +69,7 @@ export type GlobalAction =
     }
   | {
       type: 'SET_VERSION'
-      version: string
+      version: BackendModel.GetVersionResponse | null
     }
   | {
       type: 'SET_CONFIG'

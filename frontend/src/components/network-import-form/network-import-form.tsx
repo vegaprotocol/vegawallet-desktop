@@ -7,6 +7,8 @@ import { FormStatus } from '../../hooks/use-form-state'
 import { useImportNetwork } from '../../hooks/use-import-network'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
+import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
 import { Checkbox } from '../checkbox'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
@@ -18,10 +20,14 @@ interface FormFields {
 }
 
 interface NetworkImportFormProps {
-  onComplete?: () => void
+  onComplete?: (network: string) => void
+  onCancel?: () => void
 }
 
-export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
+export function NetworkImportForm({
+  onComplete,
+  onCancel
+}: NetworkImportFormProps) {
   const [isCheckboxVisible, setCheckboxVisible] = useState(false)
   const { status, submit, error } = useImportNetwork()
 
@@ -31,6 +37,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
     handleSubmit,
     setError,
     reset,
+    getValues,
     formState: { errors }
   } = useForm<FormFields>({
     defaultValues: {
@@ -41,14 +48,15 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
   })
 
   useEffect(() => {
+    const name = getValues('name')
     if (status === FormStatus.Success) {
       reset()
       setCheckboxVisible(false)
       if (typeof onComplete === 'function') {
-        onComplete()
+        onComplete(name)
       }
     }
-  }, [status, reset, onComplete])
+  }, [status, reset, getValues, onComplete])
 
   // If an error is set and its the 'wallet already exists' error, open the advanced fields section
   // set the name
@@ -115,7 +123,7 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
           <Checkbox name='force' control={control} label='Overwrite' />
         </FormGroup>
       )}
-      <div>
+      <ButtonGroup inline>
         <Button
           data-testid='import-network'
           type='submit'
@@ -123,7 +131,8 @@ export function NetworkImportForm({ onComplete }: NetworkImportFormProps) {
         >
           Import
         </Button>
-      </div>
+        {onCancel && <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>}
+      </ButtonGroup>
     </form>
   )
 }

@@ -136,28 +136,18 @@ export function createActions(
           // else continue with app setup, get wallets/networks
           logger.debug('InitApp')
 
-          const [config, version, presets, presetsInternal] = await Promise.all(
-            [
-              service.GetAppConfig(),
-              service.GetVersion(),
-              fetchNetworkPreset(DataSources.NETWORKS, logger),
-              fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
-            ]
-          )
+          const [config, presets, presetsInternal] = await Promise.all([
+            service.GetAppConfig(),
+            fetchNetworkPreset(DataSources.NETWORKS, logger),
+            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
+          ])
 
           if (config.telemetry.enabled) {
             enableTelemetry()
           }
 
-          dispatch({ type: 'SET_VERSION', version: version.version })
-          dispatch({ type: 'SET_PRESETS', presets })
-          dispatch({ type: 'SET_PRESETS_INTERNAL', presets: presetsInternal })
-
           // should now have an app config
-          const [wallets, networks]: [
-            WalletModel.ListWalletsResult,
-            WalletModel.ListNetworksResult
-          ] = await Promise.all([
+          const [wallets, networks] = await Promise.all([
             service.WalletApi.ListWallets(),
             getNetworks(service, presets[0])
           ])

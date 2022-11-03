@@ -8,7 +8,6 @@ import { ButtonUnstyled } from '../../components/button-unstyled'
 import { DRAWER_HEIGHT } from '../../components/chrome'
 import { Lock } from '../../components/icons/lock'
 import { OpenLock } from '../../components/icons/open-lock'
-import { TelemetryDialog } from '../../components/telemetry-dialog'
 import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
@@ -125,7 +124,6 @@ export const Home = () => {
           </ButtonUnstyled>
         </p>
       </div>
-      <TelemetryDialog />
     </div>
   )
 }
