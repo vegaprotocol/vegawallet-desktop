@@ -7,7 +7,5 @@ export const Wallet = () => {
     return <Navigate to='/' />
   }
 
-  return (
-    <Outlet />
-  )
+  return <Outlet />
 }

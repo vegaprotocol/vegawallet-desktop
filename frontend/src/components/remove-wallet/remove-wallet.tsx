@@ -32,8 +32,8 @@ export const RemoveWallet = ({ onClose }: RemoveWalletProps) => {
       </h2>
       <p style={{ marginBottom: 15 }}>
         Doing so will remove this wallet from your list of wallets. You will
-        only be able to recover assets or re-add your wallet if you have a
-        back up phrase.
+        only be able to recover assets or re-add your wallet if you have a back
+        up phrase.
       </p>
       <RemoveForm
         walletName={wallet.name}

@@ -490,7 +490,7 @@ export function globalReducer(
           ...omit(state.wallets, action.from),
           [action.to]: {
             ...state.wallets[action.from],
-            name: action.to,
+            name: action.to
           }
         }
       }
