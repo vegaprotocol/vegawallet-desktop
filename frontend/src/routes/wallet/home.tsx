@@ -115,19 +115,16 @@ export function WalletList() {
           />
         )}
         {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
-        <ButtonGroup orientation='vertical' style={{ padding: '20px 0' }}>
-          {tab === Tabs.KEYPAIRS && (
-            <Button
-              data-testid='generate-keypair'
-              onClick={() => {
-                dispatch(actions.addKeypairAction(wallet.name))
-              }}
-            >
-              Generate key pair
-            </Button>
-          )}
-
-        </ButtonGroup>
+        {tab === Tabs.KEYPAIRS && (
+          <Button
+            data-testid='generate-keypair'
+            onClick={() => {
+              dispatch(actions.addKeypairAction(wallet.name))
+            }}
+          >
+            Generate key pair
+          </Button>
+        )}
       </div>
       <Dialog
         size='lg'
