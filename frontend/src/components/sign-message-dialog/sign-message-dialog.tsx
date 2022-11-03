@@ -23,6 +23,7 @@ export const SignMessageDialog = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<FormFields>()
 
@@ -50,8 +51,14 @@ export const SignMessageDialog = () => {
               </CopyWithTooltip>
             </div>
             <ButtonGroup inline>
-              <Button data-testid='sign-more' onClick={() => setSignedData('')}>
-                <div>Sign another</div>
+              <Button
+                data-testid='sign-more'
+                onClick={() => {
+                  setValue('message', '')
+                  setSignedData('')
+                }}
+              >
+                Sign another
               </Button>
               <ButtonUnstyled
                 data-testid='sign-close'
