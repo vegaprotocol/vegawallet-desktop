@@ -294,6 +294,37 @@ export function createActions(
       }
     },
 
+    renameWallet(from: string, to: string, onComplete?: () => void) {
+      return async (dispatch: GlobalDispatch) => {
+        logger.debug('RenameWallet')
+
+        try {
+          const passphrase = await requestPassphrase()
+
+          await service.WalletApi.RenameWallet({
+            wallet: from,
+            newName: to,
+            passphrase,
+          })
+
+          dispatch({
+            type: 'RENAME_WALLET',
+            from,
+            to,
+          })
+
+          onComplete?.()
+        } catch (err) {
+          if (err !== 'dismissed') {
+            AppToaster.show({
+              intent: Intent.DANGER,
+              message: `${err}`
+            })
+          }
+        }
+      }
+    },
+
     // Network actions
 
     changeNetworkAction(network: string) {
