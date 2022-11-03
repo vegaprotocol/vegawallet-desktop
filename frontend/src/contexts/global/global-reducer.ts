@@ -42,7 +42,6 @@ export const initialGlobalState: GlobalState = {
     editingNetwork: null
   },
   isPassphraseModalOpen: false,
-  isRemoveWalletModalOpen: false,
   isSignMessageModalOpen: false,
   isTaintKeyModalOpen: false,
   isUpdateKeyModalOpen: false,
@@ -138,6 +137,11 @@ export type GlobalAction =
   | {
       type: 'DEACTIVATE_WALLET'
       wallet: string
+    }
+  | {
+      type: 'RENAME_WALLET'
+      from: string
+      to: string
     }
   // UI
   | {
@@ -473,6 +477,22 @@ export function globalReducer(
       return {
         ...state,
         wallet: action.wallet
+      }
+    }
+    case 'RENAME_WALLET': {
+      if (!state.wallets[action.from]) {
+        throw new Error('Wallet not found')
+      }
+
+      return {
+        ...state,
+        wallets: {
+          ...omit(state.wallets, action.from),
+          [action.to]: {
+            ...state.wallets[action.from],
+            name: action.to,
+          }
+        }
       }
     }
     case 'SET_DRAWER': {
