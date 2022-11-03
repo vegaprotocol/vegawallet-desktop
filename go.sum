@@ -1,3 +1,5 @@
+code.vegaprotocol.io/vega v0.60.0 h1:4JXQjpE+7tlW2NnyE+N+yM0ZYcDndHJ/DmzN3lT30Ks=
+code.vegaprotocol.io/vega v0.60.0/go.mod h1:2FRKYy1eLQtZ6EAPvgPMcBlrfcR3Q6liXKc2f8a/H8M=
 code.vegaprotocol.io/vega v0.60.1-0.20221026140947-612a114269a9 h1:ypLsCef3n1IExo6xZnjtRX/+XEIWX20QUKIMyp4rW8k=
 code.vegaprotocol.io/vega v0.60.1-0.20221026140947-612a114269a9/go.mod h1:2FRKYy1eLQtZ6EAPvgPMcBlrfcR3Q6liXKc2f8a/H8M=
 github.com/BurntSushi/toml v1.2.0 h1:Rt8g24XnyGTyglgET/PRUNlrUeu9F5L+7FilkXfZgs0=
