@@ -531,12 +531,6 @@ export function globalReducer(
         isUpdateKeyModalOpen: action.open
       }
     }
-    case 'SET_REMOVE_WALLET_MODAL': {
-      return {
-        ...state,
-        isRemoveWalletModalOpen: action.open
-      }
-    }
     // network
     case 'SET_NETWORKS': {
       return {
