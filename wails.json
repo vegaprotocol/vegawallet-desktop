@@ -6,11 +6,13 @@
   "frontend:dev:watcher": "npm run dev",
   "frontend:dev:serverUrl": "http://localhost:3000",
   "wailsjsdir": "./frontend/src",
-  "version": "0.1.1",
+  "version": "2",
   "outputfilename": "Vegawallet",
-  "author": {
-    "name": "Gobalsky Labs Ltd."
-  },
-  "debounceMS": 100,
-  "appargs": ""
+  "info": {
+    "companyName": "Gobalsky Labs Ltd.",
+    "productName": "Vegawallet",
+    "productVersion": "0.3.0",
+    "copyright": "Copyright (c) 2022 Gobalsky Labs Ltd.",
+    "comments": "Application to manage your Vega Protocol wallet."
+  }
 }
