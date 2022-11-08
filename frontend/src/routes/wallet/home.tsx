@@ -96,7 +96,10 @@ export function WalletList() {
         }
         breadcrumb='Wallets'
         onBack={() => {
-          dispatch(actions.deactivateWalletAction(wallet.name))
+          dispatch({
+            type: 'DEACTIVATE_WALLET',
+            wallet: wallet.name
+          })
           navigate('/')
         }}
       />

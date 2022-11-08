@@ -1,10 +1,9 @@
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 
 import { Intent } from '../../config/intent'
-import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
+import { useRenameWallet } from '../../hooks/use-rename-wallet'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -21,8 +20,7 @@ type FormData = {
 }
 
 export const WalletEdit = ({ onClose }: WalletEditProps) => {
-  const navigate = useNavigate()
-  const { dispatch, actions } = useGlobal()
+  const { rename } = useRenameWallet()
   const { wallet } = useCurrentWallet()
   const {
     register,
@@ -37,15 +35,10 @@ export const WalletEdit = ({ onClose }: WalletEditProps) => {
   const onSubmit = useCallback(
     (data: FormData) => {
       if (wallet?.name) {
-        dispatch(
-          actions.renameWallet(wallet.name, data.name, () => {
-            onClose()
-            navigate(`/wallets/${data.name}`)
-          })
-        )
+        rename(wallet.name, data.name)
       }
     },
-    [dispatch, actions, wallet?.name]
+    [rename, wallet?.name]
   )
 
   return (
