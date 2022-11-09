@@ -86,6 +86,7 @@ export function WalletList() {
                 <Edit style={{ width: 16 }} />
               </ButtonUnstyled>
               <ButtonUnstyled
+                data-testid='remove-wallet'
                 style={{ textDecoration: 'none' }}
                 onClick={() => setRemoving(true)}
               >
