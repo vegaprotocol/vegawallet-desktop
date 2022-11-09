@@ -6,7 +6,7 @@ A default version is hard-coded. This is done for people that use the developmen
 
 This requires additional steps during the release process.
 
-1. Set the `defaultVersion` variable to the desired version in the `backend/version.go` file.
+1. Set the `Version` variable to the desired version in the `backend/version.go` file.
 2. Set the `productVersion` properties to the desired version in the `wails.json`.
 3. Set the `version` property to the desired version in the `frontend/package.json`.
 4. Commit the change right before the tagging.
