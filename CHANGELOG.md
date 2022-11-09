@@ -1,17 +1,8 @@
 # Changelog
 
-## Unreleased 0.3.0
-
-### 🚨 Breaking changes
-
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
-
-### 🗑️ Deprecation
-
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+## 0.3.0
 
 ### 🛠 Improvements
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx -
 - [203](https://github.com/vegaprotocol/vegawallet-desktop/issues/203) - Adds dialog to get consent to telemetry
 - [206](https://github.com/vegaprotocol/vegawallet-desktop/issues/206) - Delete wallet functionality
 - [209](https://github.com/vegaprotocol/vegawallet-desktop/issues/209) - Adds dialog to control app settings
