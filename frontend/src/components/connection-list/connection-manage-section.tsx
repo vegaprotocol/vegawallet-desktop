@@ -49,30 +49,28 @@ export const PermissionSection = ({
                 value: AccessModes[label]
               }))}
             />
+            {field.value !== 'none' && <Title>Key pairs</Title>}
             {field.value !== 'none' &&
               fields.map((field, index) => (
-                <>
-                  <Title>Key pairs</Title>
-                  <Checkbox
-                    key={field.id}
-                    name={`${accessType}.restrictedKeys.${index}.value`}
-                    label={
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <Title style={{ margin: '0 12px 0 0' }}>
-                          {field.name}
-                        </Title>
-                        (<code>{truncateMiddle(field.key)}</code>)
-                      </div>
-                    }
-                    control={control}
-                  />
-                </>
+                <Checkbox
+                  key={field.id}
+                  name={`${accessType}.restrictedKeys.${index}.value`}
+                  label={
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Title style={{ margin: '0 12px 0 0' }}>
+                        {field.name}
+                      </Title>
+                      (<code>{truncateMiddle(field.key)}</code>)
+                    </div>
+                  }
+                  control={control}
+                />
               ))}
           </>
         )}

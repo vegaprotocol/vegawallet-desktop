@@ -4,23 +4,20 @@ import { Navigate } from 'react-router-dom'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
-import { Dialog } from '../../components/dialog'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
 import { Intent } from '../../config/intent'
-import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { FormStatus } from '../../hooks/use-form-state'
 import { useRemoveWallet } from '../../hooks/use-remove-wallet'
 import { Validation } from '../../lib/form-validation'
 import { Paths } from '../../routes'
 
-interface FormFields {
-  confirmText: string
+type RemoveWalletProps = {
+  onClose: () => void
 }
 
-export const RemoveWalletDialog = () => {
-  const { state, dispatch } = useGlobal()
+export const RemoveWallet = ({ onClose }: RemoveWalletProps) => {
   const { wallet } = useCurrentKeypair()
   const { submit, status } = useRemoveWallet()
 
@@ -29,34 +26,30 @@ export const RemoveWalletDialog = () => {
   }
 
   return (
-    <Dialog
-      size='lg'
-      open={state.isRemoveWalletModalOpen}
-      title='Remove wallet'
-    >
-      <div style={{ padding: '0 20px 20px' }}>
-        <h2 style={{ marginBottom: 15 }}>
-          Are you sure you want to remove "{wallet.name}"?
-        </h2>
-        <p style={{ marginBottom: 15 }}>
-          Doing so will remove this wallet from your list of wallets. You will
-          only be able to recover assets or re-add your wallet if you have a
-          back up phrase.
-        </p>
-        <RemoveForm
-          walletName={wallet.name}
-          status={status}
-          onSubmit={() => {
-            submit(wallet.name)
-            dispatch({ type: 'SET_REMOVE_WALLET_MODAL', open: false })
-          }}
-          onCancel={() => {
-            dispatch({ type: 'SET_REMOVE_WALLET_MODAL', open: false })
-          }}
-        />
-      </div>
-    </Dialog>
+    <div style={{ padding: '0 20px 20px' }}>
+      <h2 style={{ marginBottom: 15 }}>
+        Are you sure you want to remove "{wallet.name}"?
+      </h2>
+      <p style={{ marginBottom: 15 }}>
+        Doing so will remove this wallet from your list of wallets. You will
+        only be able to recover assets or re-add your wallet if you have a back
+        up phrase.
+      </p>
+      <RemoveForm
+        walletName={wallet.name}
+        status={status}
+        onSubmit={() => {
+          submit(wallet.name)
+          onClose()
+        }}
+        onCancel={onClose}
+      />
+    </div>
   )
+}
+
+interface FormFields {
+  confirmText: string
 }
 
 interface DeleteFormProps {

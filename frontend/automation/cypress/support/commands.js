@@ -226,12 +226,13 @@ Cypress.Commands.add('waitForHome', () => {
     'not.exist'
   )
   cy.get('body').then(body => {
-    if (
-      body.find('[data-testid="network-compatibility-continue"]').length > 0
-    ) {
+    if (body.find('[data-testid="network-compatibility-dialog"]').length > 0) {
       cy.get('button[data-testid="network-compatibility-continue"]').click()
     }
   })
+  cy.getByTestId('network-compatibility-dialog', { timeout: 30000 }).should(
+    'not.exist'
+  )
 })
 
 Cypress.Commands.add('monitor_clipboard', () => {
