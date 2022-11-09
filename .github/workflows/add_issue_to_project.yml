@@ -1,37 +1,37 @@
 ---
 
-name: Add Issues To Project Board
+name: "Add Issues To Project Board"
 
 "on":
   issues:
-    types: [opened]
+    types:
+      - opened
+env:
+  GH_TOKEN: ${{ secrets.GH_NEW_CARD_TO_PROJECT }}
+  PROJECT_ID: ${{ secrets.FRONT_END_PROJECT_ID }}
+  ISSUE_ID: ${{ github.event.issue.node_id }}
+  USER: ${{ github.actor }}
+  LABEL_ID: "MDU6TGFiZWwzMjExODE0NTM0"
 
 jobs:
   add_issue:
     runs-on: ubuntu-latest
     steps:
-      - name: Add issue project board
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_NEW_CARD_TO_PROJECT }}
-          PROJECT_ID: ${{ secrets.FRONT_END_PROJECT_ID }}
-          ISSUE_ID: ${{ github.event.issue.node_id }}
+      - name: "Add issue to project board"
         run: |
           gh api graphql -f query='
-            mutation($project:ID!, $issue:ID!) {
-              addProjectNextItem(input: {projectId: $project, contentId: $issue}) {
-                projectNextItem {
+            mutation($user:String!, $project:ID!, $issue:ID!) {
+              addProjectV2ItemById(input: {clientMutationId: $user, projectId: $project, contentId: $issue}) {
+                item {
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectNextItem.projectNextItem.id'
-
-  label_issues:
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-    steps:
-      - name: Add "desktop-wallet" label
-        uses: andymckay/labeler@5c59dabdfd4dd5bd9c6e6d255b01b9d764af4414
-        with:
-          add-labels: "desktop-wallet"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID -f user=$USER
+      - name: "Add repo identify label"
+        run: |
+          gh api graphql -f query='
+            mutation($user:String!, $issue:ID!, $label:[ID!]!) {
+              addLabelsToLabelable(input: {clientMutationId: $user, labelableId: $issue, labelIds: $label}) {
+                clientMutationId
+              }
+            }' -f label=$LABEL_ID -f issue=$ISSUE_ID -f user=$USER
