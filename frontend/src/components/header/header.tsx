@@ -7,7 +7,7 @@ import { Colors } from '../../config/colors'
 
 interface HeaderProps {
   breadcrumb?: ReactNode
-  title?: string
+  title?: ReactNode
   subtitle?: string
   onBack?: () => void
 }

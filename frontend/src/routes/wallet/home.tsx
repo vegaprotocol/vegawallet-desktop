@@ -5,9 +5,14 @@ import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { ConnectionList } from '../../components/connection-list'
+import { Dialog } from '../../components/dialog'
 import { Header } from '../../components/header'
+import { Edit } from '../../components/icons/edit'
+import { Trash } from '../../components/icons/trash'
 import { KeypairList } from '../../components/keypair-list'
+import { RemoveWallet } from '../../components/remove-wallet'
 import { Title } from '../../components/title'
+import { WalletEdit } from '../../components/wallet-edit'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
@@ -49,6 +54,8 @@ const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
 }
 
 export function WalletList() {
+  const [isEditing, setEditing] = useState(false)
+  const [isRemoving, setRemoving] = useState(false)
   const [tab, setTab] = useState<Tabs>(Tabs.KEYPAIRS)
   const navigate = useNavigate()
   const { actions, dispatch } = useGlobal()
@@ -61,10 +68,39 @@ export function WalletList() {
   return (
     <>
       <Header
-        title={wallet.name}
+        title={
+          <>
+            {wallet.name}
+            <ButtonGroup
+              inline
+              style={{
+                display: 'inline-flex',
+                marginLeft: 20,
+                gap: 12
+              }}
+            >
+              <ButtonUnstyled
+                style={{ textDecoration: 'none' }}
+                onClick={() => setEditing(true)}
+              >
+                <Edit style={{ width: 16 }} />
+              </ButtonUnstyled>
+              <ButtonUnstyled
+                data-testid='remove-wallet'
+                style={{ textDecoration: 'none' }}
+                onClick={() => setRemoving(true)}
+              >
+                <Trash style={{ width: 16 }} />
+              </ButtonUnstyled>
+            </ButtonGroup>
+          </>
+        }
         breadcrumb='Wallets'
         onBack={() => {
-          dispatch(actions.deactivateWalletAction(wallet.name))
+          dispatch({
+            type: 'DEACTIVATE_WALLET',
+            wallet: wallet.name
+          })
           navigate('/')
         }}
       />
@@ -83,27 +119,23 @@ export function WalletList() {
           />
         )}
         {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
-        <ButtonGroup orientation='vertical' style={{ padding: '20px 0' }}>
-          {tab === Tabs.KEYPAIRS && (
-            <Button
-              data-testid='generate-keypair'
-              onClick={() => {
-                dispatch(actions.addKeypairAction(wallet.name))
-              }}
-            >
-              Generate key pair
-            </Button>
-          )}
-          <ButtonUnstyled
-            onClick={() =>
-              dispatch({ type: 'SET_REMOVE_WALLET_MODAL', open: true })
-            }
-            data-testid='remove-wallet'
+        {tab === Tabs.KEYPAIRS && (
+          <Button
+            data-testid='generate-keypair'
+            onClick={() => {
+              dispatch(actions.addKeypairAction(wallet.name))
+            }}
           >
-            Remove wallet
-          </ButtonUnstyled>
-        </ButtonGroup>
+            Generate key pair
+          </Button>
+        )}
       </div>
+      <Dialog size='lg' open={isRemoving} title='Remove wallet'>
+        <RemoveWallet onClose={() => setRemoving(false)} />
+      </Dialog>
+      <Dialog open={isEditing} onChange={setEditing} title='Edit wallet'>
+        <WalletEdit onClose={() => setEditing(false)} />
+      </Dialog>
     </>
   )
 }

@@ -92,7 +92,6 @@ export interface GlobalState {
   // UI
   drawerState: DrawerState
   isPassphraseModalOpen: boolean
-  isRemoveWalletModalOpen: boolean
   isSignMessageModalOpen: boolean
   isTaintKeyModalOpen: boolean
   isUpdateKeyModalOpen: boolean
