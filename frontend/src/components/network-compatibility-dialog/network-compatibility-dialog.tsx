@@ -68,7 +68,11 @@ const shouldBeOpen = (
   networkData?: VersionModel.NetworkCompatibility,
   telemetryConsentAsked?: boolean
 ) => {
-  return telemetryConsentAsked === true && networkData?.isCompatible === false
+  return (
+    telemetryConsentAsked === true &&
+    networkData?.isCompatible === false &&
+    !('Cypress' in window)
+  )
 }
 
 export const NetworkCompatibilityDialog = () => {
