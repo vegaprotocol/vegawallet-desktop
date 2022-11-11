@@ -9,10 +9,19 @@ This requires additional steps during the release process.
 1. Set the `Version` variable to the desired version in the `backend/version.go` file.
 2. Set the `productVersion` properties to the desired version in the `wails.json`.
 3. Set the `version` property to the desired version in the `frontend/package.json`.
-4. Commit the change right before the tagging.
-5. Tag and release with the exact same name set on `defaultVersion` variable.
-6. Right after the release, push a new commit to set the version to a next
-   development version. A development version is suffixed by `+dev`.
+4. Clean up the changelog:
+   * Remove the `Unreleased` prefix in the title
+   * Remove empty sections
+   * Remove empty links
+5. Commit the change.
+6. Create a branch `release/vx.y.z` where `x.y.z` is the semantic version of the software.
+7. Merge it in the `main` branch.
+8. Tag the commit with the exact same name set on `defaultVersion`, and push it.
+9. Wait for the release job to publish the released software.
+10. Once everything is published, merge the `main` branch to the `develop` one.
+11. Push a new commit to prepare the project for the next release:
+    * Set the version to the next development version. A development version is suffixed by `+dev`.
+    * Add the `Unreleased` section to the changelog.
 
 ### Example on stable release
 
