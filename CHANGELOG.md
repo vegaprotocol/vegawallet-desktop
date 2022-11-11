@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+### 🛠 Improvements
+- [420](https://github.com/vegaprotocol/vegawallet-desktop/issues/420) - Update vega version
+
 ## 0.3.0
 
 ### 🛠 Improvements

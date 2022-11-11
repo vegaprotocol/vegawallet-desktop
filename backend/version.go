@@ -24,7 +24,7 @@ var (
 	Hash = "unknown"
 	// Version specifies the version used to build the application.
 	// See VERSION in Makefile for details.
-	Version = "v0.3.0"
+	Version = "v0.4.0"
 )
 
 type GetVersionResponse struct {
