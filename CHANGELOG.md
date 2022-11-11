@@ -1,20 +1,9 @@
 # Changelog
 
-## Unreleased 0.4.0
-
-### 🚨 Breaking changes
-
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
-
-### 🗑️ Deprecation
-
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+## 0.4.0
 
 ### 🛠 Improvements
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
-
-### 🐛 Fixes
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [420](https://github.com/vegaprotocol/vegawallet-desktop/issues/420) - Update vega version
 
 ## 0.3.0
 
