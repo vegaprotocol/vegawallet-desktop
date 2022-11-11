@@ -20,7 +20,7 @@ describe('wallet connection', () => {
     unlockWallet(walletName, passphrase)
   })
 
-  it('handles approval', () => {
+  it.skip('handles approval', () => {
     const MOCK_HOSTNAME = 'https://best-blockchain.app'
     approveConnection(MOCK_HOSTNAME, walletName, passphrase)
 
@@ -30,20 +30,20 @@ describe('wallet connection', () => {
     )
   })
 
-  // it('handles rejection', () => {
-  // @TODO: for some mysterious reason this is failing
-  // const MOCK_HOSTNAME = 'https://best-blockchain-2.app'
-  // cy.sendConnectionRequest(MOCK_HOSTNAME)
-  //
-  // cy.getByTestId('wallet-selection-modal').should('exist')
-  // cy.getByTestId('wallet-connection-reject').click()
-  //
-  // cy.getByTestId('input-passphrase').type(passphrase)
-  // cy.getByTestId('input-submit').click()
-  //
-  // cy.getByTestId('toast').should(
-  //   'have.text',
-  //   `The connection request from "${MOCK_HOSTNAME}" has been rejected.`
-  // )
-  // })
+  it.skip('handles rejection', () => {
+    // @TODO: for some mysterious reason this is failing
+    const MOCK_HOSTNAME = 'https://best-blockchain-2.app'
+    cy.sendConnectionRequest(MOCK_HOSTNAME)
+
+    cy.getByTestId('wallet-selection-modal').should('exist')
+    cy.getByTestId('wallet-connection-reject').click()
+
+    cy.getByTestId('input-passphrase').type(passphrase)
+    cy.getByTestId('input-submit').click()
+
+    cy.getByTestId('toast').should(
+      'have.text',
+      `The connection request from "${MOCK_HOSTNAME}" has been rejected.`
+    )
+  })
 })
