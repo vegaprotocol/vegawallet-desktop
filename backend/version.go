@@ -18,15 +18,6 @@ const (
 	requestTimeout = 5 * time.Second
 )
 
-var (
-	// Hash specifies the git commit used to build the application.
-	// See VERSION_HASH in Makefile for details.
-	Hash = "unknown"
-	// Version specifies the version used to build the application.
-	// See VERSION in Makefile for details.
-	Version = "v0.5.0+dev"
-)
-
 type GetVersionResponse struct {
 	Version string                       `json:"version"`
 	GitHash string                       `json:"gitHash"`
@@ -52,8 +43,8 @@ func (h *Handler) GetLatestRelease() (LatestRelease, error) {
 		latestRelease.Version = v.String()
 		latestRelease.URL = vgversion.GetGithubReleaseURL(ReleasesURL, v)
 	} else {
-		latestRelease.Version = Version
-		version, _ := semver.Parse(Version)
+		latestRelease.Version = app.Version
+		version, _ := semver.Parse(app.Version)
 		latestRelease.URL = vgversion.GetGithubReleaseURL(ReleasesURL, &version)
 	}
 
@@ -75,8 +66,8 @@ func (h *Handler) GetVersion() (*GetVersionResponse, error) {
 	}
 
 	return &GetVersionResponse{
-		Version: Version,
-		GitHash: Hash,
+		Version: app.Version,
+		GitHash: app.VersionHash,
 		Backend: wversion.GetVersionInfo(netStore, wversion.GetNetworkVersionThroughGRPC),
 	}, nil
 }
