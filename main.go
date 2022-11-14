@@ -12,6 +12,7 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
+	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/linux"
 	"github.com/wailsapp/wails/v2/pkg/options/mac"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
@@ -58,12 +59,14 @@ func main() {
 		MinWidth:         460,
 		MinHeight:        460,
 		BackgroundColour: options.NewRGBA(0, 0, 0, 255),
-		Assets:           assets,
-		Logger:           log,
-		LogLevel:         logger.INFO,
-		OnStartup:        handler.Startup,
-		OnDomReady:       handler.DOMReady,
-		OnShutdown:       handler.Shutdown,
+		AssetServer: &assetserver.Options{
+			Assets: assets,
+		},
+		Logger:     log,
+		LogLevel:   logger.INFO,
+		OnStartup:  handler.Startup,
+		OnDomReady: handler.DOMReady,
+		OnShutdown: handler.Shutdown,
 		Bind: []interface{}{
 			handler,
 		},
