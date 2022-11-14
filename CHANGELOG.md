@@ -11,7 +11,7 @@
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
 ### 🛠 Improvements
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [424](https://github.com/vegaprotocol/vegawallet-desktop/issues/424) - Update to wails 2.2.0
 
 ### 🐛 Fixes
 - [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
