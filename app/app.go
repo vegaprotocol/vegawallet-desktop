@@ -10,7 +10,7 @@ const (
 
 	aboutAppTemplate = `Application to manage your Vega Protocol wallet.
 
-%s - %s
+%s (%s)
 
 MIT License
 Copyright (c) 2022 Gobalsky Labs Ltd.
@@ -24,7 +24,7 @@ var (
 
 	// Version specifies the version used to build the application.
 	// See VERSION in Makefile for details.
-	Version = "v0.3.0+dev"
+	Version = "v0.4.0"
 
 	About = fmt.Sprintf(aboutAppTemplate, Version, VersionHash)
 )
@@ -35,7 +35,7 @@ func init() {
 
 	for _, v := range info.Settings {
 		if v.Key == "vcs.revision" {
-			VersionHash = v.Value
+			VersionHash = v.Value[:8]
 		}
 		if v.Key == "vcs.modified" && v.Value == "true" {
 			modified = true
@@ -44,4 +44,6 @@ func init() {
 	if modified {
 		VersionHash += "-modified"
 	}
+
+	About = fmt.Sprintf(aboutAppTemplate, Version, VersionHash)
 }
