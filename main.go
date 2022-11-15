@@ -7,6 +7,8 @@ import (
 	"os"
 	"time"
 
+	vgpprof "code.vegaprotocol.io/vega/libs/pprof"
+	"code.vegaprotocol.io/vega/logging"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"code.vegaprotocol.io/vegawallet-desktop/backend"
 	"github.com/wailsapp/wails/v2"
@@ -25,17 +27,28 @@ var assets embed.FS
 var icon []byte
 
 func main() {
+
 	startupLogFilePath, err := app.StartupLogFilePath()
 	if err != nil {
 		// There is not much we can do to log such an early error.
 		panic(err)
 	}
 
-	log := logger.NewFileLogger(startupLogFilePath)
+	startupLogger := logger.NewFileLogger(startupLogFilePath)
+
+	pprofhandler, err := vgpprof.New(logging.NewDevLogger(), vgpprof.NewDefaultConfig())
+	if err != nil {
+		startupLogger.Fatal(fmt.Sprintf("Could not start pprof: %v", err))
+	}
+	defer func() {
+		if err := pprofhandler.Stop(); err != nil {
+			startupLogger.Warning(fmt.Sprintf("Could not stop pprof: %v", err))
+		}
+	}()
 
 	defer func() {
 		if r := recover(); r != nil {
-			log.Fatal(fmt.Sprintf("Recovered from a panic: %v", r))
+			startupLogger.Fatal(fmt.Sprintf("Recovered from a panic: %v", r))
 		}
 	}()
 
@@ -45,11 +58,11 @@ func main() {
 	// Create an instance of the handler structure
 	handler, err := backend.NewHandler()
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Couldn't instantiate the backend: %v, PID(%d), date(%v)", err, pid, date))
+		startupLogger.Fatal(fmt.Sprintf("Couldn't instantiate the backend: %v, PID(%d), date(%v)", err, pid, date))
 	}
 
-	log.Info(fmt.Sprintf("Starting the application: PID(%d), date(%v)", pid, date))
-	defer log.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
+	startupLogger.Info(fmt.Sprintf("Starting the application: PID(%d), date(%v)", pid, date))
+	defer startupLogger.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
 
 	// Create application with options
 	if err := wails.Run(&options.App{
@@ -62,7 +75,7 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		Logger:     log,
+		Logger:     startupLogger,
 		LogLevel:   logger.INFO,
 		OnStartup:  handler.Startup,
 		OnDomReady: handler.DOMReady,
@@ -89,6 +102,6 @@ func main() {
 			Icon: icon,
 		},
 	}); err != nil {
-		log.Fatal(fmt.Sprintf("Couldn't run the application: %v, PID(%d), date(%v)", err, pid, date))
+		startupLogger.Fatal(fmt.Sprintf("Couldn't run the application: %v, PID(%d), date(%v)", err, pid, date))
 	}
 }
