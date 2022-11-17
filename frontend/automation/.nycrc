@@ -3,7 +3,5 @@
   "all": true,
   "check-coverage": true,
   "reporter": ["lcov", "html"],
-  "include": [
-    "../src"
-  ]
+  "include": ["../src"]
 }
