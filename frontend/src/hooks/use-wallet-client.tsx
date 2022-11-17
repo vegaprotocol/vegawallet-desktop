@@ -1,6 +1,6 @@
-import type { Logger } from 'loglevel'
 import type { WalletAPIRequest } from '@vegaprotocol/wallet-client'
 import { WalletClient } from '@vegaprotocol/wallet-client'
+import type { Logger } from 'loglevel'
 import { nanoid } from 'nanoid'
 import { useCallback } from 'react'
 
@@ -17,23 +17,26 @@ export class JSONRPCError extends Error {
 }
 
 export const useWalletClient = (logger: Logger) => {
-  const request: WalletAPIRequest = useCallback(async (method, params) => {
-    const response = await SubmitWalletAPIRequest({
-      jsonrpc: '2.0',
-      id: nanoid(),
-      method,
-      params
-    })
+  const request: WalletAPIRequest = useCallback(
+    async (method, params) => {
+      const response = await SubmitWalletAPIRequest({
+        jsonrpc: '2.0',
+        id: nanoid(),
+        method,
+        params
+      })
 
-    if (response.error) {
-      logger.error(response.error)
-      throw new Error(response.error.message)
-    }
+      if (response.error) {
+        logger.error(response.error)
+        throw new Error(response.error.message)
+      }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, ...rest } = response.result || {}
-    return rest
-  }, [])
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...rest } = response.result || {}
+      return rest
+    },
+    [logger]
+  )
 
   return new WalletClient(request)
 }

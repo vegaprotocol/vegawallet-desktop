@@ -24,7 +24,7 @@
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "test": "jest",
     "format:check": "npx prettier --check .",
-    "format:write": "npx prettier --write .",
+    "format:fix": "npx prettier --write .",
     "lint:check": "eslint ./src",
     "lint:fix": "eslint ./src --fix"
   },
