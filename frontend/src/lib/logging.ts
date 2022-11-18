@@ -53,7 +53,7 @@ export const initLogger = once(() => {
       dsn: SENTRY_DSN,
       integrations: [new BrowserTracing()],
       release: packageJson.version,
-      tracesSampleRate: 1.0
+      tracesSampleRate: 1
     })
   }
 })

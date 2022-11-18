@@ -35,7 +35,12 @@ export const useWalletService = (): Service => {
     },
 
     // Logging
-    GetLogger: () => logger,
+    GetLogger: (namespace?: string) => {
+      if (namespace) {
+        return createLogger(namespace)
+      }
+      return logger
+    },
 
     // Service
     StartService: Handlers.StartService,
