@@ -20,14 +20,15 @@ Before you build you will need to `yarn install` in the root directory.
 ### Development
 
 To be able to develop the frontend inside the desktop app, you need the following steps:
+
 - clone the [wallet ui](https://github.com/vegaprotocol/vegawallet-ui) repo if you don't have it already
 - follow the setup steps from its documentation
-- link the repo by running `yarn link` in the *vegawallet-ui/libs/wallet-ui* directory of the ui repo.
-- run `yarn install` in the desktop app's *frontend* folder
-- use the linked package by running `yarn link @vegaprotocol/wallet-ui` in the *frontend* folder of the desktop app
-- run `yarn dev` in the same *frontend* folder
+- link the repo by running `yarn link` in the _vegawallet-ui/libs/wallet-ui_ directory of the ui repo.
+- run `yarn install` in the desktop app's _frontend_ folder
+- use the linked package by running `yarn link @vegaprotocol/wallet-ui` in the _frontend_ folder of the desktop app
+- run `yarn dev` in the same _frontend_ folder
 
-*NOTE*: If you've previously build the frontend, make sure you removed the cached output of vite by running `rm -rf ./node_modules/.vite` in the *frontend* folder
+_NOTE_: If you've previously build the frontend, make sure you removed the cached output of vite by running `rm -rf ./node_modules/.vite` in the _frontend_ folder
 
 ### Code format
 
@@ -40,9 +41,10 @@ When you commit your changes, and create a PR, the CI runs a few checks on the c
 
 The frontend runs end to end tests with cypress. The CI configuration for this is in the [same file](../.github/workflows/test-frontend.yml) as the format / lint above.
 To run the end to end tests locally, you'll need to follow the following steps:
+
 - open a terminal, and launch the desktop app by running `wails dev` in the root directory
-- go to the *frontend/automation* folder
+- go to the _frontend/automation_ folder
 - run `npm install` to get all the dependencies
 - run `npm run cypress:open:local` to launch cypress
 
-*NOTE*: alternatively, you can run the tests in a headless mode, too, by running `npm run test` in the *frontend/automation* folder.
+_NOTE_: alternatively, you can run the tests in a headless mode, too, by running `npm run test` in the _frontend/automation_ folder.
