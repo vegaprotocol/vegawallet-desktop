@@ -28,7 +28,9 @@ To be able to develop the frontend inside the desktop app, you need the followin
 - use the linked package by running `yarn link @vegaprotocol/wallet-ui` in the _frontend_ folder of the desktop app
 - run `yarn dev` in the same _frontend_ folder
 
-_NOTE_: If you've previously build the frontend, make sure you removed the cached output of vite by running `rm -rf ./node_modules/.vite` in the _frontend_ folder
+_NOTES_:
+- if you've previously built the frontend, make sure you removed the cached output of vite by running `rm -rf ./node_modules/.vite` in the _frontend_ folder.
+- you might need to do a `yarn remove @vegaprotocol/wallet-ui && yarn add @vegaprotocol/wallet-ui`, as there's a but in the current latest version of yarn which messes with the linking.
 
 ### Code format
 

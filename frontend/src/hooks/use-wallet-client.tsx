@@ -27,8 +27,9 @@ export const useWalletClient = (logger: Logger) => {
       })
 
       if (response.error) {
-        logger.error(response.error)
-        throw new Error(response.error.message)
+        const error = new JSONRPCError(response.error)
+        logger.error(error)
+        throw error
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
