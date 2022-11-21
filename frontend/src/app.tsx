@@ -22,7 +22,7 @@ function App() {
       runtime={runtime}
       service={service}
       features={{
-        [FeatureMap.NETWORK_COMPATIBILITY_WARNING]: 'Cypress' in window,
+        [FeatureMap.NETWORK_COMPATIBILITY_WARNING]: 'Cypress' in window
       }}
     />
   )
