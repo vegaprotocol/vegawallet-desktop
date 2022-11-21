@@ -33,7 +33,7 @@ jobs:
       - name: Get backend dependencies
         run: go get -v -t -d ./...
 
-      - name: Set up Node.js ^18.12
+      - name: Set up Node ^18.12
         id: Node
         uses: actions/setup-node@v3
         with:
