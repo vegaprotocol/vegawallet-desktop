@@ -1,6 +1,7 @@
 import '@vegaprotocol/wallet-ui/index.css'
 
 import { App as WalletUI } from '@vegaprotocol/wallet-ui'
+import { FeatureMap } from '@vegaprotocol/wallet-ui/src/types'
 import { useMemo } from 'react'
 
 import { useWailsLink } from './hooks/use-wails-link'
@@ -15,7 +16,16 @@ function App() {
   const client = useWalletClient(logger)
   const runtime = useWalletRuntime()
 
-  return <WalletUI client={client} runtime={runtime} service={service} />
+  return (
+    <WalletUI
+      client={client}
+      runtime={runtime}
+      service={service}
+      features={{
+        [FeatureMap.NETWORK_COMPATIBILITY_WARNING]: 'Cypress' in window,
+      }}
+    />
+  )
 }
 
 export default App
