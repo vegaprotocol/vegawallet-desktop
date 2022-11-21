@@ -1,7 +1,6 @@
 import '@vegaprotocol/wallet-ui/index.css'
 
-import { App as WalletUI } from '@vegaprotocol/wallet-ui'
-import { FeatureMap } from '@vegaprotocol/wallet-ui/src/types'
+import { App as WalletUI, FeatureMap } from '@vegaprotocol/wallet-ui'
 import { useMemo } from 'react'
 
 import { useWailsLink } from './hooks/use-wails-link'
