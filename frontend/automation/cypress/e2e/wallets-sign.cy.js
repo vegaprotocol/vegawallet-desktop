@@ -27,13 +27,19 @@ describe('wallet sign key', () => {
   it('message signing - success', () => {
     cy.signMessage('Sign message successfully')
     authenticate(passphrase)
-    cy.getByTestId('toast').contains('Message signed successfully')
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'Message signed successfully'
+    )
   })
 
   it('message signing - able to sign multiple', () => {
     cy.signMessage('Sign message successfully')
     authenticate(passphrase)
-    cy.getByTestId('toast').contains('Message signed successfully')
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'Message signed successfully'
+    )
     cy.getByTestId('sign-more').click()
     cy.signMessage('Sign message successfully')
     authenticate(passphrase)
@@ -46,7 +52,10 @@ describe('wallet sign key', () => {
     cy.getByTestId('helper-text').should('have.text', 'Required')
     cy.signMessage('Sign message successfully')
     authenticate(passphrase)
-    cy.getByTestId('toast').contains('Message signed successfully')
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'Message signed successfully'
+    )
     cy.getByTestId('sign-more').click()
     cy.signMessage('Sign message successfully')
     authenticate(passphrase)
@@ -58,7 +67,10 @@ describe('wallet sign key', () => {
     // given a hash of the signed content as well as the message (now encoded)
     cy.signMessage('I am a secret')
     authenticate(passphrase)
-    cy.getByTestId('toast').contains('Message signed successfully')
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'Message signed successfully'
+    )
 
     const hashedMessage = '[data-state="closed"]'
 

@@ -23,7 +23,7 @@ describe('import network', () => {
 
   it('import from preset', () => {
     cy.getByTestId(`import-network-mainnet1`).click()
-    cy.getByTestId('toast').contains('Network imported to:')
+    cy.getByTestId('toast').should('contain.text', 'Network imported to:')
   })
 
   it('import successfully using url', () => {
@@ -32,7 +32,7 @@ describe('import network', () => {
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(url)
     cy.getByTestId('import-network').click()
-    cy.getByTestId('toast').contains('Network imported to:')
+    cy.getByTestId('toast').should('contain.text', 'Network imported to:')
   })
 
   it('import failure using url', () => {
@@ -42,8 +42,9 @@ describe('import network', () => {
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(url)
     cy.getByTestId('import-network').click()
-    cy.getByTestId('toast').contains(
-      "Error: couldn't import network configuration"
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'Error: could not fetch the network configuration'
     )
   })
 
@@ -51,14 +52,15 @@ describe('import network', () => {
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(Cypress.env('testNetworkPath'))
     cy.getByTestId('import-network').click()
-    cy.getByTestId('toast').contains(
-      "Error: couldn't import network configuration"
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'Error: a network with the same name already exists'
     )
     // overwrite message shown, check overwrite and re submit
     cy.getByTestId('toast').should('not.exist')
     cy.get('button[role="checkbox"]').click()
     cy.getByTestId('import-network').click()
-    cy.getByTestId('toast').contains('Network imported to:')
+    cy.getByTestId('toast').should('contain.text', 'Network imported to:')
   })
 
   it('import same network with different name', () => {
@@ -68,7 +70,7 @@ describe('import network', () => {
     cy.getByTestId('url-path').type(url)
     cy.getByTestId('network-name').type('custom')
     cy.getByTestId('import-network').click()
-    cy.getByTestId('toast').contains('Network imported to:')
+    cy.getByTestId('toast').should('contain.text', 'Network imported to:')
   })
 
   // Getting RSA keys already exist error on startup
@@ -88,7 +90,7 @@ describe('import network', () => {
     cy.getByTestId('url-path').type(filePath)
     cy.getByTestId('network-name').type('custom')
     cy.getByTestId('import-network').click()
-    cy.getByTestId('toast').contains('Network imported to:')
+    cy.getByTestId('toast').should('contain.text', 'Network imported to:')
   })
 
   it('import failure via file path', () => {
@@ -98,7 +100,8 @@ describe('import network', () => {
     cy.getByTestId('url-path').type(invalidFilePath)
     cy.getByTestId('network-name').type('custom')
     cy.getByTestId('import-network').click()
-    cy.getByTestId('toast').contains(
+    cy.getByTestId('toast').should(
+      'contain.text',
       "Error: couldn't import network configuration"
     )
   })
