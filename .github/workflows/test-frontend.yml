@@ -46,7 +46,7 @@ jobs:
           key: node_modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install frontend dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Build frontend
         working-directory: frontend
