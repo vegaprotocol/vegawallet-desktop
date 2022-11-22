@@ -222,7 +222,7 @@ Cypress.Commands.add('waitForHome', () => {
       cy.getByTestId('telemetry-option-continue').click()
     }
   })
-  cy.getByTestId('telemetry-option-continue', { timeout: 30000 }).should(
+  cy.getByTestId('telemetry-option-continue', { timeout: 60000 }).should(
     'not.exist'
   )
   cy.get('body').then(body => {
