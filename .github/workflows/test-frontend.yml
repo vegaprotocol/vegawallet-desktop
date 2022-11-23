@@ -45,21 +45,18 @@ jobs:
           path: '**/node_modules'
           key: node_modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         working-directory: frontend
         run: yarn install --frozen-lockfile
-
-      - name: Build frontend
-        working-directory: frontend
-        run: yarn build
-        env:
-          VITE_COVERAGE: "true"
 
       # Start wails in the first process
       - name: Start backend in background
         run: wails dev -noreload &
         env:
           VITE_COVERAGE: "true"
+          VITE_FEATURE_NETWORK_WARNING: "false"
+          VITE_FEATURE_TELEMETRY_CHECK: "false"
+
 
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
@@ -135,6 +132,12 @@ jobs:
       - name: Install dependencies
         working-directory: frontend
         run: yarn install --frozen-lockfile
+
+      - name: Build frontend
+        working-directory: frontend
+        run: yarn build
+        env:
+          VITE_COVERAGE: "true"
 
       - name: Check lint
         working-directory: frontend
