@@ -1,6 +1,6 @@
 import '@vegaprotocol/wallet-ui/index.css'
 
-import { App as WalletUI, FeatureMap } from '@vegaprotocol/wallet-ui'
+import { App as WalletUI } from '@vegaprotocol/wallet-ui'
 import { useMemo } from 'react'
 
 import { useWailsLink } from './hooks/use-wails-link'
@@ -21,8 +21,8 @@ function App() {
       runtime={runtime}
       service={service}
       features={{
-        [FeatureMap.NETWORK_COMPATIBILITY_WARNING]: import.meta.env.VITE_FEATURE_NETWORK_WARNING !== 'false',
-        [FeatureMap.TELEMETRY_CHECK]: import.meta.env.VITE_FEATURE_TELEMETRY_CHECK !== 'false'
+        NETWORK_COMPATIBILITY_WARNING: import.meta.env.VITE_FEATURE_NETWORK_WARNING !== 'false',
+        TELEMETRY_CHECK: import.meta.env.VITE_FEATURE_TELEMETRY_CHECK !== 'false'
       }}
     />
   )
