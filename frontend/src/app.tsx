@@ -21,8 +21,10 @@ function App() {
       runtime={runtime}
       service={service}
       features={{
-        NETWORK_COMPATIBILITY_WARNING: import.meta.env.VITE_FEATURE_NETWORK_WARNING !== 'false',
-        TELEMETRY_CHECK: import.meta.env.VITE_FEATURE_TELEMETRY_CHECK !== 'false'
+        NETWORK_COMPATIBILITY_WARNING:
+          import.meta.env.VITE_FEATURE_NETWORK_WARNING !== 'false',
+        TELEMETRY_CHECK:
+          import.meta.env.VITE_FEATURE_TELEMETRY_CHECK !== 'false'
       }}
     />
   )
