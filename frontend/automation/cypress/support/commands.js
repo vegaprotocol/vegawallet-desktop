@@ -225,7 +225,10 @@ Cypress.Commands.add('waitForHome', () => {
     'not.exist'
   )
   cy.getByTestId('service-status').should('not.contain.text', 'Not running')
-  cy.getByTestId('service-status', {timeout: 20000}).should('not.contain.text', 'Loading')
+  cy.getByTestId('service-status', { timeout: 20000 }).should(
+    'not.contain.text',
+    'Loading'
+  )
 })
 
 Cypress.Commands.add('monitor_clipboard', () => {
