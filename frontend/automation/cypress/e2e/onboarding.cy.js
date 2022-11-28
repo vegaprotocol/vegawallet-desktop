@@ -106,7 +106,7 @@ describe('onboarding', () => {
     cy.getByTestId('submit').click()
 
     cy.getByTestId('toast').should(
-      'have.text',
+      'contain.text',
       'Error: could not import the wallet: the recovery phrase is not valid'
     )
   })
