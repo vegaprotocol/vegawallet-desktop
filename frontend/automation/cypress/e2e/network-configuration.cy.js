@@ -126,6 +126,7 @@ describe('change network details', () => {
     cy.contains('gRPC Nodes')
       .next()
       .within(() => {
+        cy.getByTestId('node-list').should('have.length', 7)
         // take note of first node
         cy.getByTestId('node-list').first().its('val').as('first_grpc_node')
 
