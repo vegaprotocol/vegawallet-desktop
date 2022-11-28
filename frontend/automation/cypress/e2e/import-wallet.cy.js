@@ -23,7 +23,7 @@ describe('import wallet', () => {
     const pubkey = Cypress.env('recoveredWalletPublicKey')
 
     fillInRecoveryForm(walletName, passphrase, recoveryPhrase)
-    cy.getByTestId('toast').contains('Wallet imported to')
+    cy.getByTestId('toast').should('contain.text', 'Wallet imported to')
 
     // Can open newly imported wallet
     unlockWallet(walletName.replace(' ', '-'), passphrase)
@@ -53,7 +53,7 @@ describe('import wallet', () => {
   it('recover wallet with different version', () => {
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
     fillInRecoveryForm('newwallet', '123', recoveryPhrase, 1)
-    cy.getByTestId('toast').contains('Wallet imported to')
+    cy.getByTestId('toast').should('contain.text', 'Wallet imported to')
   })
 
   it('form validation', () => {
@@ -63,7 +63,8 @@ describe('import wallet', () => {
 
   it('incorrect recovery phrase', () => {
     fillInRecoveryForm('newallet', '123', 'incorrect')
-    cy.getByTestId('toast').contains(
+    cy.getByTestId('toast').should(
+      'contain.text',
       'Error: could not import the wallet: the recovery phrase is not valid'
     )
   })

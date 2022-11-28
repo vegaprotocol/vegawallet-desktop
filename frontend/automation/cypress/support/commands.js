@@ -217,21 +217,17 @@ Cypress.Commands.add('waitForHome', () => {
   cy.getByTestId('splash-loader').should('be.visible')
   cy.getByTestId('splash-loader').should('not.exist')
   cy.get('body').then(body => {
-    if (body.find('[data-testid="telemetry-option-form"]').length > 0) {
-      cy.get('button[role="radio"][value="no"]').click()
-      cy.getByTestId('telemetry-option-continue').click()
-    }
-  })
-  cy.getByTestId('telemetry-option-continue', { timeout: 30000 }).should(
-    'not.exist'
-  )
-  cy.get('body').then(body => {
     if (body.find('[data-testid="network-compatibility-dialog"]').length > 0) {
       cy.get('button[data-testid="network-compatibility-continue"]').click()
     }
   })
   cy.getByTestId('network-compatibility-dialog', { timeout: 30000 }).should(
     'not.exist'
+  )
+  cy.getByTestId('service-status').should('not.contain.text', 'Not running')
+  cy.getByTestId('service-status', { timeout: 20000 }).should(
+    'not.contain.text',
+    'Loading'
   )
 })
 

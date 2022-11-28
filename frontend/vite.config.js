@@ -13,9 +13,6 @@ export default defineConfig(() => {
       istanbul({
         include: 'src/*',
         exclude: ['node_modules', 'automation/', 'src/wailsjs'],
-        optimizeDeps: {
-          exclude: '@vegaprotocol/wallet-ui'
-        },
         extension: ['.js', '.ts', '.tsx'],
         forceBuildInstrument: truthy.includes(process.env['VITE_COVERAGE'])
       })
