@@ -35,7 +35,7 @@ describe('wallet taint key', () => {
     cy.getByTestId('toast')
       .contains('This key has been tainted')
       .getByTestId('close')
-      .click({multiple: true})
+      .click({ multiple: true })
     cy.getByTestId('keypair-taint-notification')
       .should('exist')
       .within(() => {
