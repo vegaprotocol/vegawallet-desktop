@@ -87,10 +87,7 @@ describe('wallet', () => {
 
   it('wrong passphrase', () => {
     unlockWallet(walletName, 'invalid')
-    cy.getByTestId('toast').should(
-      'contain.text',
-      'Error: could not retrieve the wallet: wrong passphrase'
-    )
+    cy.getByTestId('toast').should('contain.text', 'Error: wrong passphrase')
   })
 
   it('generate new key pair', () => {

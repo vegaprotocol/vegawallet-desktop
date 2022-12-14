@@ -12,6 +12,7 @@ import (
 	"code.vegaprotocol.io/vega/wallet/api"
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	nodeapi "code.vegaprotocol.io/vega/wallet/api/node"
+	"code.vegaprotocol.io/vega/wallet/api/session"
 	"code.vegaprotocol.io/vega/wallet/network"
 	netstore "code.vegaprotocol.io/vega/wallet/network/store/v1"
 	"code.vegaprotocol.io/vega/wallet/node"
@@ -23,6 +24,9 @@ import (
 )
 
 const (
+	// UnknownStatus is used when the service health check is not yet known.
+	UnknownStatus HealthCheckStatus = "unknown_status"
+
 	// ServiceIsHealthy is sent when the service is healthy.
 	// This event can be emitted every 15 seconds.
 	ServiceIsHealthy HealthCheckStatus = "service_is_healthy"
@@ -99,7 +103,9 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 		return err
 	}
 
-	walletStore, err := h.getWalletsStore(config)
+	vegaPaths := paths.New(config.VegaHome)
+
+	walletStore, err := h.getWalletsStore(vegaPaths)
 	if err != nil {
 		return err
 	}
@@ -183,7 +189,7 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 
 	sequentialInteractor := interactor.NewSequentialInteractor(ctx, h.currentService.receptionChan, h.currentService.responseChan)
 
-	clientAPI, err := api.ClientAPI(jsonRpcLogger, walletStore, sequentialInteractor, nodeSelector)
+	clientAPI, err := api.ClientAPI(jsonRpcLogger, walletStore, sequentialInteractor, nodeSelector, session.NewSessions())
 	if err != nil {
 		h.log.Error("Could not initialise the JSON-RPC API", zap.Error(err))
 		shutdownServiceFn()
@@ -204,12 +210,7 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 		log: log.Named("api-v1-policy"),
 	}
 
-	srv, err := service.NewService(log.Named("http-server"), netCfg, clientAPI, handler, auth, forwarder, unsupportedV1APIPolicy)
-	if err != nil {
-		h.log.Error("Could not initialise the service", zap.Error(err))
-		shutdownServiceFn()
-		return err
-	}
+	srv := service.NewService(log.Named("http-server"), netCfg, clientAPI, handler, auth, forwarder, unsupportedV1APIPolicy)
 
 	h.currentService.SetInfo(svcURL, logFilePath)
 	h.currentService.OnShutdown(func() {

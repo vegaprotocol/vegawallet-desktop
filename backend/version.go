@@ -6,6 +6,7 @@ import (
 	"time"
 
 	vgversion "code.vegaprotocol.io/vega/libs/version"
+	"code.vegaprotocol.io/vega/paths"
 	wversion "code.vegaprotocol.io/vega/wallet/version"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"github.com/blang/semver/v4"
@@ -19,9 +20,10 @@ const (
 )
 
 type GetVersionResponse struct {
-	Version string                       `json:"version"`
-	GitHash string                       `json:"gitHash"`
-	Backend *wversion.GetVersionResponse `json:"backend"`
+	Version       string                                       `json:"version"`
+	GitHash       string                                       `json:"gitHash"`
+	Backend       *wversion.GetSoftwareVersionResponse         `json:"backend"`
+	Compatibility *wversion.CheckSoftwareCompatibilityResponse `json:"networksCompatibility"`
 }
 
 type LatestRelease struct {
@@ -60,14 +62,19 @@ func (h *Handler) GetVersion() (*GetVersionResponse, error) {
 		return nil, fmt.Errorf("could not load the configuration: %w", err)
 	}
 
-	netStore, err := h.getNetworksStore(cfg)
+	vegaPaths := paths.New(cfg.VegaHome)
+
+	netStore, err := h.getNetworksStore(vegaPaths)
 	if err != nil {
 		return nil, err
 	}
 
+	compatibility, _ := wversion.CheckSoftwareCompatibility(netStore, wversion.GetNetworkVersionThroughGRPC)
+
 	return &GetVersionResponse{
-		Version: app.Version,
-		GitHash: app.VersionHash,
-		Backend: wversion.GetVersionInfo(netStore, wversion.GetNetworkVersionThroughGRPC),
+		Version:       app.Version,
+		GitHash:       app.VersionHash,
+		Backend:       wversion.GetSoftwareVersionInfo(),
+		Compatibility: compatibility,
 	}, nil
 }

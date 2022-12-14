@@ -27,11 +27,6 @@ describe('manage networks', () => {
     cy.getByTestId('select-test_network2').click()
     cy.getByTestId('service-status')
       .scrollIntoView()
-      .contains('Wallet Service: Loading', {
-        timeout: 20000
-      })
-    cy.getByTestId('service-status')
-      .scrollIntoView()
       .contains('Wallet Service: test_network2', {
         timeout: 20000
       })

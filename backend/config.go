@@ -3,6 +3,8 @@ package backend
 import (
 	"fmt"
 
+	"code.vegaprotocol.io/vega/libs/jsonrpc"
+	"code.vegaprotocol.io/vega/paths"
 	"code.vegaprotocol.io/vega/wallet/api"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -29,18 +31,20 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 		VegaHome: "",
 	}
 
-	wStore, err := h.getWalletsStore(defaultCfg)
+	vegaPaths := paths.New(defaultCfg.VegaHome)
+
+	wStore, err := h.getWalletsStore(vegaPaths)
 	if err != nil {
 		return nil, err
 	}
 
-	netStore, err := h.getNetworksStore(defaultCfg)
+	netStore, err := h.getNetworksStore(vegaPaths)
 	if err != nil {
 		return nil, err
 	}
 
-	listWallets, _ := api.NewAdminListWallets(wStore).Handle(h.ctx, nil)
-	listNetworks, _ := api.NewAdminListNetworks(netStore).Handle(h.ctx, nil)
+	listWallets, _ := api.NewAdminListWallets(wStore).Handle(h.ctx, nil, jsonrpc.RequestMetadata{})
+	listNetworks, _ := api.NewAdminListNetworks(netStore).Handle(h.ctx, nil, jsonrpc.RequestMetadata{})
 
 	return &SearchForExistingConfigurationResponse{
 		Wallets:  listWallets.(api.AdminListWalletsResult).Wallets,

@@ -20,7 +20,7 @@ var (
 	ErrNameIsRequired    = errors.New("a name is required for an interaction")
 )
 
-func (h *Handler) SubmitWalletAPIRequest(request *jsonrpc.Request) (*jsonrpc.Response, error) {
+func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Response, error) {
 	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
 	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
 
@@ -28,7 +28,7 @@ func (h *Handler) SubmitWalletAPIRequest(request *jsonrpc.Request) (*jsonrpc.Res
 		return nil, err
 	}
 
-	return h.walletAPI.DispatchRequest(h.ctx, request), nil
+	return h.walletAPI.DispatchRequest(h.ctx, request, jsonrpc.RequestMetadata{}), nil
 }
 
 func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error {

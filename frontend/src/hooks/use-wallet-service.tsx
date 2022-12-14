@@ -15,7 +15,17 @@ export const useWalletService = (): Service => {
   return {
     // Version
     GetLatestRelease: Handlers.GetLatestRelease,
-    GetVersion: Handlers.GetVersion,
+    GetVersion: async () => {
+      const { version, gitHash, backend, networksCompatibility } =
+        await Handlers.GetVersion()
+
+      return {
+        version,
+        gitHash,
+        backend,
+        networksCompatibility: networksCompatibility?.networksCompatibility
+      }
+    },
 
     // Config
     GetAppConfig: Handlers.GetAppConfig,
