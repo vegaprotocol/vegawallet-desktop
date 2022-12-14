@@ -26,7 +26,7 @@ func newServiceInfo() *serviceInfo {
 }
 
 func (s *serviceInfo) IsRunning() bool {
-	return s.cancelFunc != nil
+	return s.cancelFunc != nil && s.latestHealthState != UnknownStatus
 }
 
 func (s *serviceInfo) Health() HealthCheckStatus {
@@ -58,7 +58,7 @@ func (s *serviceInfo) Shutdown() {
 func (s *serviceInfo) reset() {
 	s.url = ""
 	s.logFilePath = ""
-	s.latestHealthState = ""
+	s.latestHealthState = UnknownStatus
 	s.cancelFunc = nil
 	s.receptionChan = make(chan interactor.Interaction, 1)
 	s.responseChan = make(chan interactor.Interaction, 1)
