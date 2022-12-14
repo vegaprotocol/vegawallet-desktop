@@ -33,8 +33,8 @@ describe('settings', () => {
 
     // change telemetry
     const radioGroupSelector = '[role="radiogroup"]'
-    cy.get(radioGroupSelector).find('input[value="no"]').should('be.checked')
-    cy.get(radioGroupSelector).find('button[value="yes"]').click()
+    cy.get(radioGroupSelector).find('input[value="yes"]').should('be.checked')
+    cy.get(radioGroupSelector).find('button[value="no"]').click()
 
     // submit
     cy.getByTestId('update-settings').click()
@@ -44,7 +44,7 @@ describe('settings', () => {
 
     cy.getByTestId(homeSettingsBtn).click()
     cy.getByTestId('log-level').last().should('have.value', 'debug')
-    cy.get(radioGroupSelector).find('input[value="yes"]').should('be.checked')
+    cy.get(radioGroupSelector).find('input[value="no"]').should('be.checked')
     cy.getByTestId(cancelSettingsBtn).click({ force: true })
   })
 })

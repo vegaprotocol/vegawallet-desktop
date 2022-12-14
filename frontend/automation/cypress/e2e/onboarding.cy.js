@@ -19,7 +19,7 @@ describe('onboarding', () => {
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
     cy.getByTestId('submit').click()
-    cy.getByTestId('toast').contains('Wallet created!')
+    cy.getByTestId('toast').should('contain.text', 'Wallet created!')
     cy.getByTestId('toast').should('not.exist')
     cy.getByTestId('create-wallet-success-cta').click()
     cy.getByTestId('header-title').should('have.text', walletName)
@@ -40,7 +40,7 @@ describe('onboarding', () => {
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
     cy.getByTestId('submit').click()
-    cy.getByTestId('toast').contains('Wallet created!')
+    cy.getByTestId('toast').should('contain.text', 'Wallet created!')
     cy.getByTestId('toast').should('not.exist')
     cy.getByTestId('create-wallet-success-cta').click()
     cy.getByTestId('header-title').should('have.text', walletName)
@@ -52,7 +52,7 @@ describe('onboarding', () => {
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
     cy.getByTestId('submit').click()
-    cy.getByTestId('toast').contains('Wallet created!')
+    cy.getByTestId('toast').should('contain.text', 'Wallet created!')
     cy.getByTestId('toast').should('not.exist')
     cy.getByTestId('create-wallet-success-cta').click()
     cy.getByTestId('header-title').should('have.text', walletName2)
@@ -84,7 +84,7 @@ describe('onboarding', () => {
     cy.getByTestId('confirm-passphrase').type(passphrase)
     cy.getByTestId('submit').click()
 
-    cy.getByTestId('toast').contains('Wallet imported to:')
+    cy.getByTestId('toast').should('contain.text', 'Wallet imported to:')
   })
 
   it('import wallet validation', () => {
@@ -106,7 +106,7 @@ describe('onboarding', () => {
     cy.getByTestId('submit').click()
 
     cy.getByTestId('toast').should(
-      'have.text',
+      'contain.text',
       'Error: could not import the wallet: the recovery phrase is not valid'
     )
   })

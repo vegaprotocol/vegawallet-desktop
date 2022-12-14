@@ -2,4 +2,6 @@ node_modules
 build
 *.html
 wailsjs
-src/wallet-client
+coverage
+automation/coverage
+dist

@@ -6,11 +6,7 @@ The Vega Wallet desktop app provides a graphical user interface for Vega Protoco
 
 [Wallet documentation](https://docs.vega.xyz/docs/mainnet/tools/vega-wallet/desktop-app/latest/getting-started): Read the quick-start guide for tips on using the desktop wallet app.
 
-## Development
-
 ### Dependencies
-
-#### Wails
 
 This project uses [Wails](https://wails.app) to build the desktop app. To install Wails, follow the instruction on its [Getting started](https://wails.app/gettingstarted/) page.
 
@@ -20,7 +16,7 @@ Be sure to have the following environment variables set:
 - `GO111MODULE=on`
 
 ```sh
-go install github.com/wailsapp/wails/v2/cmd/wails@v2.1.0
+go install github.com/wailsapp/wails/v2/cmd/wails@v2.2.0
 ```
 
 To check if you have the correct dependencies installed, use the following command:
@@ -29,17 +25,16 @@ To check if you have the correct dependencies installed, use the following comma
 wails doctor
 ```
 
-##### For Linux
+To be able to compile the frontend, you'll also need to install:
+
+- nodejs >= **v18.12.0**
+- yarn >= **v1.22.19**
+
+**For Linux**
 
 Be sure to follow the installation guide from Wails. There are specific dependencies that needs to be installed.
 
 For more details, see [https://wails.app/gettingstarted/linux/#gcc-gtk-webkit](https://wails.app/gettingstarted/linux/#gcc-gtk-webkit)
-
-#### Frontend
-
-Make sure to have at least **Node v16.13.2** installed.
-
-The supported version of Typescript is **4.3.5**.
 
 ### Build
 
@@ -54,7 +49,7 @@ directory.
 
 More at the [Wails documentation](https://wails.app/reference/cli/#build).
 
-### Develop
+### Development
 
 The backend embeds files from the `frontend/dist` folder. On a new environment, the `frontend/dist` folder is not populated, and will result of the following failure if wails is run first:
 
@@ -66,7 +61,7 @@ As a result, we need to run the frontend first, so wails can embed actual files 
 
 ```sh
 cd frontend
-npm run build
+yarn build
 ```
 
 Then run
@@ -75,17 +70,17 @@ Then run
 wails dev
 ```
 
-This will start the app running on `localhost:34115`, as well as starting up [Vite](https://vitejs.dev/) to handle watching for any changes and hot reloading the frontend. See [`wails.json`](https://wails.io/docs/reference/project-config) for further configuration options.
+This will start the app running on `localhost:34115`, as well as starting up [Vite](https://vitejs.dev/) to handle watching for any changes and hot reloading the frontend. See [`wails.json`](https://wails.io/docs/reference/project-config) for further configuration options. For more details on developing the frontend code, check out the [frontend readme](./frontend/README.md).
 
-#### Generate Go binding
+### More commands
 
-Use the following command:
+To generate the go bindings for the frontend, you can run:
 
 ```sh
 wails generate module
 ```
 
-#### Common issues
+### Common issues
 
 ##### Too many open files
 
@@ -110,27 +105,9 @@ To launch the backend tests, use the following commands:
 go test ./...
 ```
 
-#### Frontend
+#### End to end
 
-Go to the `frontend` directory, and start the dev server in test mode.
-
-```sh
-npm run dev:test
-```
-
-Then go to the `frontend/automation` directory and run Cypress in interactive mode or headless modes:
-
-Interactive:
-
-```sh
-npx cypress open
-```
-
-Headless:
-
-```sh
-npx cypress run
-```
+Check out the [frontend guide](./frontend/README.md) to see how to run the end to end tests.
 
 ## Support
 

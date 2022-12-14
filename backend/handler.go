@@ -8,8 +8,12 @@ import (
 	vgzap "code.vegaprotocol.io/vega/libs/zap"
 	"code.vegaprotocol.io/vega/paths"
 	walletapi "code.vegaprotocol.io/vega/wallet/api"
+	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	nodeapi "code.vegaprotocol.io/vega/wallet/api/node"
+	sessionstore "code.vegaprotocol.io/vega/wallet/api/session/store/v1"
 	netstore "code.vegaprotocol.io/vega/wallet/network/store/v1"
+	"code.vegaprotocol.io/vega/wallet/service"
+	svcstore "code.vegaprotocol.io/vega/wallet/service/store/v1"
 	wstore "code.vegaprotocol.io/vega/wallet/wallet/store/v1"
 	"code.vegaprotocol.io/vega/wallet/wallets"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
@@ -36,7 +40,8 @@ type Handler struct {
 
 	walletAPI *jsonrpc.API
 
-	currentService *serviceInfo
+	currentService        *serviceInfo
+	serviceShutdownSwitch *walletapi.ServiceShutdownSwitch
 }
 
 func NewHandler() (*Handler, error) {
@@ -93,6 +98,7 @@ func (h *Handler) Shutdown(_ context.Context) {
 	defer h.log.Debug("Leaving Shutdown")
 
 	_ = h.StopService()
+	h.serviceShutdownSwitch.Flip(nil)
 }
 
 func (h *Handler) initializeAppLogger() error {
@@ -156,14 +162,32 @@ func (h *Handler) updateBackendComponentsFromConfig() error {
 }
 
 func (h *Handler) initializeWalletAPI(cfg app.Config) error {
-	netStore, err := h.getNetworksStore(cfg)
+	vegaPaths := paths.New(cfg.VegaHome)
+
+	netStore, err := h.getNetworksStore(vegaPaths)
 	if err != nil {
 		return err
 	}
 
-	walletStore, err := h.getWalletsStore(cfg)
+	walletStore, err := h.getWalletsStore(vegaPaths)
 	if err != nil {
 		return err
+	}
+
+	svcStore, err := svcstore.InitialiseStore(vegaPaths)
+	if err != nil {
+		h.log.Error(fmt.Sprintf("Couldn't initialise the service store: %v", err))
+		return fmt.Errorf("could not initialise the service store: %w", err)
+	}
+
+	policyBuilderFunc := func(_ context.Context) service.Policy {
+		return &unsupportedV1APIPolicy{
+			log: h.log.Named("api-v1-policy"),
+		}
+	}
+
+	interactorBuilderFunc := func(ctx context.Context) walletapi.Interactor {
+		return interactor.NewSequentialInteractor(ctx, h.currentService.receptionChan, h.currentService.responseChan)
 	}
 
 	nodeSelectorBuilder := func(hosts []string, retries uint64) (nodeapi.Selector, error) {
@@ -175,7 +199,28 @@ func (h *Handler) initializeWalletAPI(cfg app.Config) error {
 		return nodeSelector, nil
 	}
 
-	walletAPI, err := walletapi.AdminAPI(h.log.Named("json-api"), walletStore, netStore, nodeSelectorBuilder)
+	shutdownSwitchBuilder := func() *walletapi.ServiceShutdownSwitch {
+		h.serviceShutdownSwitch = walletapi.NewServiceShutdownSwitch(func(err error) {
+			h.log.Error("HTTP server encountered an error", zap.Error(err))
+		})
+		return h.serviceShutdownSwitch
+	}
+
+	loggerBuilderFunc := func(path paths.StatePath, levelName string) (*zap.Logger, zap.AtomicLevel, error) {
+		return h.log, h.logLevel, nil
+	}
+
+	walletAPI, err := walletapi.AdminAPI(h.log.Named("json-api"),
+		walletStore,
+		netStore,
+		svcStore,
+		sessionstore.NewEmptyStore(),
+		nodeSelectorBuilder,
+		policyBuilderFunc,
+		interactorBuilderFunc,
+		loggerBuilderFunc,
+		shutdownSwitchBuilder,
+	)
 	if err != nil {
 		h.log.Error("Could not initialize the wallet administration API", zap.Error(err))
 		return fmt.Errorf("could not initialize the wallet administration API: %w", err)
@@ -195,8 +240,8 @@ func (h *Handler) updateAppLogLevel(level string) error {
 	return nil
 }
 
-func (h *Handler) getNetworksStore(config app.Config) (*netstore.Store, error) {
-	st, err := netstore.InitialiseStore(paths.New(config.VegaHome))
+func (h *Handler) getNetworksStore(vegaPaths paths.Paths) (*netstore.Store, error) {
+	st, err := netstore.InitialiseStore(vegaPaths)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the networks store: %v", err))
 		return nil, fmt.Errorf("could not initialise the networks store: %w", err)
@@ -205,8 +250,8 @@ func (h *Handler) getNetworksStore(config app.Config) (*netstore.Store, error) {
 	return st, nil
 }
 
-func (h *Handler) getWalletsStore(config app.Config) (*wstore.Store, error) {
-	store, err := wallets.InitialiseStore(config.VegaHome)
+func (h *Handler) getWalletsStore(vegaPaths paths.Paths) (*wstore.Store, error) {
+	store, err := wallets.InitialiseStoreFromPaths(vegaPaths)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
 		return nil, fmt.Errorf("could not initialise the wallets store: %w", err)

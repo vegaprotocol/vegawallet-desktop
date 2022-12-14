@@ -1,12 +1,9 @@
 import * as UnwrappedService from './wailsjs/go/backend/Handler'
-import { WalletClient } from './wallet-client'
 
 export type ServiceType = Omit<
   typeof UnwrappedService,
   'SubmitWalletAPIRequest'
-> & {
-  WalletApi: WalletClient
-}
+>
 
 /**
  * Wrap function to return consistent type and throw consistent error
@@ -53,7 +50,5 @@ export const Service = Object.entries(UnwrappedService).reduce(
     }
     return prev
   },
-  {
-    WalletApi: new WalletClient()
-  } as unknown as ServiceType
+  {} as unknown as ServiceType
 )

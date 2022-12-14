@@ -1,6 +1,15 @@
 # Changelog
 
+## 0.5.0
+
+Support for vega 0.64.0.
+
+### 🛠 Improvements
+- [424](https://github.com/vegaprotocol/vegawallet-desktop/issues/424) - Update to wails 2.2.0
+
 ## 0.4.0
+
+Support for vega 0.62.0.
 
 ### 🛠 Improvements
 - [420](https://github.com/vegaprotocol/vegawallet-desktop/issues/420) - Update vega version

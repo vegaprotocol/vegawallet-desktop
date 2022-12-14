@@ -76,7 +76,8 @@ export namespace backend {
 	export class GetVersionResponse {
 	    version: string;
 	    gitHash: string;
-	    backend?: version.GetVersionResponse;
+	    backend?: version.GetSoftwareVersionResponse;
+	    networksCompatibility?: version.CheckSoftwareCompatibilityResponse;
 	
 	    static createFrom(source: any = {}) {
 	        return new GetVersionResponse(source);
@@ -86,7 +87,8 @@ export namespace backend {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.version = source["version"];
 	        this.gitHash = source["gitHash"];
-	        this.backend = this.convertValues(source["backend"], version.GetVersionResponse);
+	        this.backend = this.convertValues(source["backend"], version.GetSoftwareVersionResponse);
+	        this.networksCompatibility = this.convertValues(source["networksCompatibility"], version.CheckSoftwareCompatibilityResponse);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -278,19 +280,15 @@ export namespace version {
 	        this.error = source["error"];
 	    }
 	}
-	export class GetVersionResponse {
-	    version: string;
-	    gitHash: string;
+	export class CheckSoftwareCompatibilityResponse {
 	    networksCompatibility: NetworkCompatibility[];
 	
 	    static createFrom(source: any = {}) {
-	        return new GetVersionResponse(source);
+	        return new CheckSoftwareCompatibilityResponse(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = source["version"];
-	        this.gitHash = source["gitHash"];
 	        this.networksCompatibility = this.convertValues(source["networksCompatibility"], NetworkCompatibility);
 	    }
 	
@@ -311,6 +309,20 @@ export namespace version {
 		    }
 		    return a;
 		}
+	}
+	export class GetSoftwareVersionResponse {
+	    version: string;
+	    gitHash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GetSoftwareVersionResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.gitHash = source["gitHash"];
+	    }
 	}
 
 }

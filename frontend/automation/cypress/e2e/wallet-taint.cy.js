@@ -35,7 +35,7 @@ describe('wallet taint key', () => {
     cy.getByTestId('toast')
       .contains('This key has been tainted')
       .getByTestId('close')
-      .click()
+      .click({ multiple: true })
     cy.getByTestId('keypair-taint-notification')
       .should('exist')
       .within(() => {
@@ -50,7 +50,10 @@ describe('wallet taint key', () => {
     taintKey()
     // 0001-WALL-061 must select a key to un-taint and be required to enter wallet password
     authenticate(passphrase)
-    cy.getByTestId('toast').contains('This key has been untainted')
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'This key has been untainted'
+    )
     cy.getByTestId('keypair-taint-notification').should('not.exist')
   })
 })

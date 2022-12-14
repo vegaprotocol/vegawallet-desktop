@@ -27,11 +27,6 @@ describe('manage networks', () => {
     cy.getByTestId('select-test_network2').click()
     cy.getByTestId('service-status')
       .scrollIntoView()
-      .contains('Wallet Service: Loading', {
-        timeout: 20000
-      })
-    cy.getByTestId('service-status')
-      .scrollIntoView()
       .contains('Wallet Service: test_network2', {
         timeout: 20000
       })
@@ -92,7 +87,10 @@ describe('manage networks', () => {
     // 0001-WALL-013
     cy.getByTestId('manage-networks').click()
     cy.getByTestId('remove-network-test_network2').click()
-    cy.getByTestId('toast').contains('Successfully removed network')
+    cy.getByTestId('toast').should(
+      'contain.text',
+      'Successfully removed network'
+    )
   })
 })
 
@@ -123,6 +121,7 @@ describe('change network details', () => {
     cy.contains('gRPC Nodes')
       .next()
       .within(() => {
+        cy.getByTestId('node-list').should('have.length', 7)
         // take note of first node
         cy.getByTestId('node-list').first().its('val').as('first_grpc_node')
 
@@ -214,7 +213,9 @@ describe('change network details', () => {
 
   Cypress.Commands.add('submit_network_config_form', () => {
     cy.getByTestId('submit').click()
-    cy.getByTestId('toast').contains('Configuration saved').should('be.visible')
+    cy.getByTestId('toast')
+      .should('contain.text', 'Configuration saved')
+      .should('be.visible')
   })
 
   Cypress.Commands.add(
