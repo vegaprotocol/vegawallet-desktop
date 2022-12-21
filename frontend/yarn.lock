@@ -2130,7 +2130,7 @@
 
 "@types/react-dom@^18.0.9":
   version "18.0.9"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.9.tgz#ffee5e4bfc2a2f8774b15496474f8e7fe8d0b504"
+  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.0.9.tgz"
   integrity sha512-qnVvHxASt/H7i+XG1U1xMiY5t+IHcPGUK7TDMDzom08xa7e86eCeKOiLZezwCKVxJn6NEiiy2ekgX8aQssjIKg==
   dependencies:
     "@types/react" "*"
@@ -2270,12 +2270,12 @@
 
 "@vegaprotocol/wallet-client@0.0.6":
   version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-client/-/wallet-client-0.0.6.tgz#bab421afecac4eb747c01095405f20ce293716be"
+  resolved "https://registry.npmjs.org/@vegaprotocol/wallet-client/-/wallet-client-0.0.6.tgz"
   integrity sha512-2Xlg0MKJnNVrHVtoRDh+PPS3ehNwbw5jiaVkJPD47j9v9563PavgkeRDzshCf8FOOKRtTL/XXPyABRc2kS2L6w==
 
 "@vegaprotocol/wallet-ui@^0.1.17":
   version "0.1.17"
-  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.17.tgz#78f794305eb7ee579c9738bad8ff1b5e8de0e3ed"
+  resolved "https://registry.npmjs.org/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.17.tgz"
   integrity sha512-GEf6r08hGejahs2HhjubUan1Ncd3bZMYdACnPQXJ/N3XCxWr0BiHJKU4xjFbpuNUAg6PWXvbR87CzlXEu7UmEg==
   dependencies:
     "@radix-ui/react-checkbox" "1.0.1"

@@ -12,6 +12,7 @@ import (
 	"code.vegaprotocol.io/vega/wallet/api"
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	nodeapi "code.vegaprotocol.io/vega/wallet/api/node"
+	"code.vegaprotocol.io/vega/wallet/api/pow"
 	"code.vegaprotocol.io/vega/wallet/api/session"
 	"code.vegaprotocol.io/vega/wallet/network"
 	netstore "code.vegaprotocol.io/vega/wallet/network/store/v1"
@@ -188,8 +189,8 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 	}
 
 	sequentialInteractor := interactor.NewSequentialInteractor(ctx, h.currentService.receptionChan, h.currentService.responseChan)
-
-	clientAPI, err := api.ClientAPI(jsonRpcLogger, walletStore, sequentialInteractor, nodeSelector, session.NewSessions())
+	proofOfWork := pow.NewProofOfWork()
+	clientAPI, err := api.ClientAPI(jsonRpcLogger, walletStore, sequentialInteractor, nodeSelector, proofOfWork, session.NewSessions())
 	if err != nil {
 		h.log.Error("Could not initialise the JSON-RPC API", zap.Error(err))
 		shutdownServiceFn()
@@ -210,7 +211,7 @@ func (h *Handler) StartService(req *StartServiceRequest) error {
 		log: log.Named("api-v1-policy"),
 	}
 
-	srv := service.NewService(log.Named("http-server"), netCfg, clientAPI, handler, auth, forwarder, unsupportedV1APIPolicy)
+	srv := service.NewService(log.Named("http-server"), netCfg, clientAPI, handler, auth, forwarder, proofOfWork, unsupportedV1APIPolicy)
 
 	h.currentService.SetInfo(svcURL, logFilePath)
 	h.currentService.OnShutdown(func() {
