@@ -24,7 +24,7 @@ var (
 
 	// Version specifies the version used to build the application.
 	// See VERSION in Makefile for details.
-	Version = "v0.6.0+dev"
+	Version = "v0.6.0"
 
 	About = fmt.Sprintf(aboutAppTemplate, Version, VersionHash)
 )
