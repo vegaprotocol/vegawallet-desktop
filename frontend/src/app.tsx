@@ -1,5 +1,4 @@
 import '@vegaprotocol/wallet-ui/index.css'
-
 import { App as WalletUI } from '@vegaprotocol/wallet-ui'
 import { useMemo } from 'react'
 

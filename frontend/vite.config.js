@@ -11,8 +11,8 @@ export default defineConfig(() => {
       react(),
       eslint(),
       istanbul({
-        include: 'src/*',
-        exclude: ['node_modules', 'automation/', 'src/wailsjs'],
+        include: ['src/*', 'node_modules/@vegaprotocol'],
+        exclude: ['node_modules/!@vegaprotocol', 'automation/', 'src/wailsjs'],
         extension: ['.js', '.ts', '.tsx'],
         forceBuildInstrument: truthy.includes(process.env['VITE_COVERAGE'])
       })
