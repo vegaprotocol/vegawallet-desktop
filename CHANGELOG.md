@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.7.0 (Unreleased)
+## 0.8.0 (Unreleased)
 
 ### 🚨 Breaking changes
 - [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
