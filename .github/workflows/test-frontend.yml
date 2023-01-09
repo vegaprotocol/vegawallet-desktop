@@ -76,7 +76,7 @@ jobs:
         with:
           wait-on: "http://localhost:34115"
           working-directory: frontend/automation
-          wait-on-timeout: 600
+          wait-on-timeout: 300
           record: true
         env:
           # pass the Dashboard record key as an environment variable
@@ -87,6 +87,10 @@ jobs:
           # pass the project ID from the secrets through environment variable
           CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           CYPRESS_ENV: localhost
+
+      - name: Print startup logs
+        if: ${{ always() }}
+        run: cat ~/.local/state/vega/wallet-app/logs/startup.log
 
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}

@@ -13,18 +13,18 @@ export function GetLatestRelease():Promise<backend.LatestRelease>;
 
 export function GetVersion():Promise<backend.GetVersionResponse>;
 
-export function InitialiseApp(arg1:backend.InitialiseAppRequest):Promise<Error>;
+export function InitialiseApp(arg1:backend.InitialiseAppRequest):Promise<void>;
 
 export function IsAppInitialised():Promise<boolean>;
 
-export function RespondToInteraction(arg1:interactor.Interaction):Promise<Error>;
+export function RespondToInteraction(arg1:interactor.Interaction):Promise<void>;
 
 export function SearchForExistingConfiguration():Promise<backend.SearchForExistingConfigurationResponse>;
 
-export function StartService(arg1:backend.StartServiceRequest):Promise<Error>;
+export function StartService(arg1:backend.StartServiceRequest):Promise<void>;
 
-export function StopService():Promise<Error>;
+export function StopService():Promise<void>;
 
 export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<jsonrpc.Response>;
 
-export function UpdateAppConfig(arg1:app.Config):Promise<Error>;
+export function UpdateAppConfig(arg1:app.Config):Promise<void>;
