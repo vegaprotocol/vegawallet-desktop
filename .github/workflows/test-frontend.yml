@@ -41,6 +41,9 @@ jobs:
       - name: Get Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.2.0
 
+      - name: Run Wails doctor
+        run: wails doctor
+
       - name: Get backend dependencies
         run: go get -v -t -d ./...
 
