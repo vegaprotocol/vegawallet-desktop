@@ -61,7 +61,7 @@ jobs:
 
       # Start wails in the first process
       - name: Start backend in background
-        run: wails dev -noreload
+        run: wails dev -noreload &
         env:
           VITE_COVERAGE: "true"
           VITE_FEATURE_NETWORK_WARNING: "false"
