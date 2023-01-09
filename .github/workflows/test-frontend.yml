@@ -67,12 +67,13 @@ jobs:
           VITE_FEATURE_NETWORK_WARNING: "false"
           VITE_FEATURE_TELEMETRY_CHECK: "false"
 
-
+      - name: Checkout
+        uses: actions/checkout@v3
       # Run cypress in this process
       # Install yarn automation/ dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           wait-on: "http://localhost:34115"
           working-directory: frontend/automation
@@ -130,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v
 
       - name: Set up Node 18.12
         uses: actions/setup-node@v3
