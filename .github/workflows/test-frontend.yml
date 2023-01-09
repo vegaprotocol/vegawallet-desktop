@@ -15,6 +15,11 @@ jobs:
   cypress-run:
     name: Run end-to-end tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Cross-compiling to ARM64 is not supported for Linux.
+        arch:
+          - amd64
     env:
       GO111MODULE: on # Needed by Wails
       CGO_ENABLED: 1 # Needed by Wails
@@ -27,7 +32,7 @@ jobs:
         with:
           go-version: ^1.19
         id: go
-        
+
       - name: Install Wails dependencies
         run: |
           sudo apt-get update
