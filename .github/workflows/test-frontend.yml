@@ -89,7 +89,7 @@ jobs:
           CYPRESS_ENV: localhost
 
       - name: Print startup logs
-        if: ${{ always() }}
+        if: always()
         run: cat ~/.local/state/vega/wallet-app/logs/startup.log
 
       - uses: actions/upload-artifact@v2
