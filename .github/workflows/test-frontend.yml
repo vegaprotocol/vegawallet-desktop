@@ -14,7 +14,7 @@ on:
 jobs:
   cypress-run:
     name: Run end-to-end tests
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       GO111MODULE: on # Needed by Wails
       CGO_ENABLED: 1 # Needed by Wails

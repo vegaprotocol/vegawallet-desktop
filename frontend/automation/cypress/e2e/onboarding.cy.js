@@ -73,7 +73,8 @@ describe('onboarding', () => {
   })
 
   it('import wallet', () => {
-    const walletName = 'test'
+    const randomNum = Math.floor(Math.random() * 101)
+    const walletName = `Test ${randomNum.toString()}`
     const passphrase = '123'
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
     cy.getByTestId('import-wallet').click()
