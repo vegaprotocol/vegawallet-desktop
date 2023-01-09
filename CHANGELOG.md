@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+Support for vega 0.66.1.
+
 ## 0.6.0
 
 Support for vega 0.65.0.
