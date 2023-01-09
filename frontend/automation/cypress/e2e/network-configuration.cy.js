@@ -118,6 +118,7 @@ describe('change network details', () => {
   })
 
   it('able to change gRPC nodes', function () {
+    cy.getByTestId('node-list').should('have.length', 8) // wait until list has loaded
     cy.contains('gRPC Nodes')
       .next()
       .within(() => {
