@@ -60,15 +60,11 @@ describe('onboarding', () => {
     // Access first wallet
     cy.getByTestId('back').click()
     cy.get('button').contains(walletName).click()
-    cy.getByTestId('input-passphrase').type(passphrase)
-    cy.getByTestId('input-submit').click()
     cy.getByTestId('header-title').should('have.text', walletName)
 
     // Back out and access wallet2
     cy.getByTestId('back').click()
     cy.get('button').contains(walletName2).click()
-    cy.getByTestId('input-passphrase').type(passphrase)
-    cy.getByTestId('input-submit').click()
     cy.getByTestId('header-title').should('have.text', walletName2)
   })
 
