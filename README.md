@@ -8,7 +8,7 @@ The Vega Wallet desktop app provides a graphical user interface for Vega Protoco
 
 ### Dependencies
 
-This project uses [Wails](https://wails.app) to build the desktop app. To install Wails, follow the instruction on its [Getting started](https://wails.app/gettingstarted/) page.
+This project uses [Wails](https://wails.io) to build the desktop app. To install Wails, follow the instruction on its [Getting started](https://wails.io/docs/gettingstarted/installation) page.
 
 Be sure to have the following environment variables set:
 
@@ -30,11 +30,11 @@ To be able to compile the frontend, you'll also need to install:
 - nodejs >= **v18.12.0**
 - yarn >= **v1.22.19**
 
-**For Linux**
+#### Platform Specific Dependencies
 
 Be sure to follow the installation guide from Wails. There are specific dependencies that needs to be installed.
 
-For more details, see [https://wails.app/gettingstarted/linux/#gcc-gtk-webkit](https://wails.app/gettingstarted/linux/#gcc-gtk-webkit)
+For more details, see [https://wails.io/docs/gettingstarted/installation#platform-specific-dependencies](https://wails.io/docs/gettingstarted/installation#platform-specific-dependencies)
 
 ### Build
 
@@ -47,7 +47,7 @@ wails build
 This will compile your project and save the production-ready binary in the `build/bin`
 directory.
 
-More at the [Wails documentation](https://wails.app/reference/cli/#build).
+More at the [Wails documentation](https://wails.io/docs/reference/cli#build).
 
 ### Development
 
