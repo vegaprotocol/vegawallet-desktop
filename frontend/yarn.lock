@@ -2268,15 +2268,15 @@
     "@typescript-eslint/types" "5.28.0"
     eslint-visitor-keys "^3.3.0"
 
-"@vegaprotocol/wallet-client@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@vegaprotocol/wallet-client/-/wallet-client-0.0.6.tgz"
-  integrity sha512-2Xlg0MKJnNVrHVtoRDh+PPS3ehNwbw5jiaVkJPD47j9v9563PavgkeRDzshCf8FOOKRtTL/XXPyABRc2kS2L6w==
+"@vegaprotocol/wallet-admin@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-admin/-/wallet-admin-0.1.1.tgz#d307d6aafeafb97afe863a8f99f8507a67b01890"
+  integrity sha512-WLInkWmx3WjenyuaaKkr/7vWIXMOu5kc2lo8q84FJyMPHO01WANygMcJ/ht5Gu5oqrhAa8EJ31/WQA15rOSQqA==
 
-"@vegaprotocol/wallet-ui@0.1.27":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.27.tgz#80c453c57785ab85452828083284b84a9cbcc6da"
-  integrity sha512-5uMB5B96/0S/GKg7GiBM5PSpKbRGWD/o1PolK3frho5kX0ZFRpRuo616zxkeR4au7TbkNnpQTD6A+iPCT82ifg==
+"@vegaprotocol/wallet-ui@0.1.28":
+  version "0.1.28"
+  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.28.tgz#ad78b0eb816c13e48975378f9c00f8c2db915a8c"
+  integrity sha512-A4pXkUrIxFj1c/QVYqPBxZHRyCDZofQ12xOEPw/J+bVLe8OMSSKCyphB5Mjcikcs4pAhONpDT47rKV3hCuFX7g==
   dependencies:
     "@radix-ui/react-checkbox" "1.0.1"
     "@radix-ui/react-dialog" "1.0.2"
@@ -2960,7 +2960,7 @@ debug@4.2.0:
 
 debug@^2.6.9:
   version "2.6.9"
-  resolved "https://registry.npmjs.org/debug/-/debug-2.6.9.tgz"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
   dependencies:
     ms "2.0.0"
@@ -3968,7 +3968,7 @@ inflight@^1.0.4:
 
 inherits@2:
   version "2.0.4"
-  resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
+  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
 internal-slot@^1.0.3:
@@ -4812,7 +4812,7 @@ mime-db@1.52.0:
 
 mime-types@^2.1.12:
   version "2.1.35"
-  resolved "https://registry.npmjs.org/mime-types/-/mime-types-2.1.35.tgz"
+  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.35.tgz#381a871b62a734450660ae3deee44813f70d959a"
   integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==
   dependencies:
     mime-db "1.52.0"
@@ -5508,7 +5508,7 @@ safe-buffer@~5.1.1:
 
 "safer-buffer@>= 2.1.2 < 3.0.0":
   version "2.1.2"
-  resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
 saxes@^6.0.0:
