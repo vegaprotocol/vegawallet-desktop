@@ -9,7 +9,7 @@
 - [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
 
 ### 🛠 Improvements
-- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+- [457](https://github.com/vegaprotocol/vega/issues/457) - Update vega core to work with version 0.67.1
 
 ### 🐛 Fixes
 - [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
