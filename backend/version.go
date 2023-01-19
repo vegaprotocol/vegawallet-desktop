@@ -6,7 +6,6 @@ import (
 	"time"
 
 	vgversion "code.vegaprotocol.io/vega/libs/version"
-	"code.vegaprotocol.io/vega/paths"
 	wversion "code.vegaprotocol.io/vega/wallet/version"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"github.com/blang/semver/v4"
@@ -53,28 +52,16 @@ func (h *Handler) GetLatestRelease() (LatestRelease, error) {
 	return latestRelease, nil
 }
 
-func (h *Handler) GetVersion() (*GetVersionResponse, error) {
+func (h *Handler) GetVersion() *GetVersionResponse {
 	h.log.Debug("Entering GetVersion")
 	defer h.log.Debug("Leaving GetVersion")
 
-	cfg, err := h.configLoader.GetConfig()
-	if err != nil {
-		return nil, fmt.Errorf("could not load the configuration: %w", err)
-	}
-
-	vegaPaths := paths.New(cfg.VegaHome)
-
-	netStore, err := h.getNetworksStore(vegaPaths)
-	if err != nil {
-		return nil, err
-	}
-
-	compatibility, _ := wversion.CheckSoftwareCompatibility(netStore, wversion.GetNetworkVersionThroughGRPC)
+	compatibility, _ := wversion.CheckSoftwareCompatibility(h.networkStore, wversion.GetNetworkVersionThroughGRPC)
 
 	return &GetVersionResponse{
 		Version:       app.Version,
 		GitHash:       app.VersionHash,
 		Backend:       wversion.GetSoftwareVersionInfo(),
 		Compatibility: compatibility,
-	}, nil
+	}
 }
