@@ -3,9 +3,10 @@ package backend
 import (
 	"fmt"
 
-	"code.vegaprotocol.io/vega/libs/jsonrpc"
 	"code.vegaprotocol.io/vega/paths"
 	"code.vegaprotocol.io/vega/wallet/api"
+	netStoreV1 "code.vegaprotocol.io/vega/wallet/network/store/v1"
+	"code.vegaprotocol.io/vega/wallet/wallets"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
@@ -33,18 +34,20 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 
 	vegaPaths := paths.New(defaultCfg.VegaHome)
 
-	wStore, err := h.getWalletsStore(vegaPaths)
+	netStore, err := netStoreV1.InitialiseStore(vegaPaths)
 	if err != nil {
-		return nil, err
+		h.log.Error(fmt.Sprintf("Couldn't initialise the networks store: %v", err))
+		return nil, fmt.Errorf("could not initialise the networks store: %w", err)
 	}
 
-	netStore, err := h.getNetworksStore(vegaPaths)
+	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths)
 	if err != nil {
-		return nil, err
+		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
+		return nil, fmt.Errorf("could not initialise the wallets store: %w", err)
 	}
 
-	listWallets, _ := api.NewAdminListWallets(wStore).Handle(h.ctx, nil, jsonrpc.RequestMetadata{})
-	listNetworks, _ := api.NewAdminListNetworks(netStore).Handle(h.ctx, nil, jsonrpc.RequestMetadata{})
+	listWallets, _ := api.NewAdminListWallets(walletStore).Handle(h.ctx, nil)
+	listNetworks, _ := api.NewAdminListNetworks(netStore).Handle(h.ctx, nil)
 
 	return &SearchForExistingConfigurationResponse{
 		Wallets:  listWallets.(api.AdminListWalletsResult).Wallets,

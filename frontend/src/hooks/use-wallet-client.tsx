@@ -1,5 +1,5 @@
-import type { WalletAPIRequest } from '@vegaprotocol/wallet-client'
-import { WalletClient } from '@vegaprotocol/wallet-client'
+import type { WalletAPIRequest } from '@vegaprotocol/wallet-admin'
+import { WalletAdmin } from '@vegaprotocol/wallet-admin'
 import type { Logger } from 'loglevel'
 import { nanoid } from 'nanoid'
 import { useCallback } from 'react'
@@ -48,5 +48,5 @@ export const useWalletClient = (logger: Logger) => {
     [logger]
   )
 
-  return new WalletClient(request)
+  return new WalletAdmin(request)
 }

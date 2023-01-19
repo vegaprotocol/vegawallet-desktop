@@ -1,12 +1,16 @@
 package backend
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strings"
 
 	"code.vegaprotocol.io/vega/libs/jsonrpc"
+	vgrand "code.vegaprotocol.io/vega/libs/rand"
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
+	v2 "code.vegaprotocol.io/vega/wallet/service/v2"
+	"code.vegaprotocol.io/vega/wallet/service/v2/connections"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"code.vegaprotocol.io/vegawallet-desktop/os/notification"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -20,6 +24,23 @@ var (
 	ErrNameIsRequired    = errors.New("a name is required for an interaction")
 )
 
+func (h *Handler) APIV2GenerateAPIToken(params connections.GenerateAPITokenParams) (connections.Token, error) {
+	handler := connections.NewGenerateAPITokenHandler(h.walletStore, h.tokenStore, v2.NewStdTime())
+	return handler.Handle(h.ctx, params)
+}
+
+func (h *Handler) APIV2DeleteAPIToken(token string) error {
+	return connections.DeleteAPIToken(h.tokenStore, token)
+}
+
+func (h *Handler) APIV2ListAPITokens() (connections.ListAPITokensResult, error) {
+	return connections.ListAPITokens(h.tokenStore)
+}
+
+func (h *Handler) APIV2DescribeAPIToken(token string) (connections.TokenDescription, error) {
+	return connections.DescribeAPIToken(h.tokenStore, token)
+}
+
 func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Response, error) {
 	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
 	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
@@ -28,7 +49,10 @@ func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Resp
 		return nil, err
 	}
 
-	return h.walletAPI.DispatchRequest(h.ctx, request, jsonrpc.RequestMetadata{}), nil
+	traceID := vgrand.RandomStr(64)
+	ctx := context.WithValue(h.ctx, jsonrpc.TraceIDKey, traceID)
+
+	return h.walletAdminAPI.DispatchRequest(ctx, request), nil
 }
 
 func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error {
@@ -50,7 +74,7 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 		return ErrContextCanceled
 	}
 
-	h.currentService.responseChan <- interaction
+	h.runningServiceManager.responseChan <- interaction
 
 	return nil
 }
