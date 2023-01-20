@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.9.0 (Unreleased)
+
+### 🚨 Breaking changes
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+### 🗑️ Deprecation
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+### 🛠 Improvements
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+### 🐛 Fixes
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+## 0.8.0
+
+Support for vega 0.67.1.
+
+### 🛠 Improvements
+- [457](https://github.com/vegaprotocol/vega/issues/457) - Update vega core to work with version 0.67.1
+
 ## 0.7.0
 
 Support for vega 0.66.1.
