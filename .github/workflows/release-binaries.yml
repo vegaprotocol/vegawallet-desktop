@@ -107,6 +107,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: build/bin/*.zip
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -171,6 +172,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: build/bin/*.zip
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -226,5 +228,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: build/bin/*.zip
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

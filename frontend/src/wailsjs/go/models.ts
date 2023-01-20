@@ -151,6 +151,7 @@ export namespace backend {
 	}
 	export class StartServiceRequest {
 	    network: string;
+	    noVersionCheck: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new StartServiceRequest(source);
@@ -159,8 +160,186 @@ export namespace backend {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.network = source["network"];
+	        this.noVersionCheck = source["noVersionCheck"];
 	    }
 	}
+
+}
+
+export namespace connections {
+	
+	export class GenerateAPITokenWalletParams {
+	    name: string;
+	    passphrase: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GenerateAPITokenWalletParams(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.passphrase = source["passphrase"];
+	    }
+	}
+	export class GenerateAPITokenParams {
+	    name: string;
+	    expireIn?: number;
+	    wallet: GenerateAPITokenWalletParams;
+	
+	    static createFrom(source: any = {}) {
+	        return new GenerateAPITokenParams(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.expireIn = source["expireIn"];
+	        this.wallet = this.convertValues(source["wallet"], GenerateAPITokenWalletParams);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
+	export class TokenSummary {
+	    description: string;
+	    token: string;
+	    // Go type: time.Time
+	    creationDate: any;
+	    // Go type: time.Time
+	    expirationDate?: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new TokenSummary(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.description = source["description"];
+	        this.token = source["token"];
+	        this.creationDate = this.convertValues(source["creationDate"], null);
+	        this.expirationDate = this.convertValues(source["expirationDate"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ListAPITokensResult {
+	    tokens: TokenSummary[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ListAPITokensResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.tokens = this.convertValues(source["tokens"], TokenSummary);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class WalletCredentials {
+	    name: string;
+	    passphrase: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new WalletCredentials(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.passphrase = source["passphrase"];
+	    }
+	}
+	export class TokenDescription {
+	    description: string;
+	    // Go type: time.Time
+	    creationDate: any;
+	    // Go type: time.Time
+	    expirationDate?: any;
+	    token: string;
+	    wallet: WalletCredentials;
+	
+	    static createFrom(source: any = {}) {
+	        return new TokenDescription(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.description = source["description"];
+	        this.creationDate = this.convertValues(source["creationDate"], null);
+	        this.expirationDate = this.convertValues(source["expirationDate"], null);
+	        this.token = source["token"];
+	        this.wallet = this.convertValues(source["wallet"], WalletCredentials);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 
 }
 

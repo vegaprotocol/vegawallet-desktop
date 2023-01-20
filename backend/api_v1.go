@@ -5,21 +5,18 @@ import (
 	"time"
 
 	"code.vegaprotocol.io/vega/protos/vega/wallet/v1"
-	"code.vegaprotocol.io/vega/wallet/service"
-	"go.uber.org/zap"
+	serviceV1 "code.vegaprotocol.io/vega/wallet/service/v1"
 )
 
 var ErrAPIv1Unsupported = errors.New("sending transactions through the API v1 is no longer supported")
 
 type unsupportedV1APIPolicy struct {
-	log *zap.Logger
 }
 
 func (u *unsupportedV1APIPolicy) Ask(_ *v1.SubmitTransactionRequest, _ string, _ time.Time) (bool, error) {
-	u.log.Warn("Sending transactions through the API v1 is no longer supported")
 	return false, ErrAPIv1Unsupported
 }
 
-func (u *unsupportedV1APIPolicy) Report(_ service.SentTransaction) {
+func (u *unsupportedV1APIPolicy) Report(_ serviceV1.SentTransaction) {
 	// Nothing to do.
 }
