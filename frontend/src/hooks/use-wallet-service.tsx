@@ -13,6 +13,8 @@ const logger = createLogger('DesktopWallet')
 
 export const useWalletService = (): Service => {
   return {
+    TYPE: 'http',
+
     // Version
     GetLatestRelease: Handlers.GetLatestRelease,
     GetVersion: async () => {
@@ -53,7 +55,9 @@ export const useWalletService = (): Service => {
     },
 
     // Service
-    StartService: Handlers.StartService,
+    StartService: ({ network }) => {
+      return Handlers.StartService({ network, noVersionCheck: false })
+    },
     StopService: Handlers.StopService,
     GetCurrentServiceInfo: Handlers.GetCurrentServiceInfo,
 
