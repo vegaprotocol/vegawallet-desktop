@@ -22,7 +22,9 @@ module.exports = defineConfig({
     specPattern: '**/*.cy.{js,jsx,ts,tsx}',
     fixturesFolder: false,
     defaultCommandTimeout: 20000,
-    supportFile: './cypress/support/e2e.js'
+    supportFile: './cypress/support/e2e.js',
+    video: false,
+    videoUploadOnPasses: false
   },
   env: {
     vegaHome: './frontend/automation/test-wallets',

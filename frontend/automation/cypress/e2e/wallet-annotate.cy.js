@@ -48,5 +48,8 @@ function goToUpdate(walletName, passphrase, pubkey) {
 }
 
 function assertSuccessfulUpdate() {
-  cy.getByTestId('toast').contains('Successfully updated metadata')
+  cy.getByTestId('toast').should(
+    'contain.text',
+    'Successfully updated metadata'
+  )
 }

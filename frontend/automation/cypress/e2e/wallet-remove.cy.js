@@ -37,7 +37,7 @@ describe('wallet remove', () => {
       .clear()
       .type(`Remove ${walletName}`)
     submitForm()
-    cy.getByTestId('toast').contains('Wallet removed')
+    cy.getByTestId('toast').should('contain.text', 'Wallet removed')
     cy.getByTestId('wallet-home').should('be.visible')
     cy.getByTestId(`wallet-${walletName}`).should('not.exist')
   })

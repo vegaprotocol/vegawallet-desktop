@@ -1,9 +1,9 @@
 {
   "name": "Vegawallet",
   "assetdir": "./frontend/dist",
-  "frontend:build": "npm run build",
-  "frontend:install": "npm install",
-  "frontend:dev:watcher": "npm run dev",
+  "frontend:build": "yarn build",
+  "frontend:install": "yarn",
+  "frontend:dev:watcher": "yarn dev",
   "frontend:dev:serverUrl": "http://localhost:3000",
   "wailsjsdir": "./frontend/src",
   "version": "2",
@@ -11,7 +11,7 @@
   "info": {
     "companyName": "Gobalsky Labs Ltd.",
     "productName": "Vegawallet",
-    "productVersion": "0.5.0",
+    "productVersion": "0.8.0",
     "copyright": "Copyright (c) 2022 Gobalsky Labs Ltd.",
     "comments": "Application to manage your Vega Protocol wallet."
   }

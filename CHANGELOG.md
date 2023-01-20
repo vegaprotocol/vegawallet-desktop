@@ -1,22 +1,44 @@
 # Changelog
 
-## Unreleased 0.5.0
+## 0.9.0 (Unreleased)
 
 ### 🚨 Breaking changes
-
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
 
 ### 🗑️ Deprecation
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
 
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+### 🛠 Improvements
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+### 🐛 Fixes
+- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+## 0.8.0
+
+Support for vega 0.67.1.
+
+### 🛠 Improvements
+- [457](https://github.com/vegaprotocol/vega/issues/457) - Update vega core to work with version 0.67.1
+
+## 0.7.0
+
+Support for vega 0.66.1.
+
+## 0.6.0
+
+Support for vega 0.65.0.
+
+## 0.5.0
+
+Support for vega 0.64.0.
 
 ### 🛠 Improvements
 - [424](https://github.com/vegaprotocol/vegawallet-desktop/issues/424) - Update to wails 2.2.0
 
-### 🐛 Fixes
-- [](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
-
 ## 0.4.0
+
+Support for vega 0.62.0.
 
 ### 🛠 Improvements
 - [420](https://github.com/vegaprotocol/vegawallet-desktop/issues/420) - Update vega version

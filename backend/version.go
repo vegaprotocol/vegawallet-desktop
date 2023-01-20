@@ -19,9 +19,10 @@ const (
 )
 
 type GetVersionResponse struct {
-	Version string                       `json:"version"`
-	GitHash string                       `json:"gitHash"`
-	Backend *wversion.GetVersionResponse `json:"backend"`
+	Version       string                                       `json:"version"`
+	GitHash       string                                       `json:"gitHash"`
+	Backend       *wversion.GetSoftwareVersionResponse         `json:"backend"`
+	Compatibility *wversion.CheckSoftwareCompatibilityResponse `json:"networksCompatibility"`
 }
 
 type LatestRelease struct {
@@ -51,23 +52,16 @@ func (h *Handler) GetLatestRelease() (LatestRelease, error) {
 	return latestRelease, nil
 }
 
-func (h *Handler) GetVersion() (*GetVersionResponse, error) {
+func (h *Handler) GetVersion() *GetVersionResponse {
 	h.log.Debug("Entering GetVersion")
 	defer h.log.Debug("Leaving GetVersion")
 
-	cfg, err := h.configLoader.GetConfig()
-	if err != nil {
-		return nil, fmt.Errorf("could not load the configuration: %w", err)
-	}
-
-	netStore, err := h.getNetworksStore(cfg)
-	if err != nil {
-		return nil, err
-	}
+	compatibility, _ := wversion.CheckSoftwareCompatibility(h.networkStore, wversion.GetNetworkVersionThroughGRPC)
 
 	return &GetVersionResponse{
-		Version: app.Version,
-		GitHash: app.VersionHash,
-		Backend: wversion.GetVersionInfo(netStore, wversion.GetNetworkVersionThroughGRPC),
-	}, nil
+		Version:       app.Version,
+		GitHash:       app.VersionHash,
+		Backend:       wversion.GetSoftwareVersionInfo(),
+		Compatibility: compatibility,
+	}
 }

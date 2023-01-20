@@ -19,7 +19,8 @@ describe('wallet connection', () => {
     cy.waitForHome()
     unlockWallet(walletName, passphrase)
   })
-
+  // Tests skipped because currently wails and Cypress both receive an event and send an auto-approve.
+  // Need to find a way to disable one of the UIs from interactions
   it.skip('handles approval', () => {
     const MOCK_HOSTNAME = 'https://best-blockchain.app'
     approveConnection(MOCK_HOSTNAME, walletName, passphrase)
@@ -31,7 +32,6 @@ describe('wallet connection', () => {
   })
 
   it.skip('handles rejection', () => {
-    // @TODO: for some mysterious reason this is failing
     const MOCK_HOSTNAME = 'https://best-blockchain-2.app'
     cy.sendConnectionRequest(MOCK_HOSTNAME)
 
