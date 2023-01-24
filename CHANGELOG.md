@@ -14,6 +14,10 @@
 ### 🐛 Fixes
 - [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
 
+## 0.8.2
+
+Support for vega 0.67.3.
+
 ## 0.8.1
 
 Support for vega 0.67.2.
