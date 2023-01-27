@@ -76,7 +76,7 @@ func (h *Handler) StartService(req *StartServiceRequest) (err error) {
 	h.log.Debug("Entering StartService")
 	defer h.log.Debug("Leaving StartService")
 
-	if err := h.ensureAppIsInitialised(); err != nil {
+	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
 		return err
 	}
 
@@ -156,7 +156,7 @@ func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
 	h.log.Debug("Entering GetCurrentServiceInfo")
 	defer h.log.Debug("Leaving GetCurrentServiceInfo")
 
-	if err := h.ensureAppIsInitialised(); err != nil {
+	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
 		return GetCurrentServiceInfo{}, err
 	}
 

@@ -45,7 +45,7 @@ func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Resp
 	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
 	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
 
-	if err := h.ensureAppIsInitialised(); err != nil {
+	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
 		return nil, err
 	}
 
@@ -58,6 +58,10 @@ func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Resp
 func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error {
 	h.log.Debug("Entering RespondToInteraction")
 	defer h.log.Debug("Leaving RespondToInteraction")
+
+	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
+		return err
+	}
 
 	if interaction.TraceID == "" {
 		return ErrTraceIDIsRequired

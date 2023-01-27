@@ -60,7 +60,7 @@ func (h *Handler) GetAppConfig() (app.Config, error) {
 	h.log.Debug("Entering GetAppConfig")
 	defer h.log.Debug("Leaving GetAppConfig")
 
-	if err := h.ensureAppIsInitialised(); err != nil {
+	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
 		return app.Config{}, err
 	}
 
@@ -73,7 +73,7 @@ func (h *Handler) UpdateAppConfig(updatedConfig app.Config) error {
 	h.log.Debug("Entering UpdateAppConfig")
 	defer h.log.Debug("Leaving UpdateAppConfig")
 
-	if err := h.ensureAppIsInitialised(); err != nil {
+	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
 		return err
 	}
 

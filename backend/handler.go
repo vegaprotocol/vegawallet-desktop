@@ -3,6 +3,7 @@ package backend
 import (
 	"context"
 	"fmt"
+	"sync/atomic"
 
 	vgclose "code.vegaprotocol.io/vega/libs/close"
 	"code.vegaprotocol.io/vega/libs/jsonrpc"
@@ -30,10 +31,13 @@ type Handler struct {
 	// the one to inject on runtime methods like menu, event, dialogs, etc.
 	ctx context.Context
 
+	// To prevent multiple startup of the back and thus resource leaks.
+	backendStarted atomic.Bool
+
 	// appInitialised represents the initialization state of the application
 	// and is used to prevent calls to the API when the application is not
 	// initialized.
-	appInitialised bool
+	appInitialised atomic.Bool
 
 	log *zap.Logger
 	// logLevel is a reference to the logger's log level to dynamically change
@@ -90,9 +94,15 @@ func (h *Handler) Shutdown(_ context.Context) {
 	defer h.log.Debug("Leaving Shutdown")
 
 	h.closeAllResources()
+
 }
 
 func (h *Handler) StartupBackend() error {
+	if h.backendStarted.Load() {
+		return nil
+	}
+	h.backendStarted.Store(true)
+
 	var err error
 
 	if err := h.initializeAppLogger(); err != nil {
@@ -106,17 +116,19 @@ func (h *Handler) StartupBackend() error {
 
 	h.runningServiceManager = newServiceManager()
 
-	h.appInitialised, err = h.isAppInitialised()
+	appInitialised, err := h.isAppInitialised()
 	if err != nil {
 		return fmt.Errorf("could not verify wheter the application is initialized or not: %w", err)
 	}
+
+	h.appInitialised.Store(appInitialised)
 
 	// If the application is not initialized, it means it's the first time the
 	// user is running the application. As a result, we can't load the backend
 	// components that require an existing configuration. The user will have
 	// to go through the application initialization process, that is part of
 	// the "on-boarding" workflow on the front-end.
-	if h.appInitialised {
+	if h.appInitialised.Load() {
 		if err := h.reloadBackendComponentsFromConfig(); err != nil {
 			return fmt.Errorf("could not load the backend components during the application start up: %w", err)
 		}
