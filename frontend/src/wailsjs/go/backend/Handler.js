@@ -54,6 +54,10 @@ export function StartService(arg1) {
   return window['go']['backend']['Handler']['StartService'](arg1);
 }
 
+export function StartupBackend() {
+  return window['go']['backend']['Handler']['StartupBackend']();
+}
+
 export function StopService() {
   return window['go']['backend']['Handler']['StopService']();
 }

@@ -32,6 +32,8 @@ export function SearchForExistingConfiguration():Promise<backend.SearchForExisti
 
 export function StartService(arg1:backend.StartServiceRequest):Promise<void>;
 
+export function StartupBackend():Promise<void>;
+
 export function StopService():Promise<void>;
 
 export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<jsonrpc.Response>;
