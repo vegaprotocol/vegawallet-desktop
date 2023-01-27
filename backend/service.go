@@ -174,15 +174,6 @@ func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
 	}, nil
 }
 
-func (h *Handler) ensurePortCanBeBound(svcURL string) error {
-	if _, err := http.Get("http://" + svcURL); err == nil {
-		// If there is no error, it means the server managed to establish a
-		// connection of some kind. It's not good for us.
-		return fmt.Errorf("could not start the service as an application is already served on %q", svcURL)
-	}
-	return nil
-}
-
 func (h *Handler) listenToIncomingInteractions(ctx context.Context) {
 	log := h.log.Named("service-interactions-listener")
 	log.Info("Listening to incoming interactions")

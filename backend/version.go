@@ -53,6 +53,15 @@ func (h *Handler) GetLatestRelease() (LatestRelease, error) {
 }
 
 func (h *Handler) GetVersion() *GetVersionResponse {
+	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
+		return &GetVersionResponse{
+			Version:       app.Version,
+			GitHash:       app.VersionHash,
+			Backend:       wversion.GetSoftwareVersionInfo(),
+			Compatibility: nil,
+		}
+	}
+
 	h.log.Debug("Entering GetVersion")
 	defer h.log.Debug("Leaving GetVersion")
 
