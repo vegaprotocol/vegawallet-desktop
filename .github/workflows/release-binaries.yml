@@ -18,6 +18,11 @@ jobs:
         arch:
           - amd64
           - arm64
+        include:
+          - arch: amd64
+            user-friendly-arch: intel
+          - arch: arm64
+            user-friendly-arch: apple-silicon
     steps:
       - name: Set up Node 18.12
         uses: actions/setup-node@v3
@@ -73,7 +78,7 @@ jobs:
 
       - name: Bundle binary for notarization
         working-directory: build/bin
-        run: /usr/bin/ditto -c -k --keepParent Vegawallet.app "vegawallet-desktop-darwin-${{ matrix.arch }}.zip"
+        run: /usr/bin/ditto -c -k --keepParent Vegawallet.app "vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip"
 
       - name: Store notarization credentials
         run: |
@@ -85,7 +90,7 @@ jobs:
       - name: Notarize app
         working-directory: build/bin
         run: |
-          xcrun notarytool submit "vegawallet-desktop-darwin-${{ matrix.arch }}.zip" \
+          xcrun notarytool submit "vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip" \
             --keychain-profile vega \
             --output-format json \
             --timeout "90m" \
@@ -97,11 +102,11 @@ jobs:
 
       - name: Delete old archive
         working-directory: build/bin
-        run: rm -rf vegawallet-desktop-darwin-${{ matrix.arch }}.zip
+        run: rm -rf vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip
 
       - name: Bundle binary in archive for distribution
         working-directory: build/bin
-        run: /usr/bin/ditto -c -k --keepParent Vegawallet.app "vegawallet-desktop-darwin-${{ matrix.arch }}.zip"
+        run: /usr/bin/ditto -c -k --keepParent Vegawallet.app "vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip"
 
       - name: Release
         uses: softprops/action-gh-release@v1
