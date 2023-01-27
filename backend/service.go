@@ -191,7 +191,10 @@ func (h *Handler) listenToIncomingInteractions(ctx context.Context) {
 		case <-ctx.Done():
 			log.Info("Stopping the listening to incoming interactions")
 			return
-		case interaction := <-h.runningServiceManager.receptionChan:
+		case interaction, ok := <-h.runningServiceManager.receptionChan:
+			if !ok {
+				return
+			}
 			h.emitReceivedInteraction(log, interaction)
 		}
 	}
@@ -206,7 +209,10 @@ func (h *Handler) listenToServiceRuntimeError(jobCtx context.Context, errChan <-
 		case <-jobCtx.Done():
 			log.Info("Stopping the listening to the service runtime error")
 			return
-		case err := <-errChan:
+		case err, ok := <-errChan:
+			if !ok {
+				return
+			}
 			h.log.Error("An error occurred while running the service", zap.Error(err))
 			h.runningServiceManager.ShutdownService()
 			runtime.EventsEmit(h.ctx, ServiceStoppedWithError, struct {
