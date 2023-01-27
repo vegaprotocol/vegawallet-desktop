@@ -33,11 +33,11 @@ func (l *ConfigLoader) GetConfig() (Config, error) {
 	cfg := DefaultConfig()
 
 	if err := paths.ReadStructuredFile(l.configFilePath, &cfg); err != nil {
-		return Config{}, fmt.Errorf("could not read configuration file: %w", err)
+		return Config{}, fmt.Errorf("could not read configuration file at %q: %w", l.configFilePath, err)
 	}
 
 	if err := cfg.EnsureIsValid(); err != nil {
-		return Config{}, err
+		return Config{}, fmt.Errorf("the configuration at %q is invalid: %w", l.configFilePath, err)
 	}
 
 	return cfg, nil

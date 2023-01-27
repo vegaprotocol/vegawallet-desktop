@@ -3,6 +3,7 @@ package backend
 import (
 	"context"
 	"fmt"
+	"sync"
 	"sync/atomic"
 
 	vgclose "code.vegaprotocol.io/vega/libs/close"
@@ -33,6 +34,7 @@ type Handler struct {
 
 	// To prevent multiple startup of the back and thus resource leaks.
 	backendStarted atomic.Bool
+	startupMu      sync.Mutex
 
 	// appInitialised represents the initialization state of the application
 	// and is used to prevent calls to the API when the application is not
@@ -91,13 +93,20 @@ func (h *Handler) Shutdown(_ context.Context) {
 	h.backendStarted.Store(false)
 }
 
-func (h *Handler) StartupBackend() error {
+func (h *Handler) StartupBackend() (err error) {
+	h.startupMu.Lock()
+	defer h.startupMu.Unlock()
+
 	if h.backendStarted.Load() {
 		return nil
 	}
-	h.backendStarted.Store(true)
 
-	var err error
+	defer func() {
+		if err == nil {
+			// Only set the backend as started on success.
+			h.backendStarted.Store(true)
+		}
+	}()
 
 	if err := h.initializeAppLogger(); err != nil {
 		return err
