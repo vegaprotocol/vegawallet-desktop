@@ -32,7 +32,7 @@ type Handler struct {
 
 	// appInitialised represents the initialization state of the application
 	// and is used to prevent calls to the API when the application is not
-	// initialised.
+	// initialized.
 	appInitialised bool
 
 	log *zap.Logger

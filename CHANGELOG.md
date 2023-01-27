@@ -12,7 +12,7 @@
 - [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
 
 ### 🐛 Fixes
-- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+- [465](https://github.com/vegaprotocol/vega/issues/465) - Fall back to standard output logger if the startup logger can't be built
 
 ## 0.8.2
 
