@@ -55,12 +55,16 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 	return nil
 }
 
-func (h *Handler) ensureBackendStartedAndAppIsInitialised() error {
+func (h *Handler) ensureBackendStarted() error {
 	if !h.backendStarted.Load() {
 		h.log.Error("The application backend is not started")
 		return ErrBackendNotStarted
 	}
 
+	return nil
+}
+
+func (h *Handler) ensureAppIsInitialised() error {
 	if !h.appInitialised.Load() {
 		h.log.Error("The application is not initialised")
 		return ErrAppIsNotInitialised

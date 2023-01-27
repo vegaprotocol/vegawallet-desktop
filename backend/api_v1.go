@@ -10,8 +10,7 @@ import (
 
 var ErrAPIv1Unsupported = errors.New("sending transactions through the API v1 is no longer supported")
 
-type unsupportedV1APIPolicy struct {
-}
+type unsupportedV1APIPolicy struct{}
 
 func (u *unsupportedV1APIPolicy) Ask(_ *v1.SubmitTransactionRequest, _ string, _ time.Time) (bool, error) {
 	return false, ErrAPIv1Unsupported

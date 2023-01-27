@@ -73,10 +73,14 @@ func (r StartServiceRequest) Check() error {
 }
 
 func (h *Handler) StartService(req *StartServiceRequest) (err error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return err
+	}
+
 	h.log.Debug("Entering StartService")
 	defer h.log.Debug("Leaving StartService")
 
-	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
+	if err := h.ensureAppIsInitialised(); err != nil {
 		return err
 	}
 
@@ -153,10 +157,14 @@ type GetCurrentServiceInfo struct {
 }
 
 func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return GetCurrentServiceInfo{}, err
+	}
+
 	h.log.Debug("Entering GetCurrentServiceInfo")
 	defer h.log.Debug("Leaving GetCurrentServiceInfo")
 
-	if err := h.ensureBackendStartedAndAppIsInitialised(); err != nil {
+	if err := h.ensureAppIsInitialised(); err != nil {
 		return GetCurrentServiceInfo{}, err
 	}
 
