@@ -67,39 +67,8 @@ type Handler struct {
 	tokenStore         *tokenStoreV1.EmptyStore
 }
 
-func NewHandler() (*Handler, error) {
-	h := &Handler{}
-
-	var err error
-
-	if err := h.initializeAppLogger(); err != nil {
-		return nil, err
-	}
-
-	h.configLoader, err = app.NewConfigLoader()
-	if err != nil {
-		return nil, fmt.Errorf("could not create the configuration loader: %w", err)
-	}
-
-	h.runningServiceManager = newServiceManager()
-
-	h.appInitialised, err = h.isAppInitialised()
-	if err != nil {
-		return nil, fmt.Errorf("could not verify wheter the application is initialized or not: %w", err)
-	}
-
-	// If the application is not initialized, it means it's the first time the
-	// user is running the application. As a result, we can't load the backend
-	// components that require an existing configuration. The user will have
-	// to go through the application initialization process, that is part of
-	// the "on-boarding" workflow on the front-end.
-	if h.appInitialised {
-		if err := h.reloadBackendComponentsFromConfig(); err != nil {
-			return nil, fmt.Errorf("could not load the backend components during the application start up: %w", err)
-		}
-	}
-
-	return h, nil
+func NewHandler() *Handler {
+	return &Handler{}
 }
 
 // Startup is called during application startup
@@ -121,6 +90,39 @@ func (h *Handler) Shutdown(_ context.Context) {
 	defer h.log.Debug("Leaving Shutdown")
 
 	h.closeAllResources()
+}
+
+func (h *Handler) StartupBackend() error {
+	var err error
+
+	if err := h.initializeAppLogger(); err != nil {
+		return err
+	}
+
+	h.configLoader, err = app.NewConfigLoader()
+	if err != nil {
+		return fmt.Errorf("could not create the configuration loader: %w", err)
+	}
+
+	h.runningServiceManager = newServiceManager()
+
+	h.appInitialised, err = h.isAppInitialised()
+	if err != nil {
+		return fmt.Errorf("could not verify wheter the application is initialized or not: %w", err)
+	}
+
+	// If the application is not initialized, it means it's the first time the
+	// user is running the application. As a result, we can't load the backend
+	// components that require an existing configuration. The user will have
+	// to go through the application initialization process, that is part of
+	// the "on-boarding" workflow on the front-end.
+	if h.appInitialised {
+		if err := h.reloadBackendComponentsFromConfig(); err != nil {
+			return fmt.Errorf("could not load the backend components during the application start up: %w", err)
+		}
+	}
+
+	return nil
 }
 
 func (h *Handler) initializeAppLogger() error {
