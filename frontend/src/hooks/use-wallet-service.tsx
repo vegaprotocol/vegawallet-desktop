@@ -38,6 +38,7 @@ export const useWalletService = (): Service => {
     },
 
     // Initialization
+    StartupBackend: Handlers.StartupBackend,
     InitialiseApp: async ({ vegaHome }: { vegaHome : string }) => {
       await Handlers.InitialiseApp({ vegaHome })
       return undefined
@@ -59,7 +60,7 @@ export const useWalletService = (): Service => {
     },
 
     // Service
-    StartService: async ({ network }) => {
+    StartService: async ({ network }: { network: string }) => {
       await Handlers.StartService({ network, noVersionCheck: false })
       return undefined
     },
