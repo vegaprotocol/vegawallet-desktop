@@ -78,9 +78,6 @@ func NewHandler() *Handler {
 // Startup is called during application startup
 func (h *Handler) Startup(ctx context.Context) {
 	h.ctx = ctx
-
-	h.log.Debug("Entering Startup")
-	defer h.log.Debug("Leaving Startup")
 }
 
 // DOMReady is called after the front-end dom has been loaded
@@ -90,11 +87,8 @@ func (h *Handler) DOMReady(_ context.Context) {
 
 // Shutdown is called during application termination
 func (h *Handler) Shutdown(_ context.Context) {
-	h.log.Debug("Entering Shutdown")
-	defer h.log.Debug("Leaving Shutdown")
-
 	h.closeAllResources()
-
+	h.backendStarted.Store(false)
 }
 
 func (h *Handler) StartupBackend() error {
