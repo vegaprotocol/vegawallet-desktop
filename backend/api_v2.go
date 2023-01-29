@@ -42,6 +42,10 @@ func (h *Handler) APIV2DescribeAPIToken(token string) (connections.TokenDescript
 }
 
 func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Response, error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return nil, err
+	}
+
 	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
 	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
 
@@ -56,8 +60,16 @@ func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Resp
 }
 
 func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error {
+	if err := h.ensureBackendStarted(); err != nil {
+		return err
+	}
+
 	h.log.Debug("Entering RespondToInteraction")
 	defer h.log.Debug("Leaving RespondToInteraction")
+
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return err
+	}
 
 	if interaction.TraceID == "" {
 		return ErrTraceIDIsRequired

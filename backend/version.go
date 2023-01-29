@@ -52,9 +52,17 @@ func (h *Handler) GetLatestRelease() (LatestRelease, error) {
 	return latestRelease, nil
 }
 
-func (h *Handler) GetVersion() *GetVersionResponse {
+func (h *Handler) GetVersion() (*GetVersionResponse, error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return nil, err
+	}
+
 	h.log.Debug("Entering GetVersion")
 	defer h.log.Debug("Leaving GetVersion")
+
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return nil, err
+	}
 
 	compatibility, _ := wversion.CheckSoftwareCompatibility(h.networkStore, wversion.GetNetworkVersionThroughGRPC)
 
@@ -63,5 +71,5 @@ func (h *Handler) GetVersion() *GetVersionResponse {
 		GitHash:       app.VersionHash,
 		Backend:       wversion.GetSoftwareVersionInfo(),
 		Compatibility: compatibility,
-	}
+	}, nil
 }

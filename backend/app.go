@@ -8,7 +8,10 @@ import (
 	"go.uber.org/zap"
 )
 
-var ErrAppIsNotInitialised = errors.New("the application has not been initialised")
+var (
+	ErrBackendNotStarted   = errors.New("the application backend is not started")
+	ErrAppIsNotInitialised = errors.New("the application has not been initialised")
+)
 
 func (h *Handler) IsAppInitialised() (bool, error) {
 	isConfigInit, err := h.isAppInitialised()
@@ -42,7 +45,7 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 		return fmt.Errorf("could not save the application configuration: %w", err)
 	}
 
-	h.appInitialised = true
+	h.appInitialised.Store(true)
 
 	if err := h.reloadBackendComponentsFromConfig(); err != nil {
 		h.log.Error("Could not reload the backend components during the application initialisation", zap.Error(err))
@@ -52,8 +55,17 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 	return nil
 }
 
+func (h *Handler) ensureBackendStarted() error {
+	if !h.backendStarted.Load() {
+		h.log.Error("The application backend is not started")
+		return ErrBackendNotStarted
+	}
+
+	return nil
+}
+
 func (h *Handler) ensureAppIsInitialised() error {
-	if !h.appInitialised {
+	if !h.appInitialised.Load() {
 		h.log.Error("The application is not initialised")
 		return ErrAppIsNotInitialised
 	}

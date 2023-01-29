@@ -57,6 +57,10 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 
 // GetAppConfig return the application configuration.
 func (h *Handler) GetAppConfig() (app.Config, error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return app.Config{}, err
+	}
+
 	h.log.Debug("Entering GetAppConfig")
 	defer h.log.Debug("Leaving GetAppConfig")
 
@@ -70,6 +74,10 @@ func (h *Handler) GetAppConfig() (app.Config, error) {
 // UpdateAppConfig update the application configuration. This requires a restart
 // to take effect.
 func (h *Handler) UpdateAppConfig(updatedConfig app.Config) error {
+	if err := h.ensureBackendStarted(); err != nil {
+		return err
+	}
+
 	h.log.Debug("Entering UpdateAppConfig")
 	defer h.log.Debug("Leaving UpdateAppConfig")
 

@@ -9,10 +9,10 @@
 - [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
 
 ### 🛠 Improvements
-- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+- [422](https://github.com/vegaprotocol/vega/issues/422) - Do not crash when application start with bad configuration
 
 ### 🐛 Fixes
-- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+- [465](https://github.com/vegaprotocol/vega/issues/465) - Fall back to standard output logger if the startup logger can't be built
 
 ## 0.8.2
 

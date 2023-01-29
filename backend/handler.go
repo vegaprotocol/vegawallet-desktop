@@ -3,6 +3,8 @@ package backend
 import (
 	"context"
 	"fmt"
+	"sync"
+	"sync/atomic"
 
 	vgclose "code.vegaprotocol.io/vega/libs/close"
 	"code.vegaprotocol.io/vega/libs/jsonrpc"
@@ -30,10 +32,14 @@ type Handler struct {
 	// the one to inject on runtime methods like menu, event, dialogs, etc.
 	ctx context.Context
 
+	// To prevent multiple startup of the back and thus resource leaks.
+	backendStarted atomic.Bool
+	startupMu      sync.Mutex
+
 	// appInitialised represents the initialization state of the application
 	// and is used to prevent calls to the API when the application is not
-	// initialised.
-	appInitialised bool
+	// initialized.
+	appInitialised atomic.Bool
 
 	log *zap.Logger
 	// logLevel is a reference to the logger's log level to dynamically change
@@ -67,47 +73,13 @@ type Handler struct {
 	tokenStore         *tokenStoreV1.EmptyStore
 }
 
-func NewHandler() (*Handler, error) {
-	h := &Handler{}
-
-	var err error
-
-	if err := h.initializeAppLogger(); err != nil {
-		return nil, err
-	}
-
-	h.configLoader, err = app.NewConfigLoader()
-	if err != nil {
-		return nil, fmt.Errorf("could not create the configuration loader: %w", err)
-	}
-
-	h.runningServiceManager = newServiceManager()
-
-	h.appInitialised, err = h.isAppInitialised()
-	if err != nil {
-		return nil, fmt.Errorf("could not verify wheter the application is initialized or not: %w", err)
-	}
-
-	// If the application is not initialized, it means it's the first time the
-	// user is running the application. As a result, we can't load the backend
-	// components that require an existing configuration. The user will have
-	// to go through the application initialization process, that is part of
-	// the "on-boarding" workflow on the front-end.
-	if h.appInitialised {
-		if err := h.reloadBackendComponentsFromConfig(); err != nil {
-			return nil, fmt.Errorf("could not load the backend components during the application start up: %w", err)
-		}
-	}
-
-	return h, nil
+func NewHandler() *Handler {
+	return &Handler{}
 }
 
 // Startup is called during application startup
 func (h *Handler) Startup(ctx context.Context) {
 	h.ctx = ctx
-
-	h.log.Debug("Entering Startup")
-	defer h.log.Debug("Leaving Startup")
 }
 
 // DOMReady is called after the front-end dom has been loaded
@@ -117,10 +89,55 @@ func (h *Handler) DOMReady(_ context.Context) {
 
 // Shutdown is called during application termination
 func (h *Handler) Shutdown(_ context.Context) {
-	h.log.Debug("Entering Shutdown")
-	defer h.log.Debug("Leaving Shutdown")
-
 	h.closeAllResources()
+	h.backendStarted.Store(false)
+}
+
+func (h *Handler) StartupBackend() (err error) {
+	h.startupMu.Lock()
+	defer h.startupMu.Unlock()
+
+	if h.backendStarted.Load() {
+		return nil
+	}
+
+	defer func() {
+		if err == nil {
+			// Only set the backend as started on success.
+			h.backendStarted.Store(true)
+		}
+	}()
+
+	if err := h.initializeAppLogger(); err != nil {
+		return err
+	}
+
+	h.configLoader, err = app.NewConfigLoader()
+	if err != nil {
+		return fmt.Errorf("could not create the configuration loader: %w", err)
+	}
+
+	h.runningServiceManager = newServiceManager()
+
+	appInitialised, err := h.isAppInitialised()
+	if err != nil {
+		return fmt.Errorf("could not verify wheter the application is initialized or not: %w", err)
+	}
+
+	h.appInitialised.Store(appInitialised)
+
+	// If the application is not initialized, it means it's the first time the
+	// user is running the application. As a result, we can't load the backend
+	// components that require an existing configuration. The user will have
+	// to go through the application initialization process, that is part of
+	// the "on-boarding" workflow on the front-end.
+	if h.appInitialised.Load() {
+		if err := h.reloadBackendComponentsFromConfig(); err != nil {
+			return fmt.Errorf("could not load the backend components during the application start up: %w", err)
+		}
+	}
+
+	return nil
 }
 
 func (h *Handler) initializeAppLogger() error {

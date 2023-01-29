@@ -10,7 +10,7 @@
   "outputfilename": "Vegawallet",
   "info": {
     "companyName": "Gobalsky Labs Ltd.",
-    "productName": "Vegawallet_v0.9.0",
+    "productName": "Vegawallet",
     "productVersion": "0.9.0",
     "copyright": "Copyright (c) 2022 Gobalsky Labs Ltd.",
     "comments": "Application to manage your Vega Protocol wallet."

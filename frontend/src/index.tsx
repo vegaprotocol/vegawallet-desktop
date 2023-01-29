@@ -20,6 +20,7 @@ if (element) {
       </React.StrictMode>
     )
   }
+  root.render(<App />)
 } else {
   throw Error('Could not find root element with id "app".')
 }

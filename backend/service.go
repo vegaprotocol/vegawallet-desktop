@@ -73,6 +73,10 @@ func (r StartServiceRequest) Check() error {
 }
 
 func (h *Handler) StartService(req *StartServiceRequest) (err error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return err
+	}
+
 	h.log.Debug("Entering StartService")
 	defer h.log.Debug("Leaving StartService")
 
@@ -153,6 +157,10 @@ type GetCurrentServiceInfo struct {
 }
 
 func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return GetCurrentServiceInfo{}, err
+	}
+
 	h.log.Debug("Entering GetCurrentServiceInfo")
 	defer h.log.Debug("Leaving GetCurrentServiceInfo")
 
@@ -174,15 +182,6 @@ func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
 	}, nil
 }
 
-func (h *Handler) ensurePortCanBeBound(svcURL string) error {
-	if _, err := http.Get("http://" + svcURL); err == nil {
-		// If there is no error, it means the server managed to establish a
-		// connection of some kind. It's not good for us.
-		return fmt.Errorf("could not start the service as an application is already served on %q", svcURL)
-	}
-	return nil
-}
-
 func (h *Handler) listenToIncomingInteractions(ctx context.Context) {
 	log := h.log.Named("service-interactions-listener")
 	log.Info("Listening to incoming interactions")
@@ -191,7 +190,10 @@ func (h *Handler) listenToIncomingInteractions(ctx context.Context) {
 		case <-ctx.Done():
 			log.Info("Stopping the listening to incoming interactions")
 			return
-		case interaction := <-h.runningServiceManager.receptionChan:
+		case interaction, ok := <-h.runningServiceManager.receptionChan:
+			if !ok {
+				return
+			}
 			h.emitReceivedInteraction(log, interaction)
 		}
 	}
@@ -206,7 +208,10 @@ func (h *Handler) listenToServiceRuntimeError(jobCtx context.Context, errChan <-
 		case <-jobCtx.Done():
 			log.Info("Stopping the listening to the service runtime error")
 			return
-		case err := <-errChan:
+		case err, ok := <-errChan:
+			if !ok {
+				return
+			}
 			h.log.Error("An error occurred while running the service", zap.Error(err))
 			h.runningServiceManager.ShutdownService()
 			runtime.EventsEmit(h.ctx, ServiceStoppedWithError, struct {

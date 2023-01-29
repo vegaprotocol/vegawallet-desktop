@@ -32,12 +32,17 @@ export const useWalletService = (): Service => {
     // Config
     GetAppConfig: Handlers.GetAppConfig,
     SearchForExistingConfiguration: Handlers.SearchForExistingConfiguration,
-    UpdateAppConfig: (payload: AppConfig) => {
-      return Handlers.UpdateAppConfig(new AppModel.Config(payload))
+    UpdateAppConfig: async (payload: AppConfig) => {
+      Handlers.UpdateAppConfig(new AppModel.Config(payload))
+      return undefined
     },
 
     // Initialization
-    InitialiseApp: Handlers.InitialiseApp,
+    StartupBackend: Handlers.StartupBackend,
+    InitialiseApp: async ({ vegaHome }: { vegaHome : string }) => {
+      await Handlers.InitialiseApp({ vegaHome })
+      return undefined
+    },
     IsAppInitialised: Handlers.IsAppInitialised,
 
     // Telemetry
@@ -55,20 +60,24 @@ export const useWalletService = (): Service => {
     },
 
     // Service
-    StartService: ({ network }) => {
-      return Handlers.StartService({ network, noVersionCheck: false })
+    StartService: async ({ network }: { network: string }) => {
+      await Handlers.StartService({ network, noVersionCheck: false })
+      return undefined
     },
-    StopService: Handlers.StopService,
+    StopService: async () => {
+      await Handlers.StopService()
+      return undefined
+    },
     GetCurrentServiceInfo: Handlers.GetCurrentServiceInfo,
 
     // API
-    EventsOn: EventsOn,
-    EventsOff: EventsOff,
-    RespondToInteraction: (payload: InteractionResponse) => {
+    EventsOn,
+    EventsOff,
+    RespondToInteraction: async (payload: any) => {
       if ('data' in payload) {
-        return Handlers.RespondToInteraction(payload)
+        return await Handlers.RespondToInteraction(payload)
       }
-      return Handlers.RespondToInteraction({ ...payload, data: {} })
+      return await Handlers.RespondToInteraction({ ...payload, data: {} })
     }
   }
 }

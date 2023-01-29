@@ -25,13 +25,7 @@ var assets embed.FS
 var icon []byte
 
 func main() {
-	startupLogFilePath, err := app.StartupLogFilePath()
-	if err != nil {
-		// There is not much we can do to log such an early error.
-		panic(err)
-	}
-
-	log := logger.NewFileLogger(startupLogFilePath)
+	log := startupLogger()
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -43,10 +37,7 @@ func main() {
 	date := time.Now().UTC().Format("2006-01-02-15-04-05")
 
 	// Create an instance of the handler structure
-	handler, err := backend.NewHandler()
-	if err != nil {
-		log.Fatal(fmt.Sprintf("Couldn't instantiate the backend: %v, PID(%d), date(%v)", err, pid, date))
-	}
+	handler := backend.NewHandler()
 
 	log.Info(fmt.Sprintf("Starting the application: PID(%d), date(%v)", pid, date))
 	defer log.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
@@ -89,6 +80,17 @@ func main() {
 			Icon: icon,
 		},
 	}); err != nil {
-		log.Fatal(fmt.Sprintf("Couldn't run the application: %v, PID(%d), date(%v)", err, pid, date))
+		log.Fatal(fmt.Sprintf("The application encountered an error while running: %v, PID(%d), date(%v)", err, pid, date))
 	}
+}
+
+func startupLogger() logger.Logger {
+	startupLogFilePath, err := app.StartupLogFilePath()
+	if err != nil {
+		// There is not much we can do, except fallback on a basic standard output
+		// logger.
+		return logger.NewDefaultLogger()
+	}
+
+	return logger.NewFileLogger(startupLogFilePath)
 }
