@@ -11,27 +11,6 @@ import { EventsOff, EventsOn } from '../wailsjs/runtime'
 
 const logger = createLogger('DesktopWallet')
 
-const debouncedResponseHandler = () => {
-  let lastTraceId: string | null = null
-  let lastEvent: string | null = null
-
-  return async (payload: InteractionResponse) => {
-    setTimeout(() => {
-      lastTraceId = null
-      lastEvent = null
-    }, 500)
-
-    if (lastTraceId === payload.traceID && lastEvent === payload.name) {
-      return
-    }
-
-    if ('data' in payload) {
-      await Handlers.RespondToInteraction(payload)
-    }
-    await Handlers.RespondToInteraction({ ...payload, data: {} })
-  }
-}
-
 export const useWalletService = (): Service => {
   return {
     TYPE: 'http',
@@ -92,8 +71,13 @@ export const useWalletService = (): Service => {
     GetCurrentServiceInfo: Handlers.GetCurrentServiceInfo,
 
     // API
-    EventsOn: EventsOn,
-    EventsOff: EventsOff,
-    RespondToInteraction: debouncedResponseHandler(),
+    EventsOn,
+    EventsOff,
+    RespondToInteraction: async (payload: any) => {
+      if ('data' in payload) {
+        return await Handlers.RespondToInteraction(payload)
+      }
+      return await Handlers.RespondToInteraction({ ...payload, data: {} })
+    }
   }
 }
