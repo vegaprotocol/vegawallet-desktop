@@ -89,6 +89,14 @@ func (h *Handler) UpdateAppConfig(updatedConfig app.Config) error {
 		return err
 	}
 
+	if updatedConfig.DefaultNetwork != "" {
+		if exists, err := h.networkStore.NetworkExists(updatedConfig.DefaultNetwork); err != nil {
+			return fmt.Errorf("could not verify the network exists: %w", err)
+		} else if !exists {
+			return fmt.Errorf("the network %q does not exist", updatedConfig.DefaultNetwork)
+		}
+	}
+
 	existingConfig, err := h.appConfig()
 	if err != nil {
 		return err

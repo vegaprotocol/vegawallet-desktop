@@ -194,6 +194,19 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 	}
 	h.networkStore = networkStore
 
+	// We ensure the default network is not set to a network that doesn't exist
+	// any more.
+	if cfg.DefaultNetwork != "" {
+		if exists, err := h.networkStore.NetworkExists(cfg.DefaultNetwork); err != nil {
+			return fmt.Errorf("could not verify the network exists: %w", err)
+		} else if !exists {
+			cfg.DefaultNetwork = ""
+			if err := h.configLoader.SaveConfig(cfg); err != nil {
+				return fmt.Errorf("could not save the correction to the default network: %w", err)
+			}
+		}
+	}
+
 	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
