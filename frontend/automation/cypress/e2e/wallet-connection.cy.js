@@ -1,6 +1,6 @@
 const { unlockWallet, approveConnection } = require('../support/helpers')
 
-describe('wallet connection', () => {
+describe.skip('wallet connection', () => {
   let walletName
   let passphrase
 

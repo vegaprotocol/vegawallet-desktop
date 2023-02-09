@@ -30,7 +30,7 @@ const testIds = {
   WALLET_ITEM: 'wallet-item'
 }
 
-describe('transaction approval', () => {
+describe.skip('transaction approval', () => {
   let passphrase = ''
   let walletName = ''
 

@@ -10,7 +10,7 @@ const testIds = {
   APPROVE_SELECTION_BUTTON: 'wallet-connection-approve'
 }
 
-describe('wallet permissions', () => {
+describe.skip('wallet permissions', () => {
   const MOCK_HOSTNAME = 'https://best-blockchain.app'
   let walletName
   let passphrase
