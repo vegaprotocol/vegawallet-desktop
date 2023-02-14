@@ -1,4 +1,3 @@
-import '@cypress/code-coverage/support'
 import './commands'
 import './setup'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
