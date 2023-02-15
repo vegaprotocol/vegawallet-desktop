@@ -1,9 +1,7 @@
 const { defineConfig } = require('cypress')
-const { downloadFile } = require('cypress-downloadfile/lib/addPlugin')
 
 module.exports = defineConfig({
   projectId: 't5pfg7',
-
   e2e: {
     setupNodeEvents(on, config) {
       on('before:browser:launch', (browser, launchOptions) => {
@@ -12,17 +10,14 @@ module.exports = defineConfig({
         }
         return launchOptions
       })
-
-      on('task', { downloadFile }) // download file plugin
-
       return config
     },
     baseUrl: 'http://localhost:34115/',
     fileServerFolder: '.',
-    specPattern: '**/*.cy.{js,jsx,ts,tsx}',
+    specPattern: './automation/e2e/**/*.cy.{js,jsx,ts,tsx}',
     fixturesFolder: false,
     defaultCommandTimeout: 20000,
-    supportFile: './cypress/support/e2e.js',
+    supportFile: './automation/support/e2e.js',
     video: false,
     videoUploadOnPasses: false
   },

@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "types": ["cypress", "node"],
+    "sourceMap": false,
+  },
+  "include": ["src/**/*.ts", "src/**/*.js"]
+}

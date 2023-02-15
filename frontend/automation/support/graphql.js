@@ -4,9 +4,3 @@ export const hasOperationName = (req, operationName) => {
     body.hasOwnProperty('operationName') && body.operationName === operationName
   )
 }
-
-export const aliasQuery = (req, operationName) => {
-  if (hasOperationName(req, operationName)) {
-    req.alias = operationName
-  }
-}

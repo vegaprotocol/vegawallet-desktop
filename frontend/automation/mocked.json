@@ -1,4 +1,0 @@
-{
-  "testFiles": "**/*",
-  "integrationFolder": "cypress/integration"
-}

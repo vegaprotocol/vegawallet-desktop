@@ -76,13 +76,9 @@ describe('import network', () => {
   // Getting RSA keys already exist error on startup
   // for only this test
   it('import successfully via file path', () => {
-    const url = Cypress.env('mainnetConfigUrl')
-
-    cy.downloadFile(url, 'network-config', 'mainnet-config.toml')
-
     const filePath = path.join(
       Cypress.config('projectRoot'),
-      'network-config/mainnet-config.toml'
+      'automation/data/networks/mainnet1.toml'
     )
 
     // 0001-WALL-010
@@ -94,7 +90,7 @@ describe('import network', () => {
   })
 
   it('import failure via file path', () => {
-    const invalidFilePath = './network-config/mainnet1'
+    const invalidFilePath = 'this/is/invalid/path/file.toml'
 
     cy.getByTestId('add-network').click()
     cy.getByTestId('url-path').type(invalidFilePath)

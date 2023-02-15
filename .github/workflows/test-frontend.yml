@@ -52,8 +52,10 @@ jobs:
       - name: Restore node_modules from cache
         uses: actions/cache@v3
         with:
-          path: frontend/node_modules
-          key: node_modules-${{ hashFiles('frontend/yarn.lock') }}
+          path: |
+            ~/.cache/Cypress
+            frontend/node_modules
+          key: node_modules-cypress-${{ hashFiles('frontend/yarn.lock') }}
 
       - name: Install frontend dependencies
         working-directory: frontend
@@ -75,19 +77,18 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
+          config-file: automation/cypress.config.js
+          install: false
           wait-on: "http://localhost:34115"
-          working-directory: frontend/automation
+          working-directory: frontend
           wait-on-timeout: 220
           record: true
-          cache-key: ${{ runner.os }}-cypress-${{ hashFiles('frontend/automation/yarn.lock') }}
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           # Recommended: pass the GitHub token lets this action correctly
           # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # pass the project ID from the secrets through environment variable
-          CYPRESS_ENV: localhost
 
   sanity-checks:
     name: Run sanity checks

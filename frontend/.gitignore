@@ -28,3 +28,10 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Cypress
+.nyc_output
+cypress/videos
+cypress/screenshots
+network-config
+test-wallets

@@ -1,6 +1,6 @@
 module.exports = {
-  plugins: ['simple-import-sort'],
-  extends: ['react-app', 'react-app/jest'],
+  plugins: ['simple-import-sort', 'cypress'],
+  extends: ['react-app', 'plugin:cypress/recommended'],
   ignorePatterns: ['./src/wallet-client/**'],
   rules: {
     'prefer-const': 'warn',
@@ -30,12 +30,4 @@ module.exports = {
       }
     ]
   },
-  overrides: [
-    {
-      files: ['*.test.tsx'],
-      rules: {
-        'no-restricted-imports': 'off'
-      }
-    }
-  ]
 }

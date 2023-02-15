@@ -45,9 +45,9 @@ When you commit your changes, and create a PR, the CI runs a few checks on the c
 The frontend runs end to end tests with cypress. The CI configuration for this is in the [same file](../.github/workflows/test-frontend.yml) as the format / lint above.
 To run the end to end tests locally, you'll need to follow the following steps:
 
-- open a terminal, and launch the desktop app by running `wails dev` in the root directory
-- go to the _frontend/automation_ folder
-- run `npm install` to get all the dependencies
-- run `npm run cypress:open:local` to launch cypress
+- go to the _frontend_ folder and open a terminal
+- run `yarn` to get all the dependencies
+- launch the desktop app by running `yarn test:dev`
+- run `yarn e2e:open` to launch cypress
 
-_NOTE_: alternatively, you can run the tests in a headless mode, too, by running `npm run test` in the _frontend/automation_ folder.
+_NOTE_: alternatively, you can run the tests in a headless mode, too, by running `yarn e2e:run` in the _frontend_ folder.

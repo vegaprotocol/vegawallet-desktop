@@ -2,14 +2,12 @@ const path = require('path')
 const { hasOperationName } = require('./graphql')
 const { generateAccounts } = require('./helpers')
 
-require('cypress-downloadfile/lib/downloadFileCommand')
-
 Cypress.Commands.add('getByTestId', (selector, ...args) => {
   return cy.get(`[data-testid=${selector}]`, ...args)
 })
 
 Cypress.Commands.add('clean', () => {
-  return cy.exec('npm run clean')
+  return cy.exec('yarn run e2e:clean')
 })
 
 Cypress.Commands.add('backend', () => {
@@ -53,7 +51,7 @@ Cypress.Commands.add('restoreWallet', handler => {
 Cypress.Commands.add('restoreNetwork', (handler, name = 'test') => {
   const location = path.join(
     Cypress.config('projectRoot'),
-    'network-config/test.toml'
+    'automation/network-config/test.toml'
   )
   Cypress.env('testNetworkPath', location)
 

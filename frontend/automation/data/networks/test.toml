@@ -1,6 +1,4 @@
-const fs = require('fs')
-const path = require('path')
-const CONFIG = `Name = "test"
+Name = "test"
 Level = "debug"
 TokenExpiry = "168h0m0s"
 Port = 1789
@@ -22,11 +20,3 @@ Host = "127.0.0.1"
     Hosts = []
   [API.GraphQL]
     Hosts = ["https://mock.vega.xyz/query"]
-`
-const DIR = './network-config'
-const dirExists = fs.existsSync(DIR)
-if (!dirExists) {
-  fs.mkdirSync(DIR)
-}
-const result = path.join(DIR, '/test.toml')
-fs.writeFileSync(result, CONFIG)
