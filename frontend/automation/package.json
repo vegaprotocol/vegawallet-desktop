@@ -28,13 +28,9 @@
     "glob": "^8.1.0",
     "lodash": "^4.17.21"
   },
-  "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": false
-  },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
-    "@cypress/code-coverage": "^3.10.0",
     "babel-loader": "^9.1.2",
     "cypress-downloadfile": "^1.2.1",
     "deepmerge": "^4.2.2",

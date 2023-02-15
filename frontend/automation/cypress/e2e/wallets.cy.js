@@ -1,9 +1,4 @@
-const {
-  authenticate,
-  unlockWallet,
-  goToKey,
-  generateAccounts
-} = require('../support/helpers')
+const { authenticate, unlockWallet, goToKey } = require('../support/helpers')
 
 describe('create wallet', () => {
   const walletName = 'test'
@@ -134,12 +129,13 @@ describe('wallet', () => {
       })
   })
 
-  it('wallets can be locked', () => {
+  it('wallet stays logged in', () => {
+    // 0001-WALL-016 must select a wallet and enter the passphrase only once per "session"
     unlockWallet(walletName, passphrase)
-    cy.getByTestId('wallet-keypair').should('contain', 'Key 1')
     cy.getByTestId('back').click()
-    cy.getByTestId('wallet-keypair').should('not.exist')
-    cy.getByTestId('wallet-home').should('exist')
+    cy.getByTestId(`wallet-${walletName}`).click()
+    cy.getByTestId('passphrase-form').should('not.exist')
+    cy.getByTestId('header-title').should('have.text', walletName)
   })
 
   it('can navigate to transactions page', () => {
