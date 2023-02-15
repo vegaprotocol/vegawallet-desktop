@@ -29,5 +29,5 @@ module.exports = {
           "Import the specific methods you need from lodash e.g. `import get from 'lodash/get'`. This helps with bundle sizing."
       }
     ]
-  },
+  }
 }
