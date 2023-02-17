@@ -49,9 +49,16 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 	listWallets, _ := api.NewAdminListWallets(walletStore).Handle(h.ctx, nil)
 	listNetworks, _ := api.NewAdminListNetworks(netStore).Handle(h.ctx, nil)
 
+	networks := listNetworks.(api.AdminListNetworksResult).Networks
+
+	networkNames := make([]string, 0, len(networks))
+	for _, net := range networks {
+		networkNames = append(networkNames, net.Name)
+	}
+
 	return &SearchForExistingConfigurationResponse{
 		Wallets:  listWallets.(api.AdminListWalletsResult).Wallets,
-		Networks: listNetworks.(api.AdminListNetworksResult).Networks,
+		Networks: networkNames,
 	}, nil
 }
 
