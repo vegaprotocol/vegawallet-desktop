@@ -1947,10 +1947,10 @@
   resolved "https://registry.npmjs.org/@vegaprotocol/wallet-admin/-/wallet-admin-0.1.3.tgz"
   integrity sha512-tjUZpUWEe8PXIfZTxvGCcuj5MK+0ZNdVCjhmUwllLZFbT0/42F4Bc1zIyMa7CnFbHwX8kLDERZT8P9twsX8F2w==
 
-"@vegaprotocol/wallet-ui@0.1.39":
-  version "0.1.39"
-  resolved "https://registry.npmjs.org/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.39.tgz"
-  integrity sha512-2EXNYVZSZBeE5R+8w5SSm0FrN0o5EpdeGgi0OSSYVvavk3KPQRo6UY6CIt9Glnwla64DB36aF/5+jcO4HUgOAg==
+"@vegaprotocol/wallet-ui@0.1.40":
+  version "0.1.40"
+  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.40.tgz#973d600efbafb1cba628fc308fda6848c0d4de9d"
+  integrity sha512-YIZ5q/0V77tsQ1RJgz/J3dkRVqSbttjZjHR1zwpSn+Kvvsk0b09wIlDM46IChqa4kPC0ztUBBPJ6J4z+Y+xwJA==
   dependencies:
     "@radix-ui/react-checkbox" "1.0.1"
     "@radix-ui/react-dialog" "1.0.2"
