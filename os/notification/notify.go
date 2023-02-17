@@ -11,3 +11,7 @@ import (
 func Notify(title, message string) error {
 	return beeep.Notify(app.Name, message, "")
 }
+
+func Init() error {
+	return nil
+}

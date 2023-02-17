@@ -99,12 +99,26 @@ func (h *Handler) emitReceivedInteraction(log *zap.Logger, interaction interacto
 
 	if shouldEmitOSNotification(interaction.Name) {
 		message := strings.ToLower(strings.ReplaceAll(string(interaction.Name), "_", " "))
+		message = strings.ToUpper(message[:1]) + message[1:]
 		if err := notification.Notify(app.Name, message); err != nil {
 			log.Warn("Could not send the OS notification", zap.Error(err))
 		}
 	}
 
+	if shouldBringAppToFront(interaction.Name) {
+		runtime.WindowShow(h.ctx)
+	}
+
 	runtime.EventsEmit(h.ctx, NewInteractionEvent, interaction)
+}
+
+func shouldBringAppToFront(interactionName interactor.InteractionName) bool {
+	return interactionName == interactor.RequestPassphraseName ||
+		interactionName == interactor.RequestTransactionReviewForSigningName ||
+		interactionName == interactor.RequestTransactionReviewForSendingName ||
+		interactionName == interactor.RequestPermissionsReviewName ||
+		interactionName == interactor.RequestWalletConnectionReviewName ||
+		interactionName == interactor.RequestWalletSelectionName
 }
 
 func shouldEmitOSNotification(interactionName interactor.InteractionName) bool {

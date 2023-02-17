@@ -23,6 +23,7 @@ import (
 	walletStoreV1 "code.vegaprotocol.io/vega/wallet/wallet/store/v1"
 	"code.vegaprotocol.io/vega/wallet/wallets"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
+	"code.vegaprotocol.io/vegawallet-desktop/os"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -83,9 +84,7 @@ func (h *Handler) Startup(ctx context.Context) {
 }
 
 // DOMReady is called after the front-end dom has been loaded
-func (h *Handler) DOMReady(_ context.Context) {
-	// Add your action here
-}
+func (h *Handler) DOMReady(_ context.Context) {}
 
 // Shutdown is called during application termination
 func (h *Handler) Shutdown(_ context.Context) {
@@ -135,6 +134,11 @@ func (h *Handler) StartupBackend() (err error) {
 		if err := h.reloadBackendComponentsFromConfig(); err != nil {
 			return fmt.Errorf("could not load the backend components during the application start up: %w", err)
 		}
+	}
+
+	if err := os.Init(); err != nil {
+		h.log.Error("Could not initialize OS-specific capabilities")
+		return err
 	}
 
 	return nil

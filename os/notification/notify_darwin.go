@@ -3,11 +3,8 @@
 package notification
 
 /*
-// Compiler flags.
-#cgo CFLAGS: -Wall -x objective-c -std=gnu99 -fobjc-arc
-// Linker flags.
-#cgo LDFLAGS: -framework Foundation
-
+#cgo CFLAGS: -Wall -x objective-c
+#cgo LDFLAGS: -framework Foundation -framework UserNotifications
 #import "notify_darwin.h"
 */
 import "C"
@@ -22,5 +19,10 @@ func Notify(title, message string) error {
 
 	C.Send(cTitle, cBody)
 
+	return nil
+}
+
+func Init() error {
+	C.Init()
 	return nil
 }

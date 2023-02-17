@@ -9,7 +9,7 @@
 - [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
 
 ### 🛠 Improvements
-- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+- [491](https://github.com/vegaprotocol/vega/issues/491) - Migrate MacOS notification to the UserNotification framework. However, this is still not working. Application is now brought to front when a review or an input from the user is required.
 
 ### 🐛 Fixes
 - [473](https://github.com/vegaprotocol/vega/issues/473) - Clean up the application configuration if set with a non-existing network
