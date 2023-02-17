@@ -246,7 +246,6 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 
 func (h *Handler) closeAllResources() {
 	if h.serviceStarter != nil {
-		h.serviceStarter.StopService()
 		h.serviceStarter.Close()
 	}
 
