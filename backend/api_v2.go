@@ -4,16 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strings"
 
 	"code.vegaprotocol.io/vega/libs/jsonrpc"
 	vgrand "code.vegaprotocol.io/vega/libs/rand"
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	v2 "code.vegaprotocol.io/vega/wallet/service/v2"
 	"code.vegaprotocol.io/vega/wallet/service/v2/connections"
-	"code.vegaprotocol.io/vegawallet-desktop/app"
-	"code.vegaprotocol.io/vegawallet-desktop/os/notification"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 )
 
@@ -86,43 +82,7 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 		return ErrContextCanceled
 	}
 
-	h.runningServiceManager.responseChan <- interaction
+	h.serviceStarter.responseChan <- interaction
 
 	return nil
-}
-
-func (h *Handler) emitReceivedInteraction(log *zap.Logger, interaction interactor.Interaction) {
-	log.Debug("Received a new interaction",
-		zap.String("interaction", string(interaction.Name)),
-		zap.String("trace-id", interaction.TraceID),
-	)
-
-	if shouldEmitOSNotification(interaction.Name) {
-		message := strings.ToLower(strings.ReplaceAll(string(interaction.Name), "_", " "))
-		message = strings.ToUpper(message[:1]) + message[1:]
-		if err := notification.Notify(app.Name, message); err != nil {
-			log.Warn("Could not send the OS notification", zap.Error(err))
-		}
-	}
-
-	if shouldBringAppToFront(interaction.Name) {
-		runtime.WindowShow(h.ctx)
-	}
-
-	runtime.EventsEmit(h.ctx, NewInteractionEvent, interaction)
-}
-
-func shouldBringAppToFront(interactionName interactor.InteractionName) bool {
-	return interactionName == interactor.RequestPassphraseName ||
-		interactionName == interactor.RequestTransactionReviewForSigningName ||
-		interactionName == interactor.RequestTransactionReviewForSendingName ||
-		interactionName == interactor.RequestPermissionsReviewName ||
-		interactionName == interactor.RequestWalletConnectionReviewName ||
-		interactionName == interactor.RequestWalletSelectionName
-}
-
-func shouldEmitOSNotification(interactionName interactor.InteractionName) bool {
-	return !(interactionName == interactor.LogName ||
-		interactionName == interactor.InteractionSessionBeganName ||
-		interactionName == interactor.InteractionSessionEndedName)
 }

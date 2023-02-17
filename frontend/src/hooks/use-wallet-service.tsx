@@ -1,4 +1,3 @@
-import type { InteractionResponse } from '@vegaprotocol/wallet-ui/src/types/interaction'
 import type {
   AppConfig,
   Service
