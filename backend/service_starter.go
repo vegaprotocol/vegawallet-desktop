@@ -58,6 +58,7 @@ func (s *ServiceStarter) StartService(ctx context.Context, network string) (err 
 
 	defer func() {
 		if err != nil {
+			s.isRunning.Store(false)
 			s.jobRunner.StopAllJobs()
 			s.jobRunner = nil
 			s.log.Info("The service state has been reset")
@@ -101,6 +102,9 @@ func (s *ServiceStarter) StopService() {
 }
 
 func (s *ServiceStarter) Close() {
+	if s.isRunning.Load() {
+		s.jobRunner.StopAllJobs()
+	}
 	s.closer.CloseAll()
 	s.reset()
 }
@@ -246,6 +250,8 @@ func (s *ServiceStarter) reset() {
 	s.latestHealthState = UnknownStatus
 	s.closer = vgclose.NewCloser()
 	s.receptionChan = nil
+	s.responseChan = nil
+	s.jobRunner = nil
 	s.isRunning.Store(false)
 }
 

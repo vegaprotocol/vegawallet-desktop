@@ -14,6 +14,7 @@
 
 ### 🐛 Fixes
 - [473](https://github.com/vegaprotocol/vega/issues/473) - Clean up the application configuration if set with a non-existing network
+- [500](https://github.com/vegaprotocol/vega/issues/500) - Mark the service as not running when it failed to start
 
 ## 0.8.3
 
