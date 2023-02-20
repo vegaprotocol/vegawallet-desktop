@@ -69,10 +69,12 @@ type Handler struct {
 	connectionsManager *connections.Manager
 	tokenStore         *tokenStoreV1.EmptyStore
 	svcStore           *svcStoreV1.Store
+
+	icon []byte
 }
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(icon []byte) *Handler {
+	return &Handler{icon: icon}
 }
 
 // Startup is called during application startup

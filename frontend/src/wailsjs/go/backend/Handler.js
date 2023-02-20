@@ -18,6 +18,10 @@ export function APIV2ListAPITokens() {
   return window['go']['backend']['Handler']['APIV2ListAPITokens']();
 }
 
+export function AppMenu() {
+  return window['go']['backend']['Handler']['AppMenu']();
+}
+
 export function GetAppConfig() {
   return window['go']['backend']['Handler']['GetAppConfig']();
 }
