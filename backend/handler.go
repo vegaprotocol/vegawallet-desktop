@@ -14,6 +14,7 @@ import (
 	walletapi "code.vegaprotocol.io/vega/wallet/api"
 	nodeapi "code.vegaprotocol.io/vega/wallet/api/node"
 	netStoreV1 "code.vegaprotocol.io/vega/wallet/network/store/v1"
+	svcStoreV1 "code.vegaprotocol.io/vega/wallet/service/store/v1"
 	serviceV2 "code.vegaprotocol.io/vega/wallet/service/v2"
 	"code.vegaprotocol.io/vega/wallet/service/v2/connections"
 	tokenStoreV1 "code.vegaprotocol.io/vega/wallet/service/v2/connections/store/v1"
@@ -65,6 +66,7 @@ type Handler struct {
 	walletStore        *walletStoreV1.FileStore
 	connectionsManager *connections.Manager
 	tokenStore         *tokenStoreV1.EmptyStore
+	svcStore           *svcStoreV1.Store
 }
 
 func NewHandler() *Handler {
@@ -209,6 +211,13 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 	}
 	h.walletStore = walletStore
 
+	svcStore, err := svcStoreV1.InitialiseStore(vegaPaths)
+	if err != nil {
+		h.log.Error(fmt.Sprintf("Couldn't initialise the service store: %v", err))
+		return fmt.Errorf("could not initialise the service store: %w", err)
+	}
+	h.svcStore = svcStore
+
 	tokenStore := tokenStoreV1.NewEmptyStore()
 	h.tokenStore = tokenStore
 	h.resourcesCloser.Add(tokenStore.Close)
@@ -226,6 +235,7 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 	serviceStarter, err := NewServiceStarter(
 		vegaPaths,
 		h.log.Named("service-starter"),
+		h.svcStore,
 		h.walletStore,
 		h.networkStore,
 		h.connectionsManager,
@@ -310,10 +320,6 @@ func (h *Handler) updateBackendComponentsFromConfig() error {
 	}
 
 	return nil
-}
-
-func (h *Handler) initialiseServiceStarter(vegaPaths paths.Paths) {
-
 }
 
 func (h *Handler) initializeWalletAdminAPI() {

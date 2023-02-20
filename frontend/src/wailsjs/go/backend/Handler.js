@@ -30,6 +30,10 @@ export function GetLatestRelease() {
   return window['go']['backend']['Handler']['GetLatestRelease']();
 }
 
+export function GetServiceConfig() {
+  return window['go']['backend']['Handler']['GetServiceConfig']();
+}
+
 export function GetVersion() {
   return window['go']['backend']['Handler']['GetVersion']();
 }
@@ -68,4 +72,8 @@ export function SubmitWalletAPIRequest(arg1) {
 
 export function UpdateAppConfig(arg1) {
   return window['go']['backend']['Handler']['UpdateAppConfig'](arg1);
+}
+
+export function UpdateServiceConfig(arg1) {
+  return window['go']['backend']['Handler']['UpdateServiceConfig'](arg1);
 }

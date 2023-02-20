@@ -13,7 +13,6 @@ import (
 	vgjob "code.vegaprotocol.io/vega/libs/job"
 	vgzap "code.vegaprotocol.io/vega/libs/zap"
 	"code.vegaprotocol.io/vega/paths"
-	"code.vegaprotocol.io/vega/wallet/api"
 	walletapi "code.vegaprotocol.io/vega/wallet/api"
 	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	"code.vegaprotocol.io/vega/wallet/service"
@@ -255,15 +254,10 @@ func (s *ServiceStarter) reset() {
 	s.isRunning.Store(false)
 }
 
-func NewServiceStarter(vegaPaths paths.Paths, log *zap.Logger, walletStore api.WalletStore, netStore api.NetworkStore, connectionsManager *connections.Manager) (*ServiceStarter, error) {
+func NewServiceStarter(vegaPaths paths.Paths, log *zap.Logger, svcStore *svcStoreV1.Store, walletStore walletapi.WalletStore, netStore walletapi.NetworkStore, connectionsManager *connections.Manager) (*ServiceStarter, error) {
 	s := &ServiceStarter{}
 	s.reset()
 	s.log = log
-
-	svcStore, err := svcStoreV1.InitialiseStore(vegaPaths)
-	if err != nil {
-		return nil, fmt.Errorf("could not initialise the service store: %w", err)
-	}
 
 	loggerBuilderFunc := func(levelName string) (*zap.Logger, zap.AtomicLevel, error) {
 		svcLog, svcLogPath, level, err := buildServiceLogger(vegaPaths, paths.WalletServiceLogsHome, levelName)
