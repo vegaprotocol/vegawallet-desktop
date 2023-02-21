@@ -439,6 +439,91 @@ export namespace jsonrpc {
 
 }
 
+export namespace service {
+	
+	export class APIV1Config {
+	    // Go type: encoding.Duration
+	    maximumTokenDuration: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new APIV1Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.maximumTokenDuration = this.convertValues(source["maximumTokenDuration"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ServerConfig {
+	    port: number;
+	    host: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ServerConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.port = source["port"];
+	        this.host = source["host"];
+	    }
+	}
+	export class Config {
+	    // Go type: encoding.LogLevel
+	    logLevel: any;
+	    server: ServerConfig;
+	    apiV1: APIV1Config;
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.logLevel = this.convertValues(source["logLevel"], null);
+	        this.server = this.convertValues(source["server"], ServerConfig);
+	        this.apiV1 = this.convertValues(source["apiV1"], APIV1Config);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace version {
 	
 	export class NetworkCompatibility {

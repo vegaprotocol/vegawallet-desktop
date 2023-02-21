@@ -8,12 +8,8 @@ void Init() {
 		  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
 		  [center
 		  	requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge)
-		  	completionHandler:^(BOOL granted, NSError *__nullable error){
-		  	   NSLog(@"Granted: %b", granted);
-		  	   NSLog(@"Error: %@", error);
-		  	}
+		  	completionHandler:^(BOOL granted, NSError *__nullable error){}
 		  ];
-		  NSLog(@"INIT THE NOTIFICATION");
 		}
 	}
 }
@@ -21,7 +17,6 @@ void Init() {
 void Send(const char *title, const char *subtitle) {
  	@autoreleasepool {
 		if (@available(macOS 10.14, *)) {
-      NSLog(@"SENDING THE NOTIFICATION");
 			NSString *uuidString = [[NSUUID UUID] UUIDString];
 			UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
 			content.title = [NSString stringWithUTF8String:title];
@@ -41,7 +36,6 @@ void Send(const char *title, const char *subtitle) {
 
 			UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
 			[center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * settings) {
-			  NSLog(@"Settings status %@", settings);
 				if (settings.authorizationStatus != UNAuthorizationStatusAuthorized) {
 					return;
 				}

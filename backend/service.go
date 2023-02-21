@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"code.vegaprotocol.io/vega/wallet/service"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 )
@@ -125,4 +126,45 @@ func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
 	}
 
 	return h.serviceStarter.Info(), nil
+}
+
+func (h *Handler) GetServiceConfig() (*service.Config, error) {
+	if err := h.ensureBackendStarted(); err != nil {
+		return nil, err
+	}
+
+	h.log.Debug("Entering GetServiceConfig")
+	defer h.log.Debug("Leaving GetServiceConfig")
+
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return nil, err
+	}
+
+	config, err := h.svcStore.GetConfig()
+	if err != nil {
+		h.log.Error("Couldn't retrieve the service configuration", zap.Error(err))
+		return nil, err
+	}
+
+	return config, nil
+}
+
+func (h *Handler) UpdateServiceConfig(cfg service.Config) error {
+	if err := h.ensureBackendStarted(); err != nil {
+		return err
+	}
+
+	h.log.Debug("Entering GetServiceConfig")
+	defer h.log.Debug("Leaving GetServiceConfig")
+
+	if err := h.ensureAppIsInitialised(); err != nil {
+		return err
+	}
+
+	if err := h.svcStore.SaveConfig(&cfg); err != nil {
+		h.log.Error("Couldn't save the service configuration", zap.Error(err))
+		return err
+	}
+
+	return nil
 }

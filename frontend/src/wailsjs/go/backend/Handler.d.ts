@@ -3,6 +3,7 @@
 import {connections} from '../models';
 import {app} from '../models';
 import {backend} from '../models';
+import {service} from '../models';
 import {interactor} from '../models';
 import {jsonrpc} from '../models';
 
@@ -19,6 +20,8 @@ export function GetAppConfig():Promise<app.Config>;
 export function GetCurrentServiceInfo():Promise<backend.GetCurrentServiceInfo>;
 
 export function GetLatestRelease():Promise<backend.LatestRelease>;
+
+export function GetServiceConfig():Promise<service.Config>;
 
 export function GetVersion():Promise<backend.GetVersionResponse>;
 
@@ -39,3 +42,5 @@ export function StopService():Promise<void>;
 export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<jsonrpc.Response>;
 
 export function UpdateAppConfig(arg1:app.Config):Promise<void>;
+
+export function UpdateServiceConfig(arg1:service.Config):Promise<void>;
