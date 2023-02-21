@@ -31,7 +31,7 @@ type LatestRelease struct {
 }
 
 func (h *Handler) GetLatestRelease() (LatestRelease, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
+	ctx, cancel := context.WithTimeout(h.ctx, requestTimeout)
 	defer cancel()
 
 	v, err := vgversion.Check(vgversion.BuildGithubReleasesRequestFrom(ctx, ReleasesAPI), app.Version)

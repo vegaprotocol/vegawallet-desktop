@@ -18,10 +18,12 @@ import (
 	serviceV2 "code.vegaprotocol.io/vega/wallet/service/v2"
 	"code.vegaprotocol.io/vega/wallet/service/v2/connections"
 	tokenStoreV1 "code.vegaprotocol.io/vega/wallet/service/v2/connections/store/v1"
+	"code.vegaprotocol.io/vega/wallet/wallet"
 	walletStoreV1 "code.vegaprotocol.io/vega/wallet/wallet/store/v1"
 	"code.vegaprotocol.io/vega/wallet/wallets"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"code.vegaprotocol.io/vegawallet-desktop/os"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -211,6 +213,10 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 	}
 	h.walletStore = walletStore
 
+	h.walletStore.OnUpdate(func(ctx context.Context, event wallet.Event) {
+		runtime.EventsEmit(h.ctx, string(event.Type), event.Data)
+	})
+
 	svcStore, err := svcStoreV1.InitialiseStore(vegaPaths)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service store: %v", err))
@@ -267,15 +273,13 @@ func (h *Handler) closeAllResources() {
 }
 
 func (h *Handler) ensureDefaultNetworksPresence() error {
-	ctx := context.Background()
-
 	registeredNetworks, err := h.networkStore.ListNetworks()
 	if err != nil {
 		return fmt.Errorf("could not list the registered networks: %w", err)
 	}
 
 	for _, defaultNet := range DefaultNetworks {
-		h.importDefaultNetworkIfMissing(ctx, defaultNet, registeredNetworks)
+		h.importDefaultNetworkIfMissing(h.ctx, defaultNet, registeredNetworks)
 	}
 
 	return nil

@@ -12,6 +12,7 @@
 - [476](https://github.com/vegaprotocol/vega/issues/476) - Import fairground, mainnet1, and testnet2 auto-magically on every startup
 - [495](https://github.com/vegaprotocol/vega/issues/495) - Integrate with new wallet service config
 - [491](https://github.com/vegaprotocol/vega/issues/491) - Migrate MacOS notification to the UserNotification framework. However, this is still not working. Application is now brought to front when a review or an input from the user is required.
+- [288](https://github.com/vegaprotocol/vega/issues/288) - Pick up wallet updates made externally
 
 ### 🐛 Fixes
 - [473](https://github.com/vegaprotocol/vega/issues/473) - Clean up the application configuration if set with a non-existing network
