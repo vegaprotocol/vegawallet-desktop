@@ -1,6 +1,10 @@
 package app
 
 import (
+	"errors"
+	"fmt"
+
+	vgfs "code.vegaprotocol.io/vega/libs/fs"
 	vgzap "code.vegaprotocol.io/vega/libs/zap"
 	"go.uber.org/zap"
 )
@@ -42,6 +46,20 @@ func (c Config) EnsureIsValid() error {
 
 	if err := vgzap.EnsureIsSupportedLogLevel(c.LogLevel); err != nil {
 		return err
+	}
+
+	// if a custom home path is set validate it
+	if c.VegaHome != "" {
+		exists, err := vgfs.FileExists(c.VegaHome)
+		switch {
+		case errors.Is(err, vgfs.ErrIsADirectory): // this is what we want
+		case err != nil:
+			return fmt.Errorf("unable to check if path exists %s: %w", c.VegaHome, err)
+		case !exists:
+			return fmt.Errorf("the specified VegaHome does not exist: %s", c.VegaHome)
+		default:
+			return fmt.Errorf("the specified VegaHome is not a directory: %s", c.VegaHome)
+		}
 	}
 
 	return nil

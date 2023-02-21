@@ -64,8 +64,6 @@ describe('manage networks', () => {
 
   it('edit network details displayed', () => {
     cy.edit_network_config_form_for_specified_network('test')
-    cy.getByTestId('service-host').invoke('val').should('not.be.empty')
-    cy.getByTestId('service-port').invoke('val').should('not.be.empty')
     cy.getByTestId('node-list').invoke('val').should('not.be.empty')
     cy.getByTestId('node-list').first().invoke('val').should('not.be.empty')
     cy.contains('gRPC Nodes')
@@ -101,20 +99,28 @@ describe('change network details', () => {
     cy.edit_network_config_form_for_specified_network('test_network3')
   })
 
-  it('able to change service host', () => {
-    const newServiceHost = '127.0.0.9'
-    cy.getByTestId('service-host').clear().type(newServiceHost)
+  it('able to change service console url', () => {
+    const newURL = 'http://console.url'
+    cy.getByTestId('network-console-url').clear().type(newURL)
     cy.submit_network_config_form()
     cy.edit_network_config_form_for_specified_network('test_network3')
-    cy.getByTestId('service-host').should('have.value', newServiceHost)
+    cy.getByTestId('network-console-url').should('have.value', newURL)
   })
 
-  it('able to change service port', () => {
-    const newServicePort = '9999'
-    cy.getByTestId('service-port').clear().type(newServicePort)
+  it('able to change service explorer url', () => {
+    const newURL = 'http://explorer.url'
+    cy.getByTestId('network-explorer-url').clear().type(newURL)
     cy.submit_network_config_form()
     cy.edit_network_config_form_for_specified_network('test_network3')
-    cy.getByTestId('service-port').should('have.value', newServicePort)
+    cy.getByTestId('network-explorer-url').should('have.value', newURL)
+  })
+
+  it('able to change service token url', () => {
+    const newURL = 'http://token.url'
+    cy.getByTestId('network-token-url').clear().type(newURL)
+    cy.submit_network_config_form()
+    cy.edit_network_config_form_for_specified_network('test_network3')
+    cy.getByTestId('network-token-url').should('have.value', newURL)
   })
 
   it('able to change gRPC nodes', function () {
@@ -226,7 +232,6 @@ describe('change network details', () => {
       cy.getByTestId('network-drawer').click()
       cy.getByTestId('manage-networks').click()
       cy.getByTestId(`edit-network-${network}`).first().click()
-      cy.getByTestId('service-host', { timeout: 30000 }).should('be.visible')
     }
   )
 })

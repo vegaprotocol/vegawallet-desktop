@@ -1,4 +1,3 @@
-import type { InteractionResponse } from '@vegaprotocol/wallet-ui/src/types/interaction'
 import type {
   AppConfig,
   Service
@@ -39,7 +38,7 @@ export const useWalletService = (): Service => {
 
     // Initialization
     StartupBackend: Handlers.StartupBackend,
-    InitialiseApp: async ({ vegaHome }: { vegaHome : string }) => {
+    InitialiseApp: async ({ vegaHome }: { vegaHome: string }) => {
       await Handlers.InitialiseApp({ vegaHome })
       return undefined
     },

@@ -37,7 +37,7 @@ func main() {
 	date := time.Now().UTC().Format("2006-01-02-15-04-05")
 
 	// Create an instance of the handler structure
-	handler := backend.NewHandler()
+	handler := backend.NewHandler(icon)
 
 	log.Info(fmt.Sprintf("Starting the application: PID(%d), date(%v)", pid, date))
 	defer log.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
@@ -49,6 +49,7 @@ func main() {
 		Height:           760,
 		MinWidth:         460,
 		MinHeight:        460,
+		Menu:             handler.AppMenu(),
 		BackgroundColour: options.NewRGBA(0, 0, 0, 255),
 		AssetServer: &assetserver.Options{
 			Assets: assets,

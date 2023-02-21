@@ -18,6 +18,10 @@ export function APIV2ListAPITokens() {
   return window['go']['backend']['Handler']['APIV2ListAPITokens']();
 }
 
+export function AppMenu() {
+  return window['go']['backend']['Handler']['AppMenu']();
+}
+
 export function GetAppConfig() {
   return window['go']['backend']['Handler']['GetAppConfig']();
 }
@@ -28,6 +32,10 @@ export function GetCurrentServiceInfo() {
 
 export function GetLatestRelease() {
   return window['go']['backend']['Handler']['GetLatestRelease']();
+}
+
+export function GetServiceConfig() {
+  return window['go']['backend']['Handler']['GetServiceConfig']();
 }
 
 export function GetVersion() {
@@ -68,4 +76,8 @@ export function SubmitWalletAPIRequest(arg1) {
 
 export function UpdateAppConfig(arg1) {
   return window['go']['backend']['Handler']['UpdateAppConfig'](arg1);
+}
+
+export function UpdateServiceConfig(arg1) {
+  return window['go']['backend']['Handler']['UpdateServiceConfig'](arg1);
 }

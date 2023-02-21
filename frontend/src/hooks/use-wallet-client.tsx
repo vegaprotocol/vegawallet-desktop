@@ -19,15 +19,6 @@ export class JSONRPCError extends Error {
 export const useWalletClient = (logger: Logger) => {
   const request: WalletAPIRequest = useCallback(
     async (method, params) => {
-      // @TODO: remove this hacky override once the wallet api gets fixed in >v0.64.0
-      if (method === 'admin.import_wallet') {
-        params = {
-          ...params,
-          // @ts-ignore
-          version: params.keyDerivationVersion
-        }
-      }
-
       const response = await SubmitWalletAPIRequest({
         jsonrpc: '2.0',
         id: nanoid(),

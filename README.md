@@ -6,6 +6,12 @@ The Vega Wallet desktop app provides a graphical user interface for Vega Protoco
 
 [Wallet documentation](https://docs.vega.xyz/docs/mainnet/tools/vega-wallet/desktop-app/latest/getting-started): Read the quick-start guide for tips on using the desktop wallet app.
 
+## Supported platforms
+
+**MacOS:** >= 10.13 (High Sierra)
+**Windows:** >= 8
+**Linux:** Supported but the minimum version is unknown.
+
 ### Dependencies
 
 This project uses [Wails](https://wails.io) to build the desktop app. To install Wails, follow the instruction on its [Getting started](https://wails.io/docs/gettingstarted/installation) page.
@@ -16,7 +22,7 @@ Be sure to have the following environment variables set:
 - `GO111MODULE=on`
 
 ```sh
-go install github.com/wailsapp/wails/v2/cmd/wails@v2.2.0
+go install github.com/wailsapp/wails/v2/cmd/wails@v2.3.1
 ```
 
 To check if you have the correct dependencies installed, use the following command:

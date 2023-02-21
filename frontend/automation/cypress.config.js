@@ -15,7 +15,7 @@ module.exports = defineConfig({
 
       on('task', { downloadFile }) // download file plugin
 
-      return require('./cypress/plugins/index.js')(on, config)
+      return config
     },
     baseUrl: 'http://localhost:34115/',
     fileServerFolder: '.',

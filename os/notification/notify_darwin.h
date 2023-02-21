@@ -1,46 +1,57 @@
-#import <Foundation/Foundation.h>
-#import <Cocoa/Cocoa.h>
 #import <objc/runtime.h>
+#import <Foundation/Foundation.h>
+#import <UserNotifications/UserNotifications.h>
 
-@implementation NSBundle (swizle)
-
-// Overriding bundleIdentifier works, but overriding NSUserNotificationAlertStyle does not work.
-- (NSString *)__bundleIdentifier
-{
-    if (self == [NSBundle mainBundle]) {
-        return @"com.apple.terminal";
-    }
-
-    return [self __bundleIdentifier];
+void Init() {
+	@autoreleasepool {
+	  if (@available(macOS 10.14, *)) {
+		  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+		  [center
+		  	requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge)
+		  	completionHandler:^(BOOL granted, NSError *__nullable error){}
+		  ];
+		}
+	}
 }
 
-@end
+void Send(const char *title, const char *subtitle) {
+ 	@autoreleasepool {
+		if (@available(macOS 10.14, *)) {
+			NSString *uuidString = [[NSUUID UUID] UUIDString];
+			UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+			content.title = [NSString stringWithUTF8String:title];
+			content.body = [NSString stringWithUTF8String:subtitle];
+			content.sound = [UNNotificationSound defaultSound];
 
-BOOL installNSBundleHook()
-{
-    Class c = objc_getClass("NSBundle");
-    if (c) {
-        method_exchangeImplementations(class_getInstanceMethod(c, @selector(bundleIdentifier)),
-                                       class_getInstanceMethod(c, @selector(__bundleIdentifier)));
-        return YES;
-    }
+			UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger
+				triggerWithTimeInterval:1
+				repeats:NO
+			];
 
-    return NO;
-}
+			UNNotificationRequest* request = [UNNotificationRequest
+				requestWithIdentifier:uuidString
+				content:content
+				trigger:trigger
+			];
 
-void Send(const char *title, const char *subtitle)
-{
-    @autoreleasepool {
-        if (!installNSBundleHook()) {
-            return;
-        }
+			UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+			[center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * settings) {
+				if (settings.authorizationStatus != UNAuthorizationStatusAuthorized) {
+					return;
+				}
 
-        NSUserNotificationCenter *nc = [NSUserNotificationCenter defaultUserNotificationCenter];
-
-        NSUserNotification *note = [[NSUserNotification alloc] init];
-        note.title = [NSString stringWithUTF8String:title];
-        note.subtitle = [NSString stringWithUTF8String:subtitle];
-
-        [nc deliverNotification:note];
-    }
+				// Send the notification if authorized.
+				[center
+					addNotificationRequest:request
+					withCompletionHandler:^(NSError *error){}
+				];
+			}];
+		} else {
+			NSUserNotificationCenter *nc = [NSUserNotificationCenter defaultUserNotificationCenter];
+			NSUserNotification *note = [[NSUserNotification alloc] init];
+        	note.title = [NSString stringWithUTF8String:title];
+        	note.subtitle = [NSString stringWithUTF8String:subtitle];
+			[nc deliverNotification:note];
+		}
+	}
 }

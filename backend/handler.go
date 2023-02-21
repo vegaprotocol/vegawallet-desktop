@@ -8,21 +8,22 @@ import (
 
 	vgclose "code.vegaprotocol.io/vega/libs/close"
 	"code.vegaprotocol.io/vega/libs/jsonrpc"
+	vgrand "code.vegaprotocol.io/vega/libs/rand"
 	vgzap "code.vegaprotocol.io/vega/libs/zap"
 	"code.vegaprotocol.io/vega/paths"
 	walletapi "code.vegaprotocol.io/vega/wallet/api"
-	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	nodeapi "code.vegaprotocol.io/vega/wallet/api/node"
 	netStoreV1 "code.vegaprotocol.io/vega/wallet/network/store/v1"
-	"code.vegaprotocol.io/vega/wallet/service"
 	svcStoreV1 "code.vegaprotocol.io/vega/wallet/service/store/v1"
-	serviceV1 "code.vegaprotocol.io/vega/wallet/service/v1"
 	serviceV2 "code.vegaprotocol.io/vega/wallet/service/v2"
 	"code.vegaprotocol.io/vega/wallet/service/v2/connections"
 	tokenStoreV1 "code.vegaprotocol.io/vega/wallet/service/v2/connections/store/v1"
+	"code.vegaprotocol.io/vega/wallet/wallet"
 	walletStoreV1 "code.vegaprotocol.io/vega/wallet/wallet/store/v1"
 	"code.vegaprotocol.io/vega/wallet/wallets"
 	"code.vegaprotocol.io/vegawallet-desktop/app"
+	"code.vegaprotocol.io/vegawallet-desktop/os"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -54,13 +55,9 @@ type Handler struct {
 	// of a change of the home path).
 	resourcesCloser *vgclose.Closer
 
-	// serviceStarter is used to start the service, using predefined builders.
-	serviceStarter *service.Starter
-
-	// runningServiceManager manages the resource a running service. It gets valued
-	// when the serviceStarter starts a service. It holds the resources whose lifecycles
-	// are tied to the service.
-	runningServiceManager *runningServiceManager
+	// serviceStarter supersedes the original service starter with mechanisms
+	// specific to this software.
+	serviceStarter *ServiceStarter
 
 	// walletAdminAPI is the core backend of the wallet, that is shared by every
 	// vega wallet implementation. Implementation specific features are exposed
@@ -68,13 +65,16 @@ type Handler struct {
 	walletAdminAPI *jsonrpc.Dispatcher
 
 	networkStore       *netStoreV1.Store
-	walletStore        *walletStoreV1.Store
+	walletStore        *walletStoreV1.FileStore
 	connectionsManager *connections.Manager
 	tokenStore         *tokenStoreV1.EmptyStore
+	svcStore           *svcStoreV1.Store
+
+	icon []byte
 }
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(icon []byte) *Handler {
+	return &Handler{icon: icon}
 }
 
 // Startup is called during application startup
@@ -83,9 +83,7 @@ func (h *Handler) Startup(ctx context.Context) {
 }
 
 // DOMReady is called after the front-end dom has been loaded
-func (h *Handler) DOMReady(_ context.Context) {
-	// Add your action here
-}
+func (h *Handler) DOMReady(_ context.Context) {}
 
 // Shutdown is called during application termination
 func (h *Handler) Shutdown(_ context.Context) {
@@ -117,8 +115,6 @@ func (h *Handler) StartupBackend() (err error) {
 		return fmt.Errorf("could not create the configuration loader: %w", err)
 	}
 
-	h.runningServiceManager = newServiceManager()
-
 	appInitialised, err := h.isAppInitialised()
 	if err != nil {
 		return fmt.Errorf("could not verify wheter the application is initialized or not: %w", err)
@@ -135,6 +131,11 @@ func (h *Handler) StartupBackend() (err error) {
 		if err := h.reloadBackendComponentsFromConfig(); err != nil {
 			return fmt.Errorf("could not load the backend components during the application start up: %w", err)
 		}
+	}
+
+	if err := os.Init(); err != nil {
+		h.log.Error("Could not initialize OS-specific capabilities")
+		return err
 	}
 
 	return nil
@@ -194,12 +195,36 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 	}
 	h.networkStore = networkStore
 
+	// We ensure the default network is not set to a network that doesn't exist
+	// any more.
+	if cfg.DefaultNetwork != "" {
+		if exists, err := h.networkStore.NetworkExists(cfg.DefaultNetwork); err != nil {
+			return fmt.Errorf("could not verify the network exists: %w", err)
+		} else if !exists {
+			cfg.DefaultNetwork = ""
+			if err := h.configLoader.SaveConfig(cfg); err != nil {
+				return fmt.Errorf("could not save the correction to the default network: %w", err)
+			}
+		}
+	}
+
 	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
 		return fmt.Errorf("could not initialise the wallets store: %w", err)
 	}
 	h.walletStore = walletStore
+
+	h.walletStore.OnUpdate(func(ctx context.Context, event wallet.Event) {
+		runtime.EventsEmit(h.ctx, string(event.Type), event.Data)
+	})
+
+	svcStore, err := svcStoreV1.InitialiseStore(vegaPaths)
+	if err != nil {
+		h.log.Error(fmt.Sprintf("Couldn't initialise the service store: %v", err))
+		return fmt.Errorf("could not initialise the service store: %w", err)
+	}
+	h.svcStore = svcStore
 
 	tokenStore := tokenStoreV1.NewEmptyStore()
 	h.tokenStore = tokenStore
@@ -215,17 +240,31 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 
 	h.initializeWalletAdminAPI()
 
-	if err = h.initialiseServiceStarter(vegaPaths); err != nil {
+	serviceStarter, err := NewServiceStarter(
+		vegaPaths,
+		h.log.Named("service-starter"),
+		h.svcStore,
+		h.walletStore,
+		h.networkStore,
+		h.connectionsManager,
+	)
+	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service starter: %v", err))
 		return fmt.Errorf("couldn't initialise the service starter: %v", err)
+	}
+
+	h.serviceStarter = serviceStarter
+
+	if err := h.ensureDefaultNetworksPresence(); err != nil {
+		return fmt.Errorf("could not ensure the presence of the default networks: %w", err)
 	}
 
 	return nil
 }
 
 func (h *Handler) closeAllResources() {
-	if h.runningServiceManager.IsServiceRunning() {
-		h.runningServiceManager.ShutdownService()
+	if h.serviceStarter != nil {
+		h.serviceStarter.Close()
 	}
 
 	if h.resourcesCloser != nil {
@@ -233,6 +272,45 @@ func (h *Handler) closeAllResources() {
 	}
 
 	h.serviceStarter = nil
+}
+
+func (h *Handler) ensureDefaultNetworksPresence() error {
+	registeredNetworks, err := h.networkStore.ListNetworks()
+	if err != nil {
+		return fmt.Errorf("could not list the registered networks: %w", err)
+	}
+
+	for _, defaultNet := range DefaultNetworks {
+		h.importDefaultNetworkIfMissing(h.ctx, defaultNet, registeredNetworks)
+	}
+
+	return nil
+}
+
+func (h *Handler) importDefaultNetworkIfMissing(ctx context.Context, defaultNetwork DefaultNetwork, registeredNetworks []string) {
+	for _, registeredNetwork := range registeredNetworks {
+		if registeredNetwork == defaultNetwork.Name {
+			return
+		}
+	}
+
+	reqCtx := context.WithValue(ctx, jsonrpc.TraceIDKey, vgrand.RandomStr(64))
+
+	resp := h.walletAdminAPI.DispatchRequest(reqCtx, jsonrpc.Request{
+		Version: jsonrpc.VERSION2,
+		Method:  "admin.import_network",
+		Params: walletapi.AdminImportNetworkParams{
+			Name:      defaultNetwork.Name,
+			URL:       defaultNetwork.URL,
+			Overwrite: false,
+		},
+		ID: fmt.Sprintf("automatic-network-import-%s", defaultNetwork.Name),
+	})
+	if resp.Error != nil {
+		h.log.Error("Could not import a default network", zap.String("network", defaultNetwork.Name), zap.Error(resp.Error))
+		return
+	}
+	h.log.Info("A default network has been automatically imported", zap.String("network", defaultNetwork.Name))
 }
 
 func (h *Handler) updateBackendComponentsFromConfig() error {
@@ -246,51 +324,6 @@ func (h *Handler) updateBackendComponentsFromConfig() error {
 			return err
 		}
 	}
-
-	return nil
-}
-
-func (h *Handler) initialiseServiceStarter(vegaPaths paths.Paths) error {
-	svcStore, err := svcStoreV1.InitialiseStore(vegaPaths)
-	if err != nil {
-		h.log.Error(fmt.Sprintf("Couldn't initialise the service store: %v", err))
-		return fmt.Errorf("could not initialise the service store: %w", err)
-	}
-
-	loggerBuilderFunc := func(levelName string) (*zap.Logger, zap.AtomicLevel, error) {
-		svcLog, svcLogPath, level, err := buildServiceLogger(vegaPaths, paths.WalletServiceLogsHome, levelName)
-		if err != nil {
-			return nil, zap.AtomicLevel{}, err
-		}
-		h.runningServiceManager.SetLogPath(svcLogPath)
-		return svcLog, level, nil
-	}
-
-	policyBuilderFunc := func(_ context.Context) serviceV1.Policy {
-		return &unsupportedV1APIPolicy{}
-	}
-
-	interactorBuilderFunc := func(ctx context.Context) walletapi.Interactor {
-		receptionChan := make(chan interactor.Interaction, 100)
-		responseChan := make(chan interactor.Interaction, 100)
-		h.runningServiceManager.receptionChan = receptionChan
-		h.runningServiceManager.responseChan = responseChan
-		h.runningServiceManager.OnShutdown(func() {
-			close(receptionChan)
-			close(responseChan)
-		})
-		return interactor.NewSequentialInteractor(ctx, receptionChan, responseChan)
-	}
-
-	h.serviceStarter = service.NewStarter(
-		h.walletStore,
-		h.networkStore,
-		svcStore,
-		h.connectionsManager,
-		policyBuilderFunc,
-		interactorBuilderFunc,
-		loggerBuilderFunc,
-	)
 
 	return nil
 }

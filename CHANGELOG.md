@@ -1,22 +1,49 @@
 # Changelog
 
-## 0.9.0 (Unreleased)
+## 0.10.0 (Unreleased)
 
 ### 🚨 Breaking changes
-- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
 ### 🗑️ Deprecation
-- [xxxx](https://github.com/vegaprotocol/vega/issues/xxxx) -
+
+- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
 ### 🛠 Improvements
-- [422](https://github.com/vegaprotocol/vega/issues/422) - Do not crash when application start with bad configuration
+
+- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+-
 
 ### 🐛 Fixes
-- [465](https://github.com/vegaprotocol/vega/issues/465) - Fall back to standard output logger if the startup logger can't be built
+
+- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+
+## 0.9.0
+
+Support for vega v0.68.0.
+
+### 🛠 Improvements
+
+- [476](https://github.com/vegaprotocol/vegawallet-desktop/issues/476) - Import fairground, mainnet1, and testnet2 auto-magically on every startup
+- [495](https://github.com/vegaprotocol/vegawallet-desktop/issues/495) - Integrate with new wallet service config (not exposed yet)
+- [491](https://github.com/vegaprotocol/vegawallet-desktop/issues/491) - Migrate MacOS notification to the UserNotification framework. However, this is still not working. Application is now brought to front when a review or an input from the user is required.
+- [288](https://github.com/vegaprotocol/vegawallet-desktop/issues/288) - Pick up wallet updates made externally
+- [508](https://github.com/vegaprotocol/vegawallet-desktop/issues/508) - Add custom "Main" menu on windows and Linux
+- [516](https://github.com/vegaprotocol/vegawallet-desktop/issues/516) - Add a "Help" menu for all platforms with link to documentations, feedback boards and the releases page on GitHub.
+
+### 🐛 Fixes
+
+- [473](https://github.com/vegaprotocol/vegawallet-desktop/issues/473) - Clean up the application configuration if set with a non-existing network
+- [500](https://github.com/vegaprotocol/vegawallet-desktop/issues/500) - Mark the service as not running when it failed to start
+- [504](https://github.com/vegaprotocol/vegawallet-desktop/issues/504) - Validate `VegaHome` field in application config
 
 ## 0.8.3
 
+Support for vega 0.67.3.
+
 ### 🐛 Fixes
+
 - [422](https://github.com/vegaprotocol/vegawallet-desktop/issues/422) - Do not crash when application start with bad configuration
 - [465](https://github.com/vegaprotocol/vegawallet-desktop/issues/465) Fall back to standard output logger if the startup logger can't be built
 
@@ -29,14 +56,16 @@ Support for vega 0.67.3.
 Support for vega 0.67.2.
 
 ### 🛠 Improvements
-- [457](https://github.com/vegaprotocol/vega/issues/457) - Update vega core to work with version 0.67.2
+
+- [457](https://github.com/vegaprotocol/vegawallet-desktop/issues/457) - Update vega core to work with version 0.67.2
 
 ## 0.8.0
 
 Support for vega 0.67.1.
 
 ### 🛠 Improvements
-- [457](https://github.com/vegaprotocol/vega/issues/457) - Update vega core to work with version 0.67.1
+
+- [457](https://github.com/vegaprotocol/vegawallet-desktop/issues/457) - Update vega core to work with version 0.67.1
 
 ## 0.7.0
 
@@ -51,6 +80,7 @@ Support for vega 0.65.0.
 Support for vega 0.64.0.
 
 ### 🛠 Improvements
+
 - [424](https://github.com/vegaprotocol/vegawallet-desktop/issues/424) - Update to wails 2.2.0
 
 ## 0.4.0
@@ -58,11 +88,13 @@ Support for vega 0.64.0.
 Support for vega 0.62.0.
 
 ### 🛠 Improvements
+
 - [420](https://github.com/vegaprotocol/vegawallet-desktop/issues/420) - Update vega version
 
 ## 0.3.0
 
 ### 🛠 Improvements
+
 - [203](https://github.com/vegaprotocol/vegawallet-desktop/issues/203) - Adds dialog to get consent to telemetry
 - [206](https://github.com/vegaprotocol/vegawallet-desktop/issues/206) - Delete wallet functionality
 - [209](https://github.com/vegaprotocol/vegawallet-desktop/issues/209) - Adds dialog to control app settings
@@ -76,6 +108,7 @@ Support for vega 0.62.0.
 - [324](https://github.com/vegaprotocol/vegawallet-desktop/issues/324) - Handle wallet version and network incompatibility
 
 ### 🐛 Fixes
+
 - [358](https://github.com/vegaprotocol/vegawallet-desktop/issues/358) - Fix application crasher when not initialized
 - [257](https://github.com/vegaprotocol/vegawallet-desktop/issues/257) - Update readme with more/improved links
 - [264](https://github.com/vegaprotocol/vegawallet-desktop/issues/264) - Let the transaction review window grow with the main window

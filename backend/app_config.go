@@ -49,9 +49,16 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 	listWallets, _ := api.NewAdminListWallets(walletStore).Handle(h.ctx, nil)
 	listNetworks, _ := api.NewAdminListNetworks(netStore).Handle(h.ctx, nil)
 
+	networks := listNetworks.(api.AdminListNetworksResult).Networks
+
+	networkNames := make([]string, 0, len(networks))
+	for _, net := range networks {
+		networkNames = append(networkNames, net.Name)
+	}
+
 	return &SearchForExistingConfigurationResponse{
 		Wallets:  listWallets.(api.AdminListWalletsResult).Wallets,
-		Networks: listNetworks.(api.AdminListNetworksResult).Networks,
+		Networks: networkNames,
 	}, nil
 }
 
@@ -87,6 +94,14 @@ func (h *Handler) UpdateAppConfig(updatedConfig app.Config) error {
 
 	if err := updatedConfig.EnsureIsValid(); err != nil {
 		return err
+	}
+
+	if updatedConfig.DefaultNetwork != "" {
+		if exists, err := h.networkStore.NetworkExists(updatedConfig.DefaultNetwork); err != nil {
+			return fmt.Errorf("could not verify the network exists: %w", err)
+		} else if !exists {
+			return fmt.Errorf("the network %q does not exist", updatedConfig.DefaultNetwork)
+		}
 	}
 
 	existingConfig, err := h.appConfig()
