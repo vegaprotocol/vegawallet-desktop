@@ -1,5 +1,5 @@
-code.vegaprotocol.io/vega v0.67.3-0.20230220163902-095dab0f9913 h1:aiwRQ0efDJC1uz2+UHD2rPZqcIMprrwX7n1VhZoed5o=
-code.vegaprotocol.io/vega v0.67.3-0.20230220163902-095dab0f9913/go.mod h1:tONeTDZdO7Zn8tLfyGWebBKjTXj1WkyX/NjU7M3U6oc=
+code.vegaprotocol.io/vega v0.68.0 h1:IUT15+aAClvutC4XICzdcLXaxq0awbXhtn1wpvqBDnI=
+code.vegaprotocol.io/vega v0.68.0/go.mod h1:MNsNiyFpRoIEfKDZWaCEXWMoswF9/6AD3OE37oqmqw0=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.2.1 h1:9F2/+DoOYIOksmaJFPw1tGFy1eDnIJXg+UHjuD8lTak=
 github.com/BurntSushi/toml v1.2.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=

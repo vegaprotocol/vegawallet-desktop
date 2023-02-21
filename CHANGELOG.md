@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0 (Unreleased)
+## 0.10.0 (Unreleased)
 
 ### 🚨 Breaking changes
 
@@ -12,12 +12,25 @@
 
 ### 🛠 Improvements
 
+- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+-
+
+### 🐛 Fixes
+
+- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+
+## 0.9.0
+
+Support for vega v0.68.0.
+
+### 🛠 Improvements
+
 - [476](https://github.com/vegaprotocol/vegawallet-desktop/issues/476) - Import fairground, mainnet1, and testnet2 auto-magically on every startup
 - [495](https://github.com/vegaprotocol/vegawallet-desktop/issues/495) - Integrate with new wallet service config (not exposed yet)
 - [491](https://github.com/vegaprotocol/vegawallet-desktop/issues/491) - Migrate MacOS notification to the UserNotification framework. However, this is still not working. Application is now brought to front when a review or an input from the user is required.
 - [288](https://github.com/vegaprotocol/vegawallet-desktop/issues/288) - Pick up wallet updates made externally
 - [508](https://github.com/vegaprotocol/vegawallet-desktop/issues/508) - Add custom "Main" menu on windows and Linux
-- [516](https://github.com/vegaprotocol/vegawallet-desktop/issues/516) - Add a "Help" menu for all platforms with link to documentations, feedback boards and the releases page on GitHub. 
+- [516](https://github.com/vegaprotocol/vegawallet-desktop/issues/516) - Add a "Help" menu for all platforms with link to documentations, feedback boards and the releases page on GitHub.
 
 ### 🐛 Fixes
 
@@ -26,6 +39,8 @@
 - [504](https://github.com/vegaprotocol/vegawallet-desktop/issues/504) - Validate `VegaHome` field in application config
 
 ## 0.8.3
+
+Support for vega 0.67.3.
 
 ### 🐛 Fixes
 
@@ -42,7 +57,7 @@ Support for vega 0.67.2.
 
 ### 🛠 Improvements
 
-- [457](https://github.com/vegaprotocol/vega/issues/457) - Update vega core to work with version 0.67.2
+- [457](https://github.com/vegaprotocol/vegawallet-desktop/issues/457) - Update vega core to work with version 0.67.2
 
 ## 0.8.0
 
@@ -50,7 +65,7 @@ Support for vega 0.67.1.
 
 ### 🛠 Improvements
 
-- [457](https://github.com/vegaprotocol/vega/issues/457) - Update vega core to work with version 0.67.1
+- [457](https://github.com/vegaprotocol/vegawallet-desktop/issues/457) - Update vega core to work with version 0.67.1
 
 ## 0.7.0
 
