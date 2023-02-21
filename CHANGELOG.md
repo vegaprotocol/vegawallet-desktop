@@ -23,6 +23,7 @@
 
 - [473](https://github.com/vegaprotocol/vegawallet-desktop/issues/473) - Clean up the application configuration if set with a non-existing network
 - [500](https://github.com/vegaprotocol/vegawallet-desktop/issues/500) - Mark the service as not running when it failed to start
+- [504](https://github.com/vegaprotocol/vegawallet-desktop/issues/504) - Validate `VegaHome` field in application config
 
 ## 0.8.3
 
