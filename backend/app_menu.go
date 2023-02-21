@@ -13,12 +13,15 @@ import (
 
 func (h *Handler) AppMenu() *menu.Menu {
 	appMenu := menu.NewMenu()
+
 	mainMenu := appMenu.AddSubmenu("Main")
 	mainMenu.AddText("About Vegawallet", nil, h.openAboutDialog)
 	mainMenu.AddSeparator()
 	mainMenu.AddText("Quit", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
 		wailsRuntime.Quit(h.ctx)
 	})
+
+	h.commonAppMenu(appMenu)
 
 	return appMenu
 }

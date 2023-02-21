@@ -16,7 +16,8 @@
 - [495](https://github.com/vegaprotocol/vegawallet-desktop/issues/495) - Integrate with new wallet service config (not exposed yet)
 - [491](https://github.com/vegaprotocol/vegawallet-desktop/issues/491) - Migrate MacOS notification to the UserNotification framework. However, this is still not working. Application is now brought to front when a review or an input from the user is required.
 - [288](https://github.com/vegaprotocol/vegawallet-desktop/issues/288) - Pick up wallet updates made externally
-- [508](https://github.com/vegaprotocol/vegawallet-desktop/issues/508) - Add custom About menu
+- [508](https://github.com/vegaprotocol/vegawallet-desktop/issues/508) - Add custom "Main" menu on windows and Linux
+- [516](https://github.com/vegaprotocol/vegawallet-desktop/issues/516) - Add a "Help" menu for all platforms with link to documentations, feedback boards and the releases page on GitHub. 
 
 ### 🐛 Fixes
 

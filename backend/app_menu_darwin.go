@@ -13,5 +13,7 @@ func (h *Handler) AppMenu() *menu.Menu {
 	// Enable Cmd+C,Cmd+V,Cmd+Z... shortcut on macOS platform
 	appMenu.Append(menu.EditMenu())
 
+	h.commonAppMenu(appMenu)
+
 	return appMenu
 }
