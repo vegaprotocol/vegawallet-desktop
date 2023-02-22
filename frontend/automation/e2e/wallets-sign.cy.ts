@@ -1,9 +1,9 @@
-const { unlockWallet, authenticate, goToKey } = require('../support/helpers')
+import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
 describe('wallet sign key', () => {
-  let walletName
-  let passphrase
-  let pubkey
+  let walletName: string
+  let passphrase: string
+  let pubkey: string
 
   before(() => {
     cy.clean()
@@ -21,11 +21,11 @@ describe('wallet sign key', () => {
     pubkey = Cypress.env('testWalletPublicKey')
     unlockWallet(walletName, passphrase)
     goToKey(pubkey)
-    cy.goToSign()
+    cy.getByTestId('keypair-sign').click()
   })
 
   it('message signing - success', () => {
-    cy.signMessage('Sign message successfully')
+    signMessage('Sign message successfully')
     authenticate(passphrase)
     cy.getByTestId('toast').should(
       'contain.text',
@@ -34,14 +34,14 @@ describe('wallet sign key', () => {
   })
 
   it('message signing - able to sign multiple', () => {
-    cy.signMessage('Sign message successfully')
+    signMessage('Sign message successfully')
     authenticate(passphrase)
     cy.getByTestId('toast').should(
       'contain.text',
       'Message signed successfully'
     )
     cy.getByTestId('sign-more').click()
-    cy.signMessage('Sign message successfully')
+    signMessage('Sign message successfully')
     authenticate(passphrase)
     cy.contains('Message signed successfully')
   })
@@ -50,14 +50,14 @@ describe('wallet sign key', () => {
     // 0001-WALL-062 must enter content to be signed with key
     cy.getByTestId('sign').click()
     cy.getByTestId('helper-text').should('have.text', 'Required')
-    cy.signMessage('Sign message successfully')
+    signMessage('Sign message successfully')
     authenticate(passphrase)
     cy.getByTestId('toast').should(
       'contain.text',
       'Message signed successfully'
     )
     cy.getByTestId('sign-more').click()
-    cy.signMessage('Sign message successfully')
+    signMessage('Sign message successfully')
     authenticate(passphrase)
     cy.contains('Message signed successfully')
   })
@@ -65,7 +65,7 @@ describe('wallet sign key', () => {
   it('message signing - hashed of signed content given', () => {
     // 0001-WALL-065 must be able to submit/sign the content and am
     // given a hash of the signed content as well as the message (now encoded)
-    cy.signMessage('I am a secret')
+    signMessage('I am a secret')
     authenticate(passphrase)
     cy.getByTestId('toast').should(
       'contain.text',
@@ -92,7 +92,7 @@ describe('wallet sign key', () => {
 
   it('message signing - failure', () => {
     cy.getByTestId('sign').click()
-    cy.signMessage('Sign message failure')
+    signMessage('Sign message failure')
     authenticate('invalid')
     cy.getByTestId('toast')
       .contains('Error')
@@ -100,11 +100,7 @@ describe('wallet sign key', () => {
   })
 })
 
-Cypress.Commands.add('goToSign', () => {
-  cy.getByTestId('keypair-sign').click()
-})
-
-Cypress.Commands.add('signMessage', message => {
+const signMessage = (message: string): void => {
   cy.getByTestId('message-field').type(message)
   cy.getByTestId('sign').click()
-})
+}

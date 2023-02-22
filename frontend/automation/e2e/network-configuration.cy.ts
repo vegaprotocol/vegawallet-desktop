@@ -1,6 +1,6 @@
-const { unlockWallet } = require('../support/helpers')
-let walletName
-let passphrase
+import { unlockWallet } from '../support/helpers'
+let walletName: string
+let passphrase: string
 
 before(() => {
   cy.clean()
@@ -55,7 +55,7 @@ describe('manage networks', () => {
     cy.getByTestId('network-select').should('have.text', 'test')
     cy.getByTestId('service-url').should('not.be.empty')
     cy.getByTestId('nodes-list').each($node => {
-      // eslint-disable-next-line no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       expect($node.text()).not.to.be.empty
     })
     cy.getByTestId('network-log-level').should('have.text', 'info')
@@ -63,7 +63,7 @@ describe('manage networks', () => {
   })
 
   it('edit network details displayed', () => {
-    cy.edit_network_config_form_for_specified_network('test')
+    edit_network_config_form_for_specified_network('test')
     cy.getByTestId('node-list').invoke('val').should('not.be.empty')
     cy.getByTestId('node-list').first().invoke('val').should('not.be.empty')
     cy.contains('gRPC Nodes')
@@ -96,30 +96,30 @@ describe('change network details', () => {
   // 0001-WALL-011
 
   beforeEach(() => {
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    edit_network_config_form_for_specified_network('test_network3')
   })
 
   it('able to change service console url', () => {
     const newURL = 'http://console.url'
     cy.getByTestId('network-console-url').clear().type(newURL)
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
     cy.getByTestId('network-console-url').should('have.value', newURL)
   })
 
   it('able to change service explorer url', () => {
     const newURL = 'http://explorer.url'
     cy.getByTestId('network-explorer-url').clear().type(newURL)
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
     cy.getByTestId('network-explorer-url').should('have.value', newURL)
   })
 
   it('able to change service token url', () => {
     const newURL = 'http://token.url'
     cy.getByTestId('network-token-url').clear().type(newURL)
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
     cy.getByTestId('network-token-url').should('have.value', newURL)
   })
 
@@ -136,8 +136,8 @@ describe('change network details', () => {
         cy.getByTestId('node-list').first().siblings().click()
       })
       .then(() => {
-        cy.submit_network_config_form()
-        cy.edit_network_config_form_for_specified_network('test_network3')
+        submit_network_config_form()
+        edit_network_config_form_for_specified_network('test_network3')
 
         cy.contains('gRPC Nodes')
           .next()
@@ -162,8 +162,8 @@ describe('change network details', () => {
         cy.getByTestId('node-list').first().siblings().click()
       })
 
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
 
     cy.contains('GraphQL Nodes')
       .next()
@@ -182,8 +182,8 @@ describe('change network details', () => {
         cy.getByTestId('node-list').first().type(newRestUrl)
       })
 
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
 
     cy.contains('REST Nodes')
       .next()
@@ -197,41 +197,38 @@ describe('change network details', () => {
   it.skip('able to change log level', () => {
     const newLogLevel = 'debug'
     cy.getByTestId('network-log-level').select(newLogLevel)
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
     cy.getByTestId('network-log-level').should('have.value', newLogLevel)
   })
 
   it('able to change gRPC Node retries', () => {
     const newRetryAmount = '1'
     cy.getByTestId('node-retries').clear().type(newRetryAmount)
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
     cy.getByTestId('node-retries').should('have.value', newRetryAmount)
   })
 
   it('able to change token expiry duration', () => {
     const newDuration = '48h48m48s'
     cy.getByTestId('token-expiry').clear().type(newDuration)
-    cy.submit_network_config_form()
-    cy.edit_network_config_form_for_specified_network('test_network3')
+    submit_network_config_form()
+    edit_network_config_form_for_specified_network('test_network3')
     cy.getByTestId('token-expiry').should('have.value', newDuration)
   })
-
-  Cypress.Commands.add('submit_network_config_form', () => {
-    cy.getByTestId('submit').click()
-    cy.getByTestId('toast')
-      .should('contain.text', 'Configuration saved')
-      .should('be.visible')
-  })
-
-  Cypress.Commands.add(
-    'edit_network_config_form_for_specified_network',
-    network => {
-      cy.getByTestId('network-drawer').click()
-      cy.getByTestId('network-drawer').click()
-      cy.getByTestId('manage-networks').click()
-      cy.getByTestId(`edit-network-${network}`).first().click()
-    }
-  )
 })
+
+const submit_network_config_form = () => {
+  cy.getByTestId('submit').click()
+  cy.getByTestId('toast')
+    .should('contain.text', 'Configuration saved')
+    .should('be.visible')
+}
+
+const edit_network_config_form_for_specified_network = (network: string) => {
+  cy.getByTestId('network-drawer').click()
+  cy.getByTestId('network-drawer').click()
+  cy.getByTestId('manage-networks').click()
+  cy.getByTestId(`edit-network-${network}`).first().click()
+}

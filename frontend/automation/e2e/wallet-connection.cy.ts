@@ -1,8 +1,8 @@
-const { unlockWallet, approveConnection } = require('../support/helpers')
+import { approveConnection, unlockWallet } from '../support/helpers'
 
 describe.skip('wallet connection', () => {
-  let walletName
-  let passphrase
+  let walletName: string
+  let passphrase: string
 
   before(() => {
     cy.clean()

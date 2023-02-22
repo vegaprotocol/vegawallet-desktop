@@ -1,5 +1,6 @@
-const { unlockWallet } = require('../support/helpers')
-const path = require('path')
+import path from 'path'
+
+import { unlockWallet } from '../support/helpers'
 
 describe('import network', () => {
   beforeEach(() => {

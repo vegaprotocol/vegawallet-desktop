@@ -1,15 +1,15 @@
-describe('onboarding', () => {
-  beforeEach(() => {
-    cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
-  })
+beforeEach(() => {
+  cy.clean()
+  cy.backend()
+    .then(handler => {
+      cy.setVegaHome(handler)
+    })
+    .then(() => {
+      cy.waitForHome()
+    })
+})
 
+describe('onboarding', () => {
   it('create new wallet', () => {
     const randomNum = Math.floor(Math.random() * 101)
     const walletName = `Test ${randomNum.toString()}`

@@ -1,9 +1,9 @@
-const { unlockWallet, authenticate, goToKey } = require('../support/helpers')
+import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
 describe('wallet taint key', () => {
-  let walletName
-  let passphrase
-  let pubkey
+  let walletName: string
+  let passphrase: string
+  let pubkey: string
 
   before(() => {
     cy.clean()

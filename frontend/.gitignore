@@ -31,7 +31,6 @@ yarn-error.log*
 
 # Cypress
 .nyc_output
-cypress/videos
-cypress/screenshots
+cypress
 network-config
 test-wallets

@@ -1,4 +1,4 @@
-const { unlockWallet } = require('../support/helpers')
+import { unlockWallet } from '../support/helpers'
 
 describe('import wallet', () => {
   before(() => {
@@ -71,9 +71,9 @@ describe('import wallet', () => {
 })
 
 function fillInRecoveryForm(
-  walletName,
-  passphrase,
-  recoveryPhrase,
+  walletName: string,
+  passphrase: string,
+  recoveryPhrase: string,
   version = 2
 ) {
   cy.getByTestId('wallet-name').type(walletName)

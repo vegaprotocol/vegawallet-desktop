@@ -1,6 +1,6 @@
-const { defineConfig } = require('cypress')
+import { defineConfig } from 'cypress'
 
-module.exports = defineConfig({
+export default defineConfig({
   projectId: 't5pfg7',
   e2e: {
     setupNodeEvents(on, config) {
@@ -14,10 +14,10 @@ module.exports = defineConfig({
     },
     baseUrl: 'http://localhost:34115/',
     fileServerFolder: '.',
-    specPattern: './automation/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    specPattern: './automation/e2e/**/*.cy.{ts,tsx}',
     fixturesFolder: false,
     defaultCommandTimeout: 20000,
-    supportFile: './automation/support/e2e.js',
+    supportFile: './automation/support/e2e.ts',
     video: false,
     videoUploadOnPasses: false
   },

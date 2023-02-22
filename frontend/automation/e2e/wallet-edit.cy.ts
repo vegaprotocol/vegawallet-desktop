@@ -1,8 +1,8 @@
-const { unlockWallet, authenticate } = require('../support/helpers')
+import { authenticate, unlockWallet } from '../support/helpers'
 
 describe('edit wallet', () => {
-  let walletName
-  let passphrase
+  let walletName: string
+  let passphrase: string
   const newWalletName = `${Math.random().toString(36).substring(2)}`
 
   before(() => {

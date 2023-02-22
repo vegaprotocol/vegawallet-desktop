@@ -1,9 +1,9 @@
-const { unlockWallet, authenticate, goToKey } = require('../support/helpers')
+import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
 describe('wallet annotate metadata', () => {
-  let walletName
-  let passphrase
-  let pubkey
+  let walletName: string
+  let passphrase: string
+  let pubkey: string
 
   before(() => {
     cy.clean()
@@ -41,7 +41,7 @@ describe('wallet annotate metadata', () => {
   })
 })
 
-function goToUpdate(walletName, passphrase, pubkey) {
+function goToUpdate(walletName: string, passphrase: string, pubkey: string) {
   unlockWallet(walletName, passphrase)
   goToKey(pubkey)
   cy.getByTestId('keypair-update').click()

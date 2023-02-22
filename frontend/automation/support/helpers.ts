@@ -1,4 +1,4 @@
-export function unlockWallet(name, passphrase) {
+export function unlockWallet(name: string, passphrase: string): any {
   cy.getByTestId(`wallet-${name}`).click({ force: true })
   authenticate(passphrase)
   // wait for form to be unmounted so that other elements can be interacted with as
@@ -6,17 +6,21 @@ export function unlockWallet(name, passphrase) {
   cy.getByTestId('passphrase-form').should('not.exist')
 }
 
-export function goToKey(pubkey) {
+export function goToKey(pubkey: string): void {
   cy.getByTestId(`wallet-keypair-${pubkey}`).click()
 }
 
-export function authenticate(passphrase) {
+export function authenticate(passphrase: string): void {
   cy.getByTestId('passphrase-form').should('be.visible')
   cy.getByTestId('input-passphrase').type(passphrase)
   cy.getByTestId('input-submit').click()
 }
 
-export function approveConnection(hostname, walletName, passphrase) {
+export function approveConnection(
+  hostname: string,
+  walletName: string,
+  passphrase: string
+): void {
   cy.getByTestId('service-status').should('contain.text', 'http://127.0.0.1')
   cy.sendConnectionRequest(hostname)
   cy.getByTestId('wallet-selection-modal').should('exist')
@@ -25,7 +29,7 @@ export function approveConnection(hostname, walletName, passphrase) {
   authenticate(passphrase)
 }
 
-export function generateAccounts() {
+export function generateAccounts(): any[] {
   const accounts = [
     {
       __typename: 'Account',

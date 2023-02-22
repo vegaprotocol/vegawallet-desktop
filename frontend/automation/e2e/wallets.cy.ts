@@ -1,4 +1,4 @@
-const { authenticate, unlockWallet, goToKey } = require('../support/helpers')
+import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
 describe('create wallet', () => {
   const walletName = 'test'
