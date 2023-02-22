@@ -77,7 +77,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          config-file: automation/cypress.config.js
+          config-file: automation/cypress.config.ts
           install: false
           wait-on: "http://localhost:34115"
           working-directory: frontend
