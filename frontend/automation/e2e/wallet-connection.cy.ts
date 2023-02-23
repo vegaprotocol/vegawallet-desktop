@@ -1,8 +1,8 @@
 import { approveConnection, unlockWallet } from '../support/helpers'
 
 describe.skip('wallet connection', () => {
-  let walletName: string
-  let passphrase: string
+  const passphrase = Cypress.env('testWalletPassphrase')
+  const walletName = Cypress.env('testWalletName')
 
   before(() => {
     cy.clean()
@@ -14,8 +14,6 @@ describe.skip('wallet connection', () => {
   })
 
   beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
     cy.waitForHome()
     unlockWallet(walletName, passphrase)
   })

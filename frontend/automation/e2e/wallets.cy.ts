@@ -1,15 +1,15 @@
 import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
-describe('create wallet', () => {
-  const walletName = 'test'
-  const passphrase = '123'
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
+const pubkey = Cypress.env('testWalletPublicKey')
 
+describe('create wallet', () => {
   before(() => {
     cy.clean()
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
       })
       .then(() => {
         cy.waitForHome()
@@ -52,24 +52,16 @@ describe('create wallet', () => {
 })
 
 describe('wallet', () => {
-  let passphrase = ''
-  let walletName = ''
-  let pubkey = ''
-
   before(() => {
     cy.clean()
     cy.backend().then(handler => {
       cy.setVegaHome(handler)
-      cy.restoreNetwork(handler)
       cy.restoreWallet(handler)
     })
   })
 
   beforeEach(() => {
     cy.waitForHome()
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-    pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('view wallet keypairs', () => {

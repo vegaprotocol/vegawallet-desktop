@@ -1,27 +1,20 @@
 import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
-describe('wallet taint key', () => {
-  let walletName: string
-  let passphrase: string
-  let pubkey: string
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
+const pubkey = Cypress.env('testWalletPublicKey')
 
+describe('wallet taint key', () => {
   before(() => {
     cy.clean()
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
       .then(() => {
         cy.waitForHome()
       })
-  })
-
-  beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-    pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('message taint success', () => {

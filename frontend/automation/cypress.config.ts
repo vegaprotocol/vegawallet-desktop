@@ -10,6 +10,10 @@ export default defineConfig({
         }
         return launchOptions
       })
+      config.env.testNetworkPath = require('path').join(
+        config.projectRoot,
+        'automation/data/networks/test.toml'
+      )
       return config
     },
     baseUrl: 'http://localhost:34115/',
@@ -22,15 +26,17 @@ export default defineConfig({
     videoUploadOnPasses: false
   },
   env: {
-    vegaHome: './frontend/automation/test-wallets',
-    walletServiceUrl: 'http://127.0.0.1:1789/api/v2',
     mainnetConfigUrl:
       'https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml',
     testnetConfigUrl:
       'https://raw.githubusercontent.com/vegaprotocol/networks-internal/main/fairground/vegawallet-fairground.toml',
+    testWalletName: 'test',
+    testWalletPassphrase: '123',
+    testWalletPublicKey:
+      '355bc85ef9d8e3d1018ee81dc36a94ba0e15615457da2a496ea32a8badec2d41',
     testWalletRecoveryPhrase:
       'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold',
-    recoveredWalletPublicKey:
-      '355bc85ef9d8e3d1018ee81dc36a94ba0e15615457da2a496ea32a8badec2d41'
+    vegaHome: './frontend/automation/test-wallets',
+    walletServiceUrl: 'http://127.0.0.1:1789/api/v2'
   }
 })

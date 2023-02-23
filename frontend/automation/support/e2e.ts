@@ -5,10 +5,6 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   return false
 })
 
-before(() => {
-  cy.exec('yarn run e2e:network')
-})
-
 beforeEach(() => {
   cy.mockRequests()
 })

@@ -1,5 +1,11 @@
 import { unlockWallet } from '../support/helpers'
 
+const walletName = 'import test'
+const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
+const pubkey = Cypress.env('testWalletPublicKey')
+const existingWalletName = Cypress.env('testWalletName')
+const passphrase = Cypress.env('testWalletPassphrase')
+
 describe('import wallet', () => {
   before(() => {
     cy.clean()
@@ -17,11 +23,6 @@ describe('import wallet', () => {
 
   it('recover wallet', () => {
     // 0001-WALL-004
-    const walletName = 'import test'
-    const passphrase = '123'
-    const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
-    const pubkey = Cypress.env('recoveredWalletPublicKey')
-
     fillInRecoveryForm(walletName, passphrase, recoveryPhrase)
     cy.getByTestId('toast').should('contain.text', 'Wallet imported to')
 
@@ -36,14 +37,7 @@ describe('import wallet', () => {
   })
 
   it('recover wallet with same name', () => {
-    const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
-    const existingWalletName = Cypress.env('testWalletName')
-    const existingWalletPassphrase = Cypress.env('testWalletPassphrase')
-    fillInRecoveryForm(
-      existingWalletName,
-      existingWalletPassphrase,
-      recoveryPhrase
-    )
+    fillInRecoveryForm(existingWalletName, passphrase, recoveryPhrase)
 
     cy.getByTestId('toast')
       .contains('Error')

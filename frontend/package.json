@@ -12,7 +12,6 @@
     "dev:test": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_NETWORK_WARNING='false' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -noreload",
     "dev": "VITE_ENV='development' && npx vite --port=3000",
     "e2e:clean": "rm -r automation/test-wallets; mkdir automation/test-wallets",
-    "e2e:network": "mkdir -p automation/network-config && cp automation/data/networks/test.toml $_",
     "e2e:open": "yarn run cypress open --config-file automation/cypress.config.ts",
     "e2e:run": "yarn run cypress run --config-file automation/cypress.config.ts",
     "format:check": "npx prettier --check .",

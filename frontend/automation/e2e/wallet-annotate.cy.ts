@@ -1,10 +1,10 @@
 import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
-describe('wallet annotate metadata', () => {
-  let walletName: string
-  let passphrase: string
-  let pubkey: string
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
+const pubkey = Cypress.env('testWalletPublicKey')
 
+describe('wallet annotate metadata', () => {
   before(() => {
     cy.clean()
     cy.backend()
@@ -16,12 +16,6 @@ describe('wallet annotate metadata', () => {
       .then(() => {
         cy.waitForHome()
       })
-  })
-
-  beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-    pubkey = Cypress.env('testWalletPublicKey')
   })
 
   it('handles key name update', () => {

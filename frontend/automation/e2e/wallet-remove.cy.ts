@@ -1,8 +1,8 @@
 import { unlockWallet } from '../support/helpers'
 
 describe('wallet remove', () => {
-  let walletName: string
-  let passphrase: string
+  const passphrase = Cypress.env('testWalletPassphrase')
+  const walletName = Cypress.env('testWalletName')
   const form = 'remove-wallet-form'
 
   before(() => {
@@ -10,17 +10,11 @@ describe('wallet remove', () => {
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
       .then(() => {
         cy.waitForHome()
       })
-  })
-
-  beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
   })
 
   it('removes a wallet', () => {
@@ -42,6 +36,7 @@ describe('wallet remove', () => {
     cy.getByTestId(`wallet-${walletName}`).should('not.exist')
   })
 })
+
 function submitForm(form: string) {
   cy.getByTestId(form).should('be.visible').get('button[type="submit"]').click()
 }

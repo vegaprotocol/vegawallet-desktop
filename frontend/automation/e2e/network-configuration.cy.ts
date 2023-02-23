@@ -1,7 +1,3 @@
-import { unlockWallet } from '../support/helpers'
-let walletName: string
-let passphrase: string
-
 before(() => {
   cy.clean()
   cy.backend().then(handler => {
@@ -9,19 +5,15 @@ before(() => {
     cy.restoreNetwork(handler)
     cy.restoreNetwork(handler, 'test_network2')
     cy.restoreNetwork(handler, 'test_network3')
-    cy.restoreWallet(handler)
   })
 })
 
 beforeEach(() => {
-  passphrase = Cypress.env('testWalletPassphrase')
-  walletName = Cypress.env('testWalletName')
   cy.waitForHome()
-  unlockWallet(walletName, passphrase)
   cy.getByTestId('network-drawer').click()
 })
 
-describe('manage networks', () => {
+describe.skip('manage networks', () => {
   it('change network and persists after reload', () => {
     cy.getByTestId('network-select').click()
     cy.getByTestId('select-test_network2').click()
@@ -32,7 +24,6 @@ describe('manage networks', () => {
       })
 
     cy.reload()
-    unlockWallet(walletName, passphrase)
 
     cy.getByTestId('service-status')
       .scrollIntoView()

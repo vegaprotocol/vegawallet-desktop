@@ -1,24 +1,20 @@
 import { authenticate, goToKey, unlockWallet } from '../support/helpers'
 
-describe('wallet sign key', () => {
-  let walletName: string
-  let passphrase: string
-  let pubkey: string
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
+const pubkey = Cypress.env('testWalletPublicKey')
 
+describe('wallet sign key', () => {
   before(() => {
     cy.clean()
     cy.backend().then(handler => {
       cy.setVegaHome(handler)
-      cy.restoreNetwork(handler)
       cy.restoreWallet(handler)
     })
   })
 
   beforeEach(() => {
     cy.waitForHome()
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-    pubkey = Cypress.env('testWalletPublicKey')
     unlockWallet(walletName, passphrase)
     goToKey(pubkey)
     cy.getByTestId('keypair-sign').click()
@@ -100,7 +96,7 @@ describe('wallet sign key', () => {
   })
 })
 
-const signMessage = (message: string): void => {
+function signMessage(message: string): void {
   cy.getByTestId('message-field').type(message)
   cy.getByTestId('sign').click()
 }

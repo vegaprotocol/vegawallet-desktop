@@ -1,10 +1,10 @@
 import { approveConnection, authenticate } from '../support/helpers'
 
-describe.skip('wallet permissions', () => {
-  const MOCK_HOSTNAME = 'https://best-blockchain.app'
-  let walletName: string
-  let passphrase: string
+const MOCK_HOSTNAME = 'https://best-blockchain.app'
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
 
+describe.skip('wallet permissions', () => {
   before(() => {
     cy.clean()
     cy.backend().then(handler => {
@@ -15,9 +15,6 @@ describe.skip('wallet permissions', () => {
   })
 
   beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-
     cy.waitForHome()
     approveConnection(MOCK_HOSTNAME, walletName, passphrase)
   })

@@ -1,26 +1,20 @@
 import { authenticate, unlockWallet } from '../support/helpers'
 
-describe('edit wallet', () => {
-  let walletName: string
-  let passphrase: string
-  const newWalletName = `${Math.random().toString(36).substring(2)}`
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
+const newWalletName = `${Math.random().toString(36).substring(2)}`
 
+describe('edit wallet', () => {
   before(() => {
     cy.clean()
     cy.backend()
       .then(handler => {
         cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
         cy.restoreWallet(handler)
       })
       .then(() => {
         cy.waitForHome()
       })
-  })
-
-  beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
   })
 
   it('edits wallet name', () => {
