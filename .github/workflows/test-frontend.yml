@@ -85,7 +85,7 @@ jobs:
           install: false
           wait-on: "http://localhost:34115"
           working-directory: frontend
-          wait-on-timeout: 220
+          wait-on-timeout: 600
           record: true
         env:
           # pass the Dashboard record key as an environment variable
