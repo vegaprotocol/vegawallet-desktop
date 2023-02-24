@@ -53,17 +53,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.cache/Cypress
+            /home/runner/.cache/Cypress
             frontend/node_modules
           key: node_modules-cypress-${{ hashFiles('frontend/yarn.lock') }}
 
       - name: Install frontend dependencies
-        working-directory: frontend
         run: yarn install --frozen-lockfile
+        working-directory: frontend
+
 
       - name: Install Cypress
+        run: yarn cypress install
         working-directory: frontend
-        run: yarn cypress install --force
 
       # Start wails in the first process
       - name: Start backend in background
