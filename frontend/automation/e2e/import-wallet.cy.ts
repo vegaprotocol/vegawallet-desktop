@@ -8,16 +8,13 @@ const passphrase = Cypress.env('testWalletPassphrase')
 
 describe('import wallet', () => {
   before(() => {
-    cy.clean()
-    cy.backend().then(handler => {
-      cy.setVegaHome(handler)
-      cy.restoreNetwork(handler)
-      cy.restoreWallet(handler)
-    })
+    cy.initApp()
+    cy.restoreWallet()
+    cy.waitForNetworkConnected()
   })
 
   beforeEach(() => {
-    cy.waitForHome()
+    cy.visit('/')
     cy.getByTestId('import-wallet').click()
   })
 

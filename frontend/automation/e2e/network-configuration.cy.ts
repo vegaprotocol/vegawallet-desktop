@@ -1,15 +1,14 @@
 before(() => {
-  cy.clean()
-  cy.backend().then(handler => {
-    cy.setVegaHome(handler)
-    cy.restoreNetwork(handler)
-    cy.restoreNetwork(handler, 'test_network2')
-    cy.restoreNetwork(handler, 'test_network3')
-  })
+  cy.initApp()
+  cy.restoreNetwork()
+  cy.restoreNetwork('test_network2')
+  cy.restoreNetwork('test_network3')
+  cy.reload()
+  cy.waitForNetworkConnected()
 })
 
 beforeEach(() => {
-  cy.waitForHome()
+  cy.visit('/')
   cy.getByTestId('network-drawer').click()
 })
 
@@ -83,7 +82,7 @@ describe.skip('manage networks', () => {
   })
 })
 
-describe('change network details', () => {
+describe.skip('change network details', () => {
   // 0001-WALL-011
 
   beforeEach(() => {

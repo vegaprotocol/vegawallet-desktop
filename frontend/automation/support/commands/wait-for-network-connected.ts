@@ -3,15 +3,12 @@ declare global {
   namespace Cypress {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable<Subject> {
-      waitForHome(): Chainable<Subject>
+      waitForNetworkConnected(): Chainable<Subject>
     }
   }
 }
 
-Cypress.Commands.add('waitForHome', () => {
-  cy.visit('/')
-  cy.getByTestId('splash-loader').should('be.visible')
-  cy.getByTestId('splash-loader').should('not.exist')
+Cypress.Commands.add('waitForNetworkConnected', () => {
   cy.get('body').then(body => {
     if (body.find('[data-testid="network-compatibility-dialog"]').length > 0) {
       cy.get('button[data-testid="network-compatibility-continue"]').click()

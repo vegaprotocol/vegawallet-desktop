@@ -7,15 +7,8 @@ const pubkey = Cypress.env('testWalletPublicKey')
 describe('wallet annotate metadata', () => {
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreNetwork(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.initApp()
+    cy.restoreWallet()
   })
 
   it('handles key name update', () => {

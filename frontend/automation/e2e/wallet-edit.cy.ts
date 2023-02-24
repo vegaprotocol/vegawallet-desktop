@@ -7,14 +7,8 @@ const newWalletName = `${Math.random().toString(36).substring(2)}`
 describe('edit wallet', () => {
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.initApp()
+    cy.restoreWallet()
   })
 
   it('edits wallet name', () => {

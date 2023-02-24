@@ -14,10 +14,5 @@ declare global {
 }
 
 Cypress.Commands.add('backend', () => {
-  cy.visit('/')
-  cy.getByTestId('splash-loader', { timeout: 30000 }).should('not.exist')
-
-  return cy.window().then(win => {
-    return (win as Win).go.backend.Handler as Handler
-  })
+  return cy.window().then(win => (win as Win).go.backend.Handler as Handler)
 })

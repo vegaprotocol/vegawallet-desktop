@@ -6,15 +6,8 @@ const pubkey = Cypress.env('testWalletPublicKey')
 
 describe('wallet taint key', () => {
   before(() => {
-    cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.initApp()
+    cy.restoreWallet()
   })
 
   it('message taint success', () => {

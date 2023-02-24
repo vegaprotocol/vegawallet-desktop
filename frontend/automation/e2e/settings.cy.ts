@@ -1,17 +1,12 @@
-describe('settings', () => {
-  const homeSettingsBtn = 'home-settings'
-  const settingsForm = 'settings-form'
-  const cancelSettingsBtn = 'cancel-settings'
+const homeSettingsBtn = 'home-settings'
+const settingsForm = 'settings-form'
+const cancelSettingsBtn = 'cancel-settings'
 
+describe('settings', () => {
   before(() => {
     cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.initApp()
+    cy.waitForNetworkConnected()
   })
 
   it('dialog opens and can be closed', () => {

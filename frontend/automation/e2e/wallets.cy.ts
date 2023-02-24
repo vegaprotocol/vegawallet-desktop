@@ -6,14 +6,8 @@ const pubkey = Cypress.env('testWalletPublicKey')
 
 describe('create wallet', () => {
   before(() => {
-    cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.initApp()
+    cy.waitForNetworkConnected()
   })
 
   it('create wallet', () => {
@@ -53,19 +47,18 @@ describe('create wallet', () => {
 
 describe('wallet', () => {
   before(() => {
-    cy.clean()
-    cy.backend().then(handler => {
-      cy.setVegaHome(handler)
-      cy.restoreWallet(handler)
-    })
+    cy.initApp()
+    cy.log('shit')
+    cy.waitForNetworkConnected()
+    cy.restoreWallet()
   })
 
   beforeEach(() => {
-    cy.waitForHome()
+    cy.visit('/')
+    unlockWallet(walletName, passphrase)
   })
 
   it('view wallet keypairs', () => {
-    unlockWallet(walletName, passphrase)
     cy.getByTestId('passphrase-form').should('not.exist')
     cy.getByTestId('generate-keypair').should('exist')
     cy.getByTestId('remove-wallet').should('exist')
@@ -73,13 +66,13 @@ describe('wallet', () => {
   })
 
   it('wrong passphrase', () => {
+    cy.visit('')
     unlockWallet(walletName, 'invalid')
     cy.getByTestId('toast').should('contain.text', 'Error: wrong passphrase')
   })
 
   it('generate new key pair', () => {
     // 0001-WALL-052 must be able to create new keys (derived from the source of wallet)
-    unlockWallet(walletName, passphrase)
     cy.getByTestId('wallet-keypair').should('have.length', 1)
     cy.getByTestId('generate-keypair').click()
     authenticate(passphrase)
@@ -89,7 +82,6 @@ describe('wallet', () => {
   it('copy public key from keylist', { browser: 'chrome' }, function () {
     // 0001-WALL-054 must see full public key or be able to copy it to clipboard
     const copyButton = '[data-state="closed"] > svg'
-    unlockWallet(walletName, passphrase)
     cy.monitor_clipboard().as('clipboard')
     cy.getByTestId('wallet-keypair').within(() => {
       cy.get(copyButton).first().click()
@@ -101,7 +93,6 @@ describe('wallet', () => {
 
   it('copy public key from key details', { browser: 'chrome' }, function () {
     // 0001-WALL-054 must see full public key or be able to copy it to clipboard
-    unlockWallet(walletName, passphrase)
     goToKey(pubkey)
     cy.monitor_clipboard().as('clipboard')
     cy.getByTestId('public-key').next().click()
@@ -111,7 +102,6 @@ describe('wallet', () => {
   })
 
   it('key pair page', () => {
-    unlockWallet(walletName, passphrase)
     goToKey(pubkey)
     cy.getByTestId('header-title').should('contain', 'Key 1')
     cy.getByTestId('public-key')
@@ -123,7 +113,6 @@ describe('wallet', () => {
 
   it('wallet stays logged in', () => {
     // 0001-WALL-016 must select a wallet and enter the passphrase only once per "session"
-    unlockWallet(walletName, passphrase)
     cy.getByTestId('back').click()
     cy.getByTestId(`wallet-${walletName}`).click()
     cy.getByTestId('passphrase-form').should('not.exist')
@@ -131,7 +120,6 @@ describe('wallet', () => {
   })
 
   it('can navigate to transactions page', () => {
-    unlockWallet(walletName, passphrase)
     goToKey(pubkey)
     cy.getByTestId('keypair-transactions').should('be.visible')
     cy.getByTestId('keypair-transactions').click()

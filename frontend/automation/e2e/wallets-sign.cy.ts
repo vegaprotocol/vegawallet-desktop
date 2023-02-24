@@ -6,15 +6,12 @@ const pubkey = Cypress.env('testWalletPublicKey')
 
 describe('wallet sign key', () => {
   before(() => {
-    cy.clean()
-    cy.backend().then(handler => {
-      cy.setVegaHome(handler)
-      cy.restoreWallet(handler)
-    })
+    cy.initApp()
+    cy.restoreWallet()
   })
 
   beforeEach(() => {
-    cy.waitForHome()
+    cy.visit('')
     unlockWallet(walletName, passphrase)
     goToKey(pubkey)
     cy.getByTestId('keypair-sign').click()

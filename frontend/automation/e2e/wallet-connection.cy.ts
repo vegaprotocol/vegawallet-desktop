@@ -1,22 +1,17 @@
 import { approveConnection, unlockWallet } from '../support/helpers'
 
-describe.skip('wallet connection', () => {
-  const passphrase = Cypress.env('testWalletPassphrase')
-  const walletName = Cypress.env('testWalletName')
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
 
+describe.skip('wallet connection', () => {
   before(() => {
     cy.clean()
-    cy.backend().then(handler => {
-      cy.setVegaHome(handler)
-      cy.restoreNetwork(handler)
-      cy.restoreWallet(handler)
-    })
-  })
-
-  beforeEach(() => {
-    cy.waitForHome()
+    cy.initApp()
+    cy.restoreWallet()
+    cy.waitForNetworkConnected()
     unlockWallet(walletName, passphrase)
   })
+
   // Tests skipped because currently wails and Cypress both receive an event and send an auto-approve.
   // Need to find a way to disable one of the UIs from interactions
   it.skip('handles approval', () => {

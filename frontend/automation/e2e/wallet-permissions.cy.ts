@@ -7,15 +7,12 @@ const walletName = Cypress.env('testWalletName')
 describe.skip('wallet permissions', () => {
   before(() => {
     cy.clean()
-    cy.backend().then(handler => {
-      cy.setVegaHome(handler)
-      cy.restoreNetwork(handler)
-      cy.restoreWallet(handler)
-    })
+    cy.initApp()
+    cy.restoreWallet()
+    cy.waitForNetworkConnected()
   })
 
   beforeEach(() => {
-    cy.waitForHome()
     approveConnection(MOCK_HOSTNAME, walletName, passphrase)
   })
 

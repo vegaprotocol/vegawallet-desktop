@@ -1,13 +1,6 @@
 describe('wallet service', () => {
   before(() => {
-    cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.initApp()
   })
 
   it('imports and starts mainnet automatically', () => {

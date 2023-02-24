@@ -30,23 +30,15 @@ const testIds = {
   WALLET_ITEM: 'wallet-item'
 }
 
-describe.skip('transaction approval', () => {
-  let passphrase = ''
-  let walletName = ''
+const passphrase = Cypress.env('testWalletPassphrase')
+const walletName = Cypress.env('testWalletName')
 
+describe.skip('transaction approval', () => {
   before(() => {
     cy.clean()
-    cy.backend().then(handler => {
-      cy.setVegaHome(handler)
-      cy.restoreNetwork(handler)
-      cy.restoreWallet(handler)
-    })
-  })
-
-  beforeEach(() => {
-    passphrase = Cypress.env('testWalletPassphrase')
-    walletName = Cypress.env('testWalletName')
-    cy.waitForHome()
+    cy.initApp()
+    cy.restoreWallet()
+    cy.waitForNetworkConnected()
     unlockWallet(walletName, passphrase)
   })
 

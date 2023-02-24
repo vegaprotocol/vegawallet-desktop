@@ -6,15 +6,8 @@ describe('wallet remove', () => {
   const form = 'remove-wallet-form'
 
   before(() => {
-    cy.clean()
-    cy.backend()
-      .then(handler => {
-        cy.setVegaHome(handler)
-        cy.restoreWallet(handler)
-      })
-      .then(() => {
-        cy.waitForHome()
-      })
+    cy.initApp()
+    cy.restoreWallet()
   })
 
   it('removes a wallet', () => {

@@ -1,12 +1,9 @@
+before(() => {
+  cy.initApp()
+  cy.waitForNetworkConnected()
+})
 beforeEach(() => {
-  cy.clean()
-  cy.backend()
-    .then(handler => {
-      cy.setVegaHome(handler)
-    })
-    .then(() => {
-      cy.waitForHome()
-    })
+  cy.visit('/')
 })
 
 describe('onboarding', () => {
@@ -90,7 +87,7 @@ describe('onboarding', () => {
   })
 
   it('import wallet with invalid recovery phrase', () => {
-    const walletName = 'test'
+    const walletName = 'test-invalid'
     const passphrase = '123'
     const invalidRecoveryPhrase = 'invalid'
     cy.getByTestId('import-wallet').click()
