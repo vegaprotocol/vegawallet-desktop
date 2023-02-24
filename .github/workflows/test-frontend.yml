@@ -53,6 +53,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
+            /Users/runner/Library/Caches/Cypress
             /home/runner/.cache/Cypress
             frontend/node_modules
           key: node_modules-cypress-${{ hashFiles('frontend/yarn.lock') }}
