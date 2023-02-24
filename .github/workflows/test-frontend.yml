@@ -61,6 +61,10 @@ jobs:
         working-directory: frontend
         run: yarn install --frozen-lockfile
 
+      - name: Install Cypress
+        working-directory: frontend
+        run: yarn cypress install
+
       # Start wails in the first process
       - name: Start backend in background
         run: wails dev -noreload &
@@ -78,6 +82,7 @@ jobs:
         with:
           browser: chrome
           config-file: automation/cypress.config.ts
+          install: false
           wait-on: "http://localhost:34115"
           working-directory: frontend
           wait-on-timeout: 220
