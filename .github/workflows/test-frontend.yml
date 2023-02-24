@@ -63,7 +63,7 @@ jobs:
 
       - name: Install Cypress
         working-directory: frontend
-        run: yarn cypress install
+        run: yarn cypress install --force
 
       # Start wails in the first process
       - name: Start backend in background
