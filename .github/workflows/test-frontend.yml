@@ -28,6 +28,15 @@ jobs:
         with:
           go-version: ^1.19
 
+      - name: Restore go modules from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/go/bin
+            ~/.cache/go-build
+          key: ${{ runner.os }}-wails-${{ env.WAILS_VERSION }}-go-${{ hashFiles('**/go.sum') }}
+
       - name: Get backend dependencies
         run: go get -v -t -d ./...
 
@@ -62,6 +71,7 @@ jobs:
         with:
           browser: chrome
           config-file: automation/cypress.config.ts
+          install: false
           wait-on: "http://localhost:34115"
           working-directory: frontend
           wait-on-timeout: 600
