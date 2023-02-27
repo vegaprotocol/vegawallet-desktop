@@ -83,7 +83,7 @@ describe('Import network', () => {
       const url = Cypress.env('mainnetConfigUrl')
 
       cy.getByTestId('url-path').type(url)
-      cy.getByTestId('network-name').type('custom')
+      cy.getByTestId('network-name').type(`custom-${Date.now()}`)
       cy.getByTestId('import-network').click()
       cy.getByTestId('toast').should('contain.text', 'Network imported to:')
     })
