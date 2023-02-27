@@ -38,14 +38,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.12
-        working-directory: frontend
 
       - name: Install frontend dependencies
         run: yarn install --frozen-lockfile
-        working-directory: frontend
-
-      - name: Install Cypress
-        run: yarn cypress install
         working-directory: frontend
 
       # Start wails in the first process
