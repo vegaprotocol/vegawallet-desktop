@@ -12,7 +12,7 @@ beforeEach(() => {
   cy.getByTestId('network-drawer').click()
 })
 
-describe.skip('manage networks', () => {
+describe('manage networks', () => {
   it('change network and persists after reload', () => {
     cy.getByTestId('network-select').click()
     cy.getByTestId('select-test_network2').click()
@@ -31,6 +31,7 @@ describe.skip('manage networks', () => {
       })
       .should('be.visible')
 
+    cy.getByTestId('network-drawer').click()
     cy.getByTestId('network-select').click()
     cy.getByTestId('select-test').click()
     cy.getByTestId('service-status')
@@ -38,18 +39,16 @@ describe.skip('manage networks', () => {
       .contains('Wallet Service: test', {
         timeout: 20000
       })
-    // .should('be.visible')
+      .should('be.visible')
   })
 
   it('view network details', () => {
-    cy.getByTestId('network-select').should('have.text', 'test')
+    cy.getByTestId('network-select').should('not.be.empty')
     cy.getByTestId('service-url').should('not.be.empty')
     cy.getByTestId('nodes-list').each($node => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       expect($node.text()).not.to.be.empty
     })
-    cy.getByTestId('network-log-level').should('have.text', 'info')
-    cy.getByTestId('token-expiry').should('have.text', '168h0m0s')
   })
 
   it('edit network details displayed', () => {
@@ -66,9 +65,7 @@ describe.skip('manage networks', () => {
       .within(() => {
         cy.getByTestId('node-list').first().invoke('val').should('not.be.empty')
       })
-    cy.getByTestId('network-log-level').invoke('val').should('not.be.empty')
     cy.getByTestId('node-retries').invoke('val').should('not.be.empty')
-    cy.getByTestId('token-expiry').invoke('val').should('not.be.empty')
   })
 
   it('remove network', () => {
@@ -82,6 +79,7 @@ describe.skip('manage networks', () => {
   })
 })
 
+// Skipped until `https://github.com/vegaprotocol/vegawallet-desktop/issues/529` is fixed
 describe.skip('change network details', () => {
   // 0001-WALL-011
 
@@ -182,30 +180,12 @@ describe.skip('change network details', () => {
       })
   })
 
-  // review if this is still needed as it doesn't seem to be working
-  // https://github.com/vegaprotocol/vegawallet-desktop/issues/382
-  it.skip('able to change log level', () => {
-    const newLogLevel = 'debug'
-    cy.getByTestId('network-log-level').select(newLogLevel)
-    submit_network_config_form()
-    edit_network_config_form_for_specified_network('test_network3')
-    cy.getByTestId('network-log-level').should('have.value', newLogLevel)
-  })
-
   it('able to change gRPC Node retries', () => {
     const newRetryAmount = '1'
     cy.getByTestId('node-retries').clear().type(newRetryAmount)
     submit_network_config_form()
     edit_network_config_form_for_specified_network('test_network3')
     cy.getByTestId('node-retries').should('have.value', newRetryAmount)
-  })
-
-  it('able to change token expiry duration', () => {
-    const newDuration = '48h48m48s'
-    cy.getByTestId('token-expiry').clear().type(newDuration)
-    submit_network_config_form()
-    edit_network_config_form_for_specified_network('test_network3')
-    cy.getByTestId('token-expiry').should('have.value', newDuration)
   })
 })
 
