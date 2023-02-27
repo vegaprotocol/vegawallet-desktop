@@ -65,6 +65,15 @@ describe('onboarding', () => {
     cy.getByTestId('header-title').should('have.text', walletName2)
   })
 
+  it('import default wallets', () => {
+    cy.getByTestId('network-drawer').click()
+    cy.getByTestId('network-select').click()
+    cy.get(`[role="menuitem"]`)
+      .should('contain.text', 'mainnet1')
+      .and('contain.text', 'testnet2')
+      .and('contain.text', 'fairground')
+  })
+
   it('import wallet', () => {
     const walletName = 'test'
     const passphrase = '123'
