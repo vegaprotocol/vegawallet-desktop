@@ -38,31 +38,33 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.12
+          cache: 'yarn'
+          cache-dependency-path: 'frontend/yarn.lock'
 
-      - name: Install frontend dependencies
-        run: yarn install --frozen-lockfile
-        working-directory: frontend
+      # Install dependencies using cypress action, to make them recognized in test step
+      - name: Install dependencies
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+          working-directory: frontend
 
       # Start wails in the first process
-      # - name: Start backend in background
-      #   run: wails dev -noreload &
-      #   env:
-      #     VITE_COVERAGE: "true"
-      #     VITE_FEATURE_NETWORK_WARNING: "false"
-      #     VITE_FEATURE_TELEMETRY_CHECK: "false"
+      - name: Start backend in background
+        run: wails dev -noreload &
+        env:
+          VITE_COVERAGE: "true"
+          VITE_FEATURE_NETWORK_WARNING: "false"
+          VITE_FEATURE_TELEMETRY_CHECK: "false"
 
-
-      # Run cypress in this process
-      # Install yarn automation/ dependencies, cache them correctly
-      # and run all Cypress tests
+      # Run cypress in this process and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          config-file: frontend/automation/cypress.config.ts
-          # wait-on: "http://localhost:34115"
-          # working-directory: frontend
-          # wait-on-timeout: 600
+          config-file: automation/cypress.config.ts
+          wait-on: "http://localhost:34115"
+          working-directory: frontend
+          wait-on-timeout: 600
           record: true
         env:
           # pass the Dashboard record key as an environment variable
