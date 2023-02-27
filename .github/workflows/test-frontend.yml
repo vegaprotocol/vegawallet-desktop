@@ -61,7 +61,7 @@ jobs:
           browser: chrome
           config-file: frontend/automation/cypress.config.ts
           # wait-on: "http://localhost:34115"
-          working-directory: frontend
+          # working-directory: frontend
           # wait-on-timeout: 600
           record: true
         env:
