@@ -66,6 +66,7 @@ describe('onboarding', () => {
   })
 
   it('import default wallets', () => {
+    // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
     cy.getByTestId('network-drawer').click()
     cy.getByTestId('network-select').click()
     cy.get(`[role="menuitem"]`)
