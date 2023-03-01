@@ -64,7 +64,7 @@ type Handler struct {
 	// as wails backend functions.
 	walletAdminAPI *jsonrpc.Dispatcher
 
-	networkStore       *netStoreV1.Store
+	networkStore       *netStoreV1.FileStore
 	walletStore        *walletStoreV1.FileStore
 	connectionsManager *connections.Manager
 	tokenStore         *tokenStoreV1.EmptyStore
