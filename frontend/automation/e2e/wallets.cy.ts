@@ -16,7 +16,7 @@ describe('create wallet', () => {
     cy.getByTestId('create-wallet-form-name').type(walletName)
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
-    cy.getByTestId('submit').click()
+    cy.getByTestId('create-wallet-form-submit').click()
     cy.contains('Wallet created!')
     cy.getByTestId('recovery-phrase-warning').should('not.be.empty')
     cy.getByTestId('wallet-version').next('p').should('contain', 2)
