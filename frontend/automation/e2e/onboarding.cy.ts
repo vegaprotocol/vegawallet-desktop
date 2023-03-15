@@ -15,7 +15,7 @@ describe('onboarding', () => {
     cy.getByTestId('create-wallet-form-name').type(walletName)
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
-    cy.getByTestId('submit').click()
+    cy.getByTestId('create-wallet-form-submit').click()
     cy.getByTestId('toast').should('contain.text', 'Wallet created!')
     cy.getByTestId('toast').should('not.exist')
     cy.getByTestId('create-wallet-success-cta').click()
@@ -36,7 +36,7 @@ describe('onboarding', () => {
     cy.getByTestId('create-wallet-form-name').type(walletName)
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
-    cy.getByTestId('submit').click()
+    cy.getByTestId('create-wallet-form-submit').click()
     cy.getByTestId('toast').should('contain.text', 'Wallet created!')
     cy.getByTestId('toast').should('not.exist')
     cy.getByTestId('create-wallet-success-cta').click()
@@ -48,7 +48,7 @@ describe('onboarding', () => {
     cy.getByTestId('create-wallet-form-name').type(walletName2)
     cy.getByTestId('create-wallet-form-passphrase').type(passphrase)
     cy.getByTestId('create-wallet-form-passphrase-confirm').type(passphrase)
-    cy.getByTestId('submit').click()
+    cy.getByTestId('create-wallet-form-submit').click()
     cy.getByTestId('toast').should('contain.text', 'Wallet created!')
     cy.getByTestId('toast').should('not.exist')
     cy.getByTestId('create-wallet-success-cta').click()
@@ -80,19 +80,19 @@ describe('onboarding', () => {
     const passphrase = '123'
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
     cy.getByTestId('import-wallet').click()
-    cy.getByTestId('wallet-name').type(walletName)
-    cy.getByTestId('recovery-phrase').type(recoveryPhrase)
+    cy.getByTestId('wallet-import-form-name').type(walletName)
+    cy.getByTestId('wallet-import-form-recovery-phrase').type(recoveryPhrase)
     cy.getByTestId('version').select(String(2))
-    cy.getByTestId('passphrase').type(passphrase)
-    cy.getByTestId('confirm-passphrase').type(passphrase)
-    cy.getByTestId('submit').click()
+    cy.getByTestId('wallet-import-form-passphrase').type(passphrase)
+    cy.getByTestId('wallet-import-form-passphrase-confirm').type(passphrase)
+    cy.getByTestId('wallet-import-form-submit').click()
 
     cy.getByTestId('toast').should('contain.text', 'Wallet imported to:')
   })
 
   it('import wallet validation', () => {
     cy.getByTestId('import-wallet').click()
-    cy.getByTestId('submit').click()
+    cy.getByTestId('wallet-import-form-submit').click()
     cy.getByTestId('helper-text').should('have.length', 4)
   })
 
@@ -101,12 +101,14 @@ describe('onboarding', () => {
     const passphrase = '123'
     const invalidRecoveryPhrase = 'invalid'
     cy.getByTestId('import-wallet').click()
-    cy.getByTestId('wallet-name').type(walletName)
-    cy.getByTestId('recovery-phrase').type(invalidRecoveryPhrase)
+    cy.getByTestId('wallet-import-form-name').type(walletName)
+    cy.getByTestId('wallet-import-form-recovery-phrase').type(
+      invalidRecoveryPhrase
+    )
     cy.getByTestId('version').select(String(2))
-    cy.getByTestId('passphrase').type(passphrase)
-    cy.getByTestId('confirm-passphrase').type(passphrase)
-    cy.getByTestId('submit').click()
+    cy.getByTestId('wallet-import-form-passphrase').type(passphrase)
+    cy.getByTestId('wallet-import-form-passphrase-confirm').type(passphrase)
+    cy.getByTestId('wallet-import-form-submit').click()
 
     cy.getByTestId('toast').should(
       'contain.text',
