@@ -18,7 +18,7 @@ export class JSONRPCError extends Error {
 
 export const useWalletClient = (logger: Logger) => {
   const request: WalletAPIRequest = useCallback(
-    async (method, params) => {
+    async ({ method, params }) => {
       const response = await SubmitWalletAPIRequest({
         jsonrpc: '2.0',
         id: nanoid(),
