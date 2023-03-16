@@ -1,6 +1,6 @@
 module.exports = {
-  plugins: ['simple-import-sort'],
-  extends: ['react-app', 'react-app/jest'],
+  plugins: ['simple-import-sort', 'cypress'],
+  extends: ['react-app', 'plugin:cypress/recommended'],
   ignorePatterns: ['./src/wallet-client/**'],
   rules: {
     'prefer-const': 'warn',
@@ -29,13 +29,5 @@ module.exports = {
           "Import the specific methods you need from lodash e.g. `import get from 'lodash/get'`. This helps with bundle sizing."
       }
     ]
-  },
-  overrides: [
-    {
-      files: ['*.test.tsx'],
-      rules: {
-        'no-restricted-imports': 'off'
-      }
-    }
-  ]
+  }
 }

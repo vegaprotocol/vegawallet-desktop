@@ -1,8 +1,8 @@
-import ResizeObserver from 'resize-observer-polyfill'
 import 'core-js/stable'
 
 import React from 'react'
 import { createRoot } from 'react-dom/client'
+import ResizeObserver from 'resize-observer-polyfill'
 
 import App from './app'
 import { ENV } from './config/environment'

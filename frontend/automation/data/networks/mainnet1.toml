@@ -1,0 +1,58 @@
+Name = "mainnet1"
+Level = "info"
+TokenExpiry = "168h0m0s"
+Port = 1789
+Host = "127.0.0.1"
+
+[API]
+  [API.GRPC]
+    Hosts = [
+      "commodum.mainnet.vega.community:3007",
+      "lovali.mainnet.vega.community:3007",
+      "b-harvest.mainnet.vega.community:3007",
+      "staking-facilities.mainnet.vega.community:3007",
+      "figment.mainnet.vega.community:3007",
+      "nodes-guru.mainnet.vega.community:3007",
+      "p2p.mainnet.vega.community:3007",
+      "rockaway.mainnet.vega.community:3007",
+      "greenfield-one.mainnet.vega.community:3007",
+      "grpc.vega.xprv.io:443",
+      "nala.mainnet.vega.community:3007"
+    ]
+    Retries = 5
+  [API.REST]
+    Hosts = [
+      "http://vega.xprv.io/datanode",
+      "http://nala.mainnet.vega.community:3009",
+      "http://commodum.mainnet.vega.community:3009",
+      "http://lovali.mainnet.vega.community:3009",
+      "http://b-harvest.mainnet.vega.community:3009",
+      "http://staking-facilities.mainnet.vega.community:3009",
+      "http://figment.mainnet.vega.community:3009",
+      "http://nodes-guru.mainnet.vega.community:3009",
+      "http://p2p.mainnet.vega.community:3009",
+      "http://rockaway.mainnet.vega.community:3009",
+      "http://greenfield-one.mainnet.vega.community:3009"
+    ]
+  [API.GraphQL]
+    Hosts = [
+      "https://vega.xprv.io/datanode/query",
+      "http://nala.mainnet.vega.community:3008",
+      "http://commodum.mainnet.vega.community:3008",
+      "http://lovali.mainnet.vega.community:3008",
+      "http://b-harvest.mainnet.vega.community:3008",
+      "http://staking-facilities.mainnet.vega.community:3008",
+      "http://figment.mainnet.vega.community:3008",
+      "http://nodes-guru.mainnet.vega.community:3008",
+      "http://p2p.mainnet.vega.community:3008",
+      "http://rockaway.mainnet.vega.community:3008",
+      "http://greenfield-one.mainnet.vega.community:3008"
+    ]
+
+[Console]
+  URL = ""
+  LocalPort = 1847
+
+[TokenDApp]
+  URL = "token.vega.xyz"
+  LocalPort = 1848

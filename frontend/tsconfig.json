@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "setupTests.ts"],
-  "exclude": ["node_modules", "src/wailsjs", "automation"]
+  "include": ["src"],
+  "exclude": ["node_modules", "src/wailsjs"]
 }
