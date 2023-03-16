@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.0 (Unreleased)
+## 0.11.0 (Unreleased)
 
 ### 🚨 Breaking changes
 
@@ -13,11 +13,14 @@
 ### 🛠 Improvements
 
 - [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
--
 
 ### 🐛 Fixes
 
 - [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+
+## 0.10.0
+
+Support for vega v0.69.0.
 
 ## 0.9.0
 
