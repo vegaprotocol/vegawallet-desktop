@@ -22,6 +22,7 @@ describe('wallet taint key', () => {
       .contains('This key has been tainted')
       .getByTestId('close')
       .click({ multiple: true })
+    // 0001-WALL-060 I can see tainted keys flagged as tainted
     cy.getByTestId('keypair-taint-notification')
       .should('exist')
       .within(() => {
