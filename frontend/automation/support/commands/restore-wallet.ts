@@ -20,11 +20,15 @@ Cypress.Commands.add('restoreWallet', () => {
         params: {
           wallet: 'test',
           recoveryPhrase: Cypress.env('testWalletRecoveryPhrase'),
-          version: 2,
+          keyDerivationVersion: 2,
           passphrase
         }
       })
     )
-    .then(res => res.result)
+    .then(res => {
+      if ('error' in res) {
+        throw new Error(JSON.stringify(res.error))
+      } else return res.result
+    })
     .then(() => cy.reload())
 })

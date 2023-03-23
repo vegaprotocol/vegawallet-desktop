@@ -87,7 +87,7 @@ describe('onboarding', () => {
     cy.getByTestId('wallet-import-form-passphrase-confirm').type(passphrase)
     cy.getByTestId('wallet-import-form-submit').click()
 
-    cy.getByTestId('toast').should('contain.text', 'Wallet imported to:')
+    cy.getByTestId('toast').should('contain.text', 'Wallet imported')
   })
 
   it('import wallet validation', () => {

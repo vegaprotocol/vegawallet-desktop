@@ -21,7 +21,7 @@ describe('import wallet', () => {
   it('recover wallet', () => {
     // 0001-WALL-004
     fillInRecoveryForm(walletName, passphrase, recoveryPhrase)
-    cy.getByTestId('toast').should('contain.text', 'Wallet imported to')
+    cy.getByTestId('toast').should('contain.text', 'Wallet imported')
 
     // Can open newly imported wallet
     unlockWallet(walletName.replace(' ', '-'), passphrase)
@@ -44,11 +44,11 @@ describe('import wallet', () => {
   it('recover wallet with different version', () => {
     const recoveryPhrase = Cypress.env('testWalletRecoveryPhrase')
     fillInRecoveryForm('newwallet', '123', recoveryPhrase, 1)
-    cy.getByTestId('toast').should('contain.text', 'Wallet imported to')
+    cy.getByTestId('toast').should('contain.text', 'Wallet imported')
   })
 
   it('form validation', () => {
-    cy.getByTestId('submit').click()
+    cy.getByTestId('wallet-import-form-submit').click()
     cy.getByTestId('helper-text').should('have.length', 4)
   })
 
@@ -67,10 +67,10 @@ function fillInRecoveryForm(
   recoveryPhrase: string,
   version = 2
 ) {
-  cy.getByTestId('wallet-name').type(walletName)
-  cy.getByTestId('recovery-phrase').type(recoveryPhrase)
+  cy.getByTestId('wallet-import-form-name').type(walletName)
+  cy.getByTestId('wallet-import-form-recovery-phrase').type(recoveryPhrase)
   cy.getByTestId('version').select(String(version))
-  cy.getByTestId('passphrase').type(passphrase)
-  cy.getByTestId('confirm-passphrase').type(passphrase)
-  cy.getByTestId('submit').click()
+  cy.getByTestId('wallet-import-form-passphrase').type(passphrase)
+  cy.getByTestId('wallet-import-form-passphrase-confirm').type(passphrase)
+  cy.getByTestId('wallet-import-form-submit').click()
 }

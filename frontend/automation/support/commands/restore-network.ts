@@ -17,10 +17,13 @@ Cypress.Commands.add('restoreNetwork', (name = 'test') => {
         jsonrpc: '2.0',
         method: 'admin.import_network',
         params: {
-          filePath: Cypress.env('testNetworkPath'),
+          url: `file://${Cypress.env('testNetworkPath')}`,
           name
         }
       })
-      .then(res => res.result)
+      .then(res => {
+        if ('error' in res) throw new Error(JSON.stringify(res.error))
+        else return res.result
+      })
   })
 })
