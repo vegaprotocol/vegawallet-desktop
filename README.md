@@ -22,7 +22,7 @@ Be sure to have the following environment variables set:
 - `GO111MODULE=on`
 
 ```sh
-go install github.com/wailsapp/wails/v2/cmd/wails@v2.3.1
+go install github.com/wailsapp/wails/v2/cmd/wails@v2.4.1
 ```
 
 To check if you have the correct dependencies installed, use the following command:
