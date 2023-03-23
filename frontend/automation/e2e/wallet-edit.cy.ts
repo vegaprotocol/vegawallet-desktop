@@ -1,4 +1,4 @@
-import { authenticate, unlockWallet } from '../support/helpers'
+import { unlockWallet } from '../support/helpers'
 
 const passphrase = Cypress.env('testWalletPassphrase')
 const walletName = Cypress.env('testWalletName')
@@ -22,7 +22,6 @@ describe('edit wallet', () => {
         cy.get('button[type="submit"]').click()
       })
     cy.getByTestId('edit-wallet-form').should('not.exist')
-    authenticate(passphrase)
     cy.getByTestId('header-title').should('have.text', newWalletName)
   })
 })
