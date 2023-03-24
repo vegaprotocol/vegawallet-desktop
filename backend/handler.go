@@ -134,7 +134,7 @@ func (h *Handler) StartupBackend() (err error) {
 	}
 
 	if err := os.Init(); err != nil {
-		h.log.Error("Could not initialize OS-specific capabilities")
+		h.log.Error("Could not initialize OS-specific capabilities", zap.Error(err))
 		return err
 	}
 

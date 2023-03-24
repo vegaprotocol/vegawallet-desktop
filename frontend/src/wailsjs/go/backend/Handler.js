@@ -22,6 +22,10 @@ export function AppMenu() {
   return window['go']['backend']['Handler']['AppMenu']();
 }
 
+export function ChooseFolder() {
+  return window['go']['backend']['Handler']['ChooseFolder']();
+}
+
 export function GetAppConfig() {
   return window['go']['backend']['Handler']['GetAppConfig']();
 }

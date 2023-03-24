@@ -25,10 +25,12 @@
     "@vegaprotocol/wallet-admin": "0.1.6",
     "@vegaprotocol/wallet-ui": "0.1.60",
     "core-js": "3.26.1",
+    "immer": "9.0.15",
     "loglevel": "1.8.1",
     "nanoid": "4.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",

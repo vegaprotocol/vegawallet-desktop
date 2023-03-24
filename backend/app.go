@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 
-	"code.vegaprotocol.io/vegawallet-desktop/app"
 	"go.uber.org/zap"
 )
 
@@ -14,13 +13,13 @@ var (
 )
 
 func (h *Handler) IsAppInitialised() (bool, error) {
-	isConfigInit, err := h.isAppInitialised()
+	isAppInit, err := h.isAppInitialised()
 	if err != nil {
-		h.log.Error("Could not verify the application configuration existence", zap.Error(err))
-		return false, fmt.Errorf("could not verify the application configuration existence: %w", err)
+		h.log.Error("Could not verify the application is initialized", zap.Error(err))
+		return false, fmt.Errorf("could not verify the application is initialized: %w", err)
 	}
 
-	return isConfigInit, nil
+	return isAppInit, nil
 }
 
 // isAppInitialised abstract the application initialization state verification,
@@ -37,12 +36,20 @@ func (h *Handler) InitialiseApp(req InitialiseAppRequest) error {
 	h.log.Debug("Entering InitialiseApp")
 	defer h.log.Debug("Leaving InitialiseApp")
 
-	cfg := app.DefaultConfig()
+	cfg, err := h.appConfig()
+	if err != nil {
+		return err
+	}
+
 	cfg.VegaHome = req.VegaHome
 
 	if err := h.configLoader.SaveConfig(cfg); err != nil {
 		h.log.Error("Could not save the application configuration", zap.Error(err))
 		return fmt.Errorf("could not save the application configuration: %w", err)
+	}
+
+	if err := h.configLoader.MarkOnBoardingAsDone(); err != nil {
+		return fmt.Errorf("could not mark the on-boarding as done: %w", err)
 	}
 
 	h.appInitialised.Store(true)

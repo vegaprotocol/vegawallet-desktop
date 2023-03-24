@@ -1,5 +1,5 @@
 {
-  "name": "Fairground Wallet",
+  "name": "Vega Wallet",
   "assetdir": "./frontend/dist",
   "frontend:build": "yarn build",
   "frontend:install": "yarn",
@@ -7,12 +7,12 @@
   "frontend:dev:serverUrl": "http://localhost:3000",
   "wailsjsdir": "./frontend/src",
   "version": "2",
-  "outputfilename": "Fairground Wallet",
+  "outputfilename": "Vega Wallet",
   "info": {
     "companyName": "Gobalsky Labs Ltd.",
-    "productName": "Fairground Wallet",
+    "productName": "Vega Wallet",
     "productVersion": "0.11.0",
     "copyright": "Copyright (c) 2023 Gobalsky Labs Ltd.",
-    "comments": "Application to manage your Vega Protocol wallet on Fairground."
+    "comments": "Application to manage your Vega Protocol wallet on Mainnet."
   }
 }
