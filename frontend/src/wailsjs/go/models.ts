@@ -220,9 +220,9 @@ export namespace connections {
 	export class TokenSummary {
 	    description: string;
 	    token: string;
-	    // Go type: time.Time
+	    // Go type: time
 	    creationDate: any;
-	    // Go type: time.Time
+	    // Go type: time
 	    expirationDate?: any;
 	
 	    static createFrom(source: any = {}) {
@@ -301,9 +301,9 @@ export namespace connections {
 	}
 	export class TokenDescription {
 	    description: string;
-	    // Go type: time.Time
+	    // Go type: time
 	    creationDate: any;
-	    // Go type: time.Time
+	    // Go type: time
 	    expirationDate?: any;
 	    token: string;
 	    wallet: WalletCredentials;
@@ -442,7 +442,7 @@ export namespace jsonrpc {
 export namespace service {
 	
 	export class APIV1Config {
-	    // Go type: encoding.Duration
+	    // Go type: encoding
 	    maximumTokenDuration: any;
 	
 	    static createFrom(source: any = {}) {
@@ -487,7 +487,7 @@ export namespace service {
 	    }
 	}
 	export class Config {
-	    // Go type: encoding.LogLevel
+	    // Go type: encoding
 	    logLevel: any;
 	    server: ServerConfig;
 	    apiV1: APIV1Config;

@@ -5,7 +5,7 @@ go 1.19
 require (
 	code.vegaprotocol.io/vega v0.70.0
 	github.com/gen2brain/beeep v0.0.0-20220909211152-5a9ec94374f6
-	github.com/wailsapp/wails/v2 v2.3.1
+	github.com/wailsapp/wails/v2 v2.4.1
 	go.uber.org/zap v1.24.0
 )
 
@@ -26,7 +26,6 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/btree v1.1.2 // indirect
-	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/jmhodges/levigo v1.0.0 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
