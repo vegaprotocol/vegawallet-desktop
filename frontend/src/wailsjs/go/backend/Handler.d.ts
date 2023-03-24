@@ -17,6 +17,8 @@ export function APIV2ListAPITokens():Promise<connections.ListAPITokensResult>;
 
 export function AppMenu():Promise<any>;
 
+export function ChooseFolder():Promise<string>;
+
 export function GetAppConfig():Promise<app.Config>;
 
 export function GetCurrentServiceInfo():Promise<backend.GetCurrentServiceInfo>;

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.12.0 (Unreleased)
+## 0.11.1 (Unreleased)
 
 ### 🚨 Breaking changes
 
@@ -12,11 +12,11 @@
 
 ### 🛠 Improvements
 
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [576](https://github.com/vegaprotocol/vegawallet-desktop/issues/576) - Support different vega home for Mainnet and Testnet wallet
 
 ### 🐛 Fixes
 
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [573](https://github.com/vegaprotocol/vegawallet-desktop/issues/573) - Indirectly fix `ERR_FILE_NOT_FOUND` error by separated Fairground and Mainnet software, so configuration files are not corrupted any more.
 
 ## 0.11.0
 

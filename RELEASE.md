@@ -7,7 +7,7 @@ A default version is hard-coded. This is done for people that use the developmen
 This requires additional steps during the release process.
 
 1. Set the `Version` variable to the desired version in the `app/app.go` file.
-2. Set the `productVersion` properties to the desired version in the `wails.json`.
+2. Set the `productVersion` properties to the desired version in the `wails.json`, `wails.mainnet.json`, and `wails.fairground.json`,.
 3. Set the `version` property to the desired version in the `frontend/package.json`.
 4. Clean up the changelog:
    * Remove the `Unreleased` prefix in the title
