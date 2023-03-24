@@ -44,14 +44,48 @@ For more details, see [https://wails.io/docs/gettingstarted/installation#platfor
 
 ### Build
 
-Compile the project using the `build` command.
-
-```sh
-wails build
-```
-
 This will compile your project and save the production-ready binary in the `build/bin`
 directory.
+
+**Note, this application can be bundle specifically for fairground or mainnet.**
+
+#### Using scripts
+
+There are 2 scripts that ease the switch between fairground and mainnet:
+
+**For fairground:**
+
+```sh
+./build-fairground.sh
+```
+
+**For mainnet:**
+
+```sh
+./build-mainnet.sh
+```
+
+Ensure you set the executable mode on the scripts:
+
+```sh
+chmod +x build-*.sh
+```
+
+#### Using `wails`
+
+Compile the project using the `wails build` command. This will produce a software optimized for mainnet.
+
+```sh
+wails build -f -clean
+```
+
+To compile the optimization for fairground:
+
+```sh
+wails build -f -clean -tags fairground
+```
+
+**Note that this step alone won't correctly bundle the application for fairground.** There are hacks to be performed to have the right bundle name, metadata, and icon. See `build-fairgound.sh` script for more detail.
 
 More at the [Wails documentation](https://wails.io/docs/reference/cli#build).
 

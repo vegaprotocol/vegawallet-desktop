@@ -14,13 +14,13 @@ var (
 )
 
 func (h *Handler) IsAppInitialised() (bool, error) {
-	isConfigInit, err := h.isAppInitialised()
+	isAppInit, err := h.isAppInitialised()
 	if err != nil {
-		h.log.Error("Could not verify the application configuration existence", zap.Error(err))
-		return false, fmt.Errorf("could not verify the application configuration existence: %w", err)
+		h.log.Error("Could not verify the application is initialized", zap.Error(err))
+		return false, fmt.Errorf("could not verify the application is initialized: %w", err)
 	}
 
-	return isConfigInit, nil
+	return isAppInit, nil
 }
 
 // isAppInitialised abstract the application initialization state verification,
@@ -39,6 +39,7 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 
 	cfg := app.DefaultConfig()
 	cfg.VegaHome = req.VegaHome
+	cfg.BoardingDone()
 
 	if err := h.configLoader.SaveConfig(cfg); err != nil {
 		h.log.Error("Could not save the application configuration", zap.Error(err))

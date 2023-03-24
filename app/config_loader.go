@@ -15,9 +15,19 @@ type ConfigLoader struct {
 }
 
 func NewConfigLoader() (*ConfigLoader, error) {
-	configFilePath, err := paths.CreateDefaultConfigPathFor(paths.WalletAppDefaultConfigFile)
+	var relConfigFilePath paths.ConfigPath
+	switch OptimizedFor {
+	case "mainnet":
+		relConfigFilePath = paths.WalletAppDefaultConfigFile
+		break
+	case "fairground":
+		relConfigFilePath = paths.JoinConfigPath(paths.WalletAppConfigHome, "config.fairground.toml")
+		break
+	}
+
+	configFilePath, err := paths.CreateDefaultConfigPathFor(relConfigFilePath)
 	if err != nil {
-		return nil, fmt.Errorf("could not create configuration file at %s: %w", paths.WalletAppDefaultConfigFile, err)
+		return nil, fmt.Errorf("could not create configuration file at %q: %w", relConfigFilePath, err)
 	}
 
 	return &ConfigLoader{
@@ -26,27 +36,76 @@ func NewConfigLoader() (*ConfigLoader, error) {
 }
 
 func (l *ConfigLoader) IsConfigInitialised() (bool, error) {
-	return vgfs.FileExists(l.configFilePath)
+	configExists, err := vgfs.FileExists(l.configFilePath)
+	if err != nil {
+		return false, fmt.Errorf("could not verify the application configuration exists: %w", err)
+	}
+
+	if !configExists {
+		return false, err
+	}
+
+	cfg, err := l.GetConfig()
+	if err != nil {
+		return false, err
+	}
+
+	return cfg.onBoardingDone, nil
 }
 
 func (l *ConfigLoader) GetConfig() (Config, error) {
-	cfg := DefaultConfig()
+	cfgFile := configFile{}
 
-	if err := paths.ReadStructuredFile(l.configFilePath, &cfg); err != nil {
+	if err := paths.ReadStructuredFile(l.configFilePath, &cfgFile); err != nil {
 		return Config{}, fmt.Errorf("could not read configuration file at %q: %w", l.configFilePath, err)
 	}
 
-	if err := cfg.EnsureIsValid(); err != nil {
-		return Config{}, fmt.Errorf("the configuration at %q is invalid: %w", l.configFilePath, err)
+	config := DefaultConfig()
+
+	config.VegaHome = cfgFile.VegaHome
+	config.LogLevel = cfgFile.LogLevel
+	config.DefaultNetwork = cfgFile.DefaultNetwork
+	config.Telemetry = cfgFile.Telemetry
+	config.onBoardingDone = cfgFile.OnBoardingDone
+
+	if err := config.EnsureIsValid(); err != nil {
+		return Config{}, fmt.Errorf("the configuration for %q at %q is invalid: %w", OptimizedFor, l.configFilePath, err)
 	}
 
-	return cfg, nil
+	return config, nil
 }
 
 func (l *ConfigLoader) SaveConfig(config Config) error {
+	cfg := configFile{}
+
+	configExists, err := vgfs.FileExists(l.configFilePath)
+	if err != nil {
+		return fmt.Errorf("could not verify the application configuration exists: %w", err)
+	}
+
+	if configExists {
+		if err := paths.ReadStructuredFile(l.configFilePath, &cfg); err != nil {
+			return fmt.Errorf("could not read configuration file at %q: %w", l.configFilePath, err)
+		}
+	}
+
+	cfg.VegaHome = config.VegaHome
+	cfg.LogLevel = config.LogLevel
+	cfg.DefaultNetwork = config.DefaultNetwork
+	cfg.Telemetry = config.Telemetry
+	cfg.OnBoardingDone = config.onBoardingDone
+
 	if err := paths.WriteStructuredFile(l.configFilePath, config); err != nil {
 		return fmt.Errorf("could not write configuration file: %w", err)
 	}
 
 	return nil
+}
+
+type configFile struct {
+	LogLevel       string          `json:"logLevel"`
+	VegaHome       string          `json:"vegaHome"`
+	DefaultNetwork string          `json:"defaultNetwork"`
+	Telemetry      TelemetryConfig `json:"telemetry"`
+	OnBoardingDone bool            `json:"onBoardingDone"`
 }

@@ -18,11 +18,11 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
-//go:embed frontend/dist
-var assets embed.FS
-
 //go:embed build/appicon.png
 var icon []byte
+
+//go:embed frontend/dist
+var assets embed.FS
 
 func main() {
 	log := startupLogger()
@@ -39,8 +39,8 @@ func main() {
 	// Create an instance of the handler structure
 	handler := backend.NewHandler(icon)
 
-	log.Info(fmt.Sprintf("Starting the application: PID(%d), date(%v)", pid, date))
-	defer log.Info(fmt.Sprintf("The application exited: PID(%d), date(%v)", pid, date))
+	log.Info(fmt.Sprintf("Starting the application: OptmizedFor(%s), PID(%d), date(%v)", app.OptimizedFor, pid, date))
+	defer log.Info(fmt.Sprintf("The application exited: OptmizedFor(%s), PID(%d), date(%v)", app.OptimizedFor, pid, date))
 
 	// Create application with options
 	if err := wails.Run(&options.App{
@@ -81,7 +81,7 @@ func main() {
 			Icon: icon,
 		},
 	}); err != nil {
-		log.Fatal(fmt.Sprintf("The application encountered an error while running: %v, PID(%d), date(%v)", err, pid, date))
+		log.Fatal(fmt.Sprintf("The application encountered an error while running: %v, OptmizedFor(%s), PID(%d), date(%v)", err, app.OptimizedFor, pid, date))
 	}
 }
 
