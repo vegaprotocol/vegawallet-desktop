@@ -8,6 +8,8 @@ import { useWalletClient } from './hooks/use-wallet-client'
 import { useWalletRuntime } from './hooks/use-wallet-runtime'
 import { useWalletService } from './hooks/use-wallet-service'
 
+const truthy = ['true', '1', 'yes', 'y', 'on']
+
 function App() {
   useWailsLink()
   const service = useWalletService()
@@ -21,10 +23,15 @@ function App() {
       runtime={runtime}
       service={service}
       features={{
-        NETWORK_COMPATIBILITY_WARNING:
-          import.meta.env.VITE_FEATURE_NETWORK_WARNING !== 'false',
-        TELEMETRY_CHECK:
-          import.meta.env.VITE_FEATURE_TELEMETRY_CHECK !== 'false'
+        NETWORK_COMPATIBILITY_WARNING: truthy.includes(
+          import.meta.env.VITE_FEATURE_NETWORK_WARNING
+        ),
+        TELEMETRY_CHECK: truthy.includes(
+          import.meta.env.VITE_FEATURE_TELEMETRY_CHECK
+        ),
+        FAIRGROUND_MODE: truthy.includes(
+          import.meta.env.VITE_FEATURE_FAIRGROUND_MODE
+        )
       }}
     />
   )
