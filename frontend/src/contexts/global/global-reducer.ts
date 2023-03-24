@@ -1,10 +1,5 @@
 import { extendKeypair, sortWallet } from '../../lib/wallet-helpers'
-import type {
-  Config,
-  FirstPublicKey,
-  NamedPubKey,
-  Network
-} from '../../wailsjs/go/models'
+import {config, network, wallet} from '../../wailsjs/go/models'
 import type {
   GlobalState,
   KeyPair,
@@ -50,11 +45,11 @@ export type GlobalAction =
   | {
       type: 'INIT_APP'
       isInit: boolean
-      config: Config
+      config: config.Config
       wallets: string[]
       network: string
       networks: string[]
-      networkConfig: Network | null
+      networkConfig: network.Network | null
       presetNetworks: NetworkPreset[]
       startService: boolean
       console: ProxyApp
@@ -72,7 +67,7 @@ export type GlobalAction =
     }
   | {
       type: 'SET_CONFIG'
-      config: Config
+      config: config.Config
     }
   | {
       type: 'START_ONBOARDING'
@@ -84,7 +79,7 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
-      key: FirstPublicKey
+      key: wallet.FirstPublicKey
     }
   | {
       type: 'ADD_WALLETS'
@@ -93,12 +88,12 @@ export type GlobalAction =
   | {
       type: 'SET_KEYPAIRS'
       wallet: string
-      keypairs: NamedPubKey[]
+      keypairs: wallet.NamedPubKey[]
     }
   | {
       type: 'ADD_KEYPAIR'
       wallet: string
-      keypair: FirstPublicKey
+      keypair: wallet.FirstPublicKey
     }
   | {
       type: 'CHANGE_WALLET'
@@ -120,12 +115,12 @@ export type GlobalAction =
       type: 'SET_DRAWER'
       open: boolean
     }
-  // Network
+  // network.Network
   | {
       type: 'SET_NETWORKS'
       network: string | null
       networks: string[]
-      config: Network | null
+      config: network.Network | null
     }
   | {
       type: 'SET_PRESETS'
@@ -134,22 +129,22 @@ export type GlobalAction =
   | {
       type: 'CHANGE_NETWORK'
       network: string
-      config: Network
+      config: network.Network
     }
   | {
       type: 'UPDATE_NETWORK_CONFIG'
-      config: Network
+      config: network.Network
     }
   | {
       type: 'ADD_NETWORK'
       network: string
-      config: Network
+      config: network.Network
     }
   | {
       type: 'ADD_NETWORKS'
       networks: string[]
       network: string
-      networkConfig: Network
+      networkConfig: network.Network
     }
   | {
       type: 'START_SERVICE'

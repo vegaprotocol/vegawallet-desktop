@@ -1,8 +1,8 @@
 import React from 'react'
-import type { Thunk } from 'react-hook-thunk-reducer'
+import type {Thunk} from 'react-hook-thunk-reducer'
 
-import type { Config, NamedPubKey, Network } from '../../wailsjs/go/models'
-import type { GlobalAction } from './global-reducer'
+import {config, network, wallet} from '../../wailsjs/go/models'
+import type {GlobalAction} from './global-reducer'
 
 export enum AppStatus {
   Pending = 'Pending',
@@ -11,7 +11,7 @@ export enum AppStatus {
   Onboarding = 'Onboarding'
 }
 
-export interface KeyPair extends NamedPubKey {
+export interface KeyPair extends wallet.NamedPubKey {
   publicKeyShort: string
 }
 
@@ -49,12 +49,12 @@ export interface GlobalState {
     wallets: string[]
     networks: string[]
   }
-  config: Config | null
+  config: config.Config | null
   // Network
   network: string | null
   networks: string[]
   presets: NetworkPreset[]
-  networkConfig: Network | null
+  networkConfig: network.Network | null
   serviceRunning: boolean
   serviceUrl: string
   console: ProxyApp

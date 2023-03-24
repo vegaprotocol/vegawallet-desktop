@@ -139,9 +139,15 @@ func (h *Handler) StartService(req *StartServiceRequest) (bool, error) {
 			case <-ctx.Done():
 				h.log.Info("Stop listening to channels")
 				return
-			case consentRequest := <-h.service.ConsentRequestsChan:
+			case consentRequest, ok := <-h.service.ConsentRequestsChan:
+				if !ok {
+					return
+				}
 				h.emitNewConsentRequestEvent(consentRequest)
-			case sentTransaction := <-h.service.SentTransactionsChan:
+			case sentTransaction, ok := <-h.service.SentTransactionsChan:
+				if !ok {
+					return
+				}
 				h.emitTransactionSentEvent(sentTransaction)
 			}
 		}

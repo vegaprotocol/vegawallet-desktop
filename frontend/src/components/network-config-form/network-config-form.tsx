@@ -5,7 +5,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
-import type { Network } from '../../wailsjs/go/models'
+import { network } from '../../wailsjs/go/models'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
 import { Select } from '../select'
@@ -26,8 +26,8 @@ interface FormFields {
 }
 
 export interface NetworkConfigFormProps {
-  config: Network
-  onSubmit: (config: Network) => void
+  config: network.Network
+  onSubmit: (config: network.Network) => void
 }
 
 export const NetworkConfigForm = ({
@@ -258,8 +258,8 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
   )
 }
 
-function fieldsToConfig(config: Network, values: FormFields): Network {
-  return {
+function fieldsToConfig(config: network.Network, values: FormFields): network.Network {
+  return new network.Network({
     name: config.name,
     level: values.logLevel,
     tokenExpiry: values.tokenExpiry,
@@ -282,10 +282,10 @@ function fieldsToConfig(config: Network, values: FormFields): Network {
       graphQl: config.api.graphQl,
       rest: config.api.rest
     }
-  }
+  })
 }
 
-function configToFields(config: Network): FormFields {
+function configToFields(config: network.Network): FormFields {
   return {
     logLevel: config.level as string,
     tokenExpiry: config.tokenExpiry as string,
