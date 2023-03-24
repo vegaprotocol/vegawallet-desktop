@@ -1,19 +1,13 @@
-import { requestPassphrase } from '../../components/passphrase-modal'
-import { AppToaster } from '../../components/toaster'
-import { DataSources } from '../../config/data-sources'
-import { Intent } from '../../config/intent'
-import { createLogger } from '../../lib/logging'
-import { Service } from '../../service'
-import type {
-  FirstPublicKey,
-  GetServiceStateResponse,
-  Network,
-  StartServiceRequest
-} from '../../wailsjs/go/models'
-import { GenerateKeyRequest } from '../../wailsjs/go/models'
-import type { GlobalDispatch, GlobalState } from './global-context'
-import { ProxyName } from './global-context'
-import type { GlobalAction } from './global-reducer'
+import {requestPassphrase} from '../../components/passphrase-modal'
+import {AppToaster} from '../../components/toaster'
+import {DataSources} from '../../config/data-sources'
+import {Intent} from '../../config/intent'
+import {createLogger} from '../../lib/logging'
+import {Service} from '../../service'
+import {backend, network, wallet} from '../../wailsjs/go/models'
+import type {GlobalDispatch, GlobalState} from './global-context'
+import {ProxyName} from './global-context'
+import type {GlobalAction} from './global-reducer'
 
 const logger = createLogger('GlobalActions')
 
@@ -35,17 +29,17 @@ export function initAppAction() {
       version = result[1]
       presets = result[2]
 
-      dispatch({ type: 'SET_VERSION', version: version.version })
-      dispatch({ type: 'SET_PRESETS', presets })
+      dispatch({type: 'SET_VERSION', version: version.version})
+      dispatch({type: 'SET_PRESETS', presets})
 
       if (!isInit) {
         const existingConfig = await Service.SearchForExistingConfiguration()
-        dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
+        dispatch({type: 'START_ONBOARDING', existing: existingConfig})
         return
       }
       // else continue with app setup, get wallets/networks
     } catch (err) {
-      dispatch({ type: 'INIT_APP_FAILED' })
+      dispatch({type: 'INIT_APP_FAILED'})
       logger.error(err)
     }
 
@@ -61,7 +55,7 @@ export function initAppAction() {
 
       const defaultNetwork = config.defaultNetwork
         ? networks.networks.find(n => n === config.defaultNetwork) ||
-          networks.networks[0]
+        networks.networks[0]
         : networks.networks[0]
 
       const defaultNetworkConfig = defaultNetwork
@@ -81,7 +75,7 @@ export function initAppAction() {
 
       const canStartService = Boolean(defaultNetwork && defaultNetworkConfig)
       if (canStartService) {
-        await Service.StartService({ network: defaultNetwork })
+        await Service.StartService({network: defaultNetwork})
       }
 
       dispatch({
@@ -106,7 +100,7 @@ export function initAppAction() {
         }
       })
     } catch (err) {
-      dispatch({ type: 'INIT_APP_FAILED' })
+      dispatch({type: 'INIT_APP_FAILED'})
       logger.error(err)
     }
   }
@@ -118,8 +112,8 @@ export function completeOnboardAction(onComplete: () => void) {
     try {
       const serviceState = await Service.GetServiceState()
       if (!serviceState.running && state.network && state.networkConfig) {
-        await Service.StartService({ network: state.network })
-        dispatch({ type: 'START_SERVICE', port: state.networkConfig.port })
+        await Service.StartService({network: state.network})
+        dispatch({type: 'START_SERVICE', port: state.networkConfig.port})
       }
     } catch (err) {
       logger.error(err)
@@ -132,33 +126,33 @@ export function completeOnboardAction(onComplete: () => void) {
 }
 
 export function addWalletAction(
-  wallet: string,
-  key: FirstPublicKey
+  walletName: string,
+  key: wallet.FirstPublicKey
 ): GlobalAction {
-  return { type: 'ADD_WALLET', wallet, key }
+  return {type: 'ADD_WALLET', wallet: walletName, key}
 }
 
-export function addKeypairAction(wallet: string) {
+export function addKeypairAction(walletName: string) {
   return async (dispatch: GlobalDispatch) => {
     logger.debug('AddKeyPair')
     try {
       const passphrase = await requestPassphrase()
       const res = await Service.GenerateKey(
-        new GenerateKeyRequest({
-          wallet,
-          passphrase,
+        new wallet.GenerateKeyRequest({
+          wallet: walletName,
+          passphrase: passphrase,
           metadata: []
         })
       )
 
       dispatch({
         type: 'ADD_KEYPAIR',
-        wallet,
+        wallet: walletName,
         keypair: res
       })
     } catch (err) {
       if (err !== 'dismissed') {
-        AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+        AppToaster.show({message: `${err}`, intent: Intent.DANGER})
         logger.error(err)
       }
     }
@@ -171,7 +165,7 @@ export function getKeysAction(wallet: string) {
     const selectedWallet = state.wallets.find(w => w.name === wallet)
 
     if (selectedWallet?.keypairs) {
-      dispatch({ type: 'ACTIVATE_WALLET', wallet })
+      dispatch({type: 'ACTIVATE_WALLET', wallet})
       logger.debug('ChangeWallet')
     } else {
       try {
@@ -183,10 +177,10 @@ export function getKeysAction(wallet: string) {
         if (keys instanceof Error) {
           throw keys
         }
-        dispatch({ type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || [] })
+        dispatch({type: 'SET_KEYPAIRS', wallet, keypairs: keys.keys || []})
       } catch (err) {
         if (err !== 'dismissed') {
-          AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+          AppToaster.show({message: `${err}`, intent: Intent.DANGER})
           logger.error(err)
         }
       }
@@ -195,11 +189,11 @@ export function getKeysAction(wallet: string) {
 }
 
 export function setPassphraseModalAction(open: boolean): GlobalAction {
-  return { type: 'SET_PASSPHRASE_MODAL', open }
+  return {type: 'SET_PASSPHRASE_MODAL', open}
 }
 
 export function setDrawerAction(open: boolean): GlobalAction {
-  return { type: 'SET_DRAWER', open }
+  return {type: 'SET_DRAWER', open}
 }
 
 export function chnageWalletAction(wallet: string): GlobalAction {
@@ -226,7 +220,7 @@ export function changeNetworkAction(network: string) {
 
     try {
       await stopProxies()
-      dispatch({ type: 'STOP_ALL_PROXIES' })
+      dispatch({type: 'STOP_ALL_PROXIES'})
 
       await Service.UpdateAppConfig({
         ...state.config,
@@ -252,7 +246,7 @@ export function changeNetworkAction(network: string) {
 
 export function updateNetworkConfigAction(
   editingNetwork: string,
-  networkConfig: Network
+  networkConfig: network.Network
 ) {
   return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
     const state = getState()
@@ -269,7 +263,7 @@ export function updateNetworkConfigAction(
       }
 
       await stopProxies()
-      dispatch({ type: 'STOP_ALL_PROXIES' })
+      dispatch({type: 'STOP_ALL_PROXIES'})
 
       const isSuccessful = await Service.SaveNetworkConfig(networkConfig)
 
@@ -278,9 +272,9 @@ export function updateNetworkConfigAction(
           message: 'Configuration saved',
           intent: Intent.SUCCESS
         })
-        dispatch({ type: 'UPDATE_NETWORK_CONFIG', config: networkConfig })
+        dispatch({type: 'UPDATE_NETWORK_CONFIG', config: networkConfig})
       } else {
-        AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
+        AppToaster.show({message: 'Error: Unknown', intent: Intent.DANGER})
       }
 
       if (!state.network) {
@@ -290,22 +284,22 @@ export function updateNetworkConfigAction(
       await Service.StartService({
         network: state.network
       })
-      dispatch({ type: 'START_SERVICE', port: networkConfig.port })
+      dispatch({type: 'START_SERVICE', port: networkConfig.port})
     } catch (err) {
-      AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
+      AppToaster.show({message: `${err}`, intent: Intent.DANGER})
       logger.error(err)
     }
   }
 }
 
-export function addNetworkAction(network: string, config: Network) {
+export function addNetworkAction(network: string, config: network.Network) {
   return async (dispatch: GlobalDispatch) => {
     // If no service running start service for newly added network
     try {
       const status = await Service.GetServiceState()
       if (!status.running) {
-        await Service.StartService({ network })
-        dispatch({ type: 'START_SERVICE', port: config.port })
+        await Service.StartService({network})
+        dispatch({type: 'START_SERVICE', port: config.port})
       }
     } catch (err) {
       logger.error(err)
@@ -326,7 +320,7 @@ export function stopServiceAction() {
       const status = await Service.GetServiceState()
       if (status.running) {
         await Service.StopService()
-        dispatch({ type: 'STOP_SERVICE' })
+        dispatch({type: 'STOP_SERVICE'})
       }
     } catch (err) {
       logger.error(err)
@@ -376,7 +370,7 @@ export function stopProxyAction(proxyAppName: ProxyName) {
         await proxyFns.Stop()
       }
 
-      dispatch({ type: 'STOP_PROXY', app: proxyAppName })
+      dispatch({type: 'STOP_PROXY', app: proxyAppName})
     } catch (err) {
       logger.error(err)
     }
@@ -385,8 +379,8 @@ export function stopProxyAction(proxyAppName: ProxyName) {
 
 const ProxyFns: {
   [A in ProxyName]: {
-    GetState: () => Promise<GetServiceStateResponse>
-    Start: (req: StartServiceRequest) => Promise<boolean | Error>
+    GetState: () => Promise<backend.GetServiceStateResponse>
+    Start: (req: backend.StartServiceRequest) => Promise<boolean | Error>
     Stop: () => Promise<boolean | Error>
   }
 } = {

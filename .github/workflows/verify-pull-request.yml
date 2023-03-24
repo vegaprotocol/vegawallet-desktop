@@ -22,7 +22,7 @@ jobs:
     name: Verify CHANGELOG update
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       - name: Check changelog
         uses: Zomzog/changelog-checker@v1.2.0

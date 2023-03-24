@@ -59,10 +59,10 @@ func (h *Handler) ConsentToTransaction(req *ConsentToTransactionRequest) error {
 		return ErrConsentRequestNotFound
 	}
 	if req.Decision {
-		h.log.Info("user approved transaction", zap.Any("transaction", consentRequest))
+		h.log.Info("user approved transaction", zap.Any("transaction", consentRequest.TxID))
 		consentRequest.Confirmation <- service.ConsentConfirmation{Decision: true}
 	} else {
-		h.log.Info("user declined transaction", zap.Any("transaction", consentRequest))
+		h.log.Info("user declined transaction", zap.Any("transaction", consentRequest.TxID))
 		consentRequest.Confirmation <- service.ConsentConfirmation{Decision: false}
 	}
 
@@ -82,7 +82,7 @@ func (h *Handler) GetConsentRequest(req *GetConsentRequestRequest) (*ConsentRequ
 	m := jsonpb.Marshaler{}
 	marshaledTransaction, err := m.MarshalToString(consentRequest.Tx)
 	if err != nil {
-		panic("couldn't marshal transaction")
+		h.log.Error("couldn't marshal transaction", zap.Error(err))
 	}
 
 	return &ConsentRequest{
@@ -98,7 +98,7 @@ func (h *Handler) ListConsentRequests() (*ListConsentRequestsResponse, error) {
 
 	consentRequests := []*ConsentRequest{}
 	h.service.ConsentRequests.Range(func(consentRequest service.ConsentRequest) bool {
-		consentRequests = append(consentRequests, toSerializableConsentRequest(consentRequest))
+		consentRequests = append(consentRequests, h.toSerializableConsentRequest(consentRequest))
 		return true
 	})
 
@@ -113,7 +113,7 @@ func (h *Handler) ListSentTransactions() (*ListSentTransactionsResponse, error) 
 
 	sentTransactions := []*SentTransaction{}
 	h.service.SentTransactions.Range(func(sentTransaction service.SentTransaction) bool {
-		sentTransactions = append(sentTransactions, toSerializableSentTransaction(sentTransaction))
+		sentTransactions = append(sentTransactions, h.toSerializableSentTransaction(sentTransaction))
 		return true
 	})
 
@@ -134,7 +134,8 @@ func (h *Handler) emitTransactionSentEvent(sentTransaction service.SentTransacti
 	h.log.Info(fmt.Sprintf("Received a \"transaction_sent\" event with ID: %s", sentTransaction.TxID))
 	h.service.SentTransactions.Store(sentTransaction)
 	go func() {
-		runtime.EventsEmit(h.ctx, TransactionSentEvent, toSerializableSentTransaction(sentTransaction))
+		runtime.WindowShow(h.ctx)
+		runtime.EventsEmit(h.ctx, TransactionSentEvent, h.toSerializableSentTransaction(sentTransaction))
 	}()
 }
 
@@ -142,15 +143,16 @@ func (h *Handler) emitNewConsentRequestEvent(consentRequest service.ConsentReque
 	h.log.Info(fmt.Sprintf("Received a \"new_consent_request\" event with ID: %s", consentRequest.TxID))
 	h.service.ConsentRequests.Store(consentRequest)
 	go func() {
-		runtime.EventsEmit(h.ctx, NewConsentRequestEvent, toSerializableConsentRequest(consentRequest))
+		runtime.WindowShow(h.ctx)
+		runtime.EventsEmit(h.ctx, NewConsentRequestEvent, h.toSerializableConsentRequest(consentRequest))
 	}()
 }
 
-func toSerializableConsentRequest(consentRequest service.ConsentRequest) *ConsentRequest {
+func (h *Handler) toSerializableConsentRequest(consentRequest service.ConsentRequest) *ConsentRequest {
 	m := jsonpb.Marshaler{}
 	marshaledTransaction, err := m.MarshalToString(consentRequest.Tx)
 	if err != nil {
-		panic("couldn't marshal transaction")
+		h.log.Error("couldn't marshal transaction", zap.Error(err))
 	}
 
 	return &ConsentRequest{
@@ -160,11 +162,11 @@ func toSerializableConsentRequest(consentRequest service.ConsentRequest) *Consen
 	}
 }
 
-func toSerializableSentTransaction(sentTransaction service.SentTransaction) *SentTransaction {
+func (h *Handler) toSerializableSentTransaction(sentTransaction service.SentTransaction) *SentTransaction {
 	m := jsonpb.Marshaler{}
 	marshaledTransaction, err := m.MarshalToString(sentTransaction.Tx)
 	if err != nil {
-		panic("couldn't marshal transaction")
+		h.log.Error("couldn't marshal transaction", zap.Error(err))
 	}
 
 	serializableSentTransaction := &SentTransaction{

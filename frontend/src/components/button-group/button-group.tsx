@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from 'react'
+import type {HTMLAttributes} from 'react'
 import React from 'react'
 
 interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
@@ -7,11 +7,11 @@ interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function ButtonGroup({
-  children,
-  orientation = 'horizontal',
-  style,
-  ...props
-}: ButtonGroupProps) {
+                              children,
+                              orientation = 'horizontal',
+                              style,
+                              ...props
+                            }: ButtonGroupProps) {
   return (
     <div
       {...props}
@@ -26,11 +26,9 @@ export function ButtonGroup({
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child, {
-            style: {
-              flexGrow: 1,
-              flexBasis: 0,
-              ...child.props.style
-            }
+            flexGrow: 1,
+            flexBasis: 0,
+            ...child.props.style
           })
         }
 

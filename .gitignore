@@ -1,14 +1,8 @@
 # Created when applications are built
 build/bin
-
-# Created when frontend is built
-frontend/build
-frontend/dist
-
-# Cypress
-frontend/automation/.nyc_output/
-frontend/automation/test-wallets/
-frontend/automation/network-config/
+# Auto-generated files during application build
+build/windows/installer
+build/windows/icon.ico
 
 # Misc
 .DS_Store

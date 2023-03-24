@@ -1,6 +1,17 @@
 # Changelog
 
-## ## 0.2.1
+## 0.2.2
+
+Compatible with 0.53.2
+
+### 🛠 Improvements
+- Bring the app to front when transaction needs to be reviewed.
+
+### 🐛 Fixes
+- Do not crash when starting for the first time, ever.
+
+
+## 0.2.1
 
 ### 🐛 Fixes
 - [252](https://github.com/vegaprotocol/vegawallet-desktop/issues/252) - Do not crash on Windows when creating log files

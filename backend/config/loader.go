@@ -60,7 +60,25 @@ func (l *Loader) IsConfigInitialised() (bool, error) {
 }
 
 func (l *Loader) GetConfig() (Config, error) {
-	config := Config{}
+	exists, err := vgfs.FileExists(l.configFilePath)
+	if err != nil {
+		return Config{}, fmt.Errorf("could not verify the application configuration exists: %w", err)
+	}
+
+	config := Config{
+		LogLevel:       zap.InfoLevel.String(),
+		VegaHome:       "",
+		DefaultNetwork: "",
+		Telemetry: &TelemetryConfig{
+			ConsentAsked: false,
+			Enabled:      true,
+		},
+	}
+
+	if !exists {
+		return config, nil
+	}
+
 	if err := paths.ReadStructuredFile(l.configFilePath, &config); err != nil {
 		return Config{}, fmt.Errorf("couldn't read configuration file: %w", err)
 	}
