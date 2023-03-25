@@ -46,7 +46,7 @@ func (h *Handler) StartConsole(req *StartServiceRequest) (bool, error) {
 		return false, network.NewNetworkDoesNotExistError(req.Network)
 	}
 
-	cfg, err := netStore.GetNetwork(req.Network)
+	cfg, err := getNetwork(netStore, req.Network)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise network store: %v", err))
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)
@@ -147,7 +147,7 @@ func (h *Handler) StartTokenDApp(req *StartServiceRequest) (bool, error) {
 		return false, network.NewNetworkDoesNotExistError(req.Network)
 	}
 
-	cfg, err := netStore.GetNetwork(req.Network)
+	cfg, err := getNetwork(netStore, req.Network)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise network store: %v", err))
 		return false, fmt.Errorf("couldn't initialise network store: %w", err)

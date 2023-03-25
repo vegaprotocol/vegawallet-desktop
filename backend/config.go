@@ -4,13 +4,11 @@ import (
 	"fmt"
 
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
-	"code.vegaprotocol.io/vegawallet/network"
 	"code.vegaprotocol.io/vegawallet/wallet"
 )
 
 type SearchForExistingConfigurationResponse struct {
-	Wallets  []string `json:"wallets"`
-	Networks []string `json:"networks"`
+	Wallets []string `json:"wallets"`
 }
 
 // SearchForExistingConfiguration searches for existing wallets and networks.
@@ -29,17 +27,10 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 		return nil, err
 	}
 
-	netStore, err := h.getNetworksStore(defaultCfg)
-	if err != nil {
-		return nil, err
-	}
-
 	listWallets, _ := wallet.ListWallets(wStore)
-	listNetworks, _ := network.ListNetworks(netStore)
 
 	return &SearchForExistingConfigurationResponse{
-		Wallets:  listWallets.Wallets,
-		Networks: listNetworks.Networks,
+		Wallets: listWallets.Wallets,
 	}, nil
 }
 

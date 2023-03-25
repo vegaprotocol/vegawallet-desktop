@@ -240,7 +240,6 @@ export namespace backend {
 	}
 	export class SearchForExistingConfigurationResponse {
 	    wallets: string[];
-	    networks: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new SearchForExistingConfigurationResponse(source);
@@ -249,7 +248,6 @@ export namespace backend {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.wallets = source["wallets"];
-	        this.networks = source["networks"];
 	    }
 	}
 	export class StartServiceRequest {
@@ -288,6 +286,7 @@ export namespace config {
 	    vegaHome: string;
 	    defaultNetwork: string;
 	    telemetry?: TelemetryConfig;
+	    onBoardingDone: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -299,6 +298,7 @@ export namespace config {
 	        this.vegaHome = source["vegaHome"];
 	        this.defaultNetwork = source["defaultNetwork"];
 	        this.telemetry = this.convertValues(source["telemetry"], TelemetryConfig);
+	        this.onBoardingDone = source["onBoardingDone"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

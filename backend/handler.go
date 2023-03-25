@@ -9,6 +9,7 @@ import (
 	"code.vegaprotocol.io/vegawallet-desktop/backend/config"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/proxy"
 	"code.vegaprotocol.io/vegawallet-desktop/backend/service"
+	"code.vegaprotocol.io/vegawallet/network"
 	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
 	svcstore "code.vegaprotocol.io/vegawallet/service/store/v1"
 	wstore "code.vegaprotocol.io/vegawallet/wallet/store/v1"
@@ -93,10 +94,46 @@ func (h *Handler) Shutdown(_ context.Context) {
 func (h *Handler) IsAppInitialised() (bool, error) {
 	isConfigInit, err := h.configLoader.IsConfigInitialised()
 	if err != nil {
-		return false, fmt.Errorf("couldn't verify application configuration state: %w", err)
+		h.log.Error("Could not verify the application is initialized", zap.Error(err))
+		return false, fmt.Errorf("could not verify the application is initialized: %w", err)
 	}
 
-	return isConfigInit, nil
+	if !isConfigInit {
+		return false, nil
+	}
+	cfg, err := h.configLoader.GetConfig()
+	if err != nil {
+		return false, err
+	}
+
+	netStore, err := h.getNetworksStore(cfg)
+	if err != nil {
+		return false, err
+	}
+
+	for _, defNet := range DefaultNetworks {
+		exist, err := netStore.NetworkExists(defNet.Name)
+		if err != nil {
+			continue
+		}
+		if !exist {
+			res, err := network.ImportNetworkFromSource(netStore, network.NewReaders(), &network.ImportNetworkFromSourceRequest{
+				URL: defNet.URL,
+			})
+			if err != nil {
+				h.log.Error("Could not import a network",
+					zap.String("network", defNet.Name),
+					zap.Error(err),
+				)
+			}
+			h.log.Info("Successfully Imported the network",
+				zap.String("network", res.Name),
+				zap.String("path", res.FilePath),
+			)
+		}
+	}
+
+	return true, nil
 }
 
 type InitialiseAppRequest struct {
@@ -116,11 +153,51 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 			ConsentAsked: false,
 			Enabled:      true,
 		},
+		OnBoardingDone: true,
 	}
 
 	if err := h.configLoader.SaveConfig(*cfg); err != nil {
 		return err
 	}
+
+	netStore, err := h.getNetworksStore(*cfg)
+	if err != nil {
+		return err
+	}
+
+	existingNets, err := netStore.ListNetworks()
+	if err != nil {
+		return fmt.Errorf("could not list existing network: %w", err)
+	}
+
+	h.log.Info("Delete all existing network to ensure clean state")
+	for _, existingNet := range existingNets {
+		if err := netStore.DeleteNetwork(existingNet); err != nil {
+			h.log.Error("Could not delete an existing network during initialization",
+				zap.String("network", existingNet),
+				zap.Error(err),
+			)
+		}
+		h.log.Info("Successfully deleted the network", zap.String("network", existingNet))
+	}
+
+	h.log.Info("Import networks for which this software is optimized")
+	for _, defaultNetwork := range DefaultNetworks {
+		res, err := network.ImportNetworkFromSource(netStore, network.NewReaders(), &network.ImportNetworkFromSourceRequest{
+			URL: defaultNetwork.URL,
+		})
+		if err != nil {
+			h.log.Error("Could not import a network during initialization",
+				zap.String("network", defaultNetwork.Name),
+				zap.Error(err),
+			)
+		}
+		h.log.Info("Successfully imported the network",
+			zap.String("network", res.Name),
+			zap.String("path", res.FilePath),
+		)
+	}
+
 	return nil
 }
 

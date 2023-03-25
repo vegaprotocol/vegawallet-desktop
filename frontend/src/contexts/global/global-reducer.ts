@@ -3,7 +3,6 @@ import {config, network, wallet} from '../../wailsjs/go/models'
 import type {
   GlobalState,
   KeyPair,
-  NetworkPreset,
   ProxyApp,
   Wallet
 } from './global-context'
@@ -19,13 +18,11 @@ export const initialGlobalState: GlobalState = {
   drawerOpen: false,
   onboarding: {
     wallets: [],
-    networks: []
   },
   config: null,
   // network
   network: null,
   networks: [],
-  presets: [],
   networkConfig: null,
   serviceRunning: false,
   serviceUrl: '',
@@ -50,7 +47,6 @@ export type GlobalAction =
       network: string
       networks: string[]
       networkConfig: network.Network | null
-      presetNetworks: NetworkPreset[]
       startService: boolean
       console: ProxyApp
       tokenDapp: ProxyApp
@@ -73,7 +69,6 @@ export type GlobalAction =
       type: 'START_ONBOARDING'
       existing: {
         wallets: string[]
-        networks: string[]
       }
     }
   | {
@@ -121,10 +116,6 @@ export type GlobalAction =
       network: string | null
       networks: string[]
       config: network.Network | null
-    }
-  | {
-      type: 'SET_PRESETS'
-      presets: NetworkPreset[]
     }
   | {
       type: 'CHANGE_NETWORK'
@@ -185,7 +176,6 @@ export function globalReducer(
         network: action.network,
         networks: action.networks,
         networkConfig: action.networkConfig,
-        presets: action.presetNetworks,
         status: action.isInit ? AppStatus.Initialised : AppStatus.Failed,
         serviceRunning: action.startService,
         serviceUrl: action.networkConfig
@@ -353,12 +343,6 @@ export function globalReducer(
         network: action.network,
         networks: action.networks.sort(),
         networkConfig: action.config
-      }
-    }
-    case 'SET_PRESETS': {
-      return {
-        ...state,
-        presets: action.presets
       }
     }
     case 'CHANGE_NETWORK': {

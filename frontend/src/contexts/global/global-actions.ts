@@ -1,6 +1,5 @@
 import {requestPassphrase} from '../../components/passphrase-modal'
 import {AppToaster} from '../../components/toaster'
-import {DataSources} from '../../config/data-sources'
 import {Intent} from '../../config/intent'
 import {createLogger} from '../../lib/logging'
 import {Service} from '../../service'
@@ -17,20 +16,16 @@ export function initAppAction() {
 
     let isInit
     let version
-    let presets
 
     try {
       const result = await Promise.all([
         Service.IsAppInitialised(),
         Service.GetVersion(),
-        fetch(DataSources.NETWORKS).then(res => res.json())
       ])
       isInit = result[0]
       version = result[1]
-      presets = result[2]
 
       dispatch({type: 'SET_VERSION', version: version.version})
-      dispatch({type: 'SET_PRESETS', presets})
 
       if (!isInit) {
         const existingConfig = await Service.SearchForExistingConfiguration()
@@ -86,7 +81,6 @@ export function initAppAction() {
         network: defaultNetwork,
         networks: networks.networks,
         networkConfig: defaultNetworkConfig,
-        presetNetworks: presets,
         startService: canStartService,
         console: {
           name: ProxyName.Console,

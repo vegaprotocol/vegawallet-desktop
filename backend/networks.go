@@ -4,8 +4,23 @@ import (
 	"errors"
 	"fmt"
 
+	"code.vegaprotocol.io/shared/paths"
 	"code.vegaprotocol.io/vegawallet/network"
+	netstore "code.vegaprotocol.io/vegawallet/network/store/v1"
+	"go.uber.org/zap"
 )
+
+var DefaultNetworks = []DefaultNetwork{
+	{
+		Name: "mainnet1",
+		URL:  "https://raw.githubusercontent.com/vegaprotocol/networks/master/mainnet1/mainnet1.toml",
+	},
+}
+
+type DefaultNetwork struct {
+	Name string
+	URL  string
+}
 
 func (h *Handler) ImportNetwork(req *network.ImportNetworkFromSourceRequest) (*network.ImportNetworkFromSourceResponse, error) {
 	h.log.Debug("Entering ImportNetwork")
@@ -42,13 +57,12 @@ func (h *Handler) GetNetworkConfig(name string) (*network.Network, error) {
 		return nil, err
 	}
 
-	cfg, err := st.GetNetwork(name)
+	net, err := getNetwork(st, name)
 	if err != nil {
-		h.log.Error(fmt.Sprintf("Couldn't retrieve the service configuration: %v", err))
-		return nil, fmt.Errorf("couldn't retrieve the service configuration: %w", err)
+		return nil, err
 	}
 
-	return cfg, nil
+	return net, nil
 }
 
 func (h *Handler) ListNetworks() (*network.ListNetworksResponse, error) {
@@ -65,7 +79,28 @@ func (h *Handler) ListNetworks() (*network.ListNetworksResponse, error) {
 		return nil, err
 	}
 
-	return network.ListNetworks(st)
+	networks, err := network.ListNetworks(st)
+
+	compatibleNetworks := []string{}
+	for _, net := range networks.Networks {
+		versionedFile := struct {
+			FileVersion uint32
+		}{}
+		if err := paths.ReadStructuredFile(st.GetNetworkPath(net), &versionedFile); err != nil {
+			continue
+		}
+
+		if versionedFile.FileVersion > 1 {
+			h.log.Info("Ignoring network with unsupported file version", zap.String("network", net), zap.Uint32("file-version", versionedFile.FileVersion))
+			continue
+		}
+
+		compatibleNetworks = append(compatibleNetworks, net)
+	}
+
+	return &network.ListNetworksResponse{
+		Networks: compatibleNetworks,
+	}, err
 }
 
 func (h *Handler) SaveNetworkConfig(cfg *network.Network) (bool, error) {
@@ -89,4 +124,25 @@ func (h *Handler) SaveNetworkConfig(cfg *network.Network) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func getNetwork(st *netstore.Store, name string) (*network.Network, error) {
+	versionedFile := struct {
+		FileVersion uint32
+	}{}
+	if err := paths.ReadStructuredFile(st.GetNetworkPath(name), &versionedFile); err != nil {
+		return nil, fmt.Errorf("couldn't figure out the file version of the network configuration file %q: %w", name, err)
+	}
+
+	net := &network.Network{}
+	if versionedFile.FileVersion > 1 {
+		return nil, fmt.Errorf("the format of the network configuration %q is not compatible with this software: expecting version 1, got %d", name, versionedFile.FileVersion)
+	} else {
+		if err := paths.ReadStructuredFile(st.GetNetworkPath(name), &net); err != nil {
+			return nil, fmt.Errorf("couldn't read network configuration file %q: %w", name, err)
+		}
+	}
+
+	net.Name = name
+	return net, nil
 }

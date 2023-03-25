@@ -56,15 +56,24 @@ func (l *Loader) LogFilePathForSvc() string {
 }
 
 func (l *Loader) IsConfigInitialised() (bool, error) {
-	return vgfs.FileExists(l.configFilePath)
+	configExists, err := vgfs.FileExists(l.configFilePath)
+	if err != nil {
+		return false, fmt.Errorf("could not verify the application configuration exists: %w", err)
+	}
+
+	if !configExists {
+		return false, err
+	}
+
+	cfg, err := l.GetConfig()
+	if err != nil {
+		return false, err
+	}
+
+	return cfg.OnBoardingDone, nil
 }
 
 func (l *Loader) GetConfig() (Config, error) {
-	exists, err := vgfs.FileExists(l.configFilePath)
-	if err != nil {
-		return Config{}, fmt.Errorf("could not verify the application configuration exists: %w", err)
-	}
-
 	config := Config{
 		LogLevel:       zap.InfoLevel.String(),
 		VegaHome:       "",
@@ -73,6 +82,12 @@ func (l *Loader) GetConfig() (Config, error) {
 			ConsentAsked: false,
 			Enabled:      true,
 		},
+		OnBoardingDone: false,
+	}
+
+	exists, err := vgfs.FileExists(l.configFilePath)
+	if err != nil {
+		return Config{}, fmt.Errorf("could not verify the application configuration exists: %w", err)
 	}
 
 	if !exists {

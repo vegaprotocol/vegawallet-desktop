@@ -1,22 +1,15 @@
-import { useRoutes } from 'react-router-dom'
+import {useRoutes} from 'react-router-dom'
 
-import { Chrome } from '../components/chrome'
-import {
-  Onboard,
-  OnboardHome,
-  OnboardNetwork,
-  OnboardSettings,
-  OnboardWalletCreate,
-  OnboardWalletImport
-} from '../components/onboard'
-import { Splash } from '../components/splash'
-import { useIsOnboard } from '../hooks/use-is-onboard'
-import { Home } from './home'
-import { Wallet } from './wallet'
-import { WalletKeyPair } from './wallet/wallet-key-pair'
-import { WalletList } from './wallet/wallet-list'
-import { WalletCreate } from './wallet-create'
-import { WalletImport } from './wallet-import'
+import {Chrome} from '../components/chrome'
+import {Onboard, OnboardHome, OnboardSettings, OnboardWalletCreate, OnboardWalletImport} from '../components/onboard'
+import {Splash} from '../components/splash'
+import {useIsOnboard} from '../hooks/use-is-onboard'
+import {Home} from './home'
+import {Wallet} from './wallet'
+import {WalletKeyPair} from './wallet/wallet-key-pair'
+import {WalletList} from './wallet/wallet-list'
+import {WalletCreate} from './wallet-create'
+import {WalletImport} from './wallet-import'
 
 // Root paths start with '/'
 export enum Paths {
@@ -32,7 +25,6 @@ export enum OnboardPaths {
   Settings = '/onboard/settings',
   WalletCreate = '/onboard/wallet-create',
   WalletImport = '/onboard/wallet-import',
-  Network = '/onboard/network'
 }
 
 export const AppRouter = () => {
@@ -41,55 +33,51 @@ export const AppRouter = () => {
   const routes = useRoutes([
     {
       path: Paths.Onboard,
-      element: <Onboard />,
+      element: <Onboard/>,
       children: [
         {
           index: true,
-          element: <OnboardHome />
+          element: <OnboardHome/>
         },
         {
           path: OnboardPaths.Settings,
-          element: <OnboardSettings />
+          element: <OnboardSettings/>
         },
         {
           path: OnboardPaths.WalletCreate,
-          element: <OnboardWalletCreate />
+          element: <OnboardWalletCreate/>
         },
         {
           path: OnboardPaths.WalletImport,
-          element: <OnboardWalletImport />
-        },
-        {
-          path: OnboardPaths.Network,
-          element: <OnboardNetwork />
+          element: <OnboardWalletImport/>
         }
       ]
     },
     {
       path: Paths.WalletCreate,
-      element: <WalletCreate />
+      element: <WalletCreate/>
     },
     {
       path: Paths.WalletImport,
-      element: <WalletImport />
+      element: <WalletImport/>
     },
     {
       path: Paths.Wallet,
-      element: <Wallet />,
+      element: <Wallet/>,
       children: [
         {
           // default child route, Wallet only renders an Outlet
           index: true,
-          element: <WalletList />
+          element: <WalletList/>
         },
         {
           path: 'keypair/:pubkey',
-          element: <WalletKeyPair />
+          element: <WalletKeyPair/>
         }
       ]
     },
     {
-      element: <Home />,
+      element: <Home/>,
       index: true
     }
   ])

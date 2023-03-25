@@ -5,6 +5,7 @@ type Config struct {
 	VegaHome       string           `json:"vegaHome"`
 	DefaultNetwork string           `json:"defaultNetwork"`
 	Telemetry      *TelemetryConfig `json:"telemetry"`
+	OnBoardingDone bool             `json:"onBoardingDone"`
 }
 
 // TelemetryConfig is used to configure the telemetry collection on the client.

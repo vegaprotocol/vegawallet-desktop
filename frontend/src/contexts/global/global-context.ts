@@ -32,12 +32,6 @@ export interface ProxyApp {
   url: string
 }
 
-export interface NetworkPreset {
-  name: string
-  configFileUrl: string
-  sha: string
-}
-
 export interface GlobalState {
   status: AppStatus
   version: string
@@ -47,13 +41,11 @@ export interface GlobalState {
   drawerOpen: boolean
   onboarding: {
     wallets: string[]
-    networks: string[]
   }
   config: config.Config | null
   // Network
   network: string | null
   networks: string[]
-  presets: NetworkPreset[]
   networkConfig: network.Network | null
   serviceRunning: boolean
   serviceUrl: string
