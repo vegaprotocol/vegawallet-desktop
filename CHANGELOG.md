@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.3
+
+Compatible with 0.53.2
+
+### 🛠 Improvements
+- Remove network import from on-boarding to just import `mainnet1`
+
+### 🐛 Fixes
+- Do not crash if the network name doesn't match between file and content. 
+- Do not display network configurations that do not have compatible format. 
+
 ## 0.2.2
 
 Compatible with 0.53.2
