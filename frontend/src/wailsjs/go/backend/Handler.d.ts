@@ -43,6 +43,8 @@ export function StopService():Promise<void>;
 
 export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<any>;
 
+export function SuggestFairgroundFolder():Promise<string>;
+
 export function UpdateAppConfig(arg1:app.Config):Promise<void>;
 
 export function UpdateServiceConfig(arg1:service.Config):Promise<void>;
