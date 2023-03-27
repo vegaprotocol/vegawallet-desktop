@@ -23,15 +23,13 @@ function App() {
       runtime={runtime}
       service={service}
       features={{
-        NETWORK_COMPATIBILITY_WARNING: truthy.includes(
+        NETWORK_COMPATIBILITY_WARNING: !truthy.includes(
           import.meta.env.VITE_FEATURE_NETWORK_WARNING
         ),
-        TELEMETRY_CHECK: truthy.includes(
+        TELEMETRY_CHECK: !truthy.includes(
           import.meta.env.VITE_FEATURE_TELEMETRY_CHECK
         ),
-        FAIRGROUND_MODE: truthy.includes(
-          import.meta.env.VITE_FEATURE_FAIRGROUND_MODE
-        )
+        FAIRGROUND_MODE: import.meta.env.VITE_FEATURE_MODE === 'fairground'
       }}
     />
   )

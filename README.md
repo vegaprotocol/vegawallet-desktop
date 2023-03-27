@@ -83,22 +83,22 @@ This will start the app running on `localhost:34115`, as well as starting up [Vi
 These flags are passed as environment variables to the app. They are used to enable/disable features. For example:
 
 ```bash
-VITE_FEATURE_FAIRGROUND_MODE='true' wails dev
+VITE_FEATURE_MODE='fairground' wails dev
 ```
 
 or
 
 ```bash
-VITE_FEATURE_FAIRGROUND_MODE='true' wails build
+VITE_FEATURE_MODE='fairground' wails build
 ```
 
 A full list of these can be found below:
 
-| Flag                         | Description                                                                                   |
-| ---------------------------- | --------------------------------------------------------------------------------------------- |
-| VITE_FEATURE_NETWORK_WARNING | Enable warning the user if the network is a different version for the one configured for the  |
-| VITE_FEATURE_TELEMETRY_CHECK | Enable users being asked if they would like to send bug reports for the application           |
-| VITE_FEATURE_FAIRGROUND_MODE | Build the app in fairground mode with different styling/messaging that is fairground specific |
+| Flag                         | Description                                                                                  |
+| ---------------------------- | -------------------------------------------------------------------------------------------- |
+| VITE_FEATURE_NETWORK_WARNING | Enable warning the user if the network is a different version for the one configured for the |
+| VITE_FEATURE_TELEMETRY_CHECK | Enable users being asked if they would like to send bug reports for the application          |
+| VITE_FEATURE_MODE            | Build the app in fairground mode with different styling/messaging that is mode specific      |
 
 ### More commands
 
