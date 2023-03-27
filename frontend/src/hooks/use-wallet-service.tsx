@@ -43,6 +43,7 @@ export const useWalletService = (): Service => {
       return undefined
     },
     IsAppInitialised: Handlers.IsAppInitialised,
+    SuggestFairgroundFolder: Handlers.SuggestFairgroundFolder,
 
     // Telemetry
     EnableTelemetry: async () => {
