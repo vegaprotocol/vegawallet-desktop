@@ -13,6 +13,7 @@
 ### 🛠 Improvements
 
 - [576](https://github.com/vegaprotocol/vegawallet-desktop/issues/576) - Support different vega home for Mainnet and Testnet wallet
+- [581](https://github.com/vegaprotocol/vegawallet-desktop/issues/581) - Add version of the sotfware in the window title.
 
 ### 🐛 Fixes
 
