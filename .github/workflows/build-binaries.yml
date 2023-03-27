@@ -61,8 +61,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         run: |
           type wails.${{ matrix.network }}.json > wails.json
-          dir build
-          type appicon.${{ matrix.network }}.png > appicon.png
+          type build\appicon.${{ matrix.network }}.png > build\appicon.png
 
       - name: Build binary for Windows
         if: ${{ runner.network == 'Windows' }}
