@@ -3,6 +3,9 @@ package backend
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
+
+	"github.com/adrg/xdg"
 
 	"go.uber.org/zap"
 )
@@ -60,6 +63,13 @@ func (h *Handler) InitialiseApp(req InitialiseAppRequest) error {
 	}
 
 	return nil
+}
+
+func (h *Handler) SuggestFairgroundFolder() string {
+	h.log.Debug("Entering SuggestFairgroundFolder")
+	defer h.log.Debug("Leaving SuggestFairgroundFolder")
+
+	return filepath.Join(xdg.Home, "Vega", "Fairground")
 }
 
 func (h *Handler) ensureBackendStarted() error {
