@@ -87,6 +87,10 @@ func (l *ConfigLoader) SaveConfig(config Config) error {
 		if err := paths.ReadStructuredFile(l.configFilePath, &cfg); err != nil {
 			return fmt.Errorf("could not read configuration file at %q: %w", l.configFilePath, err)
 		}
+	} else {
+		if err := vgfs.EnsureDir(config.VegaHome); err != nil {
+			return fmt.Errorf("could not create the vega home directory: %w", err)
+		}
 	}
 
 	cfg.VegaHome = config.VegaHome
