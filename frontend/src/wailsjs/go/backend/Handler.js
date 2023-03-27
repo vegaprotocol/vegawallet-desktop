@@ -78,6 +78,10 @@ export function SubmitWalletAPIRequest(arg1) {
   return window['go']['backend']['Handler']['SubmitWalletAPIRequest'](arg1);
 }
 
+export function SuggestFairgroundFolder() {
+  return window['go']['backend']['Handler']['SuggestFairgroundFolder']();
+}
+
 export function UpdateAppConfig(arg1) {
   return window['go']['backend']['Handler']['UpdateAppConfig'](arg1);
 }
