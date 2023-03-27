@@ -29,8 +29,7 @@ function App() {
         TELEMETRY_CHECK: !truthy.includes(
           import.meta.env.VITE_FEATURE_TELEMETRY_CHECK
         ),
-        FAIRGROUND_MODE:
-          import.meta.env.VITE_FEATURE_FAIRGROUND_MODE === 'fairground'
+        FAIRGROUND_MODE: import.meta.env.VITE_FEATURE_MODE === 'fairground'
       }}
     />
   )
