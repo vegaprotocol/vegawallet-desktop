@@ -56,7 +56,7 @@ describe('Import network', () => {
     cy.getByTestId('import-network').click()
     cy.getByTestId('toast').should(
       'contain.text',
-      'Error: a network source is required'
+      'Error: the network source file does not exist: invalid network source'
     )
   })
 })
