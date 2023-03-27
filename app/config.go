@@ -55,12 +55,12 @@ func (c *Config) EnsureIsValid() error {
 	return nil
 }
 
-func (c *Config) BoardingDone() {
+func (c *Config) OnBoardingDone() {
 	c.onBoardingDone = true
 }
 
-func DefaultConfig() Config {
-	return Config{
+func DefaultConfig() *Config {
+	return &Config{
 		LogLevel:       zap.InfoLevel.String(),
 		VegaHome:       "",
 		DefaultNetwork: defaultNetwork,

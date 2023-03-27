@@ -41,9 +41,9 @@ func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
 
 	cfg := app.DefaultConfig()
 	cfg.VegaHome = req.VegaHome
-	cfg.BoardingDone()
+	cfg.OnBoardingDone()
 
-	if err := h.configLoader.SaveConfig(cfg); err != nil {
+	if err := h.configLoader.SaveConfig(*cfg); err != nil {
 		h.log.Error("Could not save the application configuration", zap.Error(err))
 		return fmt.Errorf("could not save the application configuration: %w", err)
 	}

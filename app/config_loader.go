@@ -72,7 +72,7 @@ func (l *ConfigLoader) GetConfig() (Config, error) {
 		return Config{}, fmt.Errorf("the configuration for %q at %q is invalid: %w", OptimizedFor, l.configFilePath, err)
 	}
 
-	return config, nil
+	return *config, nil
 }
 
 func (l *ConfigLoader) SaveConfig(config Config) error {
@@ -93,7 +93,10 @@ func (l *ConfigLoader) SaveConfig(config Config) error {
 	cfg.LogLevel = config.LogLevel
 	cfg.DefaultNetwork = config.DefaultNetwork
 	cfg.Telemetry = config.Telemetry
-	cfg.OnBoardingDone = config.onBoardingDone
+
+	if !cfg.OnBoardingDone {
+		cfg.OnBoardingDone = config.onBoardingDone
+	}
 
 	if err := paths.WriteStructuredFile(l.configFilePath, config); err != nil {
 		return fmt.Errorf("could not write configuration file: %w", err)
