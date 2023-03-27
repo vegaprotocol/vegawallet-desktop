@@ -64,7 +64,7 @@ jobs:
           type build\appicon.${{ matrix.network }}.png > build\appicon.png
 
       - name: Build binary for Windows
-        if: ${{ runner.network == 'Windows' }}
+        if: ${{ runner.os == 'Windows' }}
         env:
           VITE_FEATURE_MODE: ${{ matrix.network }}
         run: wails build -f -platform=windows/${{ matrix.arch }} -tags ${{ matrix.network }}
