@@ -83,13 +83,13 @@ This will start the app running on `localhost:34115`, as well as starting up [Vi
 These flags are passed as environment variables to the app. They are used to enable/disable features. For example:
 
 ```bash
-VITE_FEATURE_MODE='true' wails dev
+VITE_FEATURE_MODE='fairground' wails dev
 ```
 
 or
 
 ```bash
-VITE_FEATURE_MODE='true' wails build
+VITE_FEATURE_MODE='fairground' wails build
 ```
 
 A full list of these can be found below:
