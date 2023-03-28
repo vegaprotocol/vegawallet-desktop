@@ -60,7 +60,7 @@ jobs:
 
       # Run cypress in this process and run all Cypress tests
       - name: Run e2e tests
-        run: yarn test:e2e
+        run: yarn e2e:run
         working-directory: frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

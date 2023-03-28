@@ -13,7 +13,7 @@
     "dev": "VITE_ENV='development' && npx vite --port=3000",
     "e2e:clean": "rm -r automation/test-wallets; mkdir automation/test-wallets",
     "e2e:open": "yarn e2e:run --headed",
-    "e2e:run": "yarn playwright test -c automation/playwright.config.ts --workers 1",
+    "e2e:run": "yarn playwright test -c automation/playwright.config.ts",
     "format:check": "npx prettier --check .",
     "format:fix": "npx prettier --write .",
     "lint:check": "eslint ./src",
