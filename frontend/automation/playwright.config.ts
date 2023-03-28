@@ -91,6 +91,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'yarn dev:test',
-    port: 34115
+    port: 34115,
+    timeout: 5 * 60 * 1000
   }
 })
