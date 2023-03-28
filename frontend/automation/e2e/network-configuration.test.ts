@@ -73,7 +73,7 @@ test.describe('manage networks', async () => {
 })
 
 // tests skipped until bug resolved https://github.com/vegaprotocol/vegawallet-desktop/issues/588
-test.describe.skip('change network details', () => {
+test.describe.fixme('change network details', () => {
   // 0001-WALL-011
   test.beforeEach(async () => {
     await editNetwork(page, 'test_network3')
@@ -109,8 +109,10 @@ test.describe.skip('change network details', () => {
   test('able to change gRPC nodes', async () => {
     await expect(page.locator('[name*="grpcHosts"]')).toHaveCount(7) // wait until list has loaded
     await expect(page.locator('[name*="grpcHosts"]').first()).toBeVisible()
-    const oldValue =
-      (await page.locator('[name*="grpcHosts"]').first().textContent()) || ''
+    const oldValue = (await page
+      .locator('[name*="grpcHosts"]')
+      .first()
+      .textContent()) as string
     await page
       .locator('[name*="grpcHosts"] + [data-testid="remove"]')
       .first()

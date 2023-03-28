@@ -56,10 +56,12 @@ jobs:
 
       - name: Install playwright dependencies
         run: yarn playwright install-deps chromium
+        working-directory: frontend
 
       # Run cypress in this process and run all Cypress tests
       - name: Run e2e tests
         run: yarn test:e2e
+        working-directory: frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

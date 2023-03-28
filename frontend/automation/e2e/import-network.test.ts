@@ -38,7 +38,7 @@ test.describe('Import network', () => {
 
   // Skipped until bug fixed
   // https://github.com/vegaprotocol/vegawallet-desktop/issues/561
-  test.skip('import successfully via file path', async () => {
+  test.fixme('import successfully via file path', async () => {
     const filePath = `file://${join(
       process.cwd(),
       'automation/data/networks/mainnet1.toml'
@@ -70,7 +70,7 @@ test.describe('Import network', () => {
       'Error: a network with the same name already exists'
     )
     // overwrite message shown, check overwrite and re submit
-    await expect(page.getByTestId('toast')).not.toBeVisible()
+    await expect(page.getByTestId('toast')).toBeHidden()
     await page.locator('button[role="checkbox"]').click()
     await page.getByTestId('import-network').click()
     await expect(page.getByTestId('toast')).toContainText('Network imported')
