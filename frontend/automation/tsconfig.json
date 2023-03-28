@@ -4,7 +4,7 @@
     "isolatedModules": false,
     "allowJs": false,
     "jsx": "react-jsx",
-    "types": ["cypress", "node"],
+    "types": ["@playwright/test", "node"],
     "sourceMap": false
   },
   "include": ["**/*.ts", "**/*.js"]

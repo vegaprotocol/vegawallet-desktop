@@ -1,49 +1,31 @@
-export {}
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-declare global {
-  namespace Cypress {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    interface Chainable<Subject> {
-      removeNetwork(name?: string): Chainable<Subject>
-    }
-  }
-}
+import type { Page } from '@playwright/test'
 
-Cypress.Commands.add('removeNetwork', (name?: string) => {
+type NetworksResponse = { result: { networks: { name: string }[] } }
+
+export default async function removeNetwork(
+  page: Page,
+  name?: string
+): Promise<void> {
   if (name) {
-    cy.log(`Removing network ${name}...`)
-    return removeNetwork(name)
+    const body = JSON.stringify({
+      id: '0',
+      jsonrpc: '2.0',
+      method: 'admin.remove_network',
+      params: { name }
+    })
+    await page.evaluate(
+      `window.go.backend.Handler.SubmitWalletAPIRequest(${body})`
+    )
   } else {
-    cy.log('Removing all networks...')
-    return listNetworks().then(networks => networks.forEach(removeNetwork))
+    return await listNetworks(page).then(networks =>
+      networks.forEach(async name => removeNetwork(page, name))
+    )
   }
-})
-
-function removeNetwork(name: string) {
-  return cy.backend().then(handler => {
-    handler
-      .SubmitWalletAPIRequest({
-        id: '0',
-        jsonrpc: '2.0',
-        method: 'admin.remove_network',
-        params: {
-          name
-        }
-      })
-      .then(res => res.result)
-  })
 }
 
-function listNetworks(): Cypress.Chainable<string[]> {
-  return cy.backend().then(handler =>
-    handler
-      .SubmitWalletAPIRequest({
-        id: '0',
-        jsonrpc: '2.0',
-        method: 'admin.list_networks'
-      })
-      .then(res =>
-        res.result.networks.map((network: { name: string }) => network.name)
-      )
-  )
+async function listNetworks(page: Page): Promise<string[]> {
+  const res = (await page.evaluate(
+    `window.go.backend.Handler.SubmitWalletAPIRequest({id: '0',jsonrpc: '2.0',method: 'admin.list_networks'})`
+  )) as NetworksResponse
+  return res.result.networks.map((network: { name: string }) => network.name)
 }

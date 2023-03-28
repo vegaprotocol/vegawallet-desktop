@@ -1,25 +1,13 @@
-export {}
-declare global {
-  namespace Cypress {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    interface Chainable<Subject> {
-      waitForNetworkConnected(): Chainable<Subject>
-    }
-  }
-}
+import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 
-Cypress.Commands.add('waitForNetworkConnected', () => {
-  cy.get('body').then(body => {
-    if (body.find('[data-testid="network-compatibility-dialog"]').length > 0) {
-      cy.get('button[data-testid="network-compatibility-continue"]').click()
-    }
-  })
-  cy.getByTestId('network-compatibility-dialog', { timeout: 30000 }).should(
-    'not.exist'
+export default async function waitForNetworkConnected(page: Page) {
+  await expect(page.getByTestId('service-status')).not.toContainText(
+    'Not running',
+    { timeout: 15 * 1000 }
   )
-  cy.getByTestId('service-status').should('not.contain.text', 'Not running')
-  cy.getByTestId('service-status', { timeout: 40000 }).should(
-    'not.contain.text',
-    'Loading'
+  await expect(page.getByTestId('service-status')).not.toContainText(
+    'Loading',
+    { timeout: 20 * 1000 }
   )
-})
+}
