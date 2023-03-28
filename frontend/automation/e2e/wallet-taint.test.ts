@@ -48,9 +48,7 @@ test.describe('wallet taint key', () => {
     await expect(page.getByTestId('toast')).toContainText(
       'This key has been untainted'
     )
-    await expect(
-      page.getByTestId('keypair-taint-notification')
-    ).toBeHidden()
+    await expect(page.getByTestId('keypair-taint-notification')).toBeHidden()
   })
 
   test.afterAll(async () => {
