@@ -23,7 +23,6 @@ test.beforeEach(async () => {
 
 test.describe('manage networks', async () => {
   test('change network and persists after reload', async () => {
-    await waitForNetworkConnected(page)
     await page.getByTestId('network-select').click()
     await page.getByTestId('select-test_network2').click()
     await expect(page.getByTestId('service-status')).toContainText(

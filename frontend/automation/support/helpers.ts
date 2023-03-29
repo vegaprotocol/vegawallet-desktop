@@ -20,9 +20,25 @@ export async function unlockWallet(
   await authenticate(page, passphrase)
 }
 
+// This function usage would be probably possible to remove in most of the places
+// after https://github.com/vegaprotocol/vegawallet-desktop/issues/589 is resolved
 export async function waitForNetworkConnected(page: Page) {
+  const timeout = 5 * 1000
   const serviceStatus = page.getByTestId('service-status')
-  await expect(serviceStatus).not.toContainText(/^(Not running|Loading)$/, {
-    timeout: 30 * 1000
-  })
+  try {
+    await expect(serviceStatus).not.toContainText(
+      /^(Not running|Loading|Not reachable)$/,
+      {
+        timeout
+      }
+    )
+  } catch (e) {
+    await page.goto('/')
+    await expect(serviceStatus).not.toContainText(
+      /^(Not running|Loading|Not reachable)$/,
+      {
+        timeout: 2 * timeout
+      }
+    )
+  }
 }
