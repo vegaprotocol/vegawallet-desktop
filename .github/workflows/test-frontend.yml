@@ -30,6 +30,7 @@ jobs:
 
       - name: Restore go modules from cache
         uses: actions/cache@v3
+        id: cache-go-modules
         with:
           path: |
             ~/go/pkg/mod
@@ -41,6 +42,7 @@ jobs:
         run: go get -v -t -d ./...
 
       - name: Get Wails
+        if: steps.cache-go-modules.outputs.cache-hit != 'true'
         run: go install github.com/wailsapp/wails/v2/cmd/wails@${{ env.WAILS_VERSION }}
 
       - name: Set up Node ^18.12
@@ -54,21 +56,7 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: frontend
 
-      - name: Store Playwright's Version
-        run: |
-          PLAYWRIGHT_VERSION=$(yarn list @playwright/test | grep @playwright | sed 's/.*@//')
-          echo "Playwright's Version: $PLAYWRIGHT_VERSION"
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
-
-      - name: Cache Playwright Browsers for Playwright's Version
-        id: cache-playwright-browsers
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
-
       - name: Setup Playwright browsers
-        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
         run: yarn playwright install-deps chromium
         working-directory: frontend
 
@@ -84,7 +72,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test-results
-          path: frontend/test-results/
+          path: test-results
+        working-directory: frontend
 
   sanity-checks:
     name: Run sanity checks
