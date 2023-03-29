@@ -23,7 +23,7 @@
     "@sentry/react": "7.19.0",
     "@sentry/tracing": "7.19.0",
     "@vegaprotocol/wallet-admin": "0.1.6",
-    "@vegaprotocol/wallet-ui": "0.1.51",
+    "@vegaprotocol/wallet-ui": "0.1.57",
     "core-js": "3.26.1",
     "loglevel": "1.8.1",
     "nanoid": "4.0.0",
