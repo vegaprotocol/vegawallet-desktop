@@ -5,7 +5,7 @@ export async function unlockWallet(
   name: string,
   passphrase: string
 ) {
-  await page.getByTestId(`wallet-${name}`).click({ force: true })
+  await page.getByTestId(`wallet-${name}`).click()
   await authenticate(page, passphrase)
 }
 

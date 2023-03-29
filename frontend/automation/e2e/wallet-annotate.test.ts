@@ -1,14 +1,16 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
+import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import initApp from '../support/commands/init-app'
 import restoreWallet from '../support/commands/restore-wallet'
+import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
 import { authenticate, unlockWallet } from '../support/helpers'
 
-const passphrase = process.env.testWalletPassphrase as string
-const walletName = process.env.testWalletName as string
-const pubkey = process.env.testWalletPublicKey
+const passphrase = data.testWalletPassphrase
+const walletName = data.testWalletName
+const pubkey = data.testWalletPublicKey
 
 test.describe('wallet annotate metadata', () => {
   let page: Page
@@ -17,6 +19,7 @@ test.describe('wallet annotate metadata', () => {
     await initApp(page)
     await restoreWallet(page)
     await page.goto('/')
+    await waitForNetworkConnected(page)
   })
 
   test('handles key name update', async () => {

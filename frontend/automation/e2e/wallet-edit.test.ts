@@ -1,13 +1,15 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
+import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import initApp from '../support/commands/init-app'
 import restoreWallet from '../support/commands/restore-wallet'
+import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
 import { unlockWallet } from '../support/helpers'
 
-const passphrase = process.env.testWalletPassphrase as string
-const walletName = process.env.testWalletName as string
+const passphrase = data.testWalletPassphrase
+const walletName = data.testWalletName
 const newWalletName = `${Math.random().toString(36).substring(2)}`
 
 test.describe('wallet edit', () => {
@@ -17,6 +19,7 @@ test.describe('wallet edit', () => {
     await initApp(page)
     await restoreWallet(page)
     await page.goto('/')
+    await waitForNetworkConnected(page)
   })
 
   test('edits wallet name', async () => {

@@ -36,4 +36,4 @@ cypress
 test-wallets
 
 #Playwright
-playwright-report
+test-results

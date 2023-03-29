@@ -1,9 +1,11 @@
 import { type Page } from 'playwright'
 
+import data from '../../data/test-data.json'
+
 export default async function restoreWallet(page: Page) {
   const passphrase = '123'
   const recoveryPhrase =
-    (process.env.testWalletRecoveryPhrase as string) ||
+    data.testWalletRecoveryPhrase ||
     'brown eternal intact name raw memory squeeze three social road click little gadget vote kitchen best split hungry rail coin season visa category hold'
   const body = JSON.stringify({
     id: '0',

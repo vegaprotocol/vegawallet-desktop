@@ -14,6 +14,7 @@ test.describe('settings', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     await initApp(page)
+    await page.goto('/')
     await waitForNetworkConnected(page)
   })
 
@@ -46,7 +47,7 @@ test.describe('settings', () => {
     await page.getByTestId(homeSettingsBtn).click()
     await expect(page.getByTestId('log-level').last()).toHaveValue('debug')
     await expect(radioGroupLocator.locator('input[value="no"]')).toBeChecked()
-    await page.getByTestId(cancelSettingsBtn).click({ force: true })
+    await page.getByTestId(cancelSettingsBtn).click()
   })
 
   test.afterAll(async () => {

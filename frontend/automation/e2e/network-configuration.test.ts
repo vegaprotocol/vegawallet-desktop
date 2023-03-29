@@ -17,6 +17,7 @@ test.beforeAll(async ({ browser }) => {
 
 test.beforeEach(async () => {
   await page.goto('/')
+  await waitForNetworkConnected(page)
   await page.getByTestId('network-drawer').click()
 })
 

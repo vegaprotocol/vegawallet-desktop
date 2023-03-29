@@ -2,9 +2,13 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 import { join } from 'path'
 
+import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import initApp from '../support/commands/init-app'
 import removeNetwork from '../support/commands/remove-network'
+import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
+
+const url = data.mainnetConfigUrl
 
 test.describe('Import network', () => {
   let page: Page
@@ -15,13 +19,14 @@ test.describe('Import network', () => {
   })
   test.beforeEach(async () => {
     await page.goto('/')
+    await waitForNetworkConnected(page)
     await page.getByTestId('network-drawer').click()
     await page.getByTestId('manage-networks').click()
     await page.getByTestId('add-network').click()
     await page.getByTestId('url-path').clear()
   })
   test('import successfully using url', async () => {
-    const url = process.env.testnetConfigUrl as string
+    const url = data.testnetConfigUrl
     await page.getByTestId('url-path').type(url)
     await page.getByTestId('import-network').click()
     await expect(page.getByTestId('toast')).toContainText('Network imported')
@@ -63,7 +68,6 @@ test.describe('Import network', () => {
   })
 
   test('overwrite network that already exists', async () => {
-    const url = process.env.mainnetConfigUrl as string
     await page.getByTestId('url-path').type(url)
     await page.getByTestId('import-network').click()
     await expect(page.getByTestId('toast')).toContainText(
@@ -77,7 +81,6 @@ test.describe('Import network', () => {
   })
 
   test('import same network with different name', async () => {
-    const url = process.env.mainnetConfigUrl as string
     await page.getByTestId('url-path').type(url)
     await page.getByTestId('network-name').type(`custom-${Date.now()}`)
     await page.getByTestId('import-network').click()

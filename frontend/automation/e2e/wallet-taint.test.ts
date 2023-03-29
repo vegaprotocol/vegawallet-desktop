@@ -1,14 +1,16 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
+import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import initApp from '../support/commands/init-app'
 import restoreWallet from '../support/commands/restore-wallet'
+import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
 import { authenticate, unlockWallet } from '../support/helpers'
 
-const passphrase = process.env.testWalletPassphrase as string
-const walletName = process.env.testWalletName as string
-const pubkey = process.env.testWalletPublicKey as string
+const passphrase = data.testWalletPassphrase
+const walletName = data.testWalletName
+const pubkey = data.testWalletPublicKey
 
 test.describe('wallet taint key', () => {
   let page: Page
@@ -20,6 +22,7 @@ test.describe('wallet taint key', () => {
 
   test.beforeEach(async () => {
     await page.goto('/')
+    await waitForNetworkConnected(page)
   })
 
   test('message taint success', async () => {

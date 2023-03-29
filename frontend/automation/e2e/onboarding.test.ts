@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
+import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import initApp from '../support/commands/init-app'
 import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
@@ -10,10 +11,10 @@ test.describe('onboarding', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     await initApp(page)
-    await waitForNetworkConnected(page)
   })
   test.beforeEach(async () => {
     await page.goto('/')
+    await waitForNetworkConnected(page)
   })
   test('create new wallet', async () => {
     const randomNum = Math.floor(Math.random() * 101)
@@ -89,7 +90,7 @@ test.describe('onboarding', () => {
   test('import wallet', async () => {
     const walletName = 'test'
     const passphrase = '123'
-    const recoveryPhrase = process.env.testWalletRecoveryPhrase as string
+    const recoveryPhrase = data.testWalletRecoveryPhrase
     await page.getByTestId('import-wallet').click()
     await page.getByTestId('wallet-import-form-name').type(walletName)
     await page

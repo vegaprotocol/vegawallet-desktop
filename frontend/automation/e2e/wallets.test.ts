@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
+import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import getTextFromClipboard from '../support/commands/get-text-from-clipboard'
 import initApp from '../support/commands/init-app'
@@ -8,15 +9,16 @@ import restoreWallet from '../support/commands/restore-wallet'
 import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
 import { authenticate, unlockWallet } from '../support/helpers'
 
-const passphrase = process.env.testWalletPassphrase as string
-const walletName = process.env.testWalletName as string
-const pubkey = process.env.testWalletPublicKey as string
+const passphrase = data.testWalletPassphrase
+const walletName = data.testWalletName
+const pubkey = data.testWalletPublicKey
 
 test.describe('wallet sign key', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     await initApp(page)
+    await page.goto('/')
     await waitForNetworkConnected(page)
   })
 
@@ -63,12 +65,12 @@ test.describe('wallet', async () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     await initApp(page)
-    await waitForNetworkConnected(page)
     await restoreWallet(page)
   })
 
   test.beforeEach(async () => {
     await page.goto('/')
+    await waitForNetworkConnected(page)
     await unlockWallet(page, walletName, passphrase)
   })
 

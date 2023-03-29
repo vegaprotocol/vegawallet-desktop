@@ -3,8 +3,6 @@ import { defineConfig, devices } from '@playwright/test'
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-import dotenv from 'dotenv'
-dotenv.config()
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -29,7 +27,10 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['list', { printSteps: true }],
+    ['html', { outputFolder: `test-results/playwright-report` }]
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -38,7 +39,8 @@ export default defineConfig({
     baseURL: 'http://localhost:34115/',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure'
   },
 
   /* Configure projects for major browsers */
@@ -86,7 +88,7 @@ export default defineConfig({
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  outputDir: './playwright-report/',
+  outputDir: `test-results/artifacts`,
 
   /* Run your local dev server before starting the tests */
   webServer: {

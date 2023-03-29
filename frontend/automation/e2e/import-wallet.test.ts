@@ -1,13 +1,15 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
+import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import initApp from '../support/commands/init-app'
 import restoreWallet from '../support/commands/restore-wallet'
+import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
 import { unlockWallet } from '../support/helpers'
 
-const recoveryPhrase = process.env.testWalletRecoveryPhrase as string
-const pubkey = process.env.testWalletPublicKey as string
+const recoveryPhrase = data.testWalletRecoveryPhrase
+const pubkey = data.testWalletPublicKey
 
 test.describe('import wallet', () => {
   let page: Page
@@ -19,6 +21,7 @@ test.describe('import wallet', () => {
 
   test.beforeEach(async () => {
     await page.goto('/')
+    await waitForNetworkConnected(page)
     await page.click('[data-testid="import-wallet"]')
   })
 
