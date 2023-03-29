@@ -2,9 +2,9 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 import cleanup from '../support/cleanup'
-import initApp from '../support/commands/init-app'
-import restoreNetwork from '../support/commands/restore-network'
-import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
+import { waitForNetworkConnected } from '../support/helpers'
+import initApp from '../support/init-app'
+import { restoreNetwork } from '../support/wallet-api'
 
 let page: Page
 test.beforeAll(async ({ browser }) => {

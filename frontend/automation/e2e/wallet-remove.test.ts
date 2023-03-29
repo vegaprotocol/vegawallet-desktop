@@ -3,10 +3,9 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import initApp from '../support/commands/init-app'
-import restoreWallet from '../support/commands/restore-wallet'
-import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
-import { unlockWallet } from '../support/helpers'
+import { unlockWallet, waitForNetworkConnected } from '../support/helpers'
+import initApp from '../support/init-app'
+import { restoreWallet } from '../support/wallet-api'
 
 test.describe('wallet remove', () => {
   const passphrase = data.testWalletPassphrase

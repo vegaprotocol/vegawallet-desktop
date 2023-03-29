@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test'
 import { expect } from '@playwright/test'
 import { execSync } from 'child_process'
 
-import data from '../../data/test-data.json'
+import data from '../data/test-data.json'
 
 export default async function initApp(page: Page) {
   execSync('yarn run e2e:clean')

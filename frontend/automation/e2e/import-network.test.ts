@@ -4,9 +4,9 @@ import { join } from 'path'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import initApp from '../support/commands/init-app'
-import removeNetwork from '../support/commands/remove-network'
-import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
+import { waitForNetworkConnected } from '../support/helpers'
+import initApp from '../support/init-app'
+import { removeNetwork } from '../support/wallet-api'
 
 const url = data.mainnetConfigUrl
 

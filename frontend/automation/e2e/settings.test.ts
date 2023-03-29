@@ -2,8 +2,8 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 import cleanup from '../support/cleanup'
-import initApp from '../support/commands/init-app'
-import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
+import { waitForNetworkConnected } from '../support/helpers'
+import initApp from '../support/init-app'
 
 const homeSettingsBtn = 'home-settings'
 const settingsForm = 'settings-form'

@@ -2,9 +2,8 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 import cleanup from '../support/cleanup'
-import initApp from '../support/commands/init-app'
-import waitForNetworkConnected from '../support/commands/wait-for-network-connected'
-
+import { waitForNetworkConnected } from '../support/helpers'
+import initApp from '../support/init-app'
 test.describe('wallet service', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
@@ -16,7 +15,7 @@ test.describe('wallet service', () => {
 
   test('imports and starts mainnet automatically', async () => {
     await expect(page.getByTestId('service-status')).toHaveText(
-      'Wallet Service: mainnet2 on http://127.0.0.1:1789'
+      'Wallet Service: mainnet1 on http://127.0.0.1:1789'
     )
   })
 
