@@ -77,7 +77,7 @@ test.describe('onboarding', () => {
     await expect(page.getByTestId('header-title')).toHaveText(walletName2)
   })
 
-  test('import default wallets', async () => {
+  test('import default networks', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
     await page.getByTestId('network-drawer').click()
     await page.getByTestId('network-select').click()
