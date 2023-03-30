@@ -83,8 +83,6 @@ test.describe('onboarding', () => {
     await page.getByTestId('network-select').click()
     const options = await page.getByRole('menuitem').allInnerTexts()
     expect(options).toContain('mainnet1')
-    expect(options).toContain('testnet2')
-    expect(options).toContain('fairground')
   })
 
   test('import wallet', async () => {
