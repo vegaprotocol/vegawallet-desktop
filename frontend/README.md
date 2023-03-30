@@ -40,7 +40,7 @@ When you commit your changes, and create a PR, the CI runs a few checks on the c
 - **lint**: you can run `yarn lint:fix` to check
 - **format**: you can run `yarn format:fix` to check
 
-### Tests
+## Tests
 
 The frontend runs end to end tests with cypress. The CI configuration for this is in the [same file](../.github/workflows/test-frontend.yml) as the format / lint above.
 To run the end to end tests locally, you'll need to follow the following steps:
