@@ -5,76 +5,61 @@ import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import { waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
+import { CreateWallet } from '../support/pages/create-wallet'
+import { ViewWallet } from '../support/pages/view-wallet'
+import { Wallets } from '../support/pages/wallets'
 
 let page: Page
+let createWalletPage: CreateWallet
+let viewWalletPage: ViewWallet
+let walletPage: Wallets
+const testPassphrase = '123'
+
 test.describe('onboarding', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    walletPage = new Wallets(page)
+    createWalletPage = new CreateWallet(page)
+    viewWalletPage = new ViewWallet(page)
     await initApp(page)
   })
+
   test.beforeEach(async () => {
     await page.goto('/')
     await waitForNetworkConnected(page)
   })
+
   test('create new wallet', async () => {
-    const randomNum = Math.floor(Math.random() * 101)
-    const walletName = `Test ${randomNum.toString()}`
-    const passphrase = '123'
-    await page.getByTestId('create-new-wallet').click()
-    await page.getByTestId('create-wallet-form-name').type(walletName)
-    await page.getByTestId('create-wallet-form-passphrase').type(passphrase)
-    await page
-      .getByTestId('create-wallet-form-passphrase-confirm')
-      .type(passphrase)
-    await page.getByTestId('create-wallet-form-submit').click()
-    await expect(page.getByTestId('toast')).toHaveText('Wallet created!')
+    const walletName = await createWalletPage.createRandomWalletName()
+
+    await walletPage.goToCreateWalletPage()
+    await createWalletPage.createWallet(walletName, testPassphrase)
+    await createWalletPage.checkToastSuccess()
   })
 
   test('create multiple wallets - switch between them', async () => {
     // 0001-WALL-066 must be able to create multiple wallets
     // 0001-WALL-067 must be able to switch between wallets
-    const randomNum = Math.floor(Math.random() * 101)
-    const randomNum2 = Math.floor(Math.random() * 101)
-    const walletName = `Test ${randomNum.toString()}`
-    const walletName2 = `Test ${randomNum2.toString()}`
-    const passphrase = '123'
+    const walletName = await createWalletPage.createRandomWalletName()
+    const walletName2 = await createWalletPage.createRandomWalletName()
 
-    // Create a new wallet
-    await page.getByTestId('create-new-wallet').click()
-    await page.getByTestId('create-wallet-form-name').type(walletName)
-    await page.getByTestId('create-wallet-form-passphrase').type(passphrase)
-    await page
-      .getByTestId('create-wallet-form-passphrase-confirm')
-      .type(passphrase)
-    await page.getByTestId('create-wallet-form-submit').click()
-    await expect(page.getByTestId('toast')).toHaveText('Wallet created!')
-    await expect(page.getByTestId('toast')).toBeHidden()
-    await page.getByTestId('create-wallet-success-cta').click()
-    await expect(page.getByTestId('header-title')).toHaveText(walletName)
+    await walletPage.goToCreateWalletPage()
+    await createWalletPage.createWallet(walletName, testPassphrase)
+    await createWalletPage.checkToastSuccess()
+    await createWalletPage.goToViewWalletPage()
+    await viewWalletPage.checkWalletExists(walletName)
 
-    // Create another new wallet
-    await page.getByTestId('back').click()
-    await page.getByTestId('create-new-wallet').click()
-    await page.getByTestId('create-wallet-form-name').type(walletName2)
-    await page.getByTestId('create-wallet-form-passphrase').type(passphrase)
-    await page
-      .getByTestId('create-wallet-form-passphrase-confirm')
-      .type(passphrase)
-    await page.getByTestId('create-wallet-form-submit').click()
-    await expect(page.getByTestId('toast')).toHaveText('Wallet created!')
-    await expect(page.getByTestId('toast')).toBeHidden()
-    await page.getByTestId('create-wallet-success-cta').click()
-    await expect(page.getByTestId('header-title')).toHaveText(walletName2)
+    await viewWalletPage.goToWalletsPage()
+    await walletPage.goToCreateWalletPage()
+    await createWalletPage.createWallet(walletName2, testPassphrase)
+    await createWalletPage.goToViewWalletPage()
+    await viewWalletPage.checkWalletExists(walletName2)
 
-    // Switch back to first wallet
-    await page.getByTestId('back').click()
-    await page.getByTestId(`wallet-${walletName.replace(' ', '-')}`).click()
-    await expect(page.getByTestId('header-title')).toHaveText(walletName)
+    await viewWalletPage.goToWalletsPage()
+    await walletPage.openWalletAndAssertName(walletName)
 
-    // Back out and access wallet2
-    await page.getByTestId('back').click()
-    await page.getByTestId(`wallet-${walletName2.replace(' ', '-')}`).click()
-    await expect(page.getByTestId('header-title')).toHaveText(walletName2)
+    await viewWalletPage.goToWalletsPage()
+    await walletPage.openWalletAndAssertName(walletName2)
   })
 
   test('import default network', async () => {
@@ -87,7 +72,6 @@ test.describe('onboarding', () => {
 
   test('import wallet', async () => {
     const walletName = 'test'
-    const passphrase = '123'
     const recoveryPhrase = data.testWalletRecoveryPhrase
     await page.getByTestId('import-wallet').click()
     await page.getByTestId('wallet-import-form-name').type(walletName)
@@ -95,10 +79,10 @@ test.describe('onboarding', () => {
       .getByTestId('wallet-import-form-recovery-phrase')
       .type(recoveryPhrase)
     await page.getByTestId('version').selectOption(String(2))
-    await page.getByTestId('wallet-import-form-passphrase').type(passphrase)
+    await page.getByTestId('wallet-import-form-passphrase').type(testPassphrase)
     await page
       .getByTestId('wallet-import-form-passphrase-confirm')
-      .type(passphrase)
+      .type(testPassphrase)
     await page.getByTestId('wallet-import-form-submit').click()
     await expect(page.getByTestId('toast')).toHaveText('Wallet imported')
   })
@@ -111,7 +95,6 @@ test.describe('onboarding', () => {
 
   test('import wallet with invalid recovery phrase', async () => {
     const walletName = 'test-invalid'
-    const passphrase = '123'
     const invalidRecoveryPhrase = 'invalid'
     await page.getByTestId('import-wallet').click()
     await page.getByTestId('wallet-import-form-name').type(walletName)
@@ -119,10 +102,10 @@ test.describe('onboarding', () => {
       .getByTestId('wallet-import-form-recovery-phrase')
       .type(invalidRecoveryPhrase)
     await page.getByTestId('version').selectOption(String(2))
-    await page.getByTestId('wallet-import-form-passphrase').type(passphrase)
+    await page.getByTestId('wallet-import-form-passphrase').type(testPassphrase)
     await page
       .getByTestId('wallet-import-form-passphrase-confirm')
-      .type(passphrase)
+      .type(testPassphrase)
     await page.getByTestId('wallet-import-form-submit').click()
     await expect(page.getByTestId('toast')).toHaveText(
       'Error: could not import the wallet: the recovery phrase is not valid'
