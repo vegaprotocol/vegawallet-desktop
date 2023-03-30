@@ -78,6 +78,7 @@ test.describe('onboarding', () => {
   })
 
   test('import default network', async () => {
+    // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
     await page.getByTestId('network-drawer').click()
     await page.getByTestId('network-select').click()
     const options = await page.getByRole('menuitem').allInnerTexts()
