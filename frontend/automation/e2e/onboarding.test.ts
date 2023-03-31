@@ -8,22 +8,22 @@ import {
   waitForNetworkConnected
 } from '../support/helpers'
 import initApp from '../support/init-app'
-import { CreateWallet } from '../support/pages/create-wallet'
-import { ViewWallet } from '../support/pages/view-wallet'
-import { Wallets } from '../support/pages/wallets'
+import createWallet from '../support/pages/create-wallet'
+import viewWallet from '../support/pages/view-wallet'
+import wallets from '../support/pages/wallets'
 
 let page: Page
-let createWalletPage: CreateWallet
-let viewWalletPage: ViewWallet
-let walletPage: Wallets
+let createWalletPage: ReturnType<typeof createWallet>
+let viewWalletPage: ReturnType<typeof viewWallet>
+let walletPage: ReturnType<typeof wallets>
 const testPassphrase = '123'
 
 test.describe('onboarding', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    walletPage = new Wallets(page)
-    createWalletPage = new CreateWallet(page)
-    viewWalletPage = new ViewWallet(page)
+    walletPage = wallets(page)
+    createWalletPage = createWallet(page)
+    viewWalletPage = viewWallet(page)
     await initApp(page)
   })
 
