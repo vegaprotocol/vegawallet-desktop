@@ -11,6 +11,14 @@ export async function getTextFromClipboard(page: Page): Promise<string> {
   return page.evaluate('navigator.clipboard.readText()')
 }
 
+export async function isMainnetConfiguration() {
+  return (
+    process.env.VITE_FEATURE_MODE === 'mainnet' ||
+    process.env.VITE_FEATURE_MODE === '' ||
+    process.env.VITE_FEATURE_MODE === undefined
+  )
+}
+
 export async function unlockWallet(
   page: Page,
   name: string,

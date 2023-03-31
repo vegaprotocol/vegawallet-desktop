@@ -3,7 +3,10 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { waitForNetworkConnected } from '../support/helpers'
+import {
+  isMainnetConfiguration,
+  waitForNetworkConnected
+} from '../support/helpers'
 import initApp from '../support/init-app'
 
 let page: Page
@@ -79,10 +82,7 @@ test.describe('onboarding', () => {
 
   test('mainnet should be selctable as deafult network when envvar is mainnet or empty', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
-    if (
-      process.env.VITE_FEATURE_MODE === 'mainnet' ||
-      process.env.VITE_FEATURE_MODE === ''
-    ) {
+    if (await isMainnetConfiguration()) {
       await page.getByTestId('network-drawer').click()
       await page.getByTestId('network-select').click()
       const options = await page.getByRole('menuitem').allInnerTexts()
