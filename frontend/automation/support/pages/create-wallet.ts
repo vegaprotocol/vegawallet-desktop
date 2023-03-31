@@ -1,47 +1,38 @@
-import { expect, Locator, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 
-export class CreateWallet {
-  readonly goToCreateWalletButton: Locator
-  readonly viewWalletButton: Locator
-  readonly walletsHeader: Locator
-  readonly page: Page
-  readonly nameField: Locator
-  readonly passphraseField: Locator
-  readonly passphraseConfirmationField: Locator
-  readonly submitButton: Locator
-  readonly toast: Locator
+const createWallet = (page: Page) => {
+  const nameField = page.getByTestId('create-wallet-form-name')
+  const passphraseField = page.getByTestId('create-wallet-form-passphrase')
+  const passphraseConfirmationField = page.getByTestId(
+    'create-wallet-form-passphrase-confirm'
+  )
+  const submitButton = page.getByTestId('create-wallet-form-submit')
+  const toast = page.getByTestId('toast')
+  const viewWalletButton = page.getByTestId('create-wallet-success-cta')
 
-  constructor(page: Page) {
-    this.page = page
-    this.nameField = page.getByTestId('create-wallet-form-name')
-    this.passphraseField = page.getByTestId('create-wallet-form-passphrase')
-    this.passphraseConfirmationField = page.getByTestId(
-      'create-wallet-form-passphrase-confirm'
-    )
-    this.submitButton = page.getByTestId('create-wallet-form-submit')
-    this.toast = page.getByTestId('toast')
-    this.goToCreateWalletButton = page.getByTestId('create-new-wallet')
-    this.viewWalletButton = page.getByTestId('create-wallet-success-cta')
+  const createWallet = async (username: string, passphrase: string) => {
+    await nameField.type(username)
+    await passphraseField.type(passphrase)
+    await passphraseConfirmationField.type(passphrase)
+    await submitButton.click()
   }
 
-  async createWallet(username: string, passphrase: string) {
-    await this.nameField.type(username)
-    await this.passphraseField.type(passphrase)
-    await this.passphraseConfirmationField.type(passphrase)
-    await this.submitButton.click()
+  const goToViewWalletPage = async () => await viewWalletButton.click()
+
+  const checkToastSuccess = async () => {
+    await expect(toast).toHaveText('Wallet created!')
+    await expect(toast).toBeHidden()
   }
 
-  async goToViewWalletPage() {
-    await this.viewWalletButton.click()
-  }
+  const createRandomWalletName = async () =>
+    `Test ${Math.floor(Math.random() * 101).toString()}`
 
-  async checkToastSuccess() {
-    await expect(this.toast).toHaveText('Wallet created!')
-    await expect(this.toast).toBeHidden()
-  }
-
-  async createRandomWalletName() {
-    const randomNum = Math.floor(Math.random() * 101)
-    return `Test ${randomNum.toString()}`
+  return {
+    createWallet,
+    goToViewWalletPage,
+    checkToastSuccess,
+    createRandomWalletName
   }
 }
+export default createWallet

@@ -1,21 +1,15 @@
-import { expect, Locator, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 
-export class ViewWallet {
-  readonly page: Page
-  readonly goToWalletsButton: Locator
-  readonly walletsHeader: Locator
+const viewWallet = (page: Page) => {
+  const goToWalletsButton = page.getByTestId('back')
+  const walletsHeader = page.getByTestId('header-title')
 
-  constructor(page: Page) {
-    this.page = page
-    this.goToWalletsButton = page.getByTestId('back')
-    this.walletsHeader = page.getByTestId('header-title')
-  }
+  const goToWalletsPage = async () => await goToWalletsButton.click()
 
-  async goToWalletsPage() {
-    await this.goToWalletsButton.click()
-  }
+  const checkWalletExists = async (expectedWallet: string) =>
+    await expect(walletsHeader).toHaveText(expectedWallet)
 
-  async checkWalletExists(expectedWallet: string) {
-    await expect(this.walletsHeader).toHaveText(expectedWallet)
-  }
+  return { goToWalletsPage, checkWalletExists }
 }
+export default viewWallet
