@@ -8,17 +8,24 @@ import {
   waitForNetworkConnected
 } from '../support/helpers'
 import initApp from '../support/init-app'
+import { NetworkTab } from '../support/pages/network-tab'
 
 let page: Page
+let networkTab: NetworkTab
+
 test.describe('onboarding', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    networkTab = new NetworkTab(page)
+
     await initApp(page)
   })
+
   test.beforeEach(async () => {
     await page.goto('/')
     await waitForNetworkConnected(page)
   })
+
   test('create new wallet', async () => {
     const randomNum = Math.floor(Math.random() * 101)
     const walletName = `Test ${randomNum.toString()}`
@@ -83,10 +90,18 @@ test.describe('onboarding', () => {
   test('mainnet should be selctable as deafult network when envvar is mainnet or empty', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
     if (await isMainnetConfiguration()) {
-      await page.getByTestId('network-drawer').click()
-      await page.getByTestId('network-select').click()
-      const options = await page.getByRole('menuitem').allInnerTexts()
-      expect(options).toContain('mainnet1')
+      await networkTab.openNetworkTabAndViewNetworks()
+      await networkTab.checkExpectedNetworksAvailable(['mainnet1'])
+    } else {
+      test.skip()
+    }
+  })
+
+  test('fairground should be selctable as deafult network when envvar is mainnet or empty', async () => {
+    // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
+    if (!(await isMainnetConfiguration())) {
+      await networkTab.openNetworkTabAndViewNetworks()
+      await networkTab.checkExpectedNetworksAvailable(['fairground'])
     } else {
       test.skip()
     }
