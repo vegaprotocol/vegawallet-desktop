@@ -3,7 +3,10 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { waitForNetworkConnected } from '../support/helpers'
+import {
+  isMainnetConfiguration,
+  waitForNetworkConnected
+} from '../support/helpers'
 import initApp from '../support/init-app'
 import { CreateWallet } from '../support/pages/create-wallet'
 import { ViewWallet } from '../support/pages/view-wallet'
@@ -62,12 +65,16 @@ test.describe('onboarding', () => {
     await walletPage.openWalletAndAssertName(walletName2)
   })
 
-  test('import default network', async () => {
+  test('mainnet should be selctable as deafult network when envvar is mainnet or empty', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
-    await page.getByTestId('network-drawer').click()
-    await page.getByTestId('network-select').click()
-    const options = await page.getByRole('menuitem').allInnerTexts()
-    expect(options).toContain('mainnet1')
+    if (await isMainnetConfiguration()) {
+      await page.getByTestId('network-drawer').click()
+      await page.getByTestId('network-select').click()
+      const options = await page.getByRole('menuitem').allInnerTexts()
+      expect(options).toContain('mainnet1')
+    } else {
+      test.skip()
+    }
   })
 
   test('import wallet', async () => {
