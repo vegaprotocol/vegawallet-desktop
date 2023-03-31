@@ -11,26 +11,23 @@ const createWallet = (page: Page) => {
   const toast = page.getByTestId('toast')
   const viewWalletButton = page.getByTestId('create-wallet-success-cta')
 
-  async function createWallet(username: string, passphrase: string) {
+  const createWallet = async (username: string, passphrase: string) => {
     await nameField.type(username)
     await passphraseField.type(passphrase)
     await passphraseConfirmationField.type(passphrase)
     await submitButton.click()
   }
 
-  async function goToViewWalletPage() {
-    await viewWalletButton.click()
-  }
+  const goToViewWalletPage = async () => await viewWalletButton.click()
 
-  async function checkToastSuccess() {
+  const checkToastSuccess = async () => {
     await expect(toast).toHaveText('Wallet created!')
     await expect(toast).toBeHidden()
   }
 
-  async function createRandomWalletName() {
-    const randomNum = Math.floor(Math.random() * 101)
-    return `Test ${randomNum.toString()}`
-  }
+  const createRandomWalletName = async () =>
+    `Test ${Math.floor(Math.random() * 101).toString()}`
+
   return {
     createWallet,
     goToViewWalletPage,
