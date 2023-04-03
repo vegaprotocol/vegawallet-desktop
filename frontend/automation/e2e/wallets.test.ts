@@ -10,16 +10,25 @@ import {
   waitForNetworkConnected
 } from '../support/helpers'
 import initApp from '../support/init-app'
+import createWallet from '../support/pages/create-wallet'
+import viewWallet from '../support/pages/view-wallet'
+import wallets from '../support/pages/wallets'
 import { restoreWallet } from '../support/wallet-api'
 
 const passphrase = data.testWalletPassphrase
 const walletName = data.testWalletName
 const pubkey = data.testWalletPublicKey
+let createWalletPage: ReturnType<typeof createWallet>
+let viewWalletPage: ReturnType<typeof viewWallet>
+let walletPage: ReturnType<typeof wallets>
 
 test.describe('wallet sign key', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    walletPage = wallets(page)
+    createWalletPage = createWallet(page)
+    viewWalletPage = viewWallet(page)
     await initApp(page)
     await page.goto('/')
     await waitForNetworkConnected(page)
@@ -29,15 +38,9 @@ test.describe('wallet sign key', () => {
     // 0001-WALL-005
     // 0001-WALL-006
     // 0001-WALL-008
-    await page.getByTestId('create-new-wallet').click()
-    await page.getByTestId('create-wallet-form-name').type(walletName)
-    await page.getByTestId('create-wallet-form-passphrase').type(passphrase)
-    await page
-      .getByTestId('create-wallet-form-passphrase-confirm')
-      .type(passphrase)
-
-    await page.getByTestId('create-wallet-form-submit').click()
-    await expect(page.getByTestId('toast')).toHaveText('Wallet created!')
+    await walletPage.goToCreateWalletPage()
+    await createWalletPage.createWallet(walletName, passphrase)
+    await createWalletPage.checkToastSuccess()
     await expect(page.getByTestId('recovery-phrase-warning')).not.toBeEmpty()
     await expect(page.locator('code.block').first()).toContainText('2')
     const recovery = (await page
@@ -45,8 +48,8 @@ test.describe('wallet sign key', () => {
       .textContent()) as string
     expect(recovery.split(' ').length).toEqual(24)
 
-    await page.getByTestId('create-wallet-success-cta').click()
-    await expect(page.getByTestId('header-title')).toHaveText(walletName)
+    await createWalletPage.goToViewWalletPage()
+    await viewWalletPage.checkWalletExists(walletName)
     await expect(
       page.getByTestId('wallet-keypair').getByRole('button')
     ).toContainText('Key 1')
