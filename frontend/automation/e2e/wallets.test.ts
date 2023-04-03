@@ -10,9 +10,9 @@ import {
   waitForNetworkConnected
 } from '../support/helpers'
 import initApp from '../support/init-app'
-import type createWallet from '../support/pages/create-wallet'
-import type viewWallet from '../support/pages/view-wallet'
-import type wallets from '../support/pages/wallets'
+import createWallet from '../support/pages/create-wallet'
+import viewWallet from '../support/pages/view-wallet'
+import wallets from '../support/pages/wallets'
 import { restoreWallet } from '../support/wallet-api'
 
 const passphrase = data.testWalletPassphrase
@@ -26,6 +26,9 @@ test.describe('wallet sign key', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    walletPage = wallets(page)
+    createWalletPage = createWallet(page)
+    viewWalletPage = viewWallet(page)
     await initApp(page)
     await page.goto('/')
     await waitForNetworkConnected(page)
