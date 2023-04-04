@@ -3,7 +3,10 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { isMainnetConfiguration, waitForNetworkConnected } from '../support/helpers'
+import {
+  isMainnetConfiguration,
+  waitForNetworkConnected
+} from '../support/helpers'
 import initApp from '../support/init-app'
 import { Pages } from '../support/pages/Pages'
 
@@ -72,7 +75,11 @@ test.describe('onboarding', () => {
     const walletName = 'test'
     const recoveryPhrase = data.testWalletRecoveryPhrase
     await pages.walletPage.goToImportWalletPage()
-    await pages.importWalletPage.importWallet(walletName, testPassphrase, recoveryPhrase)
+    await pages.importWalletPage.importWallet(
+      walletName,
+      testPassphrase,
+      recoveryPhrase
+    )
     await pages.importWalletPage.checkToastSuccess()
   })
 
@@ -86,7 +93,11 @@ test.describe('onboarding', () => {
     const walletName = 'test-invalid'
     const invalidRecoveryPhrase = 'invalid'
     await pages.walletPage.goToImportWalletPage()
-    await pages.importWalletPage.importWallet(walletName, invalidRecoveryPhrase, testPassphrase)
+    await pages.importWalletPage.importWallet(
+      walletName,
+      invalidRecoveryPhrase,
+      testPassphrase
+    )
     await pages.importWalletPage.checkToastShowsError()
   })
 
