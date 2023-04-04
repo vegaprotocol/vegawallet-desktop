@@ -3,9 +3,9 @@
 import {connections} from '../models';
 import {app} from '../models';
 import {backend} from '../models';
+import {service} from '../models';
 import {interactor} from '../models';
 import {jsonrpc} from '../models';
-import {service} from '../models';
 
 export function APIV2DeleteAPIToken(arg1:string):Promise<void>;
 
@@ -23,25 +23,25 @@ export function GetCurrentServiceInfo():Promise<backend.GetCurrentServiceInfo>;
 
 export function GetLatestRelease():Promise<backend.LatestRelease>;
 
-export function GetServiceConfig():Promise<any>;
+export function GetServiceConfig():Promise<service.Config>;
 
-export function GetVersion():Promise<any>;
+export function GetVersion():Promise<backend.GetVersionResponse>;
 
-export function InitialiseApp(arg1:any):Promise<void>;
+export function InitialiseApp(arg1:backend.InitialiseAppRequest):Promise<void>;
 
 export function IsAppInitialised():Promise<boolean>;
 
 export function RespondToInteraction(arg1:interactor.Interaction):Promise<void>;
 
-export function SearchForExistingConfiguration():Promise<any>;
+export function SearchForExistingConfiguration():Promise<backend.SearchForExistingConfigurationResponse>;
 
-export function StartService(arg1:any):Promise<void>;
+export function StartService(arg1:backend.StartServiceRequest):Promise<void>;
 
 export function StartupBackend():Promise<void>;
 
 export function StopService():Promise<void>;
 
-export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<any>;
+export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<jsonrpc.Response>;
 
 export function UpdateAppConfig(arg1:app.Config):Promise<void>;
 
