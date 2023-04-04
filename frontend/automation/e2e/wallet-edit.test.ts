@@ -3,18 +3,21 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { unlockWallet, waitForNetworkConnected } from '../support/helpers'
+import { waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
+import wallets from '../support/pages/wallets'
 import { restoreWallet } from '../support/wallet-api'
 
 const passphrase = data.testWalletPassphrase
 const walletName = data.testWalletName
+let walletPage: ReturnType<typeof wallets>
 const newWalletName = `${Math.random().toString(36).substring(2)}`
 
 test.describe('wallet edit', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    walletPage = wallets(page)
     await initApp(page)
     await restoreWallet(page)
     await page.goto('/')
@@ -23,7 +26,7 @@ test.describe('wallet edit', () => {
 
   test('edits wallet name', async () => {
     //0001-WALL-069 must be able to change wallet name
-    await unlockWallet(page, walletName, passphrase)
+    await walletPage.openWalletAndAssertName(walletName, passphrase)
     await page.getByTestId('edit-wallet').click()
     await expect(page.getByTestId('edit-wallet-form')).toBeVisible()
     const walletForm = page.getByTestId('edit-wallet-form')

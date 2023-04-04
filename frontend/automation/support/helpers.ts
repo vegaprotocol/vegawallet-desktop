@@ -19,15 +19,6 @@ export async function isMainnetConfiguration() {
   )
 }
 
-export async function unlockWallet(
-  page: Page,
-  name: string,
-  passphrase: string
-) {
-  await page.getByTestId(`wallet-${name}`).click()
-  await authenticate(page, passphrase)
-}
-
 // This function usage would be probably possible to remove in most of the places
 // after https://github.com/vegaprotocol/vegawallet-desktop/issues/589 is resolved
 export async function waitForNetworkConnected(page: Page) {

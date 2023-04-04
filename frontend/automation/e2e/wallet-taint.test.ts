@@ -3,21 +3,20 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import {
-  authenticate,
-  unlockWallet,
-  waitForNetworkConnected
-} from '../support/helpers'
+import { authenticate, waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
+import wallets from '../support/pages/wallets'
 import { restoreWallet } from '../support/wallet-api'
 const passphrase = data.testWalletPassphrase
 const walletName = data.testWalletName
 const pubkey = data.testWalletPublicKey
+let walletPage: ReturnType<typeof wallets>
 
 test.describe('wallet taint key', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    walletPage = wallets(page)
     await initApp(page)
     await restoreWallet(page)
   })
@@ -31,7 +30,7 @@ test.describe('wallet taint key', () => {
     // 0001-WALL-061 must select a key to un-taint and be required to enter wallet password
     // 0001-WALL-058 must be prompted to enter wallet password to taint key
     // 0001-WALL-060 I can see tainted keys flagged as tainted
-    await unlockWallet(page, walletName, passphrase)
+    await walletPage.openWalletAndAssertName(walletName, passphrase)
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
 
     await page.getByTestId('keypair-taint-toggle').click()
@@ -45,7 +44,7 @@ test.describe('wallet taint key', () => {
 
   test('message untaint success', async () => {
     // 0001-WALL-061 must select a key to un-taint and be required to enter wallet password
-    await unlockWallet(page, walletName, passphrase)
+    await walletPage.openWalletAndAssertName(walletName, passphrase)
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await page.getByTestId('keypair-taint-toggle').click()
     await page.getByTestId('taint-action').click()

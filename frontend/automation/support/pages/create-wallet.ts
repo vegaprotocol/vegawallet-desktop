@@ -11,14 +11,14 @@ const createWallet = (page: Page) => {
   const toast = page.getByTestId('toast')
   const viewWalletButton = page.getByTestId('create-wallet-success-cta')
 
+  const goToViewWalletPage = async () => await viewWalletButton.click()
+
   const createWallet = async (username: string, passphrase: string) => {
     await nameField.type(username)
     await passphraseField.type(passphrase)
     await passphraseConfirmationField.type(passphrase)
     await submitButton.click()
   }
-
-  const goToViewWalletPage = async () => await viewWalletButton.click()
 
   const checkToastSuccess = async () => {
     await expect(toast).toHaveText('Wallet created!')

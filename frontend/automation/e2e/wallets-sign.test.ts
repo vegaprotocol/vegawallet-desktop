@@ -3,22 +3,21 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import {
-  authenticate,
-  unlockWallet,
-  waitForNetworkConnected
-} from '../support/helpers'
+import { authenticate, waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
+import wallets from '../support/pages/wallets'
 import { restoreWallet } from '../support/wallet-api'
 
 const passphrase = data.testWalletPassphrase
 const walletName = data.testWalletName
 const pubkey = data.testWalletPublicKey
+let walletPage: ReturnType<typeof wallets>
 
 test.describe('wallet sign key', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    walletPage = wallets(page)
     await initApp(page)
     await restoreWallet(page)
   })
@@ -26,7 +25,7 @@ test.describe('wallet sign key', () => {
   test.beforeEach(async () => {
     await page.goto('/')
     await waitForNetworkConnected(page)
-    await unlockWallet(page, walletName, passphrase)
+    await walletPage.openWalletAndAssertName(walletName, passphrase)
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await page.getByTestId('keypair-sign').click()
   })

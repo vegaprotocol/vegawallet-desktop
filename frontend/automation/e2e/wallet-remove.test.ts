@@ -3,9 +3,12 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { unlockWallet, waitForNetworkConnected } from '../support/helpers'
+import { waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
+import wallets from '../support/pages/wallets'
 import { restoreWallet } from '../support/wallet-api'
+
+let walletPage: ReturnType<typeof wallets>
 
 test.describe('wallet remove', () => {
   const passphrase = data.testWalletPassphrase
@@ -15,6 +18,7 @@ test.describe('wallet remove', () => {
 
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    walletPage = wallets(page)
     await initApp(page)
     await restoreWallet(page)
     await page.goto('/')
@@ -23,7 +27,7 @@ test.describe('wallet remove', () => {
 
   test('removes a wallet', async () => {
     // 0001-WALL-068 must be able to remove a wallet
-    await unlockWallet(page, walletName, passphrase)
+    await walletPage.openWalletAndAssertName(walletName, passphrase)
 
     const form = page.getByTestId('remove-wallet-form')
 
