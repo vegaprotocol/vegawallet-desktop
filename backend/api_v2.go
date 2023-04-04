@@ -37,22 +37,22 @@ func (h *Handler) APIV2DescribeAPIToken(token string) (connections.TokenDescript
 	return connections.DescribeAPIToken(h.tokenStore, token)
 }
 
-func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (*jsonrpc.Response, error) {
+func (h *Handler) SubmitWalletAPIRequest(request jsonrpc.Request) (jsonrpc.Response, error) {
 	if err := h.ensureBackendStarted(); err != nil {
-		return nil, err
+		return jsonrpc.Response{}, err
 	}
 
 	h.log.Debug("Entering SubmitWalletAPIRequest", zap.String("method", request.Method))
 	defer h.log.Debug("Leaving SubmitWalletAPIRequest", zap.String("method", request.Method))
 
 	if err := h.ensureAppIsInitialised(); err != nil {
-		return nil, err
+		return jsonrpc.Response{}, err
 	}
 
 	traceID := vgrand.RandomStr(64)
 	ctx := context.WithValue(h.ctx, jsonrpc.TraceIDKey, traceID)
 
-	return h.walletAdminAPI.DispatchRequest(ctx, request), nil
+	return *h.walletAdminAPI.DispatchRequest(ctx, request), nil
 }
 
 func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error {

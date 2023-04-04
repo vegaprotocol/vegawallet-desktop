@@ -33,7 +33,7 @@ type InitialiseAppRequest struct {
 	VegaHome string `json:"vegaHome"`
 }
 
-func (h *Handler) InitialiseApp(req *InitialiseAppRequest) error {
+func (h *Handler) InitialiseApp(req InitialiseAppRequest) error {
 	h.log.Debug("Entering InitialiseApp")
 	defer h.log.Debug("Leaving InitialiseApp")
 

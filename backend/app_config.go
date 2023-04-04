@@ -24,7 +24,7 @@ type SearchForExistingConfigurationResponse struct {
 // SearchForExistingConfiguration searches for existing wallets and networks.
 // This endpoint should be used to help the user to restore existing wallet
 // setup in the app.
-func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurationResponse, error) {
+func (h *Handler) SearchForExistingConfiguration() (SearchForExistingConfigurationResponse, error) {
 	h.log.Debug("Entering SearchForExistingConfiguration")
 	defer h.log.Debug("Leaving SearchForExistingConfiguration")
 
@@ -37,13 +37,13 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 	netStore, err := netStoreV1.InitialiseStore(vegaPaths)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the networks store: %v", err))
-		return nil, fmt.Errorf("could not initialise the networks store: %w", err)
+		return SearchForExistingConfigurationResponse{}, fmt.Errorf("could not initialise the networks store: %w", err)
 	}
 
 	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
-		return nil, fmt.Errorf("could not initialise the wallets store: %w", err)
+		return SearchForExistingConfigurationResponse{}, fmt.Errorf("could not initialise the wallets store: %w", err)
 	}
 
 	listWallets, _ := api.NewAdminListWallets(walletStore).Handle(h.ctx, nil)
@@ -56,7 +56,7 @@ func (h *Handler) SearchForExistingConfiguration() (*SearchForExistingConfigurat
 		networkNames = append(networkNames, net.Name)
 	}
 
-	return &SearchForExistingConfigurationResponse{
+	return SearchForExistingConfigurationResponse{
 		Wallets:  listWallets.(api.AdminListWalletsResult).Wallets,
 		Networks: networkNames,
 	}, nil
