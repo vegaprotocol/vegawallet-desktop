@@ -2,6 +2,9 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
+import createWallet from '../pages/create-wallet'
+import viewWallet from '../pages/view-wallet'
+import wallets from '../pages/wallets'
 import cleanup from '../support/cleanup'
 import {
   authenticate,
@@ -10,9 +13,6 @@ import {
   waitForNetworkConnected
 } from '../support/helpers'
 import initApp from '../support/init-app'
-import createWallet from '../support/pages/create-wallet'
-import viewWallet from '../support/pages/view-wallet'
-import wallets from '../support/pages/wallets'
 import { restoreWallet } from '../support/wallet-api'
 
 const passphrase = data.testWalletPassphrase

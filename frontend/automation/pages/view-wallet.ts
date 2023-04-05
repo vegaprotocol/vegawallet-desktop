@@ -7,7 +7,6 @@ const viewWallet = (page: Page) => {
     walletsHeader: page.getByTestId('header-title')
   }
   return {
-    ...locators,
     goToWalletsPage: async () => locators.goToWalletsButton.click(),
     checkWalletExists: async (expectedWallet: string) =>
       expect(locators.walletsHeader).toHaveText(expectedWallet)

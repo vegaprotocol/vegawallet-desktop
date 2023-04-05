@@ -13,7 +13,6 @@ const createWallet = (page: Page) => {
     viewWalletButton: page.getByTestId('create-wallet-success-cta')
   }
   return {
-    ...locators,
     createWallet: async (username: string, passphrase: string) => {
       await locators.nameField.type(username)
       await locators.passphraseField.type(passphrase)

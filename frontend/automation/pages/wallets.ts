@@ -7,7 +7,6 @@ const wallets = (page: Page) => {
     header: page.getByTestId('header-title')
   }
   return {
-    ...locators,
     goToCreateWalletPage: async () => locators.goToCreateWalletButton.click(),
     openWalletAndAssertName: async (walletName: string) => {
       await page.getByTestId(`wallet-${walletName.replace(' ', '-')}`).click()
