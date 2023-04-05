@@ -18,6 +18,14 @@
 
 - [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
+## 0.11.1
+
+Support for vega v0.70.2.
+
+### 🐛 Fixes
+
+- [623](https://github.com/vegaprotocol/vegawallet-desktop/issues/623) - Ensure the user understand the transaction is being processed
+
 ## 0.11.0
 
 Support for vega v0.70.0.
