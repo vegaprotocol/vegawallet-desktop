@@ -35,6 +35,8 @@ export const useWalletService = (): Service => {
       Handlers.UpdateAppConfig(new AppModel.Config(payload))
       return undefined
     },
+    UpdateServiceConfig: Handlers.UpdateServiceConfig,
+    GetServiceConfig: Handlers.GetServiceConfig,
 
     // Initialization
     StartupBackend: Handlers.StartupBackend,
