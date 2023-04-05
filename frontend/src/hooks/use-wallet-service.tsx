@@ -12,10 +12,10 @@ const logger = createLogger('DesktopWallet')
 
 export const useWalletService = (): Service => {
   return {
+    ...Handlers,
     TYPE: 'http',
 
     // Version
-    GetLatestRelease: Handlers.GetLatestRelease,
     GetVersion: async () => {
       const { version, gitHash, backend, networksCompatibility } =
         await Handlers.GetVersion()
@@ -29,22 +29,15 @@ export const useWalletService = (): Service => {
     },
 
     // Config
-    GetAppConfig: Handlers.GetAppConfig,
-    SearchForExistingConfiguration: Handlers.SearchForExistingConfiguration,
-    UpdateAppConfig: async (payload: AppConfig) => {
-      Handlers.UpdateAppConfig(new AppModel.Config(payload))
-      return undefined
+    UpdateAppConfig: (payload: AppConfig) => {
+      return Handlers.UpdateAppConfig(new AppModel.Config(payload))
     },
-    UpdateServiceConfig: Handlers.UpdateServiceConfig,
-    GetServiceConfig: Handlers.GetServiceConfig,
 
     // Initialization
-    StartupBackend: Handlers.StartupBackend,
     InitialiseApp: async ({ vegaHome }: { vegaHome: string }) => {
       await Handlers.InitialiseApp({ vegaHome })
       return undefined
     },
-    IsAppInitialised: Handlers.IsAppInitialised,
 
     // Telemetry
     EnableTelemetry: async () => {
@@ -69,7 +62,6 @@ export const useWalletService = (): Service => {
       await Handlers.StopService()
       return undefined
     },
-    GetCurrentServiceInfo: Handlers.GetCurrentServiceInfo,
 
     // API
     EventsOn,
