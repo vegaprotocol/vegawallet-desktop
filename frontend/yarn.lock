@@ -2345,10 +2345,10 @@
   resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-admin/-/wallet-admin-0.1.6.tgz#86768a0d385ad8554785bcc1d1d6fb7ac29babd5"
   integrity sha512-D9Lk8sxQfNIIqRwn4WgscCBy7sZyQjWI5Y+aMbWJhGhP5ys6z0gyXU9Fq57CtVNEm3vamYR00GG5hdRWNdxCtw==
 
-"@vegaprotocol/wallet-ui@0.1.51":
-  version "0.1.51"
-  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.51.tgz#c978a93a0e9040a8adca57de9aa75f1702a4d273"
-  integrity sha512-wIzeF4+ZhvmuZdfBMFsJOkoj+zCSec0g6SnB4IkutVtlE9gWFDi3rx6Zxx2/uUrLvnp4GEN/AkNst3qLgWgE6A==
+"@vegaprotocol/wallet-ui@0.1.60":
+  version "0.1.60"
+  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.1.60.tgz#41f40462d5940cd43922945bab7518ec3653b22d"
+  integrity sha512-QUtSjE8Vz87qtWUtSpE9JJPmcIUZTpPbi2Wo4ykSm6Xdm/5gJYbjKD2n8CPoT1MjEHHRZ9TA0W8vcPyiHyZ7Lw==
   dependencies:
     "@radix-ui/react-checkbox" "1.0.1"
     "@radix-ui/react-dialog" "1.0.2"
@@ -3600,7 +3600,7 @@ esutils@^2.0.2:
 
 ethers@^5.7.0:
   version "5.7.2"
-  resolved "https://registry.npmjs.org/ethers/-/ethers-5.7.2.tgz"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
   dependencies:
     "@ethersproject/abi" "5.7.0"
@@ -4344,7 +4344,7 @@ locate-path@^6.0.0:
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
-  resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
 
 lodash.merge@^4.6.2:
