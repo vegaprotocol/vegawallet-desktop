@@ -67,7 +67,6 @@ test.describe('onboarding', () => {
 
   test('mainnet should be selctable as deafult network when envvar is mainnet or empty', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
-
     // eslint-disable-next-line playwright/no-skipped-test
     test.skip(!isMainnetConfiguration())
 

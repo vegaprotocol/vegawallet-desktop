@@ -20,14 +20,11 @@ const createWallet = (page: Page) => {
       await locators.passphraseConfirmationField.type(passphrase)
       await locators.submitButton.click()
     },
-
-    goToViewWalletPage: async () => await locators.viewWalletButton.click(),
-
+    goToViewWalletPage: async () => locators.viewWalletButton.click(),
     checkToastSuccess: async () => {
       await expect(locators.toast).toHaveText('Wallet created!')
       await expect(locators.toast).toBeHidden()
     },
-
     createRandomWalletName: async () =>
       `Test ${Math.floor(Math.random() * 101).toString()}`
   }
