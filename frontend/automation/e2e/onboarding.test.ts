@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import createWallet from '../pages/create-wallet'
+import networkTab from '../pages/network-tab'
 import viewWallet from '../pages/view-wallet'
 import wallets from '../pages/wallets'
 import cleanup from '../support/cleanup'
@@ -11,10 +12,9 @@ import {
   waitForNetworkConnected
 } from '../support/helpers'
 import initApp from '../support/init-app'
-import { NetworkTab } from '../support/pages/network-tab'
 
 let page: Page
-let networkTab: NetworkTab
+let networkTabPage: ReturnType<typeof networkTab>
 let createWalletPage: ReturnType<typeof createWallet>
 let viewWalletPage: ReturnType<typeof viewWallet>
 let walletPage: ReturnType<typeof wallets>
@@ -26,7 +26,7 @@ test.describe('onboarding', () => {
     walletPage = wallets(page)
     createWalletPage = createWallet(page)
     viewWalletPage = viewWallet(page)
-    networkTab = new NetworkTab(page)
+    networkTabPage = networkTab(page)
 
     await initApp(page)
   })
@@ -74,16 +74,17 @@ test.describe('onboarding', () => {
     // eslint-disable-next-line playwright/no-skipped-test
     test.skip(!isMainnetConfiguration())
 
-    await networkTab.openNetworkTabAndViewNetworks()
-    await networkTab.checkExpectedNetworksAvailable(['mainnet1'])
+    await networkTabPage.openNetworkTabAndViewNetworks()
+    await networkTabPage.checkExpectedNetworksAvailable(['mainnet1'])
   })
 
   test('fairground should be selectable as default network when envvar is fairground', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
+    // eslint-disable-next-line playwright/no-skipped-test
     test.skip(isMainnetConfiguration())
 
-    await networkTab.openNetworkTabAndViewNetworks()
-    await networkTab.checkExpectedNetworksAvailable(['fairground'])
+    await networkTabPage.openNetworkTabAndViewNetworks()
+    await networkTabPage.checkExpectedNetworksAvailable(['fairground'])
   })
 
   test('import wallet', async () => {
