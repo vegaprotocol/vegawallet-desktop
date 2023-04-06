@@ -1,10 +1,10 @@
 import type { Page } from '@playwright/test'
 
-import createWallet from '../support/pages/create-wallet'
-import wallets from '../support/pages/wallets'
+import createWallet from './create-wallet'
 import importWallet from './import-wallet'
 import networkTab from './network-tab'
 import viewWallet from './view-wallet'
+import wallets from './wallets'
 
 export class Pages {
   readonly createWalletPage: ReturnType<typeof createWallet>
