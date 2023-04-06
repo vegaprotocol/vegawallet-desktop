@@ -11,7 +11,7 @@ export async function getTextFromClipboard(page: Page): Promise<string> {
   return page.evaluate('navigator.clipboard.readText()')
 }
 
-export async function isMainnetConfiguration() {
+export function isMainnetConfiguration() {
   return (
     process.env.VITE_FEATURE_MODE === 'mainnet' ||
     process.env.VITE_FEATURE_MODE === '' ||

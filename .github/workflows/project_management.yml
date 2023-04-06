@@ -5,12 +5,14 @@ name: 'Project Board Automation'
 
 "on":
   pull_request:
-    branches: [develop, master]
-    types: [synchronize, opened, reopened, labeled, unlabeled, ready_for_review, review_requested, converted_to_draft, closed]
+    branches:
+#      - develop
+      - master
+    types: [ synchronize, opened, reopened, labeled, unlabeled, ready_for_review, review_requested, converted_to_draft, closed ]
   pull_request_review:
-    types: [submitted]
+    types: [ submitted ]
   pull_request_review_comment:
-    types: [created]
+    types: [ created ]
 
 # Configure the project specific variables
 env:

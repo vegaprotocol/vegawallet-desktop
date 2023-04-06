@@ -6,7 +6,6 @@ import (
 
 	vgfs "code.vegaprotocol.io/vega/libs/fs"
 	vgzap "code.vegaprotocol.io/vega/libs/zap"
-	"go.uber.org/zap"
 )
 
 type Config struct {
@@ -27,19 +26,7 @@ type TelemetryConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
-func DefaultConfig() Config {
-	return Config{
-		LogLevel:       zap.InfoLevel.String(),
-		VegaHome:       "",
-		DefaultNetwork: "",
-		Telemetry: TelemetryConfig{
-			ConsentAsked: false,
-			Enabled:      true,
-		},
-	}
-}
-
-func (c Config) EnsureIsValid() error {
+func (c *Config) EnsureIsValid() error {
 	if len(c.LogLevel) == 0 {
 		return ErrLogLevelIsRequired
 	}
@@ -56,9 +43,9 @@ func (c Config) EnsureIsValid() error {
 		case err != nil:
 			return fmt.Errorf("unable to check if path exists %s: %w", c.VegaHome, err)
 		case !exists:
-			return fmt.Errorf("the specified VegaHome does not exist: %s", c.VegaHome)
+			return fmt.Errorf("the specified Vega home does not exist: %s", c.VegaHome)
 		default:
-			return fmt.Errorf("the specified VegaHome is not a directory: %s", c.VegaHome)
+			return fmt.Errorf("the specified Vega home is not a directory: %s", c.VegaHome)
 		}
 	}
 

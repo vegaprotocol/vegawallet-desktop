@@ -1,7 +1,7 @@
 {
-  "name": "vegawallet",
+  "name": "Vegawallet",
   "author": "Gobalsky Labs Ltd.",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "private": true,
   "engines": {
     "node": "^18.12.0"
@@ -10,6 +10,7 @@
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "build": "npx vite build",
     "dev:test": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_NETWORK_WARNING='false' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -noreload",
+    "dev:test:ci": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_NETWORK_WARNING='false' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload",
     "dev": "VITE_ENV='development' && npx vite --port=3000",
     "e2e:clean": "rm -r automation/test-wallets; mkdir automation/test-wallets",
     "e2e:open": "yarn e2e:run --headed",
@@ -23,12 +24,14 @@
     "@sentry/react": "7.19.0",
     "@sentry/tracing": "7.19.0",
     "@vegaprotocol/wallet-admin": "0.1.6",
-    "@vegaprotocol/wallet-ui": "0.1.51",
+    "@vegaprotocol/wallet-ui": "0.1.60",
     "core-js": "3.26.1",
+    "immer": "9.0.15",
     "loglevel": "1.8.1",
     "nanoid": "4.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",

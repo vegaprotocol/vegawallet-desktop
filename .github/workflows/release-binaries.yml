@@ -8,17 +8,27 @@ on:
 
 env:
   VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+  WAILS_VERSION: v2.4.1
 
 jobs:
   release-macos:
-    name: Release on MacOS ${{ matrix.arch }}
+    name: Release ${{ matrix.network }} on MacOS ${{ matrix.arch }}
     runs-on: macos-latest
     strategy:
       matrix:
         arch:
           - amd64
           - arm64
+        network:
+          - mainnet
+          - fairground
         include:
+          - network: mainnet
+            software-name: Vega Wallet
+            filename: vega-wallet
+          - network: fairground
+            software-name: Fairground Wallet
+            filename: fairground-wallet
           - arch: amd64
             user-friendly-arch: intel
           - arch: arm64
@@ -27,25 +37,31 @@ jobs:
       - name: Set up Node 18.12
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12
+          node-version: 18.12.0
         id: npm
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: 1.19
         id: go
 
-      - name: Check out code
-        uses: actions/checkout@v2
-
       - name: Get Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.2.0
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@${{ env.WAILS_VERSION }}
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Prepare "${{ matrix.network }}" bundle
+        shell: bash
+        env:
+          WALLET_OPTIMIZED_FOR: ${{ matrix.network }}
+        run: ./prepare.sh
 
       - name: Build binary
-        run: |
-          hash=$(echo ${{ github.sha }} | cut -b1-8)
-          wails build -clean -f -platform darwin/${{ matrix.arch }} -ldflags "-X code.vegaprotocol.io/vegawallet-desktop/backend.VersionHash=$hash"
+        env:
+          VITE_FEATURE_MODE: ${{ matrix.network }}
+        run: wails build -clean -f -platform=darwin/${{ matrix.arch }} -tags ${{ matrix.network }}
 
       - name: Run tests
         if: ${{ matrix.arch == 'amd64' }}
@@ -70,15 +86,15 @@ jobs:
         # --options runtime
         #     On macOS versions >= 10.14.0, opts signed processes into a hardened runtime environment which includes
         #     runtime code signing enforcement, library validation, hard, kill, and debugging restrictions.
-        run: codesign --verbose --sign "${{ secrets.MACOS_CERTIFICATE_IDENTITY_ID }}" --timestamp --options runtime --deep --force Vegawallet.app
+        run: codesign --verbose --sign "${{ secrets.MACOS_CERTIFICATE_IDENTITY_ID }}" --timestamp --options runtime --deep --force "${{ matrix.software-name }}.app"
 
       - name: Verify signature
         working-directory: build/bin
-        run: codesign --verbose --verify --strict --deep Vegawallet.app
+        run: codesign --verbose --verify --strict --deep "${{ matrix.software-name }}.app"
 
       - name: Bundle binary for notarization
         working-directory: build/bin
-        run: /usr/bin/ditto -c -k --keepParent Vegawallet.app "vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip"
+        run: /usr/bin/ditto -c -k --keepParent "${{ matrix.software-name }}.app" "${{ matrix.filename }}-desktop-macos-${{ matrix.user-friendly-arch }}.zip"
 
       - name: Store notarization credentials
         run: |
@@ -90,7 +106,7 @@ jobs:
       - name: Notarize app
         working-directory: build/bin
         run: |
-          xcrun notarytool submit "vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip" \
+          xcrun notarytool submit "${{ matrix.filename }}-desktop-macos-${{ matrix.user-friendly-arch }}.zip" \
             --keychain-profile vega \
             --output-format json \
             --timeout "90m" \
@@ -98,15 +114,15 @@ jobs:
 
       - name: Staple app
         working-directory: build/bin
-        run: xcrun stapler staple Vegawallet.app
+        run: xcrun stapler staple "${{ matrix.software-name }}.app"
 
       - name: Delete old archive
         working-directory: build/bin
-        run: rm -rf vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip
+        run: rm -rf ${{ matrix.filename }}-desktop-macos-${{ matrix.user-friendly-arch }}.zip
 
       - name: Bundle binary in archive for distribution
         working-directory: build/bin
-        run: /usr/bin/ditto -c -k --keepParent Vegawallet.app "vegawallet-desktop-macos-${{ matrix.user-friendly-arch }}.zip"
+        run: /usr/bin/ditto -c -k --keepParent "${{ matrix.software-name }}.app" "${{ matrix.filename }}-desktop-macos-${{ matrix.user-friendly-arch }}.zip"
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -117,36 +133,52 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-windows:
-    name: Release on Windows ${{ matrix.arch }}
+    name: Release ${{ matrix.network }} on Windows ${{ matrix.arch }}
     runs-on: windows-2019
     strategy:
       matrix:
         arch:
           - amd64
           - arm64
+        network:
+          - mainnet
+          - fairground
+        include:
+          - network: mainnet
+            software-name: Vega Wallet
+            filename: vega-wallet
+          - network: fairground
+            software-name: Fairground Wallet
+            filename: fairground-wallet
     steps:
       - name: Set up Node 18.12
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12
+          node-version: 18.12.0
         id: npm
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: 1.19
         id: go
 
-      - name: Check out code
-        uses: actions/checkout@v2
-
       - name: Get Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.2.0
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@${{ env.WAILS_VERSION }}
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Prepare "${{ matrix.network }}" bundle
+        shell: bash
+        env:
+          WALLET_OPTIMIZED_FOR: ${{ matrix.network }}
+        run: ./prepare.sh
 
       - name: Build binary
-        run: |
-          $hash= "${{ github.sha }}".substring(0,8)
-          wails build -f -platform windows/${{ matrix.arch }} -ldflags "-X code.vegaprotocol.io/vegawallet-desktop/backend.VersionHash=$hash"
+        env:
+          VITE_FEATURE_MODE: ${{ matrix.network }}
+        run: wails build -f -platform=windows/${{ matrix.arch }} -tags ${{ matrix.network }}
 
       - name: Run tests
         if: ${{ matrix.arch == 'amd64' }}
@@ -171,7 +203,7 @@ jobs:
         with:
           type: zip
           directory: build/bin
-          filename: vegawallet-desktop-windows-${{ matrix.arch }}.zip
+          filename: ${{ matrix.filename }}-desktop-windows-${{ matrix.arch }}.zip
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -182,28 +214,37 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-linux:
-    name: Release on Linux ${{ matrix.arch }}
+    name: Release ${{ matrix.network }} on Linux ${{ matrix.arch }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Cross-compiling to ARM64 is not supported for Linux.
         arch:
           - amd64
+        network:
+          - mainnet
+          - fairground
+        include:
+          - network: mainnet
+            software-name: Vega Wallet
+            filename: vega-wallet
+          - network: fairground
+            software-name: Fairground Wallet
+            filename: fairground-wallet
     steps:
       - name: Set up Node 18.12
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12
+          node-version: 18.12.0
         id: npm
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: 1.19
         id: go
 
-      - name: Check out code
-        uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v3
 
       - name: Install Wails dependencies
         run: |
@@ -211,12 +252,18 @@ jobs:
           sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev
 
       - name: Get Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.2.0
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@${{ env.WAILS_VERSION }}
+
+      - name: Prepare "${{ matrix.network }}" bundle
+        shell: bash
+        env:
+          WALLET_OPTIMIZED_FOR: ${{ matrix.network }}
+        run: ./prepare.sh
 
       - name: Build binary
-        run: |
-          hash=$(echo ${{ github.sha }} | cut -b1-8)
-          wails build -clean -f -platform linux/${{ matrix.arch }} -ldflags "-X code.vegaprotocol.io/vegawallet-desktop/backend.VersionHash=$hash"
+        env:
+          VITE_FEATURE_MODE: ${{ matrix.network }}
+        run: wails build -clean -f -platform=linux/${{ matrix.arch }} -tags ${{ matrix.network }}
 
       - name: Run tests
         if: ${{ matrix.arch == 'amd64' }}
@@ -227,7 +274,7 @@ jobs:
         with:
           type: zip
           directory: build/bin
-          filename: vegawallet-desktop-linux-${{ matrix.arch }}.zip
+          filename: ${{ matrix.filename }}-desktop-linux-${{ matrix.arch }}.zip
 
       - name: Release
         uses: softprops/action-gh-release@v1

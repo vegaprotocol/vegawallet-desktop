@@ -1,14 +1,14 @@
 import type { Page } from '@playwright/test'
-import { expect, test } from '@playwright/test'
+import { test } from '@playwright/test'
 
 import data from '../data/test-data.json'
+import { Pages } from '../pages/pages'
 import cleanup from '../support/cleanup'
 import {
   isMainnetConfiguration,
   waitForNetworkConnected
 } from '../support/helpers'
 import initApp from '../support/init-app'
-import { Pages } from '../support/pages/Pages'
 
 let page: Page
 let pages: Pages
@@ -59,16 +59,22 @@ test.describe('onboarding', () => {
     await pages.walletPage.openWalletAndAssertName(walletName2)
   })
 
-  test('mainnet should be selctable as deafult network when envvar is mainnet or empty', async () => {
+  test('mainnet should be selectable as default network when envvar is mainnet or empty', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
-    if (await isMainnetConfiguration()) {
-      await page.getByTestId('network-drawer').click()
-      await page.getByTestId('network-select').click()
-      const options = await page.getByRole('menuitem').allInnerTexts()
-      expect(options).toContain('mainnet1')
-    } else {
-      test.skip()
-    }
+    // eslint-disable-next-line playwright/no-skipped-test
+    test.skip(!isMainnetConfiguration())
+
+    await pages.networkTab.openNetworkTabAndViewNetworks()
+    await pages.networkTab.checkExpectedNetworksAvailable(['mainnet1'])
+  })
+
+  test('fairground should be selectable as default network when envvar is fairground', async () => {
+    // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
+    // eslint-disable-next-line playwright/no-skipped-test
+    test.skip(isMainnetConfiguration())
+
+    await pages.networkTab.openNetworkTabAndViewNetworks()
+    await pages.networkTab.checkExpectedNetworksAvailable(['fairground'])
   })
 
   test('import wallet', async () => {

@@ -5,7 +5,7 @@ import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
 import { waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
-import { Pages } from '../support/pages/Pages'
+import { Pages } from '../pages/pages'
 import { restoreWallet } from '../support/wallet-api'
 
 const recoveryPhrase = data.testWalletRecoveryPhrase
