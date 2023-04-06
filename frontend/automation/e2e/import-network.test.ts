@@ -27,6 +27,7 @@ test.describe('Import network', () => {
   })
   test('import successfully using url', async () => {
     const url = data.testnetConfigUrl
+    expect(true).toBe(true)
     await page.getByTestId('url-path').type(url)
     await page.getByTestId('import-network').click()
     await expect(page.getByTestId('toast')).toContainText('Network imported')
