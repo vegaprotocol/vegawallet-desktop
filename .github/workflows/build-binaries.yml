@@ -73,7 +73,7 @@ jobs:
   build-frontend:
     needs: hash-frontend
     name: Build frontend
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         network:
