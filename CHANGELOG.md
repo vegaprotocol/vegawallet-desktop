@@ -19,6 +19,14 @@
 
 - [573](https://github.com/vegaprotocol/vegawallet-desktop/issues/573) - Indirectly fix `ERR_FILE_NOT_FOUND` error by separated Fairground and Mainnet software, so configuration files are not corrupted any more.
 
+## 0.11.1
+
+Support for vega v0.70.2.
+
+### 🐛 Fixes
+
+- [623](https://github.com/vegaprotocol/vegawallet-desktop/issues/623) - Ensure the user understand the transaction is being processed
+
 ## 0.11.0
 
 Support for vega v0.70.0.
