@@ -78,6 +78,28 @@ wails dev
 
 This will start the app running on `localhost:34115`, as well as starting up [Vite](https://vitejs.dev/) to handle watching for any changes and hot reloading the frontend. See [`wails.json`](https://wails.io/docs/reference/project-config) for further configuration options. For more details on developing the frontend code, check out the [frontend readme](./frontend/README.md).
 
+### Feature flags
+
+These flags are passed as environment variables to the app. They are used to enable/disable features. For example:
+
+```bash
+VITE_FEATURE_MODE='fairground' wails dev
+```
+
+or
+
+```bash
+VITE_FEATURE_MODE='fairground' wails build
+```
+
+A full list of these can be found below:
+
+| Flag                         | Description                                                                                  |
+| ---------------------------- | -------------------------------------------------------------------------------------------- |
+| VITE_FEATURE_NETWORK_WARNING | Enable warning the user if the network is a different version for the one configured for the |
+| VITE_FEATURE_TELEMETRY_CHECK | Enable users being asked if they would like to send bug reports for the application          |
+| VITE_FEATURE_MODE            | Build the app in fairground mode with different styling/messaging that is mode specific      |
+
 ### More commands
 
 To generate the go bindings for the frontend, you can run:

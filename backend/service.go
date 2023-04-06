@@ -66,7 +66,7 @@ func (r StartServiceRequest) Check() error {
 	return nil
 }
 
-func (h *Handler) StartService(req *StartServiceRequest) (err error) {
+func (h *Handler) StartService(req StartServiceRequest) (err error) {
 	if err := h.ensureBackendStarted(); err != nil {
 		return err
 	}
@@ -128,25 +128,25 @@ func (h *Handler) GetCurrentServiceInfo() (GetCurrentServiceInfo, error) {
 	return h.serviceStarter.Info(), nil
 }
 
-func (h *Handler) GetServiceConfig() (*service.Config, error) {
+func (h *Handler) GetServiceConfig() (service.Config, error) {
 	if err := h.ensureBackendStarted(); err != nil {
-		return nil, err
+		return service.Config{}, err
 	}
 
 	h.log.Debug("Entering GetServiceConfig")
 	defer h.log.Debug("Leaving GetServiceConfig")
 
 	if err := h.ensureAppIsInitialised(); err != nil {
-		return nil, err
+		return service.Config{}, err
 	}
 
 	config, err := h.svcStore.GetConfig()
 	if err != nil {
 		h.log.Error("Couldn't retrieve the service configuration", zap.Error(err))
-		return nil, err
+		return service.Config{}, err
 	}
 
-	return config, nil
+	return *config, nil
 }
 
 func (h *Handler) UpdateServiceConfig(cfg service.Config) error {

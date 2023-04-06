@@ -1,6 +1,6 @@
 module.exports = {
-  plugins: ['simple-import-sort', 'cypress'],
-  extends: ['react-app', 'plugin:cypress/recommended'],
+  plugins: ['simple-import-sort'],
+  extends: ['react-app', 'plugin:playwright/playwright-test'],
   ignorePatterns: ['./src/wallet-client/**'],
   rules: {
     'prefer-const': 'warn',

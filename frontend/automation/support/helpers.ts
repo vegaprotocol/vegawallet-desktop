@@ -1,70 +1,52 @@
-export function unlockWallet(name: string, passphrase: string): any {
-  cy.getByTestId(`wallet-${name}`).click({ force: true })
-  authenticate(passphrase)
-  // wait for form to be unmounted so that other elements can be interacted with as
-  // the dialog adds pointer-events: none to the body element
-  cy.getByTestId('passphrase-form').should('not.exist')
+import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
+
+export async function authenticate(page: Page, passphrase: string) {
+  await page.getByTestId('passphrase-form').waitFor({ state: 'visible' })
+  await page.getByTestId('input-passphrase').type(passphrase)
+  await page.getByTestId('input-submit').click()
 }
 
-export function goToKey(pubkey: string): void {
-  cy.getByTestId(`wallet-keypair-${pubkey}`).click()
+export async function getTextFromClipboard(page: Page): Promise<string> {
+  return page.evaluate('navigator.clipboard.readText()')
 }
 
-export function authenticate(passphrase: string): void {
-  cy.getByTestId('passphrase-form').should('be.visible')
-  cy.getByTestId('input-passphrase').type(passphrase)
-  cy.getByTestId('input-submit').click()
+export function isMainnetConfiguration() {
+  return (
+    process.env.VITE_FEATURE_MODE === 'mainnet' ||
+    process.env.VITE_FEATURE_MODE === '' ||
+    process.env.VITE_FEATURE_MODE === undefined
+  )
 }
 
-export function approveConnection(
-  hostname: string,
-  walletName: string,
+export async function unlockWallet(
+  page: Page,
+  name: string,
   passphrase: string
-): void {
-  cy.getByTestId('service-status').should('contain.text', 'http://127.0.0.1')
-  cy.sendConnectionRequest(hostname)
-  cy.getByTestId('wallet-selection-modal').should('exist')
-  cy.get(`label[for=${walletName}]`).click()
-  cy.getByTestId('wallet-connection-approve').click()
-  authenticate(passphrase)
+) {
+  await page.getByTestId(`wallet-${name}`).click()
+  await authenticate(page, passphrase)
 }
 
-export function generateAccounts(): any[] {
-  const accounts = [
-    {
-      __typename: 'Account',
-      type: 'General',
-      balance: '10000000',
-      market: {
-        __typename: 'Market',
-        id: 'market-id',
-        name: 'Test Market'
-      },
-      asset: {
-        __typename: 'Asset',
-        id: 'asset-id',
-        name: 'tBTC TEST',
-        symbol: 'tBTC',
-        decimals: 5
+// This function usage would be probably possible to remove in most of the places
+// after https://github.com/vegaprotocol/vegawallet-desktop/issues/589 is resolved
+export async function waitForNetworkConnected(page: Page) {
+  const timeout = 5 * 1000
+  const serviceStatus = page.getByTestId('service-status')
+  try {
+    await expect(serviceStatus).not.toContainText(
+      /^(Not running|Loading|Not reachable)$/,
+      {
+        timeout
       }
-    },
-    {
-      __typename: 'Account',
-      type: 'General',
-      balance: '112672538',
-      market: {
-        __typename: 'Market',
-        id: 'market-id',
-        name: 'Test Market'
-      },
-      asset: {
-        __typename: 'Asset',
-        id: 'asset-id1',
-        name: 'tDAI TEST',
-        symbol: 'tDAI',
-        decimals: 5
+    )
+  } catch (e) {
+    await page.goto('/')
+    await expect(serviceStatus).not.toContainText(
+      /^(Not running|Loading|Not reachable)$/,
+      {
+        timeout: 2 * timeout
       }
-    }
-  ]
-  return accounts
+    )
+  }
 }
