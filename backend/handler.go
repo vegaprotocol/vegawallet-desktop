@@ -80,6 +80,8 @@ func NewHandler(icon []byte) *Handler {
 // Startup is called during application startup
 func (h *Handler) Startup(ctx context.Context) {
 	h.ctx = ctx
+
+	runtime.WindowSetTitle(h.ctx, fmt.Sprintf("%s %s", app.Name, app.Version))
 }
 
 // DOMReady is called after the front-end dom has been loaded
@@ -134,7 +136,7 @@ func (h *Handler) StartupBackend() (err error) {
 	}
 
 	if err := os.Init(); err != nil {
-		h.log.Error("Could not initialize OS-specific capabilities")
+		h.log.Error("Could not initialize OS-specific capabilities", zap.Error(err))
 		return err
 	}
 

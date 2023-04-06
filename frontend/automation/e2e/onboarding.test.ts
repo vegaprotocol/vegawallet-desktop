@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import createWallet from '../pages/create-wallet'
+import networkTab from '../pages/network-tab'
 import viewWallet from '../pages/view-wallet'
 import wallets from '../pages/wallets'
 import cleanup from '../support/cleanup'
@@ -13,6 +14,7 @@ import {
 import initApp from '../support/init-app'
 
 let page: Page
+let networkTabPage: ReturnType<typeof networkTab>
 let createWalletPage: ReturnType<typeof createWallet>
 let viewWalletPage: ReturnType<typeof viewWallet>
 let walletPage: ReturnType<typeof wallets>
@@ -24,6 +26,8 @@ test.describe('onboarding', () => {
     walletPage = wallets(page)
     createWalletPage = createWallet(page)
     viewWalletPage = viewWallet(page)
+    networkTabPage = networkTab(page)
+
     await initApp(page)
   })
 
@@ -65,15 +69,22 @@ test.describe('onboarding', () => {
     await walletPage.openWalletAndAssertName(walletName2)
   })
 
-  test('mainnet should be selctable as deafult network when envvar is mainnet or empty', async () => {
+  test('mainnet should be selectable as default network when envvar is mainnet or empty', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
     // eslint-disable-next-line playwright/no-skipped-test
     test.skip(!isMainnetConfiguration())
 
-    await page.getByTestId('network-drawer').click()
-    await page.getByTestId('network-select').click()
-    const options = await page.getByRole('menuitem').allInnerTexts()
-    expect(options).toContain('mainnet1')
+    await networkTabPage.openNetworkTabAndViewNetworks()
+    await networkTabPage.checkExpectedNetworksAvailable(['mainnet1'])
+  })
+
+  test('fairground should be selectable as default network when envvar is fairground', async () => {
+    // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
+    // eslint-disable-next-line playwright/no-skipped-test
+    test.skip(isMainnetConfiguration())
+
+    await networkTabPage.openNetworkTabAndViewNetworks()
+    await networkTabPage.checkExpectedNetworksAvailable(['fairground'])
   })
 
   test('import wallet', async () => {
