@@ -40,7 +40,7 @@ func (h *Handler) SearchForExistingConfiguration() (SearchForExistingConfigurati
 		return SearchForExistingConfigurationResponse{}, fmt.Errorf("could not initialise the networks store: %w", err)
 	}
 
-	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths)
+	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths, false)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
 		return SearchForExistingConfigurationResponse{}, fmt.Errorf("could not initialise the wallets store: %w", err)
