@@ -26,7 +26,11 @@ test.describe('wallet annotate metadata', () => {
   test('handles key name update', async () => {
     // 0001-WALL-055 must be able to change key name/alias
     const NEW_NAME = 'new name'
-    await walletPage.openWalletAndAssertName(walletName, passphrase)
+    const openedWalletName = await walletPage.openWalletAndGetName(
+      walletName,
+      passphrase
+    )
+    expect(openedWalletName).toBe(walletName)
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await page.getByTestId('keypair-update').click()
     await expect(page.getByTestId('metadata-key-0')).toContainText('Name')

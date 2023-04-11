@@ -26,7 +26,11 @@ test.describe('wallet edit', () => {
 
   test('edits wallet name', async () => {
     //0001-WALL-069 must be able to change wallet name
-    await walletPage.openWalletAndAssertName(walletName, passphrase)
+    const openedWalletName = await walletPage.openWalletAndGetName(
+      walletName,
+      passphrase
+    )
+    expect(walletName).toBe(openedWalletName)
     await page.getByTestId('edit-wallet').click()
     await expect(page.getByTestId('edit-wallet-form')).toBeVisible()
     const walletForm = page.getByTestId('edit-wallet-form')

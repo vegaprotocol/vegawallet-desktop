@@ -1,5 +1,4 @@
 import type { Page } from '@playwright/test'
-import { expect } from '@playwright/test'
 
 const wallets = (page: Page) => {
   const locators = {
@@ -23,12 +22,9 @@ const wallets = (page: Page) => {
     }
   }
 
-  const openWalletAndAssertName = async (
-    walletName: string,
-    passphrase = ''
-  ) => {
+  const openWalletAndGetName = async (walletName: string, passphrase = '') => {
     await openWallet(walletName, passphrase)
-    await expect(locators.header).toHaveText(walletName)
+    return await locators.header.innerText()
   }
 
   const authenticateWallet = async (passphrase: string) => {
@@ -41,7 +37,7 @@ const wallets = (page: Page) => {
     goToImportWalletPage,
     goToCreateWalletPage,
     openWallet,
-    openWalletAndAssertName
+    openWalletAndGetName
   }
 }
 export default wallets

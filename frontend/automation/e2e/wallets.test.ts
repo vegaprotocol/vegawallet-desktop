@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
-import { Pages } from '../pages/pages'
+import pages from '../pages/pages'
 import cleanup from '../support/cleanup'
 import {
   authenticate,
@@ -11,17 +11,18 @@ import {
 } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
+import exp from 'constants'
 
 const passphrase = data.testWalletPassphrase
 const walletName = data.testWalletName
 const pubkey = data.testWalletPublicKey
-let pages: Pages
+let pgObjects: ReturnType<typeof pages>
 
 test.describe('wallet sign key', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    pages = new Pages(page)
+    pgObjects = pages(page)
     await initApp(page)
     await page.goto('/')
     await waitForNetworkConnected(page)
@@ -31,9 +32,9 @@ test.describe('wallet sign key', () => {
     // 0001-WALL-005
     // 0001-WALL-006
     // 0001-WALL-008
-    await pages.walletPage.goToCreateWalletPage()
-    await pages.createWalletPage.createWallet(walletName, passphrase)
-    await pages.createWalletPage.checkToastSuccess()
+    await pgObjects.walletPage.goToCreateWalletPage()
+    await pgObjects.createWalletPage.createWallet(walletName, passphrase)
+    await pgObjects.createWalletPage.checkToastSuccess()
     await expect(page.getByTestId('recovery-phrase-warning')).not.toBeEmpty()
     await expect(page.locator('code.block').first()).toContainText('2')
     const recovery = (await page
@@ -41,8 +42,8 @@ test.describe('wallet sign key', () => {
       .textContent()) as string
     expect(recovery.split(' ').length).toEqual(24)
 
-    await pages.createWalletPage.goToViewWalletPage()
-    await pages.viewWalletPage.checkWalletExists(walletName)
+    await pgObjects.createWalletPage.goToViewWalletPage()
+    await pgObjects.viewWalletPage.checkWalletExists(walletName)
     await expect(
       page.getByTestId('wallet-keypair').getByRole('button')
     ).toContainText('Key 1')
@@ -63,7 +64,7 @@ test.describe('wallet', async () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    pages = new Pages(page)
+    pgObjects = pages(page)
     await initApp(page)
     await restoreWallet(page)
   })
@@ -71,7 +72,11 @@ test.describe('wallet', async () => {
   test.beforeEach(async () => {
     await page.goto('/')
     await waitForNetworkConnected(page)
-    await pages.walletPage.openWalletAndAssertName(walletName, passphrase)
+    const openedWalletName = await pgObjects.walletPage.openWalletAndGetName(
+      walletName,
+      passphrase
+    )
+    expect(openedWalletName).toEqual(walletName)
   })
 
   test('view wallet keypairs', async () => {
@@ -83,7 +88,7 @@ test.describe('wallet', async () => {
 
   test('wrong passphrase', async () => {
     await page.goto('')
-    await pages.walletPage.openWallet(walletName, 'invalid')
+    await pgObjects.walletPage.openWallet(walletName, 'invalid')
     await expect(page.getByTestId('toast')).toHaveText(
       'Error: wrong passphrase'
     )

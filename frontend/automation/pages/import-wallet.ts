@@ -28,32 +28,10 @@ const importWallet = (page: Page) => {
     await submitButton.click()
   }
 
-  const expectToastToHaveText = async (text: string) => {
-    await expect(toast).toHaveText(text)
-    await toast.click()
-  }
-
-  const checkToastSuccess = async () => {
-    await expectToastToHaveText('Wallet imported')
-  }
-
-  const checkToastShowsError = async () => {
-    await expectToastToHaveText(
-      'Error: could not import the wallet: the recovery phrase is not valid'
-    )
-    await toast.click()
-  }
-
-  const checkRequiredMessageAppears = async (expectedOccurences: number) => {
-    await expect(userInputRequiredText).toHaveCount(expectedOccurences)
-  }
-
   return {
     importWallet,
-    checkToastSuccess,
-    checkToastShowsError,
-    checkRequiredMessageAppears,
-    expectToastToHaveText
+    toast,
+    userInputRequiredText
   }
 }
 export default importWallet

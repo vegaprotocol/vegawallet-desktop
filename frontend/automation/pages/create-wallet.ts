@@ -10,7 +10,7 @@ const createWallet = (page: Page) => {
     ),
     submitButton: page.getByTestId('create-wallet-form-submit'),
     toast: page.getByTestId('toast'),
-    viewWalletButton: page.getByTestId('create-wallet-success-cta')
+    viewWalletButton: page.getByTestId('create-wallet-succiss-cta')
   }
   return {
     createWallet: async (username: string, passphrase: string) => {
