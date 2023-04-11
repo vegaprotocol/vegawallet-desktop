@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test'
+import { expect, Page } from '@playwright/test'
 import { test } from '@playwright/test'
 
 import data from '../data/test-data.json'
@@ -57,13 +57,13 @@ test.describe('onboarding', () => {
     let openedWalletName = await pgObjects.walletPage.openWalletAndGetName(
       walletName
     )
-    expect(openedWalletName).toBe(walletName)
+    expect(openedWalletName).toBe(walletName.toUpperCase())
 
     await pgObjects.viewWalletPage.goToWalletsPage()
     openedWalletName = await pgObjects.walletPage.openWalletAndGetName(
       walletName2
     )
-    expect(openedWalletName).toBe(walletName2)
+    expect(openedWalletName).toBe(walletName2.toUpperCase())
   })
 
   test('mainnet should be selectable as default network when envvar is mainnet or empty', async () => {

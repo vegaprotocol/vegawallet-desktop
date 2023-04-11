@@ -30,7 +30,11 @@ test.describe('wallet taint key', () => {
     // 0001-WALL-061 must select a key to un-taint and be required to enter wallet password
     // 0001-WALL-058 must be prompted to enter wallet password to taint key
     // 0001-WALL-060 I can see tainted keys flagged as tainted
-    await walletPage.openWalletAndAssertName(walletName, passphrase)
+    const openedWalletName = await walletPage.openWalletAndGetName(
+      walletName,
+      passphrase
+    )
+    expect(openedWalletName).toBe(walletName.toUpperCase())
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
 
     await page.getByTestId('keypair-taint-toggle').click()
@@ -44,7 +48,11 @@ test.describe('wallet taint key', () => {
 
   test('message untaint success', async () => {
     // 0001-WALL-061 must select a key to un-taint and be required to enter wallet password
-    await walletPage.openWalletAndAssertName(walletName, passphrase)
+    var openedWalletName = await walletPage.openWalletAndGetName(
+      walletName,
+      passphrase
+    )
+    expect(openedWalletName).toBe(walletName.toUpperCase())
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await page.getByTestId('keypair-taint-toggle').click()
     await page.getByTestId('taint-action').click()

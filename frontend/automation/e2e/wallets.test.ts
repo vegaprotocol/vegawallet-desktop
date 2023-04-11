@@ -76,7 +76,7 @@ test.describe('wallet', async () => {
       walletName,
       passphrase
     )
-    expect(openedWalletName).toEqual(walletName)
+    expect(openedWalletName).toEqual(walletName.toUpperCase())
   })
 
   test('view wallet keypairs', async () => {

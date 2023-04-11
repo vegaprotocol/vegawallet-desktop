@@ -25,7 +25,11 @@ test.describe('wallet sign key', () => {
   test.beforeEach(async () => {
     await page.goto('/')
     await waitForNetworkConnected(page)
-    await walletPage.openWalletAndAssertName(walletName, passphrase)
+    const openedWalletName = await walletPage.openWalletAndGetName(
+      walletName,
+      passphrase
+    )
+    expect(openedWalletName).toBe(walletName.toUpperCase())
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await page.getByTestId('keypair-sign').click()
   })

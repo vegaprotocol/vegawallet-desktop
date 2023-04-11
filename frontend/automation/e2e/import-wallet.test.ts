@@ -30,8 +30,9 @@ test.describe('import wallet', () => {
 
   test('recover wallet', async () => {
     // 0001-WALL-004
+    const walletName = 'import test'
     await pgObjects.importWalletPage.importWallet(
-      'import test',
+      walletName,
       passphrase,
       recoveryPhrase
     )
@@ -39,10 +40,10 @@ test.describe('import wallet', () => {
 
     // Can open newly imported wallet
     const openedWalletName = await pgObjects.walletPage.openWalletAndGetName(
-      'import test',
+      walletName,
       passphrase
     )
-    expect(openedWalletName).toBe('import test')
+    expect(openedWalletName).toBe(walletName.toUpperCase())
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await expect(page.getByTestId('public-key')).toContainText(pubkey)
   })

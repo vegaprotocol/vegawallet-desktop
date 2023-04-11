@@ -30,7 +30,7 @@ test.describe('wallet edit', () => {
       walletName,
       passphrase
     )
-    expect(walletName).toBe(openedWalletName)
+    expect(walletName).toBe(openedWalletName.toUpperCase())
     await page.getByTestId('edit-wallet').click()
     await expect(page.getByTestId('edit-wallet-form')).toBeVisible()
     const walletForm = page.getByTestId('edit-wallet-form')

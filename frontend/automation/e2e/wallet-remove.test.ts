@@ -27,7 +27,11 @@ test.describe('wallet remove', () => {
 
   test('removes a wallet', async () => {
     // 0001-WALL-068 must be able to remove a wallet
-    await walletPage.openWalletAndAssertName(walletName, passphrase)
+    const openedWalletName = await walletPage.openWalletAndGetName(
+      walletName,
+      passphrase
+    )
+    expect(openedWalletName).toBe(walletName.toUpperCase())
 
     const form = page.getByTestId('remove-wallet-form')
 
