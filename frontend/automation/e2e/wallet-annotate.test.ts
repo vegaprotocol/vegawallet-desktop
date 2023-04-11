@@ -30,7 +30,7 @@ test.describe('wallet annotate metadata', () => {
       walletName,
       passphrase
     )
-    expect(openedWalletName).toBe(walletName.toUpperCase)
+    expect(openedWalletName).toBe(walletName.toUpperCase())
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await page.getByTestId('keypair-update').click()
     await expect(page.getByTestId('metadata-key-0')).toContainText('Name')
