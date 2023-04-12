@@ -2340,10 +2340,10 @@
   resolved "https://registry.yarnpkg.com/@vegaprotocol/tailwindcss-config/-/tailwindcss-config-0.0.1.tgz#56930a93916d9ffc97604b5ea053810e91679047"
   integrity sha512-sz84S3Em5DjXVYTRViQyXPqLHj8nLAMwghWl0u+9zrMD51aAkRZFg36YFIVz4nzE0Y1eT9up3S4L++FsOjE6Lw==
 
-"@vegaprotocol/wallet-admin@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-admin/-/wallet-admin-0.1.6.tgz#86768a0d385ad8554785bcc1d1d6fb7ac29babd5"
-  integrity sha512-D9Lk8sxQfNIIqRwn4WgscCBy7sZyQjWI5Y+aMbWJhGhP5ys6z0gyXU9Fq57CtVNEm3vamYR00GG5hdRWNdxCtw==
+"@vegaprotocol/wallet-admin@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-admin/-/wallet-admin-0.2.0.tgz#688936615bafb0957cde1c98ca67449f5b5ac783"
+  integrity sha512-QC82fdEUMjfGQCBI8n7EutsXpQU4xK4EYYpHpYVpiG10NqBaWc4OoAumNdX44x4aOynISNlNdROLhDXu3A8NLw==
 
 "@vegaprotocol/wallet-ui@0.1.60":
   version "0.1.60"
