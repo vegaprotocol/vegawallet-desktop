@@ -29,7 +29,8 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['list', { printSteps: true }],
-    ['html', { outputFolder: `test-results/playwright-report` }]
+    ['html', { outputFolder: `test-results/playwright-report` }],
+    ['junit', { outputFile: `test-results/junit-report/report.xml` }]
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
