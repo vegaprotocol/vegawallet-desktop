@@ -73,7 +73,7 @@ test.describe('manage networks', async () => {
 })
 
 // tests skipped until bug resolved https://github.com/vegaprotocol/vegawallet-desktop/issues/588
-test.describe.fixme('change network details', () => {
+test.describe('change network details', () => {
   // 0001-WALL-011
   test.beforeEach(async () => {
     await editNetwork(page, 'test_network3')
