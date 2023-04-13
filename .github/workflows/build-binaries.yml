@@ -325,6 +325,14 @@ jobs:
         working-directory: frontend
         run: yarn e2e:run
 
+      - name: Show test summary
+        if: success() || failure()
+        uses: dorny/test-reporter@v1
+        with:
+          name: UI Tests
+          path: frontend/automation/test-results/junit-report/report.xml
+          reporter: java-junit
+
       - name: Store test report
         if: always()
         uses: actions/upload-artifact@v3
