@@ -17,6 +17,8 @@ export function APIV2ListAPITokens():Promise<connections.ListAPITokensResult>;
 
 export function AppMenu():Promise<any>;
 
+export function ChooseFolder():Promise<string>;
+
 export function GetAppConfig():Promise<app.Config>;
 
 export function GetCurrentServiceInfo():Promise<backend.GetCurrentServiceInfo>;
@@ -42,6 +44,8 @@ export function StartupBackend():Promise<void>;
 export function StopService():Promise<void>;
 
 export function SubmitWalletAPIRequest(arg1:jsonrpc.Request):Promise<jsonrpc.Response>;
+
+export function SuggestFairgroundFolder():Promise<string>;
 
 export function UpdateAppConfig(arg1:app.Config):Promise<void>;
 

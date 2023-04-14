@@ -22,6 +22,10 @@ export function AppMenu() {
   return window['go']['backend']['Handler']['AppMenu']();
 }
 
+export function ChooseFolder() {
+  return window['go']['backend']['Handler']['ChooseFolder']();
+}
+
 export function GetAppConfig() {
   return window['go']['backend']['Handler']['GetAppConfig']();
 }
@@ -72,6 +76,10 @@ export function StopService() {
 
 export function SubmitWalletAPIRequest(arg1) {
   return window['go']['backend']['Handler']['SubmitWalletAPIRequest'](arg1);
+}
+
+export function SuggestFairgroundFolder() {
+  return window['go']['backend']['Handler']['SuggestFairgroundFolder']();
 }
 
 export function UpdateAppConfig(arg1) {

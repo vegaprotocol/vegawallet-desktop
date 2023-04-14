@@ -80,6 +80,8 @@ func NewHandler(icon []byte) *Handler {
 // Startup is called during application startup
 func (h *Handler) Startup(ctx context.Context) {
 	h.ctx = ctx
+
+	runtime.WindowSetTitle(h.ctx, fmt.Sprintf("%s %s", app.Name, app.Version))
 }
 
 // DOMReady is called after the front-end dom has been loaded
@@ -134,7 +136,7 @@ func (h *Handler) StartupBackend() (err error) {
 	}
 
 	if err := os.Init(); err != nil {
-		h.log.Error("Could not initialize OS-specific capabilities")
+		h.log.Error("Could not initialize OS-specific capabilities", zap.Error(err))
 		return err
 	}
 
@@ -208,12 +210,15 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 		}
 	}
 
-	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths)
+	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths, true)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
 		return fmt.Errorf("could not initialise the wallets store: %w", err)
 	}
 	h.walletStore = walletStore
+	h.resourcesCloser.Add(func() {
+		h.walletStore.Close()
+	})
 
 	h.walletStore.OnUpdate(func(ctx context.Context, event wallet.Event) {
 		runtime.EventsEmit(h.ctx, string(event.Type), event.Data)

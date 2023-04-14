@@ -14,11 +14,11 @@ func (h *Handler) AppMenu() *menu.Menu {
 	appMenu := menu.NewMenu()
 
 	mainMenu := appMenu.AddSubmenu("Main")
-	mainMenu.AddText("About Vegawallet", nil, h.openAboutDialog)
+	mainMenu.AddText(fmt.Sprintf("About %s", app.Name), nil, h.openAboutDialog)
 	mainMenu.AddSeparator()
 
 	if runtime.GOOS == "darwin" {
-		mainMenu.AddText("Hide Vegawallet", keys.CmdOrCtrl("h"), func(_ *menu.CallbackData) {
+		mainMenu.AddText(fmt.Sprintf("Hide %s", app.Name), keys.CmdOrCtrl("h"), func(_ *menu.CallbackData) {
 			wailsRuntime.Hide(h.ctx)
 		})
 		mainMenu.AddSeparator()
