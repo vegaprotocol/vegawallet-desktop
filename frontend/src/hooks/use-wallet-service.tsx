@@ -1,11 +1,12 @@
 import type {
   AppConfig,
-  Service
+  Service,
+  ServiceConfig
 } from '@vegaprotocol/wallet-ui/src/types/service'
 
 import { createLogger, initLogger } from '../lib/logging'
 import * as Handlers from '../wailsjs/go/backend/Handler'
-import { app as AppModel } from '../wailsjs/go/models'
+import { app as AppModel, service } from '../wailsjs/go/models'
 import { EventsOff, EventsOn } from '../wailsjs/runtime'
 
 const logger = createLogger('DesktopWallet')
@@ -13,7 +14,10 @@ const logger = createLogger('DesktopWallet')
 export const useWalletService = (): Service => {
   return {
     TYPE: 'http',
-
+    ...Handlers,
+    UpdateServiceConfig: async (payload: ServiceConfig) => {
+      return Handlers.UpdateServiceConfig(new service.Config(payload))
+    },
     // Version
     GetLatestRelease: Handlers.GetLatestRelease,
     GetVersion: async () => {

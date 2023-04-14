@@ -210,12 +210,15 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 		}
 	}
 
-	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths)
+	walletStore, err := wallets.InitialiseStoreFromPaths(vegaPaths, true)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the wallets store: %v", err))
 		return fmt.Errorf("could not initialise the wallets store: %w", err)
 	}
 	h.walletStore = walletStore
+	h.resourcesCloser.Add(func() {
+		h.walletStore.Close()
+	})
 
 	h.walletStore.OnUpdate(func(ctx context.Context, event wallet.Event) {
 		runtime.EventsEmit(h.ctx, string(event.Type), event.Data)
