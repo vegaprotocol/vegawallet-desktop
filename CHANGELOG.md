@@ -12,7 +12,8 @@
 
 ### 🛠 Improvements
 
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [611](https://github.com/vegaprotocol/vegawallet-desktop/issues/611) - Support a dedicated style for development version.
+
 ### 🐛 Fixes
 
 - [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
