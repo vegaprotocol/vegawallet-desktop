@@ -190,13 +190,13 @@ jobs:
           Certutil -f -p "${{ secrets.WINDOWS_CERTIFICATE_PASS }}" -importpfx certificate.pfx
 
       - name: Sign binary
-        uses: Dana-Prajea/code-sign-action@98c79121b376beab8d6a9484f445089db4461bca
+        uses: dlemstra/code-sign-action@v1
         with:
           certificate: ${{ secrets.WINDOWS_CERTIFICATE }}
           password: ${{ secrets.WINDOWS_CERTIFICATE_PASS }}
-          certificatesha1: ${{ secrets.WINDOWS_CERTIFICATE_HASH }}
-          folder: build/bin
-          timestampUrl: "http://timestamp.sectigo.com"
+          folder: 'build/bin'
+          recursive: true
+          files: "${{ matrix.software-name }}.exe"
 
       - name: Bundle binary in archive
         uses: thedoctor0/zip-release@master
