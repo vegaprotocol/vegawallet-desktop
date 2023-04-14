@@ -59,8 +59,6 @@ cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohl
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3fOKtUw0Xmo=
-code.vegaprotocol.io/vega v0.70.3-0.20230411085813-f28ecda5425b h1:jPaNMsmVoEXYwtDaj6vblF+0FXkmBIlUgBw/Q92elEU=
-code.vegaprotocol.io/vega v0.70.3-0.20230411085813-f28ecda5425b/go.mod h1:guOChMSQENqWQt0DVkmMU/SlOYssVHfuvNaWlMeuRCk=
 code.vegaprotocol.io/vega v0.70.4 h1:LnY8E2X3YV3jiNldjJKBNO5ArQts4OOsi54h1CKW6nQ=
 code.vegaprotocol.io/vega v0.70.4/go.mod h1:guOChMSQENqWQt0DVkmMU/SlOYssVHfuvNaWlMeuRCk=
 contrib.go.opencensus.io/exporter/stackdriver v0.13.4/go.mod h1:aXENhDJ1Y4lIg4EUaVTwzvYETVNZk10Pu26tevFKLUc=

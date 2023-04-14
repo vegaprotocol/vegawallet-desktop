@@ -12,7 +12,8 @@
 
 ### 🛠 Improvements
 
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [626](https://github.com/vegaprotocol/vegawallet-desktop/issues/626) - Add more shortcuts on the window to minimize the app
+
 ### 🐛 Fixes
 
 - [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
