@@ -24,7 +24,7 @@
     "@sentry/react": "7.19.0",
     "@sentry/tracing": "7.19.0",
     "@vegaprotocol/wallet-admin": "0.1.6",
-    "@vegaprotocol/wallet-ui": "0.1.60",
+    "@vegaprotocol/wallet-ui": "0.2.2",
     "core-js": "3.26.1",
     "immer": "9.0.15",
     "loglevel": "1.8.1",
