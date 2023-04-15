@@ -85,7 +85,7 @@ To compile the optimization for fairground:
 wails build -f -clean -tags fairground
 ```
 
-**Note that this step alone won't correctly bundle the application for fairground.** There are hacks to be performed to have the right bundle name, metadata, and icon. See `build-fairgound.sh` script for more detail.
+**Note that this step alone won't correctly bundle the application for fairground.** There are hacks to be performed to have the right bundle name, metadata, and icon. See `build.sh` script for more detail.
 
 More at the [Wails documentation](https://wails.io/docs/reference/cli#build).
 

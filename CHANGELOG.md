@@ -13,6 +13,7 @@
 ### 🛠 Improvements
 
 - [611](https://github.com/vegaprotocol/vegawallet-desktop/issues/611) - Support a dedicated style for development version.
+- [626](https://github.com/vegaprotocol/vegawallet-desktop/issues/626) - Add more shortcuts on the window to minimize the app
 
 ### 🐛 Fixes
 
