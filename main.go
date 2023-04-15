@@ -47,8 +47,8 @@ func main() {
 		Title:            app.Name,
 		Width:            760,
 		Height:           760,
-		MinWidth:         460,
-		MinHeight:        460,
+		MinWidth:         540,
+		MinHeight:        540,
 		Menu:             handler.AppMenu(),
 		BackgroundColour: options.NewRGBA(0, 0, 0, 255),
 		AssetServer: &assetserver.Options{

@@ -1,4 +1,4 @@
-//go:build !fairground
+//go:build mainnet
 
 package backend
 
