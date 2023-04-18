@@ -13,6 +13,7 @@ const createWallet = (page: Page) => {
     viewWalletButton: page.getByTestId('create-wallet-success-cta')
   }
   return {
+    locators,
     createWallet: async (username: string, passphrase: string) => {
       await locators.nameField.type(username)
       await locators.passphraseField.type(passphrase)
@@ -24,8 +25,8 @@ const createWallet = (page: Page) => {
       await expect(locators.toast).toHaveText('Wallet created!')
       await expect(locators.toast).toBeHidden()
     },
-    createRandomWalletName: async () =>
-      `Test ${Math.floor(Math.random() * 101).toString()}`
   }
 }
 export default createWallet
+export const createRandomWalletName = () =>
+`Test ${Math.floor(Math.random() * 101).toString()}`

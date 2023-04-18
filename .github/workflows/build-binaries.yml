@@ -278,6 +278,11 @@ jobs:
       - download-backend
     name: Run end-to-end tests
     runs-on: macos-latest
+    strategy:
+      matrix:
+        mode:
+          - dev
+          - fairground
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -320,16 +325,25 @@ jobs:
 
       # Run cypress in this process and run all Cypress tests
       - name: Run e2e tests
+        if: ${{ matrix.mode == 'dev' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: frontend
         run: yarn e2e:run
 
+      - name: Run e2e tests - fairground mode
+        if: ${{ matrix.mode == 'fairground' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_FEATURE_MODE: fairground
+        working-directory: frontend
+        run: yarn e2e:run --project="fairground"
+
       - name: Show test summary
         if: success() || failure()
         uses: dorny/test-reporter@v1
         with:
-          name: UI Tests
+          name: UI Tests - ${{ matrix.mode }}
           path: frontend/automation/test-results/junit-report/report.xml
           reporter: java-junit
 
@@ -337,5 +351,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
+          name: test-results-${{ matrix.mode }}
           path: frontend/automation/test-results
