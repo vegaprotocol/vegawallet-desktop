@@ -26,6 +26,10 @@ test.describe('onboarding - fairground version', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     await page.goto('/')
+
+    // There is a bug in app, that shows this error toast, need to be removed after fix
+    await page.getByTestId('close').click()
+
     walletPage = wallets(page)
     createWalletPage = createWallet(page)
     viewWalletPage = viewWallet(page)

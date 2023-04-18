@@ -319,9 +319,7 @@ jobs:
 
       - name: Setup Playwright browsers
         working-directory: frontend
-        run: |
-          yarn playwright install
-          yarn playwright install-deps chromium
+        run: yarn playwright install --with-deps chromium
 
       # Run cypress in this process and run all Cypress tests
       - name: Run e2e tests
