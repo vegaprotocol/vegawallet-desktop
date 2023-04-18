@@ -281,7 +281,7 @@ jobs:
     strategy:
       matrix:
         mode:
-          - dev
+          - default
           - fairground
     steps:
       - name: Checkout
@@ -321,21 +321,12 @@ jobs:
         working-directory: frontend
         run: yarn playwright install --with-deps chromium
 
-      # Run cypress in this process and run all Cypress tests
-      - name: Run e2e tests
-        if: ${{ matrix.mode == 'dev' }}
+      - name: Run e2e tests - ${{ matrix.mode }} mode
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_FEATURE_MODE: ${{ matrix.mode }}
         working-directory: frontend
-        run: yarn e2e:run
-
-      - name: Run e2e tests - fairground mode
-        if: ${{ matrix.mode == 'fairground' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_FEATURE_MODE: fairground
-        working-directory: frontend
-        run: yarn e2e:run --project="fairground"
+        run: yarn e2e:run --project="${{ matrix.mode }}"
 
       - name: Show test summary
         if: success() || failure()
