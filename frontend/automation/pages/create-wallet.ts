@@ -24,9 +24,9 @@ const createWallet = (page: Page) => {
     checkToastSuccess: async () => {
       await expect(locators.toast).toHaveText('Wallet created!')
       await expect(locators.toast).toBeHidden()
-    },
+    }
   }
 }
 export default createWallet
 export const createRandomWalletName = () =>
-`Test ${Math.floor(Math.random() * 101).toString()}`
+  `Test ${Math.floor(Math.random() * 101).toString()}`
