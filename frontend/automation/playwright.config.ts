@@ -1,4 +1,6 @@
 import { defineConfig, devices } from '@playwright/test'
+
+import { isFairgroundConfiguration } from './support/helpers'
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -41,51 +43,24 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure'
+    screenshot: 'only-on-failure',
+    ...devices['Desktop Chrome'],
+    launchOptions: {
+      args: ['--disable-web-security']
+    },
+    permissions: ['clipboard-read']
   },
 
-  /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        launchOptions: {
-          args: ['--disable-web-security']
-        },
-        permissions: ['clipboard-read']
-      }
+      name: 'default',
+      testIgnore: /.*fairground.test.ts/
+    },
+    {
+      name: 'fairground',
+      testMatch: /.*fairground.test.ts/,
+      retries: 0
     }
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] }
-    // }
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { channel: 'chrome' },
-    // },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
@@ -93,7 +68,10 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: process.env.CI ? 'yarn dev:test:ci' : 'yarn dev:test',
+    reuseExistingServer: true,
+    command: isFairgroundConfiguration()
+      ? 'yarn dev:ci:fairground'
+      : 'yarn dev:ci',
     port: 34115,
     timeout: 6 * 60 * 1000
   }

@@ -278,6 +278,11 @@ jobs:
       - download-backend
     name: Run end-to-end tests
     runs-on: macos-latest
+    strategy:
+      matrix:
+        mode:
+          - default
+          - fairground
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -314,22 +319,20 @@ jobs:
 
       - name: Setup Playwright browsers
         working-directory: frontend
-        run: |
-          yarn playwright install
-          yarn playwright install-deps chromium
+        run: yarn playwright install --with-deps chromium
 
-      # Run cypress in this process and run all Cypress tests
-      - name: Run e2e tests
+      - name: Run e2e tests - ${{ matrix.mode }} mode
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_FEATURE_MODE: ${{ matrix.mode }}
         working-directory: frontend
-        run: yarn e2e:run
+        run: yarn e2e:run --project="${{ matrix.mode }}"
 
       - name: Show test summary
         if: success() || failure()
         uses: dorny/test-reporter@v1
         with:
-          name: UI Tests
+          name: UI Tests - ${{ matrix.mode }}
           path: frontend/automation/test-results/junit-report/report.xml
           reporter: java-junit
 
@@ -337,5 +340,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
+          name: test-results-${{ matrix.mode }}
           path: frontend/automation/test-results

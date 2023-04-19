@@ -19,6 +19,10 @@ export function isMainnetConfiguration() {
   )
 }
 
+export function isFairgroundConfiguration() {
+  return process.env.VITE_FEATURE_MODE === 'fairground'
+}
+
 export async function unlockWallet(
   page: Page,
   name: string,
