@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { unlockWallet, waitForNetworkConnected } from '../support/helpers'
+import { unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 
@@ -18,7 +18,6 @@ test.describe('wallet remove', () => {
     await initApp(page)
     await restoreWallet(page)
     await page.goto('/')
-    await waitForNetworkConnected(page)
   })
 
   test('removes a wallet', async () => {

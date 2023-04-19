@@ -3,11 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import {
-  authenticate,
-  unlockWallet,
-  waitForNetworkConnected
-} from '../support/helpers'
+import { authenticate, unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 const passphrase = data.testWalletPassphrase
@@ -24,7 +20,6 @@ test.describe('wallet taint key', () => {
 
   test.beforeEach(async () => {
     await page.goto('/')
-    await waitForNetworkConnected(page)
   })
 
   test('message taint success', async () => {

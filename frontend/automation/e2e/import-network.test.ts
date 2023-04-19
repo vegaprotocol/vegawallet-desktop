@@ -4,9 +4,8 @@ import { join } from 'path'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
-import { removeNetwork } from '../support/wallet-api'
+import { removeNetwork, restoreNetwork } from '../support/wallet-api'
 
 const url = data.mainnetConfigUrl
 
@@ -16,10 +15,10 @@ test.describe('Import network', () => {
     page = await browser.newPage()
     await initApp(page)
     await removeNetwork(page, 'fairground')
+    await restoreNetwork(page)
   })
   test.beforeEach(async () => {
     await page.goto('/')
-    await waitForNetworkConnected(page)
     await page.getByTestId('network-drawer').click()
     await page.getByTestId('manage-networks').click()
     await page.getByTestId('add-network').click()
@@ -43,8 +42,8 @@ test.describe('Import network', () => {
 
   // Skipped until bug fixed
   // https://github.com/vegaprotocol/vegawallet-desktop/issues/561
-  test.fixme('import successfully via file path', async () => {
-    const filePath = `file://${join(
+  test('import successfully via file path', async () => {
+    const filePath = `${join(
       process.cwd(),
       'automation/data/networks/mainnet1.toml'
     )}`
@@ -68,7 +67,11 @@ test.describe('Import network', () => {
   })
 
   test('overwrite network that already exists', async () => {
-    await page.getByTestId('url-path').type(url)
+    const filePath = `${join(
+      process.cwd(),
+      'automation/data/networks/test.toml'
+    )}`
+    await page.getByTestId('url-path').type(filePath)
     await page.getByTestId('import-network').click()
     await expect(page.getByTestId('toast')).toContainText(
       'Error: a network with the same name already exists'
