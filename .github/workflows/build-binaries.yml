@@ -326,7 +326,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: frontend
-        run: yarn e2e:run:${{ matrix.mode }}"
+        run: yarn e2e:run:${{ matrix.mode }}
 
       - name: Show test summary
         if: success() || failure()
