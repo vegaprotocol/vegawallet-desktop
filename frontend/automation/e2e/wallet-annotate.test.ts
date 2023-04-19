@@ -3,11 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import {
-  authenticate,
-  unlockWallet,
-  waitForNetworkConnected
-} from '../support/helpers'
+import { authenticate, unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 const passphrase = data.testWalletPassphrase
@@ -21,7 +17,6 @@ test.describe('wallet annotate metadata', () => {
     await initApp(page)
     await restoreWallet(page)
     await page.goto('/')
-    await waitForNetworkConnected(page)
   })
 
   test('handles key name update', async () => {

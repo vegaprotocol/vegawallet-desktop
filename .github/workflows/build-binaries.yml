@@ -281,7 +281,8 @@ jobs:
     strategy:
       matrix:
         mode:
-          - default
+          - dev
+          - mainnet
           - fairground
     steps:
       - name: Checkout
@@ -324,9 +325,8 @@ jobs:
       - name: Run e2e tests - ${{ matrix.mode }} mode
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_FEATURE_MODE: ${{ matrix.mode }}
         working-directory: frontend
-        run: yarn e2e:run --project="${{ matrix.mode }}"
+        run: yarn e2e:run:${{ matrix.mode }}
 
       - name: Show test summary
         if: success() || failure()

@@ -18,7 +18,7 @@ let viewWalletPage: ReturnType<typeof viewWallet>
 let walletPage: ReturnType<typeof wallets>
 const testPassphrase = '123'
 
-test.describe('onboarding', () => {
+test.describe('onboarding - mainnet version', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     walletPage = wallets(page)
@@ -31,7 +31,13 @@ test.describe('onboarding', () => {
 
   test.beforeEach(async () => {
     await page.goto('/')
-    await waitForNetworkConnected(page)
+    await waitForNetworkConnected(page, 'mainnet1')
+  })
+
+  test('import and start mainnet automatically', async () => {
+    await expect(page.getByTestId('service-status')).toHaveText(
+      'Wallet Service: mainnet1 on http://127.0.0.1:1789'
+    )
   })
 
   test('create new wallet', async () => {
