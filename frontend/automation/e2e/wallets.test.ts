@@ -130,12 +130,6 @@ test.describe('wallet', async () => {
     await expect(page.getByTestId('header-title')).toHaveText(walletName)
   })
 
-  test.fixme('can navigate to transactions page', async () => {
-    await page.getByTestId(`wallet-keypair-${pubkey}`).click()
-    await page.getByTestId('keypair-transactions').click()
-    await expect(page.getByTestId('header-title')).toHaveText('Transactions')
-  })
-
   test.afterAll(async () => {
     await cleanup(page)
   })
