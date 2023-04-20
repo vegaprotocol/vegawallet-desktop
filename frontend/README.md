@@ -23,7 +23,8 @@ To be able to develop the frontend inside the desktop app, you need the followin
 
 - clone the [wallet ui](https://github.com/vegaprotocol/vegawallet-ui) repo if you don't have it already
 - follow the setup steps from its documentation
-- link the repo by running `yarn link` in the _vegawallet-ui/libs/wallet-ui_ directory of the ui repo.
+- build the wallet ui with `yarn nx build` from the project root of vegawallet-ui
+- link the repo by running `yarn link` in the built _vegawallet-ui/dist/libs/wallet-ui_ directory of the ui repo.
 - run `yarn install` in the desktop app's _frontend_ folder
 - use the linked package by running `yarn link @vegaprotocol/wallet-ui` in the _frontend_ folder of the desktop app
 - run `yarn dev` in the same _frontend_ folder
