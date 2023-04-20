@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { authenticate, unlockWallet } from '../support/helpers'
+import { unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 const passphrase = data.testWalletPassphrase
@@ -30,7 +30,6 @@ test.describe('wallet annotate metadata', () => {
 
     await page.getByTestId('metadata-value-0').type(NEW_NAME)
     await page.getByTestId('metadata-submit').click()
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'Successfully updated metadata'
     )

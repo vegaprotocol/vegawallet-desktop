@@ -6,11 +6,7 @@ import createWallet from '../pages/create-wallet'
 import viewWallet from '../pages/view-wallet'
 import wallets from '../pages/wallets'
 import cleanup from '../support/cleanup'
-import {
-  authenticate,
-  getTextFromClipboard,
-  unlockWallet
-} from '../support/helpers'
+import { getTextFromClipboard, unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 
@@ -96,7 +92,6 @@ test.describe('wallet', async () => {
     // 0001-WALL-052 must be able to create new keys (derived from the source of wallet)
     await expect(page.getByTestId('wallet-keypair')).toHaveCount(1)
     await page.getByTestId('generate-keypair').click()
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('wallet-keypair')).toHaveCount(2)
   })
 

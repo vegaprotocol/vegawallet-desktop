@@ -64,7 +64,7 @@ func (s *ServiceStarter) StartService(ctx context.Context, network string) (err 
 		}
 	}()
 
-	svcURL, errChan, err := s.serviceStarter.Start(s.jobRunner, network, true)
+	svcURL, errChan, err := s.serviceStarter.Start(s.jobRunner, network, true, 0)
 	if err != nil {
 		s.log.Error("Failed to start HTTP server", zap.Error(err))
 		return err

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { authenticate, unlockWallet } from '../support/helpers'
+import { unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 
@@ -28,7 +28,6 @@ test.describe('wallet sign key', () => {
 
   test('message signing - success', async () => {
     await signMessage(page, 'Sign message successfully')
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'Message signed successfully'
     )
@@ -36,14 +35,12 @@ test.describe('wallet sign key', () => {
 
   test('message signing - able to sign multiple', async () => {
     await signMessage(page, 'Sign message successfully')
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'Message signed successfully'
     )
     await page.getByTestId('toast').waitFor({ state: 'hidden' })
     await page.getByTestId('sign-more').click()
     await signMessage(page, 'Sign message successfully')
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'Message signed successfully'
     )
@@ -54,7 +51,6 @@ test.describe('wallet sign key', () => {
     await page.getByTestId('sign').click()
     await expect(page.getByTestId('helper-text')).toHaveText('Required')
     await signMessage(page, 'Sign message successfully')
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'Message signed successfully'
     )
@@ -64,7 +60,6 @@ test.describe('wallet sign key', () => {
     // 0001-WALL-065 must be able to submit/sign the content and am
     // given a hash of the signed content as well as the message (now encoded)
     await signMessage(page, 'I am a secret')
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'Message signed successfully'
     )
@@ -77,14 +72,6 @@ test.describe('wallet sign key', () => {
     await expect(page.locator('body')).not.toContainText('I am a secret')
   })
 
-  test('message signing - failure', async () => {
-    await page.getByTestId('sign').click()
-    await signMessage(page, 'Sign message failure')
-    await authenticate(page, 'invalid')
-    await expect(page.getByTestId('toast')).toContainText(
-      'Error: wrong passphrase'
-    )
-  })
   test.afterAll(async () => {
     await cleanup(page)
   })

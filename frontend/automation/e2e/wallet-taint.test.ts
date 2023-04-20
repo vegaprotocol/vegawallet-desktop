@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { authenticate, unlockWallet } from '../support/helpers'
+import { unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 const passphrase = data.testWalletPassphrase
@@ -31,7 +31,6 @@ test.describe('wallet taint key', () => {
 
     await page.getByTestId('keypair-taint-toggle').click()
     await page.getByTestId('taint-action').click()
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'This key has been tainted'
     )
@@ -44,7 +43,6 @@ test.describe('wallet taint key', () => {
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await page.getByTestId('keypair-taint-toggle').click()
     await page.getByTestId('taint-action').click()
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('toast')).toContainText(
       'This key has been untainted'
     )
