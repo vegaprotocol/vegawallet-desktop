@@ -2861,10 +2861,10 @@
   resolved "https://registry.yarnpkg.com/@vegaprotocol/utils/-/utils-0.0.1.tgz#d3d7a72a3613dadbc576a99298fa80c1b71f2095"
   integrity sha512-LZ4qvbJrUNPoBKSptkCVlf29CEbKZARwp4p2Ux0yIVzYsyYv3VtprVebu56PnI9IZOvQJJ4I5FuyoYtRYogAvg==
 
-"@vegaprotocol/wallet-admin@0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-admin/-/wallet-admin-0.2.1.tgz#22bb5ac76316980dde44282044f58c07288051b1"
-  integrity sha512-gSrjGjK8RKFTqsAwa98GqkRg5wDfu4Qn1/FkbnNzF2qmLGp6uxAqvIjXz1tjLR2GFLXJt+JlMB0K9GAzUHfpnQ==
+"@vegaprotocol/wallet-admin@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-admin/-/wallet-admin-0.2.2.tgz#80abe8b66fc21af5a22cd8a9407fcc54d0ae05a4"
+  integrity sha512-RzZMzfSYNH/l9Cf6LCvViQP7UWY5h8u77erBnWJCdxOhUdoZtQdcuuxInZNrC2/8jZEPkKm/thBJsJtOL4s+Xg==
 
 "@vegaprotocol/wallet-ui@0.2.4":
   version "0.2.4"
