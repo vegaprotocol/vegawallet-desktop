@@ -6,12 +6,7 @@ import createWallet from '../pages/create-wallet'
 import viewWallet from '../pages/view-wallet'
 import wallets from '../pages/wallets'
 import cleanup from '../support/cleanup'
-import {
-  authenticate,
-  getTextFromClipboard,
-  unlockWallet,
-  waitForNetworkConnected
-} from '../support/helpers'
+import { getTextFromClipboard, unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 
@@ -22,7 +17,7 @@ let createWalletPage: ReturnType<typeof createWallet>
 let viewWalletPage: ReturnType<typeof viewWallet>
 let walletPage: ReturnType<typeof wallets>
 
-test.describe('wallet sign key', () => {
+test.describe('create wallet', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
@@ -31,10 +26,9 @@ test.describe('wallet sign key', () => {
     viewWalletPage = viewWallet(page)
     await initApp(page)
     await page.goto('/')
-    await waitForNetworkConnected(page)
   })
 
-  test('create wallet', async () => {
+  test('create new wallet', async () => {
     // 0001-WALL-005
     // 0001-WALL-006
     // 0001-WALL-008
@@ -76,7 +70,6 @@ test.describe('wallet', async () => {
 
   test.beforeEach(async () => {
     await page.goto('/')
-    await waitForNetworkConnected(page)
     await unlockWallet(page, walletName, passphrase)
   })
 
@@ -99,7 +92,6 @@ test.describe('wallet', async () => {
     // 0001-WALL-052 must be able to create new keys (derived from the source of wallet)
     await expect(page.getByTestId('wallet-keypair')).toHaveCount(1)
     await page.getByTestId('generate-keypair').click()
-    await authenticate(page, passphrase)
     await expect(page.getByTestId('wallet-keypair')).toHaveCount(2)
   })
 
@@ -131,12 +123,6 @@ test.describe('wallet', async () => {
     await page.getByTestId(`wallet-${walletName}`).click()
     await expect(page.getByTestId('passphrase-form')).toBeHidden()
     await expect(page.getByTestId('header-title')).toHaveText(walletName)
-  })
-
-  test('can navigate to transactions page', async () => {
-    await page.getByTestId(`wallet-keypair-${pubkey}`).click()
-    await page.getByTestId('keypair-transactions').click()
-    await expect(page.getByTestId('header-title')).toHaveText('Transactions')
   })
 
   test.afterAll(async () => {

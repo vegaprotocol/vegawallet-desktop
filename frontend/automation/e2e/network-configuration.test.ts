@@ -2,7 +2,6 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 import cleanup from '../support/cleanup'
-import { waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreNetwork } from '../support/wallet-api'
 
@@ -15,13 +14,16 @@ test.beforeAll(async ({ browser }) => {
   await restoreNetwork(page, 'test_network3')
 })
 
-test.beforeEach(async () => {
-  await page.goto('/')
-  await waitForNetworkConnected(page)
-  await page.getByTestId('network-drawer').click()
+test.afterAll(async () => {
+  await cleanup(page)
 })
 
 test.describe('manage networks', async () => {
+  test.beforeEach(async () => {
+    await page.goto('/')
+    await page.getByTestId('network-drawer').click()
+  })
+
   test('change network and persists after reload', async () => {
     await page.getByTestId('network-select').click()
     await page.getByTestId('select-test_network2').click()
@@ -67,9 +69,6 @@ test.describe('manage networks', async () => {
       'Successfully removed network'
     )
   })
-  test.afterAll(async () => {
-    await cleanup(page)
-  })
 })
 
 // tests skipped until bug resolved https://github.com/vegaprotocol/vegawallet-desktop/issues/588
@@ -112,7 +111,7 @@ test.describe('change network details', () => {
     const oldValue = (await page
       .locator('[name*="grpcHosts"]')
       .first()
-      .textContent()) as string
+      .inputValue()) as string
     await page
       .locator('[name*="grpcHosts"] + [data-testid="remove"]')
       .first()
@@ -120,24 +119,25 @@ test.describe('change network details', () => {
     await submitNetwork(page)
     await editNetwork(page, 'test_network3')
     await expect(page.locator('[name*="grpcHosts"]')).toHaveCount(6)
-    await expect(page.locator('[name*="grpcHosts"]')).not.toContainText(
-      oldValue
-    )
+    const hosts = await page.locator('[name*="grpcHosts"]').all()
+    hosts.forEach(async host => {
+      expect(await host.inputValue()).not.toContain(oldValue)
+    })
   })
 
   test('able to change GraphQL nodes', async () => {
     const newGraphQlUrl = 'https://mochachoca.vega.xyz/query'
     await page.getByTestId('add').nth(1).click()
-    await page.locator('[name*="graphqlHosts"]').type(newGraphQlUrl)
+    await page.locator('[name*="graphqlHosts"]').last().type(newGraphQlUrl)
     await page
-      .locator('[name*="grpcHosts"] + [data-testid="remove"]')
+      .locator('[name*="graphqlHosts"] + [data-testid="remove"]')
       .first()
       .click()
 
     await submitNetwork(page)
     await editNetwork(page, 'test_network3')
     await expect(page.locator('[name*="graphqlHosts"]')).toHaveCount(1)
-    await expect(page.locator('[name*="graphqlHosts"]')).toContainText(
+    await expect(page.locator('[name*="graphqlHosts"]')).toHaveValue(
       newGraphQlUrl
     )
   })
@@ -149,7 +149,7 @@ test.describe('change network details', () => {
     await submitNetwork(page)
     await editNetwork(page, 'test_network3')
     await expect(page.locator('[name*="restHosts"]')).toHaveCount(1)
-    await expect(page.locator('[name*="restHosts"]')).toContainText(newRestUrl)
+    await expect(page.locator('[name*="restHosts"]')).toHaveValue(newRestUrl)
   })
 
   test('able to change gRPC Node retries', async () => {
@@ -160,9 +160,6 @@ test.describe('change network details', () => {
     await editNetwork(page, 'test_network3')
     await expect(page.getByTestId('node-retries')).toHaveValue(newRetryAmount)
   })
-  test.afterAll(async () => {
-    await cleanup(page)
-  })
 })
 
 async function submitNetwork(page: Page) {
@@ -172,7 +169,7 @@ async function submitNetwork(page: Page) {
 }
 
 async function editNetwork(page: Page, network: string) {
-  await page.getByTestId('network-drawer').click()
+  await page.goto('/')
   await page.getByTestId('network-drawer').click()
   await page.getByTestId('manage-networks').click()
   await page.getByTestId(`edit-network-${network}`).first().click()

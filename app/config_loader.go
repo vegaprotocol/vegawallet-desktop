@@ -23,8 +23,10 @@ func NewConfigLoader() (*ConfigLoader, error) {
 		relConfigFilePath = paths.WalletAppDefaultConfigFile
 		break
 	case "fairground":
-		relConfigFilePath = paths.JoinConfigPath(paths.WalletAppConfigHome, "config.fairground.toml")
+		relConfigFilePath = paths.WalletAppFairgroundConfigFile
 		break
+	default:
+		relConfigFilePath = paths.JoinConfigPath(paths.WalletAppConfigHome, "config.develop.toml")
 	}
 
 	configFilePath, err := paths.CreateDefaultConfigPathFor(relConfigFilePath)

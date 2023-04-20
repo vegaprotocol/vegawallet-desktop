@@ -1,7 +1,7 @@
 {
   "name": "vegawallet",
   "author": "Gobalsky Labs Ltd.",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "private": true,
   "engines": {
     "node": "^18.12.0"
@@ -9,12 +9,17 @@
   "scripts": {
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "build": "npx vite build",
-    "dev:test": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_NETWORK_WARNING='false' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -noreload",
-    "dev:test:ci": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_NETWORK_WARNING='false' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload",
+    "dev:test": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -noreload",
+    "ci:dev": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload",
+    "ci:fairground": "cd .. && cat wails.fairground.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_MODE='fairground' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload -tags fairground",
+    "ci:mainnet": "cd .. && cat wails.mainnet.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_MODE='mainnet' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload -tags mainnet",
     "dev": "VITE_ENV='development' && npx vite --port=3000",
     "e2e:clean": "rm -r automation/test-wallets; mkdir automation/test-wallets",
     "e2e:open": "yarn e2e:run --ui",
     "e2e:run": "yarn playwright test -c automation/playwright.config.ts",
+    "e2e:run:dev": "yarn e2e:run --project dev",
+    "e2e:run:fairground": "yarn e2e:run --project fairground",
+    "e2e:run:mainnet": "yarn e2e:run --project mainnet",
     "format:check": "npx prettier --check .",
     "format:fix": "npx prettier --write .",
     "lint:check": "eslint ./src",
@@ -23,8 +28,8 @@
   "dependencies": {
     "@sentry/react": "7.19.0",
     "@sentry/tracing": "7.19.0",
-    "@vegaprotocol/wallet-admin": "0.2.0",
-    "@vegaprotocol/wallet-ui": "0.2.2",
+    "@vegaprotocol/wallet-admin": "0.2.2",
+    "@vegaprotocol/wallet-ui": "0.2.4",
     "core-js": "3.26.1",
     "immer": "9.0.15",
     "loglevel": "1.8.1",

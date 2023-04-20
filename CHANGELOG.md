@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.11.3 (Unreleased)
+## 0.11.4 (Unreleased)
 
 ### 🚨 Breaking changes
 
@@ -12,13 +12,28 @@
 
 ### 🛠 Improvements
 
-- [626](https://github.com/vegaprotocol/vegawallet-desktop/issues/626) - Add more shortcuts on the window to minimize the app
+- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
 ### 🐛 Fixes
 
 - [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
 
+## 0.11.3
+
+Support for vega v0.70.4.
+
+### 🛠 Improvements
+
+- [611](https://github.com/vegaprotocol/vegawallet-desktop/issues/611) - Support a dedicated style for development version.
+- [626](https://github.com/vegaprotocol/vegawallet-desktop/issues/626) - Add more shortcuts on the window to minimize the app
+
+### 🐛 Fixes
+
+- [652](https://github.com/vegaprotocol/vegawallet-desktop/issues/652) - Fix redirection while on-boarding on Fairground Wallet 
+
 ## 0.11.2
+
+Support for vega v0.70.4.
 
 ### 🛠 Improvements
 
