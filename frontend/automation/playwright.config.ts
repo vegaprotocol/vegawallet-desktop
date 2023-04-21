@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test'
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -23,7 +24,7 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -41,51 +42,29 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure'
+    screenshot: 'only-on-failure',
+    ...devices['Desktop Chrome'],
+    launchOptions: {
+      args: ['--disable-web-security']
+    },
+    permissions: ['clipboard-read']
   },
 
-  /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        launchOptions: {
-          args: ['--disable-web-security']
-        },
-        permissions: ['clipboard-read']
-      }
+      name: 'dev',
+      testIgnore: [/.*fairground.test.ts/, /.*mainnet.test.ts/]
+    },
+    {
+      name: 'fairground',
+      testMatch: /.*fairground.test.ts/,
+      retries: 0
+    },
+    {
+      name: 'mainnet',
+      testMatch: /.*mainnet.test.ts/,
+      retries: 0
     }
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] }
-    // }
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { channel: 'chrome' },
-    // },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
@@ -93,8 +72,19 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: process.env.CI ? 'yarn dev:test:ci' : 'yarn dev:test',
+    reuseExistingServer: true,
+    command: getMode() ? `yarn ci:${getMode()}` : 'yarn dev:test',
     port: 34115,
     timeout: 6 * 60 * 1000
   }
 })
+
+function getMode() {
+  if (process.argv.includes('fairground')) {
+    return 'fairground'
+  } else if (process.argv.includes('mainnet')) {
+    return 'mainnet'
+  } else if (process.argv.includes('dev')) {
+    return 'dev'
+  }
+}

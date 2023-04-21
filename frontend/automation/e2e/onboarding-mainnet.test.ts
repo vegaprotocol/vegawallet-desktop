@@ -3,14 +3,12 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import createWallet from '../pages/create-wallet'
+import { createRandomWalletName } from '../pages/create-wallet'
 import networkTab from '../pages/network-tab'
 import viewWallet from '../pages/view-wallet'
 import wallets from '../pages/wallets'
 import cleanup from '../support/cleanup'
-import {
-  isMainnetConfiguration,
-  waitForNetworkConnected
-} from '../support/helpers'
+import { waitForNetworkConnected } from '../support/helpers'
 import initApp from '../support/init-app'
 
 let page: Page
@@ -20,7 +18,7 @@ let viewWalletPage: ReturnType<typeof viewWallet>
 let walletPage: ReturnType<typeof wallets>
 const testPassphrase = '123'
 
-test.describe('onboarding', () => {
+test.describe('onboarding - mainnet version', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     walletPage = wallets(page)
@@ -33,11 +31,17 @@ test.describe('onboarding', () => {
 
   test.beforeEach(async () => {
     await page.goto('/')
-    await waitForNetworkConnected(page)
+    await waitForNetworkConnected(page, 'mainnet1')
+  })
+
+  test('import and start mainnet automatically', async () => {
+    await expect(page.getByTestId('service-status')).toHaveText(
+      'Wallet Service: mainnet1 on http://127.0.0.1:1789'
+    )
   })
 
   test('create new wallet', async () => {
-    const walletName = await createWalletPage.createRandomWalletName()
+    const walletName = createRandomWalletName()
 
     await walletPage.goToCreateWalletPage()
     await createWalletPage.createWallet(walletName, testPassphrase)
@@ -47,8 +51,8 @@ test.describe('onboarding', () => {
   test('create multiple wallets - switch between them', async () => {
     // 0001-WALL-066 must be able to create multiple wallets
     // 0001-WALL-067 must be able to switch between wallets
-    const walletName = await createWalletPage.createRandomWalletName()
-    const walletName2 = await createWalletPage.createRandomWalletName()
+    const walletName = createRandomWalletName()
+    const walletName2 = createRandomWalletName()
 
     await walletPage.goToCreateWalletPage()
     await createWalletPage.createWallet(walletName, testPassphrase)
@@ -71,20 +75,8 @@ test.describe('onboarding', () => {
 
   test('mainnet should be selectable as default network when envvar is mainnet or empty', async () => {
     // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
-    // eslint-disable-next-line playwright/no-skipped-test
-    test.skip(!isMainnetConfiguration())
-
     await networkTabPage.openNetworkTabAndViewNetworks()
     await networkTabPage.checkExpectedNetworksAvailable(['mainnet1'])
-  })
-
-  test('fairground should be selectable as default network when envvar is fairground', async () => {
-    // 0001-WALL-009 - must have Mainnet and Fairground (testnet) pre-configured (with Mainnet being the default network)
-    // eslint-disable-next-line playwright/no-skipped-test
-    test.skip(isMainnetConfiguration())
-
-    await networkTabPage.openNetworkTabAndViewNetworks()
-    await networkTabPage.checkExpectedNetworksAvailable(['fairground'])
   })
 
   test('import wallet', async () => {
