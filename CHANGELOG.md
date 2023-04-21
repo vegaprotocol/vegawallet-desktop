@@ -1,22 +1,19 @@
 # Changelog
 
-## 0.11.4 (Unreleased)
+## 0.11.4
 
-### 🚨 Breaking changes
-
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
-
-### 🗑️ Deprecation
-
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+Support for vega v0.71.0
 
 ### 🛠 Improvements
 
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [635](https://github.com/vegaprotocol/vegawallet-desktop/issues/635) - Reduce number of times you are prompted for your password
+- [664](https://github.com/vegaprotocol/vegawallet-desktop/pulls/664) - Improve link instructions
+- [659](https://github.com/vegaprotocol/vegawallet-desktop/pulls/659) - Add fairground test flow
+- [659](https://github.com/vegaprotocol/vegawallet-desktop/pulls/659) - Add fairground test flow
 
 ### 🐛 Fixes
 
-- [xxxx](https://github.com/vegaprotocol/vegawallet-desktop/issues/xxxx) -
+- [665](https://github.com/vegaprotocol/vegawallet-desktop/issues/665) - Fix an issue where entering your password when connecting with a single wallet was broken
 
 ## 0.11.3
 
@@ -29,7 +26,7 @@ Support for vega v0.70.4.
 
 ### 🐛 Fixes
 
-- [652](https://github.com/vegaprotocol/vegawallet-desktop/issues/652) - Fix redirection while on-boarding on Fairground Wallet 
+- [652](https://github.com/vegaprotocol/vegawallet-desktop/issues/652) - Fix redirection while on-boarding on Fairground Wallet
 
 ## 0.11.2
 
