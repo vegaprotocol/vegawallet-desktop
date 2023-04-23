@@ -12,8 +12,6 @@
 
 ## 0.11.4
 
-Support for vega v0.71.0
-
 ### 🛠 Improvements
 
 - [635](https://github.com/vegaprotocol/vegawallet-desktop/issues/635) - Reduce number of times you are prompted for your password
