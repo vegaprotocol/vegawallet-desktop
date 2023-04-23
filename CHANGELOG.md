@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.11.4
+## 0.12.0
 
-Support for vega v0.71.0
+Support for vega v0.71.0.
+
+## 0.11.4
 
 ### 🛠 Improvements
 
