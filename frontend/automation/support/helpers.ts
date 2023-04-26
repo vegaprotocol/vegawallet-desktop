@@ -22,18 +22,18 @@ export async function unlockWallet(
 
 // This function usage would be probably possible to remove in most of the places
 // after https://github.com/vegaprotocol/vegawallet-desktop/issues/589 is resolved
-export async function waitForNetworkConnected(page: Page, network?: string) {
-  const timeout = 10 * 1000
+export async function waitForNetworkConnected(
+  page: Page,
+  network?: string,
+  timeout?: number
+) {
   const serviceStatus = page.getByTestId('service-status')
-  const expectedString = `Wallet Service: ${network || 'test'}`
-  try {
-    await expect(serviceStatus).toContainText(expectedString, {
-      timeout
-    })
-  } catch (e) {
-    await page.goto('/')
-    await expect(serviceStatus).toContainText(expectedString, {
-      timeout: 2 * timeout
-    })
-  }
+  await expect(serviceStatus).toContainText(
+    `Wallet Service: ${network || 'test'}`,
+    timeout
+      ? {
+          timeout
+        }
+      : { timeout: 20 * 1000 }
+  )
 }
