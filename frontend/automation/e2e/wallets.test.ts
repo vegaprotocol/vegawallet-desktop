@@ -113,7 +113,7 @@ test.describe('wallet', async () => {
 
   test('key pair page', async () => {
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
-    await expect(page.getByRole('heading', {level: 1})).toHaveText('Key 1')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Key 1')
     await expect(page.getByTestId('public-key')).toHaveText(/\w{64}$/)
   })
 
@@ -122,7 +122,7 @@ test.describe('wallet', async () => {
     await page.getByTestId('page-back').click()
     await page.getByTestId(`wallet-${walletName}`).click()
     await expect(page.getByTestId('passphrase-form')).toBeHidden()
-    await expect(page.getByRole('heading', {level: 1})).toHaveText(walletName)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(walletName)
   })
 
   test.afterAll(async () => {
