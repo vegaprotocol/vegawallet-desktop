@@ -1,7 +1,7 @@
 {
   "name": "vegawallet",
   "author": "Gobalsky Labs Ltd.",
-  "version": "0.13.0+dev",
+  "version": "0.12.1",
   "private": true,
   "engines": {
     "node": "^18.12.0"
@@ -29,7 +29,7 @@
     "@sentry/react": "7.19.0",
     "@sentry/tracing": "7.19.0",
     "@vegaprotocol/wallet-admin": "0.2.2",
-    "@vegaprotocol/wallet-ui": "0.2.5",
+    "@vegaprotocol/wallet-ui": "0.2.8",
     "core-js": "3.26.1",
     "immer": "9.0.15",
     "loglevel": "1.8.1",

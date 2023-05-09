@@ -2866,10 +2866,10 @@
   resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-admin/-/wallet-admin-0.2.2.tgz#80abe8b66fc21af5a22cd8a9407fcc54d0ae05a4"
   integrity sha512-RzZMzfSYNH/l9Cf6LCvViQP7UWY5h8u77erBnWJCdxOhUdoZtQdcuuxInZNrC2/8jZEPkKm/thBJsJtOL4s+Xg==
 
-"@vegaprotocol/wallet-ui@0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.2.5.tgz#166dee0adc8c13d1d9891f270713fdbdbc532056"
-  integrity sha512-QrS+KfVEGkC7iNy1E6+yN7BBfgfKcbmu2Xsgb6kSO+RU/zelnYNZX96KrXr7+533YpJ9johbEhtlCfae+4Q2Ew==
+"@vegaprotocol/wallet-ui@0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@vegaprotocol/wallet-ui/-/wallet-ui-0.2.8.tgz#43bd6a14721a24abb65755d9aa33762169eb370b"
+  integrity sha512-bcEkbTIZZyJOAZjAZEQ5zIrOHIhSm9FW00XVPjKmp3o5a5y5g67Q+trRKKUT0vvvusaWdTt6NmbB2VpLqOPeQw==
   dependencies:
     "@radix-ui/react-checkbox" "1.0.1"
     "@radix-ui/react-dialog" "1.0.2"
@@ -2892,6 +2892,7 @@
     react-hook-thunk-reducer "0.3.0"
     react-router-dom "6.4.3"
     react-spring "9.5.5"
+    zod "3.21.4"
 
 "@vitejs/plugin-react@2.2.0":
   version "2.2.0"
@@ -6575,6 +6576,11 @@ zen-observable@0.8.15:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
+
+zod@3.21.4:
+  version "3.21.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.21.4.tgz#10882231d992519f0a10b5dd58a38c9dabbb64db"
+  integrity sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==
 
 zustand@^4.3.2:
   version "4.3.7"

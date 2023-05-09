@@ -10,6 +10,19 @@ import { useWalletService } from './hooks/use-wallet-service'
 
 const truthy = ['true', '1', 'yes', 'y', 'on']
 
+const getNetworkMode = (mode: string) => {
+  switch (mode) {
+    case 'fairground':
+    case 'mainnet':
+    case 'dev': {
+      return mode
+    }
+    default: {
+      return undefined
+    }
+  }
+}
+
 function App() {
   useWailsLink()
   const service = useWalletService()
@@ -29,7 +42,7 @@ function App() {
         TELEMETRY_CHECK: truthy.includes(
           import.meta.env.VITE_FEATURE_TELEMETRY_CHECK
         ),
-        FAIRGROUND_MODE: import.meta.env.VITE_FEATURE_MODE === 'fairground'
+        NETWORK_MODE: getNetworkMode(import.meta.env.VITE_FEATURE_MODE),
       }}
     />
   )
