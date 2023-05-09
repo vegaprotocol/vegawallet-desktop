@@ -42,7 +42,7 @@ function App() {
         TELEMETRY_CHECK: truthy.includes(
           import.meta.env.VITE_FEATURE_TELEMETRY_CHECK
         ),
-        NETWORK_MODE: getNetworkMode(import.meta.env.VITE_FEATURE_MODE),
+        NETWORK_MODE: getNetworkMode(import.meta.env.VITE_FEATURE_MODE)
       }}
     />
   )
