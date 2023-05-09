@@ -47,7 +47,11 @@ export default defineConfig({
     launchOptions: {
       args: ['--disable-web-security']
     },
-    permissions: ['clipboard-read']
+    permissions: ['clipboard-read'],
+    viewport: {
+      width: 740,
+      height: 740
+    }
   },
 
   projects: [

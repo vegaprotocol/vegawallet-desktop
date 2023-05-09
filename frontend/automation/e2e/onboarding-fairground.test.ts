@@ -60,7 +60,7 @@ test.describe('onboarding - fairground version', () => {
 
   test('View wallet', async () => {
     await createWalletPage.goToViewWalletPage()
-    await expect(page.getByTestId('header-title')).toContainText(walletName)
+    await viewWalletPage.checkWalletExists(walletName)
   })
 
   test('View wallet list', async () => {

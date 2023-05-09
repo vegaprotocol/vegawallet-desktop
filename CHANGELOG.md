@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.12.1
+
+### 🛠 Improvements
+
+- [681](https://github.com/vegaprotocol/vegawallet-desktop/issues/681) - Connect to the default network on first use per network mode
+
+### 🐛 Fixes
+
+- [683](https://github.com/vegaprotocol/vegawallet-desktop/issues/683) - Network compatibility warning fix
+- [679](https://github.com/vegaprotocol/vegawallet-desktop/issues/679) - Fix transaction success screen logs copying
+- [179](https://github.com/vegaprotocol/vegawallet-ui/issues/179) - Logs scroll fix
+
 ## 0.12.0
 
 Support for vega v0.71.0.

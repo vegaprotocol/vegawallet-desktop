@@ -33,7 +33,7 @@ test.describe('wallet annotate metadata', () => {
     await expect(page.getByTestId('toast')).toContainText(
       'Successfully updated metadata'
     )
-    await expect(page.getByTestId('header-title')).toHaveText(NEW_NAME)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(NEW_NAME)
   })
 
   test.afterAll(async () => {
