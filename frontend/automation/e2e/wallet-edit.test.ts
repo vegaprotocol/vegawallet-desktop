@@ -31,7 +31,7 @@ test.describe('wallet edit', () => {
     await walletForm.locator('input').type(newWalletName)
     await walletForm.locator('button[type="submit"]').click()
     await expect(page.getByTestId('edit-wallet-form')).toBeHidden()
-    await expect(page.getByTestId('header-title')).toHaveText(newWalletName)
+    await expect(page.getByRole('heading', {level: 1})).toHaveText(newWalletName)
   })
 
   test.afterAll(async () => {

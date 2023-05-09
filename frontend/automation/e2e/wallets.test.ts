@@ -113,16 +113,16 @@ test.describe('wallet', async () => {
 
   test('key pair page', async () => {
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
-    await expect(page.getByTestId('header-title')).toHaveText('Key 1')
+    await expect(page.getByRole('heading', {level: 1})).toHaveText('Key 1')
     await expect(page.getByTestId('public-key')).toHaveText(/\w{64}$/)
   })
 
   test('wallet stays logged in', async () => {
     // 0001-WALL-016 must select a wallet and enter the passphrase only once per "session"
-    await page.getByTestId('back').click()
+    await page.getByTestId('page-back').click()
     await page.getByTestId(`wallet-${walletName}`).click()
     await expect(page.getByTestId('passphrase-form')).toBeHidden()
-    await expect(page.getByTestId('header-title')).toHaveText(walletName)
+    await expect(page.getByRole('heading', {level: 1})).toHaveText(walletName)
   })
 
   test.afterAll(async () => {

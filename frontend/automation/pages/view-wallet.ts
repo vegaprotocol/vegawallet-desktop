@@ -3,8 +3,8 @@ import { expect } from '@playwright/test'
 
 const viewWallet = (page: Page) => {
   const locators = {
-    goToWalletsButton: page.getByTestId('back'),
-    walletsHeader: page.getByTestId('header-title')
+    goToWalletsButton: page.getByTestId('page-back'),
+    walletsHeader: page.getByRole('heading', {level: 1})
   }
   return {
     goToWalletsPage: async () => locators.goToWalletsButton.click(),
