@@ -1,14 +1,11 @@
 # Changelog
 
-## 0.13.0+dev (Unreleased)
+## 0.12.3
 
 ### 🐛 Fixes
 
-- []() -
-
-### 🛠 Improvements
-
-- []() -
+- [689](https://github.com/vegaprotocol/vegawallet-desktop/issues/689) - Order transactions from newest to oldest
+- [690](https://github.com/vegaprotocol/vegawallet-desktop/issues/690) - Fix transaction logs overflow
 
 ## 0.12.2
 
