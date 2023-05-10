@@ -2,6 +2,20 @@
 
 ## 0.13.0+dev (Unreleased)
 
+### 🐛 Fixes
+
+- []() -
+
+### 🛠 Improvements
+
+- []() -
+
+## 0.12.2
+
+### 🐛 Fixes
+
+- [197](https://github.com/vegaprotocol/vegawallet-ui/issues/197) - Fix wallet locks
+
 ## 0.12.1
 
 ### 🛠 Improvements
