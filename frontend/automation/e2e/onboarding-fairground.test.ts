@@ -59,7 +59,7 @@ test.describe('onboarding - fairground version', () => {
   })
 
   test('View wallet', async () => {
-    await createWalletPage.goToViewWalletPage()
+    await page.getByTestId('create-wallet-success-cta').click()
     await viewWalletPage.checkWalletExists(walletName)
   })
 

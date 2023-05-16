@@ -9,8 +9,7 @@ const createWallet = (page: Page) => {
       'create-wallet-form-passphrase-confirm'
     ),
     submitButton: page.getByTestId('create-wallet-form-submit'),
-    toast: page.getByTestId('toast'),
-    viewWalletButton: page.getByTestId('create-wallet-success-cta')
+    toast: page.getByTestId('toast')
   }
   return {
     locators,
@@ -20,7 +19,6 @@ const createWallet = (page: Page) => {
       await locators.passphraseConfirmationField.type(passphrase)
       await locators.submitButton.click()
     },
-    goToViewWalletPage: async () => locators.viewWalletButton.click(),
     checkToastSuccess: async () => {
       await expect(locators.toast).toHaveText('Wallet created!')
       await expect(locators.toast).toBeHidden()

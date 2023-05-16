@@ -42,7 +42,7 @@ test.describe('create wallet', () => {
       .textContent()) as string
     expect(recovery.split(' ').length).toEqual(24)
 
-    await createWalletPage.goToViewWalletPage()
+    await page.getByTestId('create-wallet-success-cta').click()
     await viewWalletPage.checkWalletExists(walletName)
     await expect(
       page.getByTestId('wallet-keypair').getByRole('button')

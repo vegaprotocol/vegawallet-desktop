@@ -57,13 +57,13 @@ test.describe('onboarding - mainnet version', () => {
     await walletPage.goToCreateWalletPage()
     await createWalletPage.createWallet(walletName, testPassphrase)
     await createWalletPage.checkToastSuccess()
-    await createWalletPage.goToViewWalletPage()
+    await page.getByTestId('create-wallet-success-cta').click()
     await viewWalletPage.checkWalletExists(walletName)
 
     await viewWalletPage.goToWalletsPage()
     await walletPage.goToCreateWalletPage()
     await createWalletPage.createWallet(walletName2, testPassphrase)
-    await createWalletPage.goToViewWalletPage()
+    await page.getByTestId('create-wallet-success-cta').click()
     await viewWalletPage.checkWalletExists(walletName2)
 
     await viewWalletPage.goToWalletsPage()
