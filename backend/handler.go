@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	vgclose "code.vegaprotocol.io/vega/libs/close"
 	"code.vegaprotocol.io/vega/libs/jsonrpc"
@@ -12,12 +13,14 @@ import (
 	vgzap "code.vegaprotocol.io/vega/libs/zap"
 	"code.vegaprotocol.io/vega/paths"
 	walletapi "code.vegaprotocol.io/vega/wallet/api"
+	"code.vegaprotocol.io/vega/wallet/api/interactor"
 	nodeapi "code.vegaprotocol.io/vega/wallet/api/node"
 	netStoreV1 "code.vegaprotocol.io/vega/wallet/network/store/v1"
 	svcStoreV1 "code.vegaprotocol.io/vega/wallet/service/store/v1"
 	serviceV2 "code.vegaprotocol.io/vega/wallet/service/v2"
 	"code.vegaprotocol.io/vega/wallet/service/v2/connections"
-	tokenStoreV1 "code.vegaprotocol.io/vega/wallet/service/v2/connections/store/v1"
+	tokenStoreV1 "code.vegaprotocol.io/vega/wallet/service/v2/connections/store/longliving/v1"
+	sessionStoreV1 "code.vegaprotocol.io/vega/wallet/service/v2/connections/store/session/v1"
 	"code.vegaprotocol.io/vega/wallet/wallet"
 	walletStoreV1 "code.vegaprotocol.io/vega/wallet/wallet/store/v1"
 	"code.vegaprotocol.io/vega/wallet/wallets"
@@ -33,7 +36,7 @@ type Handler struct {
 	// the one to inject on runtime methods like menu, event, dialogs, etc.
 	ctx context.Context
 
-	// To prevent multiple startup of the back and thus resource leaks.
+	// To prevent multiple startups of the back and thus resource leaks.
 	backendStarted atomic.Bool
 	startupMu      sync.Mutex
 
@@ -49,7 +52,7 @@ type Handler struct {
 
 	configLoader *app.ConfigLoader
 
-	// resourcesCloser holds resources that are shared by several component
+	// resourcesCloser holds resources that are shared by several components
 	// which lifecycle is tied to the program.
 	// This is called when the program get closed or fully reloaded (because
 	// of a change of the home path).
@@ -71,6 +74,8 @@ type Handler struct {
 	svcStore           *svcStoreV1.Store
 
 	icon []byte
+
+	interactorCancelFn context.CancelFunc
 }
 
 func NewHandler(icon []byte) *Handler {
@@ -172,7 +177,7 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 
 	h.resourcesCloser = vgclose.NewCloser()
 
-	// In case something goes wrong, we free up the resources.
+	// If something goes wrong, we free up the resources.
 	defer func() {
 		if err != nil {
 			h.closeAllResources()
@@ -220,7 +225,7 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 		h.walletStore.Close()
 	})
 
-	h.walletStore.OnUpdate(func(ctx context.Context, event wallet.Event) {
+	h.walletStore.OnUpdate(func(_ context.Context, event wallet.Event) {
 		runtime.EventsEmit(h.ctx, string(event.Type), event.Data)
 	})
 
@@ -235,7 +240,22 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 	h.tokenStore = tokenStore
 	h.resourcesCloser.Add(tokenStore.Close)
 
-	connectionsManager, err := connections.NewManager(serviceV2.NewStdTime(), walletStore, tokenStore)
+	sessionStore, err := sessionStoreV1.InitialiseStore(vegaPaths)
+	if err != nil {
+		h.log.Error("Could not initialise session store", zap.Error(err))
+		return fmt.Errorf("could not initialise session store: %w", err)
+	}
+
+	receptionChan := make(chan interactor.Interaction, 100)
+
+	// Dirty hack to ensure we can unblock a waiting interactor, when closing the
+	// application.
+	ctx, interactorCancelFn := context.WithCancel(h.ctx)
+	h.interactorCancelFn = interactorCancelFn
+
+	parallelInteractor := interactor.NewParallelInteractor(ctx, receptionChan)
+
+	connectionsManager, err := connections.NewManager(serviceV2.NewStdTime(), walletStore, tokenStore, sessionStore, parallelInteractor)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the connections manager: %v", err))
 		return fmt.Errorf("could not initialise the connections manager: %w", err)
@@ -245,14 +265,7 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 
 	h.initializeWalletAdminAPI()
 
-	serviceStarter, err := NewServiceStarter(
-		vegaPaths,
-		h.log.Named("service-starter"),
-		h.svcStore,
-		h.walletStore,
-		h.networkStore,
-		h.connectionsManager,
-	)
+	serviceStarter, err := NewServiceStarter(vegaPaths, h.log.Named("service-starter"), h.svcStore, h.walletStore, h.networkStore, connectionsManager, parallelInteractor, receptionChan)
 	if err != nil {
 		h.log.Error(fmt.Sprintf("Couldn't initialise the service starter: %v", err))
 		return fmt.Errorf("couldn't initialise the service starter: %v", err)
@@ -268,6 +281,10 @@ func (h *Handler) reloadBackendComponentsFromConfig() (err error) {
 }
 
 func (h *Handler) closeAllResources() {
+	if h.interactorCancelFn != nil {
+		h.interactorCancelFn()
+	}
+
 	if h.serviceStarter != nil {
 		h.serviceStarter.Close()
 	}
@@ -334,8 +351,8 @@ func (h *Handler) updateBackendComponentsFromConfig() error {
 }
 
 func (h *Handler) initializeWalletAdminAPI() {
-	nodeSelectorBuilder := func(hosts []string, retries uint64) (nodeapi.Selector, error) {
-		nodeSelector, err := nodeapi.BuildRoundRobinSelectorWithRetryingNodes(h.log, hosts, retries)
+	nodeSelectorBuilder := func(hosts []string, retries uint64, requestTTL time.Duration) (nodeapi.Selector, error) {
+		nodeSelector, err := nodeapi.BuildRoundRobinSelectorWithRetryingNodes(h.log, hosts, retries, requestTTL)
 		if err != nil {
 			h.log.Error(fmt.Sprintf("Could not initialise the node selector for wallet API: %v", err))
 			return nil, fmt.Errorf("could not initialise the node selector for wallet API: %w", err)

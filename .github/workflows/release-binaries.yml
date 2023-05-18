@@ -9,6 +9,8 @@ on:
 env:
   VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
   WAILS_VERSION: v2.4.1
+  NODE_VERSION: 18.12.0
+  GO_VERSION: 1.20.6
 
 jobs:
   release-macos:
@@ -34,16 +36,16 @@ jobs:
           - arch: arm64
             user-friendly-arch: apple-silicon
     steps:
-      - name: Set up Node 18.12
+      - name: Set up Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12.0
+          node-version: ${{ env.NODE_VERSION }}
         id: npm
 
-      - name: Set up Go
+      - name: Set up Go ${{ env.GO_VERSION }}
         uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version: ${{ env.GO_VERSION }}
         id: go
 
       - name: Get Wails
@@ -151,16 +153,16 @@ jobs:
             software-name: Fairground Wallet
             filename: fairground-wallet
     steps:
-      - name: Set up Node 18.12
+      - name: Set up Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12.0
+          node-version: ${{ env.NODE_VERSION }}
         id: npm
 
-      - name: Set up Go
+      - name: Set up Go ${{ env.GO_VERSION }}
         uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version: ${{ env.GO_VERSION }}
         id: go
 
       - name: Get Wails
@@ -273,16 +275,16 @@ jobs:
             software-name: Fairground Wallet
             filename: fairground-wallet
     steps:
-      - name: Set up Node 18.12
+      - name: Set up Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12.0
+          node-version: ${{ env.NODE_VERSION }}
         id: npm
 
-      - name: Set up Go
+      - name: Set up Go ${{ env.GO_VERSION }}
         uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version: ${{ env.GO_VERSION }}
         id: go
 
       - name: Check out repository
