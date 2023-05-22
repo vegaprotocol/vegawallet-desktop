@@ -10,7 +10,7 @@
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "build": "npx vite build",
     "dev:test": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -noreload",
-    "ci:dev": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload",
+    "ci:dev": "cd .. && cat wails.develop.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload",
     "ci:fairground": "cd .. && cat wails.fairground.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_MODE='fairground' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload -tags fairground",
     "ci:mainnet": "cd .. && cat wails.mainnet.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_MODE='mainnet' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload -tags mainnet",
     "dev": "VITE_ENV='development' && npx vite --port=3000",
