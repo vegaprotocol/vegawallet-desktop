@@ -35,11 +35,23 @@ test.describe('onboarding - fairground version', () => {
     viewWalletPage = viewWallet(page)
   })
 
-  test('VegaHome pop-up validation', async () => {
+  test('Risk warning pop-up validation & disclaimer', async () => {
     await expect(page.getByTestId('splash-loader')).toBeHidden()
-    await expect(page.getByTestId('onboard-home')).toBeVisible()
-    await expect(page.getByTestId('onboard-home')).toContainText(
-      'Looks like you are using a Fairground build of the wallet. We recommended that you use a different VegaHome directory as compatibility between versions is not yet guaranteed.'
+    await page.getByTestId('get-started').click()
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Understand the risks before you start'
+    )
+    await expect(page.getByRole('list')).not.toBeEmpty()
+    await expect(
+      page.getByRole('link', { name: 'Vega Wallet Disclaimer' })
+    ).toBeVisible()
+  })
+
+  test('VegaHome pop-up validation', async () => {
+    await page.getByTestId('confirm').click()
+    await expect(page.getByRole('paragraph')).toContainText(
+      'Looks like you are using a Fairground build of the wallet. We recommend that you use a different wallet directory as compatibility between versions is not guaranteed.'
     )
     await expect(page.locator('#vega-home')).toBeVisible()
   })
