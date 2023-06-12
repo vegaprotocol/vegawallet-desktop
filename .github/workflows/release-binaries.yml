@@ -239,17 +239,18 @@ jobs:
             --tsaurl http://timestamp.globalsign.com/tsa/r6advanced1 \
             "${{ matrix.software-name }}.exe"
 
-      - name: Bundle binary in archive
-        uses: thedoctor0/zip-release@master
-        with:
-          type: zip
-          directory: build/bin
-          filename: ${{ matrix.filename }}-desktop-windows-${{ matrix.arch }}.zip
+      - name: Prepare binaries for release
+        shell: bash
+        run: |
+          mkdir -p build/release-bin;
+          cd build/bin;
+          cp "${{ matrix.software-name }}.exe" "../release-bin/${{ matrix.filename }}-desktop-windows-${{ matrix.arch }}.exe"
+          ls -als ../release-bin/*.exe
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: build/bin/*.zip
+          files: build/release-bin/*.exe
           prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
