@@ -16,6 +16,8 @@ Support for vega v0.71.6
 - [697](https://github.com/vegaprotocol/vegawallet-desktop/issues/697) - Fix incorrect wallet version in window header
 - [704](https://github.com/vegaprotocol/vegawallet-desktop/issues/704) - Fix create wallet dialog during fairground onboarding
 - [709](https://github.com/vegaprotocol/vegawallet-desktop/issues/709) - Temporary fix for sign messsage communication with backend
+- [716](https://github.com/vegaprotocol/vegawallet-desktop/issues/716) - Fix unlocking the wallet after onboarding
+- [717](https://github.com/vegaprotocol/vegawallet-desktop/issues/717) - Fix redirection after import wallet during onboarding
 
 ## 0.12.2
 
