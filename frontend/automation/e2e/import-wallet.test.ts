@@ -27,8 +27,6 @@ test.describe('import wallet', () => {
     await fillInRecoveryForm(page, 'import test', '123', recoveryPhrase)
     await expect(page.getByTestId('toast')).toHaveText('Wallet imported')
 
-    // Can open newly imported wallet
-    await page.getByTestId(`wallet-import-test`).click()
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await expect(page.getByTestId('public-key')).toContainText(pubkey)
   })

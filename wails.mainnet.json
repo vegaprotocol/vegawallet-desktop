@@ -11,7 +11,7 @@
   "info": {
     "companyName": "Gobalsky Labs Ltd.",
     "productName": "Vega Wallet",
-    "productVersion": "0.13.0+dev",
+    "productVersion": "0.12.3",
     "copyright": "Copyright (c) 2023 Gobalsky Labs Ltd.",
     "comments": "Application to manage your Vega Protocol wallet on Mainnet."
   }

@@ -1,7 +1,7 @@
 {
   "name": "vegawallet",
   "author": "Gobalsky Labs Ltd.",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "private": true,
   "engines": {
     "node": "^18.12.0"
@@ -10,7 +10,7 @@
     "build:test": "VITE_COVERAGE='true' npx vite build",
     "build": "npx vite build",
     "dev:test": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -noreload",
-    "ci:dev": "cd .. && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload",
+    "ci:dev": "cd .. && cat wails.develop.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload",
     "ci:fairground": "cd .. && cat wails.fairground.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_MODE='fairground' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload -tags fairground",
     "ci:mainnet": "cd .. && cat wails.mainnet.json > wails.json && VITE_COVERAGE='true' VITE_FEATURE_MODE='mainnet' VITE_FEATURE_TELEMETRY_CHECK='false' wails dev -s -skipbindings -nosyncgomod -noreload -tags mainnet",
     "dev": "VITE_ENV='development' && npx vite --port=3000",
@@ -29,7 +29,7 @@
     "@sentry/react": "7.19.0",
     "@sentry/tracing": "7.19.0",
     "@vegaprotocol/wallet-admin": "0.2.4",
-    "@vegaprotocol/wallet-ui": "0.2.20",
+    "@vegaprotocol/wallet-ui": "0.2.21",
     "core-js": "3.26.1",
     "immer": "9.0.15",
     "loglevel": "1.8.1",
