@@ -3,7 +3,6 @@ import { expect, test } from '@playwright/test'
 
 import data from '../data/test-data.json'
 import cleanup from '../support/cleanup'
-import { unlockWallet } from '../support/helpers'
 import initApp from '../support/init-app'
 import { restoreWallet } from '../support/wallet-api'
 
@@ -28,8 +27,6 @@ test.describe('import wallet', () => {
     await fillInRecoveryForm(page, 'import test', '123', recoveryPhrase)
     await expect(page.getByTestId('toast')).toHaveText('Wallet imported')
 
-    // Can open newly imported wallet
-    await unlockWallet(page, 'import-test', '123')
     await page.getByTestId(`wallet-keypair-${pubkey}`).click()
     await expect(page.getByTestId('public-key')).toContainText(pubkey)
   })

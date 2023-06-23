@@ -45,8 +45,8 @@ func main() {
 	// Create application with options
 	if err := wails.Run(&options.App{
 		Title:            app.Name,
-		Width:            760,
-		Height:           760,
+		Width:            540,
+		Height:           540,
 		MinWidth:         540,
 		MinHeight:        540,
 		Menu:             handler.AppMenu(),

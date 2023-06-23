@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.12.3
+
+Support for vega v0.71.6
+
+### 🛠 Improvements
+
+- [710] (https://github.com/vegaprotocol/vegawallet-desktop/issues/710) - Button label changed to avoid confusion in app settings
+
+### 🐛 Fixes
+
+- [689](https://github.com/vegaprotocol/vegawallet-desktop/issues/689) - Order transactions from newest to oldest
+- [690](https://github.com/vegaprotocol/vegawallet-desktop/issues/690) - Fix transaction logs overflow
+- [696](https://github.com/vegaprotocol/vegawallet-desktop/issues/696) - Fix transaction log content based on chosen network
+- [697](https://github.com/vegaprotocol/vegawallet-desktop/issues/697) - Fix incorrect wallet version in window header
+- [704](https://github.com/vegaprotocol/vegawallet-desktop/issues/704) - Fix create wallet dialog during fairground onboarding
+- [709](https://github.com/vegaprotocol/vegawallet-desktop/issues/709) - Temporary fix for sign messsage communication with backend
+- [716](https://github.com/vegaprotocol/vegawallet-desktop/issues/716) - Fix unlocking the wallet after onboarding
+- [717](https://github.com/vegaprotocol/vegawallet-desktop/issues/717) - Fix redirection after import wallet during onboarding
+
 ## 0.12.2
 
 ### 🐛 Fixes

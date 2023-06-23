@@ -43,9 +43,9 @@ func (c *Config) EnsureIsValid() error {
 		case err != nil:
 			return fmt.Errorf("unable to check if path exists %s: %w", c.VegaHome, err)
 		case !exists:
-			return fmt.Errorf("the specified Vega home does not exist: %s", c.VegaHome)
+			return fmt.Errorf("the specified wallet directory does not exist: %s", c.VegaHome)
 		default:
-			return fmt.Errorf("the specified Vega home is not a directory: %s", c.VegaHome)
+			return fmt.Errorf("the specified wallet directory is not a directory: %s", c.VegaHome)
 		}
 	}
 

@@ -8,6 +8,11 @@ on:
     branches:
       - develop
 
+permissions:
+  id-token: write
+  contents: read
+  checks: write
+
 env:
   WAILS_VERSION: v2.4.1
   NODE_VERSION: 18.12.0

@@ -36,8 +36,7 @@ export const useWalletService = (): Service => {
     GetAppConfig: Handlers.GetAppConfig,
     SearchForExistingConfiguration: Handlers.SearchForExistingConfiguration,
     UpdateAppConfig: async (payload: AppConfig) => {
-      Handlers.UpdateAppConfig(new AppModel.Config(payload))
-      return undefined
+      return Handlers.UpdateAppConfig(new AppModel.Config(payload))
     },
 
     // Initialization
