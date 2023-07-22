@@ -31,6 +31,7 @@ To check if you have the correct dependencies installed, use the following comma
 wails doctor
 ```
 
+
 To be able to compile the frontend, you'll also need to install:
 
 - nodejs >= **v18.12.0**
