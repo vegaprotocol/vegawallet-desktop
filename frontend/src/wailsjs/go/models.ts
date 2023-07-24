@@ -472,35 +472,19 @@ export namespace service {
 		    return a;
 		}
 	}
-	export class ServerConfig {
-	    port: number;
-	    host: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ServerConfig(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.port = source["port"];
-	        this.host = source["host"];
-	    }
-	}
-	export class Config {
+	export class Nodes {
+	    maximumRetryPerRequest: number;
 	    // Go type: encoding
-	    logLevel: any;
-	    server: ServerConfig;
-	    apiV1: APIV1Config;
+	    maximumRequestDuration: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new Config(source);
+	        return new Nodes(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.logLevel = this.convertValues(source["logLevel"], null);
-	        this.server = this.convertValues(source["server"], ServerConfig);
-	        this.apiV1 = this.convertValues(source["apiV1"], APIV1Config);
+	        this.maximumRetryPerRequest = source["maximumRetryPerRequest"];
+	        this.maximumRequestDuration = this.convertValues(source["maximumRequestDuration"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -521,6 +505,88 @@ export namespace service {
 		    return a;
 		}
 	}
+	export class APIV2Config {
+	    nodes: Nodes;
+	
+	    static createFrom(source: any = {}) {
+	        return new APIV2Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nodes = this.convertValues(source["nodes"], Nodes);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ServerConfig {
+	    port: number;
+	    host: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ServerConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.port = source["port"];
+	        this.host = source["host"];
+	    }
+	}
+	export class Config {
+	    // Go type: encoding
+	    logLevel: any;
+	    server: ServerConfig;
+	    apiV1: APIV1Config;
+	    apiV2: APIV2Config;
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.logLevel = this.convertValues(source["logLevel"], null);
+	        this.server = this.convertValues(source["server"], ServerConfig);
+	        this.apiV1 = this.convertValues(source["apiV1"], APIV1Config);
+	        this.apiV2 = this.convertValues(source["apiV2"], APIV2Config);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 
 }
 

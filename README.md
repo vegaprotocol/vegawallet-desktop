@@ -1,6 +1,6 @@
 # Vega Wallet desktop app
 
-The Vega Wallet desktop app provides a graphical user interface for Vega Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/) for Windows, MacOS and Linux.
+The Vega Wallet desktop app provides a graphical user interface for Vega Protocol's [wallet](https://github.com/vegaprotocol/vegawallet/) for Windows, macOS and Linux.
 
 [Latest release](https://github.com/vegaprotocol/vegawallet-desktop/releases): Download the latest release from the releases section.
 
@@ -8,11 +8,17 @@ The Vega Wallet desktop app provides a graphical user interface for Vega Protoco
 
 ## Supported platforms
 
-**MacOS:** >= 10.13 (High Sierra)
+**macOS:** >= 10.13 (High Sierra)
 **Windows:** >= 8
-**Linux:** Supported but the minimum version is unknown.
+**Linux:** Supported, but the minimum version is unknown.
 
 ### Dependencies
+
+#### Golang
+
+You will need to go 1.20.
+
+#### Wails
 
 This project uses [Wails](https://wails.io) to build the desktop app. To install Wails, follow the instruction on its [Getting started](https://wails.io/docs/gettingstarted/installation) page.
 
@@ -31,6 +37,8 @@ To check if you have the correct dependencies installed, use the following comma
 wails doctor
 ```
 
+#### Frontend
+
 To be able to compile the frontend, you'll also need to install:
 
 - nodejs >= **v18.12.0**
@@ -38,7 +46,7 @@ To be able to compile the frontend, you'll also need to install:
 
 #### Platform Specific Dependencies
 
-Be sure to follow the installation guide from Wails. There are specific dependencies that needs to be installed.
+Be sure to follow the installation guide from Wails. Specific dependencies need to be installed.
 
 For more details, see [https://wails.io/docs/gettingstarted/installation#platform-specific-dependencies](https://wails.io/docs/gettingstarted/installation#platform-specific-dependencies)
 
@@ -51,7 +59,7 @@ directory.
 
 #### Using the script `build.sh`
 
-There is scripts that ease the switch between fairground and mainnet:
+There are scripts that ease the switch between fairground and mainnet:
 
 **For fairground:**
 
@@ -85,7 +93,7 @@ To compile the optimization for fairground:
 wails build -f -clean -tags fairground
 ```
 
-**Note that this step alone won't correctly bundle the application for fairground.** There are hacks to be performed to have the right bundle name, metadata, and icon. See `build.sh` script for more detail.
+**Note that this step alone won't correctly bundle the application for fairground.** Hacks must be performed to have the right bundle name, metadata and icon. See `build.sh` script for more detail.
 
 More at the [Wails documentation](https://wails.io/docs/reference/cli#build).
 
@@ -129,7 +137,7 @@ VITE_FEATURE_MODE='fairground' wails build
 A full list of these can be found below:
 
 | Flag                         | Description                                                                                  |
-| ---------------------------- | -------------------------------------------------------------------------------------------- |
+|------------------------------|----------------------------------------------------------------------------------------------|
 | VITE_FEATURE_NETWORK_WARNING | Enable warning the user if the network is a different version for the one configured for the |
 | VITE_FEATURE_TELEMETRY_CHECK | Enable users being asked if they would like to send bug reports for the application          |
 | VITE_FEATURE_MODE            | Build the app in fairground mode with different styling/messaging that is mode specific      |
@@ -151,7 +159,7 @@ Error: EMFILE: too many open files, watch
     at FSEvent.FSWatcher._handle.onchange (node:internal/fs/watchers:204:21)
 ```
 
-It appears on MacOS. It's fixed by installing `watchman`:
+It is raised on macOS. It is fixed by installing `watchman`:
 
 ```sh
 brew install watchman
@@ -169,7 +177,7 @@ go test ./...
 
 #### End to end
 
-Check out the [frontend guide](./frontend/README.md) to see how to run the end to end tests.
+Check out the [frontend guide](./frontend/README.md) to see how to run the end-to-end tests.
 
 ## Support
 
@@ -191,7 +199,7 @@ Ask us for help, find out about scheduled open sessions, and keep up with Vega g
 
 ## About Vega
 
-[Vega][vega-website] is a protocol for creating and trading derivatives on a fully decentralised network. The network, secured with proof-of-stake, will facilitate fully automated, end-to-end margin trading and execution of complex financial products. Anyone will be able to build decentralised markets using the protocol.
+[Vega][vega-website] is a protocol for creating and trading derivatives on a fully decentralized network. The network, secured with proof-of-stake, will facilitate fully automated, end-to-end margin trading and execution of complex financial products. Anyone will be able to build decentralized markets using the protocol.
 
 Read more at [https://vega.xyz][vega-website].
 

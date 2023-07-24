@@ -16,8 +16,9 @@ import (
 const NewInteractionEvent = "new_interaction"
 
 var (
-	ErrTraceIDIsRequired = errors.New("a trace ID is required for an interaction")
-	ErrNameIsRequired    = errors.New("a name is required for an interaction")
+	ErrTraceIDIsRequired   = errors.New("a trace ID is required for an interaction")
+	ErrNameIsRequired      = errors.New("a name is required for an interaction")
+	ErrServiceIsNotRunning = errors.New("the service is not running")
 )
 
 func (h *Handler) APIV2GenerateAPIToken(params connections.GenerateAPITokenParams) (connections.Token, error) {
@@ -82,7 +83,9 @@ func (h *Handler) RespondToInteraction(interaction interactor.Interaction) error
 		return ErrContextCanceled
 	}
 
-	h.serviceStarter.responseChan <- interaction
+	if !h.serviceStarter.IsServiceRunning() {
+		return ErrServiceIsNotRunning
+	}
 
-	return nil
+	return h.serviceStarter.RespondToInteraction(interaction)
 }
