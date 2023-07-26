@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.4
+
+Support for vega v0.72.5
+
+### 🛠 Improvements
+
+- [675](https://github.com/vegaprotocol/vegawallet-desktop/issues/675) - Handle new interaction session for re-instated connections
+
 ## 0.12.3
 
 Support for vega v0.71.6
@@ -18,7 +26,6 @@ Support for vega v0.71.6
 - [709](https://github.com/vegaprotocol/vegawallet-desktop/issues/709) - Temporary fix for sign messsage communication with backend
 - [716](https://github.com/vegaprotocol/vegawallet-desktop/issues/716) - Fix unlocking the wallet after onboarding
 - [717](https://github.com/vegaprotocol/vegawallet-desktop/issues/717) - Fix redirection after import wallet during onboarding
-- [675](https://github.com/vegaprotocol/vegawallet-desktop/issues/675) - Handle new interaction session for re-instated connections
 
 ## 0.12.2
 
