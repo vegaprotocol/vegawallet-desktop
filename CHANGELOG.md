@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.4
+
+Support for vega v0.72.5
+
+### 🛠 Improvements
+
+- [675](https://github.com/vegaprotocol/vegawallet-desktop/issues/675) - Handle new interaction session for re-instated connections
+
 ## 0.12.3
 
 Support for vega v0.71.6

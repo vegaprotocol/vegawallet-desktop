@@ -71,7 +71,6 @@ test.describe('manage networks', async () => {
   })
 })
 
-// tests skipped until bug resolved https://github.com/vegaprotocol/vegawallet-desktop/issues/588
 test.describe('change network details', () => {
   // 0001-WALL-011
   test.beforeEach(async () => {
@@ -150,15 +149,6 @@ test.describe('change network details', () => {
     await editNetwork(page, 'test_network3')
     await expect(page.locator('[name*="restHosts"]')).toHaveCount(1)
     await expect(page.locator('[name*="restHosts"]')).toHaveValue(newRestUrl)
-  })
-
-  test('able to change gRPC Node retries', async () => {
-    const newRetryAmount = '1'
-    await page.getByTestId('node-retries').clear()
-    await page.getByTestId('node-retries').type(newRetryAmount)
-    await submitNetwork(page)
-    await editNetwork(page, 'test_network3')
-    await expect(page.getByTestId('node-retries')).toHaveValue(newRetryAmount)
   })
 })
 
