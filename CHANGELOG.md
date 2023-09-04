@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.5
+
+Support for vega v0.72.14
+
 ## 0.12.4
 
 Support for vega v0.72.5

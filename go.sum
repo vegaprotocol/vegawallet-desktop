@@ -59,8 +59,8 @@ cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohl
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3fOKtUw0Xmo=
-code.vegaprotocol.io/vega v0.72.5 h1:SQb+rfODWMWbLhJPl5rDRdARhTSTc23QclHRdD6ONxc=
-code.vegaprotocol.io/vega v0.72.5/go.mod h1:4hpmOPbSzhlCr3wAVnq9ZboDl/P3lMNj3iuH1BYhr7s=
+code.vegaprotocol.io/vega v0.72.14 h1:ZEA3FbcIjKkreTWCiNsTCQOdRHEVDWGQ6qvi5+vHH20=
+code.vegaprotocol.io/vega v0.72.14/go.mod h1:4jz+8jy99maf7bop6JkxeyQplI+d+mmdf8Zgk+REyBg=
 contrib.go.opencensus.io/exporter/stackdriver v0.13.4/go.mod h1:aXENhDJ1Y4lIg4EUaVTwzvYETVNZk10Pu26tevFKLUc=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/Antonboom/errname v0.1.7/go.mod h1:g0ONh16msHIPgJSGsecu1G/dcF2hlYR/0SddnIAGavU=
