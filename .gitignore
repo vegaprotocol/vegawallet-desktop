@@ -6,3 +6,4 @@ build/windows/icon.ico
 
 # Misc
 .DS_Store
+.vscode
