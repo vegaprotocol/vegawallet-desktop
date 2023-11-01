@@ -196,37 +196,37 @@ jobs:
           website: oracle.com
           release: 17
 
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v1'
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
 
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Export gcloud related env variable
-          run: export CLOUDSDK_PYTHON="/usr/bin/python3"
+        run: export CLOUDSDK_PYTHON="/usr/bin/python3"
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v1'
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
 
       - name: Download signing tool and verify sha265 checksum
         shell: bash
         run: |
           curl -L -o jsign.jar "https://github.com/ebourg/jsign/releases/download/4.2/jsign-4.2.jar"
           echo '290377fc4f593256200b3ea4061b7409e8276255f449d4c6de7833faf0850cc1  jsign.jar' | sha256sum -c
-      
-      # We sign binaries with the EV Certificate. You MUST NOT have a key in a file to sign binary. 
+
+      # We sign binaries with the EV Certificate. You MUST NOT have a key in a file to sign binary.
       # The only options to store keys are:
       #   - HSM architecture(e.g., AWS or Google)
       #   - Physical USB stick with hardware stored key
       # We are using the first option to be able to sign the binaries within the CI servers without
-      # physical access to them. However, this signing method requires the signing tool supporting the HSM key. 
+      # physical access to them. However, this signing method requires the signing tool supporting the HSM key.
       #
       # The high-level signing procedure looks like below:
       #   1. Calculate the SHA256 Hash for the app
