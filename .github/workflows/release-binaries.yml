@@ -196,20 +196,18 @@ jobs:
           website: oracle.com
           release: 17
 
-      - id: "auth"
-        uses: "google-github-actions/auth@v1"
-        with:
-          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
-
       - name: Setup python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
 
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
-        env:
-          CLOUDSDK_PYTHON: "/usr/bin/python3"
 
       - name: "Use gcloud CLI"
         run: "gcloud info"
