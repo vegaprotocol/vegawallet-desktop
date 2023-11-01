@@ -206,11 +206,10 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Export gcloud related env variable
-        run: export CLOUDSDK_PYTHON="/usr/bin/python3"
-
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
+        env:
+          CLOUDSDK_PYTHON: "/usr/bin/python3"
 
       - name: "Use gcloud CLI"
         run: "gcloud info"
