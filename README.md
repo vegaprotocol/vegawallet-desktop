@@ -16,7 +16,7 @@ The Vega Wallet desktop app provides a graphical user interface for Vega Protoco
 
 #### Golang
 
-You will need to go 1.20.
+You will need to go 1.21.
 
 #### Wails
 
@@ -28,7 +28,7 @@ Be sure to have the following environment variables set:
 - `GO111MODULE=on`
 
 ```sh
-go install github.com/wailsapp/wails/v2/cmd/wails@v2.4.1
+go install github.com/wailsapp/wails/v2/cmd/wails@v2.8.0
 ```
 
 To check if you have the correct dependencies installed, use the following command:
