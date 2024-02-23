@@ -16,7 +16,7 @@ The Vega Wallet desktop app provides a graphical user interface for Vega Protoco
 
 #### Golang
 
-You will need to go 1.20.
+You will need to go 1.21.
 
 #### Wails
 

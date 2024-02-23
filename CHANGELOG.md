@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.0
+
+Support for vega v0.74.3
+
 ## 0.12.6
 
 Support for vega v0.73.1
