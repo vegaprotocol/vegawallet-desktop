@@ -8,7 +8,7 @@ on:
 
 env:
   VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  WAILS_VERSION: v2.4.1
+  WAILS_VERSION: v2.8.0
   NODE_VERSION: 18.12.0
   GO_VERSION: 1.21.7
 
@@ -141,7 +141,6 @@ jobs:
       matrix:
         arch:
           - amd64
-          - arm64
         network:
           - mainnet
           - fairground

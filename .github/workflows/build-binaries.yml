@@ -16,7 +16,7 @@ permissions:
   checks: write
 
 env:
-  WAILS_VERSION: v2.4.1
+  WAILS_VERSION: v2.8.0
   NODE_VERSION: 18.12.0
   GO_VERSION: 1.21.7
 
@@ -143,6 +143,8 @@ jobs:
         exclude:
           - os: ubuntu-latest
             arch: arm64
+          - os: windows-latest
+            arch: arm64
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -206,6 +208,8 @@ jobs:
             platform: windows
         exclude:
           - os: ubuntu-latest
+            arch: arm64
+          - os: windows-latest
             arch: arm64
     steps:
       - name: Check out repository
