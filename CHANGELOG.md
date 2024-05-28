@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.1
+
+Fix build for windows
+
 ## 0.14.0
 
 Support for vega v0.75.8
